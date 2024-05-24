@@ -32,7 +32,7 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                     {dataCategory.map((item: any , index : any) => {
                         return (
                             <TouchableOpacity
-                                key={item.id}
+                                key={index}
                                 onPress={() => {
                                     setSelectedCategory(item.id);
                                     setNameDirectory(item.name);

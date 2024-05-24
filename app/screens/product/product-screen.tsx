@@ -275,21 +275,20 @@ export const ProductScreen: FC = () => {
     setActiveTab(tab);
   };
   const handleEndReached = () => {
-    if (!isRefreshing  && page <= totalPagesProduct - 1 && searchValue =='') {
-      // console.log(showLoading)
-      
+    console.log('--------totalPagesProduct---------------',totalPagesProduct, '----', isRefreshing, '-----', page )
+    if (!isRefreshing  && page <= totalPagesProduct - 1 ) {
+      console.log('--------handleEndReached---------------',page )
       setPage((prevPage) => prevPage + 1);
-      handleGetProduct();
+      handleGetProduct(searchValue);
     }
   };
   const handleEndReachedCategory = () => {
     if (
       !isRefreshingCategory &&
-      searchCategory == "" &&
       pageCategories <= totalPages - 1
     ) {
       setPageCategories((prevPage) => prevPage + 1);
-      handleGetCategory();
+      handleGetCategory(searchCategory);
     }
   };
   const openDirectoryModal = () => {
@@ -509,7 +508,8 @@ export const ProductScreen: FC = () => {
                   title="ok"
                 />
               }
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={index}
+              //keyExtractor={(item) => item.id.toString()}
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.5}
               ListFooterComponent={renderFooter}

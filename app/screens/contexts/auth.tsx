@@ -14,6 +14,7 @@ type AuthContextData = {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
+//const AuthProvider = ({children}: {children: React.ReactNode}) =>
 const AuthProvider: React.FC = ({ children }) => {
   const [redirect, setRedirect] = useState<number>();
   const [loading, setLoading] = useState(true);

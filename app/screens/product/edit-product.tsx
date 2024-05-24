@@ -50,7 +50,6 @@ import {
   validateFileSize,
 } from "../../utils/validate";
 import { G } from "react-native-svg";
-import ImagesGroupEdit from "./component/imageGroupEdit";
 import Dialog from "../../components/dialog/dialog";
 import {
   hideDialog,
@@ -1876,7 +1875,7 @@ export const ProductEditScreen: FC = (item) => {
                                 height={scaleHeight(14)}
                               />
                             </TouchableOpacity>
-                            <ImagesGroupEdit
+                            <ImagesGroup
                               arrData={item.imageUrls || []}
                               onPressOpenLibrary={() => {
                                 if (item.imageUrls !== undefined) {
@@ -1886,7 +1885,7 @@ export const ProductEditScreen: FC = (item) => {
                                       index
                                     );
                                     productStore.setImagesLimit(
-                                      item.imageUri?.length
+                                      item.imageUrls?.length
                                     );
                                   } else {
                                     showToast(
