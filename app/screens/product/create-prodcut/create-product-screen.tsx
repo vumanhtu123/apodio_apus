@@ -287,20 +287,6 @@ export const ProductCreateScreen: FC = (item) => {
       setDataCreateProduct(dataArr);
     }
   }, [attributeArr]);
-  // const [page, setPage] = useState(0);
-  // const [totalPage, setTotalPage] = useState(0);
-  // const [isLoadingMore, setIsLoadingMore] = useState(false);
-  // const [searchCategory, setSearchCategory] = useState("");
-  // const handleSearchCategoryChange = (text: string) => {
-  //   const newValue = text !== null ? text.toString() : "";
-  //   setSearchCategory(newValue);
-  // };
-  // const handleSubmitSearchCategory = () => {
-  //   // const processedText = searchValue.trim().toLowerCase();
-  //   setPage(0);
-  //   setDataCategory([]);
-  //   getListCategory(0 , searchCategory);
-  // };
   const getListCategory = async () => {
     const data = await categoryStore.getListCategoriesModal(0, 200);
     console.log("get list category", data);
@@ -311,16 +297,6 @@ export const ProductCreateScreen: FC = (item) => {
     //   setDataCategory(prevData => [...prevData, ...data.response.data.content]);
     // }
   };
-  // const loadMoreCategories = async () => {
-  //   if (page < totalPage ) {
-  //     setIsLoadingMore(true);
-  //     const nextPage = page + 1;
-  //     await getListCategory(nextPage);
-  //     setPage(nextPage);
-  //     setIsLoadingMore(false);
-  //   }
-  // };
-
   const getListBrand = async () => {
     const data = await productStore.getListBrand();
     setDataBrand(data.result.data.content);

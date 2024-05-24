@@ -21,11 +21,10 @@ import { colors, scaleHeight, scaleWidth } from "../../theme";
 import CategoryModalFilter from "./component/modal-category";
 import CreateDirectoryModal from "./component/modal-createDirectory";
 import EditDirectoryModal from "./component/modal-editDirectory";
-import { products } from "./data";
 import { CategoryList } from "./renderList/category-list";
 import RenderProductItem from "./renderList/renderItemProduct";
 import { styles } from "./styles";
-import { hideLoading, showLoading } from "../../utils/toast";
+
 
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
@@ -461,7 +460,7 @@ export const ProductScreen: FC = () => {
                 onPress={() =>
                   navigation.navigate("filterScreen" as never, { activeTab })
                 }
-                style={{ backgroundColor: "none" }}>
+                style={{ backgroundColor: "none" ,  width: scaleWidth(30), height: scaleHeight(30) }}>
                 <Images.slider_black
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}

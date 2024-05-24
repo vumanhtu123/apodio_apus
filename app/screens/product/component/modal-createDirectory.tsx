@@ -101,9 +101,9 @@ const CreateDirectoryModal = (props: any) => {
                 }
                 else if (response?.assets[0].uri) {
                     const { fileSize, uri, type, fileName } = response?.assets[0];
-
-                    // console.log('check camera', response?.assets)
-                    setImagesNote({ fileSize, uri, type, fileName })
+                    const result = { fileSize, uri, type, fileName }
+                    console.log('testtt', result);
+                    uploadImages(result)
                     setModalImage(false)
                 }
             })

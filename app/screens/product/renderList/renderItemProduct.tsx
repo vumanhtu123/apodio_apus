@@ -6,7 +6,7 @@ import { scaleHeight, scaleWidth } from '../../../theme';
 import { stylesItem } from '../styles';
 import { Text } from '../../../components';
 
-const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProductDetail, handleClassifyDetail }:any) => {
+const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProductDetail, handleClassifyDetail }: any) => {
   if (isGridView) {
     return (
       <TouchableOpacity
@@ -29,10 +29,10 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
             right: scaleWidth(6),
             zIndex: 1,
           }}>
-          {viewProduct === 'VIEW_VARIANT' && item.scene?.url !== '' ? 
-          <TouchableOpacity >
-            <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
-          </TouchableOpacity> : null
+          {viewProduct === 'VIEW_VARIANT' && item.scene?.url !== '' ?
+            <TouchableOpacity >
+              <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+            </TouchableOpacity> : null
           }
         </View>
         <View
@@ -101,10 +101,10 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
             backgroundColor: "#F6F7F9",
             zIndex: 1,
           }}>
-          {viewProduct === 'VIEW_VARIANT' ? 
-          <TouchableOpacity >
-            <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
-          </TouchableOpacity> : null
+          {viewProduct === 'VIEW_VARIANT' ?
+            <TouchableOpacity >
+              <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+            </TouchableOpacity> : null
           }
         </View>
         <View
