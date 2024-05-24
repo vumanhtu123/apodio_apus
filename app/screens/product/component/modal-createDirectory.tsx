@@ -32,7 +32,6 @@ const CreateDirectoryModal = (props: any) => {
 
 
     const handleCreateButtonPress = async () => {
-
         onCreateDirectory(name, imagesNote);
         // setIsVisible(false)
         // setIsVisible(false);
@@ -75,6 +74,8 @@ const CreateDirectoryModal = (props: any) => {
             console.error('Error uploading image:', error);
         }
     };
+
+
 
     const handleCameraUse = async () => {
 

@@ -120,7 +120,7 @@ export const AppStack = () => {
       headerShown: false, // Ẩn header cho tất cả các màn hình
       gestureEnabled: true,
       gestureDirection: 'horizontal',
-      cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
       initialRouteName={"mainBottom"}>
       <Stack.Screen
@@ -146,7 +146,7 @@ export const AppStack = () => {
 
       {/* màn hình kiểm kho */}
       <Stack.Screen
-        name="inventoryManagenment"
+        name="InventoryManagenment"
         component={InventoryManagement}
       />
       <Stack.Screen name="addCheckIventory" component={addCheckInventory} />
