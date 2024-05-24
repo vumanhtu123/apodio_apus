@@ -1,0 +1,15 @@
+export const LANGUAGE = {
+  TIMOLESTE: 0,
+  ENGLISH: 1,
+}
+export const KIND_SCREEN = {
+  HOME: 0,
+  ORDERS: 1,
+  HISTORY: 2,
+  ACCOUNT: 3
+}
+
+export const TYPE_SELECT_IMAGE = {
+  CAMERA: 1,
+  LIBRARY: 2
+}

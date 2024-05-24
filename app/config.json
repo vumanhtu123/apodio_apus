@@ -1,0 +1,28 @@
+{
+  "apiVersion": 7.6,
+  "versionNative": "0.0.1",
+  "versionCodePush": "202312220242",
+  "enableItunesAndOthersSource": true,
+  "ENV": "PRODUCT",
+  "API": {
+    "DEV": {
+      "URL": "https://product-manufactor-service.stg.apusplatform.com",
+      "URL_UPLOAD": "https://product-manufactor-service.dev.apusplatform.com",
+      "URL_ERP": "https://resources-service.dev.apusplatform.com",
+      "URL_GET_WAY_ERP": "https://gateway-erp.dev.apusplatform.com",
+      "UAA": "https://uaa.dev.apusplatform.com"
+    },
+    "STAGING": {
+      "URL": "https://product-manufactor-service.stg.apusplatform.com",
+      "URL_UPLOAD": "https://product-manufactor-service.stg.apusplatform.com",
+      "URL_ERP": "https://resources-service.stg.apusplatform.com",
+      "URL_GET_WAY_ERP": "https://gateway-erp.stg.apusplatform.com",
+      "UAA": "https://gateway-erp.stg.apusplatform.com/services/uaa"
+    },
+    "PRODUCT": {
+      "URL": "https://product-manufactor-service.stg.apusplatform.com",
+      "URL_ERP": "https://resources-service.dev.apusplatform.com",
+      "VERSION": "v1"
+    }
+  }
+}
