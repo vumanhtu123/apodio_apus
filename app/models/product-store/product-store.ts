@@ -64,7 +64,8 @@ export const ProductStoreModel = types
     },
     setReloadProductScreen(reload: boolean) {
       self.reloadProductScreen = reload
-    }, setImagesLimit(imagesLength: number) {
+    }, 
+    setImagesLimit(imagesLength: number) {
       self.imagesLimit = imagesLength
     },
     setImageModalIndex(index: number) {
@@ -176,6 +177,19 @@ export const ProductStoreModel = types
     deleteCheck: flow(function* (id: Number) {
       const product = new ProductApi(self.environment.api);
       const result = yield product.deleteCheck(id);
+
+      console.log("tuvm product");
+      if (result.kind === "ok") {
+        console.log("post-product-Success : ", result);
+        return result;
+      } else {
+        console.log("post-product-Failed : ", result.message);
+        return result;
+      }
+    }),
+    usingProductCheck: flow(function* (id: Number) {
+      const product = new ProductApi(self.environment.api);
+      const result = yield product.usingProductCheck(id);
 
       console.log("tuvm product");
       if (result.kind === "ok") {

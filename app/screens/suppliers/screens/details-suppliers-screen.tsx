@@ -6,8 +6,12 @@ import { AppStackScreenProps, navigationRef } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { TouchableOpacity, View } from "react-native";
 import { HeaderInfo } from "../component/header-details-supplier";
+import { ContactSupplier } from "../component/contact-supplier";
 import { InfoDetails, InfoAddress, InfoBank } from "../component/info-supplier";
 import { dataLineHeader } from "../styles/data";
+import { ScrollView } from "react-native-gesture-handler";
+import { OrderSupplier } from "../component/order-supplier";
+import { DebtSupplier } from "../component/debt-supplier";
 
 export const DetailsSupplierScreen: FC<
   AppStackScreenProps<"suppliersScreen">
@@ -17,6 +21,27 @@ export const DetailsSupplierScreen: FC<
   const onTap = (id: any) => {
     if (onclick !== id) {
       setOnclick(id);
+    }
+  };
+
+  const renderComponent = (onclick: number) => {
+    switch (onclick) {
+      case 0:
+        return (
+          <View>
+            <InfoDetails />
+            <InfoAddress />
+            <InfoBank />
+          </View>
+        );
+      case 1:
+        return <ContactSupplier />;
+      case 2:
+        return <OrderSupplier />;
+      case 3:
+        return <DebtSupplier />;
+      default:
+        return null;
     }
   };
   return (
@@ -72,9 +97,7 @@ export const DetailsSupplierScreen: FC<
           );
         })}
       </View>
-      <InfoDetails />
-      <InfoAddress />
-      <InfoBank />
+      <ScrollView>{renderComponent(onclick)}</ScrollView>
     </View>
   );
 };

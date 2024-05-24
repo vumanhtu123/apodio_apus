@@ -1,7 +1,7 @@
 import { BalanceResult } from './api.types.home';
-import { Api } from "./api";
+import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import { hideLoading, showLoading } from "../../utils/toast";
 
 
@@ -51,7 +51,30 @@ export class CategoryApi {
       );
       console.log("page", page);
       const data = response.data;
-      if (response.data.message === "Success") {
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      return { kind: "bad-data" };
+    }
+  }
+  async getListCategoriesFilter(
+    page: any,
+    size: any,
+  ): Promise<any> {
+    showLoading();
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.get(
+        ApiEndpoint.LIST_CATEGORY ,
+        {
+          page: page,
+          size: size,
+        }
+      );
+      console.log("page", page);
+      const data = response.data;
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
@@ -76,7 +99,7 @@ export class CategoryApi {
       );
       console.log("page", page);
       const data = response.data;
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
@@ -91,11 +114,12 @@ export class CategoryApi {
         ApiEndpoint.DELETE_CATEGORY,
         { productCategoryId }
       );
+      console.log('------------------------------response delete category', response)
       const data = response.data;
-      if (response.data.message === "Success") {
-        return { kind: "ok", response: data };
+      if (response.data.errorCodes) {
+        return { kind: "bad-data", response: data };
       }
-      return { kind: "bad-data", response: data };
+      return { kind: "ok", response: data };
     } catch (e) {
       return { kind: "bad-data" };
     }
@@ -108,7 +132,7 @@ export class CategoryApi {
         { name, imageUrl }
       );
       const data = response.data;
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
@@ -130,7 +154,7 @@ export class CategoryApi {
       const response: ApiResponse<any> = await this.api.apisauce.put(url, body);
       console.log("mmm", url);
       const data = response.data;
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };

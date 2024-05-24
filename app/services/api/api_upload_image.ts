@@ -1,6 +1,6 @@
 import { ApiUpload } from "./api_upload";
 import { ApiResponse } from "apisauce";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import { hideLoading, showLoading } from "../../utils/toast";
 
 export class UploadApi {

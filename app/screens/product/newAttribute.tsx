@@ -74,6 +74,9 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
     if (name.trim() === "") {
       showToast('txtToats.required_value_null', 'error')
     } else {
+      if(nameAttribute.some(item => item.name.trim() === name.trim())){
+        showToast('txtToats.cannot_create_duplicate', 'error')
+      }else{
       const id = generateRandomString(8);
       const nameArr = [{ name: name, id: id }];
       const newArr = nameAttribute.concat(nameArr);
@@ -89,13 +92,13 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
           id: id,
         },
       ];
-      const newArrData = dataAttribute.concat(newData);
+      const newArrData = dataAttribute?.concat(newData);
       setDataAttribute(newArrData);
+    }
     }
   };
 
   const addDataAttribute = (data: any, index: any) => {
-    console.log(dataCheckbox)
     if (dataCheckbox.length === 0 || dataCheckbox[dataCheckbox.length - 1]?.value.trim() === "") {
       showToast('txtToats.required_value_null', 'error')
     } else {
@@ -106,8 +109,11 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       const dataAdd = newArr[newArr.length - 1];
       const newArray = dataAttribute.map((obj) => {
         if (obj.id === data) {
-          const newValues = obj.productAttributeValues.concat(dataAdd);
-          return { ...obj, productAttributeValues: newValues };
+          if(obj.productAttributeValues.some(dto=> dto.value === dataAdd.value) ){
+            showToast('txtToats.cannot_create_duplicate', 'error')
+          }else{
+            const newValues = obj.productAttributeValues.concat(dataAdd);
+            return { ...obj, productAttributeValues: newValues };}
         }
         return obj;
       });
@@ -144,13 +150,11 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         const response = await attributeStore.createAttributeGroup(
           data.attribute
         );
-        console.log(response)
         if (response && response.kind === "ok") {
           setIsNameAttribute(false);
           setNameGroupAttribute(response.response.data);
-          console.log(response.response.data)
         } else {
-          setErrorText(response.response.errorCodes.message)
+          setErrorText(response.response.errorCodes[0].message)
           console.error("Failed to fetch categories:", response.response.errorCodes);
         }
       } catch (error) {
@@ -177,7 +181,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
     });
     const endArr = updateArr.map((item) => ({
       ...item,
-      productAttributeValues: item.productAttributeValues.map(
+      productAttributeValues: item?.productAttributeValues?.map(
         ({ idItem, ...rest }) => rest
       ),
     }));
@@ -186,7 +190,6 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         endArr,
         nameGroupAttribute.id
       );
-      console.log(response, '231792647')
       if (response && response.kind === "ok") {
        setOpenDialog(true)
       } else {
@@ -217,7 +220,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
     });
     const endArr = updateArr?.map((item) => ({
       ...item,
-      productAttributeValues: item.productAttributeValues.map(
+      productAttributeValues: item?.productAttributeValues?.map(
         ({ idItem, ...rest }) => rest
       ),
     }));
@@ -226,12 +229,13 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         endArr,
         nameGroupAttribute.id
       );
+      // console.log('first')
       if (response && response.kind === "ok") {
         setOpenDialogAttribute(true)
       } else {
-        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
-          hideDialog();
-        })
+        // showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
+        //   hideDialog();
+        // })
         console.error("Failed to fetch categories:", response);
       }
     } catch (error) {
@@ -258,7 +262,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       <Header
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
-        headerText="Thêm nhóm thuộc tính"
+        headerText={isNameAttribute === true ? "Thêm nhóm thuộc tính": "Thêm thuộc tính"}
         style={{ height: scaleHeight(52) }}
       />
       <KeyboardAvoidingView
@@ -267,15 +271,18 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         {isNameAttribute === true ? (
           <View
             style={{
-              // flex: 1,
+              // flex: 1,/
+              // height : 100,
               marginHorizontal: scaleWidth(16),
               marginTop: scaleHeight(20),
+              // marginBottom: scaleHeight(20),
             }}>
             <Controller
               control={control}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
                   keyboardType={null}
+                  style={{}}
                   inputStyle={{
                     marginBottom: scaleHeight(5),
                     marginTop:
@@ -288,6 +295,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                     onChange(value)
                     setErrorText('')
                   }}
+                  // styleError = {{}}
                   onClearText={() => onChange("")}
                   RightIconClear={Images.icon_delete2}
                   multiline={true}

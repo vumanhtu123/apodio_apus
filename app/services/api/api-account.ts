@@ -1,4 +1,4 @@
-import { Api } from "./api";
+import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { LoginResult } from "./api.types";
 import { getGeneralApiProblem } from "./api-problem";
@@ -14,7 +14,7 @@ import {
   SetNewPassForgotResult,
   StaffInforResult,
 } from "./api.types.account";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import DeviceInfo from "react-native-device-info";
 
 export class AccountApi {
@@ -44,7 +44,7 @@ export class AccountApi {
       //   const problem = getGeneralApiProblem(response)
       //   if (problem) return problem
       // }
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       if (response.data.message === "An error occurred, please try again") {
@@ -135,7 +135,7 @@ export class AccountApi {
       //   const problem = getGeneralApiProblem(response)
       //   if (problem) return problem
       // }
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       if (response.data.message === "An error occurred, please try again") {
@@ -192,7 +192,7 @@ export class AccountApi {
       );
       console.log(this.api.apisauce.headers);
       const data = response.data;
-      if (data.message === "Success") {
+      if (data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
@@ -211,7 +211,7 @@ export class AccountApi {
         {}
       );
       const data = response.data;
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       if (response.data.message === "An error occurred, please try again") {
@@ -238,7 +238,7 @@ export class AccountApi {
         }
       );
       const data = response.data;
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       if (response.data.message === "An error occurred, please try again") {

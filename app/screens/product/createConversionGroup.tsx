@@ -359,7 +359,7 @@ export const CreateConversionGroup: FC = observer(
                                                             flex: 1, fontWeight: '400', fontSize: fontSize.size12,
                                                             color: colors.palette.dolphin,
                                                             paddingBottom: scaleHeight(18),
-                                                        }} text={'Chọn DVT'} />
+                                                        }} text={'Chọn ĐVT'} />
 
                                                     }
                                                     <Images.icon_caretRightDown />

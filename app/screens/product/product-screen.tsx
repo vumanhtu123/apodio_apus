@@ -18,13 +18,14 @@ import { Header } from "../../components/header/header";
 import { Text } from "../../components/text/text";
 import { useStores } from "../../models";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
-import CategoryModalFilter from "./componet/modal-category";
-import CreateDirectoryModal from "./componet/modal-createDirectory";
-import EditDirectoryModal from "./componet/modal-editDirectory";
+import CategoryModalFilter from "./component/modal-category";
+import CreateDirectoryModal from "./component/modal-createDirectory";
+import EditDirectoryModal from "./component/modal-editDirectory";
 import { products } from "./data";
 import { CategoryList } from "./renderList/category-list";
 import RenderProductItem from "./renderList/renderItemProduct";
 import { styles } from "./styles";
+import { hideLoading, showLoading } from "../../utils/toast";
 
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
@@ -41,13 +42,14 @@ export const ProductScreen: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<any>();
   const [selectedEditCategory, setSelectedEditCategory] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [sortedProducts, setSortedProducts] = useState(products);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isDeleteFailModalVisible, setIsDeleteFailModalVisible] =
     useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<any>();
-  const [totalPages, setTotalPages] = useState<any>(1);
+  const [totalPages, setTotalPages] = useState<any>(0);
+  const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
   const [dataCategory, setDataCategory] = useState<any>([]);
+  const [dataCategoryFilter, setDataCategoryFilter] = useState<any>([]);
   const [dataProduct, setDataProduct] = useState<any>([]);
   const { categoryStore, productStore } = useStores();
   const [errorMessage, setErrorMessage] = useState("");
@@ -55,6 +57,7 @@ export const ProductScreen: FC = () => {
   const [pageCategories, setPageCategories] = useState(0);
   const [nameDirectory, setNameDirectory] = useState('')
   const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
+  const [index, setIndex] = useState()
   const handlePressViewProduct = (type: any) => {
     viewProductType(type);
   };
@@ -124,6 +127,24 @@ export const ProductScreen: FC = () => {
       console.error("Error fetching categories:", error);
     }
   };
+  const handleGetCategoryFilter = async () => {
+    try {
+      const response = await categoryStore.getListCategoriesFilter(
+        0,
+        100,
+      );
+      if (response && response.kind === "ok") {
+        const data = response.response.data.content
+        const newElement = { name: "Tất cả danh mục" };
+        data.unshift(newElement)
+        setDataCategoryFilter(data);
+      } else {
+        console.error("Failed to fetch categories:", response);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
   const [searchValue, setSearchValue] = useState("");
   const handleSearchValueChange = (text: string) => {
     const newValue = text !== null ? text.toString() : "";
@@ -152,6 +173,8 @@ export const ProductScreen: FC = () => {
         parseSort
       );
       if (response && response.kind === "ok") {
+        setTotalPagesProduct(response.response.data.totalPages)
+        console.log('////////////////' ,response.response.data.totalPages )
         if (page === 0) {
           setDataProduct(response.response.data.content);
         } else {
@@ -227,6 +250,7 @@ export const ProductScreen: FC = () => {
       setErrorMessage(result.response.message);
       handleGetCategory();
       setIsDeleteFailModalVisible(true);
+      setIsVisible(false)
     } else {
       console.log(
         "Chỉnh sửa danh mục thất bại",
@@ -241,6 +265,7 @@ export const ProductScreen: FC = () => {
   useEffect(() => {
     handleGetProduct();
     handleGetCategory();
+    handleGetCategoryFilter();
   }, []);
   useEffect(() => {
     handleGetProduct();
@@ -250,7 +275,9 @@ export const ProductScreen: FC = () => {
     setActiveTab(tab);
   };
   const handleEndReached = () => {
-    if (!isRefreshing && searchValue == "" && selectedCategory == undefined) {
+    if (!isRefreshing  && page <= totalPagesProduct - 1 && searchValue =='') {
+      // console.log(showLoading)
+      
       setPage((prevPage) => prevPage + 1);
       handleGetProduct();
     }
@@ -268,8 +295,13 @@ export const ProductScreen: FC = () => {
   const openDirectoryModal = () => {
     setIsDirectoryModalVisible(true);
   };
+  useEffect(() => {
+    if (index == 0) {
+      refreshProduct()
+    }
+  }, [index])
   const refreshProduct = async () => {
-    setIsRefreshing(true);
+    // setIsRefreshing(true);
     setSelectedCategory(undefined);
     setPage(0);
     setSearchValue("");
@@ -278,16 +310,16 @@ export const ProductScreen: FC = () => {
     productStore.setTagId(0);
     productStore.setSort([]);
     await handleGetProduct();
-    setIsRefreshing(false);
+    // setIsRefreshing(false);
   };
   const refreshCategory = async () => {
-    setIsRefreshingCategory(true);
+    // setIsRefreshingCategory(true);
     setPageCategories(0);
     setSearchCategory("");
     setDataCategory([]);
     productStore.setSortCategory([]);
     await handleGetCategory();
-    setIsRefreshingCategory(false);
+    // setIsRefreshingCategory(false);
   };
   const renderFooter = () => {
     if (!isRefreshing) return null;
@@ -311,9 +343,7 @@ export const ProductScreen: FC = () => {
     navigation.navigate("productDetailScreen" as never);
   };
   const handleClassifyDetail = (idProduct: number) => {
-    console.log("first", idProduct);
     productStore.setSelectedProductId(idProduct);
-    console.log("selectedProductId", productStore.productId);
     navigation.navigate("classifyDetailScreen" as never);
   };
   const [openSearch, setOpenSearch] = useState(false);
@@ -368,7 +398,7 @@ export const ProductScreen: FC = () => {
                 style={[
                   styles.buttonProduct,
                   activeTab === (index === 0 ? "product" : "category") &&
-                    styles.activeButton,
+                  styles.activeButton,
                 ]}>
                 <View
                   style={{ width: scaleWidth(114), height: scaleHeight(20) }}>
@@ -376,7 +406,7 @@ export const ProductScreen: FC = () => {
                     style={[
                       styles.buttonText,
                       activeTab === (index === 0 ? "product" : "category") &&
-                        styles.activeButtonText,
+                      styles.activeButtonText,
                     ]}>
                     {item}
                   </Text>
@@ -461,10 +491,12 @@ export const ProductScreen: FC = () => {
           <CategoryModalFilter
             showCategory={showCategory}
             setShowCategory={setShowCategory}
-            dataCategory={dataCategory}
+            dataCategory={dataCategoryFilter}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             setNameDirectory={setNameDirectory}
+            isSearchBarVisible={openSearch}
+            setIndex={setIndex}
           />
           <View style={styles.containerProduct}>
             <FlatList

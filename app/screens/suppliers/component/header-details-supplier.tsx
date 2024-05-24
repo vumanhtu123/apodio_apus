@@ -41,7 +41,12 @@ export const HeaderInfo = (item: any) => {
             <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
           </TouchableOpacity>
         </View>
-        <Text style={{ fontSize: fontSize.size12, fontWeight: "600" }}>
+        <Text
+          style={{
+            fontSize: fontSize.size12,
+            fontWeight: "600",
+            paddingVertical: 5,
+          }}>
           {item.name ?? "Công ty TNHH MTV Mặt Trời Hồng"}
         </Text>
         <Text style={{ fontSize: fontSize.size12, color: "#242424" }}>

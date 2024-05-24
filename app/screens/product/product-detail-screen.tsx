@@ -25,7 +25,6 @@ import {
 } from "../../theme";
 // import { styles } from "./styles"
 import { AutoImage } from "../../../app/components/auto-image/auto-image";
-import ProductAttribute from "./componet/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
 import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -33,6 +32,7 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
 import { formatNumber } from "../../utils/validate";
 import Dialog from "../../components/dialog/dialog";
+import ProductAttribute from "./component/productAttribute";
 
 export const ProductDetailScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -44,6 +44,7 @@ export const ProductDetailScreen: FC = (item) => {
   const [showNCC, setShowNCC] = useState(false);
   const [changeClassification, setChangeClassification] = useState("");
   const [dataClassification, setDataClassification] = useState({});
+  const [dataClassificationToEdit, setDataClassificationToEdit] = useState({});
   const [arrImagesProduct, setArrImagesProduct] = useState([]);
   const [arrClassification, setArrClassification] = useState([]);
   const [detailsClassification, setDetailsClassification] = useState([]);
@@ -61,11 +62,8 @@ export const ProductDetailScreen: FC = (item) => {
   const refCarousel = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [detailProduct, setDetailProduct] = useState<any>([]);
-  const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false)
+  const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false);
 
-  useEffect(() => {
-    console.log("productId", productId);
-  }, [productId]);
   const handleGetDetailProduct = async () => {
     try {
       const response = await productStore.getDetailProduct(productId);
@@ -74,6 +72,7 @@ export const ProductDetailScreen: FC = (item) => {
         const data = response.response.data;
         setDetailProduct(response.response.data);
         setDataClassification(data);
+        setDataClassificationToEdit(data);
         console.log("response---getDetailProduct-------", data);
         console.log(
           "attributeValues: ",
@@ -94,38 +93,54 @@ export const ProductDetailScreen: FC = (item) => {
       console.error("Error fetching detail:", error);
     }
   };
-  useEffect(()=>{
-    if(detailsClassification?.length!==0){
-      selectDataClassification()
-    }
-  }, [detailsClassification])
+
   useEffect(() => {
+    console.log(
+      "---------useEffect---------arrClassification------------------",
+      arrClassification
+    );
+    if (detailsClassification?.length !== 0) {
+      selectDataClassification();
+    }
+  }, [detailsClassification]);
+
+  useEffect(() => {
+    console.log("---------useEffect---------productId------------------");
     handleGetDetailProduct();
   }, [productId]);
 
   useEffect(() => {
+    console.log("---------useEffect---------reload------------------");
     if (reload === true) {
       handleGetDetailProduct();
     }
   }, [reload]);
 
-  const arrBrands = [{ id: 3746, label: 'Mặc định', label2: 'DEFAULT' }, { id: 4638, label: 'Lô', label2: 'LOTS' }, { id: 4398, label: 'Serial', label2: 'SERIAL' }]
+  const arrBrands = [
+    { id: 3746, label: "Mặc định", label2: "DEFAULT" },
+    { id: 4638, label: "Lô", label2: "LOTS" },
+    { id: 4398, label: "Serial", label2: "SERIAL" },
+  ];
   const getLabelByList = (label2: string) => {
-    const item = arrBrands.find(item => item.label2 === label2);
-    return item ? item.label : '';
+    const item = arrBrands.find((item) => item.label2 === label2);
+    return item ? item.label : "";
   };
 
   const selectDataClassification = () => {
-    const arrTextfieldAttribute = []
+    const arrTextfieldAttribute = [];
 
-    attributeCategory.forEach((items)=>{
-      items.attributeOutputDtos.forEach((item)=>{
-        if(item.displayType === "TEXTFIELD"){
-        const newItem = {...item.productAttributeValue[0], attributeName: items.name, name: item.name}
-          arrTextfieldAttribute.push(newItem)
+    attributeCategory.forEach((items) => {
+      items.attributeOutputDtos.forEach((item) => {
+        if (item.displayType === "TEXTFIELD") {
+          const newItem = {
+            ...item.productAttributeValue[0],
+            attributeName: items.name,
+            name: item.name,
+          };
+          arrTextfieldAttribute.push(newItem);
         }
-      })
-    })
+      });
+    });
 
     const matchingElements = [];
     attributeCategory.forEach((itemA) => {
@@ -136,7 +151,7 @@ export const ProductDetailScreen: FC = (item) => {
               attrValueA.id === itemB.productAttributeValueId &&
               dto.id === itemB.productAttributeId
             ) {
-              const newItem = {...attrValueA, attributeName: itemA.name }
+              const newItem = { ...attrValueA, attributeName: itemA.name };
               matchingElements.push(newItem);
             }
           });
@@ -152,7 +167,11 @@ export const ProductDetailScreen: FC = (item) => {
           return items;
         }
       });
-      return { ...item, value: a[0]?.value, attributeName: a[0]?.attributeName };
+      return {
+        ...item,
+        value: a[0]?.value,
+        attributeName: a[0]?.attributeName,
+      };
     });
 
     const matchingElements1 = [];
@@ -175,36 +194,41 @@ export const ProductDetailScreen: FC = (item) => {
       return { ...item, name: a[0]?.name };
     });
 
-    const arrTextAndCheck = newArr1.concat(arrTextfieldAttribute)
+    const arrTextAndCheck = newArr1.concat(arrTextfieldAttribute);
 
     const newArr2 = arrTextAndCheck.reduce((acc: any, obj: any) => {
       if (!acc[obj.attributeName]) {
-          acc[obj.attributeName] = [];
+        acc[obj.attributeName] = [];
       }
       acc[obj.attributeName].push(obj);
       return acc;
-  }, {});
+    }, {});
 
-  const newArr3 = Object.keys(newArr2).map(attributeName => {
-    return {
+    const newArr3 = Object.keys(newArr2).map((attributeName) => {
+      return {
         name: attributeName, // Chuyển khóa 'number' từ string sang number nếu cần
-        items: newArr2[attributeName]
-    };
-});
+        items: newArr2[attributeName],
+      };
+    });
+    console.log(
+      "---setAttributeDetailsClassification--------------",
+      JSON.stringify(newArr3)
+    );
     setAttributeDetailsClassification(newArr3);
   };
 
   const deleteProduct = async () => {
     const result = await productStore.deleteProduct(productId);
     console.log("deleteProduct-----------", JSON.stringify(result));
-    if (result.result.message === "Success") {
+    if (result.kind === "ok") {
       navigation.goBack();
+      productStore.setReloadProductScreen(true)
     } else {
       setErrorContent(result.result.errorCodes[0].message);
       setIsDeleteFailModalVisible(true);
     }
-    setDialogDeleteProduct(false)
-  }
+    setDialogDeleteProduct(false);
+  };
   const toggleDetails = () => {
     setShowDetails(!showDetails);
     selectDataClassification();
@@ -223,7 +247,7 @@ export const ProductDetailScreen: FC = (item) => {
         RightIcon1={Images.icon_editWhite}
         onRightPress1={() =>
           navigation.navigate("ProductEditScreen" as any, {
-            dataEdit: dataClassification,
+            dataEdit: dataClassificationToEdit,
           })
         }
         onRightPress2={() => setDialogDeleteProduct(true)}
@@ -246,9 +270,8 @@ export const ProductDetailScreen: FC = (item) => {
               style={{ fontSize: fontSize.size14, fontWeight: "500", flex: 1 }}>
               Thông tin chung
             </Text>
-
           </View>
-          {arrImagesProduct?.length !== 0 ?
+          {arrImagesProduct?.length !== 0 ? (
             <ScrollView
               style={{
                 marginVertical: scaleHeight(margin.margin_12),
@@ -273,18 +296,20 @@ export const ProductDetailScreen: FC = (item) => {
                   </TouchableOpacity>
                 );
               })}
-            </ScrollView> :
-            <View style={{
-              marginVertical: scaleHeight(margin.margin_12),
-              marginHorizontal: scaleWidth(margin.margin_16),
-            }}>
+            </ScrollView>
+          ) : (
+            <View
+              style={{
+                marginVertical: scaleHeight(margin.margin_12),
+                marginHorizontal: scaleWidth(margin.margin_16),
+              }}>
               <AutoImage
                 style={styles.viewImage}
                 source={require("../../../assets/Images/no_images.png")}
               />
             </View>
-          }
-          {arrClassification ?
+          )}
+          {arrClassification ? (
             <View
               style={{
                 flexDirection: "row",
@@ -311,8 +336,9 @@ export const ProductDetailScreen: FC = (item) => {
                   },
                 ]}
               />
-            </View> : null}
-          {arrClassification ?
+            </View>
+          ) : null}
+          {arrClassification ? (
             <ScrollView
               style={{
                 marginVertical: scaleHeight(margin.margin_12),
@@ -345,8 +371,9 @@ export const ProductDetailScreen: FC = (item) => {
                   </TouchableOpacity>
                 );
               })}
-            </ScrollView> : null}
-          {detailsClassification.imageUrls?.length !== 0 ?
+            </ScrollView>
+          ) : null}
+          {detailsClassification.imageUrls?.length !== 0 ? (
             <ScrollView
               style={{
                 marginVertical: scaleHeight(margin.margin_12),
@@ -372,7 +399,8 @@ export const ProductDetailScreen: FC = (item) => {
                   </View>
                 );
               })}
-            </ScrollView> : null}
+            </ScrollView>
+          ) : null}
           <View style={{ marginHorizontal: scaleWidth(margin.margin_16) }}>
             <View style={{ marginTop: 20 }}>
               <ProductAttribute
@@ -383,24 +411,31 @@ export const ProductDetailScreen: FC = (item) => {
                 label="Tên sản phẩm "
                 value={dataClassification.name}
               />
-              {arrClassification ?
+              {arrClassification ? (
                 <View>
-                  <ProductAttribute label="Mã biến thể sản phẩm " value={detailsClassification.id} />
-                  <ProductAttribute label="Tên biến thể sản phẩm " value={detailsClassification.name} />
-                </View> : null}
+                  <ProductAttribute
+                    label="Mã biến thể sản phẩm "
+                    value={detailsClassification.id}
+                  />
+                  <ProductAttribute
+                    label="Tên biến thể sản phẩm "
+                    value={detailsClassification.name}
+                  />
+                </View>
+              ) : null}
               <ProductAttribute
                 label="Trạng thái"
                 value={
                   dataClassification.saleOk === true &&
-                    dataClassification.purchaseOk === false
+                  dataClassification.purchaseOk === false
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true &&
                       dataClassification.saleOk === false
-                      ? "Có thể mua"
-                      : dataClassification.saleOk === true &&
-                        dataClassification.purchaseOk === true
-                        ? "Có thể bán/ Có thể mua"
-                        : null
+                    ? "Có thể mua"
+                    : dataClassification.saleOk === true &&
+                      dataClassification.purchaseOk === true
+                    ? "Có thể bán/ Có thể mua"
+                    : null
                 }
               />
             </View>
@@ -442,46 +477,56 @@ export const ProductDetailScreen: FC = (item) => {
                     />
                     <Text text="Giá sản phẩm" style={styles.textDolphin12} />
                   </View>
-                  {detailsClassification?.length!== 0 ? detailsClassification?.retailPrice?.map((item) => {
-                    return (
-                      <ProductAttribute
-                        label={item.min}
-                        value={formatNumber(item.price)}
-                        labelStyle={{ color: colors.palette.nero }}
-                        textStyle={{ color: colors.palette.radicalRed }}
-                      />
-                    );
-                  }): dataClassification?.retailPrice?.map((item) => {
-                    return (
-                      <ProductAttribute
-                        label={item.min}
-                        value={formatNumber(item.price)}
-                        labelStyle={{ color: colors.palette.nero }}
-                        textStyle={{ color: colors.palette.radicalRed }}
-                      />
-                    );
-                  })}
+                  {detailsClassification?.length !== 0
+                    ? detailsClassification?.retailPrice?.map((item) => {
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={formatNumber(item.price)}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })
+                    : dataClassification?.retailPrice?.map((item) => {
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={formatNumber(item.price)}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })}
                 </View>
               ) : null}
               <View>
-                {detailsClassification?.length!== 0 ?<ProductAttribute
-                  label="Giá vốn"
-                  value={formatNumber(detailsClassification?.costPrice)}
-                  textStyle={{ color: colors.palette.radicalRed }}
-                />:<ProductAttribute
-                label="Giá vốn"
-                value={formatNumber(dataClassification?.costPrice)}
-                textStyle={{ color: colors.palette.radicalRed }}
-              /> }
-                {detailsClassification?.length!== 0 ?<ProductAttribute
-                  label="Giá niêm yết"
-                  value={formatNumber(detailsClassification?.listPrice)}
-                  textStyle={{ color: colors.palette.radicalRed }}
-                />: <ProductAttribute
-                label="Giá niêm yết"
-                value={formatNumber(dataClassification?.listPrice)}
-                textStyle={{ color: colors.palette.radicalRed }}
-              />}
+                {detailsClassification?.length !== 0 ? (
+                  <ProductAttribute
+                    label="Giá vốn"
+                    value={formatNumber(detailsClassification?.costPrice)}
+                    textStyle={{ color: colors.palette.radicalRed }}
+                  />
+                ) : (
+                  <ProductAttribute
+                    label="Giá vốn"
+                    value={formatNumber(dataClassification?.costPrice)}
+                    textStyle={{ color: colors.palette.radicalRed }}
+                  />
+                )}
+                {detailsClassification?.length !== 0 ? (
+                  <ProductAttribute
+                    label="Giá niêm yết"
+                    value={formatNumber(detailsClassification?.listPrice)}
+                    textStyle={{ color: colors.palette.radicalRed }}
+                  />
+                ) : (
+                  <ProductAttribute
+                    label="Giá niêm yết"
+                    value={formatNumber(dataClassification?.listPrice)}
+                    textStyle={{ color: colors.palette.radicalRed }}
+                  />
+                )}
               </View>
               <TouchableOpacity
                 style={styles.viewCaret}
@@ -520,25 +565,27 @@ export const ProductDetailScreen: FC = (item) => {
                     />
                     <Text text="Giá sản phẩm" style={styles.textDolphin12} />
                   </View>
-                  {detailsClassification?.length!== 0 ?detailsClassification?.wholesalePrice?.map((item) => {
-                    return (
-                      <ProductAttribute
-                        label={item.min}
-                        value={formatNumber(item.price)}
-                        labelStyle={{ color: colors.palette.nero }}
-                        textStyle={{ color: colors.palette.radicalRed }}
-                      />
-                    );
-                  }): dataClassification?.wholesalePrice?.map((item) => {
-                    return (
-                      <ProductAttribute
-                        label={item.min}
-                        value={formatNumber(item.price)}
-                        labelStyle={{ color: colors.palette.nero }}
-                        textStyle={{ color: colors.palette.radicalRed }}
-                      />
-                    );
-                  })}
+                  {detailsClassification?.length !== 0
+                    ? detailsClassification?.wholesalePrice?.map((item) => {
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={formatNumber(item.price)}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })
+                    : dataClassification?.wholesalePrice?.map((item) => {
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={formatNumber(item.price)}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })}
                 </View>
               ) : null}
             </View>
@@ -559,8 +606,7 @@ export const ProductDetailScreen: FC = (item) => {
               />
               <ProductAttribute
                 label="Hình thức quản lý"
-                value={
-                  getLabelByList(dataClassification.managementForm)}
+                value={getLabelByList(dataClassification.managementForm)}
               />
               <ProductAttribute
                 label="Đơn vị tính gốc"
@@ -568,7 +614,8 @@ export const ProductDetailScreen: FC = (item) => {
               />
             </View>
           </View>
-          {dataClassification?.description !== '' && dataClassification?.description !== null ?
+          {dataClassification?.description !== "" &&
+          dataClassification?.description !== null ? (
             <View>
               <View style={styles.viewLine} />
               <View style={styles.viewDescribe}>
@@ -583,10 +630,10 @@ export const ProductDetailScreen: FC = (item) => {
                   ]}
                 />
               </View>
-            </View> : null}
-          {attributeDetailsClassification?.length !== 0 ?
+            </View>
+          ) : null}
+          {attributeDetailsClassification?.length !== 0 ? (
             <View>
-
               <View style={styles.viewLine} />
               <TouchableOpacity
                 style={{
@@ -607,7 +654,8 @@ export const ProductDetailScreen: FC = (item) => {
                   }}
                 />
               </TouchableOpacity>
-            </View> : null}
+            </View>
+          ) : null}
 
           {showDetails && (
             <View style={styles.viewDetails}>
@@ -622,36 +670,38 @@ export const ProductDetailScreen: FC = (item) => {
               <View style={styles.viewLine2} />
               {attributeDetailsClassification?.map((item, index) => (
                 <View>
-              <View
-                style={{
-                  marginVertical: scaleHeight(margin.margin_12),
-                  paddingHorizontal: scaleWidth(padding.padding_12),
-                }}>
-                <Text
-                  style={{
-                    fontWeight: "600",
-                    fontSize: fontSize.size12,
-                    color: colors.palette.navyBlue,
-                  }}>
-                  {item.name}
-                </Text>
-              </View>
-              <View style={styles.viewLine2} />
-                {item.items?.map(dto=>(<View
-                  style={{
-                    marginTop: scaleHeight(margin.margin_12),
-                  }}>
-                  <ProductAttribute
-                    label={dto.name}
-                    value={dto.value}
-                    styleAttribute={{
+                  <View
+                    style={{
+                      marginVertical: scaleHeight(margin.margin_12),
                       paddingHorizontal: scaleWidth(padding.padding_12),
-                    }}
-                  />
-                  {index !== attributeDetailsClassification?.length - 1 ? (
-                    <View style={styles.viewLine2} />
-                  ) : null}
-                </View>))}
+                    }}>
+                    <Text
+                      style={{
+                        fontWeight: "600",
+                        fontSize: fontSize.size12,
+                        color: colors.palette.navyBlue,
+                      }}>
+                      {item.name}
+                    </Text>
+                  </View>
+                  <View style={styles.viewLine2} />
+                  {item.items?.map((dto) => (
+                    <View
+                      style={{
+                        marginTop: scaleHeight(margin.margin_12),
+                      }}>
+                      <ProductAttribute
+                        label={dto.name}
+                        value={dto.value}
+                        styleAttribute={{
+                          paddingHorizontal: scaleWidth(padding.padding_12),
+                        }}
+                      />
+                      {index !== attributeDetailsClassification?.length - 1 ? (
+                        <View style={styles.viewLine2} />
+                      ) : null}
+                    </View>
+                  ))}
                 </View>
               ))}
             </View>
@@ -692,49 +742,49 @@ export const ProductDetailScreen: FC = (item) => {
                 </View>
                 {showNCC === true
                   ? arrNCC?.map((item) => {
-                    return (
-                      <View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            paddingVertical: scaleHeight(padding.padding_8),
-                          }}>
-                          <AutoHeightImage
-                            source={{ uri: item?.imgUrl }}
-                            width={scaleHeight(40)}
-                            height={scaleHeight(40)}
-                            style={{ borderRadius: 40 }}
-                            fallbackSource={Images.imageError}
-                          />
+                      return (
+                        <View>
                           <View
                             style={{
-                              marginLeft: scaleWidth(6),
-                              justifyContent: "center",
+                              flexDirection: "row",
+                              paddingVertical: scaleHeight(padding.padding_8),
                             }}>
-                            <Text style={styles.textNameNCC}>
-                              {item?.vendorCode + "- " + item?.vendorName}
-                            </Text>
-                            <Text style={styles.textNameClassification}>
-                              {item?.phoneNumber}
-                            </Text>
-                          </View >
-                        </View >
-                        <View
-                          style={{
-                            height: scaleHeight(1),
-                            backgroundColor: colors.palette.ghostWhite,
-                          }}
-                        />
-                      </View >
-                    );
-                  })
+                            <AutoHeightImage
+                              source={{ uri: item?.imgUrl }}
+                              width={scaleHeight(40)}
+                              height={scaleHeight(40)}
+                              style={{ borderRadius: 40 }}
+                              fallbackSource={Images.imageError}
+                            />
+                            <View
+                              style={{
+                                marginLeft: scaleWidth(6),
+                                justifyContent: "center",
+                              }}>
+                              <Text style={styles.textNameNCC}>
+                                {item?.vendorCode + "- " + item?.vendorName}
+                              </Text>
+                              <Text style={styles.textNameClassification}>
+                                {item?.phoneNumber}
+                              </Text>
+                            </View>
+                          </View>
+                          <View
+                            style={{
+                              height: scaleHeight(1),
+                              backgroundColor: colors.palette.ghostWhite,
+                            }}
+                          />
+                        </View>
+                      );
+                    })
                   : null}
-              </View >
-            </View >
+              </View>
+            </View>
           ) : null}
-        </ScrollView >
+        </ScrollView>
         {/* </Screen> */}
-      </SafeAreaView >
+      </SafeAreaView>
       <Dialog
         isVisible={isDeleteFailModalVisible}
         title={"productScreen.Notification"}
@@ -827,7 +877,7 @@ export const ProductDetailScreen: FC = (item) => {
         onBackdropPress={() => setModalImages1(false)}>
         <View>
           {detailsClassification.imageUrls &&
-            detailsClassification.imageUrls?.length > 0 ? (
+          detailsClassification.imageUrls?.length > 0 ? (
             <View>
               <Carousel
                 data={detailsClassification.imageUrls}
@@ -886,9 +936,8 @@ export const ProductDetailScreen: FC = (item) => {
             </View>
           ) : null}
         </View>
-
       </Modal>
-    </View >
+    </View>
   );
 };
 

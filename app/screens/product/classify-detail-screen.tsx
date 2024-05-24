@@ -24,7 +24,6 @@ import {
 } from "../../theme";
 // import { styles } from "./styles"
 import { AutoImage } from "../../../app/components/auto-image/auto-image";
-import ProductAttribute from "./componet/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
 import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -32,6 +31,8 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
 import { formatNumber } from "../../utils/validate";
 import { showDialog } from "../../utils/toast";
+import ProductAttribute from "./component/productAttribute";
+// import ProductAttribute from "./componet/productAttribute";
 
 export const ClassifyDetailScreen: FC = () => {
   const navigation = useNavigation();
@@ -90,10 +91,14 @@ export const ClassifyDetailScreen: FC = () => {
     handleGetDetailClassify();
   }, [productId]);
 
-  const arrBrands = [{ id: 3746, label: 'Mặc định', label2: 'DEFAULT' }, { id: 4638, label: 'Lô', label2: 'LOTS' }, { id: 4398, label: 'Serial', label2: 'SERIAL' }]
+  const arrBrands = [
+    { id: 3746, label: "Mặc định", label2: "DEFAULT" },
+    { id: 4638, label: "Lô", label2: "LOTS" },
+    { id: 4398, label: "Serial", label2: "SERIAL" },
+  ];
   const getLabelByList = (label2: string) => {
-    const item = arrBrands.find(item => item.label2 === label2);
-    return item ? item.label : '';
+    const item = arrBrands.find((item) => item.label2 === label2);
+    return item ? item.label : "";
   };
 
   const getNameAndValue = () => {
@@ -182,25 +187,34 @@ export const ClassifyDetailScreen: FC = () => {
               })}
             </ScrollView>
           ) : null}
-          {!isChecking && dataClassification?.scene?.url !== '' ? <TouchableOpacity
-            style={{ flexDirection: "row", alignItems: "center", marginLeft: scaleWidth(16) }}
-            onPress={() => navigation.navigate("view3D" as any, { scene: dataClassification?.scene?.url })}>
-            <Images.ic_3d
-              width={scaleWidth(20)}
-              height={scaleHeight(20)}
+          {!isChecking && dataClassification?.scene?.url !== "" ? (
+            <TouchableOpacity
               style={{
-                transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                flexDirection: "row",
+                alignItems: "center",
+                marginLeft: scaleWidth(16),
               }}
-            />
-            <Text
-              tx="productScreen.Perspective"
-              style={{
-                fontSize: fontSize.size12,
-                marginLeft: 6,
-                color: "#0078d4",
-              }}>
-            </Text>
-          </TouchableOpacity> : null}
+              onPress={() =>
+                navigation.navigate("view3D" as any, {
+                  scene: dataClassification?.scene?.url,
+                })
+              }>
+              <Images.ic_3d
+                width={scaleWidth(20)}
+                height={scaleHeight(20)}
+                style={{
+                  transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                }}
+              />
+              <Text
+                tx="productScreen.Perspective"
+                style={{
+                  fontSize: fontSize.size12,
+                  marginLeft: 6,
+                  color: "#0078d4",
+                }}></Text>
+            </TouchableOpacity>
+          ) : null}
           <View style={{ marginHorizontal: scaleWidth(margin.margin_16) }}>
             <View style={{ marginTop: 20 }}>
               <ProductAttribute
@@ -217,11 +231,11 @@ export const ClassifyDetailScreen: FC = () => {
                   dataClassification.saleOk === true
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true
-                      ? "Có thể mua"
-                      : dataClassification.saleOk === true &&
-                        dataClassification.purchaseOk === true
-                        ? "Có thể bán/ Có thể mua"
-                        : null
+                    ? "Có thể mua"
+                    : dataClassification.saleOk === true &&
+                      dataClassification.purchaseOk === true
+                    ? "Có thể bán/ Có thể mua"
+                    : null
                 }
               />
             </View>
@@ -478,42 +492,42 @@ export const ClassifyDetailScreen: FC = () => {
                 </View>
                 {showNCC === true
                   ? arrNCC.map((item: any) => {
-                    return (
-                      <View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            paddingVertical: scaleHeight(padding.padding_8),
-                          }}>
-                          <AutoHeightImage
-                            source={{ uri: item.imgUrl }}
-                            width={scaleHeight(40)}
-                            height={scaleHeight(40)}
-                            style={{ borderRadius: 40 }}
-                            fallbackSource={Images.imageError}
-                          />
+                      return (
+                        <View>
                           <View
                             style={{
-                              marginLeft: scaleWidth(6),
-                              justifyContent: "center",
+                              flexDirection: "row",
+                              paddingVertical: scaleHeight(padding.padding_8),
                             }}>
-                            <Text style={styles.textNameNCC}>
-                              {item.vendorCode + "- " + item.vendorName}
-                            </Text>
-                            <Text style={styles.textNameClassification}>
-                              {item.phoneNumber}
-                            </Text>
+                            <AutoHeightImage
+                              source={{ uri: item.imgUrl }}
+                              width={scaleHeight(40)}
+                              height={scaleHeight(40)}
+                              style={{ borderRadius: 40 }}
+                              fallbackSource={Images.imageError}
+                            />
+                            <View
+                              style={{
+                                marginLeft: scaleWidth(6),
+                                justifyContent: "center",
+                              }}>
+                              <Text style={styles.textNameNCC}>
+                                {item.vendorCode + "- " + item.vendorName}
+                              </Text>
+                              <Text style={styles.textNameClassification}>
+                                {item.phoneNumber}
+                              </Text>
+                            </View>
                           </View>
+                          <View
+                            style={{
+                              height: scaleHeight(1),
+                              backgroundColor: colors.palette.ghostWhite,
+                            }}
+                          />
                         </View>
-                        <View
-                          style={{
-                            height: scaleHeight(1),
-                            backgroundColor: colors.palette.ghostWhite,
-                          }}
-                        />
-                      </View>
-                    );
-                  })
+                      );
+                    })
                   : null}
               </View>
             </View>

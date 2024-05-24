@@ -167,9 +167,9 @@ export function InputSelect(props: InputSelectProps) {
             )}
           </View>
         </View>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        {disabled === true ? null:<View style={{ justifyContent: "center", alignItems: "center" }}>
           <Images.dropDown />
-        </View>
+        </View>}
       </TouchableOpacity>
       <Modal
         isVisible={showModal}

@@ -70,6 +70,7 @@ export const palette = {
   radicalRed: '#FF4956',
   solitude: '#EAF1FF',
   ghostWhite: '#F6F7FB',
+  ghostWhite2: '#F3F4F9',
   floralWhite: '#FFF9EC',
   amour: '#FFEFF0',
   malachite: '#00CC6A',

@@ -1,9 +1,9 @@
 import { ApiResponse } from "apisauce"
-import { Api } from "./api"
+import { Api } from "../base-api/api"
 import { getGeneralApiProblem } from "./api-problem"
 import { hideLoading, showLoading } from "../../utils/toast"
 import { CounterResult, DataDetailPaymentOrderResult, DeleteCounterResult, DeleteNotiCountResult, DetailWithdrawResResult, HistoryResult, NotificationResult, NumberUnreadResult, OrderDetailResult, OrderResult, TransactionStaffResult } from "./api.types.order"
-import { ApiEndpoint } from "./api_endpoint"
+import { ApiEndpoint } from "../base-api/api_endpoint"
 
 export class OderApi {
   private api: Api
@@ -32,7 +32,7 @@ export class OderApi {
         const problem = getGeneralApiProblem(response)
         if (problem) return problem
       }
-      if (response.data.message === 'Success') {
+      if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
@@ -50,7 +50,7 @@ export class OderApi {
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/orders",
       )
       const data = response.data
-      if (response.data.message === 'Success') {
+      if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }

@@ -1,5 +1,5 @@
 import { Api, ApiErp, GetWayAPI, ApiUpload } from "../services/api";
-import { UAA_API } from "../services/api/api-config-uaa";
+import { UAA_API } from "../services/base-api/api-config-uaa";
 
 let ReactotronDev;
 if (__DEV__) {

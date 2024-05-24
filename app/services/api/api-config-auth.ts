@@ -1,14 +1,12 @@
-import { Api } from "./api";
+import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import { hideLoading, showLoading } from "../../utils/toast";
-import { BalanceResult } from "./api.types.home";
-import { GetWayAPI } from "./api-config-get-way";
+import { GetWayAPI } from "../base-api/api-config-get-way";
 import DeviceInfo from "react-native-device-info";
 import { getGeneralApiProblem } from "./api-problem";
-import { UAA_API } from "./api-config-uaa";
+import { UAA_API } from "../base-api/api-config-uaa";
 import { LoginResponse } from "../../models/login-model";
-import { LoginResult } from "./api.types";
 
 export class AuthApi {
   private getway: GetWayAPI;

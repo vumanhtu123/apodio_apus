@@ -6,7 +6,7 @@
   "ENV": "PRODUCT",
   "API": {
     "DEV": {
-      "URL": "https://product-manufactor-service.stg.apusplatform.com",
+      "URL": "https://product-manufactor-service.dev.apusplatform.com",
       "URL_UPLOAD": "https://product-manufactor-service.dev.apusplatform.com",
       "URL_ERP": "https://resources-service.dev.apusplatform.com",
       "URL_GET_WAY_ERP": "https://gateway-erp.dev.apusplatform.com",
