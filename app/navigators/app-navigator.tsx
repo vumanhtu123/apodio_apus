@@ -146,7 +146,7 @@ export const AppStack = () => {
 
       {/* màn hình kiểm kho */}
       <Stack.Screen
-        name="inventoryManagenment"
+        name="InventoryManagenment"
         component={InventoryManagement}
       />
       <Stack.Screen name="addCheckIventory" component={addCheckInventory} />

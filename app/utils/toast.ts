@@ -16,7 +16,7 @@ export const showToast = (message: any, type: ToastType = "success", position: T
   Toast.show({
     type:  type,
     text1: translate(message),
-    //text2: 'This is some something 👋',
+    //text2: 'This is some something 👋 ',
     position: position,
   });
 }

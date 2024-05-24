@@ -21,11 +21,10 @@ import { colors, scaleHeight, scaleWidth } from "../../theme";
 import CategoryModalFilter from "./component/modal-category";
 import CreateDirectoryModal from "./component/modal-createDirectory";
 import EditDirectoryModal from "./component/modal-editDirectory";
-import { products } from "./data";
 import { CategoryList } from "./renderList/category-list";
 import RenderProductItem from "./renderList/renderItemProduct";
 import { styles } from "./styles";
-import { hideLoading, showLoading } from "../../utils/toast";
+
 
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
