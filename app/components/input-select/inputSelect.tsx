@@ -96,6 +96,8 @@ export function InputSelect(props: InputSelectProps) {
     dataDefault,
     isSearch,
     onLoadMore,
+    checkUse,
+    onPressNotUse,
     handleOnSubmitSearch,
     onChangeText ,
   } = props;
@@ -146,7 +148,9 @@ export function InputSelect(props: InputSelectProps) {
       <TouchableOpacity
         disabled={disabled}
         onPress={() => {
-          setShowModal(true);
+          if(checkUse === true){
+            onPressNotUse()
+          }else{setShowModal(true);}
         }}
         style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
