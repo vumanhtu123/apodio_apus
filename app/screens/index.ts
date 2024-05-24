@@ -17,7 +17,7 @@ export * from "./order/orderDetail/orderDetails";
 export * from "./order/newOrder/newOrder";
 export * from "./promotions/promotions";
 export * from "./product/arrange-product";
-export * from "./product/componet/modal-select-filter";
+export * from "./product/component/modal-select-filter";
 export * from "./product/product-categories-screen";
 export * from "./product/product-detail-screen";
 export * from "./order/orderDetail/orderDetails";

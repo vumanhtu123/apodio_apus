@@ -5,7 +5,7 @@ import { Button, Header, Text } from "../../components";
 import { Images } from "../../../assets";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../theme";
-import DropdownModal from "./componet/multiSelect";
+import DropdownModal from "./component/multiSelect";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Modal from 'react-native-modal';
 import { useStores } from "../../models";
