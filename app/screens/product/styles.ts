@@ -175,7 +175,8 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size10,
     marginLeft: scaleWidth(8),
     marginRight: scaleWidth(10),
-    maxWidth: scaleWidth(80)
+    maxWidth: scaleWidth(80),
+    flex: 1,
   },
   containerProduct : {
     flex: 1,

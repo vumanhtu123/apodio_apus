@@ -114,6 +114,7 @@ export const ProductEditScreen: FC = (item) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [dataCreateProduct, setDataCreateProduct] = useState([]);
   const [productUsing, setProductUsing] = useState(false);
+  const [priceUsing, setPriceUsing] = useState(false);
   const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
   const {
     control,
@@ -537,7 +538,8 @@ export const ProductEditScreen: FC = (item) => {
     if (data && data.kind === "ok") {
       const result = data.result.data;
       console.log("checkUsing:-------", result);
-      setProductUsing(result.isUsing);
+      setProductUsing(result.isUsingInAnotherService);
+      setPriceUsing(result.isUsingInPriceList)
     } else {
       console.error("Failed to fetch check using:", data);
     }
@@ -1245,7 +1247,7 @@ export const ProductEditScreen: FC = (item) => {
                   keyboardType={null}
                   labelTx={"productScreen.SKU"}
                   style={{
-                    marginBottom: scaleHeight(5),
+                    marginBottom: scaleHeight(15),
                     justifyContent: "center",
                   }}
                   inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
@@ -1278,7 +1280,7 @@ export const ProductEditScreen: FC = (item) => {
                   keyboardType={null}
                   labelTx={"productScreen.productName"}
                   style={{
-                    marginBottom: scaleHeight(5),
+                    marginBottom: scaleHeight(15),
                     justifyContent: "center",
                   }}
                   inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
@@ -1616,7 +1618,7 @@ export const ProductEditScreen: FC = (item) => {
               onPressChoice={(item: any) => {
                 setBrands(item);
               }}
-              disabled={productUsing === true ? true : false}
+              disabled={productUsing === true || priceUsing === true ? true : false}
               // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
             />
           </View>
@@ -1707,10 +1709,12 @@ export const ProductEditScreen: FC = (item) => {
               <Switch
                 value={valueSwitchUnit}
                 onToggle={() => {
-                  setUomId({ id: "", label: "" });
+                 if(priceUsing === true){
+                  showToast('txtToats.product_is_using', 'error')
+                 }else{ setUomId({ id: "", label: "" });
                   setUomGroupId({ id: "", label: "" });
                   setValueSwitchUnit(!valueSwitchUnit);
-                  getListUnitGroup(!valueSwitchUnit);
+                  getListUnitGroup(!valueSwitchUnit);}
                 }}
               />
             </View>
@@ -1732,18 +1736,24 @@ export const ProductEditScreen: FC = (item) => {
                 }
               }}
               styleView={{ marginBottom: scaleHeight(6) }}
+              checkUse={ priceUsing === true ? true : false }
+              onPressNotUse={()=> {
+                showToast('txtToats.product_is_using', 'error')
+              }}
             />
             <View style={{ marginBottom: scaleHeight(15) }}>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {
-                  if (valueSwitchUnit) {
+                  if(priceUsing === true){
+                    showToast('txtToats.product_is_using', 'error')
+                   }else{if (valueSwitchUnit) {
                     navigation.navigate("createConversionGroup" as any, {
                       editScreen: true,
                     });
                   } else {
                     setModalcreateUnit(true);
-                  }
+                  }}
                 }}>
                 <Images.ic_plusCircleBlue
                   width={scaleWidth(14)}
@@ -2200,7 +2210,7 @@ export const ProductEditScreen: FC = (item) => {
                   <TouchableOpacity
                     onPress={() => {
                       //điều kiện chuyển màn tạm thời
-                      if (productUsing === true) {
+                      if (productUsing === true || priceUsing === true) {
                         navigation.navigate("editAttributeByEdit" as never, {
                           dataAttribute: attributeToEdit,
                           constDataAttribute: constAttributeToEdit,
