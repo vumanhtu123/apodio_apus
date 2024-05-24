@@ -724,7 +724,7 @@ export const ProductCreateScreen: FC = (item) => {
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Tạo sản phẩm`}
+        headerTx={'productScreen.create_product'}
         style={{ height: scaleHeight(54) }}
       />
       <ScrollView style={{ marginBottom: scaleHeight(20) }}>
@@ -914,9 +914,7 @@ export const ProductCreateScreen: FC = (item) => {
         {valuePurchase === true ?
           <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
             <View style={styles.viewViewDetail}>
-              <Text style={styles.textTitleView}>
-                Thông tin nhà cung cấp
-              </Text>
+              <Text tx={"createProductScreen.infoSupplier"} style={styles.textTitleView}/>
               <TouchableOpacity
                 onPress={() =>
                   goToChooseSupplierScreen()
@@ -927,10 +925,8 @@ export const ProductCreateScreen: FC = (item) => {
                     {selectedIds.length} nhà cung cấp
                   </Text>
                 ) : (
-                  <Text
-                    style={styles.textWeight400Dolphin}>
-                    Chưa có nhà cung cấp nào được chọn
-                  </Text>
+                  <Text tx={"createProductScreen.noSelectSupplier"}
+                    style={styles.textWeight400Dolphin}/>
                 )}
                 <Images.icon_caretRight
                   width={scaleWidth(16)}
@@ -941,12 +937,10 @@ export const ProductCreateScreen: FC = (item) => {
           </View> : null}
         <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
           <View style={styles.viewViewDetail}>
-            <Text style={styles.textTitleView}>
-              Quản lý tồn kho
-            </Text>
+            <Text tx={'createProductScreen.inventory_management'} style={styles.textTitleView}/>
             <InputSelect
-              titleText="Hình thức quản lý"
-              hintText="Mặc định"
+              titleTx={"createProductScreen.form_of_management"}
+              // hintText="Mặc định"
               isSearch={false}
               required={true}
               arrData={arrBrands}
@@ -962,12 +956,10 @@ export const ProductCreateScreen: FC = (item) => {
         {/* View Thông tin thêm */}
         <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
           <View style={styles.viewViewDetail}>
-            <Text style={styles.textTitleView}>
-              Thông tin thêm
-            </Text>
+            <Text tx={"createProductScreen.infoMore"} style={styles.textTitleView}/>
             <InputSelect
-              titleText="Danh mục"
-              hintText="Chọn danh mục"
+              titleTx={"inforMerchant.Category"}
+              hintTx={"productScreen.select_catgory"}
               isSearch
               required={false}
               arrData={arrCategory}
@@ -981,8 +973,8 @@ export const ProductCreateScreen: FC = (item) => {
               styleView={{ marginBottom: scaleHeight(15) }}
             />
             <InputSelect
-              titleText="Thương hiệu"
-              hintText="Chọn thương hiệu"
+              titleTx={"productScreen.trademark"}
+              hintTx={"productScreen.select_trademark"}
               isSearch
               required={false}
               arrData={arrBrand}
@@ -1001,21 +993,17 @@ export const ProductCreateScreen: FC = (item) => {
                 handleSelect(items);
               }}
               dataEdit={defaultTags}
-              titleText="Tag"
-              hintText="Chọn Tag"
+              titleTx={"productScreen.tag"}
+              hintTx={"productScreen.select_tag"}
               styleView={{ marginBottom: scaleHeight(15) }}
             />
           </View>
         </View>
         <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
           <View style={styles.viewViewDetail}>
-            <Text style={styles.textTitleView}>
-              {valueSwitchUnit ? 'Nhóm đơn vị tính' : 'Đơn vị tính'}
-            </Text>
+            <Text tx={valueSwitchUnit ? "productScreen.unit_group" : "productScreen.unit"} style={styles.textTitleView}/>
             <View style={styles.viewLineSwitchUnit}>
-              <Text style={styles.textWeight400Dolphin}>
-                Quản lý nhiều đơn vị tính của sản phẩm
-              </Text>
+              <Text tx={"productScreen.manage_multiple_units"} style={styles.textWeight400Dolphin}/>
               <Switch
                 value={valueSwitchUnit}
                 onToggle={() => {
@@ -1026,8 +1014,8 @@ export const ProductCreateScreen: FC = (item) => {
               />
             </View>
             <InputSelect
-              titleText={valueSwitchUnit ? 'Nhóm đơn vị tính' : 'Đơn vị tính'}
-              hintText={valueSwitchUnit ? 'Chọn nhóm đơn vị tính' : 'Chọn đơn vị tính'}
+              titleTx={valueSwitchUnit ? "productScreen.unit_group" : "productScreen.unit"}
+              hintTx={valueSwitchUnit ? "productScreen.select_unit_group" : "productScreen.select_unit"}
               isSearch
               required={true}
               arrData={arrUnitGroupData}
@@ -1057,15 +1045,13 @@ export const ProductCreateScreen: FC = (item) => {
                   width={scaleWidth(14)}
                   height={scaleHeight(14)}
                 />
-                <Text style={styles.textWeight400Blue}>
-                  {valueSwitchUnit ? 'Tạo nhóm đơn vị tính' : 'Tạo đơn vị tính'}
-                </Text>
+                <Text tx={valueSwitchUnit ? "productScreen.create_unit_group" : "productScreen.create_unit"} style={styles.textWeight400Blue}/>
               </TouchableOpacity>
             </View>
             {valueSwitchUnit ? (
               <>
                 <View style={styles.viewLineSwitchUnit}>
-                  <Text style={{ fontSize: fontSize.size14 }}>Đơn vị gốc</Text>
+                  <Text tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }}/>
                   {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
                   {detailUnitGroupData ? (
                     <Text style={styles.textWeight600}>
@@ -1074,12 +1060,8 @@ export const ProductCreateScreen: FC = (item) => {
                   ) : null}
                 </View>
                 <View style={styles.viewLineSwitchUnit}>
-                  <Text style={{ fontSize: fontSize.size14 }}>
-                    Đơn vị quy đổi
-                  </Text>
-                  <Text style={styles.textWeight600}>
-                    Tỷ lệ quy đổi
-                  </Text>
+                  <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size14 }}/>
+                  <Text tx={"createProductScreen.conversionRate"} style={styles.textWeight600}/>
                 </View>
                 {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
                   <View
@@ -1326,9 +1308,7 @@ export const ProductCreateScreen: FC = (item) => {
             <View style={styles.viewViewDetail}>
               <View>
                 <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-                  <Text style={styles.textTitleView}>
-                    Mô tả
-                  </Text>
+                  <Text tx={"createProductScreen.description"} style={styles.textTitleView}/>
                   {description ? <TouchableOpacity onPress={() => { setModalDescribe(true) }}>
                     <Images.icon_edit
                       style={{ marginLeft: scaleWidth(8) }}
@@ -1354,9 +1334,7 @@ export const ProductCreateScreen: FC = (item) => {
                     width={scaleWidth(14)}
                     height={scaleHeight(14)}
                   />
-                  <Text style={styles.textWeight400Blue}>
-                    Thêm mô tả
-                  </Text>
+                  <Text tx={"createProductScreen.addDescription"} style={styles.textWeight400Blue}/>
                 </TouchableOpacity>
               </View> : <Text text={description} />}
             </View>
@@ -1379,24 +1357,18 @@ export const ProductCreateScreen: FC = (item) => {
                   <TouchableOpacity
                     onPress={handleDescribe}
                     style={styles.viewBtnInMorInfo}>
-                    <Text style={styles.textBtnMorInfo}>
-                      Mô tả
-                    </Text>
+                    <Text tx={"createProductScreen.description"} style={styles.textBtnMorInfo}/>
                   </TouchableOpacity>
                 ) : null}
                 {addVariant === false ? (
                   <TouchableOpacity
                     onPress={() => setAddVariant(true)}
                     style={styles.viewBtnInMorInfo}>
-                    <Text style={styles.textBtnMorInfo}>
-                      Phân loại sản phẩm
-                    </Text>
+                    <Text tx={"createProductScreen.productClassification"} style={styles.textBtnMorInfo}/>
                   </TouchableOpacity>
                 ) : null}
                 {addDescribe === true && addVariant === true ? (
-                  <Text style={[styles.textWeight400Dolphin, { marginLeft: scaleWidth(8), }]}>
-                    Bạn đã thêm tất cả thông tin khác của sản phẩm
-                  </Text>
+                  <Text tx={"createProductScreen.notificationAddAllInfoProduct"} style={[styles.textWeight400Dolphin, { marginLeft: scaleWidth(8), }]}/>
                 ) : null}
               </View>
             </View>
@@ -1504,14 +1476,12 @@ export const ProductCreateScreen: FC = (item) => {
             console.log('first', dataCreateProduct)
           }}
           style={styles.viewBtnCancel}>
-          <Text style={styles.textBtnCancel}>Hủy</Text>
+          <Text tx={"common.cancel"} style={styles.textBtnCancel}/>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleSubmit(submitAdd)}
           style={styles.viewBtnConfirm}>
-          <Text style={styles.textBtnConfirm}>
-            Hoàn tất
-          </Text>
+          <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm}/>
         </TouchableOpacity>
       </View>
     </View>
