@@ -11,6 +11,8 @@ export interface InputSelectProps {
     required?: boolean 
     styleView?: ViewStyle
 
+    checkUse?: boolean 
+    onPressNotUse?(): void
     arrData: {}[]
     onPressChoice({}): void 
     dataDefault?: string

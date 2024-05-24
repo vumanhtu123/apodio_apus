@@ -744,7 +744,7 @@ export const ProductCreateScreen: FC = (item) => {
                   keyboardType={null}
                   labelTx={"productScreen.SKU"}
                   style={{
-                    marginBottom: scaleHeight(5),
+                    marginBottom: scaleHeight(15),
                     justifyContent: "center",
                   }}
                   inputStyle={styles.textTextField}
@@ -777,7 +777,7 @@ export const ProductCreateScreen: FC = (item) => {
                   keyboardType={null}
                   labelTx={"productScreen.productName"}
                   style={{
-                    marginBottom: scaleHeight(5),
+                    marginBottom: scaleHeight(15),
                     justifyContent: "center",
                   }}
                   inputStyle={styles.textTextField}
