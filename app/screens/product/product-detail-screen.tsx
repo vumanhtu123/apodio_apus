@@ -25,7 +25,7 @@ import {
 } from "../../theme";
 // import { styles } from "./styles"
 import { AutoImage } from "../../../app/components/auto-image/auto-image";
-import ProductAttribute from "./component/productAttribute";
+import ProductAttribute from "./components/product-attribute";
 import { ScrollView } from "react-native-gesture-handler";
 import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";

@@ -21,7 +21,7 @@ import moment from "moment";
 import CustomCalendar from "../../../components/calendar";
 import { MakeResult } from "mobx/dist/internal";
 import ItemListProduct from "../components/itemListProduct";
-import ImagesGroup from "../../product/component/imageGroup";
+import ImagesGroup from "../../product/components/imageGroup";
 import { showDialog } from "../../../utils/toast";
 
 export const NewOrder: FC = observer(
