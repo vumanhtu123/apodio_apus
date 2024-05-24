@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackScreenProps,
+  CardStyleInterpolators
 } from "@react-navigation/stack";
 import React from "react";
 import { MainBottomTab } from "./bottom-navigation";
@@ -21,15 +22,15 @@ import { InventoryManagement } from "../screens/check-inventory/inventory-manage
 import { termsAndAgreementsScreen } from "../screens/users/termsAndAgreements/termsAndAgreements";
 import { commentScreen } from "../screens/users/comment/comment";
 import { faqScren } from "../screens/users/FAQ/faq";
-import { ClientScreen } from "../screens/Client/client-screen";
-import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
-import { AddClientToGroup } from "../screens/Client/add-client-to-group";
 import { addCheckInventory } from "../screens/check-inventory/add-check-inventory/add-check-inventory";
 import { addProductCreate } from "../screens/check-inventory/add-check-inventory/addProduct";
 import { TransactionHistoryScreen } from "../screens/transaction-history/transaction-history-screen/transactionHistoryScreen";
 import { TransactionHistoryDetial } from "../screens/transaction-history/transaction-history-detail/transactionHistoryDetail";
 import { CreateExportGoods } from "../screens/goods-delivery-book/Create-Export-Goods/createExportGoods";
-import { CardStyleInterpolators } from "@react-navigation/stack";
+import { ClientScreen } from "../screens/Client/client-screen";
+import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
+import { AddClientToGroup } from "../screens/Client/add-client-to-group";
+// import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -102,6 +103,7 @@ export type NavigatorParamList = {
   ProductEditScreen: undefined;
   newAttribute: undefined;
   editAttribute: undefined;
+  editAttributeByEdit: undefined;
   detailsSupplier: undefined;
 };
 
@@ -246,6 +248,12 @@ export const AppStack = () => {
         name="editAttribute"
         options={{ gestureEnabled: false }}
         component={Screens.EditAttribute}
+      />
+
+      <Stack.Screen
+        name="editAttributeByEdit"
+        options={{ gestureEnabled: false }}
+        component={Screens.EditAttributeByEdit}
       />
 
       <Stack.Screen

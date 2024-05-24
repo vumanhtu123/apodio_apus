@@ -1,7 +1,7 @@
 import { configs } from "./../../theme/dimension";
-import { Api } from "./api";
+import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { BalanceResult } from "./api.types.home";
 import { Data } from "../../models/product-store/tag-product-model";
@@ -46,7 +46,6 @@ export class ProductApi {
   ): Promise<any> {
     showLoading();
     try {
-      // console.log("tagId-------------------- :", tagId);
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_PRODUCT + sort,
         {
@@ -60,7 +59,7 @@ export class ProductApi {
       );
       const data = response.data;
       console.log("dataa :", page);
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
@@ -79,7 +78,7 @@ export class ProductApi {
       );
       const data = response.data;
       console.log(data);
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
@@ -98,7 +97,7 @@ export class ProductApi {
       );
       const data = response.data;
       console.log(data);
-      if (response.data.message === "Success") {
+      if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
@@ -215,11 +214,12 @@ export class ProductApi {
         ApiEndpoint.ADD_PRODUCT + "?id=" + id
       );
       hideLoading();
+      console.log('----------delete', response.status)
       const result = response.data;
-      if (response.data.data) {
-        return { kind: "ok", result };
-      } else {
+      if (response.data.errorCodes) {
         return { kind: "bad-data", result };
+      } else {
+        return { kind: "ok", result };
       }
     } catch (error) {
       return { kind: "bad-data", result: error };
@@ -230,6 +230,23 @@ export class ProductApi {
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.DELETE_CHECK + '?productId=' +id,
+      );
+      hideLoading();
+      const result = response.data;
+      if (response.data.data) {
+        return { kind: "ok", result };
+      } else {
+        return { kind: "bad-data", result };
+      }
+    } catch (error) {
+      return { kind: "bad-data", result: error };
+    }
+  }
+  async usingProductCheck(id: any): Promise<any> {
+    showLoading();
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.get(
+        ApiEndpoint.USING_PRODUCT_CHECK + '?id=' +id,
       );
       hideLoading();
       const result = response.data;

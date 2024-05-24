@@ -68,7 +68,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
     await authenticationStore
       .login(data.username, data.password)
       .then((data) => {
-        if (data.data.message === "Success") {
+        if (data.data) {
           console.log("success");
           setAccessToken(authenticationStore.accessToken);
           setTenantId(authenticationStore.tenantId);

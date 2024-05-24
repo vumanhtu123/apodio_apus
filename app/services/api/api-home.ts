@@ -1,10 +1,10 @@
-import { Api } from "./api";
+import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import { hideLoading, showDialog, showLoading } from "../../utils/toast";
 import { BalanceResult } from "./api.types.home";
-import { GetWayAPI } from "./api-config-get-way";
-import { UAA_API } from "./api-config-uaa";
+import { GetWayAPI } from "../base-api/api-config-get-way";
+import { UAA_API } from "../base-api/api-config-uaa";
 
 export class HomeApi {
   private api: Api;

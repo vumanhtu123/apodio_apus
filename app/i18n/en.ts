@@ -1,44 +1,45 @@
-import { NotificationSetting } from "./../screens/setting_screen/notification_screen/notification-setting-screen";
-import { AccountSecurity } from "./../screens/account_security/account-security-screen";
-import { placeholder } from "i18n-js";
-import { ExampleScreen } from "../screens/example/view/example-screen";
-import { ClientScreen } from "../screens/client/client-screen";
 const en = {
   common: {
     ok: "OK!",
     cancel: "Hủy",
     back: "Back",
-    confirm: 'Xác nhận',
+    confirm: "Xác nhận",
     logOut: "Log Out",
     listCompany: "Danh sách công ty",
 
     // @demo remove-current-line
   },
   txtToats: {
-    please_select_attribute: 'Vui lòng chọn thuộc tính',
-    required_information: 'Vui lòng nhập đủ thông tin bắt buộc',
-    required_maximum_number_of_photos: 'Số lượng ảnh tối đa là 6',
-    required_value_null: 'Không thể thêm giá trị rỗng',
-    an_error_occurred: 'Đã có lỗi xảy ra, xin vui lòng thử lại!',
-    required_dvt: 'Vui lòng chọn đơn vị tính',
-    permission_granted: 'Quyền truy cập đã được cho phép',
-    permission_denied: 'Quyền truy cập bị từ chối',
-    permission_blocked: 'Quyền truy cập bị chặn, cần kích hoạt ở cài đặt',
-
+    please_select_attribute: "Vui lòng chọn thuộc tính",
+    required_information: "Vui lòng nhập đủ thông tin bắt buộc",
+    required_maximum_number_of_photos: "Số lượng ảnh tối đa là 6",
+    required_value_null: "Không thể thêm giá trị rỗng",
+    an_error_occurred: "Đã có lỗi xảy ra, xin vui lòng thử lại!",
+    required_dvt: "Vui lòng chọn đơn vị tính",
+    permission_granted: "Quyền truy cập đã được cho phép",
+    permission_denied: "Quyền truy cập bị từ chối",
+    permission_blocked: "Quyền truy cập bị chặn, cần kích hoạt ở cài đặt",
+    attribute_is_using: "Thuộc tính đang được sử dụng, không thể xóa",
+    cannot_be_deselected: "Không thể bỏ chọn thuộc tính này",
+    cannot_create_duplicate: "Không thể tạo giá trị trùng",
   },
   txtDialog: {
-    txt_title_dialog: 'Thông báo',
-    content_exit_dialog: 'Bạn có chắc chắn muốn thoát?',
-    settings: 'Settings',
-    permission_allow: 'Permission allow',
-    allow_permission_in_setting: 'Allow permission in setting',
-    save_the_conversion_group: 'Bạn có muốn lưu nhóm quy đổi',
-    save_unit: 'Bạn có muốn lưu đơn vị tính',
-    adding_a_new_price_range: 'Bạn cần nhập đủ thông tin trước khi thêm khoảng giá mới',
-    product_repair_successful: 'Sửa sản phẩm thành công!',
+    txt_title_dialog: "Thông báo",
+    content_exit_dialog: "Bạn có chắc chắn muốn thoát?",
+    settings: "Settings",
+    permission_allow: "Permission allow",
+    allow_permission_in_setting: "Allow permission in setting",
+    save_the_conversion_group: "Bạn có muốn lưu nhóm quy đổi",
+    save_unit: "Bạn có muốn lưu đơn vị tính",
+    adding_a_new_price_range:
+      "Bạn cần nhập đủ thông tin trước khi thêm khoảng giá mới",
+    product_repair_successful: "Sửa sản phẩm thành công!",
+    product_delete_successful: "Xóa sản phẩm thành công!",
     imageUploadExceedLimitedSize: "The image upload are exceed limited size",
-    attribute_deletion_warning: 'Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?',
-    confirm_edit_attribute: 'Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?'
+    attribute_deletion_warning:
+      "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
+    confirm_edit_attribute:
+      "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
   },
   welcomeScreen: {
     postscript:
@@ -395,7 +396,7 @@ const en = {
     placeholderAddress: "Nhập địa chỉ",
   },
   productScreen: {
-    directory: "Danh mục",
+    directory: "Tất cả danh mục",
     filter: "Sắp xếp",
     directoryName: "Tên danh mục",
     placeholderDirectoryName: "Nhập tên danh mục",
@@ -427,7 +428,8 @@ const en = {
     createUnit: "Tạo đơn vị tính",
     NotifyModal: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",
     NotifyCloseModal: "Bạn có chắc chắn muốn thoát ?",
-    Perspective : 'Xem phối cảnh 3D'
+    Perspective: "Xem phối cảnh 3D",
+    validateMin: "Số lượng không được trùng lặp",
   },
   createProductScreen: {
     classify: "Phân loại",
@@ -453,7 +455,7 @@ const en = {
     productClassification: "Phân loại sản phẩm",
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
-    errorMessage: 'Đã có lỗi xảy ra. Vui lòng thử lại!',
+    errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
   },
   filterScreen: {
     new: "Mới nhất",
@@ -509,8 +511,8 @@ const en = {
     searchAndSelectProductsMaterialsToStartCheckingGoods:
       "tìm kiếm và lựa chọn sản phẩm Chất liệu để bắt đầu kiểm tra hàng ",
   },
-  itemConversion : {
-    dialogNoti : 'Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới'
+  itemConversion: {
+    dialogNoti: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",
   },
   newAttribute: {
     newAttributeDialog: "Tạo mới nhóm thuộc tính thành công",
@@ -528,6 +530,20 @@ const en = {
     bankName: "Ngân hàng:",
     bankNumber: "Số tài khoản:",
     bankAccount: "Tên chủ tài khoản:",
+    confirm: "Xác nhận",
+    amountOwed: "Số tiền còn nợ: ",
+    paymentAmount: "Số tiền thanh toán",
+    updateDebt: "Cập nhật công nợ",
+    update: "Cập nhật",
+    stillInDebt: "Còn nợ",
+    paid: "Đã thanh toán",
+    totalAmountPaid: "Tổng tiền cần thanh toán",
+    debtLimit: "Hạn mức nợ còn lại",
+    deDebt: "Hạn mức nợ",
+    Bought: "Đã mua:",
+    thisMonth: "Tháng này",
+    all: "Tất cả",
+    addContact: "Thêm liên hệ",
   },
 
   // @demo remove-block-end

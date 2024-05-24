@@ -12,6 +12,7 @@ import {
   View,
   ViewStyle,
   Text as TextRN,
+  ScrollView,
 } from "react-native";
 import {
   colors,
@@ -101,6 +102,7 @@ export interface TextFieldProps extends TextInputProps {
    */
   inputStyle?: StyleProp<TextStyle>;
   labelDolphin?: boolean;
+  styleError?: StyleProp<ViewStyle>
   /**
    * Various look & feels.
    */
@@ -124,6 +126,8 @@ export interface TextFieldProps extends TextInputProps {
   editable?: boolean;
   RightIcon?: any;
   showRightIcon?: boolean;
+  styleTextError? :  StyleProp<TextStyle>
+  isMultiline?: boolean; 
 }
 
 /**
@@ -156,6 +160,9 @@ export function TextField(props: TextFieldProps) {
     RightIcon,
     showRightIcon = true,
     labelDolphin,
+    styleError,
+    styleTextError,
+    isMultiline,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
@@ -176,156 +183,137 @@ export function TextField(props: TextFieldProps) {
   };
 
 
-  // console.log("error------------------------", error);
+  console.log("error------------------------", error);
   // const actualPlaceholder = (placeholderTx || placeholder) ? (placeholderTx ? translate(placeholderTx) : placeholder) : '';
   return (
-    <View style={{ marginBottom: scaleHeight(10) }}>
+    <View style={{}}>
       <View
         style={[
           containerStyles,
-          { borderColor: colors.palette.aliceBlue },
+          { borderColor: colors.palette.aliceBlue, flexDirection: 'row', justifyContent: 'space-between', alignItems: isMultiline===true? 'flex-start' : 'center' },
 
           //  { borderColor: isFocused ? color.yellow : color.gray }
         ]}>
-        {/* <Text preset="fieldLabel" tx={labelTx} text={label} />
-      <TextInput
-        placeholder={actualPlaceholder}
-        placeholderTextColor={color.palette.lighterGrey}
-        underlineColorAndroid={color.transparent}
-        {...rest}
-        style={inputStyles}
-        ref={forwardedRef}
-      /> */}
-        <View style={{ flexDirection: "row" }}>
-          {labelTx ? (
-            <Text
-              preset="fieldLabel"
-              tx={labelTx}
-              style={{
-                // position: "absolute",
-                left: isTL38
-                  ? scaleWidth(Platform.OS === "android" ? 50 : 55)
-                  : 0,
-                top:
-                  !isFocused && !actualPlaceholder && value === ""
-                    ? scaleHeight(19)
-                    : scaleHeight(8),
-                fontSize:
-                  !isFocused && !actualPlaceholder && value === ""
-                    ? fontSize.size16
-                    : fontSize.size12,
-                fontWeight: "500",
-                color: labelDolphin
-                  ? colors.palette.dolphin
-                  : !isFocused
-                  ? txColor
-                  : colors.palette.dolphin,
-                paddingLeft: scaleWidth(16),
-                marginTop:
-                  isFocused && !actualPlaceholder && value === ""
-                    ? scaleHeight(0)
-                    : scaleHeight(0),
-              }}
-            />
-          ) : null}
-          {isImportant ? (
-            <Text
-              style={{
-                // position: "absolute",
-                left: isTL38
-                  ? scaleWidth(Platform.OS === "android" ? 50 : 55)
-                  : 0,
-                top:
-                  !isFocused && !actualPlaceholder && value === ""
-                    ? scaleHeight(19)
-                    : scaleHeight(8),
-                fontSize:
-                  !isFocused && !actualPlaceholder && value === ""
-                    ? fontSize.size16
-                    : fontSize.size12,
-                fontWeight: "500",
-                color: "red",
-                marginTop:
-                  isFocused && !actualPlaceholder && value === ""
-                    ? scaleHeight(0)
-                    : scaleHeight(0),
-              }}>
-              {" "}
-              *
-            </Text>
-          ) : null}
-        </View>
-
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}>
-          {isTL38 ? (
-            <Text
-              style={{
-                fontWeight: "700",
-                fontSize: fontSize.size16,
-                color: value ? "#242426" : "#545456",
-                marginLeft: scaleWidth(15),
-                marginTop: scaleWidth(isFocused ? 10 : 0),
-              }}
-              text="TL38"
-            />
-          ) : null}
-          <TextInput
-            {...props}
-            editable={editable}
-            placeholder={actualPlaceholder}
-            // underlineColorAndroid={colors.palette.neutral900}
-            placeholderTextColor={colors.palette.dolphin}
-            style={[
-              inputStyles,
-              { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
-            ]}
-            ref={forwardedRef ? forwardedRef : focus}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            blurOnSubmit
-            keyboardType={keyboardType}
-          />
-          <View style={{ flexDirection: "row", paddingRight: scaleWidth(16) }}>
-            {isShowPassword && value ? (
-              <TouchableOpacity
-                style={{ marginTop: scaleHeight(4) }}
-                onPress={onShowPassword}>
-                <RightIconShow />
-              </TouchableOpacity>
+        <View style={{ flex: 1, paddingTop: scaleHeight(8) }}>
+          <View style={{ flexDirection: "row" }}>
+            {labelTx ? (
+              <Text
+                preset="fieldLabel"
+                tx={labelTx}
+                style={{
+                  // position: "absolute",
+                  left: isTL38
+                    ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                    : 0,
+                  top:
+                    !isFocused && !actualPlaceholder && value === ""
+                      ? scaleHeight(19)
+                      : scaleHeight(8),
+                  fontSize:
+                    !isFocused && !actualPlaceholder && value === ""
+                      ? fontSize.size16
+                      : fontSize.size12,
+                  fontWeight: "500",
+                  color: labelDolphin
+                    ? colors.palette.dolphin
+                    : !isFocused
+                      ? txColor
+                      : colors.palette.dolphin,
+                  paddingLeft: scaleWidth(16),
+                  marginTop:
+                    isFocused && !actualPlaceholder && value === ""
+                      ? scaleHeight(0)
+                      : scaleHeight(0),
+                }}
+              />
             ) : null}
-            <View style={{ width: scaleWidth(10) }} />
-            {value && showRightIcon ? (
-              <TouchableOpacity
-                onPress={() => {
-                  onClearText();
-                  focus.current.focus();
+            {isImportant ? (
+              <Text
+                style={{
+                  // position: "absolute",
+                  left: isTL38
+                    ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                    : 0,
+                  top:
+                    !isFocused && !actualPlaceholder && value === ""
+                      ? scaleHeight(19)
+                      : scaleHeight(8),
+                  fontSize:
+                    !isFocused && !actualPlaceholder && value === ""
+                      ? fontSize.size16
+                      : fontSize.size12,
+                  fontWeight: "500",
+                  color: "red",
+                  marginTop:
+                    isFocused && !actualPlaceholder && value === ""
+                      ? scaleHeight(0)
+                      : scaleHeight(0),
                 }}>
-                <RightIconClear />
-              </TouchableOpacity>
-            ) : RightIcon ? (
-              <TouchableOpacity onPress={() => {}} style={{}}>
-                <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} />
-              </TouchableOpacity>
+                {" "}
+                *
+              </Text>
             ) : null}
           </View>
+          <View
+            style={{
+              flexDirection: "row",
+
+            }}>
+            <TextInput
+              {...props}
+              editable={editable}
+              placeholder={actualPlaceholder}
+              // underlineColorAndroid={colors.palette.neutral900}
+              placeholderTextColor={colors.palette.dolphin}
+              style={[
+                inputStyles,
+                { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
+              ]}
+              ref={forwardedRef ? forwardedRef : focus}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              blurOnSubmit
+              keyboardType={keyboardType}
+            />
+          </View>
+        </View>
+        <View style={{ flexDirection: "row", paddingRight: scaleWidth(16) }}>
+          {isShowPassword && value ? (
+            <TouchableOpacity
+              style={{ marginTop: scaleHeight(4) }}
+              onPress={onShowPassword}>
+              <RightIconShow />
+            </TouchableOpacity>
+          ) : null}
+          <View style={{ width: scaleWidth(10) }} />
+          {value && showRightIcon ? (
+            <TouchableOpacity
+              onPress={() => {
+                onClearText();
+                focus.current.focus();
+              }}>
+              <RightIconClear />
+            </TouchableOpacity>
+          ) : RightIcon ? (
+            <TouchableOpacity onPress={() => { }} style={{}}>
+              <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} />
+            </TouchableOpacity>
+          ) : null}
         </View>
       </View>
       {error ? (
-        <Text
-          style={{
-            marginTop: Platform.OS === "android" ? scaleHeight(-5): scaleHeight(0),
-            fontSize: fontSize.size12,
-            color: colors.error,
-          }}
-          preset="fieldLabel"
-          text={error}
-        />
-      ) : null}
+        <View style={styleError}>
+          <Text
+            style={[{
+              marginTop: Platform.OS === "android" ? scaleHeight(2) : scaleHeight(0),
+              fontSize: fontSize.size12,
+              color: colors.error,
+            }, styleTextError]}
+            preset="fieldLabel"
+            text={error}
+          />
+        </View>
+      ) : <View style={{ flex: 1 }}></View>}
     </View>
   );
 }

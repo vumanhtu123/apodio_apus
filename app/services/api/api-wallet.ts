@@ -1,5 +1,5 @@
 import { ApiResponse } from "apisauce"
-import { Api } from "./api"
+import { Api } from "../base-api/api"
 import { getGeneralApiProblem } from "./api-problem"
 import { hideLoading, showLoading } from "../../utils/toast"
 import { CheckPinResult } from "./api.types"

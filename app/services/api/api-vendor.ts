@@ -1,6 +1,6 @@
-import { ApiErp } from "./api-config-erp";
+import { ApiErp } from "../base-api/api-config-erp";
 import { ApiResponse } from "apisauce";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { VendorResult } from "../../models/vendor/vendor-model";
 

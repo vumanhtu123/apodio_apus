@@ -23,6 +23,7 @@ export const patternPassword =
 export const patternvalidateBiCard = /^[a-zA-Z0-9]{0,17}$/;
 export const patternvalidateID = /^[a-zA-Z0-9]{0,17}$/;
 export const patternvalidatePassPost = /^[a-zA-Z0-9]{0,17}$/;
+export const parternValidateSku =  /^[A-Z0-9_]*$/;
 export const validatePhoneStartsWith = (value: string) => {
   if (value.length == 8 && (value.startsWith("75") || value.startsWith("76"))) {
     return true;
@@ -47,6 +48,41 @@ export const showDate = (item: any, index: number, data: any[]) => {
   }
   return true;
 };
+
+export const convertRetailPrice = (data: any) => {
+  const prices = data.map(item => Number(formatNumberByString(item.price.toString())));
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const minPriceToString = formatCurrency(minPrice)
+  const maxPriceToString = formatCurrency(maxPrice)
+  return `${minPriceToString} - ${maxPriceToString}`
+}
+export const convertAttributeRetailPrice = (data: any, indexVariant: any) => {
+  const retailPriceProduct = data[indexVariant].retailPrice;
+  const prices = retailPriceProduct.map(item => Number(formatNumberByString(item.price.toString())));
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const minPriceToString = formatCurrency(minPrice);
+  const maxPriceToString = formatCurrency(maxPrice);
+  return `${minPriceToString} - ${maxPriceToString}`;
+}
+export const convertAttributeWholesalePrice = (data: any, indexVariant: any) => {
+  const wholesalePriceProduct = data[indexVariant].wholesalePrice;
+  const prices = wholesalePriceProduct.map(item => Number(formatNumberByString(item.price.toString())));
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const minPriceToString = formatCurrency(minPrice);
+  const maxPriceToString = formatCurrency(maxPrice);
+  return `${minPriceToString} - ${maxPriceToString}`;
+}
+export const convertWholesalePrice = (data: any) => {
+  const prices = data.map(item => Number(formatNumberByString(item.price.toString())));
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const minPriceToString = formatCurrency(minPrice)
+  const maxPriceToString = formatCurrency(maxPrice)
+  return `${minPriceToString} - ${maxPriceToString}`
+}
 
 export const coverStringQueryParams = () => {
   return "";
@@ -151,6 +187,15 @@ export const mapDataDistribute = (arr: [[]]) => {
 //   return Validate(data, rules, { fullMessages: false }) || {}
 // }
 
+export const convertAttributePrice = (data: any ) => {
+  // const wholesalePriceProduct = data[indexVariant].wholesalePrice;
+  const prices = data.map((item: { price: { toString: () => any; }; }) => Number(formatNumberByString(item.price.toString())));
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const minPriceToString = formatCurrency(minPrice);
+  const maxPriceToString = formatCurrency(maxPrice);
+  return `${minPriceToString} - ${maxPriceToString}`;
+}
 export function formatNumberFloat(inputNumber: string) {
   const number = parseFloat(inputNumber);
   if (isNaN(number)) {

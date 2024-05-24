@@ -177,6 +177,9 @@ export const icWarning = require("./Images/ic_warning.png");
 export const icError = require("./Images/ic_error.png");
 import ic_location from "./Images/Maps.svg";
 import ic_oto from "./Images/oto.svg";
+import ClipboardText from "./Images/ClipboardText.svg";
+import icon_chart from "./Images/icon_chart.svg";
+import ic_x from "./Images/ic_x.svg";
 
 export const Images = {
   icon_test: _test,
@@ -350,4 +353,7 @@ export const Images = {
   ic_squareFour: ic_squareFour,
   ic_location: ic_location,
   ic_oto: ic_oto,
+  ClipboardText: ClipboardText,
+  icon_chart: icon_chart,
+  ic_x: ic_x,
 };

@@ -111,8 +111,8 @@ export default class CustomDialog extends React.PureComponent<DialogProps> {
           <View style={VIEWBUTTON}>
             {titleBTN1 !== "" && (
               <Button
-                style={[BUTTON, { backgroundColor: colors.yellowOpacity }]}
-                textStyle={[TEXTBUTTON, { color: colors.yellow }]}
+                style={[BUTTON, { backgroundColor: palette.navyBlue }]}
+                textStyle={[TEXTBUTTON, { color: palette.white }]}
                 onPress={() => this.setState({ isShow: false })}
                 text={titleBTN1}
               />

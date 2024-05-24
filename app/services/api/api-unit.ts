@@ -1,6 +1,6 @@
-import { Api } from "./api";
+import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
-import { ApiEndpoint } from "./api_endpoint";
+import { ApiEndpoint } from "../base-api/api_endpoint";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { UnitResult } from "../../models/unit/unit-model";
 import { CreateUnitResult } from "../../models/unit/create-unit-model";

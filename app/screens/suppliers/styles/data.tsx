@@ -85,3 +85,51 @@ export const dataLineHeader = [
     tittle: "Sản phẩm",
   },
 ];
+
+export const dataContact = [
+  {
+    id: 0,
+    name: "Chị Nguyễn Lan Hương",
+    phone: "0982876118",
+    url: "../../../../assets/icons/logo_default.png",
+    email: "nguyenlanhuong@gmail.com",
+    uuid: 102931231231,
+    office: "Trưởng phòng kinh doanh",
+  },
+  {
+    id: 1,
+    name: "Chị Nguyễn Thêu",
+    phone: "0982123123",
+    url: "../../../../assets/icons/logo_default.png",
+    email: "nguyenlanhuong@gmail.com",
+    uuid: 102931231231,
+    office: "Trưởng phòng kinh doanh",
+  },
+  {
+    id: 2,
+    name: "Chị Nguyễn Lan Anh",
+    phone: "0982876118",
+    url: "../../../../assets/icons/logo_default.png",
+    email: "nguyenlanhuong@gmail.com",
+    uuid: 102931231231,
+    office: "Trưởng phòng kinh doanh",
+  },
+  {
+    id: 3,
+    name: "Chị Trần Hồng Hương",
+    phone: "0982876118",
+    url: "../../../../assets/icons/logo_default.png",
+    email: "nguyenlanhuong@gmail.com",
+    uuid: 102931231231,
+    office: "Trưởng phòng kinh doanh",
+  },
+  {
+    id: 4,
+    name: "Chị Tạ Lan Hương",
+    phone: "0982876118",
+    url: "../../../../assets/icons/logo_default.png",
+    email: "nguyenlanhuong@gmail.com",
+    uuid: 102931231231,
+    office: "Trưởng phòng kinh doanh",
+  },
+];

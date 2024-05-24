@@ -12,12 +12,12 @@ type ToastPosition = 'top' | 'bottom';
 export const setToast = (_toast: any) => {
   toastRef = _toast
 }
-export const showToast = (message: any, type: ToastType = "success", position: ToastPosition = 'top') => {
+export const showToast = (message: any, type: ToastType = "success", position: ToastPosition = 'top' , ) => {
   Toast.show({
     type:  type,
     text1: translate(message),
     //text2: 'This is some something 👋',
-    position: position
+    position: position,
   });
 }
 

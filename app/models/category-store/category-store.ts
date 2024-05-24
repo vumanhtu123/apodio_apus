@@ -56,6 +56,22 @@ export const CategoryStoreModel = types
         return result;
       }
     }),
+    getListCategoriesFilter: flow(function* (
+      page: number,
+      size: number,
+    ) {
+      const categoryApi = new CategoryApi(self.environment.api);
+      const result: any = yield categoryApi.getListCategoriesFilter(
+        page,
+        size,
+      );
+      if (result.kind === "ok") {
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
     getListCategoriesModal: flow(function* (
       page: number,
       size: number,

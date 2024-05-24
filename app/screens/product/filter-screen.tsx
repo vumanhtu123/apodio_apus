@@ -4,77 +4,56 @@ import {
   useRoute,
 } from "@react-navigation/native";
 import React, { FC, useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Images } from "../../../assets/index";
 import { Header } from "../../components/header/header";
 import { Text } from "../../components/text/text";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
-import { styles } from "./styles";
-import { Button } from "../../components";
 import { useStores } from "../../models";
-import { Content, Data } from "../../models/product-store/tag-product-model";
-import data from "../../components/svg-icon/data";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
+// import { styles } from "./styles";
 
 export const FilterScreen: FC = (item) => {
   const navigation = useNavigation();
   const [typeNoti, setTypeNoti] = useState([
-    "filterScreen.new",
-    "filterScreen.older",
+    { label: "filterScreen.new", sort: "createdAt,desc" },
+    { label: "filterScreen.older", sort: "createdAt,asc" },
   ]);
   const [typeAZ, setTypeAZ] = useState([
-    "filterScreen.aToZ",
-    "filterScreen.zToA",
+    { label: "filterScreen.aToZ", sort: "name,asc" },
+    { label: "filterScreen.zToA", sort: "name,desc" },
   ]);
-  // const [typePrice, setTypePrice] = useState([
-  //   "filterScreen.priceHighToLow",
-  //   "filterScreen.priceLowToHigh",
-  // ]);
   const { productStore } = useStores();
   const [dataTag, setData] = useState([]);
   useEffect(() => {
     initData();
   }, []);
-
   const initData = async () => {
     const data = await productStore.getListTagProduct();
     setData(data.result.data.content);
-    // console.log("tuvmmmmmm", dataTag);
   };
-  const [selectedNameFilter, setSelectedNameFilter] = useState(null);
-  const [selectedTimeFilter, setSelectedTimeFilter] = useState(null);
-  const [selectedTagFilter, setSelectedTagFilter] = useState(null);
-  const handleNamePress = (item: any, index: any) => {
+  const [selectedNameFilter, setSelectedNameFilter] = useState(productStore.sort[0]);
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState(productStore.sort[1]);
+  const [selectedTagFilter, setSelectedTagFilter] = useState(0);
+  const handleNamePress = (item: any) => {
     if (selectedNameFilter === item) {
       setSelectedNameFilter(null);
     } else {
       setSelectedNameFilter(item);
     }
   };
-  const handleTimePress = (item: any, index: any) => {
+  const handleTimePress = (item: any) => {
     if (selectedTimeFilter === item) {
       setSelectedTimeFilter(null);
     } else {
       setSelectedTimeFilter(item);
     }
   };
-
   const [indexItemTag, setIndexItemTag] = useState<any>();
   const route = useRoute();
   const { activeTab }: any = route?.params || {};
   const getFilterData = () => {
-    const sortCreatedAt =
-      selectedTimeFilter === "filterScreen.new"
-        ? "createdAt,desc"
-        : selectedTimeFilter === "filterScreen.older"
-        ? "createdAt,asc"
-        : "";
-    const sortName =
-      selectedNameFilter === "filterScreen.aToZ"
-        ? "name,asc"
-        : selectedNameFilter === "filterScreen.zToA"
-        ? "name,desc"
-        : "";
-
+    const sortCreatedAt = selectedTimeFilter || "";
+    const sortName = selectedNameFilter || "";
     return {
       sortCreatedAt,
       sortName,
@@ -82,38 +61,40 @@ export const FilterScreen: FC = (item) => {
   };
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedNameFilter(null);
-      setSelectedTimeFilter(null);
-      setSelectedTagFilter(null);
+      setSelectedNameFilter(activeTab === "product" ? productStore.sort[1] : productStore.sortCategory[1]);
+      setSelectedTimeFilter(activeTab === "product" ? productStore.sort[0] : productStore.sortCategory[0]);
+      setSelectedTagFilter(productStore.tagId);
     }, [])
   );
-
+  
   const handleSort = () => {
     const filterData = getFilterData();
     productStore.setSort(Object.values(filterData));
     console.log(productStore.sort)
     productStore.setTagId(indexItemTag);
+    console.log(productStore.tagId)
     navigation.navigate("productScreen" as never, {reload: false});
   }
   const handleSortCategory = () => {
     const filterData = getFilterData();
     productStore.setSortCategory(Object.values(filterData))
+    console.log(productStore.sortCategory)
     navigation.navigate("productScreen" as never, {reload: false});
   }
   useEffect(() => {
     console.log("first ", indexItemTag);
   }, [indexItemTag]);
-  const renderItemTag = ({ item, index }: any) => {
-    const isSelected = selectedTagFilter === item;
+  const renderItemTag = ({ item }: any) => {
+    const isSelected = selectedTagFilter === item.id;
     const handleTagPress = (idTag: number) => {
       if (isSelected) {
         setSelectedTagFilter(null);
+        setIndexItemTag(0);
       } else {
-        setSelectedTagFilter(item);
+        setSelectedTagFilter(item.id);
         setIndexItemTag(idTag);
       }
     };
-
     return (
       <TouchableOpacity
         onPress={() => handleTagPress(item.id)}
@@ -164,10 +145,10 @@ export const FilterScreen: FC = (item) => {
               marginTop: scaleHeight(12),
             }}>
             {typeNoti.map((item, index) => {
-              const isSelected = selectedTimeFilter === item;
+              const isSelected = selectedTimeFilter === item.sort;
               return (
                 <TouchableOpacity
-                  onPress={() => handleTimePress(item, index)}
+                  onPress={() => handleTimePress(item.sort)}
                   key={index}
                   style={{
                     backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
@@ -186,7 +167,7 @@ export const FilterScreen: FC = (item) => {
                       fontWeight: "400",
                       fontSize: fontSize.size14,
                     }}
-                    tx={item}
+                    tx={item.label}
                   />
                 </TouchableOpacity>
               );
@@ -206,10 +187,10 @@ export const FilterScreen: FC = (item) => {
               justifyContent: "space-between",
             }}>
             {typeAZ.map((item, index) => {
-              const isSelected = selectedNameFilter === item;
+              const isSelected = selectedNameFilter === item.sort;
               return (
                 <TouchableOpacity
-                  onPress={() => handleNamePress(item, index)}
+                  onPress={() => handleNamePress(item.sort)}
                   key={index}
                   style={{
                     backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
@@ -228,7 +209,7 @@ export const FilterScreen: FC = (item) => {
                       fontWeight: "400",
                       fontSize: fontSize.size14,
                     }}
-                    tx={item}
+                    tx={item.label}
                   />
                 </TouchableOpacity>
               );
@@ -265,8 +246,7 @@ export const FilterScreen: FC = (item) => {
           marginBottom: scaleWidth(20),
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("productScreen" as never, {reload: false})
-          }
+          onPress={() => navigation.navigate("productScreen" as never, {reload: false})}
           style={{
             width: scaleWidth(165),
             height: scaleHeight(48),
@@ -276,7 +256,7 @@ export const FilterScreen: FC = (item) => {
             borderRadius: 10,
             borderColor: "#c8c8c8",
           }}>
-          <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+          <Text tx="common.cancel" style={{ fontSize: fontSize.size14 }}/>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={activeTab === 'product' ? handleSort : handleSortCategory}
@@ -288,12 +268,16 @@ export const FilterScreen: FC = (item) => {
             borderRadius: 10,
             backgroundColor: "#0078d4",
           }}>
-          <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-            Xác nhận
-          </Text>
+          <Text tx="common.confirm" style={{ fontSize: fontSize.size14, color: "white" }}/>
         </TouchableOpacity>
       </View>
     </View>
     // </View>
   );
 };
+const styles = StyleSheet.create({
+  ROOT: {
+    backgroundColor: "#Ffffff",
+    flex: 1,
+  },
+})

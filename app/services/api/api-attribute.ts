@@ -1,6 +1,6 @@
-import { Api } from "./api"
+import { Api } from "../base-api/api"
 import { ApiResponse } from "apisauce"
-import { ApiEndpoint } from "./api_endpoint"
+import { ApiEndpoint } from "../base-api/api_endpoint"
 import { hideLoading, showLoading } from "../../utils/toast"
 import { BalanceResult } from "./api.types.home"
 
@@ -24,7 +24,7 @@ export class AttributeApi {
       )
       hideLoading()
       const data = response.data
-      if (response.data.message === 'Success') {
+      if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
@@ -42,7 +42,7 @@ export class AttributeApi {
       hideLoading()
       const data = response.data
       console.log('-----getListDataAttribute-------', response)
-      if (response.data.message === 'Success') {
+      if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
@@ -60,7 +60,7 @@ export class AttributeApi {
       )
       hideLoading()
       const data = response.data
-      if (response.data.message === 'Success') {
+      if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
@@ -77,10 +77,11 @@ export class AttributeApi {
       )
       hideLoading()
       const data = response.data
-      if (response.data.message === 'Success') {
-        return { kind: "ok", response: data }
+      console.log('--------------------cxz', response.data)
+      if (response.data.errorCodes) {
+        return { kind: "bad-data", response: data }
       }
-      return { kind: "bad-data", response: data }
+      return { kind: "ok", response: data }
     } catch (e) {
       return { kind: "bad-data" }
     }

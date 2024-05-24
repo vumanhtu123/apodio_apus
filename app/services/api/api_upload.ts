@@ -1,5 +1,5 @@
 import { ApisauceInstance, create } from "apisauce"
-import { ApiConfig, DEFAULT_API_CONFIG_UPLOAD } from "./api-config"
+import { ApiConfig, DEFAULT_API_CONFIG_UPLOAD } from "../base-api/api-config"
 import { getAccessToken } from "../../utils/storage"
 import { hideDialog, hideLoading, showDialog, showLoading, showLoadingT } from "../../utils/toast"
 import { navigate, resetRoot } from "../../navigators"
@@ -84,7 +84,6 @@ export class ApiUpload {
 
         
         const token = await getAccessToken()
-        const token2 = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRfaWQiOiI3OSIsInVzZXJfaWQiOjEsImJyYW5jaF9pZCI6NjAxLCJ1c2VyX25hbWUiOiJzeXN0ZW1fYWRtaW4iLCJpc19vd25lciI6ZmFsc2UsInNjb3BlIjpbImdhdGV3YXkiXSwiZXhwIjoxNzE1MzEwMjQwLCJhdXRob3JpdGllcyI6WyJTWVNURU1fVVNFUiIsIlNZU1RFTV9BRE1JTiJdLCJqdGkiOiJLLU1TMGFJbDFnMk1qeENHWU14aGJ2cllWcWMiLCJjbGllbnRfaWQiOiJ0ZXN0In0.BwxrEfJaFcf5WzOIpFRhrYJ90D8soqkvRodCbWUNXST9HQD-5mFMT8dG6RdgidENebcFh9u4FUgom-2PnbtmNQ-cgWxU2sIYKD8BXR_zLRsWWopDxAFEKDHS9L6J_dj-gvm_xhV6Ieks2ciGQA1n61VMKQ51TpPfOZriy7gMbLaZWRsEh0QLRMXBB5kNFBfyzfEaPtNONxurUGIoa2EBJTkT-Ff3fDqoOSn7oJZ6eIbTOdX4ewu5WcLmyXlAoKc46-P_nRk5O5K7nLwEUJBbtqQnKlp1XoF5rrw4HlR5b8XdTmjIcsYOepbyhEMcl0DCffb4Jz8aIpQvUdv7jP_Z4g'
         if (token) {
           (request.headers!).Authorization = 'Bearer ' + token
         }

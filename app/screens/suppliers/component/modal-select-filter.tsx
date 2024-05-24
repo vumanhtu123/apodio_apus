@@ -10,10 +10,7 @@ import { Header } from "../../../components/header/header";
 import { Text } from "../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles/styles";
-import { Button } from "../../../components";
 import { useStores } from "../../../models";
-import { Content, Data } from "../../../models/product-store/tag-product-model";
-import data from "../../../components/svg-icon/data";
 
 export const FilterSupplierScreen: FC = (item) => {
   const navigation = useNavigation();
