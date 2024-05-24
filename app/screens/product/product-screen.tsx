@@ -462,7 +462,7 @@ export const ProductScreen: FC = () => {
                 onPress={() =>
                   navigation.navigate("filterScreen" as never, { activeTab })
                 }
-                style={{ backgroundColor: "none" }}>
+                style={{ backgroundColor: "none" ,  width: scaleWidth(30), height: scaleHeight(30) }}>
                 <Images.slider_black
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}

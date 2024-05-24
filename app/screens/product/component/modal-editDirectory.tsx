@@ -13,6 +13,7 @@ import { validateFileSize } from '../../../utils/validate';
 import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
 import { translate } from 'i18n-js';
 import { useStores } from '../../../models';
+import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
 
 const EditDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, category, onUpdateDirectory } = props;
@@ -32,20 +33,9 @@ const EditDirectoryModal = (props: any) => {
     };
     const handleUpdateDirectory = () => {
         const selectedCategoryId = category.id
-        const categoryImages = category.imageUrl || null
-        // const imagesUpdate = imagesNote || '' 
-        if (imagesNote !== categoryImages && imagesNote !== '') {
-            handleUploadImages(name, imagesUpload, selectedCategoryId);
-        }else{
-            onUpdateDirectory(name, imagesNote, selectedCategoryId);
-        }
+        onUpdateDirectory(name, imagesNote, selectedCategoryId);
         // setIsVisible(false);
     };
-    useEffect(() => {
-        console.log('first' , name)
-        console.log('first' , imagesNote)
-
-    },[name])
     useEffect(() => {
         if (category) {
             setName(category.name);
@@ -60,70 +50,51 @@ const EditDirectoryModal = (props: any) => {
 
     useEffect(() => {
         const checkChanges = () => {
-            const isNameChanged = name !== category.name && name !== '' ;
-            const isImagesNoteChanged = imagesNote !== category.imageUrl ;
+            const isNameChanged = name !== category.name && name !== '';
+            const isImagesNoteChanged = imagesNote !== category.imageUrl;
             setIsButtonDisabled(!isNameChanged && !isImagesNoteChanged);
         };
         checkChanges();
     }, [name, imagesNote]);
-    const handleUploadImages = useCallback(
-        async (name: any, imagesUpload: any, selectedCategoryId: any) => {
-            console.log('fileSize-----------------', imagesUpload)
-            const { fileSize, uri, type, fileName } = imagesUpload;
-            console.log('first', imagesUpload)
-            const checkFileSize = validateFileSize(fileSize)
+    const uploadImages = async (imageNote: any) => {
+        try {
+            console.log('đâsads', imageNote)
+            const { fileSize, uri, type, fileName } = imageNote;
+            const checkFileSize = validateFileSize(fileSize);
+
             if (checkFileSize) {
-                hideLoading()
-            } else {
-                const formData = new FormData();
-                const file = {
-                    uri: uri,
-                    type: type,
-                    name: fileName
-                };
-                formData.append("file", file);
-                const imageUriUpload = await productStore.uploadImages(formData);
-                console.log('checkkm', imageUriUpload)
-                if (imageUriUpload) {
-                    hideLoading()
-                    onUpdateDirectory(name, imageUriUpload, selectedCategoryId)
-                    // setIsVisible(false)
-                    // setImagesNote()
-                } else {
-                    hideLoading()
-                }
+                hideLoading();
+                showDialog(translate("imageUploadExceedLimitedSize"), "danger", "", "OK", "", "");
+                return;
             }
-        },
-        [imagesUpload]
-    );
-    const requestCameraPermission = async () => {
-        try {
-            if (Platform.OS === 'ios') {
-                const result = await request(PERMISSIONS.IOS.CAMERA);
-                return result;
+
+            const formData = new FormData();
+            formData.append("file", {
+                uri,
+                type,
+                name: fileName,
+            });
+
+            // Upload ảnh
+            const result = await productStore.uploadImages(formData);
+
+            console.log(`successfully----------`, result);
+            if (result) {
+                console.log(`imageNote---------------`, imageNote);
+                setImagesNote(result);
+            }
+
+            // Xử lý kết quả upload
+            if (result) {
+                console.log(`Upload image ${imageNote} successfully`);
             } else {
-                const result = await request(PERMISSIONS.ANDROID.CAMERA);
-                return result;
+                console.log(`Failed to upload image ${imageNote}`);
             }
         } catch (error) {
-            console.warn(error);
-            return null;
+            console.error('Error uploading image:', error);
         }
     };
-    const checkCameraPermission = async () => {
-        try {
-            if (Platform.OS === 'ios') {
-                const result = await check(PERMISSIONS.IOS.CAMERA);
-                return result;
-            } else {
-                const result = await check(PERMISSIONS.ANDROID.CAMERA);
-                return result;
-            }
-        } catch (error) {
-            console.warn(error);
-            return null;
-        }
-    };
+
 
     const handleCameraUse = async () => {
         const permissionStatus = await checkCameraPermission();
@@ -148,9 +119,9 @@ const EditDirectoryModal = (props: any) => {
                 }
                 else if (response?.assets[0].uri) {
                     const { fileSize, uri, type, fileName } = response?.assets[0];
-                    setImagesNote(uri);
-                    setImagesUpload({ fileSize, uri, type, fileName })
-                    console.log('mmmmmmm', response?.assets[0]);
+                    const result = { fileSize, uri, type, fileName }
+                    console.log('testtt', result);
+                    uploadImages(result)
                     setModalImage(false)
                 }
             })
@@ -160,7 +131,7 @@ const EditDirectoryModal = (props: any) => {
                 console.log("Permission granted");
             } else {
                 console.log("Permission denied");
-                showDialog(translate("txtDialog.permission_allow"),'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
+                showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
                     Linking.openSettings()
                     hideDialog();
                 })
@@ -169,38 +140,7 @@ const EditDirectoryModal = (props: any) => {
             console.log("Permission blocked, you need to enable it from settings");
         }
     };
-    const requestLibraryPermission = async () => {
-        try {
-            if (Platform.OS === 'ios') {
-                const result = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
-                return result;
-            } else {
-                const result = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-                return result;
-            }
-        } catch (error) {
-            console.warn(error);
-            return null;
-        }
-    };
 
-    const checkLibraryPermission = async () => {
-        try {
-            if (Platform.OS === 'ios') {
-                const result = await check(PERMISSIONS.IOS.MEDIA_LIBRARY);
-                return result;
-            } else {
-                const result = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-                return result;
-            }
-        } catch (error) {
-            console.warn(error);
-            return null;
-        }
-    };
-    // useEffect(()=> {
-    //     console.log('first img ' , imagesNote)
-    // },[imagesNote])
     const handleLibraryUse = async () => {
         const permissionStatus = await checkLibraryPermission();
         console.log('ads')
@@ -225,12 +165,9 @@ const EditDirectoryModal = (props: any) => {
                 else if (response?.assets[0].uri) {
                     //xử lý uri ảnh hoặc video
                     const { fileSize, uri, type, fileName } = response?.assets[0];
-
-                    console.log('snasc', response?.assets[0])
-                    setImagesNote(uri);
-                    setImagesUpload({ fileSize, uri, type, fileName })
-                    // setImagesNote(response?.assets[0].uri)
-                    console.log('mmmmmmm', response?.assets[0]);
+                    const result = { fileSize, uri, type, fileName }
+                    console.log('testtt', result);
+                    uploadImages(result)
                     setModalImage(false)
                 }
             })
@@ -240,7 +177,7 @@ const EditDirectoryModal = (props: any) => {
                 console.log("Permission granted");
             } else {
                 console.log("Permission denied");
-                showDialog(translate("txtDialog.permission_allow"),'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
+                showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
                     Linking.openSettings()
                     hideDialog();
                 })
@@ -263,14 +200,11 @@ const EditDirectoryModal = (props: any) => {
                 } else if (response.errorCode) {
                     console.log("User cancelled photo picker1");
                 } else if (response?.assets[0].uri) {
-                    //xử lý uri ảnh hoặc video
-
                     const { fileSize, uri, type, fileName } = response?.assets[0];
-                    // console.log('testttt' ,uri);
-                    setImagesNote(uri);
-                    setImagesUpload({ fileSize, uri, type, fileName })
-                    // console.log('testtt' ,response);
-                    setModalImage(false);
+                    const result = { fileSize, uri, type, fileName }
+                    console.log('testtt', result);
+                    uploadImages(result)
+                    setModalImage(false)
                 }
             });
         };
@@ -279,7 +213,7 @@ const EditDirectoryModal = (props: any) => {
         setIsVisible(false);
     };
     const handleRemoveImage = () => {
-        setImagesNote('') 
+        setImagesNote('')
         setImagesUpload(null)
     }
     return (
@@ -403,7 +337,7 @@ const EditDirectoryModal = (props: any) => {
                                 backgroundColor: isButtonDisabled ? 'gray' : '#0078d4',
                             }}
                         >
-                            <Text tx='common.confirm' style={{ fontSize: fontSize.size14, color: 'white' }}/>
+                            <Text tx='common.confirm' style={{ fontSize: fontSize.size14, color: 'white' }} />
                         </TouchableOpacity>
                     </View>
 

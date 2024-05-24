@@ -144,7 +144,7 @@ const DropdownModal = (props: InputSelectProps) => {
         );
         return (
             <View>
-                <View style={{ height: scaleHeight(1), backgroundColor: "#E7EFFF" }} />
+                <View style={{height: scaleHeight(1), backgroundColor: "#E7EFFF" }} />
                 <TouchableOpacity
                     style={styles.item}
                     onPress={() => handleItemSelect(item)}>
@@ -152,8 +152,7 @@ const DropdownModal = (props: InputSelectProps) => {
                         {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
                         {isSelected && (
                             <Images.icon_checkBox
-                            // width={scaleWidth(16)}
-                            // height={scaleHeight(16)}
+                    
                             />
                         )}
                     </View>
@@ -304,6 +303,8 @@ const styles = StyleSheet.create({
     item: {
         paddingVertical: scaleHeight(10),
         flexDirection: "row",
+        paddingHorizontal : scaleWidth(3),
+        alignItems : 'center'
     },
     itemText: {
         fontSize: fontSize.size14,
