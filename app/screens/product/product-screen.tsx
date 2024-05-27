@@ -507,8 +507,8 @@ export const ProductScreen: FC = () => {
                   title="ok"
                 />
               }
-              keyExtractor={index}
-              //keyExtractor={(item) => item.id.toString()}
+              //keyExtractor={index}
+              keyExtractor={(item) => item.id.toString()}
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.5}
               ListFooterComponent={renderFooter}

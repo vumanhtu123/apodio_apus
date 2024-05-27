@@ -33,6 +33,8 @@ import { useStores } from "../../models";
 import { formatNumber } from "../../utils/validate";
 import Dialog from "../../components/dialog/dialog";
 import ProductAttribute from "./component/productAttribute";
+import { showDialog } from "../../utils/toast";
+import { translate } from "../../i18n/translate";
 
 export const ProductDetailScreen: FC = (item) => {
   const navigation = useNavigation();

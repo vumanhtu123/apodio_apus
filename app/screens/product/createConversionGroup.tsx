@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
-import { Alert, Dimensions, FlatList, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Dimensions, FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import WebView from "react-native-webview";
 import { Images } from "../../../assets";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../theme";
@@ -14,6 +14,7 @@ import { useStores } from "../../models"
 import { da } from "date-fns/locale";
 import { hideDialog, showDialog, showToast } from "../../utils/toast";
 import { translate } from "../../i18n/translate";
+import UnitModal from "./component/modal-unit";
 
 export const CreateConversionGroup: FC = observer(
     function CreateConversionGroup(props) {
@@ -42,7 +43,7 @@ export const CreateConversionGroup: FC = observer(
                     const textData = text.toUpperCase();
                     return itemData.indexOf(textData) > -1;
                 });
-                
+
                 setFilteredData(newData);
             } else {
                 const dataChoiceItem = arrData.filter(item => item.label !== dataUnit);
@@ -69,9 +70,9 @@ export const CreateConversionGroup: FC = observer(
 
 
         const goBackToProductCreateScreen = (id: string, name: string) => {
-            if(editScreen=== true){
+            if (editScreen === true) {
                 navigation.navigate('ProductEditScreen', { idUnitGroup: id, nameUnitGroup: name, goBackConversionGroup: true, resetData: false })
-            }else{
+            } else {
                 navigation.navigate('ProductCreateScreen', { idUnitGroup: id, nameUnitGroup: name, goBackConversionGroup: true, resetData: false })
             }
         };
@@ -108,37 +109,6 @@ export const CreateConversionGroup: FC = observer(
             }
         }
 
-
-        const createUnitName = async (name: string, saveLocal: boolean) => {
-            const unitResult = await unitStore.createUnitName(name)
-            console.log('response11111', unitResult)
-            if (unitResult && unitResult.kind === 'ok') {
-                const data = unitResult.result.data;
-                const dataModified = {
-                    id: data.id,
-                    label: data.name
-                };
-                console.log('response1134433434', dataModified, "----", arrData.length)
-                // Thêm đối tượng mới vào vị trí đầu tiên của mảng bằng toán tử spread
-                // const newArray = [dataModified, ...arrData];
-                // Cập nhật state với mảng mới
-                // setData(newArray);
-                setShowModalDVT(false);
-                if (saveLocal === true) {
-                    setOriginalUnit(dataModified)
-                }
-                reset({
-                    groupName: groupNameWatch,
-                    conversion: conversionWatch,
-                    DVT: ''
-                })
-
-                getListUnit()
-            } else {
-                console.error('Failed to fetch list unit:', unitResult);
-            }
-        }
-
         const createUnitGroupLine = async (params: any, saveLocal: boolean) => {
             const unitResult = await unitStore.createUnitGroupLine(params)
             if (unitResult && unitResult.kind === 'ok') {
@@ -147,7 +117,7 @@ export const CreateConversionGroup: FC = observer(
                 goBackToProductCreateScreen(data.id, data.name);
 
             } else {
-                showDialog(translate("txtDialog.txt_title_dialog"),'danger', unitResult.result.errorCodes[0].message, translate("common.ok"),'', () => {
+                showDialog(translate("txtDialog.txt_title_dialog"), 'danger', unitResult.result.errorCodes[0].message, translate("common.ok"), '', () => {
                     //navigation.goBack()
                 })
                 console.error('Failed to fetch list unit:', unitResult);
@@ -161,18 +131,18 @@ export const CreateConversionGroup: FC = observer(
             ) {
                 showToast('txtToats.required_information', 'error')
             } else {
-                showDialog(translate("txtDialog.txt_title_dialog"),'danger', translate("txtDialog.save_the_conversion_group"), translate("common.cancel"), translate("common.confirm"), () => {
+                showDialog(translate("txtDialog.txt_title_dialog"), 'danger', translate("txtDialog.save_the_conversion_group"), translate("common.cancel"), translate("common.confirm"), () => {
                     const params: any = {};
-                            params.name = groupNameWatch;
-                            params.originalUnitId = originalUnit.id;
-                            const jsonArray = conversionWatch.map(item => ({
-                                ...item,
-                                conversionRate: parseInt(item.conversionRate, 10)
-                            }));
-                            params.unitGroupLines = jsonArray;
-                            console.log(conversionWatch)
-                            createUnitGroupLine(params, true);
-                            hideDialog();
+                    params.name = groupNameWatch;
+                    params.originalUnitId = originalUnit.id;
+                    const jsonArray = conversionWatch.map(item => ({
+                        ...item,
+                        conversionRate: parseInt(item.conversionRate, 10)
+                    }));
+                    params.unitGroupLines = jsonArray;
+                    console.log(conversionWatch)
+                    createUnitGroupLine(params, true);
+                    hideDialog();
                 })
             }
             // reset();
@@ -186,50 +156,23 @@ export const CreateConversionGroup: FC = observer(
                 showToast('txtToats.required_information', 'error')
             } else {
 
-                showDialog(translate("txtDialog.txt_title_dialog"),'danger', translate("txtDialog.save_the_conversion_group"), translate("common.cancel"), translate("common.confirm"), () => {
+                showDialog(translate("txtDialog.txt_title_dialog"), 'danger', translate("txtDialog.save_the_conversion_group"), translate("common.cancel"), translate("common.confirm"), () => {
                     const params: any = {};
-                            params.name = groupNameWatch;
-                            params.originalUnitId = originalUnit.id;
-                            const jsonArray = conversionWatch.map(item => ({
-                                ...item,
-                                conversionRate: parseInt(item.conversionRate, 10)
-                              }));
-                            params.unitGroupLines = jsonArray;
-                            console.log(conversionWatch)
-                            createUnitGroupLine(params, false);
-                            hideDialog();
-                })
-            }
-            // reset();
-        };
-
-        //luu va chon modal DVT
-        const onSubmitDVT = () => {
-            // onConfirm(data)
-            if (DVTWatch === '') {
-                showToast('txtToats.required_information', 'error')
-            } else {
-                showDialog(translate("txtDialog.txt_title_dialog"),'danger', translate("txtDialog.save_unit") + " " + DVTWatch, translate("common.cancel"), translate("common.confirm"), () => {
-                    createUnitName(DVTWatch, true)
+                    params.name = groupNameWatch;
+                    params.originalUnitId = originalUnit.id;
+                    const jsonArray = conversionWatch.map(item => ({
+                        ...item,
+                        conversionRate: parseInt(item.conversionRate, 10)
+                    }));
+                    params.unitGroupLines = jsonArray;
+                    console.log(conversionWatch)
+                    createUnitGroupLine(params, false);
                     hideDialog();
                 })
             }
             // reset();
         };
 
-        //luu modal DVT
-        const onSubmitDVT1 = () => {
-            // onConfirm(data)
-            if (DVTWatch === '') {
-                showToast('txtToats.required_information', 'error')
-            } else {
-                showDialog(translate("txtDialog.txt_title_dialog"),'danger', translate("txtDialog.save_unit") + " " + DVTWatch, translate("common.cancel"), translate("common.confirm"), () => {
-                    createUnitName(DVTWatch, false)
-                    hideDialog();
-                })
-            }
-            // reset();
-        };
 
         return (
             <View style={{ backgroundColor: colors.palette.neutral100, flex: 1 }}>
@@ -340,12 +283,13 @@ export const CreateConversionGroup: FC = observer(
                                                         />)}
                                                 />
                                                 <TouchableOpacity onPress={() => {
-                                                                if (originalUnit.label === '') {
-                                                                    showToast('txtToats.required_dvt', 'error');
-                                                                } else { setShowModal(true)
-                                                                    setIndexConversion(index)
-                                                                 }
-                                                            }}
+                                                    if (originalUnit.label === '') {
+                                                        showToast('txtToats.required_dvt', 'error');
+                                                    } else {
+                                                        setShowModal(true)
+                                                        setIndexConversion(index)
+                                                    }
+                                                }}
                                                     style={{
                                                         width: '25%',
                                                         borderBottomWidth: 1,
@@ -399,7 +343,7 @@ export const CreateConversionGroup: FC = observer(
                                                     </View>
                                                 </View>
                                             </View>
-                                            {conversionWatch[index].changeDVT && originalUnit.label  && conversionWatch[index].conversionRate ?
+                                            {conversionWatch[index].changeDVT && originalUnit.label && conversionWatch[index].conversionRate ?
                                                 <Text text={'1 ' + conversionWatch[index].changeDVT + ' = ' + conversionWatch[index].conversionRate + ' ' + originalUnit.label}
                                                     style={{ color: colors.palette.dolphin, fontWeight: '400', fontSize: fontSize.size10 }} /> : null}
                                         </View>
@@ -452,78 +396,27 @@ export const CreateConversionGroup: FC = observer(
                         </ScrollView>
                     </View>
                 </View>
-                <Modal isVisible={showModalDVT}
-                    style={{
-                        marginHorizontal: scaleWidth(margin.margin_16),
-                        backgroundColor: colors.palette.neutral100,
-                        borderRadius: 8, paddingHorizontal: scaleWidth(margin.margin_16),
-                        position: 'absolute', bottom: 20,
-                        width: Dimensions.get('screen').width - scaleWidth(32)
+
+                <UnitModal
+                    title={"productScreen.createUnit"}
+                    isVisible={showModalDVT}
+                    setIsVisible={() => setShowModalDVT(false)}
+                    onSave={(data) => {
+                        setShowModalDVT(false)
+                        getListUnit()
                     }}
-                    onBackdropPress={() => {
-                        if (DVTWatch === '') {
-                            setShowModalDVT(false)
-                        } else {
-                            showDialog(translate("txtDialog.txt_title_dialog"),'danger', translate("txtDialog.content_exit_dialog"), translate("common.cancel"), translate("common.ok"), () => {
-                                setShowModalDVT(false)
-                                        reset({
-                                            groupName: groupNameWatch,
-                                            conversion: conversionWatch,
-                                            DVT: ''
-                                        })
-                            })
-                        }
+                    onSaveAndChange={(data) => {
+                        setShowModalDVT(false)
+                        setOriginalUnit(data)
+                        reset({
+                            groupName: groupNameWatch,
+                            conversion: conversionWatch,
+                            DVT: ''
+                        })
+                        getListUnit()
                     }}
-                >
-                    <View>
-                        <Text text='Tạo đơn vị tính' style={{
-                            fontWeight: '700', fontSize: fontSize.size14,
-                            lineHeight: scaleHeight(24), color: colors.palette.nero,
-                            marginVertical: scaleHeight(18), marginLeft: scaleWidth(margin.margin_6),
-                        }} />
-                        <View style={styles.viewLine} />
-                        <Controller
-                            control={control}
-                            name={`DVT`}
-                            render={({ field: { onChange, value, onBlur } }) => (
-                                <TextInput
-                                    keyboardType={'default'}
-                                    placeholder="Nhập tên đơn vị tính"
-                                    style={{
-                                        marginVertical: scaleHeight(18),
-                                    }}
-                                    value={value}
-                                    onBlur={onBlur}
-                                    onChangeText={(value) => onChange(value)}
-                                />)}
-                        />
-                        <View style={styles.viewLine} />
-                        <View style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            backgroundColor: 'white',
-                            paddingVertical: scaleHeight(20),
-                        }}>
-                            <TouchableOpacity onPress={() => onSubmitDVT1()}
-                                style={{
-                                    width: scaleWidth(145), height: scaleHeight(48),
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderWidth: 1,
-                                    borderRadius: 10, borderColor: colors.palette.navyBlue,
-                                }}>
-                                <Text tx={'productScreen.save'} style={{ fontSize: fontSize.size14, fontWeight: '600', color: colors.palette.navyBlue }} />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={
-                                    () => onSubmitDVT()
-                                }
-                                style={{ width: scaleWidth(145), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}>
-                                <Text tx={'productScreen.saveAndChange'} style={{ fontSize: fontSize.size14, fontWeight: '600', color: colors.palette.neutral100 }} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </Modal>
+                />
+
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'space-evenly',
