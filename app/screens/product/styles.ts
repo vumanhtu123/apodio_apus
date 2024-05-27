@@ -161,7 +161,7 @@ export const styles = StyleSheet.create({
   btnFilterByCategory : {
     borderRadius: 4,
     paddingVertical: scaleHeight(8),
-    marginLeft: scaleWidth(10),
+    marginLeft: scaleWidth(5),
     borderWidth: 1,
     borderColor: "#0078D4",
     flexDirection: "row",
@@ -175,7 +175,8 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size10,
     marginLeft: scaleWidth(8),
     marginRight: scaleWidth(10),
-    maxWidth: scaleWidth(80)
+    maxWidth: scaleWidth(80),
+    flex: 1,
   },
   containerProduct : {
     flex: 1,

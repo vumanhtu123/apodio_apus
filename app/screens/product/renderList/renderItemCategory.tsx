@@ -6,19 +6,21 @@ import { Images } from '../../../../assets';
 import { stylesItem } from '../styles';
 import { Text } from '../../../components';
 
-const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditCategory }:any) => {
+const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditCategory }: any) => {
   return (
     <TouchableOpacity
       disabled={isActive}
       style={{
         backgroundColor: "white",
-        marginBottom: scaleHeight(1),
+        marginBottom: scaleHeight(5),
+        
       }}>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          marginHorizontal : scaleWidth(16)
         }}>
         <View
           style={{
@@ -26,7 +28,7 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
             justifyContent: "flex-start",
             alignItems: "center",
           }}>
-          <View style={{ marginLeft: scaleWidth(16) }}>
+          <View style={{ }}>
             <Images.arrowsOutCardinal
               width={scaleWidth(16)}
               height={scaleHeight(16)}
@@ -69,20 +71,21 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
             </Text>
           </View>
         </View>
-        <View style={{ margin: 20, flexDirection: "row" }}>
-          <Images.icon_trash
-            width={scaleWidth(16)}
-            height={scaleHeight(16)}
-            onPress={() => {
-              handleOpenDeleteModal(item.id)
-            }}
-            style={{ marginRight: scaleWidth(10) }}
-          />
-          <Images.icon_edit
-            width={scaleWidth(16)}
-            height={scaleHeight(16)}
-            onPress={() => handleEditCategory(item)}
-          />
+        <View style={{  flexDirection: "row"  }}>
+          <TouchableOpacity onPress={() => {
+            handleOpenDeleteModal(item.id)
+          }} style={{  alignItems: 'center' , justifyContent:'center', width: scaleWidth(30), height: scaleHeight(30) }}>
+            <Images.icon_trash
+              width={scaleWidth(16)}
+              height={scaleHeight(16)}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleEditCategory(item)} style={{ alignItems: 'center',justifyContent:'center', width: scaleWidth(30), height: scaleHeight(30) }}>
+            <Images.icon_edit
+              width={scaleWidth(16)}
+              height={scaleHeight(16)}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>

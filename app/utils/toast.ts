@@ -1,5 +1,6 @@
 import Toast from "react-native-toast-message";
 import { translate } from "../i18n/translate";
+import CustomDialog from "../components/dialog/custom_dialog";
 
 let toastRef: { show: (arg0: any, arg1: string, arg2: string, arg3: { type: string; name: string }, arg4: any) => any; hidden: () => any }
 let loadingRef: { showLoading: () => any; hideLoading: () => any }
@@ -16,10 +17,13 @@ export const showToast = (message: any, type: ToastType = "success", position: T
   Toast.show({
     type:  type,
     text1: translate(message),
-    //text2: 'This is some something 👋',
+    //text2: 'This is some something 👋 ',
     position: position,
   });
 }
+
+
+
 
 export const hidenToast = () => {
   Toast.hide();
@@ -47,7 +51,9 @@ export const hideLoadingT = () => {
 
 
 
-export const setDialog = (_toast: any) => {
+
+
+export const setDialog = (_toast: CustomDialog) => {
   dialogRef = _toast
 }
 
@@ -59,7 +65,7 @@ export const showDialog = (
   content: string,
   titleBTN1: string,
   titleBTN2: string,
-  funcBTN2: { (): void; (): void; (): void; (): void; (): void },
+  funcBTN2: () => void
 ) => {
   dialogRef &&
     dialogRef.showDialog &&
@@ -68,6 +74,29 @@ export const showDialog = (
 export const hideDialog = () => {
   dialogRef && dialogRef.hideDialog && dialogRef.hideDialog()
 }
+
+
+// export const setDialog = (_toast: any) => {
+//   dialogRef = _toast
+// }
+
+// type DialogType = "danger" | "success" | "warning"
+
+// export const showDialog = (
+//   message: string,
+//   type: DialogType = "success",
+//   content: string,
+//   titleBTN1: string,
+//   titleBTN2: string,
+//   funcBTN2: { (): void; (): void; (): void; (): void; (): void },
+// ) => {
+//   dialogRef &&
+//     dialogRef.showDialog &&
+//     dialogRef.showDialog(message, type, content, titleBTN1, titleBTN2, funcBTN2)
+// }
+// export const hideDialog = () => {
+//   dialogRef && dialogRef.hideDialog && dialogRef.hideDialog()
+// }
 
 export const setCodepushAlert = (_ref: any) => {
   codepushAlertRef = _ref

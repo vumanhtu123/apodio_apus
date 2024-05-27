@@ -194,7 +194,7 @@ export function TextField(props: TextFieldProps) {
 
           //  { borderColor: isFocused ? color.yellow : color.gray }
         ]}>
-        <View style={{ flex: 1, paddingTop: scaleHeight(8) }}>
+        <View style={{ flex: 1, paddingTop: Platform.OS === 'android' ? scaleHeight(8) : scaleHeight(0) }}>
           <View style={{ flexDirection: "row" }}>
             {labelTx ? (
               <Text
@@ -305,7 +305,7 @@ export function TextField(props: TextFieldProps) {
         <View style={styleError}>
           <Text
             style={[{
-              marginTop: Platform.OS === "android" ? scaleHeight(2) : scaleHeight(0),
+              marginTop: Platform.OS === "android" ? scaleHeight(2) : scaleHeight(-5),
               fontSize: fontSize.size12,
               color: colors.error,
             }, styleTextError]}

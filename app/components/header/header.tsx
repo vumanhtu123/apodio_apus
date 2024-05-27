@@ -23,8 +23,8 @@ const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: "center" }
 const LEFT: ViewStyle = { width: 32 }
 // const TOP: ViewStyle = { height: Platform.OS === 'ios' ? scaleHeight(44) : scaleHeight(32) }
 const RIGHT: ViewStyle = { width: 32, marginRight: 2, zIndex: 2 }
-const BTNLEFT: ViewStyle = { paddingLeft: 16 }
-const BTNRIGHT: ViewStyle = { paddingRight: 16 }
+const BTNLEFT: ViewStyle = { width : scaleWidth(30) , height : scaleHeight(30),  alignItems : 'center' }
+const BTNRIGHT: ViewStyle = {  width : scaleWidth(30) , height : scaleHeight(30) ,  alignItems : 'center' }
 const LOGO: ViewStyle = {
   position: 'absolute', opacity: 1, top: 0, right: 40, height: 40, width: 40, zIndex: 1
 }
@@ -94,7 +94,7 @@ export function Header(props: HeaderProps) {
           <View style={LEFT} />
         )}
         {leftText && (
-          <TouchableOpacity onPress={onLeftTextPress} style={{ width:80, justifyContent: 'center',}}>
+          <TouchableOpacity onPress={onLeftTextPress} style={{ width:80, justifyContent: 'center'}}>
             <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center',  }} />
           </TouchableOpacity>
         )
@@ -176,22 +176,21 @@ export function Header(props: HeaderProps) {
           )}
           {RightIcon && (
             <Button preset="link" onPress={onRightPress} style={[BTNRIGHT, btnRightStyle]}>
-              <RightIcon width={widthRightIcon} height={heightRightIcon} />
+              <RightIcon width={scaleWidth(16)} height={scaleHeight(16)} />
             </Button>
           )}
           {RightIcon1 && (
             <Button preset="link" onPress={onRightPress1} style={[BTNRIGHT, btnRightStyle]}>
-              <RightIcon1 width={widthRightIcon} height={heightRightIcon} />
+              <RightIcon1 width={scaleWidth(16)} height={scaleHeight(16)}/>
             </Button>
           )}
           {RightIcon2 && (
             <Button preset="link" onPress={onRightPress2} style={[BTNRIGHT, btnRightStyle]}>
-              <RightIcon2 width={widthRightIcon} height={heightRightIcon} />
+              <RightIcon2 width={scaleWidth(16)} height={scaleHeight(16)} />
             </Button>
           )}
           {rightText && (
-            <Button preset="link" onPress={onRightTextPress} style={{ width: 50, alignItems: 'center', zIndex: 2 }}>
-              {/* <Text tx={rightText} style={{ color: '#FFFFFF', textAlign: 'center' }} /> */}
+            <Button preset="link" onPress={onRightTextPress} style={{ width: scaleWidth(50), alignItems: 'center', zIndex: 2 }}>
               <Text text={textRight} style={{ color: '#FFFFFF', textAlign: 'center' }} />
             </Button>
           )

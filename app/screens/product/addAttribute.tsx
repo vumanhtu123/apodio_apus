@@ -333,8 +333,8 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                     <View style={styles.viewItemFlatListModal}>
                         {isSelected && (
                             <Images.icon_checkBox
-                                width={scaleWidth(16)}
-                                height={scaleHeight(16)}
+                                // width={scaleWidth(16)}
+                                // height={scaleHeight(16)}
                             />
                         )}
                     </View>
@@ -470,7 +470,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                                                                 style={{
                                                                     width:
                                                                         (Dimensions.get("screen").width -
-                                                                            scaleWidth(32)) *
+                                                                            scaleWidth(45)) *
                                                                         0.6,
                                                                 }}>
                                                                 <Text
@@ -483,7 +483,9 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                                                             </View>
                                                         )}
                                                         <TouchableOpacity
+                                                            // style={{marginRight : 20}}
                                                             onPress={() => {
+                                                                console.log('2323')
                                                                 onPressCaret(
                                                                     items.item.productAttributeValue,
                                                                     items.item.id,
@@ -698,7 +700,8 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         justifyContent: "center",
         alignItems: "center",
-        marginRight: scaleWidth(6),
+        marginHorizontal: scaleWidth(6),
+
     },
     ROOT: { flex: 1, backgroundColor: colors.palette.neutral100 },
     viewBody: {
