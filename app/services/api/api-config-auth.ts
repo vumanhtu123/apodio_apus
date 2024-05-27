@@ -16,18 +16,16 @@ export class AuthApi {
     this.getway = getway;
     this.uaa = uaa;
   }
-  async login(username: string, password: string): Promise<LoginResponse> {
+  async login(username: string, password: string): Promise<any> {
     showLoading();
     try {
-      const response: ApiResponse<any> = await this.getway.apisauce.post(
-        ApiEndpoint.SIGN_IN,
-        {
+      const response: ApiResponse<BaseResponse<LoginResponse, ErrorCode>> =
+        await this.getway.apisauce.post(ApiEndpoint.SIGN_IN, {
           username,
           password,
           deviceInfo: DeviceInfo.getUniqueIdSync() + 2,
-        }
-      );
-      console.log("response", response.data);
+        });
+      console.log("response tuvm", response.data);
       const data = response.data;
       // if (!response.ok) {
       //   // hideLoading()
@@ -39,7 +37,7 @@ export class AuthApi {
       //   return { kind: "ok", LoginModelResult: data };
       // }
       // return { kind: "bad-data", LoginModelResult: data };
-      return { kind: "ok", data };
+      return data;
     } catch (e) {
       return { kind: "bad-data" };
     }
