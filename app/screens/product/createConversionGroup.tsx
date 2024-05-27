@@ -357,38 +357,46 @@ export const CreateConversionGroup: FC = observer(
                                         <Modal isVisible={showModal}
                                             onBackdropPress={() => { setShowModal(false) }}
                                         >
-                                            <View style={styles.viewModal}>
-                                                <TextInput
-                                                    style={{ fontSize: 16, fontWeight: '400' }}
-                                                    onChangeText={(text) => handleSearch(text)}
-                                                    value={search}
-                                                    placeholder="Search..."
-                                                />
-                                                <FlatList
-                                                    data={filteredData}
-                                                    style={{
-                                                        // flex: 1,
-                                                        marginTop: scaleHeight(margin.margin_10)
-                                                    }}
-                                                    renderItem={({ item }) => {
-                                                        return (
-                                                            <View>
-                                                                <TouchableOpacity onPress={() => {
-                                                                    setDataUnit(item.label)
-                                                                    setFilteredData(prevItems => prevItems.filter(i => i.label !== item.label));
-                                                                    setValue(`conversion.${indexConversion}.unitId`, item.id)
-                                                                    setValue(`conversion.${indexConversion}.changeDVT`, item.label)
-                                                                    setShowModal(false)
-                                                                }}>
-                                                                    <Text text={item.label}
-                                                                        style={styles.textLabelFlatList} />
-                                                                </TouchableOpacity>
-                                                                <View style={styles.viewLine}></View>
-                                                            </View>
-                                                        );
-                                                    }}
-                                                />
-                                            </View>
+                                            <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
+                                            <KeyboardAvoidingView
+                                                behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+                                                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+                                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                            >
+                                                <View style={styles.viewModal}>
+                                                    <TextInput
+                                                        style={{ fontSize: 16, fontWeight: '400' }}
+                                                        onChangeText={(text) => handleSearch(text)}
+                                                        value={search}
+                                                        placeholder="Search..."
+                                                    />
+                                                    <FlatList
+                                                        data={filteredData}
+                                                        style={{
+                                                            // flex: 1,
+                                                            marginTop: scaleHeight(margin.margin_10)
+                                                        }}
+                                                        renderItem={({ item }) => {
+                                                            return (
+                                                                <View>
+                                                                    <TouchableOpacity onPress={() => {
+                                                                        setDataUnit(item.label)
+                                                                        setFilteredData(prevItems => prevItems.filter(i => i.label !== item.label));
+                                                                        setValue(`conversion.${indexConversion}.unitId`, item.id)
+                                                                        setValue(`conversion.${indexConversion}.changeDVT`, item.label)
+                                                                        setShowModal(false)
+                                                                    }}>
+                                                                        <Text text={item.label}
+                                                                            style={styles.textLabelFlatList} />
+                                                                    </TouchableOpacity>
+                                                                    <View style={styles.viewLine}></View>
+                                                                </View>
+                                                            );
+                                                        }}
+                                                    />
+                                                </View>
+                                            </KeyboardAvoidingView>
+                                            </TouchableWithoutFeedback>
                                         </Modal>
                                     </View>
                                 )
