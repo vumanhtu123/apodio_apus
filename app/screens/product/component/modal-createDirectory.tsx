@@ -32,7 +32,6 @@ const CreateDirectoryModal = (props: any) => {
 
 
     const handleCreateButtonPress = async () => {
-
         onCreateDirectory(name, imagesNote);
         // setIsVisible(false)
         // setIsVisible(false);
@@ -76,6 +75,8 @@ const CreateDirectoryModal = (props: any) => {
         }
     };
 
+
+
     const handleCameraUse = async () => {
 
         const permissionStatus = await checkCameraPermission();
@@ -100,9 +101,9 @@ const CreateDirectoryModal = (props: any) => {
                 }
                 else if (response?.assets[0].uri) {
                     const { fileSize, uri, type, fileName } = response?.assets[0];
-
-                    // console.log('check camera', response?.assets)
-                    setImagesNote({ fileSize, uri, type, fileName })
+                    const result = { fileSize, uri, type, fileName }
+                    console.log('testtt', result);
+                    uploadImages(result)
                     setModalImage(false)
                 }
             })

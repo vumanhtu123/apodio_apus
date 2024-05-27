@@ -65,3 +65,4 @@ export * from "../screens/goods-delivery-book/Detail-Export-Goods/detailExportGo
 export * from "./company/company-screen";
 export * from "../screens/users/inforAccount/inforAccount";
 export * from "../screens/suppliers/screens/details-suppliers-screen";
+export * from "../screens/suppliers/screens/details-order-screen";

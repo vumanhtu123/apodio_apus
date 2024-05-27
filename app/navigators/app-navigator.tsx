@@ -8,7 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackScreenProps,
-  CardStyleInterpolators
+  CardStyleInterpolators,
 } from "@react-navigation/stack";
 import React from "react";
 import { MainBottomTab } from "./bottom-navigation";
@@ -127,7 +127,7 @@ export const AppStack = () => {
       screenOptions={{
         headerShown: false, // Ẩn header cho tất cả các màn hình
         gestureEnabled: true,
-        gestureDirection: 'horizontal',
+        gestureDirection: "horizontal",
         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
       initialRouteName={"mainBottom"}>
@@ -154,7 +154,7 @@ export const AppStack = () => {
 
       {/* màn hình kiểm kho */}
       <Stack.Screen
-        name="inventoryManagenment"
+        name="InventoryManagenment"
         component={InventoryManagement}
       />
       <Stack.Screen name="addCheckIventory" component={addCheckInventory} />
@@ -337,6 +337,11 @@ export const AppStack = () => {
         name="detailsSupplier"
         options={{ gestureEnabled: false }}
         component={Screens.DetailsSupplierScreen}
+      />
+      <Stack.Screen
+        name="detailsOrderScreen"
+        options={{ gestureEnabled: false }}
+        component={Screens.DetailsOrderScreen}
       />
     </Stack.Navigator>
   );

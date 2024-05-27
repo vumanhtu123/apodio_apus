@@ -23,6 +23,7 @@ const en = {
     attribute_is_using: "Thuộc tính đang được sử dụng, không thể xóa",
     cannot_be_deselected: "Không thể bỏ chọn thuộc tính này",
     cannot_create_duplicate: "Không thể tạo giá trị trùng",
+    product_is_using: "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",

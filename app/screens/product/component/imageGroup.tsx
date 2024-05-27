@@ -160,6 +160,7 @@ export default function ImagesGroup(props: ImagesGroup) {
                                 sliderWidth={Dimensions.get("window").width - 32}
                                 itemWidth={Dimensions.get("window").width - 32}
                                 onSnapToItem={(index) => {
+                                    console.log('--------Carousel-----------------------', index)
                                     setactiveSlide(index)
                                     productStore.setImageModalIndex(index)
                                 }}

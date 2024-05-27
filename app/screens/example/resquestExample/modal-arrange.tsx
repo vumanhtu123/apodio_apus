@@ -141,11 +141,6 @@ const ArrangeModal = (props: ArrangeProps) => {
                          null   
                     }
                    </TouchableOpacity>
-                   
-                
-
-                  
-                  
                 </View>
             </View>
            
