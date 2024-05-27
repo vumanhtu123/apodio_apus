@@ -87,10 +87,12 @@ export default class CustomDialog extends React.PureComponent<DialogProps> {
 
   onPressBTN = () => {
     this.state.onPressAccept()
+    this.hideDialog();
   }
 
   render() {
     const { isShow, imageSource, title, content, titleBTN1, titleBTN2 } = this.state
+    console.log('------------isShow--------------', isShow)
     return (
       <Modal
         statusBarTranslucent

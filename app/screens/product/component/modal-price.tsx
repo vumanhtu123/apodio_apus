@@ -1,7 +1,7 @@
 import 'numeral/locales/vi';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Dimensions, FlatList, Platform, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Platform, TouchableOpacity, View , KeyboardAvoidingView} from 'react-native';
 import Modal from 'react-native-modal';
 import { Images } from '../../../../assets/index';
 import { Button, Text, TextField } from '../../../components';
@@ -94,6 +94,12 @@ const PriceModal = (props: PriceModalProps) => {
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}
             isVisible={isVisible}
+            avoidKeyboard={true}
+        >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
         >
             <View style={{
                 maxHeight: Dimensions.get('screen').height * 0.6,
@@ -272,6 +278,7 @@ const PriceModal = (props: PriceModalProps) => {
                 styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8  }}
                 onPressAccept={() => setModalError(false)}
             />
+            </KeyboardAvoidingView>
         </Modal>
     );
 };

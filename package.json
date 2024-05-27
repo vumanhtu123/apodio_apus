@@ -23,6 +23,7 @@
     "date-fns": "^3.6.0",
     "i18n-js": "3.9.2",
     "lodash": "^4.17.21",
+    "lottie-ios": "4.4.1",
     "lottie-react-native": "^6.7.2",
     "mobx": "^6.12.3",
     "mobx-react-lite": "^4.0.7",
