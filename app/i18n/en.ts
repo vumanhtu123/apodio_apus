@@ -6,6 +6,7 @@ const en = {
     confirm: "Xác nhận",
     logOut: "Log Out",
     listCompany: "Danh sách công ty",
+    filter: " Bộ lọc"
 
     // @demo remove-current-line
   },
@@ -372,7 +373,9 @@ const en = {
   ExampleScreen: {
     btnContinue: "Tiếp tục",
   },
-
+  feedBack: {
+    improtFeedback: "Nhập góp ý",
+  },
   ClientScreen: {
     client: "Khách hàng",
     groupClient: "Khách hàng",
@@ -465,6 +468,22 @@ const en = {
     priceHighToLow: "Cao đến thấp",
     priceLowToHigh: "Thấp đến cao",
   },
+  tranSacTionHistory: {
+    tranSactionHistory: "Lịch sử giao dịch",
+    transactionHistoryDetail: "Chi tiết lịch sử giao dịch",
+    paymentDetail:"Chi tiết thanh toán",
+    paymentOder:"Thanh toán đơn hàng",
+    transactionType: "Loại giao dịch",
+    merchantPhone:"SDT đại lý",
+    merchantName:"Tên đại lý",
+    status:"Trạng thái",
+    transactionTime:"Thời gian giao dịch",
+    amount: "Thành tiền",
+    fee: "Thuế ",
+    totalAmount: "Tổng cộng"
+
+
+  },
   chooseSupplierScreen: {
     placeholderSearch: "Tìm nhà cung cấp theo mã và tên",
   },
@@ -483,6 +502,7 @@ const en = {
     btnDetail: "Xem chi tiết sản phẩm",
     btnBack: "Quay lại trang chủ",
   },
+  
   wareHouse: {
     wareHouse: "Kho hàng",
     wareBook: "Sổ kho",
@@ -497,12 +517,31 @@ const en = {
     quantity: "Số lượng",
     inforWareHouse: "Thông tin kho hàng",
     confirm: "Xác nhận",
+    createOder: "Xuất hàng", 
+    createProduct: "Kiểm kho",
+    createBatchProduct: "Nhập hàng"
   },
+  
   GoodsExportBook: {
     createExportGoods: "Tạo xuất hàng",
     exportGoods: "Xuất hàng",
     product: "Sản phẩm",
-    contenue: "Tiếp tục",
+    contenue:"Tiếp tục",
+    shippingDetails :"Chi tiết xuất hàng",
+    submitBallot: "Gửi phiếu",
+    dowloadBallot: "Tải phiếu",
+    collapse: "Thu gọn",
+    notCreateExportGoods: "Chưa có phiếu xuất nào được tạo"
+  },
+  detailPallot: {
+    ballotDetail: "Chi tiết phiếu",
+    DeliveryNote: "Phiếu xuất hàng",
+    name: "TÊN",
+    total: "Tổng số lượng",
+    inPallot: "In phiếu",
+    printerIsNotConnected: "Máy in chưa được kết nối",
+    later: "Để sau",
+    settingPrinter: " Cài đặt máy in"
   },
   checkInventory: {
     createInventorySeets: "Tạo phiếu xuất hàng",
@@ -510,6 +549,38 @@ const en = {
     btnAddProduct: "Thêm sản phẩm",
     searchAndSelectProductsMaterialsToStartCheckingGoods:
       "tìm kiếm và lựa chọn sản phẩm Chất liệu để bắt đầu kiểm tra hàng ",
+  },
+  ImprotGoodsBook:{
+    createImportGoods: "Tạo nhập hàng",
+    ImportGoods: "Nhập hàng",
+    createGoodsReceipt: "Tạo phiếu nhập hàng",
+    supplier: "Nhà cung cấp",
+    debit: "Ghi nợ",
+    addProduct: "+ Thêm sản phẩm",
+    brick: "Gạch 1566CB502 60x60",
+    price: "Giá 0",
+    note: "Ghi chú",
+    Total:"Tổng số lượng",
+    totalCostOfGoods: "Tổng tiền hàng",
+    discount: "Chiết khấu",
+    costsIncurred: "Chi phí phát sinh",
+    paymentConfirmation:"Xác nhận thanh toán",
+    totalAmount: "Tổng tiền",
+    iPaid: "Tôi đã trả",
+    funds: "Nguồn tiền",
+    electronicWallet: "Ví điện tử",
+    cash : "Tiền mặt",
+    unclassified: "Chưa phân loại",
+    bank: "Ngân hàng", 
+    storeWallet: "Ví của hàng",
+    detailImportReceipt : "Chi tiết nhập hàng",
+    cancelImportOrder: "Hủy đơn nhập hàng",
+    refund: "Hoàn tiền",
+    recordTheTransactionInDebt: "Ghi lại giao dịch vào công nợ",
+    back: "Quay lại",
+    confrim: "Xác nhận",
+    deletionWarning: "Các giao dịch liên quan đến đơn nhập hàng này sẽ bị xóa. Bạn muốn xóa giao dịch liên quan?",
+    importCoupon:"Phiếu nhập hàng"
   },
   itemConversion: {
     dialogNoti: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",
@@ -545,6 +616,38 @@ const en = {
     all: "Tất cả",
     addContact: "Thêm liên hệ",
   },
+  warehouseBook: {
+    warehouseBook: "Sổ kho",
+    ExistingAtTheBeginningOfThePeriod: "Tồn đầu kỳ",
+    DuringThePeriod: "Nhập trong kỳ",
+    ExportedInPeriod: "Xuất trong kỳ",
+    EndingStocks: "Tồn cuối kỳ",
+    productDelivery: "Xuất hàng",
+    importGoods: "Nhập hàng",
+    checkInventory: "Kiểm kho",
+    time: "Thời gian",
+    orCustomizeTheTime: "Hoặc tùy chỉnh thời gian",
+    filter: "Bộ lọc ",
+    from: "Từ",
+    to: "Đến",
+    classify: "Phân loại",
+    sell: "Bán hàng",
+    return:"Hoàn trả",
+    initializeWarehouse:"Khởi tạo kho",
+    editInventory: "Sửa tồn kho",
+    editCostPrice: "Sửa giá vốn",
+    deleteProduct: "Xóa sản phẩm",
+    deleteRawMaterials: "Xóa nguyên vật liêu",
+    different: "Khác",
+    typeOfGoods: "Loại hàng hóa",
+    product: "Sản phẩm",
+    rawMaterials: "Nguyên vật liệu",
+    reportDetail: " Báo cáo chi tiết",
+    downloadNow: "Tải ngay",
+    reset: "Thiết lập lại",
+    apply: "Áp dụng",
+
+  }
 
   // @demo remove-block-end
 };

@@ -78,13 +78,13 @@ export type NavigatorParamList = {
   TestDebug: undefined;
   addAttribute: undefined;
   successScreen: undefined;
-  InfomerchantUsers: undefined;
+  Introduce: undefined;
   accountSecurity: undefined;
   changePass: undefined;
   clientScreen: undefined;
   detailClient: undefined;
   addClientToGroup: undefined;
-  InventoryManagenment: undefined;
+  inventoryManagenment: undefined;
   addCheckIventory: undefined;
   addProduct: undefined;
   listCompany: undefined;
@@ -105,6 +105,14 @@ export type NavigatorParamList = {
   editAttribute: undefined;
   editAttributeByEdit: undefined;
   detailsSupplier: undefined;
+  ballotDetail: undefined;
+  detaiExportGoods: undefined;
+  importGoodsBook: undefined;
+  createGoodsReceipt: undefined;
+  detailImportReceipt: undefined;
+  voucherDetail: undefined;
+  warehouseBook: undefined;
+  filterInWarehouseBook: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -116,11 +124,11 @@ const Stack = createStackNavigator<NavigatorParamList>();
 export const AppStack = () => {
   return (
     <Stack.Navigator
-    screenOptions={{
-      headerShown: false, // Ẩn header cho tất cả các màn hình
-      gestureEnabled: true,
-      gestureDirection: 'horizontal',
-      cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+      screenOptions={{
+        headerShown: false, // Ẩn header cho tất cả các màn hình
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
       initialRouteName={"mainBottom"}>
       <Stack.Screen
@@ -128,7 +136,7 @@ export const AppStack = () => {
         component={Screens.AccountSecurity}
       />
       <Stack.Screen
-        name="InfomerchantUsers"
+        name="Introduce"
         component={Screens.IntroductionScreen2}
       />
       <Stack.Screen name="changePass" component={Screens.changePassScreen} />
@@ -171,10 +179,6 @@ export const AppStack = () => {
         name="GoodsDeliveryBook"
         component={Screens.GoodsDeliveryBook}
       />
-      <Stack.Screen
-        name="createImportGoods"
-        component={Screens.CreateImportGoods}
-      />
       <Stack.Screen name="createExportGoods" component={CreateExportGoods} />
       <Stack.Screen
         name="createDeliveNote"
@@ -186,6 +190,23 @@ export const AppStack = () => {
       />
 
       <Stack.Screen name="inforAccount" component={Screens.InforAccount} />
+      <Stack.Screen name="notificationSetting" component={Screens.NotificationSetting} />
+      <Stack.Screen name="ballotDetail" component={Screens.BallotDetail} />
+      <Stack.Screen name="detaiExportGoods" component={Screens.DetailExportGoods} />
+
+      {/* màn sổ nhập */}
+      <Stack.Screen name="importGoodsBook" component={Screens.ImprotGoodsBook} />
+      <Stack.Screen name="createImportGoods" component={Screens.CreateImportGoods} />
+      <Stack.Screen name="createGoodsReceipt" component={Screens.CreateGoodsReceipt} />
+      <Stack.Screen name="detailImportReceipt" component={Screens.DetailImportReceipt} />
+      <Stack.Screen name="voucherDetail" component={Screens.VoucherDetail} />
+
+        {/* màn hình sô kho */}
+        <Stack.Screen name="warehouseBook" component={Screens.warehouseBook} />
+      <Stack.Screen name="filterInWarehouseBook" component={Screens.FilterWarehouseBook}/> 
+
+    
+
 
       <Stack.Screen
         name="mainBottom"
@@ -322,7 +343,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()

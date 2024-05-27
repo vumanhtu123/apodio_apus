@@ -38,6 +38,8 @@ export function Header(props: HeaderProps) {
     onRightTextPress,
     onRightIconTextInput,
     onRightIconTextInputCenter,
+    onRightIconAndTextBelow,
+    RightIconAndTextBelow,
     RightIcon,
     RightIcon1,
     RightIcon2,
@@ -46,6 +48,7 @@ export function Header(props: HeaderProps) {
     LeftIcon,
     headerText,
     headerTx,
+    textBelowIconRight,
     leftText,
     rightText,
     rightTx,
@@ -94,8 +97,8 @@ export function Header(props: HeaderProps) {
           <View style={LEFT} />
         )}
         {leftText && (
-          <TouchableOpacity onPress={onLeftTextPress} style={{ width:80, justifyContent: 'center',}}>
-            <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center',  }} />
+          <TouchableOpacity onPress={onLeftTextPress} style={{ width: 80, justifyContent: 'center', }}>
+            <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center', }} />
           </TouchableOpacity>
         )
         }
@@ -139,23 +142,23 @@ export function Header(props: HeaderProps) {
 
               {
                 RightIconTextInputCenter ?
-                (
-                  <Button
-                  preset="link"
-                  onPress={onRightIconTextInputCenter}
-                  style={{ justifyContent: 'center', alignItems: 'center', marginLeft:scaleWidth(12) }}
-                >
-                  <RightIconTextInputCenter width={16} height={16} />
-                  {
-                    textBelowIconRightSearch && (
-                      <Text style={{ fontSize: 9, fontFamily: 'Inter', color: '#FFF', }}>
-                        Báo cáo
-                      </Text>
-                    )
-                  }
-  
-                </Button>
-                ):null
+                  (
+                    <Button
+                      preset="link"
+                      onPress={onRightIconTextInputCenter}
+                      style={{ justifyContent: 'center', alignItems: 'center', marginLeft: scaleWidth(12) }}
+                    >
+                      <RightIconTextInputCenter width={16} height={16} />
+                      {
+                        textBelowIconRightSearch && (
+                          <Text style={{ fontSize: 9, fontFamily: 'Inter', color: '#FFF', }}>
+                            Báo cáo
+                          </Text>
+                        )
+                      }
+
+                    </Button>
+                  ) : null
               }
 
             </View>
@@ -196,6 +199,24 @@ export function Header(props: HeaderProps) {
             </Button>
           )
           }
+          {
+            RightIconAndTextBelow && (
+              <Button
+                preset="link"
+                onPress={onRightIconAndTextBelow}
+                style={{width:scaleWidth(40),marginRight:10, alignItems: 'center', justifyContent:'center'}}
+              >
+                <RightIconAndTextBelow width={widthRightIcon} height={heightRightIcon} />
+                {
+                  textBelowIconRight && (
+                    <Text text={textBelowIconRight}
+                      style={{ fontSize:scaleWidth(8) , color: '#FFF' }}
+                    />
+                  )
+                }
+              </Button>
+            )
+          }
         </View>
 
         <View style={LOGO}>
@@ -230,7 +251,7 @@ export function Header(props: HeaderProps) {
             value={searchValue}
             onChangeText={handleSearch}
             enterKeyHint="search"
-            onSubmitEditing = {handleOnSubmitSearch}
+            onSubmitEditing={handleOnSubmitSearch}
             enablesReturnKeyAutomatically
 
           // placeholder="Tìm kiếm..."
@@ -261,6 +282,7 @@ export function Header(props: HeaderProps) {
             <Images.icon_Logo1/>
           </View> */
       )}
+
     </View>
   )
 }

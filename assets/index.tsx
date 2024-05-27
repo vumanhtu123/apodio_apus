@@ -180,6 +180,15 @@ import ic_oto from "./Images/oto.svg";
 import ClipboardText from "./Images/ClipboardText.svg";
 import icon_chart from "./Images/icon_chart.svg";
 import ic_x from "./Images/ic_x.svg";
+import ic_downLoadBlue from "./Images/ic_downLoadBlue.svg"
+import ic_Feild from "./Images/ic_field .svg"
+import ic_system_uico from "./Images/ic_System_Uicons.svg"
+import ic_pen from"./Images/ic_pen.svg"
+import ic_PaperPlaneTilt from"./Images/ic_PaperPlaneTilt.svg"
+import ic_bin from "./Images/ic_bin.svg"
+import ic_In from"./Images/ic_In.svg"
+import img_test from "./Images/img_test.svg"
+import ic_avatar from "./Images/ic_avatar.svg"
 
 export const Images = {
   icon_test: _test,
@@ -350,10 +359,19 @@ export const Images = {
   ic_Xcicle_Red: ic_Xcircle_Red,
   ic_Tick_Green: ic_Tick_Green,
   ic_BoxAndSearch: ic_BoxAndSearch,
+  ic_avatar: ic_avatar,
   ic_squareFour: ic_squareFour,
   ic_location: ic_location,
   ic_oto: ic_oto,
   ClipboardText: ClipboardText,
   icon_chart: icon_chart,
   ic_x: ic_x,
+  img_test : img_test,
+  ic_downLoadBlue: ic_downLoadBlue,
+  ic_Feilter: ic_Feild,
+  ic_system_uico: ic_system_uico,
+  ic_bin: ic_bin,
+  ic_pen: ic_pen,
+  ic_In : ic_In ,
+  ic_PaperPlaneTilt : ic_PaperPlaneTilt,
 };

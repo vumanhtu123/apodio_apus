@@ -1,6 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { FC, useState } from "react";
-import { AppStackParamList } from "../../../navigators";
+import {  NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { Header, Text } from "../../../components";
 import { Images } from "../../../../assets";
@@ -12,7 +12,7 @@ import { styles } from "../../login/styles";
 
 
 
-export const addProductCreate: FC<StackNavigationProp<AppStackParamList, "addProduct">> = observer(
+export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addProduct">> = observer(
     function AddProduct(props) {
         const navigation = useNavigation();
 

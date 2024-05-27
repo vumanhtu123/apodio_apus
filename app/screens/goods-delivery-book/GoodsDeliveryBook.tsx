@@ -1,13 +1,13 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
-import React, { FC, useRef, useState } from 'react';
-import { View, Alert, Platform, TouchableOpacity, StyleSheet } from 'react-native';
+import  { FC, useRef, useState } from 'react';
+import { View, Alert, Platform, TouchableOpacity, StyleSheet,FlatList } from 'react-native';
 import { NavigatorParamList, navigate } from '../../navigators';
 import { Header, Text } from '../../components';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../theme';
 import { Images } from '../../../assets';
-import { FlashList } from "@shopify/flash-list";
 import CustomCalendar from '../../components/calendar';
+import React = require('react');
 
 export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDeliveryBook">> = observer(
 
@@ -242,15 +242,15 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                                     </View>
 
                                 </View>
-                                <FlashList
-                                    style={{ marginTop: scaleWidth(15), backgroundColor: 'red', flex: 1 }}
+                                <FlatList
+                                    style={{ marginTop: scaleWidth(15), flex: 1 }}
                                     data={displayedData}
                                     showsVerticalScrollIndicator={false}
 
                                     renderItem={({ item }) => {
                                         return (
                                             <TouchableOpacity style={Styles.bodyItem}
-                                                onPress={() => props.navigation.navigate('detaiExampleGoods')}
+                                                onPress={() => props.navigation.navigate('detaiExampleGoods',{dataItemGoodsDeliveryBook: item})}
                                             
                                             >
                                                 <View style={{

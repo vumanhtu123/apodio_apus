@@ -88,6 +88,7 @@ export const palette = {
   textExDoing: '#2D4982',
   textExDone:'#F4AD22',
   textExCancle: '#FF4956',
+  greenTea: '#DAFBDF',
   
 } as const;
 
