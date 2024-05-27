@@ -1,24 +1,28 @@
 import { Instance, SnapshotOut, flow, types } from "mobx-state-tree";
 import { withEnvironment } from "./extensions/with-environment";
 import { AuthApi } from "../services/api/api-config-auth";
+import { LoginResponse } from "./login-model";
+import { getAccessToken, setAccessToken, setTenantId } from "../utils/storage";
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
   .props({
-    accessToken: types.optional(types.string, ""),
+    accessToken: types.maybe(types.string),
     refreshToken: types.optional(types.string, ""),
     userId: types.optional(types.number, 0),
     jti: types.optional(types.string, ""),
-    authToken: types.maybe(types.string),
     tenantId: types.maybe(types.string),
     authEmail: "",
     otpReceiver: types.optional(types.string, ""),
     receiverType: types.optional(types.string, ""),
+    userName: types.optional(types.string, ""),
+    passWord: types.optional(types.string, ""),
+    errorMessage: types.optional(types.string, ""),
   })
   .extend(withEnvironment)
   .views((store) => ({
     get isAuthenticated() {
-      return !!store.authToken;
+      return !!store.accessToken;
     },
     get validationError() {
       if (store.authEmail.length === 0) {
@@ -47,7 +51,7 @@ export const AuthenticationStoreModel = types
       store.jti = jti;
     },
     setAuthToken(value?: string) {
-      store.authToken = value;
+      store.accessToken = value;
     },
     setAuthEmail(value: string) {
       store.authEmail = value.replace(/ /g, "");
@@ -55,28 +59,49 @@ export const AuthenticationStoreModel = types
     setTenantId(value: string) {
       store.tenantId = value;
     },
+    setUserName(value: string) {
+      store.userName = value;
+    },
+    setPassWord(value: string) {
+      store.passWord = value;
+    },
+    setErrorMessage(value: string) {
+      store.errorMessage = value;
+    },
   }))
   .actions((store) => ({
     login: flow(function* (username: string, password: string) {
+      store.setUserName(username);
+      store.setPassWord(password);
       const authApi = new AuthApi(
         store.environment.apiGetWay,
         store.environment.apiUaa
       );
-      const result: any = yield authApi.login(username, password);
-
-      console.log("tuvm", result);
-      if (result.kind === "ok") {
-        store.setAccessToken(result.data.data.accessToken);
-        store.setRefreshToken(result.data.data.refreshToken);
-        store.setUserID(result.data.data.userID);
-        store.setJTI(result.data.data.jti);
-        store.setUserID(result.data.data.userId);
-        store.setTenantId(result.data.data.tenantId);
-        console.log("token set", result.data.data.tenantId);
-        return result;
-      } else {
-        __DEV__ && console.tron.log(result.kind);
-        return result;
+      try {
+        const result: BaseResponse<LoginResponse, ErrorCode> =
+          yield authApi.login(username, password);
+        if (result.data != undefined) {
+          console.log("tuvm", result);
+          store.setAccessToken(result.data.accessToken);
+          store.setRefreshToken(result.data.refreshToken);
+          store.setUserID(result.data.userId);
+          store.setJTI(result.data.jti);
+          setAccessToken(store.accessToken);
+          setTenantId(store.tenantId);
+          store.setTenantId(result.data.tenantId);
+          const access = getAccessToken();
+          console.log("access: ", access);
+          return result.data;
+        } else {
+          const errorM = result.errorCodes.find((error) => error.code)?.message;
+          console.log("err", errorM);
+          store.setErrorMessage(errorM ?? "");
+          __DEV__ && console.tron.log(result.errorCodes);
+          console.log("error");
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
       }
     }),
 
@@ -87,7 +112,7 @@ export const AuthenticationStoreModel = types
       );
       console.log("jti : ", store.jti);
       const result: any = yield authApi.logout(store.jti);
-      store.authToken = undefined;
+      store.accessToken = undefined;
       console.log("tuvm logout", result);
       if (result.kind === "ok") {
         console.log("token set", store.accessToken);

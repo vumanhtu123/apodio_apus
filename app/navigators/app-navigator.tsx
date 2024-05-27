@@ -8,7 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackScreenProps,
-  CardStyleInterpolators
+  CardStyleInterpolators,
 } from "@react-navigation/stack";
 import React from "react";
 import { MainBottomTab } from "./bottom-navigation";
@@ -105,6 +105,7 @@ export type NavigatorParamList = {
   editAttribute: undefined;
   editAttributeByEdit: undefined;
   detailsSupplier: undefined;
+  detailsOrderScreen: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -116,11 +117,11 @@ const Stack = createStackNavigator<NavigatorParamList>();
 export const AppStack = () => {
   return (
     <Stack.Navigator
-    screenOptions={{
-      headerShown: false, // Ẩn header cho tất cả các màn hình
-      gestureEnabled: true,
-      gestureDirection: 'horizontal',
-      cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
+      screenOptions={{
+        headerShown: false, // Ẩn header cho tất cả các màn hình
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
       initialRouteName={"mainBottom"}>
       <Stack.Screen
@@ -316,6 +317,11 @@ export const AppStack = () => {
         name="detailsSupplier"
         options={{ gestureEnabled: false }}
         component={Screens.DetailsSupplierScreen}
+      />
+      <Stack.Screen
+        name="detailsOrderScreen"
+        options={{ gestureEnabled: false }}
+        component={Screens.DetailsOrderScreen}
       />
     </Stack.Navigator>
   );
