@@ -125,8 +125,7 @@ export default function ImageProduct(props: ImageProduct) {
                                     width={scaleWidth(16)}
                                     height={scaleHeight(16)}
                                 />
-                                <Text style={styles.textBtnCamera}>
-                                    Tải ảnh lên
+                                <Text tx={"createProductScreen.uploadImage"} style={styles.textBtnCamera}>
                                 </Text>
                             </View>
                         </TouchableOpacity>
@@ -145,8 +144,7 @@ export default function ImageProduct(props: ImageProduct) {
                                     width={scaleWidth(16)}
                                     height={scaleHeight(16)}
                                 />
-                                <Text style={styles.textBtnCamera}>
-                                    Chụp ảnh
+                                <Text tx={"createProductScreen.openCamera"} style={styles.textBtnCamera}>
                                 </Text>
                             </View>
                         </TouchableOpacity>

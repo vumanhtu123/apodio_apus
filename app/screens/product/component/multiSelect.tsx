@@ -212,7 +212,7 @@ const DropdownModal = (props: InputSelectProps) => {
             <Modal isVisible={modalVisible} onBackdropPress={toggleModal}>
                 <View style={styles.modalContainer}>
                     <Text
-                        text={titleText}
+                        text={title}
                         style={{
                             marginVertical: scaleHeight(18),
                             marginLeft: scaleWidth(9),
