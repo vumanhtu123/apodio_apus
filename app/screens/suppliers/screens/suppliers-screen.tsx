@@ -211,7 +211,7 @@ export const SuppliersScreen: FC = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("detailsSupplier" as never)}
+        onPress={() => navigation.navigate("detailsOrderScreen" as never)}
         style={{
           flexDirection: "row",
           justifyContent: "center",

@@ -9,8 +9,6 @@ import { TextField } from "../../components/text-field/text-field"
 import { Text } from "../../components/text/text"
 import { useStores } from "../../models"
 import { colors, fontSize, palette, scaleHeight, scaleWidth } from "../../theme"
-// import SelectFilterModal from "./modal-select-filter"
-
 export const ChooseVendorScreen: FC = () => {
     const navigation = useNavigation()
     const [arrVendor, setArrVendor] = useState<any>([]);
@@ -19,7 +17,6 @@ export const ChooseVendorScreen: FC = () => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const [searchValue, setSearchValue] = useState("");
     const route = useRoute();
     const { listIds, mode }: any = route?.params || {};
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -56,7 +53,6 @@ export const ChooseVendorScreen: FC = () => {
         }
     };
     useEffect(() => {
-        // console.log('check', listIds)
         getListVendor(true, searchText)
     }, [])
     const RadioButton = ({ selected, onPress }: any) => (
@@ -78,7 +74,6 @@ export const ChooseVendorScreen: FC = () => {
         console.log('page', page)
     }, [page])
     const refreshVendor = async () => {
-        console.log('okok')
         setIsRefreshing(true)
         setArrVendor([])
         setPage(0)

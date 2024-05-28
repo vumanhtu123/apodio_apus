@@ -305,7 +305,7 @@ export function TextField(props: TextFieldProps) {
         <View style={styleError}>
           <Text
             style={[{
-              marginTop: Platform.OS === "android" ? scaleHeight(2) : scaleHeight(0),
+              marginTop: Platform.OS === "android" ? scaleHeight(2) : scaleHeight(-5),
               fontSize: fontSize.size12,
               color: colors.error,
             }, styleTextError]}

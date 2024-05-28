@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, Platform, View } from 'react-native';
+import React from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal/dist/modal';
-import { colors, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Text } from '../../../components';
+import { colors, padding, scaleHeight, scaleWidth } from '../../../theme';
 
-const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory , isSearchBarVisible , setIndex  }: any) => {
-   
+const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory, isSearchBarVisible, setIndex }: any) => {
+
     return (
         <Modal
             isVisible={showCategory}
@@ -20,51 +20,56 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                 right: 0,
                 top: isSearchBarVisible ? Platform.OS === "ios" ? scaleHeight(235) : scaleHeight(180) : Platform.OS === "ios" ? scaleHeight(185) : scaleHeight(135),
             }}>
-            <View
-                style={{
-                    // borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: colors.palette.veryLightGrey,
-                    height: scaleHeight(144),
-                    width: scaleWidth(170),
-                    backgroundColor: colors.palette.neutral100,
-                }}
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
             >
-                <ScrollView>
-                    {dataCategory.map((item: any , index : any) => {
-                        return (
-                            <TouchableOpacity
-                                key={index}
-                                onPress={() => {
-                                    setSelectedCategory(item.id);
-                                    setNameDirectory(item.name);
-                                    setShowCategory(false);
-                                    setIndex(index)
-                                }}
-                                style={{
-                                    paddingVertical: scaleHeight(padding.padding_12),
-                                    paddingHorizontal: scaleWidth(padding.padding_12),
-                                    backgroundColor:
-                                        selectedCategory === item.id
-                                            ? colors.palette.navyBlue
-                                            : colors.palette.neutral100,
-                                }}>
-                                <Text
+                <View
+                    style={{
+                        borderWidth: 1,
+                        borderColor: colors.palette.veryLightGrey,
+                        height: scaleHeight(144),
+                        width: scaleWidth(170),
+                        backgroundColor: colors.palette.neutral100,
+                    }}
+                >
+                    <ScrollView>
+                        {dataCategory.map((item: any, index: any) => {
+                            return (
+                                <TouchableOpacity
+                                    key={index}
+                                    onPress={() => {
+                                        setSelectedCategory(item.id);
+                                        setNameDirectory(item.name);
+                                        setShowCategory(false);
+                                        setIndex(index)
+                                    }}
                                     style={{
-                                        fontWeight: "500",
-                                        fontSize: 10, // Adjust font size accordingly
-                                        color:
+                                        paddingVertical: scaleHeight(padding.padding_12),
+                                        paddingHorizontal: scaleWidth(padding.padding_12),
+                                        backgroundColor:
                                             selectedCategory === item.id
-                                                ? colors.palette.neutral100
-                                                : colors.palette.nero,
+                                                ? colors.palette.navyBlue
+                                                : colors.palette.neutral100,
                                     }}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </ScrollView>
-            </View>
+                                    <Text
+                                        style={{
+                                            fontWeight: "500",
+                                            fontSize: 10, // Adjust font size accordingly
+                                            color:
+                                                selectedCategory === item.id
+                                                    ? colors.palette.neutral100
+                                                    : colors.palette.nero,
+                                        }}>
+                                        {item.name}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </ScrollView>
+                </View>
+            </KeyboardAvoidingView>
         </Modal>
     );
 };

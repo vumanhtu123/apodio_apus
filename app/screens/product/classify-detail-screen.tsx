@@ -227,14 +227,16 @@ export const ClassifyDetailScreen: FC = () => {
               <ProductAttribute
                 labelTx="detailScreen.status"
                 value={
-                  dataClassification.saleOk === true
+                  dataClassification.saleOk === true &&
+                  dataClassification.purchaseOk === false
                     ? "Có thể bán"
-                    : dataClassification.purchaseOk === true
-                      ? "Có thể mua"
-                      : dataClassification.saleOk === true &&
-                        dataClassification.purchaseOk === true
-                        ? "Có thể bán/ Có thể mua"
-                        : null
+                    : dataClassification.purchaseOk === true &&
+                      dataClassification.saleOk === false
+                    ? "Có thể mua"
+                    : dataClassification.saleOk === true &&
+                      dataClassification.purchaseOk === true
+                    ? "Có thể bán/ Có thể mua"
+                    : null
                 }
               />
             </View>
