@@ -45,6 +45,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'flex-end',
+          marginBottom: scaleHeight(5),
         }}
       >
         <Button

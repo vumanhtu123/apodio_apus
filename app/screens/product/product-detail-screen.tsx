@@ -33,8 +33,10 @@ import { useStores } from "../../models";
 import { formatNumber } from "../../utils/validate";
 import Dialog from "../../components/dialog/dialog";
 import ProductAttribute from "./component/productAttribute";
-import { showDialog } from "../../utils/toast";
+import { hideDialog, showDialog } from "../../utils/toast";
 import { translate } from "../../i18n/translate";
+// import { translate } from "i18n-js";
+
 
 export const ProductDetailScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -225,10 +227,20 @@ export const ProductDetailScreen: FC = (item) => {
 
   const deleteProduct = async () => {
     const result = await productStore.deleteProduct(productId);
-    console.log("deleteProduct-----------", JSON.stringify(result));
+    console.log("deleteProduct-----------", result);
     if (result.kind === "ok") {
-      navigation.goBack();
-      productStore.setReloadProductScreen(true)
+      showDialog(
+        translate("txtDialog.txt_title_dialog"),
+        "danger",
+        `${result.result.message}`,
+        "",
+        translate("common.ok"),
+        () => {
+          navigation.goBack();
+          productStore.setReloadProductScreen(true)
+          hideDialog();
+        }
+      );
     } else {
       setErrorContent(result.result.errorCodes[0].message);
       setIsDeleteFailModalVisible(true);
