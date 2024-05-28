@@ -11,8 +11,10 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
             isVisible={showCategory}
             onBackdropPress={() => setShowCategory(false)}
             backdropColor=""
-            animationIn={"fadeIn"}
-            animationOut={"fadeOut"}
+            animationIn="slideInRight"
+            animationOut="slideOutRight"
+            animationInTiming={500}
+            animationOutTiming={750}  
             style={{
                 position: "absolute",
                 right: 0,

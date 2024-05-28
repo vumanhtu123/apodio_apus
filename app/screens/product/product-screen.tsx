@@ -3,7 +3,7 @@ import {
   useNavigation,
   useRoute
 } from "@react-navigation/native";
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -28,8 +28,6 @@ import { styles } from "./styles";
 
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  // const reload = route?.params?.reload
   const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
   const [btnTab, setBtnTab] = useState(["Sản phẩm", "Danh mục"]);
   const [showCategory, setShowCategory] = useState(false);
@@ -57,17 +55,9 @@ export const ProductScreen: FC = () => {
   const [nameDirectory, setNameDirectory] = useState('')
   const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
   const [index, setIndex] = useState()
-  const handlePressViewProduct = (type: any) => {
-    viewProductType(type);
-  };
-  const viewProductType = (type: any) => {
-    const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
-    setViewProduct(viewType);
-    productStore.setViewProductType(viewType)
-  };
+
   useFocusEffect(
     useCallback(() => {
-      // setViewProduct(productStore.viewProductType);
       setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
     }, [viewProduct])
   );
@@ -171,9 +161,10 @@ export const ProductScreen: FC = () => {
         productStore.tagId,
         parseSort
       );
+      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         setTotalPagesProduct(response.response.data.totalPages)
-        console.log('////////////////' ,response.response.data.totalPages )
+        console.log('////////////////', response.response.data.totalPages)
         if (page === 0) {
           setDataProduct(response.response.data.content);
         } else {
@@ -188,6 +179,15 @@ export const ProductScreen: FC = () => {
     } catch (error) {
       console.error("Error fetching product:", error);
     }
+  };
+  const handlePressViewProduct = (type: any) => {
+    viewProductType(type);
+    setPage(0)
+  };
+  const viewProductType = (type: any) => {
+    const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
+    setViewProduct(viewType);
+    productStore.setViewProductType(viewType)
   };
   const handleEditCategory = (category: any) => {
     setSelectedEditCategory(category);
@@ -238,7 +238,6 @@ export const ProductScreen: FC = () => {
     imageUrl: string,
     productCategoryId: number
   ) => {
-    console.log("firstzzz", name);
     const result = await categoryStore.getUpdateCategories(
       name,
       imageUrl,
@@ -268,15 +267,14 @@ export const ProductScreen: FC = () => {
   }, []);
   useEffect(() => {
     handleGetProduct();
-    console.log("firstmmmm", selectedCategory);
   }, [viewProduct, selectedCategory]);
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
   const handleEndReached = () => {
-    console.log('--------totalPagesProduct---------------',totalPagesProduct, '----', isRefreshing, '-----', page )
-    if (!isRefreshing  && page <= totalPagesProduct - 1 ) {
-      console.log('--------handleEndReached---------------',page )
+    console.log('--------totalPagesProduct---------------', totalPagesProduct, '----', isRefreshing, '-----', page)
+    if (!isRefreshing && page <= totalPagesProduct - 1) {
+      console.log('--------handleEndReached---------------', page)
       setPage((prevPage) => prevPage + 1);
       handleGetProduct(searchValue);
     }
@@ -348,6 +346,12 @@ export const ProductScreen: FC = () => {
   const handleOpenSearch = () => {
     setOpenSearch(!openSearch);
   };
+  const flatListRef = useRef(null);
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+    }
+  }, [viewProduct])
   return (
     <View style={styles.ROOT}>
       <Header
@@ -384,166 +388,168 @@ export const ProductScreen: FC = () => {
           <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>02466989909</Text>
         </View>
       </View> */}
-      <View style={styles.btnTab}>
-        <View style={styles.rowBtnTab}>
-          {btnTab.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() =>
-                  handleTabPress(index === 0 ? "product" : "category")
-                }
-                key={index}
-                style={[
-                  styles.buttonProduct,
-                  activeTab === (index === 0 ? "product" : "category") &&
-                  styles.activeButton,
-                ]}>
-                <View
-                  style={{ width: scaleWidth(114), height: scaleHeight(20) }}>
-                  <Text
-                    style={[
-                      styles.buttonText,
-                      activeTab === (index === 0 ? "product" : "category") &&
-                      styles.activeButtonText,
-                    ]}>
-                    {item}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </View>
-      {activeTab === "product" ? (
-        <>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ProductCreateScreen" as never)}
-            style={styles.btnCreateProduct}>
-            <Images.ic_addProduct
-              width={scaleWidth(50)}
-              height={scaleHeight(50)}
-            />
-          </TouchableOpacity>
-          <View
-            style={{ justifyContent: "space-between", flexDirection: "row" }}>
-            <View style={styles.rowTabType}>
-              {tabTypes.map((item, index) => {
-                const isActive = index === indexItem;
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      handlePressViewProduct(item);
-                      setIndexItem(index);
-                    }}
-                    key={index}
-                    style={[
-                      styles.tabButton,
-                      isActive
-                        ? styles.tabButtonActive
-                        : styles.tabButtonInactive,
-                    ]}>
+      <View style={{ flex: 1, backgroundColor: '#f6f7f9' }}>
+        <View style={styles.btnTab}>
+          <View style={styles.rowBtnTab}>
+            {btnTab.map((item, index) => {
+              return (
+                <TouchableOpacity
+                  onPress={() =>
+                    handleTabPress(index === 0 ? "product" : "category")
+                  }
+                  key={index}
+                  style={[
+                    styles.buttonProduct,
+                    activeTab === (index === 0 ? "product" : "category") &&
+                    styles.activeButton,
+                  ]}>
+                  <View
+                    style={{ width: scaleWidth(114), height: scaleHeight(20) }}>
                     <Text
                       style={[
-                        styles.tabText,
-                        isActive
-                          ? styles.tabTextActive
-                          : styles.tabTextInactive,
+                        styles.buttonText,
+                        activeTab === (index === 0 ? "product" : "category") &&
+                        styles.activeButtonText,
                       ]}>
                       {item}
                     </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-            <View style={styles.containerFilter}>
-              <Button
-                onPress={() =>
-                  navigation.navigate("filterScreen" as never, { activeTab })
-                }
-                style={{ backgroundColor: "none" ,  width: scaleWidth(30), height: scaleHeight(30) }}>
-                <Images.slider_black
-                  width={scaleWidth(16)}
-                  height={scaleHeight(16)}
-                />
-              </Button>
-              <TouchableOpacity
-                onPress={() => {
-                  setShowCategory(true);
-                }}
-                style={styles.btnFilterByCategory}>
-                <Text
-                  tx={nameDirectory === "" ? "productScreen.directory" : null}
-                  numberOfLines={1}
-                  style={styles.textBtnFilter}>
-                  {nameDirectory}
-                </Text>
-                <View style={{ marginRight: scaleWidth(8) }}>
-                  <Images.iconDownBlue
-                    width={scaleWidth(14)}
-                    height={scaleHeight(14)}
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+        {activeTab === "product" ? (
+          <>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ProductCreateScreen" as never)}
+              style={styles.btnCreateProduct}>
+              <Images.ic_addProduct
+                width={scaleWidth(50)}
+                height={scaleHeight(50)}
+              />
+            </TouchableOpacity>
+            <View
+              style={{ justifyContent: "space-between", flexDirection: "row" }}>
+              <View style={styles.rowTabType}>
+                {tabTypes.map((item, index) => {
+                  const isActive = index === indexItem;
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        handlePressViewProduct(item);
+                        setIndexItem(index);
+                      }}
+                      key={index}
+                      style={[
+                        styles.tabButton,
+                        isActive
+                          ? styles.tabButtonActive
+                          : styles.tabButtonInactive,
+                      ]}>
+                      <Text
+                        style={[
+                          styles.tabText,
+                          isActive
+                            ? styles.tabTextActive
+                            : styles.tabTextInactive,
+                        ]}>
+                        {item}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+              <View style={styles.containerFilter}>
+                <Button
+                  onPress={() =>
+                    navigation.navigate("filterScreen" as never, { activeTab })
+                  }
+                  style={{ backgroundColor: "none", width: scaleWidth(30), height: scaleHeight(30) }}>
+                  <Images.slider_black
+                    width={scaleWidth(16)}
+                    height={scaleHeight(16)}
                   />
-                </View>
-              </TouchableOpacity>
+                </Button>
+                <TouchableOpacity
+                  onPress={() => {
+                    setShowCategory(true);
+                  }}
+                  style={styles.btnFilterByCategory}>
+                  <Text
+                    tx={nameDirectory === "" ? "productScreen.directory" : null}
+                    numberOfLines={1}
+                    style={styles.textBtnFilter}>
+                    {nameDirectory}
+                  </Text>
+                  <View style={{ marginRight: scaleWidth(8) }}>
+                    <Images.iconDownBlue
+                      width={scaleWidth(14)}
+                      height={scaleHeight(14)}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          <CategoryModalFilter
-            showCategory={showCategory}
-            setShowCategory={setShowCategory}
-            dataCategory={dataCategoryFilter}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            setNameDirectory={setNameDirectory}
-            isSearchBarVisible={openSearch}
-            setIndex={setIndex}
-          />
-          <View style={styles.containerProduct}>
-            <FlatList
-              data={dataProduct}
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl
-                  refreshing={isRefreshing}
-                  onRefresh={refreshProduct}
-                  title="ok"
-                />
-              }
-              keyExtractor={index}
-              //keyExtractor={(item) => item.id.toString()}
-              onEndReached={handleEndReached}
-              onEndReachedThreshold={0.5}
-              ListFooterComponent={renderFooter}
-              key={isGridView ? "grid" : "list"}
-              numColumns={isGridView ? 3 : 1}
-              columnWrapperStyle={isGridView ? null : null}
-              renderItem={({ item, index }) => (
-                <RenderProductItem
-                  item={item}
-                  index={index}
-                  isGridView={isGridView}
-                  viewProduct={viewProduct}
-                  handleProductDetail={handleProductDetail}
-                  handleClassifyDetail={handleClassifyDetail}
-                />
-              )}
+            <CategoryModalFilter
+              showCategory={showCategory}
+              setShowCategory={setShowCategory}
+              dataCategory={dataCategoryFilter}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              setNameDirectory={setNameDirectory}
+              isSearchBarVisible={openSearch}
+              setIndex={setIndex}
             />
-          </View>
-        </>
-      ) : (
-        <CategoryList
-          openDirectoryModal={openDirectoryModal}
-          navigation={navigation}
-          activeTab={activeTab}
-          dataCategory={dataCategory}
-          isRefreshingCategory={isRefreshingCategory}
-          refreshCategory={refreshCategory}
-          handleEndReachedCategory={handleEndReachedCategory}
-          handleOpenDeleteModal={handleOpenDeleteModal}
-          handleEditCategory={handleEditCategory}
-          isDeleteModalVisible={isDeleteModalVisible} // Truyền prop isDeleteModalVisible
-          setIsDeleteModalVisible={setIsDeleteModalVisible} // Truyền prop setIsDeleteModalVisible
-          handleDeleteItem={handleDeleteItem} // Truyền prop handleDeleteItem
-        />
-      )}
+            <View style={styles.containerProduct}>
+              <FlatList
+                data={dataProduct}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={isRefreshing}
+                    onRefresh={refreshProduct}
+                    title="ok"
+                  />
+                }
+                keyExtractor={(item) => item.id.toString()}
+                ref={flatListRef}
+                onEndReached={handleEndReached}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={renderFooter}
+                key={isGridView ? "grid" : "list"}
+                numColumns={isGridView ? 3 : 1}
+                columnWrapperStyle={isGridView ? null : null}
+                renderItem={({ item, index }) => (
+                  <RenderProductItem
+                    item={item}
+                    index={index}
+                    isGridView={isGridView}
+                    viewProduct={viewProduct}
+                    handleProductDetail={handleProductDetail}
+                    handleClassifyDetail={handleClassifyDetail}
+                  />
+                )}
+              />
+            </View>
+          </>
+        ) : (
+          <CategoryList
+            openDirectoryModal={openDirectoryModal}
+            navigation={navigation}
+            activeTab={activeTab}
+            dataCategory={dataCategory}
+            isRefreshingCategory={isRefreshingCategory}
+            refreshCategory={refreshCategory}
+            handleEndReachedCategory={handleEndReachedCategory}
+            handleOpenDeleteModal={handleOpenDeleteModal}
+            handleEditCategory={handleEditCategory}
+            isDeleteModalVisible={isDeleteModalVisible} // Truyền prop isDeleteModalVisible
+            setIsDeleteModalVisible={setIsDeleteModalVisible} // Truyền prop setIsDeleteModalVisible
+            handleDeleteItem={handleDeleteItem} // Truyền prop handleDeleteItem
+          />
+        )}
+      </View>
       <CreateDirectoryModal
         isVisible={isDirectoryModalVisible}
         setIsVisible={setIsDirectoryModalVisible}

@@ -135,9 +135,7 @@ export const FilterScreen: FC = (item) => {
       />
       <View style={{ marginHorizontal: scaleWidth(16), flex: 1 }}>
         <View style={{ marginTop: scaleHeight(20) }}>
-          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-            Thời gian tạo
-          </Text>
+          <Text tx="filterScreen.filterTime" style={{ fontSize: fontSize.size14, fontWeight: "500" }}/>
           <View
             style={{
               alignItems: "center",
@@ -176,9 +174,7 @@ export const FilterScreen: FC = (item) => {
         </View>
 
         <View style={{ marginTop: scaleHeight(20) }}>
-          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-            Theo tên
-          </Text>
+          <Text tx="filterScreen.filterName" style={{ fontSize: fontSize.size14, fontWeight: "500" }}/>
           <View
             style={{
               alignItems: "center",
@@ -223,13 +219,11 @@ export const FilterScreen: FC = (item) => {
                 marginTop: scaleHeight(20),
                 marginBottom: scaleHeight(12),
               }}>
-              <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-                Tag
-              </Text>
+              <Text tx="detailScreen.tag" style={{ fontSize: fontSize.size14, fontWeight: "500" }}/>
               <View style={{ marginTop: scaleWidth(12) }}>
                 <FlatList
                   data={dataTag}
-                  keyExtractor={(item) => item.id.toString()}
+                  keyExtractor={(item : any) => item.id.toString()}
                   numColumns={3}
                   columnWrapperStyle={{ gap: 10 }}
                   renderItem={renderItemTag}

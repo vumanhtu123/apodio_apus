@@ -29,13 +29,9 @@ export const ChooseVendorScreen: FC = () => {
     } = useForm({
         mode: 'all',
     });
-
-    useEffect(() => {
-        getListVendor(true);
-    }, [page]);
     const getListVendor = async (vendorActivated: boolean, search?: any) => {
         const vendorResult = await vendorStore.getListVendor(page, 20, vendorActivated, search)
-        console.log('vendorResult----------------' , vendorResult.result.data.totalPages)
+        console.log('vendorResult----------------', vendorResult.result.data)
         setTotalPages(vendorResult.result.data.totalPages)
         if (vendorResult && vendorResult.kind === 'ok') {
             if (page === 0) {
@@ -54,15 +50,15 @@ export const ChooseVendorScreen: FC = () => {
         }
     }
     const handleEndReachedCategory = () => {
-        if (page <= totalPages - 1 && searchText == '') {
+        if (page <= totalPages - 1 && !isRefreshing) {
             setPage(prevPage => prevPage + 1);
-            getListVendor(true);
+            getListVendor(true, searchText);
         }
     };
-    // useEffect(() => {
-    //     // console.log('check', listIds)
-    //     console.log('first', selectedIds)
-    // }, [selectedIds])
+    useEffect(() => {
+        // console.log('check', listIds)
+        getListVendor(true, searchText)
+    }, [])
     const RadioButton = ({ selected, onPress }: any) => (
         <TouchableOpacity onPress={onPress}>
             {selected ? (
@@ -119,10 +115,10 @@ export const ChooseVendorScreen: FC = () => {
     const renderNCCItem = ({ item, index }: any) => {
         const key = item.id ? item.id.toString() : `index-${index}`;
         return (
-            <View key={key} style={{ flexDirection: 'row', alignItems: 'center', width: scaleWidth(375), height: scaleHeight(56), paddingHorizontal: 16, backgroundColor: 'white', marginBottom: 1.5, justifyContent: 'space-between' }}>
+            <View key={key} style={{ flexDirection: 'row', alignItems: 'center', width: scaleWidth(375), paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(8), backgroundColor: 'white', marginBottom: 1.5, justifyContent: 'space-between' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                     <ImageBackground
-                        style={{ width: scaleWidth(40), height: scaleHeight(40) }}
+                        style={{ width: scaleWidth(40), height: scaleHeight(45) }}
                         imageStyle={{
                             borderRadius: 20
                         }}
@@ -130,19 +126,18 @@ export const ChooseVendorScreen: FC = () => {
                         <FastImage
                             style={{
                                 width: scaleWidth(40),
-                                height: scaleHeight(40),
+                                height: scaleHeight(45),
                                 borderRadius: 20
                             }}
                             source={{
-                                uri: `${item.imageUrls}`,
+                                uri: `${item.avatarUrl}`,
                                 cache: FastImage.cacheControl.immutable,
                             }}
                             defaultSource={require("../../../assets/Images/no_images.png")}
                         />
                     </ImageBackground>
-                    {/* </View> */}
-                    <View style={{ marginHorizontal: 6 }}>
-                        <Text style={{ fontSize: fontSize.size10 }}>{item.code} - {item.name}</Text>
+                    <View style={{ marginHorizontal: 6, maxWidth: scaleWidth(230) }}>
+                        <Text numberOfLines={2} style={{ fontSize: fontSize.size10 }}>{item.code} - {item.name}</Text>
                         <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.phoneNumber}</Text>
                     </View>
                 </View>
@@ -170,13 +165,13 @@ export const ChooseVendorScreen: FC = () => {
                 LeftIcon={Images.back}
                 onLeftPress={() => navigation.goBack()}
                 colorIcon={colors.text}
-                headerText={`Chọn nhà cung cấp`}
+                headerTx="vendorScreen.header"
                 style={{ height: scaleHeight(54) }}
                 titleMiddleStyle={{ paddingLeft: 5, flexDirection: 'row', alignItems: 'center' }}
                 titleStyle={{ fontSize: fontSize.size16, fontWeight: '700' }}
             />
             <View style={styles.ROOT}>
-                <View style={{ marginHorizontal: scaleWidth(16), marginTop: scaleHeight(20) }}>
+                <View style={{ marginHorizontal: scaleWidth(16), marginTop: scaleHeight(10) }}>
                     <Controller
                         control={control}
                         render={({ field: { onChange, value, onBlur } }) => (
@@ -184,8 +179,9 @@ export const ChooseVendorScreen: FC = () => {
                                 keyboardType={null}
                                 style={{
                                     // marginBottom: scaleHeight(5),
-                                    justifyContent: 'center',
-                                    height: scaleHeight(40)
+                                    // justifyContent: 'center',
+                                    // height: scaleHeight(40)
+                                    backgroundColor: 'none'
                                 }}
                                 inputStyle={{ fontSize: fontSize.size12, fontWeight: '500', }}
                                 value={searchText}
@@ -219,7 +215,7 @@ export const ChooseVendorScreen: FC = () => {
                         data={arrVendor}
                         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshVendor} title="ok" />}
                         showsVerticalScrollIndicator={false}
-                        keyExtractor={(item, index) => item.id ? item.id.toString() : `index-${index}`}
+                        keyExtractor={(item, index) => index}
                         onEndReached={handleEndReachedCategory}
                         onEndReachedThreshold={0.5}
                         numColumns={1}
@@ -254,10 +250,12 @@ export const ChooseVendorScreen: FC = () => {
                             </View>
                             <Images.ic_shopping width={scaleWidth(20)} height={scaleHeight(20)} style={{ marginRight: 6, marginTop: 2 }} />
                         </View>
-                        <Text style={{ color: 'white', fontSize: fontSize.size14, }}>{selectedCount} nhà cung cấp</Text>
+                        <Text style={{ color: 'white', fontSize: fontSize.size14, }}>
+                            {selectedCount} <Text style={{ color: 'white', fontSize: fontSize.size14, }} tx="vendorScreen.vendor" />
+                        </Text>
                     </View>
                     <View>
-                        <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Tiếp tục</Text>
+                        <Text tx="common.continue" style={{ color: 'white', fontSize: fontSize.size14 }}/>
                     </View>
                 </TouchableOpacity>
             </View>

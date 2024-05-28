@@ -6,7 +6,7 @@ const en = {
     confirm: "Xác nhận",
     logOut: "Log Out",
     listCompany: "Danh sách công ty",
-
+    continue: "Tiếp tục",
     // @demo remove-current-line
   },
   txtToats: {
@@ -109,6 +109,11 @@ const en = {
     passwordNew: "Nhập mật khẩu",
     passwordConfirm: "Nhập lại mật khẩu",
     continue: "Tiếp tục",
+  },
+  dialog: {
+    title : 'Mã xác thực',
+    content : 'Vui lòng nhập OTP được gửi tới số điện thoại của bạn',
+
   },
   changePass: {
     changePass: "Change Pass",
@@ -432,6 +437,21 @@ const en = {
     Perspective: "Xem phối cảnh 3D",
     validateMin: "Số lượng không được trùng lặp",
   },
+  detailScreen : {
+    headerClassify : 'Chi tiết phân loại',
+    information : 'Thông tin chung',
+    productCode : 'Mã sản phẩm' ,
+    nameProduct : "Tên sản phẩm",
+    status : 'Trạng thái' , 
+    minimumPurchase : 'Mua tối thiểu',
+    priceProduct : 'Giá sản phẩm',
+    tag : 'Tag', 
+    brand : 'Thương hiệu',
+    management : 'Hình thức quản lý' , 
+    unit : 'Đơn vị tính gốc',
+    properties : 'Thuộc tính chung',
+    detailProperty : 'Xem chi tiết thuộc tính'
+  },
   createProductScreen: {
     classify: "Phân loại",
     details:
@@ -465,9 +485,22 @@ const en = {
     zToA: "Từ Z -> A",
     priceHighToLow: "Cao đến thấp",
     priceLowToHigh: "Thấp đến cao",
+    filterTime : 'Thời gian tạo',
+    filterName : 'Theo tên'
   },
   chooseSupplierScreen: {
     placeholderSearch: "Tìm nhà cung cấp theo mã và tên",
+  },
+  addAttribute : {
+    title : 'Nhóm thuộc tính',
+    hint : 'Chọn nhóm thuộc tính',
+    header : 'Chọn thuộc tính',
+    addAttribute : 'Tạo nhóm thuộc tính mới',
+    selectedValue : 'Chọn giá trị'
+  },
+  vendorScreen : {
+    vendor : 'nhà cung cấp',
+    header : 'Chọn nhà cung cấp'
   },
   productDetail: {
     productClassification: "product classification",

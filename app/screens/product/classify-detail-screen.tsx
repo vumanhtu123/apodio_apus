@@ -138,7 +138,7 @@ export const ClassifyDetailScreen: FC = () => {
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Chi tiết phân loại`}
+        headerTx="detailScreen.headerClassify"
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
         widthRightIcon={scaleWidth(16)}
@@ -157,9 +157,8 @@ export const ClassifyDetailScreen: FC = () => {
               marginHorizontal: scaleWidth(margin.margin_16),
             }}>
             <Text
-              style={{ fontSize: fontSize.size14, fontWeight: "500", flex: 1 }}>
-              Thông tin chung
-            </Text>
+              tx="detailScreen.information"
+              style={{ fontSize: fontSize.size14, fontWeight: "500", flex: 1 }} />
           </View>
           {arrImagesProduct.length > 0 ? (
             <ScrollView
@@ -218,24 +217,24 @@ export const ClassifyDetailScreen: FC = () => {
           <View style={{ marginHorizontal: scaleWidth(margin.margin_16) }}>
             <View style={{ marginTop: 20 }}>
               <ProductAttribute
-                label="Mã sản phẩm"
+                labelTx="detailScreen.productCode"
                 value={dataClassification.sku}
               />
               <ProductAttribute
-                label="Tên sản phẩm "
+                labelTx="detailScreen.nameProduct"
                 value={dataClassification.name}
               />
               <ProductAttribute
-                label="Trạng thái"
+                labelTx="detailScreen.status"
                 value={
                   dataClassification.saleOk === true
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true
-                    ? "Có thể mua"
-                    : dataClassification.saleOk === true &&
-                      dataClassification.purchaseOk === true
-                    ? "Có thể bán/ Có thể mua"
-                    : null
+                      ? "Có thể mua"
+                      : dataClassification.saleOk === true &&
+                        dataClassification.purchaseOk === true
+                        ? "Có thể bán/ Có thể mua"
+                        : null
                 }
               />
             </View>
@@ -267,7 +266,7 @@ export const ClassifyDetailScreen: FC = () => {
                       marginBottom: scaleHeight(margin.margin_10),
                     }}>
                     <Text
-                      text="Mua tối thiểu"
+                      tx="detailScreen.minimumPurchase"
                       style={[
                         styles.textDolphin12,
                         {
@@ -275,9 +274,9 @@ export const ClassifyDetailScreen: FC = () => {
                         },
                       ]}
                     />
-                    <Text text="Giá sản phẩm" style={styles.textDolphin12} />
+                    <Text tx="detailScreen.priceProduct" style={styles.textDolphin12} />
                   </View>
-                  {dataClassification.retailPrice?.map((item) => {
+                  {dataClassification.retailPrice?.map((item: { min: any; price: number; }) => {
                     return (
                       <ProductAttribute
                         label={item.min}
@@ -291,12 +290,12 @@ export const ClassifyDetailScreen: FC = () => {
               ) : null}
               <View>
                 <ProductAttribute
-                  label="Giá vốn"
+                  labelTx="productScreen.priceCapital"
                   value={formatNumber(dataClassification?.costPrice ?? 0)}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 <ProductAttribute
-                  label="Giá niêm yết"
+                  labelTx="productScreen.priceList"
                   value={formatNumber(dataClassification?.listPrice ?? 0)}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
@@ -328,7 +327,7 @@ export const ClassifyDetailScreen: FC = () => {
                       marginBottom: scaleHeight(margin.margin_10),
                     }}>
                     <Text
-                      text="Mua tối thiểu"
+                      tx="detailScreen.minimumPurchase"
                       style={[
                         styles.textDolphin12,
                         {
@@ -336,7 +335,7 @@ export const ClassifyDetailScreen: FC = () => {
                         },
                       ]}
                     />
-                    <Text text="Giá sản phẩm" style={styles.textDolphin12} />
+                    <Text tx="detailScreen.priceProduct" style={styles.textDolphin12} />
                   </View>
                   {dataClassification.wholesalePrice?.map((item) => {
                     return (
@@ -353,25 +352,25 @@ export const ClassifyDetailScreen: FC = () => {
             </View>
             <View>
               <ProductAttribute
-                label="Danh mục"
+                labelTx="inforMerchant.Category"
                 value={dataClassification.productCategory?.name}
               />
               <ProductAttribute
-                label="Thương hiệu"
+                labelTx="detailScreen.brand"
                 value={dataClassification.brand?.name}
               />
               <ProductAttribute
-                label="Tag"
+                labelTx="detailScreen.tag"
                 value={dataClassification.productTags
                   ?.map((item) => item.name)
                   .join(", ")}
               />
               <ProductAttribute
-                label="Hình thức quản lý"
+                labelTx="detailScreen.management"
                 value={getLabelByList(dataClassification.managementForm)}
               />
               <ProductAttribute
-                label="Đơn vị tính gốc"
+                labelTx="detailScreen.unit"
                 value={dataClassification.uom?.name}
               />
             </View>
@@ -399,12 +398,10 @@ export const ClassifyDetailScreen: FC = () => {
               marginHorizontal: scaleWidth(margin.margin_16),
             }}
             onPress={toggleDetails}>
-            <Text style={{ color: colors.palette.navyBlue }}>
-              Xem chi tiết thuộc tính{" "}
-            </Text>
+            <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue , marginRight : scaleWidth(5) }}/>
             <Images.iconDownBlue
-              width={16}
-              height={16}
+              width={scaleWidth(16)}
+              height={scaleHeight(16)}
               style={{
                 transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
               }}
@@ -427,13 +424,12 @@ export const ClassifyDetailScreen: FC = () => {
                   paddingHorizontal: scaleWidth(padding.padding_12),
                 }}>
                 <Text
+                  tx="detailScreen.properties"
                   style={{
                     fontWeight: "600",
                     fontSize: fontSize.size12,
                     color: colors.palette.navyBlue,
-                  }}>
-                  Thuộc tính chung
-                </Text>
+                  }} />
               </View>
               <View style={styles.viewLine2} />
               {nameValue?.map((item: any, index: number) => (
@@ -492,42 +488,42 @@ export const ClassifyDetailScreen: FC = () => {
                 </View>
                 {showNCC === true
                   ? arrNCC.map((item: any) => {
-                      return (
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              paddingVertical: scaleHeight(padding.padding_8),
-                            }}>
-                            <AutoHeightImage
-                              source={{ uri: item.imgUrl }}
-                              width={scaleHeight(40)}
-                              height={scaleHeight(40)}
-                              style={{ borderRadius: 40 }}
-                              fallbackSource={Images.imageError}
-                            />
-                            <View
-                              style={{
-                                marginLeft: scaleWidth(6),
-                                justifyContent: "center",
-                              }}>
-                              <Text style={styles.textNameNCC}>
-                                {item.vendorCode + "- " + item.vendorName}
-                              </Text>
-                              <Text style={styles.textNameClassification}>
-                                {item.phoneNumber}
-                              </Text>
-                            </View>
-                          </View>
-                          <View
-                            style={{
-                              height: scaleHeight(1),
-                              backgroundColor: colors.palette.ghostWhite,
-                            }}
+                    return (
+                      <View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            paddingVertical: scaleHeight(padding.padding_8),
+                          }}>
+                          <AutoHeightImage
+                            source={{ uri: item.imgUrl }}
+                            width={scaleHeight(40)}
+                            height={scaleHeight(40)}
+                            style={{ borderRadius: 40 }}
+                            fallbackSource={Images.imageError}
                           />
+                          <View
+                            style={{
+                              marginLeft: scaleWidth(6),
+                              justifyContent: "center",
+                            }}>
+                            <Text style={styles.textNameNCC}>
+                              {item.vendorCode + "- " + item.vendorName}
+                            </Text>
+                            <Text style={styles.textNameClassification}>
+                              {item.phoneNumber}
+                            </Text>
+                          </View>
                         </View>
-                      );
-                    })
+                        <View
+                          style={{
+                            height: scaleHeight(1),
+                            backgroundColor: colors.palette.ghostWhite,
+                          }}
+                        />
+                      </View>
+                    );
+                  })
                   : null}
               </View>
             </View>

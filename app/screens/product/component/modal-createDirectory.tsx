@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, Text as TextRN, View, PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, Text as TextRN, View, PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
 import { SvgIcon } from '../../../components/svg-icon/index';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { navigate } from '../../../navigators';
@@ -14,6 +14,7 @@ import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
 import { translate } from 'i18n-js';
 import { validateFileSize } from '../../../utils/validate';
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
+import Modal from 'react-native-modal'
 
 const CreateDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, onCreateDirectory } = props;
@@ -211,8 +212,16 @@ const CreateDirectoryModal = (props: any) => {
         }, [isVisible])
     )
     return (
-        <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={handleCloseModal}>
-            <View style={styles.container}>
+        <Modal
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            animationInTiming={500}
+            animationOutTiming={750}
+            isVisible={isVisible}
+            onBackdropPress={handleCloseModal}
+            style={styles.container}
+        >
+            <View>
                 <View style={styles.modalView}>
                     <TextRN style={styles.modalText} />
                     <View style={styles.header}>
@@ -338,17 +347,12 @@ const CreateDirectoryModal = (props: any) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalView: {
         backgroundColor: '#fff',
         borderRadius: 8,
         paddingTop: scaleHeight(8),
-        // paddingBottom: 5,
-        marginHorizontal: scaleWidth(16),
-        marginBottom: scaleHeight(15),
         paddingHorizontal: scaleWidth(16),
 
     },
@@ -394,16 +398,16 @@ const styles = StyleSheet.create({
         // marginRight: 10
     },
     radioButtonSelected: {
-        width: 14,
-        height: 14,
+        width: scaleWidth(14),
+        height: scaleHeight(14),
         borderRadius: 6,
         backgroundColor: '#0078d4',
     },
     groupTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginTop: 20,
-        marginBottom: 10,
+        marginTop: scaleHeight(20),
+        marginBottom: scaleHeight(10),
         color: 'black'
     },
     horizontalLine: {
