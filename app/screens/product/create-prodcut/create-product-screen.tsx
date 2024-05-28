@@ -137,7 +137,7 @@ export const ProductCreateScreen: FC = (item) => {
         setDataCreateProduct([])
         setCategory({ label: "", id: 0 })
         setBrand({ label: "", id: 0 })
-        setBrands({ label: "", label2: "", id: 0 })
+        setBrands({ id: 0, label: 'Mặc định', label2: 'DEFAULT' })
         setCostPriceProduct(0)
         setImagesNote([])
         setListPriceProduct(0)
@@ -364,8 +364,8 @@ export const ProductCreateScreen: FC = (item) => {
         brandId: brand.id || null,
         tagIds: selectedItems,
         hasUomGroupInConfig: valueSwitchUnit,
-        uomId: uomId.id,
-        uomGroupId: uomGroupId.id,
+        uomId: valueSwitchUnit === false ? uomId.id : null,
+        uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
         hasVariantInConfig: !checkArrayIsEmptyOrNull(newArr2),
         attributeValues: attributeValues,
         textAttributes: textAttributes,
@@ -394,7 +394,7 @@ export const ProductCreateScreen: FC = (item) => {
 
     if (permissionStatus === RESULTS.GRANTED) {
       console.log("You can use the camera");
-      showToast('txtToats.permission_granted', 'success')
+      // showToast('txtToats.permission_granted', 'success')
       const options = {
         cameraType: "back",
         quality: 1,
@@ -419,7 +419,7 @@ export const ProductCreateScreen: FC = (item) => {
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
-        showToast('txtToats.permission_granted', 'success')
+        // showToast('txtToats.permission_granted', 'success')
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
@@ -510,7 +510,7 @@ export const ProductCreateScreen: FC = (item) => {
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
-        showToast('txtToats.permission_granted', 'success')
+        // showToast('txtToats.permission_granted', 'success')
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
@@ -604,7 +604,7 @@ export const ProductCreateScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        showToast('txtToats.permission_granted', 'success')
+        // showToast('txtToats.permission_granted', 'success')
       } else {
         console.log("Permission denied");
         showToast('txtToats.permission_denied', 'error')
@@ -983,7 +983,7 @@ export const ProductCreateScreen: FC = (item) => {
               <Switch
                 value={valueSwitchUnit}
                 onToggle={() => {
-                  setUomGroupId({ id: "", label: "" })
+                  // setUomGroupId({ id: "", label: "" })
                   setValueSwitchUnit(!valueSwitchUnit);
                   getListUnitGroup(!valueSwitchUnit);
                 }}
@@ -1027,7 +1027,7 @@ export const ProductCreateScreen: FC = (item) => {
             {valueSwitchUnit ? (
               <>
                 <View style={styles.viewLineSwitchUnit}>
-                  <Text tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }}/>
+                  <Text  tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }}/>
                   {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
                   {detailUnitGroupData ? (
                     <Text style={styles.textWeight600}>
@@ -1058,7 +1058,7 @@ export const ProductCreateScreen: FC = (item) => {
                       </Text>
                     </View>
                     <Text style={styles.textWeight600}>
-                      {item.conversionRate}
+                    {item.conversionRate} {detailUnitGroupData?.originalUnit?.name}
                     </Text>
                   </View>
                 ))}
@@ -1448,8 +1448,7 @@ export const ProductCreateScreen: FC = (item) => {
         style={styles.viewGroupBtn}>
         <TouchableOpacity
           onPress={() => {
-            // navigation.goBack()
-            console.log('first', dataCreateProduct)
+            navigation.goBack()
           }}
           style={styles.viewBtnCancel}>
           <Text tx={"common.cancel"} style={styles.textBtnCancel}/>

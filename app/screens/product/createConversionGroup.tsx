@@ -298,7 +298,7 @@ export const CreateConversionGroup: FC = observer(
                                                         marginTop: 15,
                                                     }}>
                                                     {conversionWatch[index].changeDVT !== '' ?
-                                                        <Text style={{ flex: 1, paddingBottom: scaleHeight(12) }} text={conversionWatch[index].changeDVT} />
+                                                        <Text style={{ flex: 1, paddingBottom: scaleHeight(12) }} text={conversionWatch[index].changeDVT} numberOfLines={1} />
                                                         : <Text style={{
                                                             flex: 1, fontWeight: '400', fontSize: fontSize.size12,
                                                             color: colors.palette.dolphin,
@@ -339,7 +339,7 @@ export const CreateConversionGroup: FC = observer(
                                                         alignSelf: 'center',
                                                         width: '40%'
                                                     }}>
-                                                        <Text text={originalUnit.label} style={{ color: colors.palette.dolphin, fontWeight: '400', fontSize: fontSize.size10, textAlign: 'right' }} />
+                                                        <Text text={originalUnit.label} style={{ color: colors.palette.dolphin, fontWeight: '400', fontSize: fontSize.size10, textAlign: 'right' }} numberOfLines={1} />
                                                     </View>
                                                 </View>
                                             </View>

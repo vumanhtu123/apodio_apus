@@ -228,9 +228,11 @@ export const ClassifyDetailScreen: FC = () => {
               <ProductAttribute
                 label="Trạng thái"
                 value={
-                  dataClassification.saleOk === true
+                  dataClassification.saleOk === true &&
+                  dataClassification.purchaseOk === false
                     ? "Có thể bán"
-                    : dataClassification.purchaseOk === true
+                    : dataClassification.purchaseOk === true &&
+                      dataClassification.saleOk === false
                     ? "Có thể mua"
                     : dataClassification.saleOk === true &&
                       dataClassification.purchaseOk === true

@@ -233,9 +233,9 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       if (response && response.kind === "ok") {
         setOpenDialogAttribute(true)
       } else {
-        // showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
-        //   hideDialog();
-        // })
+        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
+          hideDialog();
+        })
         console.error("Failed to fetch categories:", response);
       }
     } catch (error) {

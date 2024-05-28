@@ -559,7 +559,7 @@ export const ProductEditScreen: FC = (item) => {
     } else {
       const newArr1: never[] = [];
       const newArr = dataCreateProduct?.map((item) => {
-        return { ...item, name: nameProduct + " - " + item.name };
+        return { ...item, name: nameProduct + " -" + item.name };
       });
       arrIdOrigin?.forEach((item) => {
         let isUnique = true;
@@ -617,8 +617,8 @@ export const ProductEditScreen: FC = (item) => {
         brandId: brand.id || null,
         tagIds: selectedItems,
         hasUomGroupInConfig: valueSwitchUnit,
-        uomId: uomId.id,
-        uomGroupId: uomGroupId.id,
+        uomId: valueSwitchUnit === false ? uomId.id : null,
+        uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
         hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
         attributeValues: attributeValues,
         textAttributes: textAttributes,
@@ -639,7 +639,7 @@ export const ProductEditScreen: FC = (item) => {
           translate("common.ok"),
           () => {
             hideDialog();
-            navigation.navigate("productDetailScreen" as any, { reload: true });
+            navigation.navigate("productDetailScreen" as never, {reload: true});
           }
         );
       } else {
@@ -691,7 +691,7 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        showToast("txtToats.permission_granted", "success");
+        // showToast("txtToats.permission_granted", "success");
       } else {
         console.log("Permission denied");
         showToast("txtToats.permission_denied", "error");
@@ -837,7 +837,7 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        showToast("txtToats.permission_granted", "success");
+        // showToast("txtToats.permission_granted", "success");
       } else {
         console.log("Permission denied");
         showToast("txtToats.permission_denied", "error");
@@ -912,7 +912,7 @@ export const ProductEditScreen: FC = (item) => {
       : dataCreateProduct[indexItem]?.imageUrls?.length;
     console.log("----------------indexItem-----------------", numberUrl);
     if (permissionStatus === RESULTS.GRANTED) {
-      showToast("txtToats.permission_granted", "success");
+      // showToast("txtToats.permission_granted", "success");
       const options = {
         cameraType: "back",
         quality: 1,
@@ -937,7 +937,7 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        showToast("txtToats.permission_granted", "success");
+        // showToast("txtToats.permission_granted", "success");
       } else {
         console.log("Permission denied");
         showToast("txtToats.permission_denied", "error");
@@ -1008,37 +1008,48 @@ export const ProductEditScreen: FC = (item) => {
   });
 
   const handleDeleteProduct = async (index: any, id: any) => {
-    try {
-      if (id !== null) {
-        const checkDelete = await productStore.deleteCheck(id);
-        console.log(checkDelete, "----------check");
-
-        if (checkDelete.result && checkDelete.kind === "ok") {
-          if (checkDelete.result.data.isUsing === false) {
+    showDialog(
+      translate("txtDialog.txt_title_dialog"),
+      "danger",
+      translate("txtDialog.delete_variant"),
+      translate("common.cancel"),
+      translate("common.confirm"),
+      async () => {
+        try {
+          if (id !== null) {
+            const checkDelete = await productStore.deleteCheck(id);
+            console.log(checkDelete, "----------check");
+    
+            if (checkDelete.result && checkDelete.kind === "ok") {
+              if (checkDelete.result.data.isUsing === false) {
+                const updatedData = [
+                  ...dataCreateProduct.slice(0, index),
+                  ...dataCreateProduct.slice(index + 1),
+                ];
+                setDataCreateProduct(updatedData);
+                setErrorContent(checkDelete.result.message);
+                setIsDeleteFailModalVisible(true);
+              } else {
+                setErrorContent(checkDelete.result.errorCodes[0].message);
+                setIsDeleteFailModalVisible(true);
+              }
+            } else {
+              setErrorContent(checkDelete.result.errorCodes[0].message);
+              setIsDeleteFailModalVisible(true);
+              console.error("Failed to fetch categories:", checkDelete.result);
+            }
+          } else {
             const updatedData = [
               ...dataCreateProduct.slice(0, index),
               ...dataCreateProduct.slice(index + 1),
             ];
             setDataCreateProduct(updatedData);
-          } else {
-            setErrorContent("Không thể xóa biến thể này!");
-            setIsDeleteFailModalVisible(true);
           }
-        } else {
-          setErrorContent("Không thể xóa biến thể này!");
-          setIsDeleteFailModalVisible(true);
-          console.error("Failed to fetch categories:", checkDelete.result);
+        } catch (error) {
+          console.error("Error fetching categories:", error);
         }
-      } else {
-        const updatedData = [
-          ...dataCreateProduct.slice(0, index),
-          ...dataCreateProduct.slice(index + 1),
-        ];
-        setDataCreateProduct(updatedData);
       }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
+    );
   };
 
   const handleSelect = (items: any) => {
@@ -1692,8 +1703,7 @@ export const ProductEditScreen: FC = (item) => {
                 onToggle={() => {
                  if(priceUsing === true){
                   showToast('txtToats.product_is_using', 'error')
-                 }else{ setUomId({ id: "", label: "" });
-                  setUomGroupId({ id: "", label: "" });
+                 }else{
                   setValueSwitchUnit(!valueSwitchUnit);
                   getListUnitGroup(!valueSwitchUnit);}
                 }}
@@ -1755,12 +1765,12 @@ export const ProductEditScreen: FC = (item) => {
                     justifyContent: "space-between",
                     marginBottom: scaleHeight(15),
                   }}>
-                  <Text style={{ fontSize: fontSize.size14 }}/>
+                  <Text tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }}/>
                   {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
                   {detailUnitGroupData ? (
-                    <Text  tx={"createProductScreen.originalUnit"}
+                    <Text
                       style={{ fontSize: fontSize.size14, fontWeight: "600" }}>
-                      {detailUnitGroupData.originalUnit.name}
+                      {detailUnitGroupData?.originalUnit?.name}
                     </Text>
                   ) : null}
                 </View>
@@ -1803,7 +1813,7 @@ export const ProductEditScreen: FC = (item) => {
                         fontSize: fontSize.size14,
                         fontWeight: "600",
                       }}>
-                      {item.conversionRate}
+                      {item.conversionRate} {detailUnitGroupData?.originalUnit?.name}
                     </Text>
                   </View>
                 ))}
