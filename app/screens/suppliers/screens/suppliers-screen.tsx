@@ -16,6 +16,7 @@ import { renderItemSupplier2 } from "../component/item-list-supplier";
 import { styles } from "../styles/styles";
 import { dataSuppliers } from "../styles/data";
 import { ScrollView } from "react-native-gesture-handler";
+import SelectFilterModal from "../../product/component/modal-select-filter";
 import ModalCreateSuppliers from "../component/modal-create-supplier";
 
 export const SuppliersScreen: FC = () => {
@@ -43,7 +44,7 @@ export const SuppliersScreen: FC = () => {
     { name: "tuvm4" },
   ];
 
-  const openFilter = () => { };
+  const openFilter = () => {};
 
   useEffect(() => {
     setDataCategory(data);
@@ -97,13 +98,13 @@ export const SuppliersScreen: FC = () => {
                   style={[
                     styles.buttonProduct,
                     activeTab === (index === 0 ? "product" : "category") &&
-                    styles.activeButton,
+                      styles.activeButton,
                   ]}>
                   <Text
                     style={[
                       styles.buttonText,
                       activeTab === (index === 0 ? "product" : "category") &&
-                      styles.activeButtonText,
+                        styles.activeButtonText,
                     ]}>
                     {item}
                   </Text>
@@ -238,10 +239,12 @@ export const SuppliersScreen: FC = () => {
         setIsVisible={setIsVisible}
         setType={setTypeFilter}
       /> */}
-      <ModalCreateSuppliers
+      {/* <ModalCreateSuppliers
         isVisible={true}
-
-      />
+        setIsVisible={setIsVisible}
+        setType={setTypeFilter}
+      /> */}
+      <ModalCreateSuppliers isVisible={true} />
     </View>
   );
 };
