@@ -6,6 +6,7 @@ import { VendorStoreModel } from "../vendor/vendor-store";
 import { ProductStoreModel } from "../product-store/product-store";
 import { AttributeStoreModel } from "../attribute-store/attribute-store";
 import { HomeStoreModel } from "../home-store/home-store";
+import { OrderStoreModel } from "../oder-store/oder-store";
 
 /**
  * A RootStore model.
@@ -18,6 +19,7 @@ export const RootStoreModel = types.model("RootStore").props({
   productStore: types.optional(ProductStoreModel, {}),
   attributeStore: types.optional(AttributeStoreModel, {}),
   HomeStore: types.optional(HomeStoreModel, {}),
+  orderStore: types.optional(OrderStoreModel, {})
 });
 
 /**

@@ -15,6 +15,7 @@ export * from "./notifications/notification-screen";
 export * from "./product/product-screen";
 export * from "./order/orderDetail/orderDetails";
 export * from "./order/newOrder/newOrder";
+export * from "./order/orderTracking/orderTracking";
 export * from "./promotions/promotions";
 export * from "./product/arrange-product";
 export * from "./product/component/modal-select-filter";

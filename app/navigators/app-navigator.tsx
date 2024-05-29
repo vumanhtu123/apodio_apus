@@ -106,6 +106,7 @@ export type NavigatorParamList = {
   editAttributeByEdit: undefined;
   detailsSupplier: undefined;
   detailsOrderScreen: undefined;
+  orderTracking: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -277,6 +278,11 @@ export const AppStack = () => {
         name="newOrder"
         options={{ gestureEnabled: false }}
         component={Screens.NewOrder}
+      />
+      <Stack.Screen
+        name="orderTracking"
+        options={{ gestureEnabled: false }}
+        component={Screens.OrderTracking}
       />
       <Stack.Screen
         name="view3D"
