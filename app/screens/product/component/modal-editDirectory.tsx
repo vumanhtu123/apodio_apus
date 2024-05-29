@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, StyleSheet, TouchableOpacity, Text as TextRN, View, PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
-import { SvgIcon } from '../../../components/svg-icon/index';
-import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { navigate } from '../../../navigators';
-import { useNavigation } from '@react-navigation/native';
-import { Images } from '../../../../assets';
-import { AutoImage, Button, Text, TextField } from '../../../components';
-import { Controller, useForm } from 'react-hook-form';
-import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { validateFileSize } from '../../../utils/validate';
-import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
 import { translate } from 'i18n-js';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Linking, StyleSheet, Text as TextRN, TouchableOpacity, View } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { RESULTS } from 'react-native-permissions';
+import { Images } from '../../../../assets';
+import { AutoImage, Text, TextField } from '../../../components';
 import { useStores } from '../../../models';
+import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
+import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
+import { validateFileSize } from '../../../utils/validate';
+import Modal from 'react-native-modal'
 
 const EditDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, category, onUpdateDirectory } = props;
@@ -217,8 +215,15 @@ const EditDirectoryModal = (props: any) => {
         setImagesUpload(null)
     }
     return (
-        <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={handleCloseModal}>
-            <View style={styles.container}>
+        <Modal
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            animationInTiming={500}
+            animationOutTiming={750}
+            isVisible={isVisible}
+            onBackdropPress={handleCloseModal}
+            style={styles.container}>
+            <View >
                 <View style={styles.modalView}>
                     <TextRN style={styles.modalText} />
                     <View style={styles.header}>
@@ -349,19 +354,13 @@ const EditDirectoryModal = (props: any) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalView: {
         backgroundColor: '#fff',
         borderRadius: 8,
         paddingTop: scaleHeight(8),
-        // paddingBottom: 5,
-        marginHorizontal: scaleWidth(16),
-        marginBottom: scaleHeight(15),
         paddingHorizontal: scaleWidth(16),
-
     },
     modalText: {
         textAlign: 'center',
@@ -402,19 +401,18 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         justifyContent: 'center',
         alignItems: 'center',
-        // marginRight: 10
     },
     radioButtonSelected: {
-        width: 14,
-        height: 14,
+        width: scaleWidth(14),
+        height: scaleHeight(14),
         borderRadius: 6,
         backgroundColor: '#0078d4',
     },
     groupTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginTop: 20,
-        marginBottom: 10,
+        marginTop: scaleHeight(20),
+        marginBottom: scaleHeight(10),
         color: 'black'
     },
     horizontalLine: {

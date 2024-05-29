@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, TouchableOpacity, Platform, View, KeyboardAvoidingView } from 'react-native';
+import React from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal/dist/modal';
-import { colors, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Text } from '../../../components';
+import { colors, padding, scaleHeight, scaleWidth } from '../../../theme';
 
 const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory, isSearchBarVisible, setIndex }: any) => {
 
@@ -11,9 +11,10 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
             isVisible={showCategory}
             onBackdropPress={() => setShowCategory(false)}
             backdropColor=""
-            animationIn={"fadeIn"}
-            animationOut={"fadeOut"}
-            avoidKeyboard={true}
+            animationIn="slideInRight"
+            animationOut="slideOutRight"
+            animationInTiming={500}
+            animationOutTiming={750}  
             style={{
                 position: "absolute",
                 right: 0,
@@ -26,7 +27,6 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
             >
                 <View
                     style={{
-                        // borderRadius: 10,
                         borderWidth: 1,
                         borderColor: colors.palette.veryLightGrey,
                         height: scaleHeight(144),

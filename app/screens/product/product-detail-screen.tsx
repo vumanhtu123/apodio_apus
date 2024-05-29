@@ -33,8 +33,10 @@ import { useStores } from "../../models";
 import { formatNumber } from "../../utils/validate";
 import Dialog from "../../components/dialog/dialog";
 import ProductAttribute from "./component/productAttribute";
-import { showDialog } from "../../utils/toast";
+import { hideDialog, showDialog } from "../../utils/toast";
 import { translate } from "../../i18n/translate";
+// import { translate } from "i18n-js";
+
 
 export const ProductDetailScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -113,10 +115,14 @@ export const ProductDetailScreen: FC = (item) => {
 
   useEffect(() => {
     console.log("---------useEffect---------reload------------------");
-    if (reload === true) {
-      handleGetDetailProduct();
-    }
-  }, [reload]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (reload === true) {
+        handleGetDetailProduct();
+      }
+    });
+
+    return unsubscribe;
+  }, [ navigation, reload]);
 
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -221,10 +227,20 @@ export const ProductDetailScreen: FC = (item) => {
 
   const deleteProduct = async () => {
     const result = await productStore.deleteProduct(productId);
-    console.log("deleteProduct-----------", JSON.stringify(result));
+    console.log("deleteProduct-----------", result);
     if (result.kind === "ok") {
-      navigation.goBack();
-      productStore.setReloadProductScreen(true)
+      showDialog(
+        translate("txtDialog.txt_title_dialog"),
+        "danger",
+        `${result.result.message}`,
+        "",
+        translate("common.ok"),
+        () => {
+          navigation.goBack();
+          productStore.setReloadProductScreen(true)
+          hideDialog();
+        }
+      );
     } else {
       setErrorContent(result.result.errorCodes[0].message);
       setIsDeleteFailModalVisible(true);
@@ -612,7 +628,7 @@ export const ProductDetailScreen: FC = (item) => {
               />
               <ProductAttribute
                 label="Đơn vị tính gốc"
-                value={dataClassification.uom?.name}
+                value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
               />
             </View>
           </View>
@@ -671,7 +687,7 @@ export const ProductDetailScreen: FC = (item) => {
               </View>
               <View style={styles.viewLine2} />
               {attributeDetailsClassification?.map((item, index) => (
-                <View>
+                <View key={index}>
                   <View
                     style={{
                       marginVertical: scaleHeight(margin.margin_12),

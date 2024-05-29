@@ -207,30 +207,15 @@ export const stylesItem = StyleSheet.create({
   item: {
     backgroundColor: "white",
     borderRadius: 10,
-    shadowColor: "#ffffff",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 1,
-    // marginHorizontal: 8,
-
-    marginBottom: scaleHeight(16),
+    marginBottom: scaleHeight(10),
   },
   title: {
     color: "#242426",
     fontSize: fontSize.size10,
     fontWeight: "700",
-    lineHeight: 16,
-    
-    // textAlign: 'left'
   },
   titleView: {
     alignItems: "flex-start",
-    // width: scaleWidth(87),
-    // height: scaleHeight(38),
   },
   description: {
     fontSize: fontSize.size9,
