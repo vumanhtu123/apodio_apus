@@ -7,8 +7,19 @@ import { Images } from "../../../../assets";
 import { useNavigation } from "@react-navigation/native";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { AppStackScreenProps } from "../../../navigators";
-import { HeaderOrderDetails } from "../component/header-details-order";
-
+import {
+  HeaderOrderDetails,
+  SubHeader,
+  AddressOrder,
+} from "../component/header-details-order";
+import {
+  BodyDetailsOrder,
+  Payment,
+  PromotionList,
+  InfoPayment,
+  Notes,
+} from "../component/body-details-order";
+import { ScrollView } from "react-native-gesture-handler";
 export const DetailsOrderScreen: FC<
   AppStackScreenProps<"detailsOrderScreen">
 > = () => {
@@ -21,8 +32,8 @@ export const DetailsOrderScreen: FC<
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Nhà cung cấp`}
-        RightIcon={Images.icon_funnel}
+        headerText={`Chi tiết đơn hàng`}
+        // RightIcon={Images.icon_funnel}
         // RightIcon1={isVisible ? Images.icon_close : Images.search}
         // RightIcon2={isVisible ? Images.icon_close : Images.search}
         // headerInput={isVisible}
@@ -37,7 +48,16 @@ export const DetailsOrderScreen: FC<
         }}
         titleStyle={{ fontSize: fontSize.size16, fontWeight: "700" }}
       />
-      <HeaderOrderDetails />
+      <ScrollView>
+        <HeaderOrderDetails />
+        <SubHeader />
+        <AddressOrder />
+        <BodyDetailsOrder />
+        <PromotionList />
+        <Payment />
+        <InfoPayment />
+        <Notes />
+      </ScrollView>
     </View>
   );
 };

@@ -16,6 +16,8 @@ import { renderItemSupplier2 } from "../component/item-list-supplier";
 import { styles } from "../styles/styles";
 import { dataSuppliers } from "../styles/data";
 import { ScrollView } from "react-native-gesture-handler";
+import ModalCreateSuppliers from "../component/modal-create-supplier";
+import SelectFilterModal from "../../product/component/modal-select-filter";
 
 export const SuppliersScreen: FC = () => {
   const navigation = useNavigation();
@@ -238,9 +240,10 @@ export const SuppliersScreen: FC = () => {
         setType={setTypeFilter}
       /> */}
       {/* <ModalCreateSuppliers
-                isVisible = {true}
-
-            /> */}
+        isVisible={true}
+        setIsVisible={setIsVisible}
+        setType={setTypeFilter}
+      /> */}
     </View>
   );
 };

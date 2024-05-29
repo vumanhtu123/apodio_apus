@@ -164,7 +164,7 @@ const ModalCreateSuppliers = (props: any) => {
     ];
 
     return (
-      <Modal animationType="slide" transparent={true} visible={isVisible}>
+      <Modal animationType="slide" transparent={true} visible={true}>
         <View style={styles.container}>
           <View style={styles.modalView}>
             <TextRN style={styles.modalText} />
