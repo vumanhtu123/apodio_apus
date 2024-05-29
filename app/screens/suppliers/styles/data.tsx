@@ -133,3 +133,45 @@ export const dataContact = [
     office: "Trưởng phòng kinh doanh",
   },
 ];
+
+export const dataOrderDetails = [
+  {
+    name: "Gạch 1566CB502 60x60 ",
+    size: "- 30 hộp",
+    price: "10.0000.000",
+    currency: "đ",
+    vat: "100.000",
+    imageUrl: "../../../../assets/Images/Avatar.png",
+  },
+  {
+    name: "Gạch 1566CB502 60x60 ",
+    size: "- 30 hộp",
+    price: "10.0000.000",
+    currency: "đ",
+    vat: "100.000",
+    imageUrl: "../../../../assets/Images/Avatar.png",
+  },
+  {
+    name: "Gạch 1566CB502 60x60 ",
+    size: "- 30 hộp",
+    price: "10.0000.000",
+    currency: "đ",
+    vat: "100.000",
+    imageUrl: "../../../../assets/Images/Avatar.png",
+  },
+];
+
+export const dataPromotion = [
+  {
+    disCount: "10%",
+    maxValue: "30k",
+  },
+  {
+    disCount: "5%",
+    maxValue: "15k",
+  },
+  {
+    disCount: "9%",
+    maxValue: "28k",
+  },
+];
