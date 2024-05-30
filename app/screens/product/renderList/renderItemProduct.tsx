@@ -13,6 +13,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
         key={index}
         onPress={() => {
           viewProduct === 'VIEW_PRODUCT' ? handleProductDetail(item.id) : handleClassifyDetail(item.id);
+          // console.log('first' , item)
         }}
         style={[
           stylesItem.item,
@@ -157,4 +158,4 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
   }
 };
 
-export default RenderProductItem;
+export default React.memo(RenderProductItem);

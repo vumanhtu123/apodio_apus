@@ -43,6 +43,9 @@ const en = {
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
   },
+  ruleController : {
+    emptyText : 'Vui lòng nhập dữ liệu'
+  },
   welcomeScreen: {
     postscript:
       "psst  — This probably isn't what your app looks like. (Unless your designer handed you these screens, and in that case, ship it!)",
@@ -514,6 +517,9 @@ const en = {
     header : 'Chọn thuộc tính',
     addAttribute : 'Tạo nhóm thuộc tính mới',
     selectedValue : 'Chọn giá trị'
+  },
+  editAttribute : {
+    headerText : 'Sửa thuộc tính'
   },
   vendorScreen : {
     vendor : 'nhà cung cấp',

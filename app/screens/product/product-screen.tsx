@@ -1,28 +1,23 @@
 import {
   useFocusEffect,
-  useNavigation,
-  useRoute
+  useNavigation
 } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
-  FlatList,
-  RefreshControl,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { Images } from "../../../assets/index";
-import { Button } from "../../components";
 import Dialog from "../../components/dialog/dialog";
 import { Header } from "../../components/header/header";
 import { Text } from "../../components/text/text";
 import { useStores } from "../../models";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
-import CategoryModalFilter from "./component/modal-category";
 import CreateDirectoryModal from "./component/modal-createDirectory";
 import EditDirectoryModal from "./component/modal-editDirectory";
 import { CategoryList } from "./renderList/category-list";
-import RenderProductItem from "./renderList/renderItemProduct";
+import { ProductList } from "./renderList/product-list";
 import { styles } from "./styles";
 
 
@@ -54,8 +49,7 @@ export const ProductScreen: FC = () => {
   const [pageCategories, setPageCategories] = useState(0);
   const [nameDirectory, setNameDirectory] = useState('')
   const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
-  const [index, setIndex] = useState()
-
+  const [index, setIndex] = useState<any>()
   useFocusEffect(
     useCallback(() => {
       setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
@@ -144,6 +138,7 @@ export const ProductScreen: FC = () => {
     handleGetProduct(searchValue);
   };
   const handleGetProduct = async (searchValue?: any) => {
+
     var parseSort = "";
     try {
       if (productStore.sort.length > 0) {
@@ -155,13 +150,13 @@ export const ProductScreen: FC = () => {
       const response: any = await productStore.getListProduct(
         page,
         size,
-        viewProduct,
+        productStore.viewProductType,
         selectedCategory,
         searchValue,
         productStore.tagId,
         parseSort
       );
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+      console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         setTotalPagesProduct(response.response.data.totalPages)
         console.log('////////////////', response.response.data.totalPages)
@@ -266,17 +261,26 @@ export const ProductScreen: FC = () => {
     handleGetCategoryFilter();
   }, []);
   useEffect(() => {
-    handleGetProduct();
+    const fetchData = async () => {
+      setPage(0)      
+      setDataProduct([]);
+      await handleGetProduct(searchValue);
+    };
+    fetchData();
   }, [viewProduct, selectedCategory]);
+  useEffect(() => {
+    handleGetCategory(searchCategory);
+  }, [pageCategories]);
+  useEffect(() => {
+    handleGetProduct(searchValue);
+  }, [page]);
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
   const handleEndReached = () => {
     console.log('--------totalPagesProduct---------------', totalPagesProduct, '----', isRefreshing, '-----', page)
-    if (!isRefreshing && page <= totalPagesProduct - 1) {
-      console.log('--------handleEndReached---------------', page)
+    if (!isRefreshing && page <= totalPagesProduct - 1 ) {
       setPage((prevPage) => prevPage + 1);
-      handleGetProduct(searchValue);
     }
   };
   const handleEndReachedCategory = () => {
@@ -285,7 +289,6 @@ export const ProductScreen: FC = () => {
       pageCategories <= totalPages - 1
     ) {
       setPageCategories((prevPage) => prevPage + 1);
-      handleGetCategory(searchCategory);
     }
   };
   const openDirectoryModal = () => {
@@ -301,6 +304,7 @@ export const ProductScreen: FC = () => {
     setSelectedCategory(undefined);
     setPage(0);
     setSearchValue("");
+    setOpenSearch(false)
     setNameDirectory("");
     setDataProduct([]);
     productStore.setTagId(0);
@@ -309,22 +313,22 @@ export const ProductScreen: FC = () => {
     // setIsRefreshing(false);
   };
   const refreshCategory = async () => {
-    // setIsRefreshingCategory(true);
+    setIsRefreshingCategory(true);
     setPageCategories(0);
     setSearchCategory("");
+    setOpenSearch(false)
     setDataCategory([]);
     productStore.setSortCategory([]);
     await handleGetCategory();
-    // setIsRefreshingCategory(false);
+    setIsRefreshingCategory(false);
   };
   const renderFooter = () => {
-    if (!isRefreshing) return null;
-    return (
-      <View>
-        <ActivityIndicator size="large" color="#F6961C" />
-      </View>
-    );
+    if (totalPagesProduct > 1 && page < totalPagesProduct) {
+      return <ActivityIndicator size="large" color="#F6961C" />
+    }
+    return null;
   };
+
   useEffect(() => {
     productStore.setViewGrid(isGridView);
   }, [isGridView]);
@@ -352,6 +356,7 @@ export const ProductScreen: FC = () => {
       flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
     }
   }, [viewProduct])
+
   return (
     <View style={styles.ROOT}>
       <Header
@@ -360,7 +365,7 @@ export const ProductScreen: FC = () => {
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Sản phẩm`}
-        RightIcon2={activeTab === "product" ? Images.ic_squareFour : null}
+        RightIcon2={activeTab === "product" ? isGridView ? Images.ic_squareFour : Images.ic_grid : null}
         onRightPress={handleOpenSearch}
         onRightPress2={toggleView}
         RightIcon={openSearch ? Images.icon_close : Images.search}
@@ -420,119 +425,33 @@ export const ProductScreen: FC = () => {
           </View>
         </View>
         {activeTab === "product" ? (
-          <>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("ProductCreateScreen" as never)}
-              style={styles.btnCreateProduct}>
-              <Images.ic_addProduct
-                width={scaleWidth(50)}
-                height={scaleHeight(50)}
-              />
-            </TouchableOpacity>
-            <View
-              style={{ justifyContent: "space-between", flexDirection: "row" }}>
-              <View style={styles.rowTabType}>
-                {tabTypes.map((item, index) => {
-                  const isActive = index === indexItem;
-                  return (
-                    <TouchableOpacity
-                      onPress={() => {
-                        handlePressViewProduct(item);
-                        setIndexItem(index);
-                      }}
-                      key={index}
-                      style={[
-                        styles.tabButton,
-                        isActive
-                          ? styles.tabButtonActive
-                          : styles.tabButtonInactive,
-                      ]}>
-                      <Text
-                        style={[
-                          styles.tabText,
-                          isActive
-                            ? styles.tabTextActive
-                            : styles.tabTextInactive,
-                        ]}>
-                        {item}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-              <View style={styles.containerFilter}>
-                <Button
-                  onPress={() =>
-                    navigation.navigate("filterScreen" as never, { activeTab })
-                  }
-                  style={{ backgroundColor: "none", width: scaleWidth(30), height: scaleHeight(30) }}>
-                  <Images.slider_black
-                    width={scaleWidth(16)}
-                    height={scaleHeight(16)}
-                  />
-                </Button>
-                <TouchableOpacity
-                  onPress={() => {
-                    setShowCategory(true);
-                  }}
-                  style={styles.btnFilterByCategory}>
-                  <Text
-                    tx={nameDirectory === "" ? "productScreen.directory" : null}
-                    numberOfLines={1}
-                    style={styles.textBtnFilter}>
-                    {nameDirectory}
-                  </Text>
-                  <View style={{ marginRight: scaleWidth(8) }}>
-                    <Images.iconDownBlue
-                      width={scaleWidth(14)}
-                      height={scaleHeight(14)}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <CategoryModalFilter
-              showCategory={showCategory}
-              setShowCategory={setShowCategory}
-              dataCategory={dataCategoryFilter}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              setNameDirectory={setNameDirectory}
-              isSearchBarVisible={openSearch}
-              setIndex={setIndex}
-            />
-            <View style={styles.containerProduct}>
-              <FlatList
-                data={dataProduct}
-                showsVerticalScrollIndicator={false}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={isRefreshing}
-                    onRefresh={refreshProduct}
-                    title="ok"
-                  />
-                }
-                keyExtractor={(item) => item.id.toString()}
-                ref={flatListRef}
-                onEndReached={handleEndReached}
-                onEndReachedThreshold={0.5}
-                ListFooterComponent={renderFooter}
-                key={isGridView ? "grid" : "list"}
-                numColumns={isGridView ? 3 : 1}
-                columnWrapperStyle={isGridView ? null : null}
-                renderItem={({ item, index }) => (
-                  <RenderProductItem
-                    item={item}
-                    index={index}
-                    isGridView={isGridView}
-                    viewProduct={viewProduct}
-                    handleProductDetail={handleProductDetail}
-                    handleClassifyDetail={handleClassifyDetail}
-                  />
-                )}
-              />
-            </View>
-          </>
+          <ProductList
+            navigation={navigation}
+            tabTypes={tabTypes}
+            indexItem={indexItem}
+            handlePressViewProduct={handlePressViewProduct}
+            setIndexItem={setIndexItem}
+            setShowCategory={setShowCategory}
+            showCategory={showCategory}
+            dataCategoryFilter={dataCategoryFilter}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            setNameDirectory={setNameDirectory}
+            openSearch={openSearch}
+            setIndex={setIndex}
+            dataProduct={dataProduct}
+            isRefreshing={isRefreshing}
+            refreshProduct={refreshProduct}
+            flatListRef={flatListRef}
+            handleEndReached={handleEndReached}
+            isGridView={isGridView}
+            viewProduct={viewProduct}
+            handleProductDetail={handleProductDetail}
+            handleClassifyDetail={handleClassifyDetail}
+            nameDirectory={nameDirectory}
+            isLoadingMore={false}
+            renderFooter={renderFooter}
+          />
         ) : (
           <CategoryList
             openDirectoryModal={openDirectoryModal}
@@ -544,9 +463,9 @@ export const ProductScreen: FC = () => {
             handleEndReachedCategory={handleEndReachedCategory}
             handleOpenDeleteModal={handleOpenDeleteModal}
             handleEditCategory={handleEditCategory}
-            isDeleteModalVisible={isDeleteModalVisible} // Truyền prop isDeleteModalVisible
-            setIsDeleteModalVisible={setIsDeleteModalVisible} // Truyền prop setIsDeleteModalVisible
-            handleDeleteItem={handleDeleteItem} // Truyền prop handleDeleteItem
+            isDeleteModalVisible={isDeleteModalVisible}
+            setIsDeleteModalVisible={setIsDeleteModalVisible}
+            handleDeleteItem={handleDeleteItem}
           />
         )}
       </View>
@@ -561,7 +480,6 @@ export const ProductScreen: FC = () => {
         category={selectedEditCategory}
         onUpdateDirectory={handleUpdateDirectory}
       />
-
       <Dialog
         isVisible={isDeleteFailModalVisible}
         title={"productScreen.Notification"}

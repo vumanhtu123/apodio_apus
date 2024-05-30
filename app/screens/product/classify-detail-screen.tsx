@@ -197,6 +197,7 @@ export const ClassifyDetailScreen: FC = () => {
                 navigation.navigate("view3D" as any, {
                   scene: dataClassification?.scene?.url,
                 })
+                // console.log('first' ,)
               }>
               <Images.ic_3d
                 width={scaleWidth(20)}

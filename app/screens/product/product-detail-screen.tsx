@@ -768,7 +768,7 @@ export const ProductDetailScreen: FC = (item) => {
                               paddingVertical: scaleHeight(padding.padding_8),
                             }}>
                             <AutoHeightImage
-                              source={{ uri: item?.imgUrl }}
+                              source={{ uri: item?.avatarUrl }}
                               width={scaleHeight(40)}
                               height={scaleHeight(40)}
                               style={{ borderRadius: 40 }}

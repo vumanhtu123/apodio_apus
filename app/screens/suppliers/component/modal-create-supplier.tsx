@@ -14,6 +14,7 @@ import { Images } from "../../../../assets";
 import { TextField } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { translate } from "../../../i18n/translate";
 
 const ModalCreateSuppliers = (props: any) => {
   const { isVisible, setType, setIsVisible } = props;
@@ -150,7 +151,7 @@ const ModalCreateSuppliers = (props: any) => {
                 // defaultValue={''}
                 name="suplierId"
                 rules={{
-                  required: "Please input data",
+                  required: translate('ruleController.emptyText'),
                 }}
               />
               <Controller
@@ -181,7 +182,7 @@ const ModalCreateSuppliers = (props: any) => {
                 // defaultValue={''}
                 name="nameSuppliers"
                 rules={{
-                  required: "Please input data",
+                  required: translate('ruleController.emptyText'),
                 }}
               />
               <Controller
@@ -212,7 +213,7 @@ const ModalCreateSuppliers = (props: any) => {
                 // defaultValue={''}
                 name="nameSuppliers"
                 rules={{
-                  required: "Please input data",
+                  required: translate('ruleController.emptyText'),
                 }}
               />
               <InputSelect
@@ -275,7 +276,7 @@ const ModalCreateSuppliers = (props: any) => {
                       />
                     )}
                     name={item.name}
-                    rules={{ required: "Please input data" }}
+                    rules={{required: translate('ruleController.emptyText'),}}
                   />
                 )}
               />
@@ -350,7 +351,7 @@ const ModalCreateSuppliers = (props: any) => {
                 // defaultValue={''}
                 name="nameSuppliers"
                 rules={{
-                  required: "Please input data",
+                  required: translate('ruleController.emptyText'),
                 }}
               />
             </View>

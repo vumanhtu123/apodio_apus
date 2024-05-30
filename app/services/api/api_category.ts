@@ -63,7 +63,7 @@ export class CategoryApi {
     page: any,
     size: any,
   ): Promise<any> {
-    showLoading();
+    // showLoading();
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_CATEGORY ,
@@ -72,7 +72,7 @@ export class CategoryApi {
           size: size,
         }
       );
-      console.log("page", page);
+      // console.log("page", page);
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };

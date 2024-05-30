@@ -1,4 +1,3 @@
-import { translate } from 'i18n-js';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Linking, StyleSheet, Text as TextRN, TouchableOpacity, View } from 'react-native';
@@ -12,6 +11,7 @@ import { checkCameraPermission, checkLibraryPermission, requestCameraPermission,
 import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
 import { validateFileSize } from '../../../utils/validate';
 import Modal from 'react-native-modal'
+import { translate } from '../../../i18n/translate';
 
 const EditDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, category, onUpdateDirectory } = props;
@@ -322,7 +322,7 @@ const EditDirectoryModal = (props: any) => {
                                     placeholderTx={"productScreen.placeholderDirectoryName"}
                                 />
                             )}
-                            rules={{ required: 'Please input data' }}
+                            rules={{ required: translate('ruleController.emptyText'), }}
                         />
 
                     </View>

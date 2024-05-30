@@ -44,7 +44,9 @@ export class ProductApi {
     tagId: number,
     sort: string
   ): Promise<any> {
+    
     showLoading();
+    // console.log("dataa :", page);
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_PRODUCT + sort,
@@ -58,7 +60,6 @@ export class ProductApi {
         }
       );
       const data = response.data;
-      console.log("dataa :", page);
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
