@@ -181,6 +181,7 @@ import ClipboardText from "./Images/ClipboardText.svg";
 import icon_chart from "./Images/icon_chart.svg";
 import ic_x from "./Images/ic_x.svg";
 import tag from "./Images/Tag.svg";
+import ic_plus_blue from "./Images/PlusBlue.svg";
 
 export const Images = {
   icon_test: _test,
@@ -358,4 +359,5 @@ export const Images = {
   icon_chart: icon_chart,
   ic_x: ic_x,
   ic_tag: tag,
+  icon_plus_blue: ic_plus_blue,
 };

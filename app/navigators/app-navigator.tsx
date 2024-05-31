@@ -106,6 +106,7 @@ export type NavigatorParamList = {
   editAttributeByEdit: undefined;
   detailsSupplier: undefined;
   detailsOrderScreen: undefined;
+  orderDetailsSupplier: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -318,10 +319,15 @@ export const AppStack = () => {
         options={{ gestureEnabled: false }}
         component={Screens.DetailsSupplierScreen}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="detailsOrderScreen"
         options={{ gestureEnabled: false }}
         component={Screens.DetailsOrderScreen}
+      /> */}
+      <Stack.Screen
+        name="orderDetailsSupplier"
+        options={{ gestureEnabled: false }}
+        component={Screens.OrderDetailsScreen}
       />
     </Stack.Navigator>
   );
