@@ -380,6 +380,7 @@ export const ProductDetailScreen: FC = (item) => {
                     onPress={() => {
                       setChangeClassification(item.id);
                       setDetailsClassification(item);
+                      console.log('first' , dataClassification)
                       // setShowDetails(false);
                     }}>
                     <Text
@@ -433,7 +434,7 @@ export const ProductDetailScreen: FC = (item) => {
                 <View>
                   <ProductAttribute
                     label="Mã biến thể sản phẩm "
-                    value={detailsClassification.id}
+                    value={detailsClassification.sku}
                   />
                   <ProductAttribute
                     label="Tên biến thể sản phẩm "

@@ -42,11 +42,13 @@ export class ProductApi {
     productCategoryId: number,
     search: string,
     tagId: number,
-    sort: string
+    sort: string,
+    isLoadMore : boolean
   ): Promise<any> {
-    
-    showLoading();
-    // console.log("dataa :", page);
+    if(!isLoadMore) {
+      showLoading();
+    }
+    // console.log("dataa :", isLoadMore);
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_PRODUCT + sort,

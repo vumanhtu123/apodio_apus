@@ -7,6 +7,7 @@ const en = {
     logOut: "Log Out",
     listCompany: "Danh sách công ty",
     continue: "Tiếp tục",
+    saveAndContinue : 'Lưu và tiếp tục'
     // @demo remove-current-line
   },
   txtToats: {
@@ -453,6 +454,7 @@ const en = {
     NotifyCloseModal: "Bạn có chắc chắn muốn thoát ?",
     Perspective: "Xem phối cảnh 3D",
     validateMin: "Số lượng không được trùng lặp",
+    product : 'sản phẩm'
   },
   detailScreen : {
     headerClassify : 'Chi tiết phân loại',

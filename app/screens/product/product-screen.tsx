@@ -154,9 +154,11 @@ export const ProductScreen: FC = () => {
         selectedCategory,
         searchValue,
         productStore.tagId,
-        parseSort
+        parseSort,
+        productStore.isLoadMore
       );
-      console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+      console.log('first------------------', response)
+      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         setTotalPagesProduct(response.response.data.totalPages)
         console.log('////////////////', response.response.data.totalPages)
@@ -169,7 +171,7 @@ export const ProductScreen: FC = () => {
           ]);
         }
       } else {
-        console.error("Failed to fetch product:", response);
+        console.error("Failed to fetch product:", response.response.errorCodes[0].message);
       }
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -262,7 +264,7 @@ export const ProductScreen: FC = () => {
   }, []);
   useEffect(() => {
     const fetchData = async () => {
-      setPage(0)      
+      setPage(0)
       setDataProduct([]);
       await handleGetProduct(searchValue);
     };
@@ -272,14 +274,27 @@ export const ProductScreen: FC = () => {
     handleGetCategory(searchCategory);
   }, [pageCategories]);
   useEffect(() => {
-    handleGetProduct(searchValue);
+    const fetchMoreProducts = async () => {
+      try {
+        await handleGetProduct(searchValue); // Load more
+      } catch (error) {
+        console.error('Error fetching more products:', error);
+      } finally {
+        productStore.setIsLoadMore(false);
+      }
+    };
+
+    if (productStore.isLoadMore) {
+      fetchMoreProducts();
+    }
   }, [page]);
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
   const handleEndReached = () => {
     console.log('--------totalPagesProduct---------------', totalPagesProduct, '----', isRefreshing, '-----', page)
-    if (!isRefreshing && page <= totalPagesProduct - 1 ) {
+    if (!isRefreshing && page <= totalPagesProduct - 1) {
+      productStore.setIsLoadMore(true)
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -356,7 +371,6 @@ export const ProductScreen: FC = () => {
       flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
     }
   }, [viewProduct])
-
   return (
     <View style={styles.ROOT}>
       <Header

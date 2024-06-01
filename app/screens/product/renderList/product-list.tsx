@@ -166,7 +166,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                     keyExtractor={(item) => item.id.toString()}
                     ref={flatListRef}
                     onEndReached={handleEndReached}
-                    // ListFooterComponent={renderFooter}
+                    ListFooterComponent={renderFooter}
                     onEndReachedThreshold={0.5}
                     key={isGridView ? "grid" : "list"}
                     numColumns={isGridView ? 3 : 1}
