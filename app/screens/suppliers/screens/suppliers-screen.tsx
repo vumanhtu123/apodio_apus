@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useEffect, useState } from "react";
-import { FlatList, Platform, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
@@ -26,10 +26,14 @@ export const SuppliersScreen: FC = () => {
   const [btnTab, setBtnTab] = useState(["Nhà cung cấp", "Nhóm NCC"]);
   const [activeTab, setActiveTab] = useState("product");
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleAddSupplier, setIsVisibleAddSupplier] = useState(false)
+  // console.log("doannnn", isVisibleAddSupplier);
+
   const [typeFilter, setTypeFilter] = useState("");
   const [dataCategory, setDataCategory] = useState<any>([]);
   const [showCategory, setShowCategory] = useState(false);
   const [showTextCategory, setShowTextCategory] = useState<string>(" Danh mục");
+
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
@@ -44,7 +48,7 @@ export const SuppliersScreen: FC = () => {
     { name: "tuvm4" },
   ];
 
-  const openFilter = () => {};
+  const openFilter = () => { };
 
   useEffect(() => {
     setDataCategory(data);
@@ -53,6 +57,10 @@ export const SuppliersScreen: FC = () => {
   const openTypeFilter = () => {
     setIsVisible(!true);
   };
+
+  const handleIsAddSupplier = () => {
+    setIsVisibleAddSupplier(!isVisibleAddSupplier)
+  }
   return (
     <View style={styles.ROOT}>
       <Header
@@ -98,13 +106,13 @@ export const SuppliersScreen: FC = () => {
                   style={[
                     styles.buttonProduct,
                     activeTab === (index === 0 ? "product" : "category") &&
-                      styles.activeButton,
+                    styles.activeButton,
                   ]}>
                   <Text
                     style={[
                       styles.buttonText,
                       activeTab === (index === 0 ? "product" : "category") &&
-                        styles.activeButtonText,
+                      styles.activeButtonText,
                     ]}>
                     {item}
                   </Text>

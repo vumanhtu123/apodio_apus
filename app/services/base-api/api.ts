@@ -13,7 +13,7 @@ import DeviceInfo from "react-native-device-info";
 /**
  * Manages all requests to the API.
  */
-export class Api {
+export class  Api {
   /**
    * The underlying apisauce instance which performs the requests.
    */
