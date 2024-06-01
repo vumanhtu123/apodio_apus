@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Text as TextRN, View, PermissionsAndroid, Platform, Alert, Linking, KeyboardAvoidingView } from 'react-native';
-import { SvgIcon } from '../../../components/svg-icon/index';
-import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { navigate } from '../../../navigators';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Images } from '../../../../assets';
-import { AutoImage, Button, TextField } from '../../../components';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
+import { KeyboardAvoidingView, Linking, Platform, StyleSheet, Text, Text as TextRN, TouchableOpacity, View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import Modal from 'react-native-modal';
+import { RESULTS } from 'react-native-permissions';
+import { Images } from '../../../../assets';
+import { AutoImage, TextField } from '../../../components';
+import { translate } from '../../../i18n/translate';
 import { useStores } from '../../../models';
-import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
-import { translate } from 'i18n-js';
-import { validateFileSize } from '../../../utils/validate';
+import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
-import Modal from 'react-native-modal'
+import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
+import { validateFileSize } from '../../../utils/validate';
 
 const CreateDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, onCreateDirectory } = props;

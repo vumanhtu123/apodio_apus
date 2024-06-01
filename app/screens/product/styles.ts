@@ -13,6 +13,9 @@ export const styles = StyleSheet.create({
     backgroundColor: "#Ffffff",
     flex: 1,
   },
+  animatedButton: {
+    padding: 10, // Add padding if needed, adjust as necessary
+  },
   btnTab: {
     justifyContent: "center",
     alignItems: "center",
@@ -180,7 +183,7 @@ export const styles = StyleSheet.create({
   },
   containerProduct: {
     flex: 1,
-    marginVertical: scaleHeight(16),
+    marginTop: scaleHeight(16),
     marginHorizontal: scaleWidth(16),
   },
   btnCreateCategory: {

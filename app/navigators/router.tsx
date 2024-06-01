@@ -44,7 +44,7 @@ export const Router = (props: NavigationProps) => {
       {...props}>
       <ButtonProvider>
         {getStack()}
-        <FloatingButton />
+        {/* <FloatingButton /> */}
       </ButtonProvider>
     </NavigationContainer>
   );

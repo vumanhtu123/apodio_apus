@@ -180,6 +180,7 @@ import ic_oto from "./Images/oto.svg";
 import ClipboardText from "./Images/ClipboardText.svg";
 import icon_chart from "./Images/icon_chart.svg";
 import ic_x from "./Images/ic_x.svg";
+import ic_grid from "./Images/ic_grid-list.svg";
 import ic_downLoadBlue from "./Images/ic_downLoadBlue.svg";
 import ic_Feild from "./Images/ic_field .svg";
 import ic_system_uico from "./Images/ic_System_Uicons.svg";
@@ -387,6 +388,7 @@ export const Images = {
   ClipboardText: ClipboardText,
   icon_chart: icon_chart,
   ic_x: ic_x,
+  ic_grid : ic_grid,
   img_test: img_test,
   ic_downLoadBlue: ic_downLoadBlue,
   ic_Feilter: ic_Feild,

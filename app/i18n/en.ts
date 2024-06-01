@@ -11,6 +11,7 @@ const en = {
     filter: " Bộ lọc",
 
     continue: "Tiếp tục",
+    saveAndContinue : 'Lưu và tiếp tục'
     // @demo remove-current-line
   },
   txtToats: {
@@ -46,6 +47,9 @@ const en = {
       "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
+  },
+  ruleController : {
+    emptyText : 'Vui lòng nhập dữ liệu'
   },
   welcomeScreen: {
     postscript:
@@ -504,6 +508,7 @@ const en = {
     NotifyCloseModal: "Bạn có chắc chắn muốn thoát ?",
     Perspective: "Xem phối cảnh 3D",
     validateMin: "Số lượng không được trùng lặp",
+    product : 'sản phẩm',
     addBank: "Thêm ngân hàng"
   },
   detailScreen : {
@@ -585,6 +590,9 @@ const en = {
     header : 'Chọn thuộc tính',
     addAttribute : 'Tạo nhóm thuộc tính mới',
     selectedValue : 'Chọn giá trị'
+  },
+  editAttribute : {
+    headerText : 'Sửa thuộc tính'
   },
   vendorScreen : {
     vendor : 'nhà cung cấp',

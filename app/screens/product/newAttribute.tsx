@@ -97,35 +97,6 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       }
     }
   };
-  const addAttribute1 = (event) => {
-    const textInput = event.nativeEvent.text
-    if (textInput.trim() === "") {
-      showToast('txtToats.required_value_null', 'error')
-    } else {
-      if (nameAttribute.some(item => item.name.trim() === textInput.trim())) {
-        showToast('txtToats.cannot_create_duplicate', 'error')
-      } else {
-        const id = generateRandomString(8);
-        const nameArr = [{ name: textInput, id: id }];
-        const newArr = nameAttribute.concat(nameArr);
-        const newInput = [...inputText, ""];
-        setInputText(newInput);
-        setNameAttribute(newArr);
-        setName("");
-        const newData = [
-          {
-            name: textInput,
-            displayType: "Checkbox",
-            productAttributeValues: [],
-            id: id,
-          },
-        ];
-        const newArrData = dataAttribute?.concat(newData);
-        setDataAttribute(newArrData);
-      }
-    }
-  };
-
   const addDataAttribute = (data: any, index: any) => {
     if (dataCheckbox.length === 0 || dataCheckbox[dataCheckbox.length - 1]?.value.trim() === "") {
       showToast('txtToats.required_value_null', 'error')
@@ -222,7 +193,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       if (response && response.kind === "ok") {
         setOpenDialog(true)
       } else {
-        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
+        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.errorCodes[0].message, translate("common.ok"), '', () => {
           hideDialog();
         })
         console.error("Failed to fetch categories:", response.response.message);
@@ -262,7 +233,8 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       if (response && response.kind === "ok") {
         setOpenDialogAttribute(true)
       } else {
-        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
+        console.log('first',)
+        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.errorCodes[0].message, translate("common.ok"), '', () => {
           hideDialog();
         })
         console.error("Failed to fetch categories:", response);
@@ -578,7 +550,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
             textStyle={styles.textButtonCancel}
           />
           <Button
-            text="Lưu và tiếp tục"
+            tx="common.saveAndContinue"
             style={styles.viewButtonConfirm}
             textStyle={[
               styles.textButtonCancel,
