@@ -200,6 +200,16 @@ import ic_toPay from "./Images/ic_topay.svg";
 import ic_receivables from "./Images/ic_receivables.svg"
 import ic_calender_white from "./Images/ic_calender_white.svg"
 import ic_slider from "./Images/ic_sliders.svg"
+import icon_ellipse_tracking from "./Images/icon_ellipse_tracking.svg";
+import icon_order_success from "./Images/icon_orderSuccess.svg"
+import icon_pickup from "./Images/icon_pickup.svg"
+import icon_deliveryBlue from "./Images/icon_deliveryBlue.svg"
+import icon_ellipse_tracking_blue from "./Images/icon_ellipse_tracking_blue.svg";
+import icon_order_success_blue from "./Images/icon_orderSuccessBlue.svg"
+import icon_pickup_blue from "./Images/icon_pickupBlue.svg"
+import icon_delivery from "./Images/icon_delivery.svg"
+import tag from "./Images/Tag.svg";
+import ic_plus_blue from "./Images/PlusBlue.svg";
 
 export const Images = {
   icon_test: _test,
@@ -397,4 +407,14 @@ export const Images = {
   ic_calender_white: ic_calender_white,
   ic_slider: ic_slider,
 
+  icon_ellipse_tracking: icon_ellipse_tracking,
+  icon_order_success: icon_order_success,
+  icon_pickup: icon_pickup,
+  icon_deliveryBlue: icon_deliveryBlue,
+  icon_ellipse_tracking_blue: icon_ellipse_tracking_blue,
+  icon_order_success_blue: icon_order_success_blue,
+  icon_pickup_blue: icon_pickup_blue,
+  icon_delivery: icon_delivery,
+  ic_tag: tag,
+  icon_plus_blue: ic_plus_blue,
 };

@@ -354,7 +354,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
             <Header
                 LeftIcon={Images.back}
                 onLeftPress={() => navigation.goBack()}
-                headerText="Chọn thuộc tính"
+                headerTx="addAttribute.header"
                 style={{ height: scaleHeight(52) }}
             />
             <View
@@ -366,8 +366,8 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                     required
                     arrData={attributeData}
                     onPressChoice={handleSelect}
-                    titleText="Nhóm thuộc tính"
-                    hintText="Chọn nhóm thuộc tính"
+                    titleTx="addAttribute.title"
+                    hintTx="addAttribute.hint"
                     newData={idNewAttribute?.data}
                     dataEdit={dataEditDropdown}
                     loadMore={() => setPage(page + 1)}
@@ -474,7 +474,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                                                                         0.6,
                                                                 }}>
                                                                 <Text
-                                                                    text=" Chọn giá trị"
+                                                                    tx="addAttribute.selectedValue"
                                                                     style={{
                                                                         color: colors.palette.dolphin,
                                                                         fontSize: fontSize.size12,
@@ -604,7 +604,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         style={{ flexDirection: "row", marginVertical: scaleHeight(10) }}>
                         <Images.icon_add />
                         <Text
-                            text="Tạo nhóm thuộc tính mới"
+                            tx="addAttribute.addAttribute"
                             style={{
                                 marginLeft: scaleWidth(6),
                                 fontWeight: "600",

@@ -15,6 +15,7 @@ export * from "./notifications/notification-screen";
 export * from "./product/product-screen";
 export * from "./order/orderDetail/orderDetails";
 export * from "./order/newOrder/newOrder";
+export * from "./order/orderTracking/orderTracking";
 export * from "./promotions/promotions";
 export * from "./product/arrange-product";
 export * from "./product/component/modal-select-filter";
@@ -68,3 +69,4 @@ export * from "../screens/suppliers/screens/details-suppliers-screen";
 export * from "../screens/suppliers/screens/details-order-screen";
 export * from "../screens/debt/screen/debt-screen";
 export * from "../screens/debt/screen/mustPayScreen"
+export * from "../screens/suppliers/screens/order-details-screen";

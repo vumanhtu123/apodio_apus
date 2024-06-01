@@ -16,6 +16,7 @@ import { renderItemSupplier2 } from "../component/item-list-supplier";
 import { styles } from "../styles/styles";
 import { dataSuppliers } from "../styles/data";
 import { ScrollView } from "react-native-gesture-handler";
+import SelectFilterModal from "../../product/component/modal-select-filter";
 import ModalCreateSuppliers from "../component/modal-create-supplier";
 
 export const SuppliersScreen: FC = () => {
@@ -220,9 +221,8 @@ export const SuppliersScreen: FC = () => {
 
       <TouchableOpacity
         onPress={() => {
-          // Alert.alert("okkk")
-          setIsVisibleAddSupplier(!isVisibleAddSupplier)
-
+          console.log("abc");
+          navigation.navigate("orderDetailsSupplier" as never);
         }}
         style={{
           flexDirection: "row",
@@ -250,11 +250,12 @@ export const SuppliersScreen: FC = () => {
         setIsVisible={setIsVisible}
         setType={setTypeFilter}
       /> */}
-      <ModalCreateSuppliers
-        isVisible={isVisibleAddSupplier}
-        setIsVisible={() => handleIsAddSupplier()}
-
-      />
+      {/* <ModalCreateSuppliers
+        isVisible={true}
+        setIsVisible={setIsVisible}
+        setType={setTypeFilter}
+      /> */}
+      {/* <ModalCreateSuppliers isVisible={true} /> */}
     </View>
   );
 };

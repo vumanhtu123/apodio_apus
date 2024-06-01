@@ -1,16 +1,29 @@
 import { colors, fontSize } from "../../../theme";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, StyleProp, TextStyle, ViewStyle } from "react-native";
+import { Text } from "../../../components";
+import { TxKeyPath } from "../../../i18n";
 
-const ProductAttribute = ({
+
+interface ProductAttributeProps {
+  label?: string 
+  labelTx?: TxKeyPath;
+  value?: any;
+  labelStyle?: StyleProp<TextStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  styleAttribute?: StyleProp<ViewStyle>;
+}
+const ProductAttribute: React.FC<ProductAttributeProps> = ({
   label,
+  labelTx,
   value,
   labelStyle,
   textStyle,
   styleAttribute,
-}: any) => (
+}) => (
   <View style={[styles.attributeContainer, styleAttribute]}>
-    <Text style={[styles.labelText, labelStyle]}>{label}</Text>
+    {labelTx ? <Text tx={labelTx} style={[styles.labelText, labelStyle]} /> : null}
+    {label ? <Text style={[styles.labelText, labelStyle]}>{label}</Text> : null}
     <Text style={[styles.valueText, textStyle]}>{value}</Text>
   </View>
 );

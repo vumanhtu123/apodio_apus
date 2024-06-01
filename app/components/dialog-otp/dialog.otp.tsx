@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Controller, useForm} from 'react-hook-form';
+import React, { useEffect, useRef, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -11,13 +11,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {colors, scaleHeight, scaleWidth} from '../../theme';
-import {TextField} from '../text-field/text-field';
-import {Text} from '../text/text';
-import {useStores} from '../../models';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { colors, scaleHeight, scaleWidth } from '../../theme';
+import { TextField } from '../text-field/text-field';
+import { Text } from '../text/text';
+import { useStores } from '../../models';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const {width, height} = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 
 const VerificationCodeModal = ({
   setIsVisible,
@@ -34,7 +34,7 @@ const VerificationCodeModal = ({
     watch,
     setValue,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm({
     mode: 'all',
   });
@@ -72,8 +72,9 @@ const VerificationCodeModal = ({
         keyboardShouldPersistTaps="handled">
         <View style={styles.modalView}>
           <TextRN style={styles.modalText} />
-          <Text style={styles.text}>Verification code</Text>
+          <Text tx='dialog.title' style={styles.text} />
           <Text
+            tx='dialog.content'
             style={{
               maxWidth: '80%',
               textAlign: 'center',
@@ -84,7 +85,6 @@ const VerificationCodeModal = ({
               alignSelf: 'center',
               fontWeight: '700',
             }}>
-            Please enter the OTP sent to your phone number
             <Text
               style={{
                 color: '#323232',
@@ -96,7 +96,7 @@ const VerificationCodeModal = ({
           <Controller
             control={control}
             defaultValue={''}
-            render={({field: {onChange, value, onBlur}}) => (
+            render={({ field: { onChange, value, onBlur } }) => (
               <View>
                 <TextField
                   autoFocus
@@ -132,7 +132,7 @@ const VerificationCodeModal = ({
                     <Text
                       style={[
                         styles.textResend,
-                        {color: secondss === 0 ? '#3F91FF' : '#3F91FF80'},
+                        { color: secondss === 0 ? '#3F91FF' : '#3F91FF80' },
                       ]}
                       text="Resend"
                     />
@@ -157,7 +157,7 @@ const VerificationCodeModal = ({
                 setIsButtonEnable(false);
                 setIsVisible(false);
               }}>
-              <Text style={styles.textCancel}>Cancel</Text>
+              <Text tx='common.cancel' style={styles.textCancel}/>
             </TouchableOpacity>
             <TouchableOpacity
               style={
@@ -165,8 +165,8 @@ const VerificationCodeModal = ({
                   ? styles.buttonConfirm
                   : styles.buttonConfirm2
               }
-              onPress={isButtonEnable === true ? checkOTP : () => {}}>
-              <Text style={styles.textConfirm}>Confirm</Text>
+              onPress={isButtonEnable === true ? checkOTP : () => { }}>
+              <Text tx='common.confirm' style={styles.textConfirm}/>
             </TouchableOpacity>
           </View>
         </View>

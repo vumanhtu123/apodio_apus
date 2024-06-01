@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
-  Text as TextRN,
   View,
   FlatList,
   ScrollView,
+  Text as TextRN,
   Alert,
 } from "react-native";
 import { SvgIcon } from "../../../components/svg-icon/index";

@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, StyleSheet, TouchableOpacity, Text as TextRN, View, PermissionsAndroid, Platform, Alert, Linking } from 'react-native';
-import { SvgIcon } from '../../../components/svg-icon/index';
-import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { navigate } from '../../../navigators';
-import { useNavigation } from '@react-navigation/native';
-import { Images } from '../../../../assets';
-import { AutoImage, Button, Text, TextField } from '../../../components';
-import { Controller, useForm } from 'react-hook-form';
-import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { validateFileSize } from '../../../utils/validate';
-import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
 import { translate } from 'i18n-js';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { KeyboardAvoidingView, Linking, Platform, StyleSheet, Text as TextRN, TouchableOpacity, View } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { RESULTS } from 'react-native-permissions';
+import { Images } from '../../../../assets';
+import { AutoImage, Text, TextField } from '../../../components';
 import { useStores } from '../../../models';
+import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
+import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
+import { validateFileSize } from '../../../utils/validate';
+import Modal from 'react-native-modal'
 
 const EditDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, category, onUpdateDirectory } = props;
@@ -217,151 +215,159 @@ const EditDirectoryModal = (props: any) => {
         setImagesUpload(null)
     }
     return (
-        <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={handleCloseModal}>
-            <View style={styles.container}>
-                <View style={styles.modalView}>
-                    <TextRN style={styles.modalText} />
-                    <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Chỉnh sửa danh mục</Text>
-                    </View>
-                    <View style={styles.horizontalLine} />
-
-                    {imagesNote !== '' && isValidImageUrl(imagesNote) ? (
-                        <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
-                            <View style={{ flexDirection: 'column', marginRight: scaleHeight(20) }}>
-                                <TouchableOpacity onPress={handleLibraryUse}
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderWidth: 1,
-                                        borderColor: '#0078d4',
-                                        borderRadius: 8,
-                                        paddingHorizontal: scaleWidth(10),
-                                        paddingVertical: scaleHeight(7),
-                                        marginBottom: scaleHeight(10)
-                                    }}>
-                                    <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={handleCameraUse}
-                                    style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        borderWidth: 1,
-                                        borderColor: '#0078d4',
-                                        borderRadius: 8,
-                                        paddingHorizontal: scaleWidth(10),
-                                        paddingVertical: scaleHeight(7),
-                                    }}
-                                >
-                                    <Images.ic_camera width={scaleWidth(16)} height={scaleHeight(16)} />
-                                </TouchableOpacity>
-                            </View>
-                            <View >
-                                <AutoImage
-                                    style={{
-                                        width: scaleWidth(107),
-                                        height: scaleHeight(70),
-                                        borderRadius: 8
-                                    }}
-                                    source={{ uri: imagesNote }}
-                                />
-                                <TouchableOpacity
-                                    style={{ position: 'absolute', right: scaleWidth(5), top: scaleHeight(5) }}
-                                    onPress={() => handleRemoveImage()}
-                                >
-                                    <Images.circle_close width={scaleWidth(16)} height={scaleHeight(16)} />
-                                </TouchableOpacity>
-                            </View>
+        <Modal
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            animationInTiming={500}
+            animationOutTiming={750}
+            isVisible={isVisible}
+            onBackdropPress={handleCloseModal}
+            style={styles.container}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+            >
+                <View >
+                    <View style={styles.modalView}>
+                        <TextRN style={styles.modalText} />
+                        <View style={styles.header}>
+                            <Text style={styles.headerTitle}>Chỉnh sửa danh mục</Text>
                         </View>
-                    ) : (
-                        <>
+                        <View style={styles.horizontalLine} />
+
+                        {imagesNote !== '' && isValidImageUrl(imagesNote) ? (
                             <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
-                                <TouchableOpacity onPress={handleLibraryUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', marginRight: scaleWidth(10), borderRadius: 8 }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
+                                <View style={{ flexDirection: 'column', marginRight: scaleHeight(20) }}>
+                                    <TouchableOpacity onPress={handleLibraryUse}
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            borderWidth: 1,
+                                            borderColor: '#0078d4',
+                                            borderRadius: 8,
+                                            paddingHorizontal: scaleWidth(10),
+                                            paddingVertical: scaleHeight(7),
+                                            marginBottom: scaleHeight(10)
+                                        }}>
                                         <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
-                                        <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>Tải ảnh lên</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={handleCameraUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', borderRadius: 8 }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={handleCameraUse}
+                                        style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                            borderWidth: 1,
+                                            borderColor: '#0078d4',
+                                            borderRadius: 8,
+                                            paddingHorizontal: scaleWidth(10),
+                                            paddingVertical: scaleHeight(7),
+                                        }}
+                                    >
                                         <Images.ic_camera width={scaleWidth(16)} height={scaleHeight(16)} />
-                                        <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>Chụp ảnh</Text>
-                                    </View>
-                                </TouchableOpacity>
+                                    </TouchableOpacity>
+                                </View>
+                                <View >
+                                    <AutoImage
+                                        style={{
+                                            width: scaleWidth(107),
+                                            height: scaleHeight(70),
+                                            borderRadius: 8
+                                        }}
+                                        source={{ uri: imagesNote }}
+                                    />
+                                    <TouchableOpacity
+                                        style={{ position: 'absolute', right: scaleWidth(5), top: scaleHeight(5) }}
+                                        onPress={() => handleRemoveImage()}
+                                    >
+                                        <Images.circle_close width={scaleWidth(16)} height={scaleHeight(16)} />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </>
-                    )}
-                    <View>
-                        <Controller
-                            control={control}
-                            name="nameEditCategory"
-                            render={({ field: { onChange, onBlur, value } }) => (
-                                <TextField
-                                    keyboardType={null}
-                                    labelTx={"productScreen.directoryName"}
-                                    style={{ marginBottom: scaleHeight(5), justifyContent: 'center' }}
-                                    defaultValue={name}
-                                    inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
-                                    value={name}  // Ensure this uses the local state
-                                    onBlur={onBlur}
-                                    RightIconClear={Images.icon_delete2}
-                                    error={errors?.nameEditCategory?.message}
-                                    onClearText={() => {
-                                        onChange('');  // Clear the form value
-                                        setName('');  // Clear the local state
-                                    }}
-                                    onChangeText={(value) => {
-                                        onChange(value);  // Update the form value
-                                        setName(value);  // Update the local state
-                                    }}
-                                    placeholderTx={"productScreen.placeholderDirectoryName"}
-                                />
-                            )}
-                            rules={{ required: 'Please input data' }}
-                        />
+                        ) : (
+                            <>
+                                <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
+                                    <TouchableOpacity onPress={handleLibraryUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', marginRight: scaleWidth(10), borderRadius: 8 }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
+                                            <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
+                                            <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>Tải ảnh lên</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={handleCameraUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', borderRadius: 8 }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
+                                            <Images.ic_camera width={scaleWidth(16)} height={scaleHeight(16)} />
+                                            <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>Chụp ảnh</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </>
+                        )}
+                        <View>
+                            <Controller
+                                control={control}
+                                name="nameEditCategory"
+                                render={({ field: { onChange, onBlur, value } }) => (
+                                    <TextField
+                                        keyboardType={null}
+                                        labelTx={"productScreen.directoryName"}
+                                        style={{ marginBottom: scaleHeight(5), justifyContent: 'center' }}
+                                        defaultValue={name}
+                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
+                                        value={name}  // Ensure this uses the local state
+                                        onBlur={onBlur}
+                                        RightIconClear={Images.icon_delete2}
+                                        error={errors?.nameEditCategory?.message}
+                                        onClearText={() => {
+                                            onChange('');  // Clear the form value
+                                            setName('');  // Clear the local state
+                                        }}
+                                        onChangeText={(value) => {
+                                            onChange(value);  // Update the form value
+                                            setName(value);  // Update the local state
+                                        }}
+                                        placeholderTx={"productScreen.placeholderDirectoryName"}
+                                    />
+                                )}
+                                rules={{ required: 'Please input data' }}
+                            />
+
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
+                            <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
+                                <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={handleUpdateDirectory}
+                                disabled={isButtonDisabled}
+                                style={{
+                                    width: scaleWidth(166),
+                                    height: scaleHeight(48),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 10,
+                                    backgroundColor: isButtonDisabled ? 'gray' : '#0078d4',
+                                }}
+                            >
+                                <Text tx='common.confirm' style={{ fontSize: fontSize.size14, color: 'white' }} />
+                            </TouchableOpacity>
+                        </View>
 
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
-                        <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
-                            <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={handleUpdateDirectory}
-                            disabled={isButtonDisabled}
-                            style={{
-                                width: scaleWidth(150),
-                                height: scaleHeight(48),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: 10,
-                                backgroundColor: isButtonDisabled ? 'gray' : '#0078d4',
-                            }}
-                        >
-                            <Text tx='common.confirm' style={{ fontSize: fontSize.size14, color: 'white' }} />
-                        </TouchableOpacity>
-                    </View>
-
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        margin: 0,
     },
     modalView: {
         backgroundColor: '#fff',
-        borderRadius: 8,
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
         paddingTop: scaleHeight(8),
-        // paddingBottom: 5,
-        marginHorizontal: scaleWidth(16),
-        marginBottom: scaleHeight(15),
         paddingHorizontal: scaleWidth(16),
-
     },
     modalText: {
         textAlign: 'center',
@@ -402,19 +408,18 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         justifyContent: 'center',
         alignItems: 'center',
-        // marginRight: 10
     },
     radioButtonSelected: {
-        width: 14,
-        height: 14,
+        width: scaleWidth(14),
+        height: scaleHeight(14),
         borderRadius: 6,
         backgroundColor: '#0078d4',
     },
     groupTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginTop: 20,
-        marginBottom: 10,
+        marginTop: scaleHeight(20),
+        marginBottom: scaleHeight(10),
         color: 'black'
     },
     horizontalLine: {

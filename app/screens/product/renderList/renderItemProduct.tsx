@@ -18,7 +18,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
           stylesItem.item,
           {
             width: scaleWidth(107),
-            height: scaleHeight(124),
+            // height: scaleHeight(124),
             marginRight: scaleWidth(11),
           },
         ]}>
@@ -49,7 +49,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
                 borderTopRightRadius: 12,
               }}
               source={require("../../../../assets/Images/no_images.png")}>
-              <FastImage
+              <FastImage 
                 style={{
                   width: scaleWidth(107),
                   height: scaleHeight(70),
@@ -69,6 +69,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
               stylesItem.titleView,
               {
                 marginHorizontal: scaleWidth(10),
+                marginBottom: scaleHeight(8)
               },
             ]}>
             <Text numberOfLines={1} style={stylesItem.title}>{item.sku}</Text>
@@ -91,7 +92,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
         onPress={() => viewProduct === 'VIEW_PRODUCT' ? handleProductDetail(item.id) : handleClassifyDetail(item.id)}
         style={[
           stylesItem.item,
-          { width: scaleWidth(343), height: scaleHeight(82) },
+          { width: scaleWidth(343)},
         ]}>
         <View
           style={{
@@ -101,7 +102,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
             backgroundColor: "#F6F7F9",
             zIndex: 1,
           }}>
-          {viewProduct === 'VIEW_VARIANT' ?
+          {viewProduct === 'VIEW_VARIANT' && item.scene?.url !== '' ?
             <TouchableOpacity >
               <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
             </TouchableOpacity> : null
@@ -138,13 +139,17 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
               stylesItem.titleView,
               { marginTop: scaleHeight(10), marginHorizontal: scaleWidth(6) },
             ]}>
-            <Text numberOfLines={1} style={stylesItem.title}>{item.sku}</Text>
-            <Text numberOfLines={1} style={stylesItem.title}>
-              {item.name}
-            </Text>
-            <Text style={stylesItem.content} numberOfLines={1}>
-              {item.variantCount} phân loại SP
-            </Text>
+            <View style={{ flexDirection: 'row' , maxWidth: scaleWidth(100) }}>
+              <Text numberOfLines={1} style={[stylesItem.title, { marginRight: scaleWidth(5) }]}>{item.sku}</Text>
+              <Text numberOfLines={1} style={stylesItem.title}>
+                {item.name}
+              </Text>
+            </View>
+            {viewProduct === "VIEW_PRODUCT" ? (
+              <Text style={stylesItem.content} numberOfLines={1}>
+                {item.variantCount} <Text tx="productScreen.productClassification" style={stylesItem.content}></Text>
+              </Text>
+            ) : null}
           </View>
         </View>
       </TouchableOpacity>

@@ -12,8 +12,8 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
       disabled={isActive}
       style={{
         backgroundColor: "white",
-        marginBottom: scaleHeight(5),
-        
+        // marginTop : scaleHeight(5),
+        marginBottom: scaleHeight(1),
       }}>
       <View
         style={{

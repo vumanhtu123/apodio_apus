@@ -148,4 +148,7 @@ export const colors = {
   metallicBlue: palette.metallicBlue,
   verdigris: palette.verdigris,
   royalOrange: palette.royalOrange,
+  nero: palette.nero,
+  navyBlue: palette.navyBlue,
+  dolphin: palette.dolphin,
 };

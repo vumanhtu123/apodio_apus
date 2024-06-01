@@ -8,8 +8,9 @@ const en = {
     confirm: "Xác nhận",
     logOut: "Log Out",
     listCompany: "Danh sách công ty",
-    filter: " Bộ lọc"
+    filter: " Bộ lọc",
 
+    continue: "Tiếp tục",
     // @demo remove-current-line
   },
   txtToats: {
@@ -31,6 +32,7 @@ const en = {
     txt_title_dialog: "Thông báo",
     content_exit_dialog: "Bạn có chắc chắn muốn thoát?",
     settings: "Settings",
+    delete_variant: "Bạn có muốn xóa biến thể này?",
     permission_allow: "Permission allow",
     allow_permission_in_setting: "Allow permission in setting",
     save_the_conversion_group: "Bạn có muốn lưu nhóm quy đổi",
@@ -113,6 +115,11 @@ const en = {
     passwordConfirm: "Nhập lại mật khẩu",
     continue: "Tiếp tục",
   },
+  dialog: {
+    title : 'Mã xác thực',
+    content : 'Vui lòng nhập OTP được gửi tới số điện thoại của bạn',
+
+  },
   changePass: {
     changePass: "Change Pass",
     importOldPass: "Enter old password",
@@ -146,6 +153,16 @@ const en = {
     totalTax: "Total tax:",
   },
   order: {
+    orderTracking: "Theo dõi hành trình đơn hàng",
+    time: "Thời gian",
+    back: "Quay lại",
+    select_father_status: "Chọn trạng thái cha",
+    select_child_status: 'Chọn trạng thái con',
+    father_status: "Trạng thái cha",
+    child_status: 'Trạng thái con',
+    shipping_status: "Trạng thái vận chuyển",
+    update_shipping_status: "Cập nhật trạng thái vận chuyển",
+    update_status: "Cập nhật trạng thái",
     orderDetail: "Order detail",
     copy: "Copy",
     return: "Return",
@@ -440,7 +457,20 @@ const en = {
     totalDebtMustPay: "Tổng số công nợ phải trả"
   },
   productScreen: {
+    create_product: "Tạo sản phẩm",
     directory: "Tất cả danh mục",
+    select_catgory: "Chọn danh mục",
+    trademark: "Thương hiệu",
+    select_trademark: "Chọn thương hiệu",
+    tag: "Tag",
+    select_tag: "Chọn tag",
+    unit_group: "Nhóm đơn vị tính",
+    select_unit_group: "Chọn nhóm đơn vị tính",
+    create_unit_group: "Tạo nhóm đơn vị tính",
+    manage_multiple_units:"Quản lý nhiều đơn vị tính của sản phẩm",
+    unit: "Chọn đơn vị tính",
+    select_unit: "Chọn đơn vị tính",
+    create_unit: "Tạo đơn vị tính",
     filter: "Sắp xếp",
     directoryName: "Tên danh mục",
     placeholderDirectoryName: "Nhập tên danh mục",
@@ -476,6 +506,21 @@ const en = {
     validateMin: "Số lượng không được trùng lặp",
     addBank: "Thêm ngân hàng"
   },
+  detailScreen : {
+    headerClassify : 'Chi tiết phân loại',
+    information : 'Thông tin chung',
+    productCode : 'Mã sản phẩm' ,
+    nameProduct : "Tên sản phẩm",
+    status : 'Trạng thái' , 
+    minimumPurchase : 'Mua tối thiểu',
+    priceProduct : 'Giá sản phẩm',
+    tag : 'Tag', 
+    brand : 'Thương hiệu',
+    management : 'Hình thức quản lý' , 
+    unit : 'Đơn vị tính gốc',
+    properties : 'Thuộc tính chung',
+    detailProperty : 'Xem chi tiết thuộc tính'
+  },
   createProductScreen: {
     classify: "Phân loại",
     details:
@@ -483,12 +528,15 @@ const en = {
     addProperties: "Thêm thuộc tính",
     information: "Thêm thông tin",
     canBuy: "Có thể mua",
+    edit_product: "Sửa sản phẩm",
     cancel: "Hủy",
     done: "Hoàn tất",
     openCamera: "Chụp ảnh",
     uploadImage: "Tải ảnh lên",
     infoSupplier: "Thông tin nhà cung cấp",
     noSelectSupplier: "Chưa có nhà cung cấp nào được chọn",
+    inventory_management: "Quản lý tồn kho",
+    form_of_management: "Hình thức quản lý",
     infoMore: "Thông tin thêm",
     manageMultipleProduct: "Quản lý nhiều đơn vị tính của sản phẩm",
     createUnits: "Tạo đơn vị tính",
@@ -509,6 +557,8 @@ const en = {
     zToA: "Từ Z -> A",
     priceHighToLow: "Cao đến thấp",
     priceLowToHigh: "Thấp đến cao",
+    filterTime : 'Thời gian tạo',
+    filterName : 'Theo tên'
   },
   tranSacTionHistory: {
     tranSactionHistory: "Lịch sử giao dịch",
@@ -528,6 +578,17 @@ const en = {
   },
   chooseSupplierScreen: {
     placeholderSearch: "Tìm nhà cung cấp theo mã và tên",
+  },
+  addAttribute : {
+    title : 'Nhóm thuộc tính',
+    hint : 'Chọn nhóm thuộc tính',
+    header : 'Chọn thuộc tính',
+    addAttribute : 'Tạo nhóm thuộc tính mới',
+    selectedValue : 'Chọn giá trị'
+  },
+  vendorScreen : {
+    vendor : 'nhà cung cấp',
+    header : 'Chọn nhà cung cấp'
   },
   productDetail: {
     productClassification: "product classification",

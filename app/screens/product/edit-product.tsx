@@ -559,7 +559,7 @@ export const ProductEditScreen: FC = (item) => {
     } else {
       const newArr1: never[] = [];
       const newArr = dataCreateProduct?.map((item) => {
-        return { ...item, name: nameProduct + " - " + item.name };
+        return { ...item, name: nameProduct + " -" + item.name };
       });
       arrIdOrigin?.forEach((item) => {
         let isUnique = true;
@@ -617,8 +617,8 @@ export const ProductEditScreen: FC = (item) => {
         brandId: brand.id || null,
         tagIds: selectedItems,
         hasUomGroupInConfig: valueSwitchUnit,
-        uomId: uomId.id,
-        uomGroupId: uomGroupId.id,
+        uomId: valueSwitchUnit === false ? uomId.id : null,
+        uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
         hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
         attributeValues: attributeValues,
         textAttributes: textAttributes,
@@ -639,7 +639,7 @@ export const ProductEditScreen: FC = (item) => {
           translate("common.ok"),
           () => {
             hideDialog();
-            navigation.navigate("productDetailScreen" as any, { reload: true });
+            navigation.navigate("productDetailScreen" as never, {reload: true});
           }
         );
       } else {
@@ -691,7 +691,7 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        showToast("txtToats.permission_granted", "success");
+        // showToast("txtToats.permission_granted", "success");
       } else {
         console.log("Permission denied");
         showToast("txtToats.permission_denied", "error");
@@ -837,7 +837,7 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        showToast("txtToats.permission_granted", "success");
+        // showToast("txtToats.permission_granted", "success");
       } else {
         console.log("Permission denied");
         showToast("txtToats.permission_denied", "error");
@@ -912,7 +912,7 @@ export const ProductEditScreen: FC = (item) => {
       : dataCreateProduct[indexItem]?.imageUrls?.length;
     console.log("----------------indexItem-----------------", numberUrl);
     if (permissionStatus === RESULTS.GRANTED) {
-      showToast("txtToats.permission_granted", "success");
+      // showToast("txtToats.permission_granted", "success");
       const options = {
         cameraType: "back",
         quality: 1,
@@ -937,7 +937,7 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        showToast("txtToats.permission_granted", "success");
+        // showToast("txtToats.permission_granted", "success");
       } else {
         console.log("Permission denied");
         showToast("txtToats.permission_denied", "error");
@@ -1008,37 +1008,48 @@ export const ProductEditScreen: FC = (item) => {
   });
 
   const handleDeleteProduct = async (index: any, id: any) => {
-    try {
-      if (id !== null) {
-        const checkDelete = await productStore.deleteCheck(id);
-        console.log(checkDelete, "----------check");
-
-        if (checkDelete.result && checkDelete.kind === "ok") {
-          if (checkDelete.result.data.isUsing === false) {
+    showDialog(
+      translate("txtDialog.txt_title_dialog"),
+      "danger",
+      translate("txtDialog.delete_variant"),
+      translate("common.cancel"),
+      translate("common.confirm"),
+      async () => {
+        try {
+          if (id !== null) {
+            const checkDelete = await productStore.deleteCheck(id);
+            console.log(checkDelete, "----------check");
+    
+            if (checkDelete.result && checkDelete.kind === "ok") {
+              if (checkDelete.result.data.isUsing === false) {
+                const updatedData = [
+                  ...dataCreateProduct.slice(0, index),
+                  ...dataCreateProduct.slice(index + 1),
+                ];
+                setDataCreateProduct(updatedData);
+                setErrorContent(checkDelete.result.message);
+                setIsDeleteFailModalVisible(true);
+              } else {
+                setErrorContent(checkDelete.result.errorCodes[0].message);
+                setIsDeleteFailModalVisible(true);
+              }
+            } else {
+              setErrorContent(checkDelete.result.errorCodes[0].message);
+              setIsDeleteFailModalVisible(true);
+              console.error("Failed to fetch categories:", checkDelete.result);
+            }
+          } else {
             const updatedData = [
               ...dataCreateProduct.slice(0, index),
               ...dataCreateProduct.slice(index + 1),
             ];
             setDataCreateProduct(updatedData);
-          } else {
-            setErrorContent("Không thể xóa biến thể này!");
-            setIsDeleteFailModalVisible(true);
           }
-        } else {
-          setErrorContent("Không thể xóa biến thể này!");
-          setIsDeleteFailModalVisible(true);
-          console.error("Failed to fetch categories:", checkDelete.result);
+        } catch (error) {
+          console.error("Error fetching categories:", error);
         }
-      } else {
-        const updatedData = [
-          ...dataCreateProduct.slice(0, index),
-          ...dataCreateProduct.slice(index + 1),
-        ];
-        setDataCreateProduct(updatedData);
       }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
+    );
   };
 
   const handleSelect = (items: any) => {
@@ -1063,7 +1074,7 @@ export const ProductEditScreen: FC = (item) => {
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Sửa sản phẩm`}
+        headerTx={"createProductScreen.edit_product"}
         style={{ height: scaleHeight(54) }}
       />
       <ScrollView style={{ marginBottom: scaleHeight(20) }}>
@@ -1194,10 +1205,8 @@ export const ProductEditScreen: FC = (item) => {
                         width={scaleWidth(16)}
                         height={scaleHeight(16)}
                       />
-                      <Text
-                        style={{ fontSize: fontSize.size14, color: "#0078d4" }}>
-                        Tải ảnh lên
-                      </Text>
+                      <Text tx={"createProductScreen.uploadImage"}
+                        style={{ fontSize: fontSize.size14, color: "#0078d4" }}/>
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -1229,10 +1238,8 @@ export const ProductEditScreen: FC = (item) => {
                         width={scaleWidth(16)}
                         height={scaleHeight(16)}
                       />
-                      <Text
-                        style={{ fontSize: fontSize.size14, color: "#0078d4" }}>
-                        Chụp ảnh
-                      </Text>
+                      <Text tx={"createProductScreen.openCamera"}
+                        style={{ fontSize: fontSize.size14, color: "#0078d4" }}/>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -1304,13 +1311,11 @@ export const ProductEditScreen: FC = (item) => {
               }}
             />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text
+              <Text tx="createProductScreen.canBuy"
                 style={{
                   fontSize: fontSize.size13,
                   marginRight: scaleWidth(10),
-                }}>
-                Có thể mua
-              </Text>
+                }}/>
               <Switch
                 value={valuePurchase}
                 onToggle={() => {
@@ -1551,14 +1556,12 @@ export const ProductEditScreen: FC = (item) => {
                 marginHorizontal: scaleWidth(16),
                 marginVertical: scaleHeight(20),
               }}>
-              <Text
+              <Text tx={"createProductScreen.infoSupplier"}
                 style={{
                   fontSize: fontSize.size14,
                   fontWeight: "700",
                   marginBottom: scaleHeight(15),
-                }}>
-                Thông tin nhà cung cấp
-              </Text>
+                }}/>
               <TouchableOpacity
                 onPress={() => goToChooseSupplierScreen()}
                 style={{
@@ -1576,14 +1579,12 @@ export const ProductEditScreen: FC = (item) => {
                     {vendor.length} nhà cung cấp
                   </Text>
                 ) : (
-                  <Text
+                  <Text tx={"createProductScreen.noSelectSupplier"}
                     style={{
                       fontSize: fontSize.size13,
                       fontWeight: "400",
                       color: "#747475",
-                    }}>
-                    Chưa có nhà cung cấp nào được chọn
-                  </Text>
+                    }}/>
                 )}
                 <Images.icon_caretRight
                   width={scaleWidth(16)}
@@ -1599,16 +1600,14 @@ export const ProductEditScreen: FC = (item) => {
               marginHorizontal: scaleWidth(16),
               marginVertical: scaleHeight(20),
             }}>
-            <Text
+            <Text tx={'createProductScreen.inventory_management'}
               style={{
                 fontSize: fontSize.size14,
                 fontWeight: "700",
                 marginBottom: scaleHeight(15),
-              }}>
-              Quản lý tồn kho
-            </Text>
+              }}/>
             <InputSelect
-              titleText="Hình thức quản lý"
+              titleTx={"createProductScreen.form_of_management"}
               //hintText="Mặc định"
               isSearch={false}
               required={true}
@@ -1629,17 +1628,15 @@ export const ProductEditScreen: FC = (item) => {
               marginHorizontal: scaleWidth(16),
               marginVertical: scaleHeight(20),
             }}>
-            <Text
+            <Text tx={"createProductScreen.infoMore"}
               style={{
                 fontSize: fontSize.size14,
                 fontWeight: "700",
                 marginBottom: scaleHeight(15),
-              }}>
-              Thông tin thêm
-            </Text>
+              }}/>
             <InputSelect
-              titleText="Danh mục"
-              hintText="Chọn danh mục"
+              titleTx={"inforMerchant.Category"}
+              hintTx={"productScreen.select_catgory"}
               isSearch
               required={false}
               arrData={arrCategory}
@@ -1650,8 +1647,8 @@ export const ProductEditScreen: FC = (item) => {
               styleView={{ marginBottom: scaleHeight(15) }}
             />
             <InputSelect
-              titleText="Thương hiệu"
-              hintText="Chọn thương hiệu"
+              titleTx={"productScreen.trademark"}
+              hintTx={"productScreen.select_trademark"}
               isSearch
               required={false}
               arrData={arrBrand}
@@ -1670,8 +1667,8 @@ export const ProductEditScreen: FC = (item) => {
                 handleSelect(items);
               }}
               dataEdit={defaultTags}
-              titleText="Tag"
-              hintText="Chọn Tag"
+              titleTx={"productScreen.tag"}
+              hintTx={"productScreen.select_tag"}
               styleView={{ marginBottom: scaleHeight(15) }}
             />
           </View>
@@ -1682,14 +1679,12 @@ export const ProductEditScreen: FC = (item) => {
               marginHorizontal: scaleWidth(16),
               marginVertical: scaleHeight(20),
             }}>
-            <Text
+            <Text tx={valueSwitchUnit ? "productScreen.unit_group" : "productScreen.unit"}
               style={{
                 fontSize: fontSize.size14,
                 fontWeight: "700",
                 marginBottom: scaleHeight(15),
-              }}>
-              {valueSwitchUnit ? "Nhóm đơn vị tính" : "Đơn vị tính"}
-            </Text>
+              }}/>
             <View
               style={{
                 flexDirection: "row",
@@ -1697,31 +1692,26 @@ export const ProductEditScreen: FC = (item) => {
                 justifyContent: "space-between",
                 marginBottom: scaleHeight(15),
               }}>
-              <Text
+              <Text tx={"productScreen.manage_multiple_units"} 
                 style={{
                   fontSize: fontSize.size13,
                   fontWeight: "400",
                   color: "#747475",
-                }}>
-                Quản lý nhiều đơn vị tính của sản phẩm
-              </Text>
+                }}/>
               <Switch
                 value={valueSwitchUnit}
                 onToggle={() => {
                  if(priceUsing === true){
                   showToast('txtToats.product_is_using', 'error')
-                 }else{ setUomId({ id: "", label: "" });
-                  setUomGroupId({ id: "", label: "" });
+                 }else{
                   setValueSwitchUnit(!valueSwitchUnit);
                   getListUnitGroup(!valueSwitchUnit);}
                 }}
               />
             </View>
             <InputSelect
-              titleText={valueSwitchUnit ? "Nhóm đơn vị tính" : "Đơn vị tính"}
-              hintText={
-                valueSwitchUnit ? "Chọn nhóm đơn vị tính" : "Chọn đơn vị tính"
-              }
+              titleTx={valueSwitchUnit ? "productScreen.unit_group" : "productScreen.unit"}
+              hintTx={valueSwitchUnit ? "productScreen.select_unit_group" : "productScreen.select_unit"}
               isSearch
               required={true}
               arrData={arrUnitGroupData}
@@ -1758,14 +1748,12 @@ export const ProductEditScreen: FC = (item) => {
                   width={scaleWidth(14)}
                   height={scaleHeight(14)}
                 />
-                <Text
+                <Text tx={valueSwitchUnit ? "productScreen.create_unit_group" : "productScreen.create_unit"}
                   style={{
                     color: "#0078d4",
                     fontSize: fontSize.size12,
                     marginLeft: scaleWidth(4),
-                  }}>
-                  {valueSwitchUnit ? "Tạo nhóm đơn vị tính" : "Tạo đơn vị tính"}
-                </Text>
+                  }}/>
               </TouchableOpacity>
             </View>
             {valueSwitchUnit ? (
@@ -1777,12 +1765,12 @@ export const ProductEditScreen: FC = (item) => {
                     justifyContent: "space-between",
                     marginBottom: scaleHeight(15),
                   }}>
-                  <Text style={{ fontSize: fontSize.size14 }}>Đơn vị gốc</Text>
+                  <Text tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }}/>
                   {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
                   {detailUnitGroupData ? (
                     <Text
                       style={{ fontSize: fontSize.size14, fontWeight: "600" }}>
-                      {detailUnitGroupData.originalUnit.name}
+                      {detailUnitGroupData?.originalUnit?.name}
                     </Text>
                   ) : null}
                 </View>
@@ -1793,13 +1781,9 @@ export const ProductEditScreen: FC = (item) => {
                     justifyContent: "space-between",
                     marginBottom: scaleHeight(15),
                   }}>
-                  <Text style={{ fontSize: fontSize.size14 }}>
-                    Đơn vị quy đổi
-                  </Text>
-                  <Text
-                    style={{ fontSize: fontSize.size14, fontWeight: "600" }}>
-                    Tỷ lệ quy đổi
-                  </Text>
+                  <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size14 }}/>
+                  <Text  tx={"createProductScreen.conversionRate"}
+                    style={{ fontSize: fontSize.size14, fontWeight: "600" }}/>
                 </View>
                 {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
                   <View
@@ -1829,7 +1813,7 @@ export const ProductEditScreen: FC = (item) => {
                         fontSize: fontSize.size14,
                         fontWeight: "600",
                       }}>
-                      {item.conversionRate}
+                      {item.conversionRate} {detailUnitGroupData?.originalUnit?.name}
                     </Text>
                   </View>
                 ))}
@@ -2208,7 +2192,6 @@ export const ProductEditScreen: FC = (item) => {
                 {dataCreateProduct?.length > 0 ? (
                   <TouchableOpacity
                     onPress={() => {
-                      //điều kiện chuyển màn tạm thời
                       if (productUsing === true || priceUsing === true) {
                         navigation.navigate("editAttributeByEdit" as never, {
                           dataAttribute: attributeToEdit,
@@ -2252,14 +2235,12 @@ export const ProductEditScreen: FC = (item) => {
               }}>
               <View>
                 <View style={{ flexDirection: "row", alignContent: "center" }}>
-                  <Text
+                  <Text tx={"createProductScreen.description"}
                     style={{
                       fontSize: fontSize.size14,
                       fontWeight: "700",
                       marginBottom: scaleHeight(15),
-                    }}>
-                    Mô tả
-                  </Text>
+                    }}/>
                   {description ? (
                     <TouchableOpacity
                       onPress={() => {
@@ -2286,7 +2267,7 @@ export const ProductEditScreen: FC = (item) => {
                   />
                 </TouchableOpacity>
               </View>
-              {description === "" ? (
+              {description === "" || description === null ? (
                 <View style={{}}>
                   <TouchableOpacity
                     style={{ flexDirection: "row", alignItems: "center" }}
@@ -2295,14 +2276,12 @@ export const ProductEditScreen: FC = (item) => {
                       width={scaleWidth(14)}
                       height={scaleHeight(14)}
                     />
-                    <Text
+                    <Text  tx={"createProductScreen.addDescription"}
                       style={{
                         color: "#0078d4",
                         fontSize: fontSize.size12,
                         marginLeft: scaleWidth(4),
-                      }}>
-                      Thêm mô tả
-                    </Text>
+                      }}/>
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -2343,10 +2322,8 @@ export const ProductEditScreen: FC = (item) => {
                       borderRadius: 4,
                       marginLeft: scaleWidth(8),
                     }}>
-                    <Text
-                      style={{ color: "#0078d4", fontSize: fontSize.size10 }}>
-                      Mô tả
-                    </Text>
+                    <Text tx={"createProductScreen.description"}
+                      style={{ color: "#0078d4", fontSize: fontSize.size10 }}/>
                   </TouchableOpacity>
                 ) : null}
                 {addVariant === false ? (
@@ -2361,20 +2338,16 @@ export const ProductEditScreen: FC = (item) => {
                       borderRadius: 4,
                       marginLeft: scaleWidth(8),
                     }}>
-                    <Text
-                      style={{ color: "#0078d4", fontSize: fontSize.size10 }}>
-                      Phân loại sản phẩm
-                    </Text>
+                    <Text tx={"createProductScreen.productClassification"}
+                      style={{ color: "#0078d4", fontSize: fontSize.size10 }}/>
                   </TouchableOpacity>
                 ) : null}
                 {addDescribe === true && addVariant === true ? (
-                  <Text
+                  <Text tx={"createProductScreen.notificationAddAllInfoProduct"}
                     style={{
                       marginLeft: scaleWidth(8),
                       fontSize: fontSize.size13,
-                    }}>
-                    Bạn đã thêm tất cả thông tin khác của sản phẩm
-                  </Text>
+                    }}/>
                 ) : null}
               </View>
             </View>
@@ -2566,7 +2539,7 @@ export const ProductEditScreen: FC = (item) => {
             borderRadius: 10,
             borderColor: "#c8c8c8",
           }}>
-          <Text style={{ fontSize: fontSize.size14 }}>Hủy</Text>
+          <Text tx={"common.cancel"} style={{ fontSize: fontSize.size14 }}/>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -2580,9 +2553,7 @@ export const ProductEditScreen: FC = (item) => {
             borderRadius: 10,
             backgroundColor: "#0078d4",
           }}>
-          <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-            Hoàn tất
-          </Text>
+          <Text tx={"createProductScreen.done"} style={{ fontSize: fontSize.size14, color: "white" }}/>
         </TouchableOpacity>
       </View>
     </View>

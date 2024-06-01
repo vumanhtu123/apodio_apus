@@ -2,10 +2,13 @@ import React, { useEffect, useLayoutEffect } from "react";
 import {
   Dimensions,
   FlatList,
+  KeyboardAvoidingView,
+  Platform,
   TextBase,
   TextInput,
   TextStyle,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from "react-native";
@@ -61,11 +64,12 @@ const VIEWMODAL: ViewStyle = {
   // width: Dimensions.get('screen').width - 32,
   height: Dimensions.get("screen").height * 0.4,
   backgroundColor: colors.palette.neutral100,
-  borderRadius: 8,
+  borderTopRightRadius: 8,
+  borderTopLeftRadius: 8, 
   paddingVertical: scaleHeight(padding.padding_12),
   paddingHorizontal: scaleWidth(padding.padding_16),
   position: "absolute",
-  bottom: 16,
+  bottom: 0,
   left: 0,
   right: 0,
 };
@@ -99,7 +103,7 @@ export function InputSelect(props: InputSelectProps) {
     checkUse,
     onPressNotUse,
     handleOnSubmitSearch,
-    onChangeText ,
+    onChangeText,
   } = props;
   const title = titleText || (titleTx && translate(titleTx)) || "";
   const hint = hintText || (hintTx && translate(hintTx)) || "";
@@ -134,11 +138,11 @@ export function InputSelect(props: InputSelectProps) {
     }
   };
   useEffect(() => {
-    if(dataDefault !== undefined && dataDefault !== null && dataDefault !== '' ){
+    if (dataDefault !== undefined && dataDefault !== null && dataDefault !== '') {
       console.log('dataDefault---------------------------', dataDefault)
       const dataChoiceItem = arrData.filter(item => item.label !== dataDefault);
       setFilteredData(dataChoiceItem);
-    }else {
+    } else {
       setFilteredData(arrData);
     }
   }, [arrData]);
@@ -148,9 +152,9 @@ export function InputSelect(props: InputSelectProps) {
       <TouchableOpacity
         disabled={disabled}
         onPress={() => {
-          if(checkUse === true){
+          if (checkUse === true) {
             onPressNotUse()
-          }else{setShowModal(true);}
+          } else { setShowModal(true); }
         }}
         style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
@@ -171,7 +175,7 @@ export function InputSelect(props: InputSelectProps) {
             )}
           </View>
         </View>
-        {disabled === true ? null:<View style={{ justifyContent: "center", alignItems: "center" }}>
+        {disabled === true ? null : <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Images.dropDown />
         </View>}
       </TouchableOpacity>
@@ -179,46 +183,56 @@ export function InputSelect(props: InputSelectProps) {
         isVisible={showModal}
         onBackdropPress={() => {
           setShowModal(false);
-        }}>
-        <View style={VIEWMODAL}>
-          {/* <Text text="chon ly do" /> */}
-          {isSearch ?
-            <TextInput
-              style={{ fontSize: 16, fontWeight: "400" }}
-              onChangeText={(text) => handleSearch(text)}
-              value={search}
-              placeholder="Search..."
-              // enterKeyHint="search"
-              // onSubmitEditing={handleOnSubmitSearch}
-              // enablesReturnKeyAutomatically
-            /> : null}
-          <FlatList
-            data={filteredData}
-            style={{
-              // flex: 1,
-              marginTop: scaleHeight(margin.margin_10),
-            }}
-            onEndReached={loadMore}
-            onEndReachedThreshold={0.5}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setData(item.label);
-                      onPressChoice(item);
-                      setShowModal(false);
-                      const dataChoiceItem = arrData.filter(i => i.label !== item.label);
-                      setFilteredData(dataChoiceItem);
-                    }}>
-                    <Text text={item.label} style={TEXTLABELFLATLIST} />
-                  </TouchableOpacity>
-                  <View style={VIEWLINE}></View>
-                </View>
-              );
-            }}
-          />
-        </View>
+        }}
+        style={{margin: 0}}>
+        <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <View style={VIEWMODAL}>
+              {/* <Text text="chon ly do" /> */}
+              {isSearch ?
+                <TextInput
+                  style={{ fontSize: 16, fontWeight: "400" }}
+                  onChangeText={(text) => handleSearch(text)}
+                  value={search}
+                  placeholder="Tìm kiếm..."
+                // enterKeyHint="search"
+                // onSubmitEditing={handleOnSubmitSearch}
+                // enablesReturnKeyAutomatically
+                /> : null}
+              <FlatList
+                data={filteredData}
+                style={{
+                  // flex: 1,
+                  marginTop: scaleHeight(margin.margin_10),
+                  marginBottom: scaleHeight(margin.margin_15),
+                }}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.5}
+                renderItem={({ item }) => {
+                  return (
+                    <View>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setData(item.label);
+                          onPressChoice(item);
+                          setShowModal(false);
+                          const dataChoiceItem = arrData.filter(i => i.label !== item.label);
+                          setFilteredData(dataChoiceItem);
+                        }}>
+                        <Text text={item.label} style={TEXTLABELFLATLIST} />
+                      </TouchableOpacity>
+                      <View style={VIEWLINE}></View>
+                    </View>
+                  );
+                }}
+              />
+            </View>
+          </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
