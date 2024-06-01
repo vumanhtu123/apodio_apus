@@ -212,7 +212,10 @@ export const SuppliersScreen: FC = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("detailsOrderScreen" as never)}
+        onPress={() => {
+          console.log("abc");
+          navigation.navigate("orderDetailsSupplier" as never);
+        }}
         style={{
           flexDirection: "row",
           justifyContent: "center",
@@ -244,7 +247,7 @@ export const SuppliersScreen: FC = () => {
         setIsVisible={setIsVisible}
         setType={setTypeFilter}
       /> */}
-      <ModalCreateSuppliers isVisible={true} />
+      {/* <ModalCreateSuppliers isVisible={true} /> */}
     </View>
   );
 };
