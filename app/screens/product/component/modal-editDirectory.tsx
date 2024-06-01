@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Linking, StyleSheet, Text as TextRN, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Linking, Platform, StyleSheet, Text as TextRN, TouchableOpacity, View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { RESULTS } from 'react-native-permissions';
 import { Images } from '../../../../assets';
@@ -223,13 +223,17 @@ const EditDirectoryModal = (props: any) => {
             isVisible={isVisible}
             onBackdropPress={handleCloseModal}
             style={styles.container}>
-            <View >
-                <View style={styles.modalView}>
-                    <TextRN style={styles.modalText} />
-                    <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Chỉnh sửa danh mục</Text>
-                    </View>
-                    <View style={styles.horizontalLine} />
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+            >
+                <View >
+                    <View style={styles.modalView}>
+                        <TextRN style={styles.modalText} />
+                        <View style={styles.header}>
+                            <Text style={styles.headerTitle}>Chỉnh sửa danh mục</Text>
+                        </View>
+                        <View style={styles.horizontalLine} />
 
                     {imagesNote !== '' && isValidImageUrl(imagesNote) ? (
                         <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
@@ -325,29 +329,30 @@ const EditDirectoryModal = (props: any) => {
                             rules={{ required: translate('ruleController.emptyText'), }}
                         />
 
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
-                        <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
-                            <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={handleUpdateDirectory}
-                            disabled={isButtonDisabled}
-                            style={{
-                                width: scaleWidth(150),
-                                height: scaleHeight(48),
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: 10,
-                                backgroundColor: isButtonDisabled ? 'gray' : '#0078d4',
-                            }}
-                        >
-                            <Text tx='common.confirm' style={{ fontSize: fontSize.size14, color: 'white' }} />
-                        </TouchableOpacity>
-                    </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
+                            <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
+                                <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={handleUpdateDirectory}
+                                disabled={isButtonDisabled}
+                                style={{
+                                    width: scaleWidth(166),
+                                    height: scaleHeight(48),
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderRadius: 10,
+                                    backgroundColor: isButtonDisabled ? 'gray' : '#0078d4',
+                                }}
+                            >
+                                <Text tx='common.confirm' style={{ fontSize: fontSize.size14, color: 'white' }} />
+                            </TouchableOpacity>
+                        </View>
 
+                    </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
     );
 };
@@ -355,10 +360,12 @@ const EditDirectoryModal = (props: any) => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-end',
+        margin: 0,
     },
     modalView: {
         backgroundColor: '#fff',
-        borderRadius: 8,
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
         paddingTop: scaleHeight(8),
         paddingHorizontal: scaleWidth(16),
     },

@@ -40,6 +40,7 @@ const DescribeModal = (props: DescribeModalProps) => {
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}
             isVisible={isVisible}
+            style={{margin: 0}}
         // onBackdropPress={setIsVisible}
         >
             <KeyboardAvoidingView
@@ -49,8 +50,10 @@ const DescribeModal = (props: DescribeModalProps) => {
             >
                 <View style={{
                     maxHeight: Dimensions.get('screen').height * 0.6,
-                    width: Dimensions.get('screen').width - scaleWidth(32), backgroundColor: colors.palette.neutral100,
-                    borderRadius: 8, position: 'absolute', bottom: scaleHeight(20)
+                    width: '100%', backgroundColor: colors.palette.neutral100,
+                    borderTopRightRadius: 8,
+                    borderTopLeftRadius: 8,
+                    position: 'absolute', bottom: scaleHeight(0),
                 }}>
                     <Text style={{
                         fontWeight: '700', fontSize: fontSize.size14,
@@ -71,7 +74,7 @@ const DescribeModal = (props: DescribeModalProps) => {
                                     keyboardType={'default'}
                                     placeholder={'Nhập mô tả'}
                                     style={{
-                                        width: (Dimensions.get('screen').width - scaleWidth(64)),
+                                        width: (Dimensions.get('screen').width - scaleWidth(32)),
                                         height: Dimensions.get('screen').height * 0.3,
                                         marginBottom: scaleHeight(10),
                                     }}
@@ -92,13 +95,13 @@ const DescribeModal = (props: DescribeModalProps) => {
                     </View>
                     <View style={{
                         marginHorizontal: scaleWidth(margin.margin_16), flexDirection: 'row',
-                        justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_10)
+                        justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_15)
                     }}>
                         <Button onPress={() => onCancel()}
                             tx={'common.cancel'} style={{
                                 height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
                                 borderWidth: 1, borderColor: colors.palette.veryLightGrey,
-                                width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.48,
+                                width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
                                 borderRadius: 8
                             }} textStyle={{
                                 color: colors.palette.dolphin, fontWeight: '700',
@@ -107,7 +110,7 @@ const DescribeModal = (props: DescribeModalProps) => {
                         <Button tx={'common.confirm'} style={{
                             height: scaleHeight(48),
                             backgroundColor: colors.palette.navyBlue,
-                            width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.48,
+                            width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
                             borderRadius: 8
                         }}
                             textStyle={{

@@ -97,7 +97,6 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       }
     }
   };
-
   const addDataAttribute = (data: any, index: any) => {
     if (dataCheckbox.length === 0 || dataCheckbox[dataCheckbox.length - 1]?.value.trim() === "") {
       showToast('txtToats.required_value_null', 'error')
@@ -385,7 +384,9 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                       placeholder={'Nhập tên thuộc tính'}
                       value={name}
                       onChangeText={(text) => setName(text)}
-                      multiline={true}
+                      onSubmitEditing={() => addAttribute()}
+                      blurOnSubmit={false}
+                      // multiline={true}
                     />
                   </View>
                   <TouchableOpacity onPress={() => addAttribute()}>
@@ -516,7 +517,9 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                                       dataCheckbox.concat(newObj);
                                     setDataCheckbox(newData);
                                   }}
-                                />
+                                  onSubmitEditing={() => addDataAttribute(item.id, index)}
+                                  blurOnSubmit={false}
+                                  />
                               </ScrollView>
                             </View>
                           )}
@@ -576,7 +579,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
           />
         </View>
       ) : null}
-      <Modal isVisible={isModal}>
+      <Modal isVisible={isModal} style={{margin: 0}}>
         <View style={styles.viewModal}>
           <Text
             text={"DataType"}
@@ -688,11 +691,12 @@ const styles = StyleSheet.create({
   viewModal: {
     // height: Dimensions.get("screen").height * 0.3,
     backgroundColor: colors.palette.neutral100,
-    borderRadius: 8,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
     paddingVertical: scaleHeight(padding.padding_12),
     paddingHorizontal: scaleWidth(padding.padding_16),
     position: "absolute",
-    bottom: 16,
+    bottom: 0,
     left: 0,
     right: 0,
   },

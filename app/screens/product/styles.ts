@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 12,
     marginTop: scaleHeight(20),
   },
-  rowBtnTab : {
+  rowBtnTab: {
     flexDirection: "row",
     backgroundColor: "#E6E7EA",
     borderRadius: 8,
@@ -118,13 +118,13 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: fontSize.size10,
   },
-  titleHeader : {
+  titleHeader: {
     justifyContent: "flex-start",
     paddingLeft: 5,
     flexDirection: "row",
     alignItems: "center",
   },
-  btnCreateProduct : {
+  btnCreateProduct: {
     position: "absolute",
     bottom: scaleHeight(40),
     zIndex: 1,
@@ -156,12 +156,12 @@ export const styles = StyleSheet.create({
   tabTextInactive: {
     color: "#747475",
   },
-  containerFilter : {
+  containerFilter: {
     marginRight: scaleHeight(16),
     flexDirection: "row",
     alignItems: "center",
   },
-  btnFilterByCategory : {
+  btnFilterByCategory: {
     borderRadius: 4,
     paddingVertical: scaleHeight(8),
     marginLeft: scaleWidth(5),
@@ -169,9 +169,9 @@ export const styles = StyleSheet.create({
     borderColor: "#0078D4",
     flexDirection: "row",
     width: scaleWidth(110),
-    justifyContent: 'space-between'
+    justifyContent: "space-between",
   },
-  textBtnFilter : {
+  textBtnFilter: {
     color: "#0078D4",
     textAlign: "center",
     fontWeight: "400",
@@ -181,19 +181,19 @@ export const styles = StyleSheet.create({
     maxWidth: scaleWidth(80),
     flex: 1,
   },
-  containerProduct : {
+  containerProduct: {
     flex: 1,
     marginTop: scaleHeight(16),
     marginHorizontal: scaleWidth(16),
   },
-  btnCreateCategory : {
+  btnCreateCategory: {
     position: "absolute",
     bottom: scaleHeight(40),
     zIndex: 1,
     right: scaleWidth(16),
     borderRadius: 40,
     backgroundColor: "#0078D4",
-  }
+  },
 });
 
 export const stylesItem = StyleSheet.create({
@@ -231,4 +231,3 @@ export const stylesItem = StyleSheet.create({
     // marginBottom: scaleHeight(16),
   },
 });
-

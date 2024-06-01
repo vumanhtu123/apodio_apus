@@ -22,9 +22,8 @@ export const SuccessScreen: FC = () => {
 
             </View >
             <View style={{
-                marginHorizontal: scaleWidth(16)
             }}>
-                <TouchableOpacity onPress={() => navigation.reset({ index: 1, routes: [{ name: 'productScreen' as any }, { name: 'ProductCreateScreen' as any }]})} style={{
+                <TouchableOpacity onPress={() => navigation.reset({index: 1, routes:[{name: 'productScreen' as any },{name: 'ProductCreateScreen' as any}]})} style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 10, borderColor: '#c8c8c8',

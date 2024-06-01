@@ -519,6 +519,9 @@ export const OrderDetails: FC = observer(
                             </View>
                         </View>
                     </View>
+                    <TouchableOpacity onPress={()=> navigation.navigate('orderTracking' as never)}>
+                        <Text text="Theo doi giao hang"/>
+                    </TouchableOpacity>
                 </ScrollView>
                 {data.status === 'Đang xử lý' ?
                     <View style={styles.viewButtonCancel}>
