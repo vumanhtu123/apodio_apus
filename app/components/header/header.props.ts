@@ -11,6 +11,7 @@ export interface HeaderProps {
   rightTx1? : TxKeyPath
   leftText? : TxKeyPath
   textBelowIconRightSearch? : any
+  textBelowIconRight?: any
   /**
    * header non-i18n
    */
@@ -36,6 +37,7 @@ export interface HeaderProps {
   RightIcon2?: any;
   RightIconTextInput?: any;
   RightIconTextInputCenter?: any;
+  RightIconAndTextBelow?: any; 
   /**
    * What happens when you press the right icon
    */
@@ -47,6 +49,7 @@ export interface HeaderProps {
   onRightIconTextInput?() : void;
   onRightIconTextInputCenter?() :void;
   onLeftTextPress?() : void;
+  onRightIconAndTextBelow?() : void;
 
   /**
    * Container style overrides.

@@ -22,6 +22,7 @@ import {
   colors,
   fontSize,
   padding,
+  palette,
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
@@ -44,8 +45,8 @@ import { LinearGradient } from "react-native-linear-gradient";
 // import { string } from "mobx-state-tree/dist/internal"
 // import { BulletItem } from "app/components/bullet-item/bullet-item"
 import { Row } from "../../../../app/components/Row";
-import { AppStackParamList } from "../../../navigators/AppNavigator";
-import { TabScreenProps } from "../../../navigators/bottom-navigation";
+import { BottomParamList, TabScreenProps } from "../../../navigators/bottom-navigation";
+import { TextField } from "../../../components";
 // import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors"
 // import { UsersScreen } from "../users/view/users-screen"
 //
@@ -108,13 +109,13 @@ const MainAccount1 = ({ title, onPress, index }: any) => {
   );
 };
 
-export const UserScreen: FC<StackScreenProps<AppStackParamList, "users">> =
+export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
   observer(function AccountScreen(props) {
     // const { accountStore } = useStores()
     // const { userId, imageUrl, name, selectedLanguage, setSelectedLanguage } = accountStore
 
     const navigation = useNavigation();
-
+    const [isVisibleFeedback, setIsVisibleFeedback] = useState(false)
     const [selectLanguage, setSelectLanguage] = useState("");
     const { top } = useSafeAreaInsets();
     const [data, setData] = useState();
@@ -217,7 +218,7 @@ export const UserScreen: FC<StackScreenProps<AppStackParamList, "users">> =
         icon: Images.ic_infor,
         onPress: () => {
           // Alert.alert('ok')
-          props.navigation.navigate("InfomerchantUsers");
+          props.navigation.navigate("inforAccount");
         },
       },
       {
@@ -233,17 +234,17 @@ export const UserScreen: FC<StackScreenProps<AppStackParamList, "users">> =
       {
         title: "inforMerchant.btnIntroduct",
         icon: Images.ic_inTroduce,
-        // onPress: () => props.navigation.navigate('infomerchantUsers'),
+        onPress: () => props.navigation.navigate('Introduce'),
       },
       {
         title: "inforMerchant.btnFeedback",
         icon: Images.ic_feedBack,
-        // onPress: () => props.navigation.navigate('changePass'),
+        onPress: () => setIsVisibleFeedback(!isVisibleFeedback),
       },
       {
         title: "inforMerchant.btnSettingBell",
         icon: Images.ic_settingBell,
-        // onPress: () => props.navigation.navigate('changePass'),
+        onPress: () => props.navigation.navigate('notificationSetting'),
       },
     ];
 
@@ -510,6 +511,49 @@ export const UserScreen: FC<StackScreenProps<AppStackParamList, "users">> =
               </TouchableOpacity>
             </View>
           </View>
+        </ReactNativeModal>
+
+        <ReactNativeModal
+          animationIn={"fadeInDown"}
+          backdropOpacity={0.5}
+          isVisible={isVisibleFeedback}
+          onBackdropPress={() => {
+            setIsVisibleFeedback(!isVisibleFeedback)
+          }}
+          style={{ justifyContent: 'flex-end' }}
+        >
+          <View
+            style={{ backgroundColor: colors.palette.white, borderRadius: 8 }}
+          >
+
+            <View style={{ backgroundColor: "#C7C7C7", width: 68, height: 5, borderRadius: 100, alignSelf: 'center', marginTop: 8 }} />
+            <View style={{ padding: scaleWidth(15) }}>
+              <View
+
+                style={{ paddingVertical: scaleWidth(18), paddingHorizontal: scaleHeight(10), flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, marginBottom: scaleHeight(15), borderBottomColor: "#E7EFFF" }}
+              >
+                <Text tx="menuDrawer.feedback" style={{ fontWeight: 'bold' }} />
+                <TouchableOpacity
+                  onPress={() => setIsVisibleFeedback(!isVisibleFeedback)}
+                >
+                  <Text tx="inforMerchant.cancel" style={{ color: colors.palette.radicalRed }} />
+                </TouchableOpacity>
+              </View>
+
+              <TextField
+                labelTx={"feedBack.improtFeedback"}
+                style={{ height: scaleWidth(210), }}
+              />
+              <TouchableOpacity style={{ alignItems: 'center', padding: scaleWidth(12), backgroundColor: colors.palette.navyBlue, borderRadius: 8 }}>
+                <Text tx="inforMerchant.btnSen"
+                  style={{ color: palette.white }}
+                />
+              </TouchableOpacity>
+            </View>
+
+
+          </View>
+
         </ReactNativeModal>
       </ScrollView>
     );

@@ -14,12 +14,12 @@ import store from "../comment/comment";
 import { useStores } from "../../../models";
 import React from "react";
 import StarRating from "react-native-star-rating-widget";
-import { AppStackParamList } from "../../../navigators/AppNavigator";
+import { NavigatorParamList } from "../../../navigators";
 
 
 
 
-export const IntroductionScreen2: FC<StackScreenProps<AppStackParamList, "InfomerchantUsers">> = observer(
+export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Introduce">> = observer(
 
     function Introduction2(props) {
 
