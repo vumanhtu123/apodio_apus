@@ -64,11 +64,12 @@ const VIEWMODAL: ViewStyle = {
   // width: Dimensions.get('screen').width - 32,
   height: Dimensions.get("screen").height * 0.4,
   backgroundColor: colors.palette.neutral100,
-  borderRadius: 8,
+  borderTopRightRadius: 8,
+  borderTopLeftRadius: 8, 
   paddingVertical: scaleHeight(padding.padding_12),
   paddingHorizontal: scaleWidth(padding.padding_16),
   position: "absolute",
-  bottom: 16,
+  bottom: 0,
   left: 0,
   right: 0,
 };
@@ -182,7 +183,8 @@ export function InputSelect(props: InputSelectProps) {
         isVisible={showModal}
         onBackdropPress={() => {
           setShowModal(false);
-        }}>
+        }}
+        style={{margin: 0}}>
         <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'height' : 'height'}
@@ -206,6 +208,7 @@ export function InputSelect(props: InputSelectProps) {
                 style={{
                   // flex: 1,
                   marginTop: scaleHeight(margin.margin_10),
+                  marginBottom: scaleHeight(margin.margin_15),
                 }}
                 onEndReached={loadMore}
                 onEndReachedThreshold={0.5}
