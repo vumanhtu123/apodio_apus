@@ -66,3 +66,5 @@ export * from "./company/company-screen";
 export * from "../screens/users/inforAccount/inforAccount";
 export * from "../screens/suppliers/screens/details-suppliers-screen";
 export * from "../screens/suppliers/screens/details-order-screen";
+export * from "../screens/debt/screen/debt-screen";
+export * from "../screens/debt/screen/mustPayScreen"

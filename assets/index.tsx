@@ -180,15 +180,26 @@ import ic_oto from "./Images/oto.svg";
 import ClipboardText from "./Images/ClipboardText.svg";
 import icon_chart from "./Images/icon_chart.svg";
 import ic_x from "./Images/ic_x.svg";
-import ic_downLoadBlue from "./Images/ic_downLoadBlue.svg"
-import ic_Feild from "./Images/ic_field .svg"
-import ic_system_uico from "./Images/ic_System_Uicons.svg"
-import ic_pen from"./Images/ic_pen.svg"
-import ic_PaperPlaneTilt from"./Images/ic_PaperPlaneTilt.svg"
-import ic_bin from "./Images/ic_bin.svg"
-import ic_In from"./Images/ic_In.svg"
-import img_test from "./Images/img_test.svg"
-import ic_avatar from "./Images/ic_avatar.svg"
+import ic_downLoadBlue from "./Images/ic_downLoadBlue.svg";
+import ic_Feild from "./Images/ic_field .svg";
+import ic_system_uico from "./Images/ic_System_Uicons.svg";
+import ic_pen from "./Images/ic_pen.svg";
+import ic_PaperPlaneTilt from "./Images/ic_PaperPlaneTilt.svg";
+import ic_bin from "./Images/ic_bin.svg";
+import ic_In from "./Images/ic_In.svg";
+import img_test from "./Images/img_test.svg";
+import ic_avatar from "./Images/ic_avatar.svg";
+import ic_BIDV from "./Images/ic_BIDV.svg";
+import ic_Truck from "./Images/ic_Truck.svg";
+import ic_MapPin from "./Images/ic_MapPin.svg";
+import img_Girl from "./Images/img_girl.svg";
+import img_addImg from "./Images/ic_addImg.svg";
+import img_Camera from "./Images/img_camera.svg";
+import ic_debt from "./Images/ic_debt.svg";
+import ic_toPay from "./Images/ic_topay.svg";
+import ic_receivables from "./Images/ic_receivables.svg"
+import ic_calender_white from "./Images/ic_calender_white.svg"
+import ic_slider from "./Images/ic_sliders.svg"
 
 export const Images = {
   icon_test: _test,
@@ -366,12 +377,24 @@ export const Images = {
   ClipboardText: ClipboardText,
   icon_chart: icon_chart,
   ic_x: ic_x,
-  img_test : img_test,
+  img_test: img_test,
   ic_downLoadBlue: ic_downLoadBlue,
   ic_Feilter: ic_Feild,
   ic_system_uico: ic_system_uico,
   ic_bin: ic_bin,
   ic_pen: ic_pen,
-  ic_In : ic_In ,
-  ic_PaperPlaneTilt : ic_PaperPlaneTilt,
+  ic_In: ic_In,
+  ic_PaperPlaneTilt: ic_PaperPlaneTilt,
+  ic_BIDV: ic_BIDV,
+  ic_Truck: ic_Truck,
+  ic_MapPin: ic_MapPin,
+  img_Girl: img_Girl,
+  img_addImg: img_addImg,
+  img_Camera: img_Camera,
+  ic_debt: ic_debt,
+  ic_receivables: ic_receivables,
+  ic_toPay: ic_toPay,
+  ic_calender_white: ic_calender_white,
+  ic_slider: ic_slider,
+
 };

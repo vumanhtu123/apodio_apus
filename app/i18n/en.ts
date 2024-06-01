@@ -1,3 +1,5 @@
+import { placeholder } from "i18n-js";
+
 const en = {
   common: {
     ok: "OK!",
@@ -125,7 +127,7 @@ const en = {
     product: "Product",
     moreFeatures: "More features",
     supply: "Supply",
-    debt: "Debt",
+    debt: "Công nợ",
     revenue: "Revenue",
     revenueMonth: "Revenue this month",
     titleBanner: "Participating sales programs",
@@ -385,19 +387,57 @@ const en = {
   },
   NCCScreen: {
     idSupliers: "Mã nhà cung cấp",
+    name: "Tên",
+    placeholderName: "Nhập tên",
     placeholderIdSuppliers: "Ví dụ : NCC00001",
     nameSuppliers: "Tên nhà cung cấp",
     placeholderNameSuppliers: "Ví dụ : Công ty TNHH Hà Nội",
     type: "Kiểu",
     groupSuppliers: "Nhóm NCC",
     phone: "Số điện thoại",
-    placeholderPhone: "Ví dụ : 0123456789",
+    enterPhone: "Nhập số điện thoại",
+    placeholderCodeSupplier: "Ví dụ : NCC000001",
     email: "Email",
     placeholderEmail: "Nhập địa chỉ email",
     idCard: "Số giấy tờ định danh",
     placeHolderIdCard: "Nhập số giấy tờ định danh ",
     address: "Địa chỉ",
     placeholderAddress: "Nhập địa chỉ",
+    selectedGroupSuppliers: "Chọn nhóm nhà cung cấp",
+    moreInformation: "Thông tin thêm",
+    codeSupplier: "Mã nhà cung cấp",
+    addressInfomation: "Thông tin địa chỉ chính",
+    region: "Vùng",
+    selectRegion: "Chọn vùng",
+    addAnotherAddress: "Thêm địa chỉ khác",
+    addBank: "Thêm ngân hàng", 
+    bankInformation: "Thông tin ngân hàng",
+    contactPersonInformation : "Thông tin người liên hệ",
+    addContactPersonInformation : "Thêm thông tin ngươi liên hệ",
+    selectedAddress: "Chọn địa chỉ",
+    accountNumber: "Số tài khoản",
+    enterAccountNumber: "Nhập số tài khoản",
+    accountName: "Tên chủ tài khoản",
+    enterAccountName: "Nhập tên chủ tài khoản",
+    addContactPerson: "Thêm người liên hệ",
+    nickName: "Danh xưng",
+    selectNickName: "Chọn danh xưng",
+    position: "Chức vụ",
+    placeholderPosition: "Nhập chức vụ",
+    gender: "Giới tính", 
+    placeholderGender: "Nhập giới tính",
+    dayBirth: "Ngày sinh",
+    personalIdentification: "Số giấy tờ định danh cá nhân",
+    placeholderPersonalIdentification: "Nhập số giấy tờ",
+    
+
+  },
+  debtScreen: {
+    receivables: "Phải thu",
+    mustPay: "phải trả",
+    toPaydebt: "Công nợ phải trả",
+    totalNumberOfSuppliersIncurringDebt: "Tổng số nhà cung cấp đang phát sinh công nợ",
+    totalDebtMustPay: "Tổng số công nợ phải trả"
   },
   productScreen: {
     directory: "Tất cả danh mục",
@@ -434,6 +474,7 @@ const en = {
     NotifyCloseModal: "Bạn có chắc chắn muốn thoát ?",
     Perspective: "Xem phối cảnh 3D",
     validateMin: "Số lượng không được trùng lặp",
+    addBank: "Thêm ngân hàng"
   },
   createProductScreen: {
     classify: "Phân loại",

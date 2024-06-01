@@ -4,7 +4,7 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackScreenProps,
@@ -113,6 +113,8 @@ export type NavigatorParamList = {
   voucherDetail: undefined;
   warehouseBook: undefined;
   filterInWarehouseBook: undefined;
+  debt: undefined;
+  mustPay: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -154,7 +156,7 @@ export const AppStack = () => {
 
       {/* màn hình kiểm kho */}
       <Stack.Screen
-        name="InventoryManagenment"
+        name="inventoryManagenment"
         component={InventoryManagement}
       />
       <Stack.Screen name="addCheckIventory" component={addCheckInventory} />
@@ -201,12 +203,13 @@ export const AppStack = () => {
       <Stack.Screen name="detailImportReceipt" component={Screens.DetailImportReceipt} />
       <Stack.Screen name="voucherDetail" component={Screens.VoucherDetail} />
 
-        {/* màn hình sô kho */}
-        <Stack.Screen name="warehouseBook" component={Screens.warehouseBook} />
-      <Stack.Screen name="filterInWarehouseBook" component={Screens.FilterWarehouseBook}/> 
+      {/* màn hình sô kho */}
+      <Stack.Screen name="warehouseBook" component={Screens.warehouseBook} />
+      <Stack.Screen name="filterInWarehouseBook" component={Screens.FilterWarehouseBook} />
 
-    
-
+      {/* Màn hình công nợ */}
+      <Stack.Screen name="debt" component={Screens.DebtScreen} />
+      <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
 
       <Stack.Screen
         name="mainBottom"
