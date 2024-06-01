@@ -131,37 +131,37 @@ export const ProductCreateScreen: FC = (item) => {
     return unsubscribe;
   }, [idUnitGroup]);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      if (resetData === true) {
-        setDataCreateProduct([])
-        setCategory({ label: "", id: 0 })
-        setBrand({ label: "", id: 0 })
-        setBrands({ id: 0, label: 'Mặc định', label2: 'DEFAULT' })
-        setCostPriceProduct(0)
-        setImagesNote([])
-        setListPriceProduct(0)
-        setRetailPriceProduct([])
-        setWholesalePriceProduct([])
-        setTags([])
-        setDescription('')
-        setAttributeValues([])
-        setTextAttributes([])
-        setAddDescribe(false)
-        setAddVariant(false)
-        setNameProduct('')
-        setDefaultTags([])
-        setSku('')
-        setUomId({ id: "", label: "" })
-        setUomGroupId({ id: "", label: "" })
-        setValuePurchase(false)
-        setValueSwitchUnit(false)
-        setSelectedItems([])
-        reset()
-      }
-    });
-    return unsubscribe;
-  }, [navigation, resetData]);
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', () => {
+  //     if (resetData === true) {
+  //       setDataCreateProduct([])
+  //       setCategory({ label: "", id: 0 })
+  //       setBrand({ label: "", id: 0 })
+  //       setBrands({ id: 0, label: 'Mặc định', label2: 'DEFAULT' })
+  //       setCostPriceProduct(0)
+  //       setImagesNote([])
+  //       setListPriceProduct(0)
+  //       setRetailPriceProduct([])
+  //       setWholesalePriceProduct([])
+  //       setTags([])
+  //       setDescription('')
+  //       setAttributeValues([])
+  //       setTextAttributes([])
+  //       setAddDescribe(false)
+  //       setAddVariant(false)
+  //       setNameProduct('')
+  //       setDefaultTags([])
+  //       setSku('')
+  //       setUomId({ id: "", label: "" })
+  //       setUomGroupId({ id: "", label: "" })
+  //       setValuePurchase(false)
+  //       setValueSwitchUnit(false)
+  //       setSelectedItems([])
+  //       reset()
+  //     }
+  //   });
+  //   return unsubscribe;
+  // }, [navigation, resetData]);
 
   const getDetailUnitGroup = async (id: number) => {
     // call nhieu lan

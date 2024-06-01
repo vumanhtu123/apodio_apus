@@ -331,14 +331,14 @@ const EditDirectoryModal = (props: any) => {
 
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
-                            <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
+                            <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
                                 <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={handleUpdateDirectory}
                                 disabled={isButtonDisabled}
                                 style={{
-                                    width: scaleWidth(150),
+                                    width: scaleWidth(166),
                                     height: scaleHeight(48),
                                     justifyContent: 'center',
                                     alignItems: 'center',
@@ -360,10 +360,12 @@ const EditDirectoryModal = (props: any) => {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-end',
+        margin: 0,
     },
     modalView: {
         backgroundColor: '#fff',
-        borderRadius: 8,
+        borderTopRightRadius: 8,
+        borderTopLeftRadius: 8,
         paddingTop: scaleHeight(8),
         paddingHorizontal: scaleWidth(16),
     },

@@ -7,6 +7,7 @@ import {colors} from '../../theme';
 const BASE: TextStyle = {
   color: colors.text,
   fontSize: 15,
+  // fontFamily: 'Inter-Medium',
 };
 
 /**
