@@ -190,6 +190,7 @@ import icon_pickup_blue from "./Images/icon_pickupBlue.svg"
 import icon_delivery from "./Images/icon_delivery.svg"
 import tag from "./Images/Tag.svg";
 import ic_plus_blue from "./Images/PlusBlue.svg";
+import icon_plus_blue2 from "./Images/icon_plus_blue2.svg";
 
 export const Images = {
   icon_test: _test,
@@ -376,4 +377,5 @@ export const Images = {
   icon_delivery: icon_delivery,
   ic_tag: tag,
   icon_plus_blue: ic_plus_blue,
+  icon_plus_blue2: icon_plus_blue2,
 };

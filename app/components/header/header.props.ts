@@ -11,12 +11,14 @@ export interface HeaderProps {
   rightTx1? : TxKeyPath
   leftText? : TxKeyPath
   textBelowIconRightSearch? : any
+  searchTx?: TxKeyPath
   /**
    * header non-i18n
    */
   headerText?: string;
   rightText? : string;
   rightText1? : string;
+  searchText? : string
 
   /**
    * Icon that should appear on the left

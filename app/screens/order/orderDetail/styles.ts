@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: scaleWidth(margin.margin_16),
   },
   viewAddress: {
-    marginTop: scaleHeight(margin.margin_16),
+    marginBottom: scaleHeight(margin.margin_16),
     backgroundColor: colors.palette.neutral100,
     borderRadius: 8,
     paddingHorizontal: scaleWidth(padding.padding_16),
