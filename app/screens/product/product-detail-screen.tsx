@@ -380,6 +380,7 @@ export const ProductDetailScreen: FC = (item) => {
                     onPress={() => {
                       setChangeClassification(item.id);
                       setDetailsClassification(item);
+                      console.log('first' , dataClassification)
                       // setShowDetails(false);
                     }}>
                     <Text
@@ -433,7 +434,7 @@ export const ProductDetailScreen: FC = (item) => {
                 <View>
                   <ProductAttribute
                     label="Mã biến thể sản phẩm "
-                    value={detailsClassification.id}
+                    value={detailsClassification.sku}
                   />
                   <ProductAttribute
                     label="Tên biến thể sản phẩm "
@@ -768,7 +769,7 @@ export const ProductDetailScreen: FC = (item) => {
                               paddingVertical: scaleHeight(padding.padding_8),
                             }}>
                             <AutoHeightImage
-                              source={{ uri: item?.imgUrl }}
+                              source={{ uri: item?.avatarUrl }}
                               width={scaleHeight(40)}
                               height={scaleHeight(40)}
                               style={{ borderRadius: 40 }}

@@ -33,8 +33,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList,'wareHouse'
                 img: require('../../../assets/Images/ic_WareBook.png'),
                 name: en.wareHouse.wareBook,
                 onPress: () => {
-                      Alert.alert('ok 1')
-                    // props.navigation.navigate('inventoryManagenment')
+                    //   Alert.alert('ok 1')
+                    props.navigation.navigate('warehouseBook')
                 } 
             },
             {
@@ -44,7 +44,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList,'wareHouse'
                 onPress: () => {
                     // Alert.alert('ok 2')
               
-                    props.navigation.navigate('doan')
+                    props.navigation.navigate('inventoryManagenment')
                    
                 } 
             },
@@ -53,8 +53,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList,'wareHouse'
                 img: require('../../../assets/Images/ic_importBook.png'),
                 name: en.wareHouse.importBook,
                 onPress: () => {
-                      Alert.alert('ok 3')
-                    props.navigation.navigate('GoodsDeliveryBook')
+                    //   Alert.alert('ok 3')
+                    props.navigation.navigate('importGoodsBook')
                 } 
             },
             {

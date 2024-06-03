@@ -128,7 +128,7 @@ export const FilterScreen: FC = (item) => {
       <Header
         type={"AntDesign"}
         LeftIcon={Images.back}
-        onLeftPress={() => navigation.goBack()}
+        onLeftPress={() => navigation.goBack()} 
         colorIcon={colors.text}
         headerText={`Bộ lọc`}
         style={{ height: scaleHeight(54) }}

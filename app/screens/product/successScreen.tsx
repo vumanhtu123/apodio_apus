@@ -11,8 +11,8 @@ import { useStores } from "../../models"
 export const SuccessScreen: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const {idProduct} = route.params || undefined
-    const {productStore}= useStores()
+    const { idProduct } = route.params || undefined
+    const { productStore } = useStores()
     return (
         <View style={styles.ROOT}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -22,7 +22,6 @@ export const SuccessScreen: FC = () => {
 
             </View >
             <View style={{
-                marginHorizontal: scaleWidth(16)
             }}>
                 <TouchableOpacity onPress={() => navigation.reset({index: 1, routes:[{name: 'productScreen' as any },{name: 'ProductCreateScreen' as any}]})} style={{
                     justifyContent: 'center',
@@ -42,9 +41,9 @@ export const SuccessScreen: FC = () => {
                     <Text tx="successScreen.btnDetail" style={{ fontSize: fontSize.size14, color: '#0078D4', fontWeight: '700' }} />
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => { 
+                    onPress={() => {
                         productStore.setReloadProductScreen(true)
-                        navigation.navigate('mainBottom'as never)
+                        navigation.navigate('mainBottom' as never)
                     }}
                     style={{ justifyContent: 'center', alignItems: 'center', marginTop: scaleHeight(15), marginBottom: scaleHeight(30) }}>
                     <Text tx="successScreen.btnBack" style={{ fontSize: fontSize.size14, color: '#0078D4', fontWeight: '700' }} />

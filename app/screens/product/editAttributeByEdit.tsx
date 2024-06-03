@@ -221,7 +221,7 @@ export const EditAttributeByEdit: FC = observer(
                 <Header
                     LeftIcon={Images.back}
                     onLeftPress={() => navigation.goBack()}
-                    headerText="Sửa thuộc tính"
+                    headerTx="editAttribute.headerText"
                     style={{ height: scaleHeight(52) }}
                 />
                 <View style={[styles.viewBody, { top: scaleHeight(52) + scaleHeight(paddingTop), }]}>
@@ -230,7 +230,7 @@ export const EditAttributeByEdit: FC = observer(
                         arrData={attributeData}
                         // onPressChoice={handleSelect}
                         // onRemove={handleRemove}
-                        titleText="Nhóm thuộc tính"
+                        titleTx="addAttribute.title"
                         // hintText="Chọn nhóm thuộc tính"
                         dataEdit={dropdownSelected}
                         disable={true}
