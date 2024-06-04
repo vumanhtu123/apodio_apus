@@ -149,7 +149,13 @@ export const EditAttributeByEdit: FC = observer(
 
         const handleItemSelect = (item: any) => {
             if (item.isUsing === true) {
-                showToast('txtToats.cannot_be_deselected', 'error')
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: '',
+                    textBody: translate('txtToats.cannot_be_deselected'),
+            
+                  })
+                
             } else {
                 var indexArr = arrSelect.findIndex((selectedItem: { value: any, id: any }) => selectedItem.value === item.value && selectedItem.id === item.id)
                 if (indexArr === -1) {
@@ -286,7 +292,13 @@ export const EditAttributeByEdit: FC = observer(
                                                                             return (
                                                                                 <TouchableOpacity onPress={() => {
                                                                                     if (item.isUsing === true) {
-                                                                                        showToast('txtToats.attribute_is_using', 'error')
+                                                                                        Toast.show({
+                                                                                            type: ALERT_TYPE.DANGER,
+                                                                                            title: '',
+                                                                                            textBody: translate('txtToats.attribute_is_using'),
+                                                                                    
+                                                                                          })
+                                                                                       
                                                                                     } else {
                                                                                         const newArr = selectedItems.slice()
                                                                                         const a = newArr.filter(items => items.id !== item.id)
