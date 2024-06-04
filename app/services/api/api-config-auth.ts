@@ -1,7 +1,7 @@
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { hideLoading, showLoading } from "../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { GetWayAPI } from "../base-api/api-config-get-way";
 import DeviceInfo from "react-native-device-info";
 import { getGeneralApiProblem } from "./api-problem";
@@ -16,16 +16,20 @@ export class AuthApi {
     this.getway = getway;
     this.uaa = uaa;
   }
-  async login(username: string, password: string): Promise<any> {
-    showLoading();
+  async login(username: string, password: string): Promise<LoginResponse> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<BaseResponse<LoginResponse, ErrorCode>> =
         await this.getway.apisauce.post(ApiEndpoint.SIGN_IN, {
           username,
           password,
           deviceInfo: DeviceInfo.getUniqueIdSync() + 2,
-        });
-      console.log("response tuvm", response.data);
+        }
+      );
+      Loading.hide();
+      console.log("response", response.data);
       const data = response.data;
       // if (!response.ok) {
       //   // hideLoading()
@@ -39,12 +43,15 @@ export class AuthApi {
       // return { kind: "bad-data", LoginModelResult: data };
       return data;
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
 
   async logout(jti: string): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.getway.apisauce.post(
         ApiEndpoint.LOG_OUT,
@@ -53,6 +60,7 @@ export class AuthApi {
           deviceInfo: DeviceInfo.getUniqueIdSync() + 2,
         }
       );
+      Loading.hide();
       console.log("response", response.data);
       const data = response.data;
       // if (!response.ok) {
@@ -67,12 +75,15 @@ export class AuthApi {
       // return { kind: "bad-data", LoginModelResult: data };
       return { kind: "ok", data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
 
   async forgotPass(otpReceiver: string, receiverType: string): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.uaa.apisauce.post(
         ApiEndpoint.FORGOT_PASSWORD,
@@ -84,7 +95,7 @@ export class AuthApi {
       console.log("response", response.data);
       const data = response.data;
       // if (!response.ok) {
-      hideLoading();
+        Loading.hide();
       //   const problem = getGeneralApiProblem(response);
       //   if (problem) return problem;
       // }
@@ -95,7 +106,7 @@ export class AuthApi {
       // return { kind: "bad-data", LoginModelResult: data };
       return { kind: "ok", data };
     } catch (e) {
-      hideLoading();
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }

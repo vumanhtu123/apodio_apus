@@ -1,8 +1,8 @@
 import { Api } from "../base-api/api"
 import { ApiResponse } from "apisauce"
 import { ApiEndpoint } from "../base-api/api_endpoint"
-import { hideLoading, showLoading } from "../../utils/toast"
-import { BalanceResult } from "./api.types.home"
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+
 
 
 
@@ -14,7 +14,9 @@ export class AttributeApi {
   }
 
   async getListAttribute(page: number, size: number, activated: boolean): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.LIST_ATTRIBUTE, {
         page,
@@ -22,24 +24,27 @@ export class AttributeApi {
         activated
       }
       )
-      hideLoading()
+      Loading.hide();
       const data = response.data
       if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }  
   async getListDataAttribute(categoryIds: any): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
         const queryStringParts = categoryIds.map(id => `categoryIds=${id}`);
         const queryString = categoryIds.length !== 0 ? '?' + queryStringParts.join('&'): ''
       const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.LIST_DATA_ATTRIBUTE+ queryString, 
       )
-      hideLoading()
+      Loading.hide();
       const data = response.data
       console.log('-----getListDataAttribute-------', response)
       if (response.data.data) {
@@ -47,35 +52,41 @@ export class AttributeApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }  
 
   async createAttributeGroup(name: any): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_ATTRIBUTE_GROUP, {
         name
       }
       )
-      hideLoading()
+      Loading.hide();
       const data = response.data
       if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }  
 
   async createAttributeDataGroup(DataAttribute: any,attributeCategoryId: number): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_DATA_ATTRIBUTE_GROUP+ "?attributeCategoryId=" + attributeCategoryId,
         DataAttribute,
       )
-      hideLoading()
+      Loading.hide();
       const data = response.data
       console.log('--------------------cxz', response.data)
       if (response.data.errorCodes) {
@@ -83,6 +94,7 @@ export class AttributeApi {
       }
       return { kind: "ok", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }  

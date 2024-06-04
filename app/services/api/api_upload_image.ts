@@ -1,7 +1,7 @@
-import { ApiUpload } from "./api_upload";
+import { ApiUpload } from "../base-api/api_upload";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { hideLoading, showLoading } from "../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 export class UploadApi {
   private api: ApiUpload;
@@ -14,7 +14,9 @@ export class UploadApi {
     formData: any,
     callBack: (arg0: number) => void
   ): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         `${ApiEndpoint.UPLOAD_IMAGES}?feature_alias=upload-product`,
@@ -35,9 +37,10 @@ export class UploadApi {
       );
       const result = response;
       console.log("respone", response);
-      hideLoading();
+      Loading.hide();
       return { kind: "ok", result };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data" };
     }

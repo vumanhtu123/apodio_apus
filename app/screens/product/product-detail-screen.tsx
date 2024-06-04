@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -31,12 +31,9 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
 import { formatNumber } from "../../utils/validate";
-import Dialog from "../../components/dialog/dialog";
 import ProductAttribute from "./component/productAttribute";
-import { hideDialog, showDialog } from "../../utils/toast";
 import { translate } from "../../i18n/translate";
-// import { translate } from "i18n-js";
-
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 export const ProductDetailScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -59,8 +56,6 @@ export const ProductDetailScreen: FC = (item) => {
   const [modalImages, setModalImages] = useState(false);
   const [modalImages1, setModalImages1] = useState(false);
   const [errorContent, setErrorContent] = useState("");
-  const [isDeleteFailModalVisible, setIsDeleteFailModalVisible] =
-    useState(false);
   const { productStore } = useStores();
   const { productId } = productStore;
   const refCarousel = useRef(null);
@@ -242,8 +237,13 @@ export const ProductDetailScreen: FC = (item) => {
         }
       );
     } else {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("productScreen.Notification"),
+        button: translate("common.ok"),
+        textBody: result.result.errorCodes[0].message,
+        closeOnOverlayTap: false})  
       setErrorContent(result.result.errorCodes[0].message);
-      setIsDeleteFailModalVisible(true);
     }
     setDialogDeleteProduct(false);
   };
@@ -268,7 +268,18 @@ export const ProductDetailScreen: FC = (item) => {
             dataEdit: dataClassificationToEdit,
           })
         }
-        onRightPress2={() => setDialogDeleteProduct(true)}
+        onRightPress2={() => {
+          Dialog.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: translate("productScreen.Notification"),
+            button: translate("productScreen.cancel"),
+            button2: translate("productScreen.BtnNotificationAccept"),
+            textBody: translate("productScreen.ProductDelete"),
+            closeOnOverlayTap: false,
+            onPressButton: () =>
+              deleteProduct()
+          })  
+        }}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
       />
@@ -804,30 +815,7 @@ export const ProductDetailScreen: FC = (item) => {
         </ScrollView>
         {/* </Screen> */}
       </SafeAreaView>
-      <Dialog
-        isVisible={isDeleteFailModalVisible}
-        title={"productScreen.Notification"}
-        errorMessage={errorContent}
-        titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-        onPressAccept={() => setIsDeleteFailModalVisible(false)}
-      />
-      <Dialog
-        onPressCancel={() => setDialogDeleteProduct(false)}
-        onPressAccept={deleteProduct}
-        isVisible={dialogDeleteProduct}
-        title={"productScreen.Notification"}
-        content={"productScreen.ProductDelete"}
-        titleBTN1="productScreen.BtnNotificationBack"
-        titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN1={{
-          backgroundColor: "white",
-          borderWidth: 1,
-          borderColor: "#d5d5d5",
-          borderRadius: 8,
-        }}
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-      />
+      
       <Modal
         isVisible={modalImages}
         onBackdropPress={() => setModalImages(false)}>

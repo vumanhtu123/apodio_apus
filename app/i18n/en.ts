@@ -2,7 +2,7 @@ import { placeholder } from "i18n-js";
 
 const en = {
   common: {
-    ok: "OK!",
+    ok: "OK",
     cancel: "Hủy",
     back: "Back",
     confirm: "Xác nhận",
