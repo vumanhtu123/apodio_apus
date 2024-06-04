@@ -36,6 +36,7 @@ export const AddProductOrder: FC = observer(
         const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
         const [index, setIndex] = useState()
         const [isModal, setIsModal] = useState(false)
+        const [isSelected, setIsSelected] = useState('1')
         const { dataProductAddOrder, setDataProductAddOrder, dataProductAddOrderNew, setDataProductAddOrderNew } = orderStore
 
         useFocusEffect(
@@ -55,12 +56,17 @@ export const AddProductOrder: FC = observer(
         }, [navigation]);
 
         const arrArrange = [
-            {label: 'Ngày tạo', data: 1},
-            {label: 'Giá từ cao đến thấp', data: 2},
-            {label: 'Giá từ tấp đến cao', data: 3},
-            {label: 'Theo tên từ A -> Z', data: 4},
-            {label: 'Theo tên từ Z -> A', data: 5},
+            {label: 'Ngày tạo', id: '1'},
+            {label: 'Giá từ cao đến thấp', id: '2'},
+            {label: 'Giá từ tấp đến cao', id: '3'},
+            {label: 'Theo tên từ A -> Z', id: '4'},
+            {label: 'Theo tên từ Z -> A', id: '5'},
         ]
+
+        const onPressModal = (data: any) => {
+            setIsSelected(data.id)
+            setIsModal(false)
+        }
 
         const handleGetCategoryFilter = async () => {
             try {
@@ -406,7 +412,7 @@ export const AddProductOrder: FC = observer(
                                                 paddingVertical: 10,
                                                 flexDirection: "row",
                                             }}
-                                            // onPress={() => onPressModal(item)}
+                                            onPress={() => onPressModal(item.item)}
                                             >
                                             <Text
                                                 style={{
@@ -415,7 +421,7 @@ export const AddProductOrder: FC = observer(
                                                 }}>
                                                 {item.item.label}
                                             </Text>
-                                            <Images.icon_check/>
+                                            {isSelected === item.item.id ?<Images.icon_check/>: null}
                                         </TouchableOpacity>
                                     </View>
                                 );

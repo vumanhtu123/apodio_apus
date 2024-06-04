@@ -60,6 +60,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     control,
     formState: { errors },
   } = useForm();
+  const dataAddress = route?.params?.dataAddress
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [payment, setPayment] = useState({ label: "" });
@@ -351,7 +352,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             />
             <Text text="Nguyen Ngoc Anh" style={styles.textContent} />
           </View>
-          <View style={styles.viewAddress}>
+          <TouchableOpacity style={styles.viewAddress}
+          onPress={() => navigation.navigate('deliveryAddress' as never, {dataAddress: dataAddress})}>
             <Text
               tx={"order.deliveryAddress"}
               style={[
@@ -421,7 +423,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                 style={styles.textContent}
               />
             </View>
-          </View>
+          </TouchableOpacity>
           <View style={styles.viewNameCompany}>
             <AutoHeightImage
               height={32}

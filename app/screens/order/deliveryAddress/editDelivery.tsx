@@ -1,5 +1,5 @@
 import { Observer, observer } from 'mobx-react-lite';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import React, { KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import { Button, Header, Switch, Text, TextField } from '../../../components';
@@ -22,13 +22,9 @@ export const EditDelivery: FC = observer(
 
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
 
-        const addressChoice = {
-            name: 'Công ty TNHH Mặt Trời Hồng',
-            phone: '02468876656',
-            address: "85 Hàng Bài, Hoàn Kiếm, Hà Nội",
-            default: false,
-            id: 1
-        }
+        useEffect(()=>{
+            
+        },[])
         const arrTest = [
             {
                 "name": "An Giang",
