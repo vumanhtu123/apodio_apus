@@ -96,14 +96,11 @@ const PriceModal = (props: PriceModalProps) => {
     
     return (
         <Modal
-            // animationIn={'fadeIn'}
-            // animationOut={'fadeOut'}
+            animationIn={'fadeIn'}
+            animationOut={'fadeOut'}
             isVisible={isVisible}
             style={VIEWMODAL}
             avoidKeyboard={true}
-            animationIn="slideInUp"
-            animationOut="slideOutDown"
-            useNativeDriver={true}
         >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -112,12 +109,12 @@ const PriceModal = (props: PriceModalProps) => {
         >
             <View style={{
                 maxHeight: Dimensions.get('screen').height * 0.6,
-                //width: Dimensions.get('screen').width - scaleWidth(32), 
-                backgroundColor: colors.palette.neutral100,
                 width: '100%',
-                borderRadius: 8, 
-                position: 'absolute', 
-                //bottom: scaleHeight(20)
+                backgroundColor: colors.palette.neutral100,
+                borderTopRightRadius: 8,
+                borderTopLeftRadius: 8, 
+                position: 'absolute',
+                bottom: 0
             }}>
                 <Text style={{
                     fontWeight: '700', fontSize: fontSize.size14,
@@ -144,7 +141,7 @@ const PriceModal = (props: PriceModalProps) => {
                                             <TextField
                                                 keyboardType={'numeric'}
                                                 labelTx={'productScreen.minimum'}
-                                                style={{ width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.4 }}
+                                                style={{ width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.4 }}
                                                 inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0, marginTop: scaleHeight(4) }}
                                                 value={value}
                                                 onBlur={onBlur}
@@ -173,7 +170,7 @@ const PriceModal = (props: PriceModalProps) => {
                                             labelTx={'productScreen.priceProduct'}
                                             style={{
                                                 marginHorizontal: scaleWidth(margin.margin_12),
-                                                width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.49,
+                                                width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.49,
                                             }}
                                             inputStyle={{
                                                 marginTop: scaleHeight(4)
@@ -224,7 +221,7 @@ const PriceModal = (props: PriceModalProps) => {
                 </Button>
                 <View style={{
                     marginHorizontal: scaleWidth(margin.margin_16), flexDirection: 'row',
-                    justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_10)
+                    justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_15)
                 }}>
                     <Button onPress={() => {
                         if (priceWatch?.length === 1 && priceWatch[0].min === '' && priceWatch[0].price === '') {
@@ -236,7 +233,7 @@ const PriceModal = (props: PriceModalProps) => {
                         tx={'productScreen.cancel'} style={{
                             height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
                             borderWidth: 1, borderColor: colors.palette.veryLightGrey,
-                            width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.48,
+                            width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
                             borderRadius: 8
                         }} textStyle={{
                             color: colors.palette.dolphin, fontWeight: '700',
@@ -245,7 +242,7 @@ const PriceModal = (props: PriceModalProps) => {
                     <Button tx={'productScreen.BtnNotificationAccept'} style={{
                         height: scaleHeight(48),
                         backgroundColor: colors.palette.navyBlue,
-                        width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.48,
+                        width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
                         borderRadius: 8
                     }}
                         textStyle={{

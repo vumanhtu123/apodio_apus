@@ -21,9 +21,8 @@ export class AuthApi {
       text: 'Loading...',
     });
     try {
-      const response: ApiResponse<any> = await this.getway.apisauce.post(
-        ApiEndpoint.SIGN_IN,
-        {
+      const response: ApiResponse<BaseResponse<LoginResponse, ErrorCode>> =
+        await this.getway.apisauce.post(ApiEndpoint.SIGN_IN, {
           username,
           password,
           deviceInfo: DeviceInfo.getUniqueIdSync() + 2,
@@ -42,7 +41,7 @@ export class AuthApi {
       //   return { kind: "ok", LoginModelResult: data };
       // }
       // return { kind: "bad-data", LoginModelResult: data };
-      return { kind: "ok", data };
+      return data;
     } catch (e) {
       Loading.hide();
       return { kind: "bad-data" };

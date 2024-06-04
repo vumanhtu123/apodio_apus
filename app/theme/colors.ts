@@ -88,6 +88,7 @@ export const palette = {
   textExDoing: '#2D4982',
   textExDone:'#F4AD22',
   textExCancle: '#FF4956',
+  greenTea: '#DAFBDF',
   
 } as const;
 
@@ -147,4 +148,7 @@ export const colors = {
   metallicBlue: palette.metallicBlue,
   verdigris: palette.verdigris,
   royalOrange: palette.royalOrange,
+  nero: palette.nero,
+  navyBlue: palette.navyBlue,
+  dolphin: palette.dolphin,
 };

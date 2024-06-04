@@ -4,11 +4,11 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, StackActions } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackScreenProps,
-  CardStyleInterpolators
+  CardStyleInterpolators,
 } from "@react-navigation/stack";
 import React from "react";
 import { MainBottomTab } from "./bottom-navigation";
@@ -78,13 +78,13 @@ export type NavigatorParamList = {
   TestDebug: undefined;
   addAttribute: undefined;
   successScreen: undefined;
-  InfomerchantUsers: undefined;
+  Introduce: undefined;
   accountSecurity: undefined;
   changePass: undefined;
   clientScreen: undefined;
   detailClient: undefined;
   addClientToGroup: undefined;
-  InventoryManagenment: undefined;
+  inventoryManagenment: undefined;
   addCheckIventory: undefined;
   addProduct: undefined;
   listCompany: undefined;
@@ -105,6 +105,23 @@ export type NavigatorParamList = {
   editAttribute: undefined;
   editAttributeByEdit: undefined;
   detailsSupplier: undefined;
+  ballotDetail: undefined;
+  detaiExportGoods: undefined;
+  importGoodsBook: undefined;
+  createGoodsReceipt: undefined;
+  detailImportReceipt: undefined;
+  voucherDetail: undefined;
+  warehouseBook: undefined;
+  filterInWarehouseBook: undefined;
+  debt: undefined;
+  mustPay: undefined;
+  detailsOrderScreen: undefined;
+  orderTracking: undefined;
+  orderDetailsSupplier: undefined;
+  deliveryAddress: undefined;
+  editDelivery: undefined;
+  newDelivery: undefined;
+  addProductOrder: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -116,11 +133,11 @@ const Stack = createStackNavigator<NavigatorParamList>();
 export const AppStack = () => {
   return (
     <Stack.Navigator
-    screenOptions={{
-      headerShown: false, // Ẩn header cho tất cả các màn hình
-      gestureEnabled: true,
-      gestureDirection: 'horizontal',
-      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      screenOptions={{
+        headerShown: false, // Ẩn header cho tất cả các màn hình
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+        cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
       initialRouteName={"mainBottom"}>
       <Stack.Screen
@@ -128,7 +145,7 @@ export const AppStack = () => {
         component={Screens.AccountSecurity}
       />
       <Stack.Screen
-        name="InfomerchantUsers"
+        name="Introduce"
         component={Screens.IntroductionScreen2}
       />
       <Stack.Screen name="changePass" component={Screens.changePassScreen} />
@@ -146,7 +163,7 @@ export const AppStack = () => {
 
       {/* màn hình kiểm kho */}
       <Stack.Screen
-        name="InventoryManagenment"
+        name="inventoryManagenment"
         component={InventoryManagement}
       />
       <Stack.Screen name="addCheckIventory" component={addCheckInventory} />
@@ -171,10 +188,6 @@ export const AppStack = () => {
         name="GoodsDeliveryBook"
         component={Screens.GoodsDeliveryBook}
       />
-      <Stack.Screen
-        name="createImportGoods"
-        component={Screens.CreateImportGoods}
-      />
       <Stack.Screen name="createExportGoods" component={CreateExportGoods} />
       <Stack.Screen
         name="createDeliveNote"
@@ -186,6 +199,24 @@ export const AppStack = () => {
       />
 
       <Stack.Screen name="inforAccount" component={Screens.InforAccount} />
+      <Stack.Screen name="notificationSetting" component={Screens.NotificationSetting} />
+      <Stack.Screen name="ballotDetail" component={Screens.BallotDetail} />
+      <Stack.Screen name="detaiExportGoods" component={Screens.DetailExportGoods} />
+
+      {/* màn sổ nhập */}
+      <Stack.Screen name="importGoodsBook" component={Screens.ImprotGoodsBook} />
+      <Stack.Screen name="createImportGoods" component={Screens.CreateImportGoods} />
+      <Stack.Screen name="createGoodsReceipt" component={Screens.CreateGoodsReceipt} />
+      <Stack.Screen name="detailImportReceipt" component={Screens.DetailImportReceipt} />
+      <Stack.Screen name="voucherDetail" component={Screens.VoucherDetail} />
+
+      {/* màn hình sô kho */}
+      <Stack.Screen name="warehouseBook" component={Screens.warehouseBook} />
+      <Stack.Screen name="filterInWarehouseBook" component={Screens.FilterWarehouseBook} />
+
+      {/* Màn hình công nợ */}
+      <Stack.Screen name="debt" component={Screens.DebtScreen} />
+      <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
 
       <Stack.Screen
         name="mainBottom"
@@ -268,6 +299,26 @@ export const AppStack = () => {
         component={Screens.NewAttribute}
       />
       <Stack.Screen
+        name="deliveryAddress"
+        options={{ gestureEnabled: false }}
+        component={Screens.DeliveryAddress}
+      />
+      <Stack.Screen
+        name="editDelivery"
+        options={{ gestureEnabled: false }}
+        component={Screens.EditDelivery}
+      />
+      <Stack.Screen
+        name="newDelivery"
+        options={{ gestureEnabled: false }}
+        component={Screens.NewDelivery}
+      />
+      <Stack.Screen
+        name="addProductOrder"
+        options={{ gestureEnabled: false }}
+        component={Screens.AddProductOrder}
+      />
+      <Stack.Screen
         name="orderDetails"
         options={{ gestureEnabled: false }}
         component={Screens.OrderDetails}
@@ -276,6 +327,11 @@ export const AppStack = () => {
         name="newOrder"
         options={{ gestureEnabled: false }}
         component={Screens.NewOrder}
+      />
+      <Stack.Screen
+        name="orderTracking"
+        options={{ gestureEnabled: false }}
+        component={Screens.OrderTracking}
       />
       <Stack.Screen
         name="view3D"
@@ -317,12 +373,22 @@ export const AppStack = () => {
         options={{ gestureEnabled: false }}
         component={Screens.DetailsSupplierScreen}
       />
+      {/* <Stack.Screen
+        name="detailsOrderScreen"
+        options={{ gestureEnabled: false }}
+        component={Screens.DetailsOrderScreen}
+      /> */}
+      <Stack.Screen
+        name="orderDetailsSupplier"
+        options={{ gestureEnabled: false }}
+        component={Screens.OrderDetailsScreen}
+      />
     </Stack.Navigator>
   );
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()

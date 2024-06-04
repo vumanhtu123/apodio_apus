@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-
 import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useEffect, useState } from "react";
 import { Button } from "../../components/button/button";
@@ -19,16 +17,9 @@ import {
 import { useStores } from "../../models";
 import { colors, palette, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
-import { Buffer } from "buffer";
 import { Images } from "../../../assets/index";
 import { LinearGradient } from "react-native-linear-gradient";
 import { useAuth } from "../contexts/auth";
-import {
-  getAccessToken,
-  setAccessToken,
-  setTenantId,
-} from "../../utils/storage";
-import { hideLoading, showLoading } from "../../utils/toast";
 
 export const LoginScreen: FC = observer(function LoginScreen(props) {
   // Pull in one of our MST stores
@@ -39,21 +30,20 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   } = useForm();
   const { authenticationStore } = useStores();
 
-  const [isShowPassword, setisShowPassword] = useState(true);
-  const [emptyInputData, setEmptyInputData] = useState(true);
-  const [error, setError] = useState("");
+  const [isShowPassword, setIsShowPassword] = useState<boolean>(true);
+  const [emptyInputData, setEmptyInputData] = useState<boolean>(true);
   const [userName, setUserName] = useState<String>("");
   const [password, setPassWord] = useState<String>("");
-  const auth = useAuth();
   // Pull in navigation via hook
   const navigation = useNavigation();
 
+  console.log("login 2");
+  const auth = useAuth();
   useEffect(() => {
     checkValidation();
   }, [userName, password]);
 
   const checkValidation = async () => {
-    console.log("on login");
     console.log("user", userName);
     if (userName != "" && password != "") {
       setEmptyInputData(false);
@@ -63,25 +53,10 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   };
 
   const onSubmit = async (data: any) => {
-    checkValidation();
-    console.log("login");
-    await authenticationStore
-      .login(data.username, data.password)
-      .then((data) => {
-        if (data.data) {
-          console.log("success");
-          setAccessToken(authenticationStore.accessToken);
-          setTenantId(authenticationStore.tenantId);
-          console.log("tuvm id", authenticationStore.tenantId);
-          auth.changeLoginStatus();
-        } else {
-          setError(data.data.errorCodes.map((item: any) => item.message));
-          console.log(
-            "login error",
-            data.data.errorCodes.map((item: any) => item.message)
-          );
-        }
-      });
+    await authenticationStore.login(data.username, data.password);
+    if (authenticationStore.isAuthenticated === true) {
+      auth.changeLoginStatus();
+    }
   };
 
   return (
@@ -131,6 +106,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               />
             )}
             // Account test setup new pin
+            // defaultValue={""}
             defaultValue={"system_admin"}
             // Account test
             // defaultValue={"67076743544"}
@@ -140,9 +116,9 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
           <Controller
             control={control}
             // Account test setup new pin
-            // defaultValue={"system_admin"}
-            // Account test
             defaultValue={"system_admin"}
+            // Account test
+            // defaultValue={""}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 keyboardType={null}
@@ -159,11 +135,12 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
                   isShowPassword ? Images.icon_eye : Images.icon_unEye
                 }
                 onClearText={() => {
+                  authenticationStore.setErrorMessage("");
                   onChange("");
                   setPassWord("");
                   checkValidation();
                 }}
-                onShowPassword={() => setisShowPassword(!isShowPassword)}
+                onShowPassword={() => setIsShowPassword(!isShowPassword)}
                 error={""}
                 onChangeText={(value) => {
                   onChange(value);
@@ -175,7 +152,12 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
             name="password"
             rules={{ required: "Password is required" }}
           />
-          {error != "" ? <Text text={error} style={styles.textError} /> : null}
+          {authenticationStore.errorMessage != "" ? (
+            <Text
+              text={authenticationStore.errorMessage}
+              style={styles.textError}
+            />
+          ) : null}
           {!emptyInputData ? (
             <Button
               tx="loginScreen.signIn"

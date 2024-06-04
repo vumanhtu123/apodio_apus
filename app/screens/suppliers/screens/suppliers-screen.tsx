@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useEffect, useState } from "react";
-import { FlatList, Platform, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
@@ -16,6 +16,8 @@ import { renderItemSupplier2 } from "../component/item-list-supplier";
 import { styles } from "../styles/styles";
 import { dataSuppliers } from "../styles/data";
 import { ScrollView } from "react-native-gesture-handler";
+import SelectFilterModal from "../../product/component/modal-select-filter";
+import ModalCreateSuppliers from "../component/modal-create-supplier";
 
 export const SuppliersScreen: FC = () => {
   const navigation = useNavigation();
@@ -24,10 +26,14 @@ export const SuppliersScreen: FC = () => {
   const [btnTab, setBtnTab] = useState(["Nhà cung cấp", "Nhóm NCC"]);
   const [activeTab, setActiveTab] = useState("product");
   const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleAddSupplier, setIsVisibleAddSupplier] = useState(false)
+  // console.log("doannnn", isVisibleAddSupplier);
+
   const [typeFilter, setTypeFilter] = useState("");
   const [dataCategory, setDataCategory] = useState<any>([]);
   const [showCategory, setShowCategory] = useState(false);
   const [showTextCategory, setShowTextCategory] = useState<string>(" Danh mục");
+
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
@@ -42,7 +48,7 @@ export const SuppliersScreen: FC = () => {
     { name: "tuvm4" },
   ];
 
-  const openFilter = () => {};
+  const openFilter = () => { };
 
   useEffect(() => {
     setDataCategory(data);
@@ -51,6 +57,10 @@ export const SuppliersScreen: FC = () => {
   const openTypeFilter = () => {
     setIsVisible(!true);
   };
+
+  const handleIsAddSupplier = () => {
+    setIsVisibleAddSupplier(!isVisibleAddSupplier)
+  }
   return (
     <View style={styles.ROOT}>
       <Header
@@ -96,13 +106,13 @@ export const SuppliersScreen: FC = () => {
                   style={[
                     styles.buttonProduct,
                     activeTab === (index === 0 ? "product" : "category") &&
-                      styles.activeButton,
+                    styles.activeButton,
                   ]}>
                   <Text
                     style={[
                       styles.buttonText,
                       activeTab === (index === 0 ? "product" : "category") &&
-                        styles.activeButtonText,
+                      styles.activeButtonText,
                     ]}>
                     {item}
                   </Text>
@@ -210,7 +220,10 @@ export const SuppliersScreen: FC = () => {
       </View>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("detailsSupplier" as never)}
+        onPress={() => {
+          console.log("abc");
+          navigation.navigate("orderDetailsSupplier" as never);
+        }}
         style={{
           flexDirection: "row",
           justifyContent: "center",
@@ -238,9 +251,11 @@ export const SuppliersScreen: FC = () => {
         setType={setTypeFilter}
       /> */}
       {/* <ModalCreateSuppliers
-                isVisible = {true}
-
-            /> */}
+        isVisible={true}
+        setIsVisible={setIsVisible}
+        setType={setTypeFilter}
+      /> */}
+      {/* <ModalCreateSuppliers isVisible={true} /> */}
     </View>
   );
 };

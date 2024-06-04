@@ -209,10 +209,10 @@ const DropdownModal = (props: InputSelectProps) => {
                     <Images.dropDown />
                 </View>}
             </TouchableOpacity>
-            <Modal isVisible={modalVisible} onBackdropPress={toggleModal}>
+            <Modal isVisible={modalVisible} onBackdropPress={toggleModal} style={{margin: 0}}>
                 <View style={styles.modalContainer}>
                     <Text
-                        text={titleText}
+                        text={title}
                         style={{
                             marginVertical: scaleHeight(18),
                             marginLeft: scaleWidth(9),
@@ -232,7 +232,8 @@ const DropdownModal = (props: InputSelectProps) => {
                         style={{
                             flexDirection: "row",
                             justifyContent: "space-between",
-                            marginBottom: scaleHeight(margin.margin_10),
+                            marginBottom: scaleHeight(margin.margin_15),
+                            marginTop: scaleHeight(10),
                         }}>
                         <Button
                             onPress={() => {
@@ -244,7 +245,7 @@ const DropdownModal = (props: InputSelectProps) => {
                                 backgroundColor: colors.palette.neutral100,
                                 borderWidth: 1,
                                 borderColor: colors.palette.veryLightGrey,
-                                width: (Dimensions.get("screen").width - scaleWidth(64)) * 0.48,
+                                width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
                                 borderRadius: 8,
                             }}
                             textStyle={{
@@ -259,7 +260,7 @@ const DropdownModal = (props: InputSelectProps) => {
                             style={{
                                 height: scaleHeight(48),
                                 backgroundColor: colors.palette.navyBlue,
-                                width: (Dimensions.get("screen").width - scaleWidth(64)) * 0.48,
+                                width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
                                 borderRadius: 8,
                             }}
                             textStyle={{
@@ -295,7 +296,7 @@ const styles = StyleSheet.create({
         paddingVertical: scaleHeight(padding.padding_12),
         paddingHorizontal: scaleWidth(padding.padding_16),
         position: "absolute",
-        bottom: 16,
+        bottom: 0,
         left: 0,
         right: 0,
         // marginHorizontal : 15

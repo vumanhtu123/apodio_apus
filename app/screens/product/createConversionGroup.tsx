@@ -298,7 +298,7 @@ export const CreateConversionGroup: FC = observer(
                                                         marginTop: 15,
                                                     }}>
                                                     {conversionWatch[index].changeDVT !== '' ?
-                                                        <Text style={{ flex: 1, paddingBottom: scaleHeight(12) }} text={conversionWatch[index].changeDVT} />
+                                                        <Text style={{ flex: 1, paddingBottom: scaleHeight(12) }} text={conversionWatch[index].changeDVT} numberOfLines={1} />
                                                         : <Text style={{
                                                             flex: 1, fontWeight: '400', fontSize: fontSize.size12,
                                                             color: colors.palette.dolphin,
@@ -339,7 +339,7 @@ export const CreateConversionGroup: FC = observer(
                                                         alignSelf: 'center',
                                                         width: '40%'
                                                     }}>
-                                                        <Text text={originalUnit.label} style={{ color: colors.palette.dolphin, fontWeight: '400', fontSize: fontSize.size10, textAlign: 'right' }} />
+                                                        <Text text={originalUnit.label} style={{ color: colors.palette.dolphin, fontWeight: '400', fontSize: fontSize.size10, textAlign: 'right' }} numberOfLines={1} />
                                                     </View>
                                                 </View>
                                             </View>
@@ -357,38 +357,46 @@ export const CreateConversionGroup: FC = observer(
                                         <Modal isVisible={showModal}
                                             onBackdropPress={() => { setShowModal(false) }}
                                         >
-                                            <View style={styles.viewModal}>
-                                                <TextInput
-                                                    style={{ fontSize: 16, fontWeight: '400' }}
-                                                    onChangeText={(text) => handleSearch(text)}
-                                                    value={search}
-                                                    placeholder="Search..."
-                                                />
-                                                <FlatList
-                                                    data={filteredData}
-                                                    style={{
-                                                        // flex: 1,
-                                                        marginTop: scaleHeight(margin.margin_10)
-                                                    }}
-                                                    renderItem={({ item }) => {
-                                                        return (
-                                                            <View>
-                                                                <TouchableOpacity onPress={() => {
-                                                                    setDataUnit(item.label)
-                                                                    setFilteredData(prevItems => prevItems.filter(i => i.label !== item.label));
-                                                                    setValue(`conversion.${indexConversion}.unitId`, item.id)
-                                                                    setValue(`conversion.${indexConversion}.changeDVT`, item.label)
-                                                                    setShowModal(false)
-                                                                }}>
-                                                                    <Text text={item.label}
-                                                                        style={styles.textLabelFlatList} />
-                                                                </TouchableOpacity>
-                                                                <View style={styles.viewLine}></View>
-                                                            </View>
-                                                        );
-                                                    }}
-                                                />
-                                            </View>
+                                            <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
+                                            <KeyboardAvoidingView
+                                                behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+                                                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+                                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                            >
+                                                <View style={styles.viewModal}>
+                                                    <TextInput
+                                                        style={{ fontSize: 16, fontWeight: '400' }}
+                                                        onChangeText={(text) => handleSearch(text)}
+                                                        value={search}
+                                                        placeholder="Search..."
+                                                    />
+                                                    <FlatList
+                                                        data={filteredData}
+                                                        style={{
+                                                            // flex: 1,
+                                                            marginTop: scaleHeight(margin.margin_10)
+                                                        }}
+                                                        renderItem={({ item }) => {
+                                                            return (
+                                                                <View>
+                                                                    <TouchableOpacity onPress={() => {
+                                                                        setDataUnit(item.label)
+                                                                        setFilteredData(prevItems => prevItems.filter(i => i.label !== item.label));
+                                                                        setValue(`conversion.${indexConversion}.unitId`, item.id)
+                                                                        setValue(`conversion.${indexConversion}.changeDVT`, item.label)
+                                                                        setShowModal(false)
+                                                                    }}>
+                                                                        <Text text={item.label}
+                                                                            style={styles.textLabelFlatList} />
+                                                                    </TouchableOpacity>
+                                                                    <View style={styles.viewLine}></View>
+                                                                </View>
+                                                            );
+                                                        }}
+                                                    />
+                                                </View>
+                                            </KeyboardAvoidingView>
+                                            </TouchableWithoutFeedback>
                                         </Modal>
                                     </View>
                                 )

@@ -45,7 +45,8 @@ export class ProductApi {
     productCategoryId: number,
     search: string,
     tagId: number,
-    sort: string
+    sort: string,
+    isLoadMore : boolean
   ): Promise<any> {
     Loading.show({
       text: 'Loading...',

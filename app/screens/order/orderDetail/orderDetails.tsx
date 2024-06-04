@@ -336,24 +336,6 @@ export const OrderDetails: FC = observer(
                             <Text text={data.payStatus} style={styles.textPayStatus} />
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.viewAddress}
-                        onPress={() => setShowAddress(true)}>
-                        <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
-                        <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
-                            <Text text={addressChoice.name} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                            <Text text={addressChoice.phone} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                            <Text text={addressChoice.address} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                        </View>
-                    </TouchableOpacity>
                     <View style={styles.viewName}>
                         <View style={styles.viewImageName}>
                             <AutoHeightImage
@@ -378,6 +360,24 @@ export const OrderDetails: FC = observer(
                             <Images.icon_copy2 style={{ marginLeft: scaleWidth(margin.margin_4) }} />
                         </TouchableOpacity>
                     </View>
+                    <TouchableOpacity style={styles.viewAddress}
+                        onPress={() => navigation.navigate('deliveryAddress' as never)}>
+                        <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
+                        <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
+                            <Text text={addressChoice.name} style={[styles.textMoney2, {
+                                lineHeight: scaleHeight(14.52),
+                                marginBottom: scaleHeight(margin.margin_8)
+                            }]} />
+                            <Text text={addressChoice.phone} style={[styles.textMoney2, {
+                                lineHeight: scaleHeight(14.52),
+                                marginBottom: scaleHeight(margin.margin_8)
+                            }]} />
+                            <Text text={addressChoice.address} style={[styles.textMoney2, {
+                                lineHeight: scaleHeight(14.52),
+                                marginBottom: scaleHeight(margin.margin_8)
+                            }]} />
+                        </View>
+                    </TouchableOpacity>
                     <View style={{ borderRadius: 8, backgroundColor: colors.palette.neutral100 }}>
                         {
                             promotions.map((item) => {
@@ -401,7 +401,7 @@ export const OrderDetails: FC = observer(
                             })
                         }
                     </View>
-                    {data.status === "Hủy đơn" || data.status === "Trả hàng" ? null :
+                    {/* {data.status === "Hủy đơn" || data.status === "Trả hàng" ? null :
                         <View style={styles.viewPay}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text tx={'order.paymentMethods'} style={[styles.textListProduct,
@@ -445,7 +445,8 @@ export const OrderDetails: FC = observer(
                                     </View>
                                 </View>
                             }
-                        </View>}
+                        </View>
+                        } */}
                     <ItemOrder
                         money={data.money}
                         discount={data.discount}
@@ -457,21 +458,22 @@ export const OrderDetails: FC = observer(
                             borderBottomRightRadius: 0
                         }}
                     />
-                    {data.status === "Hủy đơn" ?
+                    {/* {data.status === "Hủy đơn" ?
                         <View style={styles.viewDateMoney}>
                             <Text tx={'order.reasonForCancellation'} style={styles.textDateMoney} />
                         </View>
-                        : data.status === "Đang xử lỹ" || data.status === "Đã giao" ?
+                        : data.status === "Đang xử lỹ" || data.status === "Đã giao" ? */}
                             <View style={styles.viewDateMoney}>
-                                <Text tx={'order.sellerConfirm'} style={styles.textDateMoney} />
+                                <Text tx={'order.sellerConfirm'} style={[styles.textDateMoney,{flex: 1}]} />
+                                <Text text="Đã thanh toán" style={styles.textPayStatus2} />
                             </View>
-                            :
+                            {/* :
                             <View style={styles.viewDateMoney}>
                                 <View style={{ flex: 1 }}>
                                     <Text tx={'order.date'} style={styles.textDateMoney} />
                                 </View>
                                 <Text tx={'order.money'} style={styles.textDateMoney} />
-                            </View>}
+                            </View>} */}
 
 
                     {/* 2 thẻ giống nhau data trả về thì viết riêng component */}
@@ -519,8 +521,12 @@ export const OrderDetails: FC = observer(
                             </View>
                         </View>
                     </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)}>
+                        <Text text="Theo doi giao hang" />
+                    </TouchableOpacity>
                 </ScrollView>
-                {data.status === 'Đang xử lý' ?
+
+                {/* {data.status === 'Đang xử lý' ?
                     <View style={styles.viewButtonCancel}>
                         <Button tx={'order.requestCancellation'}
                             onPress={() => setShowCancelOrder(true)}
@@ -536,7 +542,7 @@ export const OrderDetails: FC = observer(
                                 }]}
                                 textStyle={styles.textButtonCancel} />
                         </View> : null
-                }
+                } */}
                 <Modal isVisible={showCancelOrder}
                     onBackdropPress={() => setShowCancelOrder(false)}>
                     <View style={styles.viewModal}>
@@ -650,12 +656,12 @@ export const OrderDetails: FC = observer(
                                                         </View>
                                                     </View>
                                                     <View>
-                                                        {addressChoice.id ===item.item.id ? 
-                                                        <Images.icon_checkGreen width={17} height={13} /> : null }
+                                                        {addressChoice.id === item.item.id ?
+                                                            <Images.icon_checkGreen width={17} height={13} /> : null}
                                                     </View>
                                                 </View>
                                                 {item.item.default === true ? <View >
-                                                    <Text tx={'order.deFault'} style={[styles.textMoney2,{
+                                                    <Text tx={'order.deFault'} style={[styles.textMoney2, {
                                                         color: colors.palette.radicalRed
                                                     }]} />
                                                 </View> : null}
@@ -688,7 +694,7 @@ export const OrderDetails: FC = observer(
                                                 keyboardType={null}
                                                 labelTx={"order.phone"}
                                                 style={styles.viewTextField}
-                                                inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8): 0 }}
+                                                inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0 }}
                                                 value={value}
                                                 onBlur={onBlur}
                                                 onChangeText={(value) => onChange(value)}

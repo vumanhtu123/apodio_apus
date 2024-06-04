@@ -12,10 +12,34 @@ export const styles = StyleSheet.create({
   ROOT: {
     backgroundColor: "#F2F2F2",
     flex: 1,
+    justifyContent: "space-between",
   },
   rowBtnTab: {
     justifyContent: "center",
     alignItems: "center",
+  },
+  content: {
+    color: colors.palette.navyBlue,
+    fontSize: fontSize.size10,
+  },
+
+  icon: {
+    marginTop: 0,
+    marginBottom: 5,
+    // backgroundColor : 'red'
+  },
+  item: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    marginBottom: scaleHeight(10),
+  },
+  title: {
+    color: "#242426",
+    fontSize: fontSize.size10,
+    fontWeight: "700",
+  },
+  titleView: {
+    alignItems: "flex-start",
   },
   rowNotiType: {
     alignItems: "center",

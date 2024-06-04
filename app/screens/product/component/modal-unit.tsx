@@ -77,6 +77,7 @@ const UnitModal = (props: UnitModalProps) => {
             avoidKeyboard={true}
             onBackdropPress={setIsVisible}
             onBackButtonPress={setIsVisible}
+            style={{margin: 0}}
         >
             <TouchableWithoutFeedback onPress={setIsVisible}>
             <KeyboardAvoidingView
@@ -89,8 +90,9 @@ const UnitModal = (props: UnitModalProps) => {
                 
                 <View style={{
                     maxHeight: Dimensions.get('screen').height * 0.6,
-                    width: Dimensions.get('screen').width - scaleWidth(32), backgroundColor: colors.palette.neutral100,
-                    borderRadius: 8, position: 'absolute', bottom: scaleHeight(20)
+                    width: '100%', backgroundColor: colors.palette.neutral100,
+                    borderTopRightRadius: 8,
+                    borderTopLeftRadius: 8, position: 'absolute', bottom: 0,
                 }}>
                     <Text style={{
                         fontWeight: '700', fontSize: fontSize.size14,
@@ -110,7 +112,7 @@ const UnitModal = (props: UnitModalProps) => {
                                     keyboardType={'default'}
                                     placeholder={'Nhập tên đơn vị tính'}
                                     style={{
-                                        width: (Dimensions.get('screen').width - scaleWidth(64)),
+                                        width: (Dimensions.get('screen').width - scaleWidth(32)),
                                         marginBottom: scaleHeight(10),
                                     }}
                                     inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0 }}
@@ -136,14 +138,14 @@ const UnitModal = (props: UnitModalProps) => {
                     </View>
                     <View style={{
                         marginHorizontal: scaleWidth(margin.margin_16), flexDirection: 'row',
-                        justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_10)
+                        justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_15)
                     }}>
                         <Button
                             onPress={handleSubmit(saveData)}
                             tx={'productScreen.save'} style={{
                                 height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
                                 borderWidth: 1, borderColor: colors.palette.veryLightGrey,
-                                width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.48,
+                                width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
                                 borderRadius: 8
                             }} textStyle={{
                                 color: colors.palette.dolphin, fontWeight: '700',
@@ -152,7 +154,7 @@ const UnitModal = (props: UnitModalProps) => {
                         <Button tx={'productScreen.saveAndChange'} style={{
                             height: scaleHeight(48),
                             backgroundColor: colors.palette.navyBlue,
-                            width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.48,
+                            width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
                             borderRadius: 8
                         }}
                             textStyle={{

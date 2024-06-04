@@ -13,13 +13,16 @@ export const styles = StyleSheet.create({
     backgroundColor: "#Ffffff",
     flex: 1,
   },
+  animatedButton: {
+    padding: 10, // Add padding if needed, adjust as necessary
+  },
   btnTab: {
     justifyContent: "center",
     alignItems: "center",
     paddingBottom: 12,
     marginTop: scaleHeight(20),
   },
-  rowBtnTab : {
+  rowBtnTab: {
     flexDirection: "row",
     backgroundColor: "#E6E7EA",
     borderRadius: 8,
@@ -115,13 +118,13 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: fontSize.size10,
   },
-  titleHeader : {
+  titleHeader: {
     justifyContent: "flex-start",
     paddingLeft: 5,
     flexDirection: "row",
     alignItems: "center",
   },
-  btnCreateProduct : {
+  btnCreateProduct: {
     position: "absolute",
     bottom: scaleHeight(40),
     zIndex: 1,
@@ -153,12 +156,12 @@ export const styles = StyleSheet.create({
   tabTextInactive: {
     color: "#747475",
   },
-  containerFilter : {
+  containerFilter: {
     marginRight: scaleHeight(16),
     flexDirection: "row",
     alignItems: "center",
   },
-  btnFilterByCategory : {
+  btnFilterByCategory: {
     borderRadius: 4,
     paddingVertical: scaleHeight(8),
     marginLeft: scaleWidth(5),
@@ -166,9 +169,9 @@ export const styles = StyleSheet.create({
     borderColor: "#0078D4",
     flexDirection: "row",
     width: scaleWidth(110),
-    justifyContent: 'space-between'
+    justifyContent: "space-between",
   },
-  textBtnFilter : {
+  textBtnFilter: {
     color: "#0078D4",
     textAlign: "center",
     fontWeight: "400",
@@ -178,19 +181,19 @@ export const styles = StyleSheet.create({
     maxWidth: scaleWidth(80),
     flex: 1,
   },
-  containerProduct : {
+  containerProduct: {
     flex: 1,
-    marginVertical: scaleHeight(16),
+    marginTop: scaleHeight(16),
     marginHorizontal: scaleWidth(16),
   },
-  btnCreateCategory : {
+  btnCreateCategory: {
     position: "absolute",
     bottom: scaleHeight(40),
     zIndex: 1,
     right: scaleWidth(16),
     borderRadius: 40,
     backgroundColor: "#0078D4",
-  }
+  },
 });
 
 export const stylesItem = StyleSheet.create({
@@ -207,30 +210,15 @@ export const stylesItem = StyleSheet.create({
   item: {
     backgroundColor: "white",
     borderRadius: 10,
-    shadowColor: "#ffffff",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 1,
-    // marginHorizontal: 8,
-
-    marginBottom: scaleHeight(16),
+    marginBottom: scaleHeight(10),
   },
   title: {
     color: "#242426",
     fontSize: fontSize.size10,
     fontWeight: "700",
-    lineHeight: 16,
-    
-    // textAlign: 'left'
   },
   titleView: {
     alignItems: "flex-start",
-    // width: scaleWidth(87),
-    // height: scaleHeight(38),
   },
   description: {
     fontSize: fontSize.size9,
@@ -243,4 +231,3 @@ export const stylesItem = StyleSheet.create({
     // marginBottom: scaleHeight(16),
   },
 });
-

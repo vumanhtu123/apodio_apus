@@ -110,10 +110,14 @@ export const ProductDetailScreen: FC = (item) => {
 
   useEffect(() => {
     console.log("---------useEffect---------reload------------------");
-    if (reload === true) {
-      handleGetDetailProduct();
-    }
-  }, [reload]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (reload === true) {
+        handleGetDetailProduct();
+      }
+    });
+
+    return unsubscribe;
+  }, [ navigation, reload]);
 
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -218,10 +222,20 @@ export const ProductDetailScreen: FC = (item) => {
 
   const deleteProduct = async () => {
     const result = await productStore.deleteProduct(productId);
-    console.log("deleteProduct-----------", JSON.stringify(result));
+    console.log("deleteProduct-----------", result);
     if (result.kind === "ok") {
-      navigation.goBack();
-      productStore.setReloadProductScreen(true)
+      showDialog(
+        translate("txtDialog.txt_title_dialog"),
+        "danger",
+        `${result.result.message}`,
+        "",
+        translate("common.ok"),
+        () => {
+          navigation.goBack();
+          productStore.setReloadProductScreen(true)
+          hideDialog();
+        }
+      );
     } else {
       Dialog.show({
         type: ALERT_TYPE.DANGER,
@@ -377,6 +391,7 @@ export const ProductDetailScreen: FC = (item) => {
                     onPress={() => {
                       setChangeClassification(item.id);
                       setDetailsClassification(item);
+                      console.log('first' , dataClassification)
                       // setShowDetails(false);
                     }}>
                     <Text
@@ -430,7 +445,7 @@ export const ProductDetailScreen: FC = (item) => {
                 <View>
                   <ProductAttribute
                     label="Mã biến thể sản phẩm "
-                    value={detailsClassification.id}
+                    value={detailsClassification.sku}
                   />
                   <ProductAttribute
                     label="Tên biến thể sản phẩm "
@@ -625,7 +640,7 @@ export const ProductDetailScreen: FC = (item) => {
               />
               <ProductAttribute
                 label="Đơn vị tính gốc"
-                value={dataClassification.uom?.name}
+                value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
               />
             </View>
           </View>
@@ -684,7 +699,7 @@ export const ProductDetailScreen: FC = (item) => {
               </View>
               <View style={styles.viewLine2} />
               {attributeDetailsClassification?.map((item, index) => (
-                <View>
+                <View key={index}>
                   <View
                     style={{
                       marginVertical: scaleHeight(margin.margin_12),
@@ -765,7 +780,7 @@ export const ProductDetailScreen: FC = (item) => {
                               paddingVertical: scaleHeight(padding.padding_8),
                             }}>
                             <AutoHeightImage
-                              source={{ uri: item?.imgUrl }}
+                              source={{ uri: item?.avatarUrl }}
                               width={scaleHeight(40)}
                               height={scaleHeight(40)}
                               style={{ borderRadius: 40 }}

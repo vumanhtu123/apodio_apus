@@ -12,6 +12,7 @@ import { dataLineHeader } from "../styles/data";
 import { ScrollView } from "react-native-gesture-handler";
 import { OrderSupplier } from "../component/order-supplier";
 import { DebtSupplier } from "../component/debt-supplier";
+import { ProductSupplier } from "../component/product-supplier";
 
 export const DetailsSupplierScreen: FC<
   AppStackScreenProps<"suppliersScreen">
@@ -40,6 +41,8 @@ export const DetailsSupplierScreen: FC<
         return <OrderSupplier />;
       case 3:
         return <DebtSupplier />;
+      case 4:
+        return <ProductSupplier />;
       default:
         return null;
     }
@@ -77,7 +80,7 @@ export const DetailsSupplierScreen: FC<
               }}>
               <Text
                 style={{
-                  marginHorizontal: scaleWidth(12),
+                  marginHorizontal: scaleWidth(13),
                   fontSize: 12,
                   fontWeight: "400",
                   color: index == onclick ? "#0078D4" : "#242424",

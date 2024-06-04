@@ -18,6 +18,9 @@ interface CategoryListProps {
   handleEndReachedCategory: () => void;
   handleOpenDeleteModal: (item: any) => void;
   handleEditCategory: (item: any) => void;
+  isDeleteModalVisible : boolean,
+  setIsDeleteModalVisible : any,
+  handleDeleteItem : () => void;
 }
 
 export const CategoryList: React.FC<CategoryListProps> = ({
@@ -32,7 +35,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({
   handleEditCategory,
   isDeleteModalVisible, // Thêm prop isDeleteModalVisible
   setIsDeleteModalVisible, // Thêm prop setIsDeleteModalVisible
-  handleDeleteItem, // Thêm prop handleDeleteItem
+  handleDeleteItem,
 }) => {
   return (
     <View style={{ flex: 1 }}>
@@ -45,6 +48,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'flex-end',
+          marginBottom: scaleHeight(5),
         }}
       >
         <Button
@@ -72,7 +76,7 @@ export const CategoryList: React.FC<CategoryListProps> = ({
             <RefreshControl refreshing={isRefreshingCategory} onRefresh={refreshCategory} title="ok" />
           }
           keyExtractor={(item: any) => item.id.toString()}
-          scrollEnabled={true}
+          // scrollEnabled={true}
           renderItem={({ item, isActive }: any) => (
             <RenderCategoryItem
               item={item}
