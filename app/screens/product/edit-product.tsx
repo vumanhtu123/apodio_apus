@@ -49,14 +49,8 @@ import {
   removeNonNumeric,
   validateFileSize,
 } from "../../utils/validate";
-import { G } from "react-native-svg";
-import Dialog from "../../components/dialog/dialog";
-import {
-  hideDialog,
-  hideLoading,
-  showDialog,
-  showToast,
-} from "../../utils/toast";
+
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { translate } from "../../i18n/translate";
 import UnitModal from "./component/modal-unit";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -218,13 +212,13 @@ export const ProductEditScreen: FC = (item) => {
       const attributeEdit:
         | ((prevState: never[]) => never[])
         | {
-            productAttributeId: any;
-            value: any;
-            activated?: any;
-            sequence?: any;
-            id?: any;
-            idGroup?: any;
-          }[] = [];
+          productAttributeId: any;
+          value: any;
+          activated?: any;
+          sequence?: any;
+          id?: any;
+          idGroup?: any;
+        }[] = [];
 
       newDataEdit?.attributeCategory?.forEach(
         (item: { attributeOutputDtos: any[]; id?: any }) => {
@@ -555,7 +549,13 @@ export const ProductEditScreen: FC = (item) => {
 
   const submitAdd = async () => {
     if (uomId.id === "") {
-      showToast("txtToats.required_information", "error");
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.required_information'),
+
+      })
+
     } else {
       const newArr1: never[] = [];
       const newArr = dataCreateProduct?.map((item) => {
@@ -631,29 +631,26 @@ export const ProductEditScreen: FC = (item) => {
         deleteVariantIds: newArr1,
       });
       if (data.kind === "ok") {
-        showDialog(
-          translate("txtDialog.txt_title_dialog"),
-          "danger",
-          translate("txtDialog.product_repair_successful"),
-          "",
-          translate("common.ok"),
-          () => {
-            hideDialog();
-            navigation.navigate("productDetailScreen" as never, {reload: true});
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("txtDialog.txt_title_dialog"),
+          textBody: translate("txtDialog.product_repair_successful"),
+          button2: translate("common.ok"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            navigation.navigate("productDetailScreen" as never, { reload: true });
+            Dialog.hide();
           }
-        );
+        })
       } else {
         console.log("data------------------------------", JSON.stringify(data));
-        showDialog(
-          translate("txtDialog.txt_title_dialog"),
-          "danger",
-          data.result.errorCodes[0].message,
-          "",
-          translate("common.ok"),
-          () => {
-            hideDialog();
-          }
-        );
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: translate("txtDialog.txt_title_dialog"),
+          textBody: data.result.errorCodes[0].message,
+          button: translate("common.ok"),
+          closeOnOverlayTap: false
+        })
       }
     }
   };
@@ -691,24 +688,37 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        // showToast("txtToats.permission_granted", "success");
+
       } else {
         console.log("Permission denied");
-        showToast("txtToats.permission_denied", "error");
-        showDialog(
-          translate("txtDialog.permission_allow"),
-          "danger",
-          translate("txtDialog.allow_permission_in_setting"),
-          translate("common.cancel"),
-          translate("txtDialog.settings"),
-          () => {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: '',
+          textBody: translate('txtToats.permission_denied'),
+
+        })
+
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
             Linking.openSettings();
-            hideDialog();
+            Dialog.hide();
           }
-        );
+        })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
-      showToast("txtToats.permission_blocked", "error");
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.permission_blocked'),
+
+      })
+
       console.log("Permission blocked, you need to enable it from settings");
     }
   };
@@ -752,15 +762,14 @@ export const ProductEditScreen: FC = (item) => {
         const { fileSize, uri, type, fileName } = image;
         const checkFileSize = validateFileSize(fileSize);
         if (checkFileSize) {
-          hideLoading();
-          showDialog(
-            translate("txtDialog.imageUploadExceedLimitedSize"),
-            "danger",
-            "",
-            "OK",
-            "",
-            ""
-          );
+          Loading.hide();
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: translate("txtDialog.txt_title_dialog"),
+            textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
+            button: translate("common.ok"),
+            closeOnOverlayTap: false
+          })
         } else {
           const formData = new FormData();
           formData.append("file", {
@@ -827,7 +836,13 @@ export const ProductEditScreen: FC = (item) => {
           // uploadImages(selectedAssets, true, -1);
           // setModalImage(false);
           if (selectedAssets.length + imagesNote.length > 6) {
-            showToast('txtToats.required_maximum_number_of_photos', 'error')
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: '',
+              textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+            })
+
           } else {
             uploadImages(selectedAssets, true, -1);
           }
@@ -837,24 +852,36 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        // showToast("txtToats.permission_granted", "success");
+
       } else {
         console.log("Permission denied");
-        showToast("txtToats.permission_denied", "error");
-        showDialog(
-          translate("txtDialog.permission_allow"),
-          "danger",
-          translate("txtDialog.allow_permission_in_setting"),
-          translate("common.cancel"),
-          translate("txtDialog.settings"),
-          () => {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: '',
+          textBody: translate('txtToats.permission_denied'),
+
+        })
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
             Linking.openSettings();
-            hideDialog();
+            Dialog.hide();
           }
-        );
+        })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
-      showToast("txtToats.permission_blocked", "error");
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.permission_blocked'),
+
+      })
+
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
       const options = {
@@ -878,7 +905,12 @@ export const ProductEditScreen: FC = (item) => {
           //setImagesNote([...imagesNote, ...selectedAssets]);
           // uploadImages(selectedAssets, true, -1);
           if (selectedAssets.length + imagesNote.length > 6) {
-            showToast('txtToats.required_maximum_number_of_photos', 'error')
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: '',
+              textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+            })
           } else {
             uploadImages(selectedAssets, true, -1);
           }
@@ -912,7 +944,7 @@ export const ProductEditScreen: FC = (item) => {
       : dataCreateProduct[indexItem]?.imageUrls?.length;
     console.log("----------------indexItem-----------------", numberUrl);
     if (permissionStatus === RESULTS.GRANTED) {
-      // showToast("txtToats.permission_granted", "success");
+
       const options = {
         cameraType: "back",
         quality: 1,
@@ -937,24 +969,37 @@ export const ProductEditScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        // showToast("txtToats.permission_granted", "success");
+
       } else {
         console.log("Permission denied");
-        showToast("txtToats.permission_denied", "error");
-        showDialog(
-          translate("txtDialog.permission_allow"),
-          "danger",
-          translate("txtDialog.allow_permission_in_setting"),
-          translate("common.cancel"),
-          translate("txtDialog.settings"),
-          () => {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: '',
+          textBody: translate('txtToats.permission_denied'),
+
+        })
+
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
             Linking.openSettings();
-            hideDialog();
+            Dialog.hide();
           }
-        );
+        })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
-      showToast("txtToats.permission_blocked", "error");
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.permission_blocked'),
+
+      })
+
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
       const options = {
@@ -975,7 +1020,13 @@ export const ProductEditScreen: FC = (item) => {
         } else if (response?.assets && response.assets.length > 0) {
           const selectedAssets = response.assets.map((asset) => asset);
           if (selectedAssets.length + numberUrl > 6) {
-            showToast('txtToats.required_maximum_number_of_photos', 'error')
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: '',
+              textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+            })
+
           } else {
             uploadImages(selectedAssets, false, indexItem);
           }
@@ -1008,18 +1059,19 @@ export const ProductEditScreen: FC = (item) => {
   });
 
   const handleDeleteProduct = async (index: any, id: any) => {
-    showDialog(
-      translate("txtDialog.txt_title_dialog"),
-      "danger",
-      translate("txtDialog.delete_variant"),
-      translate("common.cancel"),
-      translate("common.confirm"),
-      async () => {
+    Dialog.show({
+      type: ALERT_TYPE.INFO,
+      title: translate("txtDialog.txt_title_dialog"),
+      textBody: translate("txtDialog.delete_variant"),
+      button: translate("common.cancel"),
+      button2: translate("common.confirm"),
+      closeOnOverlayTap: false,
+      onPressButton: async () => {
         try {
           if (id !== null) {
             const checkDelete = await productStore.deleteCheck(id);
             console.log(checkDelete, "----------check");
-    
+
             if (checkDelete.result && checkDelete.kind === "ok") {
               if (checkDelete.result.data.isUsing === false) {
                 const updatedData = [
@@ -1028,14 +1080,32 @@ export const ProductEditScreen: FC = (item) => {
                 ];
                 setDataCreateProduct(updatedData);
                 setErrorContent(checkDelete.result.message);
-                setIsDeleteFailModalVisible(true);
+                Dialog.show({
+                  type: ALERT_TYPE.DANGER,
+                  title: translate("txtDialog.txt_title_dialog"),
+                  textBody: checkDelete.result.message,
+                  button: translate("common.ok"),
+                  closeOnOverlayTap: false
+              })
               } else {
                 setErrorContent(checkDelete.result.errorCodes[0].message);
-                setIsDeleteFailModalVisible(true);
+                Dialog.show({
+                  type: ALERT_TYPE.DANGER,
+                  title: translate("txtDialog.txt_title_dialog"),
+                  textBody: checkDelete.result.errorCodes[0].message,
+                  button: translate("common.ok"),
+                  closeOnOverlayTap: false
+              })
               }
             } else {
               setErrorContent(checkDelete.result.errorCodes[0].message);
-              setIsDeleteFailModalVisible(true);
+              Dialog.show({
+                type: ALERT_TYPE.DANGER,
+                title: translate("txtDialog.txt_title_dialog"),
+                textBody: checkDelete.result.errorCodes[0].message,
+                button: translate("common.ok"),
+                closeOnOverlayTap: false
+            })
               console.error("Failed to fetch categories:", checkDelete.result);
             }
           } else {
@@ -1049,7 +1119,7 @@ export const ProductEditScreen: FC = (item) => {
           console.error("Error fetching categories:", error);
         }
       }
-    );
+    })
   };
 
   const handleSelect = (items: any) => {
@@ -1098,10 +1168,13 @@ export const ProductEditScreen: FC = (item) => {
                         handleLibraryUse();
                         productStore.setImagesLimit(imagesNote.length);
                       } else {
-                        showToast(
-                          "txtToats.required_maximum_number_of_photos",
-                          "error"
-                        );
+                        Toast.show({
+                          type: ALERT_TYPE.DANGER,
+                          title: '',
+                          textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+                        })
+
                       }
                     }}
                     style={styles.btnLibrary}>
@@ -1115,10 +1188,13 @@ export const ProductEditScreen: FC = (item) => {
                       if (imagesNote.length < 6) {
                         handleCameraUse();
                       } else {
-                        showToast(
-                          "txtToats.required_maximum_number_of_photos",
-                          "error"
-                        );
+                        Toast.show({
+                          type: ALERT_TYPE.DANGER,
+                          title: '',
+                          textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+                        })
+
                       }
                     }}
                     style={styles.btnCamera}>
@@ -1180,10 +1256,12 @@ export const ProductEditScreen: FC = (item) => {
                         handleLibraryUse();
                         productStore.setImagesLimit(imagesNote.length);
                       } else {
-                        showToast(
-                          "txtToats.required_maximum_number_of_photos",
-                          "error"
-                        );
+                        Toast.show({
+                          type: ALERT_TYPE.DANGER,
+                          title: '',
+                          textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+                        })
                       }
                     }}
                     style={{
@@ -1206,7 +1284,7 @@ export const ProductEditScreen: FC = (item) => {
                         height={scaleHeight(16)}
                       />
                       <Text tx={"createProductScreen.uploadImage"}
-                        style={{ fontSize: fontSize.size14, color: "#0078d4" }}/>
+                        style={{ fontSize: fontSize.size14, color: "#0078d4" }} />
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -1214,10 +1292,12 @@ export const ProductEditScreen: FC = (item) => {
                       if (imagesNote.length < 6) {
                         handleCameraUse();
                       } else {
-                        showToast(
-                          "txtToats.required_maximum_number_of_photos",
-                          "error"
-                        );
+                        Toast.show({
+                          type: ALERT_TYPE.DANGER,
+                          title: '',
+                          textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+                        })
                       }
                     }}
                     style={{
@@ -1239,7 +1319,7 @@ export const ProductEditScreen: FC = (item) => {
                         height={scaleHeight(16)}
                       />
                       <Text tx={"createProductScreen.openCamera"}
-                        style={{ fontSize: fontSize.size14, color: "#0078d4" }}/>
+                        style={{ fontSize: fontSize.size14, color: "#0078d4" }} />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -1269,14 +1349,14 @@ export const ProductEditScreen: FC = (item) => {
                   placeholderTx="productScreen.placeholderSKU"
                   RightIcon={Images.ic_QR}
                   editable={false}
-                  // isImportant
+                // isImportant
                 />
               )}
               // defaultValue={''}
               name="SKU"
-              // rules={{
-              //   required: "Please input data",
-              // }}
+            // rules={{
+            //   required: "Please input data",
+            // }}
             />
             <Controller
               control={control}
@@ -1315,7 +1395,7 @@ export const ProductEditScreen: FC = (item) => {
                 style={{
                   fontSize: fontSize.size13,
                   marginRight: scaleWidth(10),
-                }}/>
+                }} />
               <Switch
                 value={valuePurchase}
                 onToggle={() => {
@@ -1361,7 +1441,7 @@ export const ProductEditScreen: FC = (item) => {
                       }}
                     />
                     {retailPriceProduct?.length > 0 &&
-                    retailPriceProduct?.length !== 1 ? (
+                      retailPriceProduct?.length !== 1 ? (
                       <Text
                         text={convertRetailPrice(retailPriceProduct)}
                         numberOfLines={1}
@@ -1507,7 +1587,7 @@ export const ProductEditScreen: FC = (item) => {
                       }}
                     />
                     {wholesalePriceProduct?.length > 0 &&
-                    wholesalePriceProduct?.length !== 1 ? (
+                      wholesalePriceProduct?.length !== 1 ? (
                       <Text
                         text={convertWholesalePrice(wholesalePriceProduct)}
                         numberOfLines={1}
@@ -1561,7 +1641,7 @@ export const ProductEditScreen: FC = (item) => {
                   fontSize: fontSize.size14,
                   fontWeight: "700",
                   marginBottom: scaleHeight(15),
-                }}/>
+                }} />
               <TouchableOpacity
                 onPress={() => goToChooseSupplierScreen()}
                 style={{
@@ -1605,7 +1685,7 @@ export const ProductEditScreen: FC = (item) => {
                 fontSize: fontSize.size14,
                 fontWeight: "700",
                 marginBottom: scaleHeight(15),
-              }}/>
+              }} />
             <InputSelect
               titleTx={"createProductScreen.form_of_management"}
               //hintText="Mặc định"
@@ -1617,7 +1697,7 @@ export const ProductEditScreen: FC = (item) => {
                 setBrands(item);
               }}
               disabled={productUsing === true || priceUsing === true ? true : false}
-              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
+            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
             />
           </View>
         </View>
@@ -1633,7 +1713,7 @@ export const ProductEditScreen: FC = (item) => {
                 fontSize: fontSize.size14,
                 fontWeight: "700",
                 marginBottom: scaleHeight(15),
-              }}/>
+              }} />
             <InputSelect
               titleTx={"inforMerchant.Category"}
               hintTx={"productScreen.select_catgory"}
@@ -1657,7 +1737,7 @@ export const ProductEditScreen: FC = (item) => {
                 setBrand(item);
               }}
               styleView={{ marginBottom: scaleHeight(15) }}
-              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
+            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
             />
             <DropdownModal
               required={false}
@@ -1684,7 +1764,7 @@ export const ProductEditScreen: FC = (item) => {
                 fontSize: fontSize.size14,
                 fontWeight: "700",
                 marginBottom: scaleHeight(15),
-              }}/>
+              }} />
             <View
               style={{
                 flexDirection: "row",
@@ -1692,7 +1772,7 @@ export const ProductEditScreen: FC = (item) => {
                 justifyContent: "space-between",
                 marginBottom: scaleHeight(15),
               }}>
-              <Text tx={"productScreen.manage_multiple_units"} 
+              <Text tx={"productScreen.manage_multiple_units"}
                 style={{
                   fontSize: fontSize.size13,
                   fontWeight: "400",
@@ -1701,11 +1781,18 @@ export const ProductEditScreen: FC = (item) => {
               <Switch
                 value={valueSwitchUnit}
                 onToggle={() => {
-                 if(priceUsing === true){
-                  showToast('txtToats.product_is_using', 'error')
-                 }else{
-                  setValueSwitchUnit(!valueSwitchUnit);
-                  getListUnitGroup(!valueSwitchUnit);}
+                  if (priceUsing === true) {
+                    Toast.show({
+                      type: ALERT_TYPE.DANGER,
+                      title: '',
+                      textBody: translate('txtToats.product_is_using'),
+
+                    })
+
+                  } else {
+                    setValueSwitchUnit(!valueSwitchUnit);
+                    getListUnitGroup(!valueSwitchUnit);
+                  }
                 }}
               />
             </View>
@@ -1725,24 +1812,37 @@ export const ProductEditScreen: FC = (item) => {
                 }
               }}
               styleView={{ marginBottom: scaleHeight(6) }}
-              checkUse={ priceUsing === true ? true : false }
-              onPressNotUse={()=> {
-                showToast('txtToats.product_is_using', 'error')
+              checkUse={priceUsing === true ? true : false}
+              onPressNotUse={() => {
+                Toast.show({
+                  type: ALERT_TYPE.DANGER,
+                  title: '',
+                  textBody: translate('txtToats.product_is_using'),
+
+                })
+
               }}
             />
             <View style={{ marginBottom: scaleHeight(15) }}>
               <TouchableOpacity
                 style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {
-                  if(priceUsing === true){
-                    showToast('txtToats.product_is_using', 'error')
-                   }else{if (valueSwitchUnit) {
-                    navigation.navigate("createConversionGroup" as any, {
-                      editScreen: true,
-                    });
+                  if (priceUsing === true) {
+                    Toast.show({
+                      type: ALERT_TYPE.DANGER,
+                      title: '',
+                      textBody: translate('txtToats.product_is_using'),
+
+                    })
                   } else {
-                    setModalcreateUnit(true);
-                  }}
+                    if (valueSwitchUnit) {
+                      navigation.navigate("createConversionGroup" as any, {
+                        editScreen: true,
+                      });
+                    } else {
+                      setModalcreateUnit(true);
+                    }
+                  }
                 }}>
                 <Images.ic_plusCircleBlue
                   width={scaleWidth(14)}
@@ -1753,7 +1853,7 @@ export const ProductEditScreen: FC = (item) => {
                     color: "#0078d4",
                     fontSize: fontSize.size12,
                     marginLeft: scaleWidth(4),
-                  }}/>
+                  }} />
               </TouchableOpacity>
             </View>
             {valueSwitchUnit ? (
@@ -1765,7 +1865,7 @@ export const ProductEditScreen: FC = (item) => {
                     justifyContent: "space-between",
                     marginBottom: scaleHeight(15),
                   }}>
-                  <Text tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }}/>
+                  <Text tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }} />
                   {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
                   {detailUnitGroupData ? (
                     <Text
@@ -1781,9 +1881,9 @@ export const ProductEditScreen: FC = (item) => {
                     justifyContent: "space-between",
                     marginBottom: scaleHeight(15),
                   }}>
-                  <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size14 }}/>
-                  <Text  tx={"createProductScreen.conversionRate"}
-                    style={{ fontSize: fontSize.size14, fontWeight: "600" }}/>
+                  <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size14 }} />
+                  <Text tx={"createProductScreen.conversionRate"}
+                    style={{ fontSize: fontSize.size14, fontWeight: "600" }} />
                 </View>
                 {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
                   <View
@@ -1872,10 +1972,13 @@ export const ProductEditScreen: FC = (item) => {
                                       item.imageUrls?.length
                                     );
                                   } else {
-                                    showToast(
-                                      "txtToats.required_maximum_number_of_photos",
-                                      "error"
-                                    );
+                                    Toast.show({
+                                      type: ALERT_TYPE.DANGER,
+                                      title: '',
+                                      textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+                                    })
+
                                   }
                                 } else {
                                   handleLibraryUseProduct(
@@ -1939,7 +2042,7 @@ export const ProductEditScreen: FC = (item) => {
                                       }}
                                     />
                                     {item.retailPrice?.length > 0 &&
-                                    item.retailPrice?.length !== 1 ? (
+                                      item.retailPrice?.length !== 1 ? (
                                       <Text
                                         text={convertAttributeRetailPrice(
                                           dataCreateProduct,
@@ -2006,8 +2109,8 @@ export const ProductEditScreen: FC = (item) => {
                                       onChange(
                                         vendorStore.checkSeparator === "DOTS"
                                           ? formatCurrency(
-                                              removeNonNumeric(value)
-                                            )
+                                            removeNonNumeric(value)
+                                          )
                                           : addCommas(removeNonNumeric(value))
                                       );
                                       item.costPrice = value;
@@ -2047,8 +2150,8 @@ export const ProductEditScreen: FC = (item) => {
                                       onChange(
                                         vendorStore.checkSeparator === "DOTS"
                                           ? formatCurrency(
-                                              removeNonNumeric(value)
-                                            )
+                                            removeNonNumeric(value)
+                                          )
                                           : addCommas(removeNonNumeric(value))
                                       );
                                       item.listPrice = value;
@@ -2102,7 +2205,7 @@ export const ProductEditScreen: FC = (item) => {
                                       }}
                                     />
                                     {item.wholesalePrice?.length > 0 &&
-                                    item.wholesalePrice?.length !== 1 ? (
+                                      item.wholesalePrice?.length !== 1 ? (
                                       <Text
                                         text={convertAttributeWholesalePrice(
                                           dataCreateProduct,
@@ -2240,7 +2343,7 @@ export const ProductEditScreen: FC = (item) => {
                       fontSize: fontSize.size14,
                       fontWeight: "700",
                       marginBottom: scaleHeight(15),
-                    }}/>
+                    }} />
                   {description ? (
                     <TouchableOpacity
                       onPress={() => {
@@ -2276,12 +2379,12 @@ export const ProductEditScreen: FC = (item) => {
                       width={scaleWidth(14)}
                       height={scaleHeight(14)}
                     />
-                    <Text  tx={"createProductScreen.addDescription"}
+                    <Text tx={"createProductScreen.addDescription"}
                       style={{
                         color: "#0078d4",
                         fontSize: fontSize.size12,
                         marginLeft: scaleWidth(4),
-                      }}/>
+                      }} />
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -2323,7 +2426,7 @@ export const ProductEditScreen: FC = (item) => {
                       marginLeft: scaleWidth(8),
                     }}>
                     <Text tx={"createProductScreen.description"}
-                      style={{ color: "#0078d4", fontSize: fontSize.size10 }}/>
+                      style={{ color: "#0078d4", fontSize: fontSize.size10 }} />
                   </TouchableOpacity>
                 ) : null}
                 {addVariant === false ? (
@@ -2339,7 +2442,7 @@ export const ProductEditScreen: FC = (item) => {
                       marginLeft: scaleWidth(8),
                     }}>
                     <Text tx={"createProductScreen.productClassification"}
-                      style={{ color: "#0078d4", fontSize: fontSize.size10 }}/>
+                      style={{ color: "#0078d4", fontSize: fontSize.size10 }} />
                   </TouchableOpacity>
                 ) : null}
                 {addDescribe === true && addVariant === true ? (
@@ -2347,7 +2450,7 @@ export const ProductEditScreen: FC = (item) => {
                     style={{
                       marginLeft: scaleWidth(8),
                       fontSize: fontSize.size13,
-                    }}/>
+                    }} />
                 ) : null}
               </View>
             </View>
@@ -2485,14 +2588,7 @@ export const ProductEditScreen: FC = (item) => {
         }}
         dataAdd={dataModal}
       />
-      <Dialog
-        isVisible={isDeleteFailModalVisible}
-        title={"productScreen.Notification"}
-        errorMessage={errorContent}
-        titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-        onPressAccept={() => setIsDeleteFailModalVisible(false)}
-      />
+      
       <DescribeModal
         title={"productScreen.describe"}
         isVisible={modalDescribe}
@@ -2539,7 +2635,7 @@ export const ProductEditScreen: FC = (item) => {
             borderRadius: 10,
             borderColor: "#c8c8c8",
           }}>
-          <Text tx={"common.cancel"} style={{ fontSize: fontSize.size14 }}/>
+          <Text tx={"common.cancel"} style={{ fontSize: fontSize.size14 }} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -2553,7 +2649,7 @@ export const ProductEditScreen: FC = (item) => {
             borderRadius: 10,
             backgroundColor: "#0078d4",
           }}>
-          <Text tx={"createProductScreen.done"} style={{ fontSize: fontSize.size14, color: "white" }}/>
+          <Text tx={"createProductScreen.done"} style={{ fontSize: fontSize.size14, color: "white" }} />
         </TouchableOpacity>
       </View>
     </View>

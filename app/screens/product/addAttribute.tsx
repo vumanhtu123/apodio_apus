@@ -295,7 +295,6 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
         if (selectedItems.length === 0) {
             navigation.goBack();
         } else {
-
             Dialog.show({
                 type: ALERT_TYPE.SUCCESS,
                 title: translate("txtDialog.txt_title_dialog"),

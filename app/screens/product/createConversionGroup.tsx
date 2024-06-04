@@ -111,6 +111,7 @@ export const CreateConversionGroup: FC = observer(
         const createUnitGroupLine = async (params: any, saveLocal: boolean) => {
             const unitResult = await unitStore.createUnitGroupLine(params)
             if (unitResult && unitResult.kind === 'ok') {
+                Dialog.hide();
                 const data = unitResult.result.data;
                 console.log('response11111', unitResult)
                 goBackToProductCreateScreen(data.id, data.name);

@@ -24,7 +24,6 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { panHandlerName } from "react-native-gesture-handler/lib/typescript/handlers/PanGestureHandler";
 import { styles } from "./styles";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import AddProduct from "../components/itemListProduct";
@@ -44,8 +43,7 @@ import moment from "moment";
 import CustomCalendar from "../../../components/calendar";
 import { MakeResult } from "mobx/dist/internal";
 import ItemListProduct from "../components/itemListProduct";
-import ImagesGroup from "../../product/component/imageGroup";
-import { showDialog } from "../../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 
 export const NewOrder: FC = observer(function NewOrder(props) {
   const navigation = useNavigation();
@@ -215,17 +213,20 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
-        showDialog(
-          translate("txtDialog.permission_allow"),
-          "danger",
-          translate("txtDialog.allow_permission_in_setting"),
-          translate("common.cancel"),
-          translate("txtDialog.settings"),
-          () => {
+
+        Dialog.show({
+          type: ALERT_TYPE.WARNING,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
             Linking.openSettings();
-            hideDialog();
+            Dialog.hide();
+             
           }
-        );
+      })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       console.log("Permission blocked, you need to enable it from settings");

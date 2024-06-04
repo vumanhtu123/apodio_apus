@@ -11,7 +11,7 @@ import { translate } from '../../../i18n/translate';
 import { useStores } from '../../../models';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
-import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 import { validateFileSize } from '../../../utils/validate';
 
 const CreateDirectoryModal = (props: any) => {
@@ -42,8 +42,14 @@ const CreateDirectoryModal = (props: any) => {
             const checkFileSize = validateFileSize(fileSize);
 
             if (checkFileSize) {
-                hideLoading();
-                showDialog(translate("imageUploadExceedLimitedSize"), "danger", "", "OK", "", "");
+                Loading.hide();
+                Dialog.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: translate("imageUploadExceedLimitedSize"),
+                    button: translate("common.ok"),
+                    closeOnOverlayTap: false
+                })
                 return;
             }
 
@@ -112,9 +118,17 @@ const CreateDirectoryModal = (props: any) => {
                 console.log("Permission granted");
             } else {
                 console.log("Permission denied");
-                showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
-                    Linking.openSettings()
-                    hideDialog();
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.permission_allow"),
+                    textBody: translate("txtDialog.allow_permission_in_setting"),
+                    button: translate("common.cancel"),
+                    button2: translate("txtDialog.settings"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        Linking.openSettings()
+                        Dialog.hide();
+                    }
                 })
             }
         } else if (permissionStatus === RESULTS.BLOCKED) {
@@ -159,9 +173,17 @@ const CreateDirectoryModal = (props: any) => {
                 console.log("Permission granted");
             } else {
                 console.log("Permission denied");
-                showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
-                    Linking.openSettings()
-                    hideDialog();
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.permission_allow"),
+                    textBody: translate("txtDialog.allow_permission_in_setting"),
+                    button: translate("common.cancel"),
+                    button2: translate("txtDialog.settings"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        Linking.openSettings()
+                        Dialog.hide();
+                    }
                 })
             }
         } else if (permissionStatus === RESULTS.BLOCKED) {
