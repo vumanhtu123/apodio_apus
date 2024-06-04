@@ -5,7 +5,7 @@ import { Color, getImage } from '../service';
 import { scaleHeight, scaleWidth } from '../../../theme';
 
 export type IConfigDialog = {
-  type: ALERT_TYPE;
+  type?: ALERT_TYPE;
   title?: string;
   textBody?: string;
   button?: string;

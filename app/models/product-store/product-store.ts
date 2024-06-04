@@ -241,7 +241,6 @@ export const ProductStoreModel = types
           if (traceId) {
             console.log("errorCodes", errorCodes);
             if (errorCodes !== undefined && errorCodes[0].code) {
-              // showDialog(translate("imageUploadExceedLimitedSize"), "danger", "", "OK", "", "");
               return null;
             } else {
               self.setImageUrl(data.url);
