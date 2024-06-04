@@ -224,18 +224,19 @@ export const ProductDetailScreen: FC = (item) => {
     const result = await productStore.deleteProduct(productId);
     console.log("deleteProduct-----------", result);
     if (result.kind === "ok") {
-      showDialog(
-        translate("txtDialog.txt_title_dialog"),
-        "danger",
-        `${result.result.message}`,
-        "",
-        translate("common.ok"),
-        () => {
-          navigation.goBack();
+      Dialog.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: translate("txtDialog.txt_title_dialog"),
+        button: '',
+        button2: translate("common.ok"),
+        textBody: result.result.message,
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          navigation.goBack()
           productStore.setReloadProductScreen(true)
-          hideDialog();
+          Dialog.hide();
         }
-      );
+      })  
     } else {
       Dialog.show({
         type: ALERT_TYPE.DANGER,
@@ -270,7 +271,7 @@ export const ProductDetailScreen: FC = (item) => {
         }
         onRightPress2={() => {
           Dialog.show({
-            type: ALERT_TYPE.SUCCESS,
+            type: ALERT_TYPE.INFO,
             title: translate("productScreen.Notification"),
             button: translate("productScreen.cancel"),
             button2: translate("productScreen.BtnNotificationAccept"),

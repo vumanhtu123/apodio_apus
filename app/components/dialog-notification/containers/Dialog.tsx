@@ -190,7 +190,6 @@ export class Dialog extends React.Component<IProps, IState> {
   private _buttonRender = (): JSX.Element => {
     const { styles } = this.state;
     const { type, onPressButton, button, button2 } = this.state.config!;
-    if (button) {
       return (
         <View style={styles.viewButton}>
 
@@ -202,8 +201,6 @@ export class Dialog extends React.Component<IProps, IState> {
         </TouchableOpacity>)}
         </View>
       );
-    }
-    return <></>;
   };
 
   /**
@@ -312,7 +309,7 @@ const __styles = (isDark: boolean) =>
     },
     button: {
       //flex: 1,
-      borderRadius: 50,
+      borderRadius: 30,
       height: 40,
       width: 130,
       justifyContent: 'center',
