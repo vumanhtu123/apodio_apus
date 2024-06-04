@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ACTION, ALERT_TYPE, ENV } from '../config';
 import { Color, getImage } from '../service';
-import { scaleHeight, scaleWidth } from '../../../theme';
+import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 
 export type IConfigDialog = {
   type?: ALERT_TYPE;
@@ -193,11 +193,12 @@ export class Dialog extends React.Component<IProps, IState> {
       return (
         <View style={styles.viewButton}>
 
-        {button && ( <TouchableOpacity style={StyleSheet.flatten([styles.button, styles[type]])} onPress={this._close}>
+        {button && ( <TouchableOpacity style={StyleSheet.flatten([styles.button])} onPress={this._close}>
           <Text style={styles.buttonLabel}>{button}</Text>
         </TouchableOpacity>)}
-        {button2 && ( <TouchableOpacity style={StyleSheet.flatten([styles.button, styles[type]])} onPress={onPressButton ?? this._close}>
-          <Text style={styles.buttonLabel}>{button2}</Text>
+        {button && button2 && <View style={{ width: scaleWidth(9) }} />}
+        {button2 && ( <TouchableOpacity style={StyleSheet.flatten([styles.buttonAccept])} onPress={onPressButton ?? this._close}>
+          <Text style={styles.buttonLabelAccept}>{button2}</Text>
         </TouchableOpacity>)}
         </View>
       );
@@ -236,8 +237,8 @@ export class Dialog extends React.Component<IProps, IState> {
         }) => (this._popupHeight = height)}
         style={StyleSheet.flatten([styles.cardContainer, { transform: [{ translateY: this._positionDialog }] }])}
       >
-        <View style={styles.backendImage} />
-        <Image source={getImage(type)} resizeMode="contain" style={StyleSheet.flatten([styles.image, styles[`${type}Image`]])} />
+        {/* <View style={styles.backendImage} /> */}
+        {/* <Image source={getImage(type)} resizeMode="contain" style={StyleSheet.flatten([styles.image, styles[`${type}Image`]])} /> */}
         <View style={styles.cardBody}>
           {title && <Text style={styles.titleLabel}>{title}</Text>}
           {textBody && <Text style={styles.descLabel}>{textBody}</Text>}
@@ -273,13 +274,14 @@ const __styles = (isDark: boolean) =>
     },
     cardContainer: {
       alignSelf: 'center',
-      maxWidth: 400,
-      width: '80%',
-      minHeight: 250,
-      borderRadius: 24,
-      paddingHorizontal: 12,
-      paddingTop: 50,
-      paddingBottom: 24,
+      // maxWidth: 400,
+      width: '90%',
+      // margin : scaleWidth(16),
+      // minHeight: 250,
+      borderRadius: 8,
+      paddingHorizontal: scaleWidth(10),
+      paddingTop: scaleHeight(20),
+      paddingBottom: scaleHeight(15),
       position: 'absolute',
       backgroundColor: Color.get('card', isDark),
     },
@@ -306,21 +308,39 @@ const __styles = (isDark: boolean) =>
     descLabel: {
       textAlign: 'center',
       color: Color.get('label', isDark),
+      marginVertical : scaleHeight(15)
     },
     button: {
-      //flex: 1,
-      borderRadius: 30,
-      height: 40,
-      width: 130,
+      flex: 1,
+      // backgroundColor : 'red',
+      borderColor :"#d5d5d5",
+      borderWidth: 1,
+      borderRadius: 8,
+      height: scaleHeight(44),
+      // width: scaleWidth(153),
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      marginTop: 12,
+    },
+    buttonAccept:{
+      flex: 1,
+      borderRadius: 8,
+      height: scaleHeight(44),
+      // width: scaleWidth(153),
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      backgroundColor : '#0078d4'
     },
     buttonLabel: {
+      color: '#747475',
+      fontWeight: 'bold',
+      fontSize: fontSize.size14,
+    },
+    buttonLabelAccept : {
       color: '#fff',
       fontWeight: 'bold',
-      fontSize: 16,
+      fontSize: fontSize.size14,
     },
     [ALERT_TYPE.SUCCESS]: {
       backgroundColor: Color.get('success', isDark),

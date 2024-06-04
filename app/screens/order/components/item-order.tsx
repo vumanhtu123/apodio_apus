@@ -32,7 +32,9 @@ export default function ItemOrder(props: ItemOrder) {
             activeOpacity={0.8}
             style={[ROOT, styleViewItemOrder]}
             onPress={onPress}>
-            {name && code && time && amount && status !== "" ?
+            {/* {name && code && time && amount && status !== "" ? */}
+            {name && code && time && amount !== "" ?
+
                 <View>
                     <View style={{ flexDirection: 'row', marginBottom: -2 }}>
                         <View style={{ flex: 1 }}>

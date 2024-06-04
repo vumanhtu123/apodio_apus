@@ -32,7 +32,9 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size12,
     alignItems: "center",
     lineHeight: 16,
-    padding: scaleHeight(padding.padding_8),
+    // padding: scaleHeight(padding.padding_8),
+    paddingHorizontal : scaleWidth(8),
+    paddingVertical : scaleHeight(8)
   },
   viewItemSelect: {
     marginRight: scaleWidth(margin.margin_8),

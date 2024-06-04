@@ -26,3 +26,21 @@ export const formatDate = (date: string, dateFormat?: string, options?: Options)
   }
   return format(parseISO(date), dateFormat ?? "MMM dd, yyyy", dateOptions)
 }
+
+export const formatDateTime = (dateTimeString: string | number | Date) => {
+  const date = new Date(dateTimeString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  // Lấy thông tin năm
+  const year = date.getFullYear();
+  // Lấy thông tin giờ
+  const hours = String(date.getHours()).padStart(2, '0');
+  // Lấy thông tin phút
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  // Lấy thông tin giây
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  const formattedDateTime = ` ${hours}:${minutes} ${day}/${month}`;
+
+  return formattedDateTime;
+}

@@ -133,7 +133,7 @@ export const ChooseVendorScreen: FC = () => {
                     </ImageBackground>
                     <View style={{ marginHorizontal: 6, maxWidth: scaleWidth(230) }}>
                         <Text numberOfLines={2} style={{ fontSize: fontSize.size10 }}>{item.code} - {item.name}</Text>
-                        <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.phoneNumber}</Text>
+                        <Text style={{ fontSize: fontSize.size10, color:colors.palette.dolphin }}>{item.phoneNumber}</Text>
                     </View>
                 </View>
                 <TouchableOpacity
@@ -305,7 +305,7 @@ export const styles = StyleSheet.create({
     buttonText: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#747475',
+        color: colors.palette.dolphin,
         textAlign: 'center',
     },
     activeButtonText: {

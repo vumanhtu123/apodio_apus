@@ -92,7 +92,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
                         </View>
                         <View style={{ marginHorizontal: 6 }}>
                             <Text style={{ fontSize: fontSize.size10 }}>{item.name}</Text>
-                            <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.phoneNumber}</Text>
+                            <Text style={{ fontSize: fontSize.size10, color: colors.palette.dolphin }}>{item.phoneNumber}</Text>
                         </View>
                     </View>
 

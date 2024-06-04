@@ -117,7 +117,7 @@ export const AccountSecurity: FC = observer(function AccountSecurity() {
               />
             </View>
             <Switch
-              trackColor={{ false: '#747475', true: '#747475' }}
+              trackColor={{ false: colors.palette.dolphin, true: colors.palette.dolphin }}
               thumbColor={isEnabled ? '#0178d4' : '#f4f3f4'}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
