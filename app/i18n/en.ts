@@ -1,6 +1,6 @@
 const en = {
   common: {
-    ok: "OK!",
+    ok: "OK",
     cancel: "Hủy",
     back: "Back",
     confirm: "Xác nhận",

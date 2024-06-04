@@ -12,7 +12,7 @@ export const View3D: FC = observer(
         const paddingTop = useSafeAreaInsets().top
         const navigation = useNavigation()
         const route = useRoute()
-        const scene = route?.params?.upc
+        const scene = route?.params?.scene
         return (
             <WebView style={{ flex: 1, marginTop: paddingTop }}
                 source={{ uri: scene }}

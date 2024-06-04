@@ -1,8 +1,7 @@
 import { ApiResponse } from "apisauce"
 import { Api } from "../base-api/api"
 import { getGeneralApiProblem } from "./api-problem"
-import { hideLoading, showLoading } from "../../utils/toast"
-import { CounterResult, DataDetailPaymentOrderResult, DeleteCounterResult, DeleteNotiCountResult, DetailWithdrawResResult, HistoryResult, NotificationResult, NumberUnreadResult, OrderDetailResult, OrderResult, TransactionStaffResult } from "./api.types.order"
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { ApiEndpoint } from "../base-api/api_endpoint"
 
 export class OderApi {
@@ -17,7 +16,9 @@ export class OderApi {
     contents: string,
     originalPrice: any,
   ): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/orders",
@@ -27,6 +28,7 @@ export class OderApi {
           originalPrice,
         },
       )
+      Loading.hide();
       const data = response.data
       if (!response.ok) {
         const problem = getGeneralApiProblem(response)
@@ -37,6 +39,7 @@ export class OderApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" }
     }
@@ -44,23 +47,29 @@ export class OderApi {
 
 
   async getOrders(): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/orders",
       )
+      Loading.hide();
       const data = response.data
       if (response.data.data) {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }
  
-  async getOrderMerchant(dateFrom: any, dateTo: any): Promise<OrderResult> {
-    showLoading()
+  async getOrderMerchant(dateFrom: any, dateTo: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/orders",
@@ -71,6 +80,7 @@ export class OderApi {
           size: 50,
         },
       )
+      Loading.hide();
       // console.log("response", response.data)
       const data = response.data
       if (response.data.message == "Success") {
@@ -78,13 +88,16 @@ export class OderApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
   }
 
   async getPromotions(): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/promotion-service/api/v1/mobile/campaign-promotion/merchants",
@@ -92,28 +105,33 @@ export class OderApi {
       const data = response.data
 
       console.log("Datae", data.message);
-
+      Loading.hide();
       if (data.message === 'success.') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }
 
   async currentMerchant(): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/merchants/current",
       )
+      Loading.hide();
       const data = response.data
       if (data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }
@@ -124,8 +142,10 @@ export class OderApi {
     page: number,
     size: number,
     types: string
-  ): Promise<HistoryResult> {
-    showLoading()
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/transactions/transaction-withdrawal", {
@@ -136,12 +156,14 @@ export class OderApi {
         types
       }
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: e }
     }
   }
@@ -151,8 +173,10 @@ export class OderApi {
     createdAtTo: string,
     page: number,
     size: number,
-  ): Promise<TransactionStaffResult> {
-    showLoading()
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/transactions", {
@@ -162,12 +186,14 @@ export class OderApi {
         size,
       }
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" , response : e}
     }
   }
@@ -176,13 +202,14 @@ export class OderApi {
     orderUUID: string,
     isLoading?: boolean
 
-  ): Promise<OrderDetailResult> {
+  ): Promise<any> {
     if (isLoading) {
       console.log("LOading====");
-
-      showLoading()
+      Loading.show({
+        text: 'Loading...',
+      });
     } else {
-      hideLoading()
+      Loading.hide();
     }
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -194,24 +221,29 @@ export class OderApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: e }
     }
   }
 
   async getTransationDetail(
     transactionUUID: string,
-  ): Promise<DataDetailPaymentOrderResult> {
-    showLoading()
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/transactions/" + transactionUUID,
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: e }
     }
   }
@@ -219,35 +251,43 @@ export class OderApi {
   async getInvoice(
     orderUUID: string,
   ): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "services/merchant-service/merchant-service/mobile/merchant/public/api/v1/orders/" + orderUUID + "/invoice",
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }
 
   async getDetailWithDrawal(
     transactionId: string,
-  ): Promise<DetailWithdrawResResult> {
-    showLoading()
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "services/merchant-service/merchant-service/mobile/merchant/public/api/v1/transactions/withdrawal/" + transactionId,
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: null }
     }
   }
@@ -256,8 +296,10 @@ export class OderApi {
     page: number,
     size: number,
     product?: string
-  ): Promise<NotificationResult> {
-    showLoading()
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "services/notification-service/api/v1/notification/users", {
@@ -266,50 +308,59 @@ export class OderApi {
         product
       }
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: e }
     }
   }
 
-  async getUserNotificationsUnread(): Promise<NumberUnreadResult> {
-    showLoading()
+  async getUserNotificationsUnread(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "services/notification-service/api/v1/notification/users/number-unread", {}
       )
       const data = response.data
-
+      Loading.hide();
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: e }
     }
   }
 
-  async deleteNotifyCount(): Promise<DeleteNotiCountResult> {
-    showLoading()
+  async deleteNotifyCount(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         "services/notification-service/api/v1/notification/users", {}
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: e }
     }
   }
 
-  async getCountUnRead(): Promise<CounterResult> {
+  async getCountUnRead(): Promise<any> {
     // showLoading()
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -325,34 +376,42 @@ export class OderApi {
     }
   }
 
-  async delateCountUnRead(): Promise<DeleteCounterResult> {
-    showLoading()
+  async delateCountUnRead(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.delete(
         "services/notification-service/api/v1/notification/users/counters", {}
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data", response: e }
     }
   }
 
   async putMarkRead(id: any): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         "services/notification-service/api/v1/notification/users/" + id, {}
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" }
     }
   }

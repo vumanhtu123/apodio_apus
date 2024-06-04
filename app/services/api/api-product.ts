@@ -2,10 +2,10 @@ import { configs } from "./../../theme/dimension";
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { hideLoading, showLoading } from "../../utils/toast";
-import { BalanceResult } from "./api.types.home";
 import { Data } from "../../models/product-store/tag-product-model";
 import { Brand } from "../../models/brand-model";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+
 
 export class ProductApi {
   private api: Api;
@@ -14,8 +14,10 @@ export class ProductApi {
     this.api = api;
   }
 
-  async getBalance(): Promise<BalanceResult> {
-    showLoading();
+  async getBalance(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_PRODUCT,
@@ -24,7 +26,7 @@ export class ProductApi {
           size: 20,
         }
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -32,6 +34,7 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
@@ -44,7 +47,9 @@ export class ProductApi {
     tagId: number,
     sort: string
   ): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_PRODUCT + sort,
@@ -59,16 +64,20 @@ export class ProductApi {
       );
       const data = response.data;
       console.log("dataa :", page);
+      Loading.hide();
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
   async getDetailProduct(id: number): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_PRODUCT_DETAIL,
@@ -78,16 +87,20 @@ export class ProductApi {
       );
       const data = response.data;
       console.log(data);
+      Loading.hide();
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
   async getDetailClassify(id: number): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_CLASSIFY_DETAIL,
@@ -97,16 +110,20 @@ export class ProductApi {
       );
       const data = response.data;
       console.log(data);
+      Loading.hide();
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
   async getListTagProduct(): Promise<Data> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_TAG_PRODUCT,
@@ -115,7 +132,7 @@ export class ProductApi {
           size: 20,
         }
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -123,12 +140,15 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
 
   async putMoveCategory(fromId: any, toId: any): Promise<Brand> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         ApiEndpoint.PUT_MOVE_CATEGORY +
@@ -139,7 +159,7 @@ export class ProductApi {
           "toId=" +
           toId
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -147,11 +167,14 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
   async getListBrandProduct(): Promise<Brand> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_BRAND_PRODUCT,
@@ -160,7 +183,7 @@ export class ProductApi {
           size: 20,
         }
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -168,17 +191,20 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
   async createProduct(product: any): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         ApiEndpoint.ADD_PRODUCT,
         product
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -186,17 +212,20 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
   async editProduct(id: any, product: any): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         ApiEndpoint.ADD_PRODUCT + "?id=" + id,
         product
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -204,16 +233,21 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
   async deleteProduct(id: any): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+      onShow: () => console.log('Loading shown'),
+      onHide: () => console.log('Loading hidden'),
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.delete(
         ApiEndpoint.ADD_PRODUCT + "?id=" + id
       );
-      hideLoading();
+      Loading.hide();
       console.log('----------delete', response.status)
       const result = response.data;
       if (response.data.errorCodes) {
@@ -221,17 +255,21 @@ export class ProductApi {
       } else {
         return { kind: "ok", result };
       }
+      
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
   async deleteCheck(id: any): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.DELETE_CHECK + '?productId=' +id,
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -239,16 +277,19 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
   async usingProductCheck(id: any): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.USING_PRODUCT_CHECK + '?id=' +id,
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -256,6 +297,7 @@ export class ProductApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
@@ -263,7 +305,9 @@ export class ProductApi {
     formData: any,
     callBack: (arg0: number) => void
   ): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         `${ApiEndpoint.UPLOAD_IMAGES}?feature_alias=upload-product`,
@@ -284,9 +328,10 @@ export class ProductApi {
       );
       const result = response;
       console.log("respone", response);
-      hideLoading();
+      Loading.hide();
       return { kind: "ok", result };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data" };
     }

@@ -15,5 +15,4 @@ export * from './auto-image/auto-image';
 export * from './loading/loading';
 export * from './svg-icon/index';
 export * from './dialog/dialog';
-export * from './dialog/custom_dialog';
 export * from './dialog_loading/dialog-loading';

@@ -134,7 +134,7 @@ export const ChooseVendorScreen: FC = () => {
                                 borderRadius: 20
                             }}
                             source={{
-                                uri: `${item.imageUrls}`,
+                                uri: `${item.avatarUrl}`,
                                 cache: FastImage.cacheControl.immutable,
                             }}
                             defaultSource={require("../../../assets/Images/no_images.png")}

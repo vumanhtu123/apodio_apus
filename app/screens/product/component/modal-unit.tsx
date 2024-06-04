@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, TouchableOpacity, View, FlatList, TextInput, Platform, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import Modal from 'react-native-modal'
@@ -6,10 +6,8 @@ import { Button, Text, TextField } from '../../../components';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TxKeyPath, translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { hideLoading, showDialog, showLoading, showToast } from '../../../utils/toast';
+import { hideLoading, showLoading, showToast } from '../../../utils/toast';
 import { useFocusEffect } from '@react-navigation/native';
-
-const { width, height } = Dimensions.get('screen');
 
 interface UnitModalProps {
     isVisible: boolean;
@@ -29,7 +27,7 @@ const UnitModal = (props: UnitModalProps) => {
     const { control, reset, setValue, handleSubmit, watch, formState: { errors }, clearErrors } = useForm();
     const { unitStore } = useStores()
     const [name, setName] = useState("");
-    const [textError, setTextError] = useState('')
+    const [textError, setTextError] = useState('');
 
     const createUnitName = async (name: string, onclickSave: boolean) => {
         showLoading();
@@ -49,11 +47,8 @@ const UnitModal = (props: UnitModalProps) => {
             }
             hideLoading();
         } else {
-            showDialog(translate("txtDialog.txt_title_dialog"), 'danger', unitResult.result.errorCodes[0].message, translate("common.ok"), '', () => {
-                //navigation.goBack()
-            })
             hideLoading();
-            //setTextError(unitResult.result.message)
+            setTextError(unitResult.result.errorCodes[0].message)
             console.error('Failed to fetch list unit:', unitResult);
         }
     }
@@ -130,7 +125,7 @@ const UnitModal = (props: UnitModalProps) => {
                                     // RightIconClear={Images.icon_delete2}
                                     showRightIcon={false}
                                     multiline={true}
-                                    error={errors?.Describe?.message}
+                                    error={textError}
                                 />)}
                             defaultValue={''}
                             name='Describe'

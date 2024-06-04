@@ -1,21 +1,10 @@
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
-import { LoginResult } from "./api.types";
 import { getGeneralApiProblem } from "./api-problem";
-import * as Types from "./api.types";
-import { hideLoading, showLoading } from "../../utils/toast";
 import { getAccessToken } from "../../utils/storage";
-import { AccountInfor, AccountInforResult } from "./api.types.home";
-import {
-  CheckPhoneMerchantResult,
-  GetOtpForgotPassResult,
-  InforMerchantResult,
-  MerchantGetOtpSetNewPinResult,
-  SetNewPassForgotResult,
-  StaffInforResult,
-} from "./api.types.account";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import DeviceInfo from "react-native-device-info";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 export class AccountApi {
   private api: Api;
@@ -28,8 +17,10 @@ export class AccountApi {
     phoneNumber: string,
     type: string,
     identity: string
-  ): Promise<CheckPhoneMerchantResult> {
-    showLoading();
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/public-api/mobile/merchant/v1/merchant/forgot-password",
@@ -44,6 +35,7 @@ export class AccountApi {
       //   const problem = getGeneralApiProblem(response)
       //   if (problem) return problem
       // }
+      Loading.hide();
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
@@ -52,6 +44,7 @@ export class AccountApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data", response: e };
     }
@@ -60,8 +53,10 @@ export class AccountApi {
   async getOtpNewPass(
     phone: any,
     userId: any
-  ): Promise<GetOtpForgotPassResult> {
-    showLoading();
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/public-api/mobile/merchant/v1/opts",
@@ -76,11 +71,13 @@ export class AccountApi {
       //   const problem = getGeneralApiProblem(response)
       //   if (problem) return problem
       // }
+      Loading.hide();
       if (response.data.message == "Success") {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data", response: e };
     }
@@ -91,8 +88,10 @@ export class AccountApi {
     newPassword: any,
     session: any,
     userId: any
-  ): Promise<SetNewPassForgotResult> {
-    showLoading();
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/public-api/mobile/merchant/v1/opts/verify",
@@ -108,12 +107,14 @@ export class AccountApi {
       //   const problem = getGeneralApiProblem(response)
       //   if (problem) return problem
       // }
+      Loading.hide();
       if (response.data.message == "Success") {
         return { kind: "ok", response: data };
       } else {
         return { kind: "bad-data", response: data };
       }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data", response: e };
     }
@@ -121,8 +122,10 @@ export class AccountApi {
 
   async checkPhoneNumberStaff(
     phoneNumber: string
-  ): Promise<CheckPhoneMerchantResult> {
-    showLoading();
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/public-api/mobile/merchant/v1/staffs/forgot-password",
@@ -135,6 +138,7 @@ export class AccountApi {
       //   const problem = getGeneralApiProblem(response)
       //   if (problem) return problem
       // }
+      Loading.hide();
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
@@ -143,13 +147,15 @@ export class AccountApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      hideLoading();
+      Loading.hide();
       return { kind: "bad-data", response: e };
     }
   }
 
   async getAccountInfo(userId): Promise<AccountInforResult> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/uaa/api/v1/user",
@@ -157,34 +163,38 @@ export class AccountApi {
           userId,
         }
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       return { kind: "ok", result };
     } catch (e) {
-      hideLoading();
+      Loading.hide();
       return { kind: "bad-data", result: e };
     }
   }
 
-  async upLoadImg(params): Promise<any> {
-    showLoading();
+  async upLoadImg(params: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/uaa/api/v1/user/upload-user-image",
         params,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       return { kind: "ok", result };
     } catch (e) {
-      hideLoading();
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
 
   async merchantCheckPIN(): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/merchants/check-pin",
@@ -192,24 +202,28 @@ export class AccountApi {
       );
       console.log(this.api.apisauce.headers);
       const data = response.data;
+      Loading.hide();
       if (data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
       __DEV__ && console.tron.log(e.message);
-
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
 
-  async merchantGetOTP(): Promise<MerchantGetOtpSetNewPinResult> {
-    showLoading();
+  async merchantGetOTP(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/wallets/otp",
         {}
       );
+      Loading.hide();
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };
@@ -219,6 +233,7 @@ export class AccountApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data", response: e };
     }
@@ -227,8 +242,10 @@ export class AccountApi {
   async merchantRegisterPIN(
     newPin: any,
     otp: any
-  ): Promise<CheckPhoneMerchantResult> {
-    showLoading();
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/merchants/register-pin",
@@ -237,6 +254,7 @@ export class AccountApi {
           otp,
         }
       );
+      Loading.hide();
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };
@@ -246,17 +264,21 @@ export class AccountApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data", response: e };
     }
   }
-  async getInfoMerchant(): Promise<InforMerchantResult> {
-    showLoading();
+  async getInfoMerchant(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/merchants/merchant",
         {}
       );
+      Loading.hide();
       console.log("response", response.data);
       const data = response.data;
       // if (!response.ok) {
@@ -268,13 +290,16 @@ export class AccountApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data", response: e };
     }
   }
 
-  async uploadAVT(formData): Promise<any> {
-    showLoading();
+  async uploadAVT(formData: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     const token = await getAccessToken();
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
@@ -288,16 +313,19 @@ export class AccountApi {
         }
       );
       const result = response;
-      hideLoading();
+      Loading.hide();
       return { kind: "ok", result };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data" };
     }
   }
 
   async updateUserAVT(id: any, imageUrl: any): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         "/services/uaa/api/v1/user",
@@ -307,16 +335,19 @@ export class AccountApi {
         }
       );
       const result = response;
-      hideLoading();
+      Loading.hide();
       return { kind: "ok", result };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data" };
     }
   }
 
-  async getInfoStaff(): Promise<StaffInforResult> {
-    showLoading();
+  async getInfoStaff(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/staffs/staff",
@@ -328,11 +359,13 @@ export class AccountApi {
       //   const problem = getGeneralApiProblem(response)
       //   if (problem) return problem
       // }
+      Loading.hide();
       if (response.data.message == "Success") {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message);
       return { kind: "bad-data", response: e };
     }

@@ -13,16 +13,13 @@ import {
   initialWindowMetrics,
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
-import {RootStore, RootStoreProvider, setupRootStore} from './models';
-import {AppNavigator, useNavigationPersistence} from './navigators';
+import { RootStore, RootStoreProvider, setupRootStore } from './models';
+import { AppNavigator, useNavigationPersistence } from './navigators';
 import * as storage from './utils/storage';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {ViewStyle, Linking} from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ViewStyle, Linking } from 'react-native';
 import Config from "react-native-config";
-import {setDialog, setLoading, setToast} from './utils/toast';
-import Loading from './components/loading/loading';
-import Toast from 'react-native-toast-message';
-import CustomDialog from './components/dialog/custom_dialog';
+import { Root } from './components/dialog-notification';
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
 // Web linking configuration
@@ -54,7 +51,7 @@ interface AppProps {
  * This is the root component of our app.
  */
 function App(props: AppProps) {
-  const {hideSplashScreen} = props;
+  const { hideSplashScreen } = props;
   const {
     initialNavigationState,
     onNavigationStateChange,
@@ -70,7 +67,6 @@ function App(props: AppProps) {
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
     (async () => {
-      setToast(Toast);
       setupRootStore().then(setRootStore);
       const lang = await storage.getCurrentLanguage();
     })();
@@ -78,24 +74,27 @@ function App(props: AppProps) {
 
   if (!rootStore || !isNavigationStateRestored) return null;
 
+
+
+
+
   // otherwise, we're ready to render the app
   return (
-    <RootStoreProvider value={rootStore}>
-    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      {/* <ErrorBoundary catchErrors={Config.catchErrors}> */}
-      <GestureHandlerRootView style={$container}>
-        <AppNavigator
-          linking={linking}
-          initialState={initialNavigationState}
-          onStateChange={onNavigationStateChange}
-        />
-      </GestureHandlerRootView>
-      <Loading ref={_ref => _ref && setLoading(_ref)} />
-      <Toast/>
-      <CustomDialog ref={_refDialog => _refDialog && setDialog(_refDialog)} />
-      {/* </ErrorBoundary> */}
-    </SafeAreaProvider>
-    </RootStoreProvider>
+    <Root>
+      <RootStoreProvider value={rootStore}>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          {/* <ErrorBoundary catchErrors={Config.catchErrors}> */}
+          <GestureHandlerRootView style={$container}>
+            <AppNavigator
+              linking={linking}
+              initialState={initialNavigationState}
+              onStateChange={onNavigationStateChange}
+            />
+          </GestureHandlerRootView>
+          {/* </ErrorBoundary> */}
+        </SafeAreaProvider>
+      </RootStoreProvider>
+    </Root>
   );
 }
 

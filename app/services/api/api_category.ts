@@ -1,8 +1,7 @@
-import { BalanceResult } from './api.types.home';
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { hideLoading, showLoading } from "../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 
 export class CategoryApi {
@@ -12,8 +11,10 @@ export class CategoryApi {
     this.api = api;
   }
 
-  async getBalance(): Promise<BalanceResult> {
-    showLoading();
+  async getBalance(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_PRODUCT,
@@ -22,7 +23,7 @@ export class CategoryApi {
           size: 20,
         }
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -30,6 +31,7 @@ export class CategoryApi {
         return { kind: "bad-data", result };
       }
     } catch (error) {
+      Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
@@ -39,7 +41,9 @@ export class CategoryApi {
     search: any,
     sort: string
   ): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_CATEGORY + sort,
@@ -49,6 +53,7 @@ export class CategoryApi {
           search: search,
         }
       );
+      Loading.hide();
       console.log("page", page);
       const data = response.data;
       if (response.data.data) {
@@ -56,6 +61,7 @@ export class CategoryApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
@@ -63,7 +69,9 @@ export class CategoryApi {
     page: any,
     size: any,
   ): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_CATEGORY ,
@@ -73,12 +81,14 @@ export class CategoryApi {
         }
       );
       console.log("page", page);
+      Loading.hide();
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
@@ -87,7 +97,9 @@ export class CategoryApi {
     size: any,
     search: any
   ): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_CATEGORY,
@@ -97,6 +109,7 @@ export class CategoryApi {
           search: search,
         }
       );
+      Loading.hide();
       console.log("page", page);
       const data = response.data;
       if (response.data.data) {
@@ -104,11 +117,14 @@ export class CategoryApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
   async getDeleteCategories(productCategoryId: number): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.delete(
         ApiEndpoint.DELETE_CATEGORY,
@@ -116,27 +132,33 @@ export class CategoryApi {
       );
       console.log('------------------------------response delete category', response)
       const data = response.data;
+      Loading.hide();
       if (response.data.errorCodes) {
         return { kind: "bad-data", response: data };
       }
       return { kind: "ok", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
   async getCreateCategories(name: string, imageUrl: string): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         ApiEndpoint.CREATE_CATEGORY,
         { name, imageUrl }
       );
+      Loading.hide();
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
@@ -145,7 +167,9 @@ export class CategoryApi {
     imageUrl: string,
     productCategoryId: number
   ): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const url = `${
         ApiEndpoint.UPDATE_CATEGORY
@@ -154,11 +178,13 @@ export class CategoryApi {
       const response: ApiResponse<any> = await this.api.apisauce.put(url, body);
       console.log("mmm", url);
       const data = response.data;
+      Loading.hide();
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
