@@ -56,6 +56,8 @@ export function Header(props: HeaderProps) {
     rightTx1,
     style,
     titleStyle,
+    searchTx,
+    searchText,
     titleMiddleStyle,
     btnRightStyle,
     widthRightIcon,
@@ -72,6 +74,7 @@ export function Header(props: HeaderProps) {
   const header = headerText || (headerTx && translate(headerTx)) || ""
   const textRight = rightText || (rightTx && translate(rightTx)) || ""
   const textRight1 = rightText1 || (rightTx1 && translate(rightTx1)) || ""
+  const searchPlaceholder = searchText || (searchTx && translate(searchTx)) || ""
   // const [searchText, setSearchText] = useState(searchValue);
   // const [searchValue, setSearchValue] = useState("");
   // const handleSearch = (text: any) => setSearchText(text);
@@ -252,6 +255,7 @@ export function Header(props: HeaderProps) {
             enterKeyHint="search"
             onSubmitEditing={handleOnSubmitSearch}
             enablesReturnKeyAutomatically
+            placeholder={searchPlaceholder}
 
           // placeholder="Tìm kiếm..."
           />

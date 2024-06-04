@@ -10,6 +10,9 @@ export const OrderStoreModel = types
     fatherStatus: types.optional(types.frozen<InputSelectModel>(), {id: '', label: ''}),
     dataChildStatus: types.optional(types.array(types.frozen<InputSelectModel>()), []),
     childStatus: types.optional(types.frozen<InputSelectModel>(), {id: '', label: ''}),
+
+    dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
+    dataProductAddOrderNew: types.optional(types.array(types.frozen<never>()), []),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -25,6 +28,12 @@ export const OrderStoreModel = types
     },
     closeModalTracking() {
       self.isModalTracking = false;
+    },
+    setDataProductAddOrder(value: any) {
+      self.dataProductAddOrder = value
+    },
+    setDataProductAddOrderNew(value: any) {
+      self.dataProductAddOrderNew = value
     },
   }))
   .actions((self) => ({}));

@@ -447,7 +447,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             {/* <Images.icon_copy2 /> */}
           </View>
           <View style={styles.viewListProduct}>
-            <Button style={styles.buttonListProduct}>
+            <Button style={styles.buttonListProduct} 
+            onPress={()=> navigation.navigate('addProductOrder' as never)}>
               <Images.icon_add />
               <Text
                 tx={"order.addProduct"}
