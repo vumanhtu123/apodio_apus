@@ -24,7 +24,7 @@ const LEFT: ViewStyle = { width: 32 }
 // const TOP: ViewStyle = { height: Platform.OS === 'ios' ? scaleHeight(44) : scaleHeight(32) }
 const RIGHT: ViewStyle = { width: 32, marginRight: 2, zIndex: 2 }
 const BTNLEFT: ViewStyle = { width: scaleWidth(30), height: scaleHeight(30), alignItems: 'center' }
-const BTNRIGHT: ViewStyle = { width: scaleWidth(30), height: scaleHeight(30), alignItems: 'center'  }
+const BTNRIGHT: ViewStyle = { width: scaleWidth(25), height: scaleHeight(20), alignItems: 'center'  }
 const LOGO: ViewStyle = {
   position: 'absolute', opacity: 1, top: 0, right: 40, height: 40, width: 40, zIndex: 1
 }
@@ -59,6 +59,8 @@ export function Header(props: HeaderProps) {
     rightTx1,
     style,
     titleStyle,
+    searchTx,
+    searchText,
     titleMiddleStyle,
     btnRightStyle,
     widthRightIcon,
@@ -75,6 +77,7 @@ export function Header(props: HeaderProps) {
   const header = headerText || (headerTx && translate(headerTx)) || ""
   const textRight = rightText || (rightTx && translate(rightTx)) || ""
   const textRight1 = rightText1 || (rightTx1 && translate(rightTx1)) || ""
+  const searchPlaceholder = searchText || (searchTx && translate(searchTx)) || ""
   // const [searchText, setSearchText] = useState(searchValue);
   // const [searchValue, setSearchValue] = useState("");
   // const handleSearch = (text: any) => setSearchText(text);
@@ -267,6 +270,7 @@ export function Header(props: HeaderProps) {
             enterKeyHint="search"
             onSubmitEditing={handleOnSubmitSearch}
             enablesReturnKeyAutomatically
+            placeholder={searchPlaceholder}
 
           // placeholder="Tìm kiếm..."
           />

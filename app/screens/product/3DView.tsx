@@ -13,7 +13,6 @@ export const View3D: FC = observer(
         const navigation = useNavigation()
         const route = useRoute()
         const scene = route?.params?.scene
-        console.log('checkkk', scene)
         return (
             <View style={{ flex: 1, marginTop: paddingTop }} >
                 <WebView style={{ flex: 1, marginTop: paddingTop }}

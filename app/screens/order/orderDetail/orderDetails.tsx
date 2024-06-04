@@ -1,25 +1,21 @@
-import React from "react"
-import { Images } from "../../../../assets/index";
-import { Button, Header, Switch, Text, TextField } from "../../../../app/components";
-import { TabScreenProps } from "../../../../app/navigators/BottomTabNavigator";
-import { observer } from "mobx-react-lite";
-import { FC, useEffect, useState } from "react";
-import { Dimensions, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../app/theme";
-import { LinearGradient } from "react-native-linear-gradient";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AutoHeightImage from "react-native-auto-height-image";
-import { styles } from "./styles";
-import ItemOrder from "../components/item-order";
-import Modal from "react-native-modal";
-import { InputSelect } from "../../../components/input-select/inputSelect";
+import { observer } from "mobx-react-lite";
+import React, { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import en from "../../../i18n/en";
+import { Dimensions, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
+import Modal from "react-native-modal";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Button, Header, Switch, Text, TextField } from "../../../../app/components";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../app/theme";
+import { Images } from "../../../../assets/index";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import { translate } from "../../../i18n";
-import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { formatDateTime } from "../../../utils/formatDate";
 import { formatCurrency } from "../../../utils/validate";
+import ItemOrder from "../components/item-order";
+import { styles } from "./styles";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 export const OrderDetails: FC = observer(
     function OrderDetails(props) {
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
@@ -257,12 +253,16 @@ export const OrderDetails: FC = observer(
             return (
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: scaleHeight(12) }}>
                     {/* Replace Images component with Image */}
-                    <View style={{ marginBottom: 5 }}>
-                        {item.complete ? <Images.icon_checkGreen width={scaleWidth(13)} height={scaleHeight(10)} /> :
-                            <Images.ic_dot width={scaleWidth(5)} height={scaleHeight(5)} />}
+                    <View style={{   }}>
+                        {item.complete ? <Images.icon_checkGreen width={scaleWidth(13)} height={scaleHeight(13)} /> :
+                            <View style={{width : scaleWidth(13) , height: scaleHeight(13) , alignItems : 'center'  , justifyContent: 'center'}}>
+
+                                <Images.ic_dot width={scaleWidth(5)} height={scaleHeight(5)} />
+                            </View>
+                        }
                     </View>
                     {/* <View style={{ height: 1, width: 48, backgroundColor: '#858992' }} /> */}
-                    <Text style={{ fontSize: fontSize.size10, width: scaleWidth(70), textAlign: 'center', }}>{item.status}</Text>
+                    <Text style={{ fontSize: fontSize.size10, width: scaleWidth(70), textAlign: 'center', paddingTop: scaleHeight(5) }}>{item.status}</Text>
                     {/* {!isFirstStep && <View style={styles.leftBar} />} */}
                     {!isLastStep && <View style={styles.rightBar} />}
                 </View>
@@ -329,7 +329,21 @@ export const OrderDetails: FC = observer(
                     TitleIcon1="order.return"
                     RightIcon2={Images.icon_printer}
                     TitleIcon2="order.printInvoice"
-                    btnRightStyle = {{marginRight:scaleWidth(3), width : scaleWidth(40)}}
+                    btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
+                    onRightPress1={() => {
+                        Dialog.show({
+                            type: ALERT_TYPE.SUCCESS,
+                            title: translate("txtDialog.txt_title_dialog"),
+                            textBody: translate("txtDialog.delete_order"),
+                            button: translate("common.cancel"),
+                            button2: translate("common.confirm"),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                                navigation.goBack()
+                                Dialog.hide();
+                            }
+                        })
+                    }}
                     // RightIcon2={activeTab === "product" ? isGridView ? Images.ic_squareFour : Images.ic_grid : null}
                     // onRightPress={handleOpenSearch}
                     // onRightPress2={toggleView}
@@ -349,7 +363,7 @@ export const OrderDetails: FC = observer(
                     titleMiddleStyle={styles.titleHeader}
                     widthRightIcon={20}
                     heightRightIcon={20}
-                    style={{ height: scaleHeight(54) ,  }}
+                    style={{ height: scaleHeight(54), }}
                 />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -509,35 +523,37 @@ export const OrderDetails: FC = observer(
                         weight={data.weight}
                         payStatus={data.payStatus}
                         styleViewItemOrder={{
+                            marginTop : scaleHeight(15),
                             borderBottomLeftRadius: 0,
                             borderBottomRightRadius: 0
                         }}
                     />
-                    {data.status === "Hủy đơn" ?
+                    {/* {data.status === "Hủy đơn" ?
                         <View style={styles.viewDateMoney}>
                             <Text tx={'order.reasonForCancellation'} style={styles.textDateMoney} />
                         </View>
-                        : data.status === "Đang xử lỹ" || data.status === "Đã giao" ?
-                            <View style={styles.viewDateMoney}>
-                                <Text tx={'order.sellerConfirm'} style={styles.textDateMoney} />
-                            </View>
-                            :
+                        : data.status === "Đang xử lỹ" || data.status === "Đã giao" ? */}
+                    <View style={styles.viewDateMoney}>
+                        <Text tx={'order.sellerConfirm'} style={[styles.textDateMoney, { flex: 1 }]} />
+                        <Text text="Đã thanh toán" style={styles.textPayStatus2} />
+                    </View>
+                    {/* :
                             <View style={styles.viewDateMoney}>
                                 <View style={{ flex: 1 }}>
                                     <Text tx={'order.date'} style={styles.textDateMoney} />
                                 </View>
                                 <Text tx={'order.money'} style={styles.textDateMoney} />
-                            </View>}
+                            </View>} */}
 
 
                     {/* 2 thẻ giống nhau data trả về thì viết riêng component */}
                     <View style={styles.viewCash}>
-                        <View style={{ flexDirection: 'row' }}>
+                        {/* <View style={{ flexDirection: 'row' }}>
                             <View style={styles.viewPayStatus}>
                                 <Text text={data.payStatus} style={styles.textPayStatus3} />
                             </View>
                             <View style={{ flex: 1 }}></View>
-                        </View>
+                        </View> */}
                         <View style={{
                             flexDirection: 'row', alignItems: 'center',
                             marginBottom: scaleHeight(margin.margin_15)
@@ -553,15 +569,15 @@ export const OrderDetails: FC = observer(
                                 <Text text="56.000.000" />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
+                        {/* <View style={{ flexDirection: 'row' }}>
                             <View style={styles.viewPayStatus}>
                                 <Text text={data.payStatus} style={styles.textPayStatus3} />
                             </View>
                             <View style={{ flex: 1 }}></View>
-                        </View>
+                        </View> */}
                         <View style={{
                             flexDirection: 'row', alignItems: 'center',
-                            marginBottom: scaleHeight(margin.margin_15)
+                            // marginBottom: scaleHeight(margin.margin_15)
                         }}>
                             <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
                                 <Text text={"02/03/2024 13:56"} style={styles.textContent} />
@@ -575,16 +591,12 @@ export const OrderDetails: FC = observer(
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)}>
-                        <Text text="Theo doi giao hang" />
-                    </TouchableOpacity>
-                    <View style={{
+                    <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)} style={{
                         paddingHorizontal: scaleWidth(padding.padding_16),
                         backgroundColor: colors.palette.neutral100,
                         // backgroundColor : 'red' , 
                         paddingVertical: scaleHeight(padding.padding_12),
-                        borderBottomLeftRadius: 8,
-                        borderBottomRightRadius: 8,
+                        borderRadius: 8,
                         marginBottom: scaleHeight(margin.margin_20),
                         alignItems: 'center',
                         // flexDirection: 'row'
@@ -613,9 +625,10 @@ export const OrderDetails: FC = observer(
                                     isLastStep={index === dataStatus.length - 1} />
                             ))}
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 </ScrollView>
-                {data.status === 'Đang xử lý' ?
+
+                {/* {data.status === 'Đang xử lý' ?
                     <View style={styles.viewButtonCancel}>
                         <Button tx={'order.requestCancellation'}
                             onPress={() => setShowCancelOrder(true)}
@@ -631,7 +644,7 @@ export const OrderDetails: FC = observer(
                                 }]}
                                 textStyle={styles.textButtonCancel} />
                         </View> : null
-                }
+                } */}
                 <Modal isVisible={showCancelOrder}
                     onBackdropPress={() => setShowCancelOrder(false)}>
                     <View style={styles.viewModal}>

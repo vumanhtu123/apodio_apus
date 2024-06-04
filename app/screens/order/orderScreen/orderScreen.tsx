@@ -285,8 +285,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
                 <TouchableOpacity onPress={() => {
                   store.onSelectStatus(index)
                   console.log(index)
-                  console.log(store.selectedStatus)
-                  console.log(store.arrData)
+                  // console.log(store.selectedStatus)
+                  console.log(arrData)
                 }}
                   key={index}
                   style={[styles.viewItemSelect, {
