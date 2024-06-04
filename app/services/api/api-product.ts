@@ -48,7 +48,7 @@ export class ProductApi {
     if(!isLoadMore) {
       showLoading();
     }
-    // console.log("dataa :", isLoadMore);
+    console.log("dataa :", isLoadMore);
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_PRODUCT + sort,

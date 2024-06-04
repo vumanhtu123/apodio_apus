@@ -1583,7 +1583,7 @@ export const ProductEditScreen: FC = (item) => {
                     style={{
                       fontSize: fontSize.size13,
                       fontWeight: "400",
-                      color: "#747475",
+                      color: colors.palette.dolphin,
                     }}/>
                 )}
                 <Images.icon_caretRight
@@ -1696,7 +1696,7 @@ export const ProductEditScreen: FC = (item) => {
                 style={{
                   fontSize: fontSize.size13,
                   fontWeight: "400",
-                  color: "#747475",
+                  color: colors.palette.dolphin,
                 }}/>
               <Switch
                 value={valueSwitchUnit}
@@ -2156,7 +2156,7 @@ export const ProductEditScreen: FC = (item) => {
                     style={{
                       fontSize: fontSize.size13,
                       fontWeight: "400",
-                      color: "#747475",
+                      color: colors.palette.dolphin,
                       marginBottom: scaleHeight(12),
                     }}
                   />
