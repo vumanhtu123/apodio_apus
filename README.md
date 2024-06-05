@@ -46,8 +46,11 @@ yarn ios
 ### Document components dialog-notification
 
 Dialog hiện đang có 2 trường hợp ẩn dialog: 
+
 T1 : nếu ẩn mà k phải chờ đợi kết quả BE trả về để hiển thị thì mọi người dùng Dialog.hide(); 
+
 T2: nếu ẩn dialog và chờ kết quả BE trả về để hiển thị tiết 1 lần nữa thì dùng await Dialog.hideDialog();
+
 đã có comment và demo ở màn editProduct
 
 
