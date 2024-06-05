@@ -13,6 +13,7 @@ export const OrderStoreModel = types
 
     dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
     dataProductAddOrderNew: types.optional(types.array(types.frozen<never>()), []),
+    checkPriceList: types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .views((self) => ({}))

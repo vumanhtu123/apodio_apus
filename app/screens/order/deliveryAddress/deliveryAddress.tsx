@@ -180,7 +180,7 @@ export const DeliveryAddress: FC = observer(
                                                             </Text>
                                                             <Text text={item.item.phone} style={styles.textMoney2} />
                                                             <TouchableOpacity
-                                                                onPress={() => navigation.navigate('editDelivery' as never, { dataEdit: item })}>
+                                                                onPress={() => navigation.navigate('editDelivery' as never, { dataEdit: item.item })}>
                                                                 <Images.icon_edit style={{ marginLeft: scaleWidth(margin.margin_4) }} />
                                                             </TouchableOpacity>
                                                         </View>
@@ -197,7 +197,7 @@ export const DeliveryAddress: FC = observer(
                                                 </View>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                     <View style={styles.viewBorder}>
-                                                        <Text text='askhbdkas akjsbdka' style={styles.textDolphin400} />
+                                                        <Text text='loại địa chỉ' style={styles.textDolphin400} />
                                                     </View>
                                                     {item.item.default === true ? <View >
                                                         <Text tx={'order.deFault'} style={[styles.textDolphin400, {

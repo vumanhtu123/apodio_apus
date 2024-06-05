@@ -24,14 +24,14 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
         const newArr2 = newArr1.map(items => {
             if (items.id === data.id) {
                 const amounts = items.amount - 1
-                if(amounts === 0){
-                    return 
-                }else{
+                if (amounts === 0) {
+                    return
+                } else {
                     return { ...items, amount: amounts }
                 }
             } else { return items }
         })
-        const newArr3 = newArr2.filter(items=> items !== undefined)
+        const newArr3 = newArr2.filter(items => items !== undefined)
         setDataProductAddOrderNew(newArr3)
         console.log(dataProductAddOrderNew)
     }
@@ -46,7 +46,7 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
         console.log(dataProductAddOrderNew)
     }
 
-    const idItemCheck = dataProductAddOrderNew.filter(items=> items.id === item.id)
+    const idItemCheck = dataProductAddOrderNew.filter(items => items.id === item.id)
 
     if (isGridView) {
         return (
@@ -111,17 +111,21 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                         <Text numberOfLines={1} style={stylesItem.textName}>
                             {item.name}
                         </Text>
+                        {orderStore.checkPriceList === false ? null:
+                         <View>
                         <Text style={stylesItem.amount} numberOfLines={1}>
                             {item.variantCount} <Text text='hop' style={stylesItem.amount}></Text>
                         </Text>
-                        {viewProduct === "VIEW_PRODUCT" ? (
-                            <Text style={stylesItem.content} numberOfLines={1}>
-                                {item.variantCount} <Text tx="productScreen.productClassification" style={stylesItem.content}></Text>
-                            </Text>
-                        ) : null}
-                        {item.check === "Het hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
-                            item.check === "Con hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
-                                <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />}
+
+                            {viewProduct === "VIEW_PRODUCT" ? (
+                                <Text style={stylesItem.content} numberOfLines={1}>
+                                    {item.variantCount} <Text tx="productScreen.productClassification" style={stylesItem.content}></Text>
+                                </Text>
+                            ) : null}
+                            {item.check === "Het hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                item.check === "Con hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
+                                    <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />}
+                        </View>}
                         {viewProduct === "VIEW_PRODUCT" ? null :
                             (idItemCheck.length === 0 ?
                                 <TouchableOpacity style={{ marginVertical: scaleHeight(5.5) }}
@@ -216,7 +220,7 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                             <Text numberOfLines={1} style={stylesItem.textName}>
                                 {item.name}
                             </Text>
-                            </View>
+                        </View>
                         <Text style={stylesItem.amount} numberOfLines={1}>
                             {item.variantCount} <Text text='hop' style={stylesItem.amount}></Text>
                         </Text>

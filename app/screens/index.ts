@@ -20,6 +20,8 @@ export * from "./order/deliveryAddress/editDelivery";
 export * from "./order/deliveryAddress/newDelivery";
 export * from "./order/orderTracking/orderTracking";
 export * from "./order/addProduct/addProductOrder";
+export * from "./order/addProduct/selectVariant";
+export * from "./order/addProduct/filterOrderScreen";
 export * from "./promotions/promotions";
 export * from "./product/arrange-product";
 export * from "./product/component/modal-select-filter";

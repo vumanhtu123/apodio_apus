@@ -203,3 +203,9 @@ export const styles = StyleSheet.create({
         lineHeight: scaleHeight(24),
       },
   });
+
+  export const stylesVariant = StyleSheet.create({
+    ROOT: {
+
+    },
+  })

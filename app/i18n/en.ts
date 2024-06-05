@@ -9,6 +9,8 @@ const en = {
     logOut: "Log Out",
     listCompany: "Danh sách công ty",
     filter: " Bộ lọc",
+    saveChange: "Lưu thay đổi",
+
 
     continue: "Tiếp tục",
     saveAndContinue : 'Lưu và tiếp tục'
@@ -186,7 +188,12 @@ const en = {
     confirm: "Confirm",
     addProduct: "Chọn sản phẩm",
     editDelivery: "Sửa địa chỉ giao hàng",
-    newDelivery: "Tạo địa chỉ giao hàng",
+    newDelivery: "Thêm địa chỉ giao hàng",
+    addToCart: "Thêm vào giỏ hàng",
+    seeDetail: "Xem chi tiết",
+    price2: "Giá bán: ",
+    miniumQuanlity: "SL tối thiểu cần bán: ",
+    quanlity: "Số lượng:",
     cancellationReason: "Cancellation reason",
     sellerConfirm: "Thông tin thanh toán",
     deliveryAddress: "Địa chỉ giao hàng",

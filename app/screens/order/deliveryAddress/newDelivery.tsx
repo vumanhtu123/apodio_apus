@@ -8,16 +8,14 @@ import { Images } from '../../../../assets';
 import { InputSelect } from '../../../components/input-select/inputSelect';
 import { colors, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { useNavigation } from '@react-navigation/native';
+import { ALERT_TYPE, Toast } from '../../../components/dialog-notification';
 export const NewDelivery: FC = observer(
     function NewDelivery() {
         const navigation = useNavigation()
         const [city, setCity] = useState({ id: '', label: '' })
         const [district, setDistrict] = useState({ id: '', label: '' })
         const [wards, setWards] = useState({ id: '', label: '' })
-        const [phone, setPhone] = useState('')
-        const [addressChange, setAddressChange] = useState('')
         const [valueSwitch, setValueSwitch] = useState(false)
-        const [showAddAddress, setShowAddAddress] = useState(false)
 
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
 
@@ -34,9 +32,26 @@ export const NewDelivery: FC = observer(
         const handleSelectWards = (data: any)=>{
             setWards(data)
         }
+        const handleSelectDistrict1 = ()=>{
+            Toast.show({type: ALERT_TYPE.DANGER,
+                textBody: 'Vui lòng chọn Tỉnh/Thành phố'
+            })
+        }
+
+        const handleSelectWards1 = ()=>{
+            if(city.label === ''){
+                Toast.show({type: ALERT_TYPE.DANGER,
+                    textBody: 'Vui lòng chọn Tỉnh/Thành phố'
+                })
+            }else{
+                Toast.show({type: ALERT_TYPE.DANGER,
+                    textBody: 'Vui lòng chọn Quận/Huyện'
+                })
+            }
+        }
 
         const submitAdd = (data: any)=>{
-            console.log(city,wards,phone, addressChange)
+            console.log(city, district,wards, valueSwitch)
             console.log(data)
         }
 
@@ -130,7 +145,7 @@ export const NewDelivery: FC = observer(
                                 isImportant={true}
                                 error={errors?.phone?.message}
                             />)}
-                        defaultValue={phone}
+                        defaultValue={''}
                         name="phone"
                         rules={{ required: "Phone is required" }}
                     />
@@ -151,7 +166,7 @@ export const NewDelivery: FC = observer(
                         dataDefault={district.label}
                         onPressChoice={(item) => handleSelectDistrict(item)}
                         styleView={{ marginVertical: scaleHeight(margin.margin_8)}}
-                        onPressNotUse={()=> console.log('123421')}
+                        onPressNotUse={()=> handleSelectDistrict1()}
                         checkUse={city.label !== ''? false: true}
                     />
                     <InputSelect
@@ -162,7 +177,7 @@ export const NewDelivery: FC = observer(
                         dataDefault={wards.label}
                         onPressChoice={(item) => handleSelectWards(item)}
                         styleView={{ marginVertical: scaleHeight(margin.margin_8)}}
-                        onPressNotUse={()=> console.log('123421')}
+                        onPressNotUse={()=> handleSelectWards1()}
                         checkUse={city.label !== '' && district.label !== '' ? false: true}
                     />
                     <Controller
@@ -181,7 +196,7 @@ export const NewDelivery: FC = observer(
                                 isImportant={true}
                                 error={errors?.phone?.message}
                             />)}
-                        defaultValue={addressChange}
+                        defaultValue={''}
                         name="address"
                         rules={{ required: "Address is required" }}
                     />
@@ -206,7 +221,7 @@ export const NewDelivery: FC = observer(
                     <TouchableOpacity
                           onPress={handleSubmit(submitAdd)}
                         style={styles.viewBtnConfirm}>
-                        <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm} />
+                        <Text tx={"common.saveChange"} style={styles.textBtnConfirm} />
                     </TouchableOpacity>
                 </View>
             </View>

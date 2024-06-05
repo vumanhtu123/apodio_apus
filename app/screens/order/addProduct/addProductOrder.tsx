@@ -190,8 +190,8 @@ export const AddProductOrder: FC = observer(
             setIsGridView(!isGridView);
         };
         const handleProductDetail = (idProduct: number) => {
-            productStore.setSelectedProductId(idProduct);
-            navigation.navigate("productDetailScreen" as never);
+            // productStore.setSelectedProductId(idProduct);
+            navigation.navigate("selectVariant" as never);
         };
         const handleClassifyDetail = (idProduct: number) => {
             productStore.setSelectedProductId(idProduct);
@@ -217,7 +217,7 @@ export const AddProductOrder: FC = observer(
                     colorIcon={colors.text}
                     headerTx={'order.order'}
                     RightIcon2={Images.vector}
-                    onRightPress={() => setIsModal(true)}
+                    onRightPress={() =>  navigation.navigate("filterOrderScreen" as never)}
                     onRightPress2={toggleView}
                     RightIcon={Images.slider}
                     headerInput={openSearch}

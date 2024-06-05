@@ -7,24 +7,71 @@ import { styles } from './styles';
 import { Images } from '../../../../assets';
 import { InputSelect } from '../../../components/input-select/inputSelect';
 import { colors, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { ALERT_TYPE, Toast } from '../../../components/dialog-notification';
 export const EditDelivery: FC = observer(
     function EditDelivery() {
         const navigation = useNavigation()
-        const [reason, setReason] = useState({ label: '' })
-        const [city, setCity] = useState({})
-        const [district, setDistrict] = useState({})
-        const [wards, setWards] = useState({})
-        const [phone, setPhone] = useState('')
-        const [addressChange, setAddressChange] = useState('')
+        const route = useRoute()
+        const [city, setCity] = useState({ id: '', label: '' })
+        const [district, setDistrict] = useState({ id: '', label: '' })
+        const [wards, setWards] = useState({ id: '', label: '' })
         const [valueSwitch, setValueSwitch] = useState(false)
-        const [showAddAddress, setShowAddAddress] = useState(false)
+        const [addressChange, setAddressChange] = useState('')
+        const dataEdit = route?.params?.dataEdit
 
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
 
-        useEffect(()=>{
-            
-        },[])
+        useEffect(() => {
+            console.log(dataEdit)
+            let arrText = dataEdit.address.split(",")
+            console.log(arrText)
+            setCity({ label: arrText[3], id: '' })
+            setDistrict({ label: arrText[2], id: '' })
+            setWards({ label: arrText[1], id: '' })
+            setAddressChange(arrText[0])
+            setValueSwitch(dataEdit.default)
+        }, [])
+
+        const handleSelectCity = (data: any) => {
+            setCity(data)
+            //call api lấy data quận/huyện
+        }
+
+        const handleSelectDistrict = (data: any) => {
+            setDistrict(data)
+            //call api lấy data phường xã
+        }
+
+        const handleSelectWards = (data: any) => {
+            setWards(data)
+        }
+        const handleSelectDistrict1 = () => {
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                textBody: 'Vui lòng chọn Tỉnh/Thành phố'
+            })
+        }
+
+        const handleSelectWards1 = () => {
+            if (city.label === '') {
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    textBody: 'Vui lòng chọn Tỉnh/Thành phố'
+                })
+            } else {
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    textBody: 'Vui lòng chọn Quận/Huyện'
+                })
+            }
+        }
+
+        const submitEdit = (data: any) => {
+            console.log(city, district, wards, valueSwitch)
+            console.log(data)
+        }
+
         const arrTest = [
             {
                 "name": "An Giang",
@@ -88,17 +135,17 @@ export const EditDelivery: FC = observer(
         })
 
         return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
-                LeftIcon={Images.back}
-                onLeftPress={()=> navigation.goBack()}
-                headerTx={'order.editDelivery'}
-                style={{height: scaleHeight(54)}}
+                    LeftIcon={Images.back}
+                    onLeftPress={() => navigation.goBack()}
+                    headerTx={'order.editDelivery'}
+                    style={{ height: scaleHeight(54) }}
                 />
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
-                    style={{ marginHorizontal: scaleWidth(16), marginTop: scaleHeight(10)}}>
+                    style={{ marginHorizontal: scaleWidth(16), marginTop: scaleHeight(10) }}>
                     <Controller
                         control={control}
                         render={({ field: { onChange, value, onBlur } }) => (
@@ -115,9 +162,9 @@ export const EditDelivery: FC = observer(
                                 isImportant={true}
                                 error={errors?.phone?.message}
                             />)}
-                        defaultValue={phone}
+                        defaultValue={dataEdit.phone}
                         name="phone"
-                        rules={{ required: "Phone is required" }}
+                        rules={{ required: "Số điện thoại là bắt buộc" }}
                     />
                     <InputSelect
                         titleTx={'order.city'}
@@ -125,9 +172,7 @@ export const EditDelivery: FC = observer(
                         required={true}
                         arrData={arrCity}
                         dataDefault={city.label}
-                        onPressChoice={(item) => {
-                            setCity(item)
-                        }}
+                        onPressChoice={(item) => handleSelectCity(item)}
                         styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
                     />
                     <InputSelect
@@ -136,10 +181,10 @@ export const EditDelivery: FC = observer(
                         required={true}
                         arrData={arrCity}
                         dataDefault={district.label}
-                        onPressChoice={(item) => {
-                            setDistrict(item)
-                        }}
+                        onPressChoice={(item) => handleSelectDistrict(item)}
                         styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+                        onPressNotUse={() => handleSelectDistrict1()}
+                        checkUse={city.label !== '' ? false : true}
                     />
                     <InputSelect
                         titleTx={'order.ward'}
@@ -147,10 +192,10 @@ export const EditDelivery: FC = observer(
                         required={true}
                         arrData={arrCity}
                         dataDefault={wards.label}
-                        onPressChoice={(item) => {
-                            setWards(item)
-                        }}
+                        onPressChoice={(item) => handleSelectWards}
                         styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+                        onPressNotUse={() => handleSelectWards1()}
+                        checkUse={city.label !== '' && district.label !== '' ? false : true}
                     />
                     <Controller
                         control={control}
@@ -166,11 +211,11 @@ export const EditDelivery: FC = observer(
                                 onClearText={() => onChange('')}
                                 RightIconClear={Images.icon_delete2}
                                 isImportant={true}
-                                error={errors?.phone?.message}
+                                error={errors?.address?.message}
+                                defaultValue={addressChange}
                             />)}
-                        defaultValue={addressChange}
                         name="address"
-                        rules={{ required: "Address is required" }}
+                        rules={{ required: "Địa chỉ là bắt buộc" }}
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ flex: 1 }} tx={'order.addressDefault'} />
@@ -181,37 +226,21 @@ export const EditDelivery: FC = observer(
                         />
                     </View>
                 </KeyboardAvoidingView>
-                {/* <View style={{
-                    flexDirection: 'row',
-                    marginTop: scaleHeight(margin.margin_10),
-                    justifyContent: 'space-between'
-                }}>
-                    <Button style={styles.buttonCancelModal}
-                        tx={'common.cancel'}
-                        textStyle={{ color: colors.palette.navyBlue }}
-                        onPress={() => setShowAddAddress(false)}
-                    />
-                    <Button
-                        onPress={handleSubmit(handleChangeAddress)}
-                        style={styles.buttonConfirmModal}
-                        tx={'order.confirm'}
-                    />
-                </View> */}
                 <View
-        style={styles.viewGroupBtn}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack()
-          }}
-          style={styles.viewBtnCancel}>
-          <Text tx={"common.cancel"} style={styles.textBtnCancel}/>
-        </TouchableOpacity>
-        <TouchableOpacity
-        //   onPress={handleSubmit(submitAdd)}
-          style={styles.viewBtnConfirm}>
-          <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm}/>
-        </TouchableOpacity>
-      </View>
+                    style={styles.viewGroupBtn}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.goBack()
+                        }}
+                        style={styles.viewBtnCancel}>
+                        <Text tx={"common.cancel"} style={styles.textBtnCancel} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                          onPress={handleSubmit(submitEdit)}
+                        style={styles.viewBtnConfirm}>
+                        <Text tx={"common.saveChange"} style={styles.textBtnConfirm} />
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     })
