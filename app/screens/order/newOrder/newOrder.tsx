@@ -328,7 +328,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   : heightScroll,
             },
           ]}>
-          <View style={styles.viewSupplier}>
+          <TouchableOpacity style={styles.viewSupplier}
+            onPress={() => props.navigation.navigate('selectClient')}
+          >
             <Text
               tx={"order.supplier"}
               style={[
@@ -350,7 +352,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
               ]}
             />
             <Text text="Nguyen Ngoc Anh" style={styles.textContent} />
-          </View>
+          </TouchableOpacity>
           <View style={styles.viewAddress}>
             <Text
               tx={"order.deliveryAddress"}
@@ -554,12 +556,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                       multiline={true}
                       placeholderTx={"order.placNote"}
                       placeholderTextColor={colors.palette.nero}
-                      // isImportant={true}
-                      // error={errors?.phone?.message}
+                    // isImportant={true}
+                    // error={errors?.phone?.message}
                     />
                   )}
                   name="noteText"
-                  // rules={{ required: "Address is required" }}
+                // rules={{ required: "Address is required" }}
                 />
               </View>
               {imagesNote === "" ? (
@@ -731,7 +733,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           </View>
         ) : null}
         <Button
-          onPress={() => {}}
+          onPress={() => { }}
           tx={"order.order"}
           style={styles.buttonOrder}
           textStyle={styles.textButtonOrder}

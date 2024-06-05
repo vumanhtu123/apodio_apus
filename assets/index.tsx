@@ -406,7 +406,6 @@ export const Images = {
   ic_toPay: ic_toPay,
   ic_calender_white: ic_calender_white,
   ic_slider: ic_slider,
-
   icon_ellipse_tracking: icon_ellipse_tracking,
   icon_order_success: icon_order_success,
   icon_pickup: icon_pickup,

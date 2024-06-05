@@ -40,4 +40,6 @@ export const ApiEndpoint = {
   USING_PRODUCT_CHECK: "/api/v1/product-template/use-in-another-service",
   COMPANY_INFO: "/api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
+  GET_LIST_SLECT_CLIENT: "/api/v1/b2c/partners/list",
+  CREATE_CLIENT: "/api/v1/b2c/partners",
 };

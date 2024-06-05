@@ -41,6 +41,7 @@ export class VendorApi {
       return { kind: "bad-data", result: error };
     }
   }
+
   async getInfoCompany(): Promise<any> {
     showLoading();
     try {

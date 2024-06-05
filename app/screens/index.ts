@@ -70,3 +70,4 @@ export * from "../screens/suppliers/screens/details-order-screen";
 export * from "../screens/debt/screen/debt-screen";
 export * from "../screens/debt/screen/mustPayScreen"
 export * from "../screens/suppliers/screens/order-details-screen";
+export * from "../screens/order/selectCilent/selectClientScreen"

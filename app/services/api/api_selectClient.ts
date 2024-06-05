@@ -1,0 +1,47 @@
+import { ApiResponse } from "apisauce";
+import { hideLoading, showLoading } from "../../utils/toast";
+import { ApiErp } from "../base-api/api-config-erp";
+import { ApiEndpoint } from "../base-api/api_endpoint";
+import { OderListResspose,  } from "../../models/order-list-select-clien";
+
+export class SelectClienAPI {
+   private api: ApiErp; 
+   
+   constructor(api: ApiErp){
+    this.api = api
+   }
+
+
+   async getListSelectClient (
+    page: number,
+    size: number,
+
+   ): Promise<any> {
+        showLoading()
+        try {
+         
+            console.log("doandev " , this.api.config.url);
+            
+            const response:  ApiResponse<BaseResponse<OderListResspose, ErrorCode>> = await this.api.apisauce.get(
+                ApiEndpoint.GET_LIST_SLECT_CLIENT,
+                // truyền params.
+                {
+                  page: page,
+                  size: size,
+                }
+              );
+              hideLoading();
+              const result = response.data;
+
+              if (result?.data != null) {
+                return result;
+              } else {
+                return result?.errorCodes ;
+              }   
+        } catch (error) {
+            return { kind: "bad-data", result: error };
+            
+        }
+
+   } 
+}

@@ -750,7 +750,16 @@ const en = {
     reset: "Thiết lập lại",
     apply: "Áp dụng",
 
-  }
+  },
+  selectClient: {
+    selectClient: "Chọn khách hàng",
+    selectCustomerForSalesOrder : "Chọn khách hàng cho đơn bán",
+    selected: "Lựa chọn",
+    add: "Thêm mới",
+    nameClient: "Tên khách hàng",
+    customerType: "Kiểu khách hàng",
+    selectCustomerType: "Chọn kiểu khách hàng"
+  },
 
   // @demo remove-block-end
 };
