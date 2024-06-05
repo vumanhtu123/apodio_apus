@@ -1,6 +1,5 @@
 import React, { Dimensions, FlatList, Image, TouchableOpacity, View } from "react-native"
 import { scaleHeight, scaleWidth } from "../../../theme"
-import { showToast } from "../../../utils/toast"
 import { Images } from "../../../../assets"
 import { styles } from "./styles"
 import { AutoImage, Text } from "../../../components"
@@ -8,6 +7,8 @@ import Modal from "react-native-modal/dist/modal";
 import Carousel, { Pagination } from "react-native-snap-carousel"
 import { useRef, useState } from "react"
 import { useStores } from "../../../models"
+import { ALERT_TYPE, Toast } from "../../../components/dialog-notification"
+import { translate } from "../../../i18n/translate"
 
 interface ImageProduct {
     arrData: any
@@ -42,7 +43,13 @@ export default function ImageProduct(props: ImageProduct) {
                                     useLibrary()
                                     productStore.setImagesLimit(arrData.length)
                                 } else {
-                                    showToast('txtToats.required_maximum_number_of_photos', 'error')
+                                    Toast.show({
+                                        type: ALERT_TYPE.DANGER,
+                                        title: '',
+                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                
+                                      })
+                                    
                                 }
                             }}
                             style={styles.btnLibrary}>
@@ -57,7 +64,13 @@ export default function ImageProduct(props: ImageProduct) {
                                     // handleCameraUse() 
                                     useCamera()
                                 } else {
-                                    showToast('txtToats.required_maximum_number_of_photos', 'error')
+                                    Toast.show({
+                                        type: ALERT_TYPE.DANGER,
+                                        title: '',
+                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                
+                                      })
+                                   
                                 }
                             }}
                             style={styles.btnCamera}>
@@ -116,7 +129,12 @@ export default function ImageProduct(props: ImageProduct) {
                                     useLibrary()
                                     productStore.setImagesLimit(arrData.length)
                                 } else {
-                                    showToast('txtToats.required_maximum_number_of_photos', 'error')
+                                    Toast.show({
+                                        type: ALERT_TYPE.DANGER,
+                                        title: '',
+                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                
+                                      })
                                 }
                             }}
                             style={styles.viewBtnCamera}>
@@ -135,7 +153,12 @@ export default function ImageProduct(props: ImageProduct) {
                                     // handleCameraUse() 
                                     useCamera()
                                 } else {
-                                    showToast('txtToats.required_maximum_number_of_photos', 'error')
+                                    Toast.show({
+                                        type: ALERT_TYPE.DANGER,
+                                        title: '',
+                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                
+                                      })
                                 }
                             }}
                             style={styles.viewBtnLibrary}>

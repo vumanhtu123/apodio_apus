@@ -395,8 +395,7 @@ export const ProductScreen: FC = () => {
             ? handleSubmitSearch
             : handleSubmitSearchCategory
         }
-        widthRightIcon={20}
-        heightRightIcon={20}
+     
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
       />

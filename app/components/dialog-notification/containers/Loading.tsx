@@ -64,23 +64,10 @@ export class Loading extends React.Component<IProps, IState> {
         return null;
       }
       const { isDark } = this.props;
-      // return (
-      //   <Modal
-      //     statusBarTranslucent
-      //     backdropOpacity={0.5}
-      //     animationIn="zoomIn"
-      //     animationOut="fadeOut"
-      //     style={{ justifyContent: 'center', alignItems: 'center' }}
-      //     isVisible={this.state.isVisible}>
-      //      <View style={[styles.overlay, isDark ? styles.darkOverlay : styles.lightOverlay]}>
-      //       <ActivityIndicator size={'large'} color="#2A6FA8" />
-      //       {data?.text ? <Text style={[styles.text, data.textStyle]}>{data.text}</Text> : null}
-      //     </View>
-      //   </Modal>
-      // );
       return (
         <View style={[styles.overlay, isDark ? styles.darkOverlay : styles.lightOverlay]}>
-          <ActivityIndicator size="large" color={isDark ? '#ffffff' : '#000000'} />
+          <ActivityIndicator size={'large'} color="#2A6FA8" />
+          {/* <ActivityIndicator size="large" color={isDark ? '#ffffff' : '#000000'} /> */}
           {data?.text ? <Text style={[styles.text, data.textStyle]}>{data.text}</Text> : null}
         </View>
       );

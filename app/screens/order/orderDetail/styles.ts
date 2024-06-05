@@ -19,6 +19,12 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size12,
     color: colors.palette.nero,
   },
+  priceOriginal : {
+    textDecorationLine :'line-through',
+    marginTop : scaleHeight(8),
+    color : colors.palette.dolphin,
+    fontSize: fontSize.size12,
+  },
   logoHeader: {
     pointerEvents: "none",
     position: "absolute",
@@ -50,14 +56,14 @@ export const styles = StyleSheet.create({
   },
   viewStatus: {
     paddingHorizontal: padding.padding_8,
-    paddingVertical: padding.padding_2,
+    // paddingVertical: padding.padding_2,
     justifyContent: "center",
     borderRadius: 2,
   },
   textStatus: {
     fontWeight: "400",
-    fontSize: 8,
-    lineHeight: 9.68,
+    fontSize: fontSize.size8,
+    // lineHeight: 9.68,
   },
   buttonSend: {
     backgroundColor: colors.palette.navyBlue,
@@ -69,6 +75,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: scaleWidth(padding.padding_16),
     paddingTop: scaleHeight(padding.padding_10),
     paddingBottom: scaleHeight(padding.padding_12),
+    // backgroundColor : 'red'
   },
   textPayStatus: {
     fontWeight: "400",
@@ -81,11 +88,14 @@ export const styles = StyleSheet.create({
     marginHorizontal: scaleWidth(margin.margin_16),
   },
   viewAddress: {
-    marginBottom: scaleHeight(margin.margin_16),
+    marginBottom: scaleHeight(margin.margin_15),
     backgroundColor: colors.palette.neutral100,
     borderRadius: 8,
     paddingHorizontal: scaleWidth(padding.padding_16),
     paddingVertical: scaleHeight(padding.padding_12),
+    flexDirection : 'row',
+    alignItems : 'center' , 
+    justifyContent : 'space-between'
   },
   viewPay: {
     marginVertical: scaleHeight(margin.margin_15),
@@ -283,5 +293,40 @@ export const styles = StyleSheet.create({
     marginBottom: scaleHeight(0),
     marginTop: scaleHeight(margin.margin_10),
     paddingBottom: scaleHeight(padding.padding_8),
+  },
+  circleStyle: {
+    width: 40, // Adjust for desired circle size
+    height: 40, // Adjust for desired circle size
+    // borderRadius: '50%',
+    backgroundColor: '#ddd', // Adjust background color
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2, // Add border for completed steps
+    borderColor: '#ddd', // Adjust border color
+  },
+  stepText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333', // Adjust text color
+  },
+  labelText: {
+    fontSize: 14, // Adjust label text size
+    color: '#333', // Adjust label text color
+    marginTop: 5, // Adjust spacing between circle and label
+  },
+  rightBar: {
+    position: 'absolute',
+    top: '40%', // Center the bar vertically
+    right: 0, // Align to the right edge
+    width: scaleWidth(48), // Stretch the bar across the entire width
+    height: 1, // Set the bar height to 1 pixel
+    backgroundColor: '#00CC6A',
+    left : scaleWidth(45)
+  },
+  titleHeader: {
+    justifyContent: "flex-start",
+    paddingLeft: 5,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

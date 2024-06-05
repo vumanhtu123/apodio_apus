@@ -1,4 +1,3 @@
-import { placeholder } from "i18n-js";
 
 const en = {
   common: {
@@ -49,6 +48,7 @@ const en = {
       "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
+    delete_order : 'Bạn có chắc chắn muốn hủy đơn hàng bán này không?'
   },
   ruleController : {
     emptyText : 'Vui lòng nhập dữ liệu'
@@ -133,7 +133,7 @@ const en = {
   },
   dashboard: {
     storeInformation: "Store information",
-    promotions: "Promotions",
+    promotions: "Chiết khấu",
     transactionHistory: "Transaction history",
     sampleRequest: "Sample request",
     orders: "Orders",
@@ -147,16 +147,16 @@ const en = {
     titleOrder: "Orders being processed",
     start: "Start: ",
     end: "End: ",
-    goods: "Goods:",
+    goods: "Tiền hàng: ",
     promotionsInvoice: "Promotions:",
-    totalAmount: "Total amount to be paid:",
-    estimated: "Estimated order tonnage:",
+    totalAmount: "Tổng thanh toán:",
+    estimated: "Trọng tải đơn hàng dự tính:",
     orderNCC: "Order NCC",
     orderApodio: "Order Apodio",
     request: "Sample issuance request",
-    amountProduct: "Amount product:",
+    amountProduct: "Số lượng sản phẩm",
     client: "Khách hàng",
-    totalTax: "Total tax:",
+    totalTax: "Tổng thuế:",
   },
   order: {
     orderTracking: "Theo dõi hành trình đơn hàng",
@@ -169,12 +169,12 @@ const en = {
     shipping_status: "Trạng thái vận chuyển",
     update_shipping_status: "Cập nhật trạng thái vận chuyển",
     update_status: "Cập nhật trạng thái",
+    copy: "Sao chép",
+    return: "Trả/Huỷ",
+    printInvoice: "In hoá đơn",
     arrange: 'Sắp xếp',
     searchCodeName: "Tìm kiếm theo mã và tên",
     orderDetail: "Chi tiết đơn hàng",
-    copy: "Sao chép",
-    return: "Trả/Hủy",
-    printInvoice: "In hóa đơn",
     sendInvoice: "Tạo hóa đơn",
     quantity: "SL: ",
     promotions: 'Chiết khấu:',
@@ -243,6 +243,7 @@ const en = {
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",
+    waitingPickup : 'Chờ lấy hàng'
   },
   demoNavigator: {
     componentsTab: "Components",

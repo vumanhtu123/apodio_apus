@@ -6,8 +6,8 @@ import { Button, Text, TextField } from '../../../components';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { TxKeyPath, translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { hideLoading, showLoading, showToast } from '../../../utils/toast';
 import { useFocusEffect } from '@react-navigation/native';
+import { Loading } from '../../../components/dialog-notification';
 
 interface UnitModalProps {
     isVisible: boolean;
@@ -30,7 +30,7 @@ const UnitModal = (props: UnitModalProps) => {
     const [textError, setTextError] = useState('');
 
     const createUnitName = async (name: string, onclickSave: boolean) => {
-        showLoading();
+        Loading.show({});
         const unitResult = await unitStore.createUnitName(name)
         if (unitResult && unitResult.kind === 'ok') {
             const data = unitResult.result.data;
@@ -45,9 +45,9 @@ const UnitModal = (props: UnitModalProps) => {
                 console.log('--------onSaveAndChange---111----', dataModified),
                     onSaveAndChange(dataModified)
             }
-            hideLoading();
+            Loading.hide();
         } else {
-            hideLoading();
+            Loading.hide();
             setTextError(unitResult.result.errorCodes[0].message)
             console.error('Failed to fetch list unit:', unitResult);
         }
