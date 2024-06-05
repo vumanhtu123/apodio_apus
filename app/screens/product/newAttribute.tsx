@@ -281,7 +281,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                 value: nameGroupAttribute.id,
                 text: nameGroupAttribute.name,
               },
-            }),
+            })
             Dialog.hide();
           }
       })
