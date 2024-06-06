@@ -425,9 +425,9 @@ export const Images = {
   icon_delivery: icon_delivery,
   ic_tag: tag,
   icon_plus_blue: ic_plus_blue,
-  ic_dot:ic_dot,
+  ic_dot: ic_dot,
   icon_plus_blue2: icon_plus_blue2,
-  icon_QRCode : icon_QRCode
+  icon_QRCode: icon_QRCode,
   ic_avatar_order: ic_avatar_order,
   ic_warning_yellow: ic_warning_yellow,
   ic_plus_orange: ic_plus_orange,
