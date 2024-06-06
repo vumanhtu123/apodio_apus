@@ -46,4 +46,5 @@ export const ApiEndpoint = {
   GET_LIST_ORDER_PRODUCT_PRICE: '/api/v1/retail/sale-order/price-list/product-templates',
   GET_LIST_ORDER_VARIANT_PRICE: '/api/v1/retail/sale-order/price-list/products',
   GET_LIST_CITY: '/api/v1/cities/list/city-country',
+  GET_DETAIL_ORDER : '/api/v1/retail/sale-order',
 };

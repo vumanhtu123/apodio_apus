@@ -21,6 +21,7 @@ export const OrderStoreModel = types
     productId: types.optional(types.number, 0),
     viewProductType : types.optional(types.string , "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
+    orderId : types.optional(types.number, 0),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -60,6 +61,9 @@ export const OrderStoreModel = types
     },
     setIsLoadMore (isLoadMore : boolean) {
       self.isLoadMore = isLoadMore
+    },
+    setOrderId (id : number) {
+      self.orderId = id
     }
   }))
   .actions((self) => ({
@@ -67,6 +71,7 @@ export const OrderStoreModel = types
       page: number,
       size: number,
     ) {
+      
       console.log('page' , page)
       const orderApi = new OrderApi(self.environment.apiOrder);
       const result: OrderResult = yield orderApi.getListOrder(
@@ -229,6 +234,23 @@ export const OrderStoreModel = types
         search,
         countryId,
         regionId,
+      );
+      console.log('-----------dsa' , result)
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getDetailOrder: flow(function* (
+      id: number,
+    ) {
+      console.log('page' , id)
+      const orderApi = new OrderApi(self.environment.apiOrder);
+      const result: OrderResult = yield orderApi.getDetailOrder(
+        id
       );
       console.log('-----------dsa' , result)
       if (result.kind === "ok") {

@@ -136,7 +136,7 @@ const en = {
     promotions: "Chiết khấu",
     transactionHistory: "Transaction history",
     sampleRequest: "Sample request",
-    orders: "Orders",
+    orders: "Đơn hàng",
     product: "Product",
     moreFeatures: "More features",
     supply: "Supply",
@@ -179,7 +179,7 @@ const en = {
     quantity: "SL: ",
     promotions: 'Chiết khấu:',
     totalAmountNoTax: "Tổng tiền(chưa thuế):",
-    tax: 'Thuế:',
+    tax: 'Tổng thuế:',
     totalAmount: 'Tổng thanh toán:',
     estimated: 'Trọng tải đơn hàng dự tính:',
     date: "Date",
@@ -776,6 +776,12 @@ const en = {
     reset: "Thiết lập lại",
     apply: "Áp dụng",
 
+  },
+  printInvoiceScreen : {
+    printInvoice : 'In hoá đơn',
+    name : 'Tên khách hàng:',
+    address : 'Địa chỉ:',
+    phone : 'Số điện thoại:'
   }
 
   // @demo remove-block-end
