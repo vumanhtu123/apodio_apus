@@ -213,6 +213,7 @@ import tag from "./Images/Tag.svg";
 import ic_plus_blue from "./Images/PlusBlue.svg";
 import ic_dot from "./Images/ic_dot.svg";
 import icon_plus_blue2 from "./Images/icon_plus_blue2.svg";
+import icon_QRCode from "./Images/ic_QRCode.svg";
 
 export const Images = {
   icon_test: _test,
@@ -422,4 +423,5 @@ export const Images = {
   icon_plus_blue: ic_plus_blue,
   ic_dot:ic_dot,
   icon_plus_blue2: icon_plus_blue2,
+  icon_QRCode : icon_QRCode
 };

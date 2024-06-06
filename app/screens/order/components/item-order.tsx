@@ -70,12 +70,12 @@ export default function ItemOrder(props: ItemOrder) {
                 </View>
                 <Text style={TEXTMONEY} text={discount} />
             </View>
-            <View style={{ flexDirection: 'row' }}>
+            {/* <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
                     <Text style={TEXTCONTENT} tx={'order.totalAmountNoTax'} />
                 </View>
                 <Text style={TEXTMONEY} text={totalTax} />
-            </View>
+            </View> */}
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
                     <Text style={TEXTCONTENT} tx={'order.tax'} />

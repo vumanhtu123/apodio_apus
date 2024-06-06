@@ -11,6 +11,7 @@ export const OrderStoreModel = types
     fatherStatus: types.optional(types.frozen<InputSelectModel>(), { id: '', label: '' }),
     dataChildStatus: types.optional(types.array(types.frozen<InputSelectModel>()), []),
     childStatus: types.optional(types.frozen<InputSelectModel>(), { id: '', label: '' }),
+    orderId : types.optional(types.number, 0),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -27,17 +28,38 @@ export const OrderStoreModel = types
     closeModalTracking() {
       self.isModalTracking = false;
     },
+    setOrderId (id : number) {
+      self.orderId = id
+    }
   }))
   .actions((self) => ({
     getListOrder: flow(function* (
       page: number,
       size: number,
     ) {
+      
       console.log('page' , page)
       const orderApi = new OrderApi(self.environment.apiOrder);
       const result: OrderResult = yield orderApi.getListOrder(
         page,
         size,
+      );
+      console.log('-----------dsa' , result)
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getDetailOrder: flow(function* (
+      id: number,
+    ) {
+      console.log('page' , id)
+      const orderApi = new OrderApi(self.environment.apiOrder);
+      const result: OrderResult = yield orderApi.getDetailOrder(
+        id
       );
       console.log('-----------dsa' , result)
       if (result.kind === "ok") {
