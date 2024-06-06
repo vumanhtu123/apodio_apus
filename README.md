@@ -42,6 +42,18 @@ npm run ios
 yarn ios
 ```
 
+
+### Document components dialog-notification
+
+Dialog hiện đang có 2 trường hợp ẩn dialog: 
+
+T1 : nếu ẩn mà k phải chờ đợi kết quả BE trả về để hiển thị thì mọi người dùng Dialog.hide(); 
+
+T2: nếu ẩn dialog và chờ kết quả BE trả về để hiển thị tiết 1 lần nữa thì dùng await Dialog.hideDialog();
+
+đã có comment và demo ở màn editProduct
+
+
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.

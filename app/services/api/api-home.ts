@@ -1,8 +1,7 @@
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { hideLoading, showDialog, showLoading } from "../../utils/toast";
-import { BalanceResult } from "./api.types.home";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { GetWayAPI } from "../base-api/api-config-get-way";
 import { UAA_API } from "../base-api/api-config-uaa";
 
@@ -17,8 +16,10 @@ export class HomeApi {
     this.getWayAPI = getWayAPI;
   }
 
-  async getBalance(): Promise<BalanceResult> {
-    showLoading();
+  async getBalance(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_PRODUCT,
@@ -27,7 +28,7 @@ export class HomeApi {
           size: 20,
         }
       );
-      hideLoading();
+      Loading.hide();
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -40,7 +41,9 @@ export class HomeApi {
   }
   
   async getListCompany(userId: any): Promise<any> {
-    showLoading();
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.uaa.apisauce.get(
         ApiEndpoint.GET_LIST_COMPANY,
@@ -51,7 +54,7 @@ export class HomeApi {
       console.log("company", response.data);
       const data = response.data;
       // if (!response.ok) {
-      hideLoading();
+        Loading.hide();
       //   const problem = getGeneralApiProblem(response);
       //   if (problem) return problem;
       // }
@@ -62,7 +65,7 @@ export class HomeApi {
       // return { kind: "bad-data", LoginModelResult: data };
       return { kind: "ok", data };
     } catch (e) {
-      hideLoading();
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }

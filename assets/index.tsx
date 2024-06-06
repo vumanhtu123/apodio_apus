@@ -211,6 +211,9 @@ import icon_pickup_blue from "./Images/icon_pickupBlue.svg";
 import icon_delivery from "./Images/icon_delivery.svg";
 import tag from "./Images/Tag.svg";
 import ic_plus_blue from "./Images/PlusBlue.svg";
+import ic_dot from "./Images/ic_dot.svg";
+import icon_plus_blue2 from "./Images/icon_plus_blue2.svg";
+import icon_QRCode from "./Images/ic_QRCode.svg";
 import ic_avatar_order from "./Images/AvatarInOrder.svg";
 import ic_warning_yellow from "./Images/warning_yellow.svg";
 import ic_plus_orange from "./Images/ic_plus_orange.svg";
@@ -412,7 +415,6 @@ export const Images = {
   ic_toPay: ic_toPay,
   ic_calender_white: ic_calender_white,
   ic_slider: ic_slider,
-
   icon_ellipse_tracking: icon_ellipse_tracking,
   icon_order_success: icon_order_success,
   icon_pickup: icon_pickup,
@@ -423,6 +425,9 @@ export const Images = {
   icon_delivery: icon_delivery,
   ic_tag: tag,
   icon_plus_blue: ic_plus_blue,
+  ic_dot:ic_dot,
+  icon_plus_blue2: icon_plus_blue2,
+  icon_QRCode : icon_QRCode
   ic_avatar_order: ic_avatar_order,
   ic_warning_yellow: ic_warning_yellow,
   ic_plus_orange: ic_plus_orange,

@@ -234,17 +234,19 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
-        showDialog(
-          translate("txtDialog.permission_allow"),
-          "danger",
-          translate("txtDialog.allow_permission_in_setting"),
-          translate("common.cancel"),
-          translate("txtDialog.settings"),
-          () => {
+
+        Dialog.show({
+          type: ALERT_TYPE.WARNING,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
             Linking.openSettings();
-            hideDialog();
-          }
-        );
+            Dialog.hide();
+          },
+        });
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       console.log("Permission blocked, you need to enable it from settings");
@@ -395,7 +397,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             dataDefault={payment.label}
           />
           <View style={styles.viewListProduct}>
-            <Button style={styles.buttonListProduct}>
+            <Button
+              style={styles.buttonListProduct}
+              onPress={() => navigation.navigate("addProductOrder" as never)}>
               <Images.icon_add />
               <Text
                 tx={"order.addProduct"}

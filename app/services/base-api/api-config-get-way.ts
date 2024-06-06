@@ -1,10 +1,4 @@
 import { ApiResponse, ApisauceInstance, create } from "apisauce";
-import {
-  hideDialog,
-  hideLoading,
-  showDialog,
-  showLoading,
-} from "../../utils/toast";
 import DeviceInfo from "react-native-device-info";
 import {
   ApiConfig,
@@ -13,6 +7,7 @@ import {
 } from "./api-config";
 import { resetRoot } from "../../navigators";
 import { getAccessToken, getTenantId } from "../../utils/storage";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 const API_PAGE_SIZE = 50;
 
@@ -27,7 +22,6 @@ export class GetWayAPI {
 
   async setup() {
     // construct the apisauce instance
-    showLoading();
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
@@ -38,44 +32,50 @@ export class GetWayAPI {
     console.log("apisauceGETWAY", this.config.url);
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
-        hideLoading();
+        Loading.hide();
         console.log("RESPONSE :", response);
         return response;
       },
       async (error) => {
-        hideLoading();
+        Loading.hide();
         console.log("error==", error);
         if (error.toJSON().message === "Network Error") {
-          showDialog("Error", "danger", "Network Error!", "", "OK", () =>
-            hideDialog()
-          );
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'Network Error!',
+            closeOnOverlayTap: false}) 
         }
         console.log("error ", error.response.status);
         if (error.response.status === 401) {
           console.log("401 authentication");
-          showDialog(
-            "Error",
-            "danger",
-            "Your session was expired. Please login again to continue using Mosan",
-            "",
-            "OK",
-            () => {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'Your session was expired',
+            closeOnOverlayTap: false,
+            onPressButton: () => {
               resetRoot({
                 index: 1,
-                routes: [{ name: "AuthStack" } as never],
-              });
-              hideDialog();
+                routes: [{ name: 'authStack' }],
+              })
+              Dialog.hide();              
+              Loading.hide();
             }
-          );
+          }) 
         }
         if (error.response.status === 500 || error.response.status === 404) {
-          showDialog("Error", "danger", "System Busy!", "", "OK", () =>
-            hideDialog()
-          );
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'System Busy!',
+            closeOnOverlayTap: false})  
         }
       }
     );
-    showLoading();
     this.apisauce.addAsyncRequestTransform((request) => async () => {
       try {
         const tenantId = await getTenantId();
@@ -91,7 +91,7 @@ export class GetWayAPI {
         console.log("REQUEST--222: ", request);
       } catch (err) {
         console.log("Catch err", err);
-        hideLoading();
+        Loading.hide();
       }
     });
     // this.apisauce.addResponseTransform(async (response) => {

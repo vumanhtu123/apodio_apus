@@ -40,4 +40,6 @@ export const ApiEndpoint = {
   USING_PRODUCT_CHECK: "/api/v1/product-template/use-in-another-service",
   COMPANY_INFO: "/api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
+  GET_LIST_ORDER : '/api/v1/retail/sale-order/list',
+  GET_DETAIL_ORDER : '/api/v1/retail/sale-order',
 };

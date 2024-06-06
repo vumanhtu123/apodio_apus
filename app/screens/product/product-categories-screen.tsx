@@ -99,7 +99,7 @@ export const ProductCategoriesScreen: FC = observer(() => {
                         /> */}
                             <Images.logoShop width={scaleWidth(27.63)} height={scaleHeight(29.75)} />
                             <View style={{ top: 10 }}>
-                                <Text style={{ color: '#747475', fontSize: fontSize.size10, lineHeight: 12, textAlign: 'center' }} numberOfLines={2}>{item.name}</Text>
+                                <Text style={{ color: colors.palette.dolphin, fontSize: fontSize.size10, lineHeight: 12, textAlign: 'center' }} numberOfLines={2}>{item.name}</Text>
                             </View>
                         </View>
                     </View>

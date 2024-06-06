@@ -1,9 +1,7 @@
 import { ApiResponse } from "apisauce"
 import { Api } from "../base-api/api"
 import { getGeneralApiProblem } from "./api-problem"
-import { hideLoading, showLoading } from "../../utils/toast"
-import { CheckPinResult } from "./api.types"
-import { ChangePassResult, ChangePinResult, FeeResult, OtpResult, ResendBankResult, WithDrawHoResult } from "./api.types.wallet"
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 export class WalletApi {
   private api: Api
@@ -16,7 +14,9 @@ export class WalletApi {
     contents: string,
     originalPrice: any,
   ): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/orders",
@@ -26,6 +26,7 @@ export class WalletApi {
           originalPrice,
         },
       )
+      Loading.hide();
       const data = response.data
       if (!response.ok) {
         const problem = getGeneralApiProblem(response)
@@ -40,16 +41,19 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" }
     }
   }
 
-  async getListResend(search?: any, loading?: boolean): Promise<ResendBankResult> {
+  async getListResend(search?: any, loading?: boolean): Promise<any> {
     if (loading) {
-      showLoading()
+      Loading.show({
+        text: 'Loading...',
+      });
     } else {
-      hideLoading()
+      Loading.hide();
     }
 
     try {
@@ -57,6 +61,7 @@ export class WalletApi {
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/transfer-to-bank",
         { search },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -66,13 +71,16 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" , response: e }
     }
   }
 
-  async merchantWithdrawFee(amount: any, type: string): Promise<FeeResult> {
-    showLoading()
+  async merchantWithdrawFee(amount: any, type: string): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/wallets/fee",
@@ -81,6 +89,7 @@ export class WalletApi {
           type
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -90,12 +99,15 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
   }
-  async merchantPINVerify(pinCode: any): Promise<CheckPinResult> {
-    showLoading()
+  async merchantPINVerify(pinCode: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/wallets/pin/verify",
@@ -103,6 +115,7 @@ export class WalletApi {
           pinCode
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -112,12 +125,15 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
   }
-  async merchantChangePIN(oldPin: any, newPin: any): Promise<ChangePinResult> {
-    showLoading()
+  async merchantChangePIN(oldPin: any, newPin: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/root-accounts/pin",
@@ -126,6 +142,7 @@ export class WalletApi {
           newPin
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -135,12 +152,15 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
   }
-  async merchantChangePass(oldPassword: any, newPassword: any): Promise<ChangePassResult> {
-    showLoading()
+  async merchantChangePass(oldPassword: any, newPassword: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/root-accounts/change-password",
@@ -149,6 +169,7 @@ export class WalletApi {
           newPassword
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -158,12 +179,15 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
   }
-  async staffChangePass(oldPassword: any, newPassword: any): Promise<ChangePassResult> {
-    showLoading()
+  async staffChangePass(oldPassword: any, newPassword: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/staffs/change-password",
@@ -172,6 +196,7 @@ export class WalletApi {
           newPassword
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -181,17 +206,21 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
   }
-  async merchantGetOTPBank(): Promise<OtpResult> {
-    showLoading()
+  async merchantGetOTPBank(): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/wallets/otp",
         {},
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -201,6 +230,7 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
@@ -212,8 +242,10 @@ export class WalletApi {
     otp: any,
     pinCode: any,
     content: string
-  ): Promise<WithDrawHoResult> {
-    showLoading()
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/wallets/withdrawal/bank",
@@ -226,6 +258,7 @@ export class WalletApi {
           content
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -235,6 +268,7 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data", response: e }
     }
@@ -244,8 +278,10 @@ export class WalletApi {
     amount: number,
     otp: any,
     pinCode: any
-  ): Promise<WithDrawHoResult> {
-    showLoading()
+  ): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/wallets/withdrawal/ho",
@@ -256,6 +292,7 @@ export class WalletApi {
           pinCode
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -265,6 +302,7 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" , response: e}
     }
@@ -275,7 +313,9 @@ export class WalletApi {
     amount: number,
 
   ): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/transfer-to-bank",
@@ -284,6 +324,7 @@ export class WalletApi {
           amount,
         },
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -293,17 +334,21 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" }
     }
   }
   async merchantWalletGetRecentBank(): Promise<any> {
-    showLoading()
+    Loading.show({
+      text: 'Loading...',
+    });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         "/services/merchant-service/merchant-service/mobile/merchant/public/api/v1/transfer-to-bank",
         {},
       )
+      Loading.hide();
       const data = response.data
       if (response.data.message === 'Success') {
         return { kind: "ok", response: data }
@@ -313,6 +358,7 @@ export class WalletApi {
       }
       return { kind: "bad-data", response: data }
     } catch (e) {
+      Loading.hide();
       __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" }
     }

@@ -27,11 +27,15 @@ import { Text } from '../../../components/text/text';
 import CustomCalendar from '../../../components/calendar';
 import ItemOrder from '../components/item-order';
 import { useNavigation } from '@react-navigation/native';
+import { useStores } from '../../../models';
+import { formatCurrency } from '../../../utils/validate';
+import { formatDateTime } from '../../../utils/formatDate';
 
 export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
   function OrderScreen(props) {
     // Pull in one of our MST stores
     // const refCarousel = useRef(null)
+    const { orderStore } = useStores();
     const [data, setData] = useState([])
     const [arrData, setArrData] = useState<any>([])
     const [isShow, setIsShow] = useState(false);
@@ -70,7 +74,25 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     { status: 'Đã giao', textStatus: 'Hoàn thành' },
     { status: 'Hủy đơn', textStatus: 'Hủy đơn' },
     ]
-
+    useEffect(() => {
+      getListOrder()
+    }, [])
+    const getListOrder = async () => {
+      try {
+        const response = await orderStore.getListOrder(
+          0,
+          50,
+        );
+        if (response && response.kind === "ok") {
+          console.log('orderLisst', JSON.stringify(response.response.data.content) )
+          setArrData(response.response.data.content)
+        } else {
+          console.error("Failed to fetch order:", response);
+        }
+      } catch (error) {
+        console.error("Error fetching order:", error);
+      }
+    };
     const arrPromotions: Array<{}> = [
       {
         id: 1,
@@ -82,7 +104,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         discount: '5.000.000',
         totalAmount: '84.000.000',
         weight: '37kg',
-        payStatus: 'Đã thanh toán',
+        payStatus: 'Thanh toán một phần ',
         amount: "7",
         totalTax: "5000000",
       },
@@ -212,7 +234,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     }
     const store = useLocalStore(() => ({
       selectedStatus: 0,
-      arrData: [{}],
+      arrData: arrData,
       selectStatus: [{ status: 'Tất cả', textStatus: 'Tất cả' },
       { status: 'Đã gửi YC', textStatus: 'Chờ xác nhận' },
       { status: 'Đang xử lý', textStatus: 'Đang xử lý' },
@@ -222,9 +244,9 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       ],
 
       onLoad() {
-        store.arrData = arrPromotions
+        store.arrData = arrData
+        // console.log('first', arrData)
       },
-
       onSelectStatus(index: any) {
         store.selectedStatus = index;
         var t = store.selectStatus[store.selectedStatus].status
@@ -243,6 +265,11 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const toggleModalDate = () => {
       setIsSortByDate(!isSortByDate)
     }
+    const handleDetailOrder = (id : number) => {
+      orderStore.setOrderId(id)
+      console.log('first' , orderStore.orderId)
+      navigation.navigate('orderDetails' as never)
+    }
 
     return (
       <View style={styles.ROOT}>
@@ -250,12 +277,11 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           type={"AntDesign"}
           style={styles.header}
           titleStyle={styles.textHeader}
-          RightIcon={Images.icon_calendar}
+          RightIcon={Images.ic_calender_white}
           RightIcon1={Images.search}
-          widthRightIcon={16}
-          heightRightIcon={16}
-          rightText1={moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("DD/MM/YYYY") +"- "+moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
-           />
+          onRightPress={toggleModalDate}
+          rightText1={moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
+        />
         <View style={styles.viewSelect}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
             {selectStatus.map((item, index) => {
@@ -263,8 +289,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
                 <TouchableOpacity onPress={() => {
                   store.onSelectStatus(index)
                   console.log(index)
-                  console.log(store.selectedStatus)
-                  console.log(store.arrData)
+                  // console.log(store.selectedStatus)
+                  console.log(arrData)
                 }}
                   key={index}
                   style={[styles.viewItemSelect, {
@@ -296,23 +322,23 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         </View> */}
         {/* {(arrData && arrData.length > 0) ? ( */}
         <FlatList
-          data={store.arrData}
+          data={arrData}
           style={styles.styleFlatlist}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <ItemOrder
-              onPress={() => navigation.navigate('orderDetails', { data: item })}
-              name={item.name}
-              time={item.time}
+              onPress={() => handleDetailOrder(item.id)}
+              name={item.partner.name}
+              time={formatDateTime(item.quoteCreationDate)}
               code={item.code}
               status={item.status}
               amount={item.amount}
-              discount={item.discount}
+              discount={formatCurrency(item.amountDiscount)}
               payStatus={item.payStatus}
               weight={item.weight}
-              totalAmount={item.totalAmount}
-              totalTax={item.totalTax}
-              money={item.money}
+              totalAmount={formatCurrency(item.amountTotal)}
+              totalTax={formatCurrency(item.amountTax)}
+              money={formatCurrency(item.totalPrice)}
               styleViewStatus={{
                 backgroundColor: item.status === 'Đã xử lý' ? colors.palette.solitude
                   : item.status === 'Chờ xử lý' ? colors.palette.floralWhite : colors.palette.amour,
@@ -345,7 +371,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           isOneDate={false}
           toggleModalDate={toggleModalDate}
         />
-        <TouchableOpacity onPress={() => {navigation.navigate('newOrder' as any) }} style={styles.btnShowModal}>
+        <TouchableOpacity onPress={() => { navigation.navigate('newOrder' as any) }} style={styles.btnShowModal}>
           <Images.icon_addOrder />
         </TouchableOpacity>
       </View>

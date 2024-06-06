@@ -11,8 +11,7 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { InputSelect } from "../../components/input-select/inputSelect";
 import Modal from 'react-native-modal';
 import { useStores } from "../../models"
-import { da } from "date-fns/locale";
-import { hideDialog, showDialog, showToast } from "../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { translate } from "../../i18n/translate";
 import UnitModal from "./component/modal-unit";
 
@@ -112,13 +111,18 @@ export const CreateConversionGroup: FC = observer(
         const createUnitGroupLine = async (params: any, saveLocal: boolean) => {
             const unitResult = await unitStore.createUnitGroupLine(params)
             if (unitResult && unitResult.kind === 'ok') {
+                Dialog.hide();
                 const data = unitResult.result.data;
                 console.log('response11111', unitResult)
                 goBackToProductCreateScreen(data.id, data.name);
 
             } else {
-                showDialog(translate("txtDialog.txt_title_dialog"), 'danger', unitResult.result.errorCodes[0].message, translate("common.ok"), '', () => {
-                    //navigation.goBack()
+                Dialog.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: translate("productScreen.Notification"),
+                    textBody: unitResult.result.errorCodes[0].message,
+                    button: translate("common.ok"),
+                    closeOnOverlayTap: false
                 })
                 console.error('Failed to fetch list unit:', unitResult);
             }
@@ -129,20 +133,33 @@ export const CreateConversionGroup: FC = observer(
             if (groupNameWatch === '' || originalUnit.label === '' ||
                 (conversionWatch.length === 1 && conversionWatch[0].code === '' && conversionWatch[0].conversionRate === '')
             ) {
-                showToast('txtToats.required_information', 'error')
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: '',
+                    textBody: translate('txtToats.required_information'),
+                
+                })
             } else {
-                showDialog(translate("txtDialog.txt_title_dialog"), 'danger', translate("txtDialog.save_the_conversion_group"), translate("common.cancel"), translate("common.confirm"), () => {
-                    const params: any = {};
-                    params.name = groupNameWatch;
-                    params.originalUnitId = originalUnit.id;
-                    const jsonArray = conversionWatch.map(item => ({
-                        ...item,
-                        conversionRate: parseInt(item.conversionRate, 10)
-                    }));
-                    params.unitGroupLines = jsonArray;
-                    console.log(conversionWatch)
-                    createUnitGroupLine(params, true);
-                    hideDialog();
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: translate("txtDialog.save_the_conversion_group"),
+                    button: translate("common.cancel"),
+                    button2: translate("common.confirm"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        const params: any = {};
+                        params.name = groupNameWatch;
+                        params.originalUnitId = originalUnit.id;
+                        const jsonArray = conversionWatch.map(item => ({
+                            ...item,
+                            conversionRate: parseInt(item.conversionRate, 10)
+                        }));
+                        params.unitGroupLines = jsonArray;
+                        console.log(conversionWatch)
+                        createUnitGroupLine(params, true);
+                       
+                    }
                 })
             }
             // reset();
@@ -153,21 +170,33 @@ export const CreateConversionGroup: FC = observer(
             if (groupNameWatch === '' || originalUnit.label === '' ||
                 (conversionWatch.length === 1 && conversionWatch[0].code === '' && conversionWatch[0].conversionRate === '')
             ) {
-                showToast('txtToats.required_information', 'error')
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: '',
+                    textBody: translate('txtToats.required_information'),
+                })
             } else {
 
-                showDialog(translate("txtDialog.txt_title_dialog"), 'danger', translate("txtDialog.save_the_conversion_group"), translate("common.cancel"), translate("common.confirm"), () => {
-                    const params: any = {};
-                    params.name = groupNameWatch;
-                    params.originalUnitId = originalUnit.id;
-                    const jsonArray = conversionWatch.map(item => ({
-                        ...item,
-                        conversionRate: parseInt(item.conversionRate, 10)
-                    }));
-                    params.unitGroupLines = jsonArray;
-                    console.log(conversionWatch)
-                    createUnitGroupLine(params, false);
-                    hideDialog();
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: translate("txtDialog.save_the_conversion_group"),
+                    button: translate("common.cancel"),
+                    button2: translate("common.confirm"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        const params: any = {};
+                        params.name = groupNameWatch;
+                        params.originalUnitId = originalUnit.id;
+                        const jsonArray = conversionWatch.map(item => ({
+                            ...item,
+                            conversionRate: parseInt(item.conversionRate, 10)
+                        }));
+                        params.unitGroupLines = jsonArray;
+                        console.log(conversionWatch)
+                        createUnitGroupLine(params, false);
+                       
+                    }
                 })
             }
             // reset();
@@ -241,7 +270,11 @@ export const CreateConversionGroup: FC = observer(
                                 if (lastItem.code && lastItem.conversionRate) {
                                     append({ id: '', code: '', unitId: '', conversionRate: '', changeDVT: '' });
                                 } else {
-                                    showToast('txtDialog.adding_a_new_price_range', 'error')
+                                    Toast.show({
+                                        type: ALERT_TYPE.DANGER,
+                                        title: '',
+                                        textBody: translate('txtDialog.adding_a_new_price_range'),
+                                    })
                                 }
                             }} >
                                 <Text text="Thêm dòng" style={{
@@ -276,7 +309,11 @@ export const CreateConversionGroup: FC = observer(
                                                             onBlur={onBlur}
                                                             onChangeText={(value) => {
                                                                 if (originalUnit.label === '') {
-                                                                    showToast('txtToats.required_dvt', 'error');
+                                                                    Toast.show({
+                                                                        type: ALERT_TYPE.DANGER,
+                                                                        title: '',
+                                                                        textBody: translate('txtToats.required_dvt'),
+                                                                    })
                                                                 } else { onChange(value) }
                                                             }}
                                                             maxLength={50}
@@ -284,7 +321,11 @@ export const CreateConversionGroup: FC = observer(
                                                 />
                                                 <TouchableOpacity onPress={() => {
                                                     if (originalUnit.label === '') {
-                                                        showToast('txtToats.required_dvt', 'error');
+                                                        Toast.show({
+                                                            type: ALERT_TYPE.DANGER,
+                                                            title: '',
+                                                            textBody: translate('txtToats.required_dvt'),
+                                                        })
                                                     } else {
                                                         setShowModal(true)
                                                         setIndexConversion(index)
@@ -328,7 +369,11 @@ export const CreateConversionGroup: FC = observer(
                                                                 onBlur={onBlur}
                                                                 onChangeText={(value) => {
                                                                     if (originalUnit.label === '') {
-                                                                        showToast('txtToats.required_dvt', 'error');
+                                                                        Toast.show({
+                                                                            type: ALERT_TYPE.DANGER,
+                                                                            title: '',
+                                                                            textBody: translate('txtToats.required_dvt'),
+                                                                        })
                                                                     } else { onChange(value) }
                                                                 }}
                                                                 maxLength={50}
@@ -358,44 +403,44 @@ export const CreateConversionGroup: FC = observer(
                                             onBackdropPress={() => { setShowModal(false) }}
                                         >
                                             <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
-                                            <KeyboardAvoidingView
-                                                behavior={Platform.OS === 'ios' ? 'height' : 'height'}
-                                                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-                                                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-                                            >
-                                                <View style={styles.viewModal}>
-                                                    <TextInput
-                                                        style={{ fontSize: 16, fontWeight: '400' }}
-                                                        onChangeText={(text) => handleSearch(text)}
-                                                        value={search}
-                                                        placeholder="Search..."
-                                                    />
-                                                    <FlatList
-                                                        data={filteredData}
-                                                        style={{
-                                                            // flex: 1,
-                                                            marginTop: scaleHeight(margin.margin_10)
-                                                        }}
-                                                        renderItem={({ item }) => {
-                                                            return (
-                                                                <View>
-                                                                    <TouchableOpacity onPress={() => {
-                                                                        setDataUnit(item.label)
-                                                                        setFilteredData(prevItems => prevItems.filter(i => i.label !== item.label));
-                                                                        setValue(`conversion.${indexConversion}.unitId`, item.id)
-                                                                        setValue(`conversion.${indexConversion}.changeDVT`, item.label)
-                                                                        setShowModal(false)
-                                                                    }}>
-                                                                        <Text text={item.label}
-                                                                            style={styles.textLabelFlatList} />
-                                                                    </TouchableOpacity>
-                                                                    <View style={styles.viewLine}></View>
-                                                                </View>
-                                                            );
-                                                        }}
-                                                    />
-                                                </View>
-                                            </KeyboardAvoidingView>
+                                                <KeyboardAvoidingView
+                                                    behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+                                                    keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+                                                    style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                                                >
+                                                    <View style={styles.viewModal}>
+                                                        <TextInput
+                                                            style={{ fontSize: 16, fontWeight: '400' }}
+                                                            onChangeText={(text) => handleSearch(text)}
+                                                            value={search}
+                                                            placeholder="Search..."
+                                                        />
+                                                        <FlatList
+                                                            data={filteredData}
+                                                            style={{
+                                                                // flex: 1,
+                                                                marginTop: scaleHeight(margin.margin_10)
+                                                            }}
+                                                            renderItem={({ item }) => {
+                                                                return (
+                                                                    <View>
+                                                                        <TouchableOpacity onPress={() => {
+                                                                            setDataUnit(item.label)
+                                                                            setFilteredData(prevItems => prevItems.filter(i => i.label !== item.label));
+                                                                            setValue(`conversion.${indexConversion}.unitId`, item.id)
+                                                                            setValue(`conversion.${indexConversion}.changeDVT`, item.label)
+                                                                            setShowModal(false)
+                                                                        }}>
+                                                                            <Text text={item.label}
+                                                                                style={styles.textLabelFlatList} />
+                                                                        </TouchableOpacity>
+                                                                        <View style={styles.viewLine}></View>
+                                                                    </View>
+                                                                );
+                                                            }}
+                                                        />
+                                                    </View>
+                                                </KeyboardAvoidingView>
                                             </TouchableWithoutFeedback>
                                         </Modal>
                                     </View>

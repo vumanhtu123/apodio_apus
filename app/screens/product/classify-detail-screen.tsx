@@ -30,7 +30,6 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
 import { formatNumber } from "../../utils/validate";
-import { showDialog } from "../../utils/toast";
 import ProductAttribute from "./component/productAttribute";
 // import ProductAttribute from "./componet/productAttribute";
 
