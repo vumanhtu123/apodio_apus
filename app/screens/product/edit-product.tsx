@@ -1071,7 +1071,6 @@ export const ProductEditScreen: FC = (item) => {
           if (id !== null) {
             const checkDelete = await productStore.deleteCheck(id);
             console.log(checkDelete, "----------check");
-
             if (checkDelete.result && checkDelete.kind === "ok") {
               if (checkDelete.result.data.isUsing === false) {
                 const updatedData = [
@@ -1080,6 +1079,7 @@ export const ProductEditScreen: FC = (item) => {
                 ];
                 setDataCreateProduct(updatedData);
                 setErrorContent(checkDelete.result.message);
+                await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
                 Dialog.show({
                   type: ALERT_TYPE.DANGER,
                   title: translate("txtDialog.txt_title_dialog"),
@@ -1089,6 +1089,7 @@ export const ProductEditScreen: FC = (item) => {
               })
               } else {
                 setErrorContent(checkDelete.result.errorCodes[0].message);
+                await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
                 Dialog.show({
                   type: ALERT_TYPE.DANGER,
                   title: translate("txtDialog.txt_title_dialog"),
@@ -1099,6 +1100,7 @@ export const ProductEditScreen: FC = (item) => {
               }
             } else {
               setErrorContent(checkDelete.result.errorCodes[0].message);
+              await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
               Dialog.show({
                 type: ALERT_TYPE.DANGER,
                 title: translate("txtDialog.txt_title_dialog"),

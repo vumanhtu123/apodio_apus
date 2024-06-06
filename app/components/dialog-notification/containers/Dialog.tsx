@@ -3,6 +3,7 @@ import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from
 import { ACTION, ALERT_TYPE, ENV } from '../config';
 import { Color, getImage } from '../service';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
+import { Loading } from './Loading';
 
 export type IConfigDialog = {
   type?: ALERT_TYPE;
@@ -42,12 +43,11 @@ export class Dialog extends React.Component<IProps, IState> {
     Dialog.instance.current?._open(args);
   };
 
-  /**
-   *
-   */
+
   public static hide = (): void => {
     Dialog.instance.current?._close();
   };
+
 
   private _timeout?: NodeJS.Timeout;
 
@@ -175,11 +175,19 @@ export class Dialog extends React.Component<IProps, IState> {
     });
   };
 
-  private onPressBTN = () => {
+  public static hideDialog = async (): Promise<void> => {
+    return new Promise<void>((resolve) => {
+      Dialog.hide();
+      setTimeout(resolve, 300); // Điều chỉnh thời gian nếu cần để khớp với thời gian animation ẩn
+    });
+  };
+
+  
+  private onPressBTN = async () => {
     const { onPressButton } = this.state.config!;
     if (onPressButton) {
-      onPressButton();
-      Dialog.hide();
+      await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
+      onPressButton(); // Thực thi logic sau khi dialog đã ẩn
     }
   };
 
@@ -197,7 +205,7 @@ export class Dialog extends React.Component<IProps, IState> {
           <Text style={[styles.buttonLabel , {color: button2 ? '#747475' : '#fff'}] }>{button}</Text>
         </TouchableOpacity>)}
         {button && button2 && <View style={{ width: scaleWidth(9) }} />}
-        {button2 && (<TouchableOpacity style={StyleSheet.flatten([styles.buttonAccept])} onPress={onPressButton ?? this._close}>
+        {button2 && ( <TouchableOpacity style={StyleSheet.flatten([styles.buttonAccept])} onPress={this.onPressBTN ?? this._close}>
           <Text style={styles.buttonLabelAccept}>{button2}</Text>
         </TouchableOpacity>)}
       </View>
