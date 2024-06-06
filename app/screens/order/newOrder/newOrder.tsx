@@ -44,9 +44,11 @@ import CustomCalendar from "../../../components/calendar";
 import { MakeResult } from "mobx/dist/internal";
 import ItemListProduct from "../components/itemListProduct";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { useStores } from "../../../models";
 
 export const NewOrder: FC = observer(function NewOrder(props) {
   const navigation = useNavigation();
+  const {orderStore} = useStores()
   const paddingTop = useSafeAreaInsets().top;
   const heightScroll =
     Dimensions.get("window").height -
@@ -304,6 +306,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
   useEffect(() => {
     setArrProduct(arrProducts);
+    // orderStore.setCheckPriceList(true)
   }, []);
 
   return (

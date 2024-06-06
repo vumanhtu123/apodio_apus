@@ -33,40 +33,16 @@ export const AddProductOrder: FC = observer(
         const [errorMessage, setErrorMessage] = useState("");
         const [size, setSize] = useState(20);
         const [nameDirectory, setNameDirectory] = useState('')
-        const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
+        const [viewProduct, setViewProduct] = useState(orderStore.viewProductType);
         const [index, setIndex] = useState()
-        const [isModal, setIsModal] = useState(false)
-        const [isSelected, setIsSelected] = useState('1')
         const { dataProductAddOrder, setDataProductAddOrder, dataProductAddOrderNew, setDataProductAddOrderNew } = orderStore
 
         useFocusEffect(
             useCallback(() => {
-                setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
+                setIndexItem(orderStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
             }, [viewProduct])
         );
-
-        useEffect(() => {
-            const unsubscribe = navigation.addListener("focus", () => {
-                if (productStore.reloadProductScreen === true) {
-                    handleGetProduct();
-                }
-                setDataProductAddOrderNew(dataProductAddOrder.slice())
-            });
-            return unsubscribe;
-        }, [navigation]);
-
-        const arrArrange = [
-            {label: 'Ngày tạo', id: '1'},
-            {label: 'Giá từ cao đến thấp', id: '2'},
-            {label: 'Giá từ tấp đến cao', id: '3'},
-            {label: 'Theo tên từ A -> Z', id: '4'},
-            {label: 'Theo tên từ Z -> A', id: '5'},
-        ]
-
-        const onPressModal = (data: any) => {
-            setIsSelected(data.id)
-            setIsModal(false)
-        }
+        console.log(orderStore.checkPriceList)
 
         const handleGetCategoryFilter = async () => {
             try {
@@ -98,32 +74,150 @@ export const AddProductOrder: FC = observer(
         const handleGetProduct = async (searchValue?: any) => {
             var parseSort = "";
             try {
-                if (productStore.sort.length > 0) {
+                if (orderStore.sort.length > 0) {
                     parseSort =
                         "?sort=" +
-                        productStore.sort[0] +
-                        (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
+                        orderStore.sort[0] +
+                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
                 }
-                const response: any = await productStore.getListProduct(
+                const response: any = await orderStore.getListOrderProduct(
                     page,
                     size,
-                    viewProduct,
                     selectedCategory,
                     searchValue,
-                    productStore.tagId,
-                    parseSort
+                    parseSort,
+                    orderStore.isLoadMore,
+                    undefined,
                 );
                 // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
                 if (response && response.kind === "ok") {
                     setTotalPagesProduct(response.response.data.totalPages)
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
-                        const newArr = response.response.data.content.map(items => { return { ...items, amount: 0 } })
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
                         setDataProduct(newArr);
                     } else {
                         setDataProduct((prevProducts: any) => [
                             ...prevProducts,
-                            ...response.response.data.content.map(items => { return { ...items, amount: 0 } }),
+                            ...response.response.data.content.map((items: any) => { return { ...items, amount: 0 } }),
+                        ]);
+                    }
+                } else {
+                    console.error("Failed to fetch product:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
+        };
+        const handleGetVariant = async (searchValue?: any) => {
+            var parseSort = "";
+            try {
+                if (orderStore.sort.length > 0) {
+                    parseSort =
+                        "?sort=" +
+                        orderStore.sort[0] +
+                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
+                }
+                const response: any = await orderStore.getListOrderVariant(
+                    page,
+                    size,
+                    selectedCategory,
+                    searchValue,
+                    parseSort,
+                    orderStore.isLoadMore,
+                    undefined,
+                    undefined
+                );
+                // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+                if (response && response.kind === "ok") {
+                    setTotalPagesProduct(response.response.data.totalPages)
+                    console.log('////////////////', response.response.data.totalPages)
+                    if (page === 0) {
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
+                        setDataProduct(newArr);
+                    } else {
+                        setDataProduct((prevProducts: any) => [
+                            ...prevProducts,
+                            ...response.response.data.content.map((items: any) => { return { ...items, amount: 0 } }),
+                        ]);
+                    }
+                } else {
+                    console.error("Failed to fetch product:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
+        };
+        const handleGetProductPrice = async (searchValue?: any) => {
+            var parseSort = "";
+            try {
+                if (orderStore.sort.length > 0) {
+                    parseSort =
+                        "?sort=" +
+                        orderStore.sort[0] +
+                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
+                }
+                const response: any = await orderStore.getListOrderProductPrice(
+                    page,
+                    size,
+                    selectedCategory,
+                    searchValue,
+                    parseSort,
+                    orderStore.isLoadMore,
+                    undefined,
+                    6203,
+                );
+                // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+                if (response && response.kind === "ok") {
+                    setTotalPagesProduct(response.response.data.totalPages)
+                    console.log('////////////////', response.response.data.totalPages)
+                    if (page === 0) {
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
+                        setDataProduct(newArr);
+                    } else {
+                        setDataProduct((prevProducts: any) => [
+                            ...prevProducts,
+                            ...response.response.data.content.map((items: any) => { return { ...items, amount: 0 } }),
+                        ]);
+                    }
+                } else {
+                    console.error("Failed to fetch product:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
+        };
+        const handleGetVariantPrice = async (searchValue?: any) => {
+            var parseSort = "";
+            try {
+                if (orderStore.sort.length > 0) {
+                    parseSort =
+                        "?sort=" +
+                        orderStore.sort[0] +
+                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
+                }
+                const response: any = await orderStore.getListOrderVariantPrice(
+                    page,
+                    size,
+                    selectedCategory,
+                    searchValue,
+                    parseSort,
+                    orderStore.isLoadMore,
+                    undefined,
+                    undefined,
+                    6203,
+                );
+                // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+                if (response && response.kind === "ok") {
+                    setTotalPagesProduct(response.response.data.totalPages)
+                    console.log('////////////////', response.response.data.totalPages)
+                    if (page === 0) {
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
+                        setDataProduct(newArr);
+                    } else {
+                        setDataProduct((prevProducts: any) => [
+                            ...prevProducts,
+                            ...response.response.data.content.map((items: any) => { return { ...items, amount: 0 } }),
                         ]);
                     }
                 } else {
@@ -140,24 +234,90 @@ export const AddProductOrder: FC = observer(
         const viewProductType = (type: any) => {
             const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
             setViewProduct(viewType);
-            productStore.setViewProductType(viewType)
+            orderStore.setViewProductType(viewType)
         };
-        const [isGridView, setIsGridView] = useState(productStore.viewGrid);
+        const [isGridView, setIsGridView] = useState(orderStore.viewGrid);
         useEffect(() => {
-            handleGetProduct();
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_PRODUCT") {
+                handleGetProduct();
+            }
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_VARIANT") {
+                handleGetVariant();
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_PRODUCT") {
+                handleGetProductPrice();
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
+                handleGetVariantPrice();
+            }
             handleGetCategoryFilter();
         }, []);
         useEffect(() => {
-            handleGetProduct();
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_PRODUCT") {
+                handleGetProduct();
+            }
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_VARIANT") {
+                handleGetVariant();
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_PRODUCT") {
+                handleGetProductPrice();
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
+                handleGetVariantPrice();
+            }
         }, [viewProduct, selectedCategory]);
+
+        useEffect(() => {
+            const unsubscribe = navigation.addListener("focus", () => {
+                if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_PRODUCT") {
+                    handleGetProduct();
+                }
+                if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_VARIANT") {
+                    handleGetVariant();
+                }
+                if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_PRODUCT") {
+                    handleGetProductPrice();
+                }
+                if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
+                    handleGetVariantPrice();
+                }
+            });
+            return unsubscribe;
+        }, [navigation, orderStore.sort]);
+
         const handleEndReached = () => {
             console.log('--------totalPagesProduct---------------', totalPagesProduct, '----', isRefreshing, '-----', page)
             if (!isRefreshing && page <= totalPagesProduct - 1) {
-                console.log('--------handleEndReached---------------', page)
+                orderStore.setIsLoadMore(true)
                 setPage((prevPage) => prevPage + 1);
-                handleGetProduct(searchValue);
             }
         };
+        useEffect(() => {
+            const fetchMoreProducts = async () => {
+                try {
+                    if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_PRODUCT") {
+                        handleGetProduct(searchValue);
+                    }
+                    if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_VARIANT") {
+                        handleGetVariant(searchValue);
+                    }
+                    if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_PRODUCT") {
+                        handleGetProductPrice(searchValue);
+                    }
+                    if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
+                        handleGetVariantPrice(searchValue);
+                    }
+                } catch (error) {
+                    console.error('Error fetching more products:', error);
+                } finally {
+                    orderStore.setIsLoadMore(false);
+                }
+            };
+
+            if (orderStore.isLoadMore) {
+                fetchMoreProducts();
+            }
+        }, [page]);
         useEffect(() => {
             if (index == 0) {
                 refreshProduct()
@@ -170,8 +330,8 @@ export const AddProductOrder: FC = observer(
             setSearchValue("");
             setNameDirectory("");
             setDataProduct([]);
-            productStore.setTagId(0);
-            productStore.setSort([]);
+            // productStore.setTagId(0);
+            orderStore.setSort([]);
             await handleGetProduct();
             // setIsRefreshing(false);
         };
@@ -184,7 +344,7 @@ export const AddProductOrder: FC = observer(
             );
         };
         useEffect(() => {
-            productStore.setViewGrid(isGridView);
+            orderStore.setViewGrid(isGridView);
         }, [isGridView]);
         const toggleView = () => {
             setIsGridView(!isGridView);
@@ -213,11 +373,12 @@ export const AddProductOrder: FC = observer(
                     onLeftPress={() => {
                         navigation.goBack()
                         setDataProductAddOrderNew(dataProductAddOrder.slice())
+                        orderStore.setSort([]);
                     }}
                     colorIcon={colors.text}
                     headerTx={'order.order'}
                     RightIcon2={Images.vector}
-                    onRightPress={() =>  navigation.navigate("filterOrderScreen" as never)}
+                    onRightPress={() => navigation.navigate("filterOrderScreen" as never)}
                     onRightPress2={toggleView}
                     RightIcon={Images.slider}
                     headerInput={openSearch}
@@ -318,7 +479,7 @@ export const AddProductOrder: FC = observer(
                                         item={item}
                                         index={index}
                                         isGridView={isGridView}
-                                        viewProduct={viewProduct}
+                                        viewProduct={orderStore.viewProductType}
                                         handleProductDetail={handleProductDetail}
                                         handleClassifyDetail={handleClassifyDetail}
                                     />
@@ -330,7 +491,7 @@ export const AddProductOrder: FC = observer(
                 {dataProductAddOrderNew.length !== 0 ?
                     <TouchableOpacity onPress={() => {
                         navigation.navigate('newOrder' as never),
-                        setDataProductAddOrder(dataProductAddOrderNew.slice())
+                            setDataProductAddOrder(dataProductAddOrderNew.slice())
                         setDataProductAddOrderNew([])
                     }}
                         style={{
@@ -367,69 +528,6 @@ export const AddProductOrder: FC = observer(
                             <Text tx="common.continue" style={{ color: 'white', fontSize: fontSize.size14, fontWeight: '600' }} />
                         </View>
                     </TouchableOpacity> : null}
-                <Modal isVisible={isModal} style={{ margin: 0 }}>
-                    <View style={styles.viewModal}>
-                        <View style={{flexDirection: 'row'}}>
-                        <Text
-                            tx={"order.arrange"}
-                            style={[
-                                styles.textButtonCancel,
-                                {
-                                    marginVertical: scaleHeight(10),
-                                    marginLeft: scaleWidth(9),
-                                    color: colors.palette.nero,
-                                    flex: 1
-                                },
-                            ]}
-                        />
-                        <TouchableOpacity onPress={()=> setIsModal(false)}>
-                        <Text
-                            tx={"common.cancel"}
-                            style={[
-                                styles.textButtonCancel,
-                                {
-                                    marginVertical: scaleHeight(10),
-                                    marginLeft: scaleWidth(9),
-                                    color: colors.palette.radicalRed,
-                                },
-                            ]}
-                        />
-                        </TouchableOpacity>
-                        </View>
-                        <FlatList
-                            data={arrArrange}
-                            renderItem={(item) => {
-                                return (
-                                    <View>
-                                        <View
-                                            style={{
-                                                height: scaleHeight(1),
-                                                backgroundColor: "#E7EFFF",
-                                            }}
-                                        />
-                                        <TouchableOpacity
-                                            style={{
-                                                paddingVertical: 10,
-                                                flexDirection: "row",
-                                            }}
-                                            onPress={() => onPressModal(item.item)}
-                                            >
-                                            <Text
-                                                style={{
-                                                    fontSize: fontSize.size14,
-                                                    flex: 1,
-                                                }}>
-                                                {item.item.label}
-                                            </Text>
-                                            {isSelected === item.item.id ?<Images.icon_check/>: null}
-                                        </TouchableOpacity>
-                                    </View>
-                                );
-                            }}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                    </View>
-                </Modal>
                 <Dialog
                     isVisible={isDeleteFailModalVisible}
                     title={"productScreen.Notification"}

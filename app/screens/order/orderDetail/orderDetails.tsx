@@ -424,23 +424,26 @@ export const OrderDetails: FC = observer(
                         </TouchableOpacity> */}
                     </View>
                     <TouchableOpacity style={styles.viewAddress}>
-                        <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
-                        <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
-                            <Text text={addressChoice.name} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                            <Text text={addressChoice.phone} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                            <Text text={addressChoice.address} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
+                        <View>
+                            <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
+                            <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
+                                <Text text={addressChoice.name} style={[styles.textMoney2, {
+                                    lineHeight: scaleHeight(14.52),
+                                    marginBottom: scaleHeight(margin.margin_8)
+                                }]} />
+                                <Text text={addressChoice.phone} style={[styles.textMoney2, {
+                                    lineHeight: scaleHeight(14.52),
+                                    marginBottom: scaleHeight(margin.margin_8)
+                                }]} />
+                                <Text text={addressChoice.address} style={[styles.textMoney2, {
+                                    lineHeight: scaleHeight(14.52),
+                                    marginBottom: scaleHeight(margin.margin_8)
+                                }]} />
+                            </View>
                         </View>
                         <Images.icon_caretRight width={scaleWidth(16)} height={scaleHeight(16)} />
                     </TouchableOpacity>
+
 
                     <View style={{ borderRadius: 8, backgroundColor: colors.palette.neutral100 }}>
                         {
@@ -707,7 +710,7 @@ export const OrderDetails: FC = observer(
                         </View>
                     </View>
                 </Modal>
-            </LinearGradient>
+            </View>
         )
     }
 );

@@ -13,6 +13,7 @@ import { useStores } from "../../../models";
   
   export const FilterOrderScreen: FC = (item) => {
     const navigation = useNavigation();
+    const {orderStore}= useStores()
     const [typeNoti, setTypeNoti] = useState([
       { label: "filterScreen.new", sort: "createdAt,desc" },
       { label: "filterScreen.older", sort: "createdAt,asc" },
@@ -30,8 +31,8 @@ import { useStores } from "../../../models";
       const data = await productStore.getListTagProduct();
       setData(data.result.data.content);
     };
-    const [selectedNameFilter, setSelectedNameFilter] = useState(productStore.sort[0]);
-    const [selectedTimeFilter, setSelectedTimeFilter] = useState(productStore.sort[1]);
+    const [selectedNameFilter, setSelectedNameFilter] = useState(orderStore.sort[0]);
+    const [selectedTimeFilter, setSelectedTimeFilter] = useState(orderStore.sort[1]);
     const [selectedTagFilter, setSelectedTagFilter] = useState(0);
     const handleNamePress = (item: any) => {
       if (selectedNameFilter === item) {
@@ -59,16 +60,16 @@ import { useStores } from "../../../models";
     };
     useFocusEffect(
       React.useCallback(() => {
-        setSelectedNameFilter(productStore.sort[1]);
-        setSelectedTimeFilter(productStore.sort[0]);
+        setSelectedNameFilter(orderStore.sort[1]);
+        setSelectedTimeFilter(orderStore.sort[0]);
         setSelectedTagFilter(productStore.tagId);
       }, [])
     );
     
     const handleSort = () => {
       const filterData = getFilterData();
-      productStore.setSort(Object.values(filterData));
-      console.log(productStore.sort)
+      orderStore.setSort(Object.values(filterData));
+      console.log(orderStore.sort)
       productStore.setTagId(indexItemTag);
       console.log(productStore.tagId)
       navigation.navigate("addProductOrder" as never);
