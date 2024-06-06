@@ -776,7 +776,21 @@ const en = {
     add: "Thêm mới",
     nameClient: "Tên khách hàng",
     customerType: "Kiểu khách hàng",
-    selectCustomerType: "Chọn kiểu khách hàng"
+    selectCustomerType: "Chọn kiểu khách hàng",
+    filter: "Bộ lọc",
+    followName: "Theo tên",
+    timeCreate: "Thời gian tạo",
+    tag : "Tag",
+    new : "Mới nhất",
+    old: "Cũ nhất",
+    aToz: "Từ A -> Z",
+    zToa: "Từ Z -> A",
+    floorTiles: "Gạch lát",
+    wallTiles: "Gạch ốp",
+    brick40x40: "Gạch 40*40",
+    brick60x60: "Gạch 60*60",
+    brick80x80: "Gạch 80*80",
+
   },
 
   // @demo remove-block-end

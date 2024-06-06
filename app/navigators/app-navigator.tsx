@@ -30,6 +30,7 @@ import { CreateExportGoods } from "../screens/goods-delivery-book/Create-Export-
 import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
+
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
@@ -123,6 +124,7 @@ export type NavigatorParamList = {
   editDelivery: undefined;
   newDelivery: undefined;
   addProductOrder: undefined;
+  filterSelectScreen: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -220,6 +222,7 @@ export const AppStack = () => {
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
 
       <Stack.Screen name="selectClient" component={Screens.SelectClientScreen} />
+      <Stack.Screen name="filterSelectScreen" component={Screens.FilterSelectScreen} />
       <Stack.Screen
         name="mainBottom"
         options={{ gestureEnabled: false }}

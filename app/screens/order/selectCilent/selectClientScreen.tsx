@@ -17,11 +17,12 @@ import { useStores } from "../../../models";
 import ModalCreateClient from "./Modal/modal-create-client";
 import Loading from "../../../components/loading/loading";
 import { showLoading } from "../../../utils/toast";
+import { useNavigation } from "@react-navigation/native";
 
 
 export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "selectClient">> = observer(
     function SelectClientScreen(props) {
-
+        const navigation = useNavigation()
         const [indexSelect, setIndexSelect] = useState<any>()
         const [onClick, setOnClick] = useState('successfully')
         const [isVisible, setIsVisible] = useState(false);
@@ -57,14 +58,18 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
             setIsVisible(true)
         }
 
-        console.log("doannnnn", totalPage);
+        // console.log("doannnnn", totalPage);
+
+
+        const sort = getAPi.vendorStore.sort
+        console.log("doann log sort", sort);
 
 
         const getListClient = () => {
-            getAPi.vendorStore.getListSelectClient(page, size).then((data) => {
+            getAPi.vendorStore.getListSelectClient(0, size, sort).then((data) => {
                 console.log("dataaaaaaaaa", data);
 
-                setTotalPage(data?.totalPages)
+                // setTotalPage(data?.totalPages)
 
                 const dataSelectClien = data?.content.map((item) => {
                     return {
@@ -79,9 +84,10 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
         useEffect(() => {
             getListClient()
-        }, [])
+        }, [getAPi.vendorStore.sort])
 
-        console.log("doacccccccccccccccccccccccc", isLoadingMore)
+        console.log("load more", isLoadingMore)
+
         const handleRefresh = React.useCallback(async () => {
             setRefreshing(true);
             try {
@@ -96,15 +102,11 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
             }
         }, []);
 
-        // const handleLoadMore = () => {
-        //     setIsLoadingMore(true)
-        //     if (isLoadingMore == true) {
-        //         setPage(page + 3)
-        //     }
-
-        //     setIsLoadingMore(!isLoadingMore)
-
-        // };
+        const handleLoadMore = () => {
+            setIsLoadingMore(true)
+            setsize(size + 3)
+            getListClient()
+        };
 
         return (
             <View style={{ flex: 1 }}>
@@ -115,7 +117,11 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                     RightIcon={Images.icon_funnel}
                     RightIcon1={Images.icon_search}
                     style={{ height: scaleWidth(52) }}
-                    onRightPress={openTypeFilter}
+                    onRightPress={() => {
+                        // openTypeFilter
+                        props.navigation.navigate("filterSelectScreen")
+
+                    }}
 
                 />
                 <View style={{ alignItems: 'center', padding: 8 }}>
@@ -166,7 +172,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                                 </TouchableOpacity>
                             )
                         }}
-                        keyExtractor={(item: any, index: any) => item.code.toString()}
+                        // keyExtractor={(item: any, index: any) => item.code.toString()}
                         refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}
@@ -174,9 +180,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                             />
 
                         }
-                        onEndReached={() => {
-
-                        }}
+                        onEndReached={() => handleLoadMore()}
                         onEndReachedThreshold={0.7}
                         ListFooterComponent={() => {
                             return (

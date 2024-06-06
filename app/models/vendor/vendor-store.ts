@@ -13,12 +13,18 @@ export const VendorStoreModel = types
   .model("VendorStore")
   .props({
     checkSeparator: types.optional(types.string, ''),
+    sort: types.optional(types.string, '')
+  
   })
+  
   .extend(withEnvironment)
   .actions((self) => ({
     setCheckSeparator(value: any) {
       self.checkSeparator = value
-    }
+    },
+    setSort(sort: any) {
+      self.sort = sort;
+    },
   }))
   .actions((self) => ({
     getListVendor: flow(function* (page: number, size: number, vendorActivated: boolean, search: string) {
@@ -42,10 +48,10 @@ export const VendorStoreModel = types
         return error
       }
     }),
-    getListSelectClient: flow(function * (page: number, size: number ) {
+    getListSelectClient: flow(function * (page: number, size: number, sort: string ) {
       try {
         const clientAPI = new SelectClienAPI(self.environment.apiErp)
-        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size)
+        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size, sort)
         console.log("SlectClientResult-------------",JSON.stringify(result.data))
         return result.data
       } catch (error) {

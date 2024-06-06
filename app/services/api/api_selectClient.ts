@@ -15,12 +15,12 @@ export class SelectClienAPI {
    async getListSelectClient (
     page: number,
     size: number,
-
+    sort: string
    ): Promise<any> {
         showLoading()
         try {
          
-            console.log("doandev " , this.api.config.url);
+            console.log("doandev url " , this.api.config.url);
             
             const response:  ApiResponse<BaseResponse<OderListResspose, ErrorCode>> = await this.api.apisauce.get(
                 ApiEndpoint.GET_LIST_SLECT_CLIENT,
@@ -28,6 +28,7 @@ export class SelectClienAPI {
                 {
                   page: page,
                   size: size,
+                  sort: sort
                 }
               );
               hideLoading();

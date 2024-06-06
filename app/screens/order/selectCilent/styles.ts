@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
-import { colors, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
+import { styles } from "../orderScreen/styles";
 
 export const Styles = StyleSheet.create({
     stylesBtnBottom: {
@@ -34,4 +35,35 @@ export const Styles = StyleSheet.create({
         borderColor: colors.palette.navyBlue,
 
     },
+    flexRow: {
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    stylesBTNSelect: {
+        backgroundColor: colors.palette.aliceBlue2,
+        borderWidth:1,
+        borderColor: colors.palette.navyBlue,
+        padding: 11,
+        borderRadius:8,
+        flex:1, 
+        // marginRight:12,
+        alignItems:'center' 
+
+    },
+    stylesBTNUnSelect: {
+        flex:1,  
+        backgroundColor: colors.palette.aliceBlue,
+        borderWidth:1,
+        borderColor: colors.palette.veryLightGrey,
+        padding: 11,
+        borderRadius:8,
+        alignItems:'center' 
+
+    },
+    stylesTitle: {
+        fontSize:scaleWidth(14),
+        fontWeight: "600",
+        marginBottom: scaleHeight(12)
+
+    }
 })
