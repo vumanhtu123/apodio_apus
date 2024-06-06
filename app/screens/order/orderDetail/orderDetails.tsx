@@ -16,13 +16,12 @@ import { formatCurrency } from "../../../utils/validate";
 import ItemOrder from "../components/item-order";
 import { styles } from "./styles";
 import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
+import { useStores } from "../../../models";
 export const OrderDetails: FC = observer(
     function OrderDetails(props) {
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
 
         const navigation = useNavigation();
-        const paddingTop = useSafeAreaInsets().top
-        const [showPay, setShowPay] = useState(false)
         const [valueSwitch, setValueSwitch] = useState(false)
         const [showCancelOrder, setShowCancelOrder] = useState(false)
         const [showAddress, setShowAddress] = useState(false)
@@ -33,15 +32,31 @@ export const OrderDetails: FC = observer(
         const [wards, setWards] = useState({})
         const [phone, setPhone] = useState('')
         const [addressChange, setAddressChange] = useState('')
-        const [disable, setDisable] = useState(false)
-
-        const route = useRoute()
-        const data = route?.params?.data
+        const { orderStore } = useStores();
+        const { orderId } = orderStore;
+        const [data, setData] = useState<any>([]);
 
         useEffect(() => {
-            console.log(data)
+            console.log('id' , orderId)
         })
-
+        const handleGetDetailOrder = async () => {
+            try {
+              const response = await orderStore.getDetailOrder(orderId);
+              console.log("productId", orderId);
+              if (response && response.kind === "ok") {
+                const data = response.response.data;
+                console.log('dataDetail' , data)
+                setData(data);
+              } else {
+                console.error("Failed to fetch detail:", response);
+              }
+            } catch (error) {
+              console.error("Error fetching detail:", error);
+            }
+          };
+          useEffect(()=>{
+            handleGetDetailOrder()
+          },[])
         const arrData = [
             {
                 id: 1,
@@ -98,12 +113,6 @@ export const OrderDetails: FC = observer(
             address: "85 Hàng Bài, Hoàn Kiếm, Hà Nội",
             default: false,
             id: 1
-        }
-
-        const info = {
-            name: 'Nguyễn Hà Dung',
-            phone: '0988764476',
-            company: 'Công ty TNHH Một thành viên Apodio'
         }
 
         const userAddress = [
@@ -211,10 +220,6 @@ export const OrderDetails: FC = observer(
             console.log(reason)
             console.log(data.reasonText)
             setShowCancelOrder(false)
-        }
-
-        function handleConfirmAddress(data: any) {
-            console.log(data)
         }
 
         const handleChangeAddress = (data: any) => {
@@ -329,6 +334,7 @@ export const OrderDetails: FC = observer(
                     TitleIcon1="order.return"
                     RightIcon2={Images.icon_printer}
                     TitleIcon2="order.printInvoice"
+                    onRightPress2={()=> navigation.navigate('printInvoiceScreen' as never)}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
                     onRightPress1={() => {
                         Dialog.show({
@@ -388,7 +394,7 @@ export const OrderDetails: FC = observer(
                                     } text={data?.status} />
                                 </View>
                             </View>
-                            <Text text={formatDateTime(data?.quoteCreationDate)}
+                            <Text text={formatDateTime(data?.orderDate)}
                                 style={styles.textContent}
                             />
                         </View>
@@ -399,10 +405,10 @@ export const OrderDetails: FC = observer(
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ flex: 1 }} >
-                                    <Text text={formatCurrency(data.totalPrice)} />
+                                    <Text text={formatCurrency(data.amountTotal)} />
                                 </View>
                                 <Button tx={'order.sendInvoice'}
-                                    onPress={() => { }}
+                                    onPress={() => {navigation.navigate('newInvoice' as never) }}
                                     style={styles.buttonSend} />
                             </View>
                             <Text text={data.payStatus} style={styles.textPayStatus} />
@@ -517,11 +523,12 @@ export const OrderDetails: FC = observer(
                             }
                         </View>} */}
                     <ItemOrder
-                        money={data.money}
-                        discount={data.discount}
-                        totalAmount={formatCurrency(data.totalPrice)}
-                        weight={data.weight}
-                        payStatus={data.payStatus}
+                        money={formatCurrency(data?.totalPrice)}
+                        totalTax={data?.amountTax}
+                        discount={data?.amountDiscount}
+                        totalAmount={formatCurrency(data?.amountTotal)}
+                        weight={data?.weight}
+                        payStatus={data?.payStatus}
                         styleViewItemOrder={{
                             marginTop : scaleHeight(15),
                             borderBottomLeftRadius: 0,
