@@ -1,13 +1,7 @@
   import { ApisauceInstance, create } from "apisauce";
 import { ApiConfig, DEFAULT_API_CONFIG_ERP } from "./api-config";
 import { getAccessToken, getTenantId } from "../../utils/storage";
-import {
-  hideDialog,
-  hideLoading,
-  showDialog,
-  showLoading,
-  showLoadingT,
-} from "../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { navigate, resetRoot } from "../../navigators";
 import DeviceInfo from "react-native-device-info";
 /**
@@ -50,38 +44,45 @@ export class ApiErp {
     console.log("apisauce", this.config.url);
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
-        hideLoading();
+        Loading.hide();
         console.log("RESPONSE :", response);
         return response;
       },
       async (error) => {
-        hideLoading();
+        Loading.hide();
         console.log("error==", error);
         if (error.toJSON().message === "Network Error") {
-          showDialog("Error", "danger", "Network Error!", "", "OK", () =>
-            hideDialog()
-          );
-        }
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'Network Error!',
+            closeOnOverlayTap: false})  
+          }
         if (error.response.status === 401) {
-          showDialog(
-            "Error",
-            "danger",
-            "Your session was expired. Please login again to continue using Mosan",
-            "",
-            "OK",
-            () => {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'Your session was expired',
+            closeOnOverlayTap: false,
+            onPressButton: () => {
               resetRoot({
                 index: 1,
-                routes: [{ name: "authStack" }],
-              });
-              hideDialog();
+                routes: [{ name: 'authStack' }],
+              })
+              Dialog.hide();              
+              Loading.hide();
             }
-          );
+          }) 
         }
         if (error.response.status === 500 || error.response.status === 404) {
-          showDialog("Error", "danger", "System Busy!", "", "OK", () =>
-            hideDialog()
-          );
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'System Busy!',
+            closeOnOverlayTap: false}) 
         }
       }
     );
@@ -100,7 +101,7 @@ export class ApiErp {
         console.log("REQUEST--222: ", request);
       } catch (err) {
         console.log("Catch err", err);
-        hideLoading();
+        Loading.hide();
       }
     });
     this.apisauce.addResponseTransform(async (response) => {

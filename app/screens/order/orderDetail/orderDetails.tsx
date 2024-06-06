@@ -1,23 +1,21 @@
-import React from "react"
-import { Images } from "../../../../assets/index";
-import { Button, Header, Switch, Text, TextField } from "../../../../app/components";
-import { TabScreenProps } from "../../../../app/navigators/BottomTabNavigator";
-import { observer } from "mobx-react-lite";
-import { FC, useEffect, useState } from "react";
-import { Dimensions, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../app/theme";
-import { LinearGradient } from "react-native-linear-gradient";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AutoHeightImage from "react-native-auto-height-image";
-import { styles } from "./styles";
-import ItemOrder from "../components/item-order";
-import Modal from "react-native-modal";
-import { InputSelect } from "../../../components/input-select/inputSelect";
+import { observer } from "mobx-react-lite";
+import React, { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import en from "../../../i18n/en";
+import { Dimensions, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
+import Modal from "react-native-modal";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Button, Header, Switch, Text, TextField } from "../../../../app/components";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../app/theme";
+import { Images } from "../../../../assets/index";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import { translate } from "../../../i18n";
-
+import { formatDateTime } from "../../../utils/formatDate";
+import { formatCurrency } from "../../../utils/validate";
+import ItemOrder from "../components/item-order";
+import { styles } from "./styles";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 export const OrderDetails: FC = observer(
     function OrderDetails(props) {
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
@@ -40,10 +38,8 @@ export const OrderDetails: FC = observer(
         const route = useRoute()
         const data = route?.params?.data
 
-
-
         useEffect(() => {
-            // console.log(data)
+            console.log(data)
         })
 
         const arrData = [
@@ -246,59 +242,135 @@ export const OrderDetails: FC = observer(
             setValueSwitch(false)
             reset()
         }
+        const dataStatus = [
+            { status: 'Chờ lấy hàng', complete: true },
+            { status: 'Đã lấy hàng', complete: true },
+            { status: 'Đang vận chuyển', complete: true },
+            { status: 'Đã giao thành công', complete: false },
+        ];
 
+        const OrderStatusItem = ({ item, isFirstStep, isLastStep }: any) => {
+            return (
+                <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: scaleHeight(12) }}>
+                    {/* Replace Images component with Image */}
+                    <View style={{   }}>
+                        {item.complete ? <Images.icon_checkGreen width={scaleWidth(13)} height={scaleHeight(13)} /> :
+                            <View style={{width : scaleWidth(13) , height: scaleHeight(13) , alignItems : 'center'  , justifyContent: 'center'}}>
 
-        return (
-            <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
-                colors={[colors.palette.navyBlue, colors.palette.malibu]}
-                style={{ flex: 1 }}
-            >
-                <View style={[styles.viewHeader, {
-                    marginTop: scaleHeight(paddingTop),
-                    marginRight: scaleWidth(margin.margin_16)
-                }]}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}
-                        style={{ marginLeft: scaleWidth(margin.margin_16) }} >
-                        <Images.back width={20} height={20} />
-                    </TouchableOpacity>
-                    <View style={{
-                        marginLeft: scaleWidth(margin.margin_2),
-                        flex: 1, marginBottom: scaleHeight(margin.margin_2)
-                    }}>
-                        <Text tx={'order.orderDetail'}
-                            style={styles.textHeader} />
+                                <Images.ic_dot width={scaleWidth(5)} height={scaleHeight(5)} />
+                            </View>
+                        }
                     </View>
-                    {data.status === "Đã gửi YC" || data.status === "Trả hàng" ? null :
-                        <TouchableOpacity style={{ alignItems: 'center' }}
-                        // onPress={() => navigation.navigate('orderCopy' as any, { data: promotions })}
-                        >
-                            <Images.icon_copy height={16} width={16} />
-                            <Text tx={'order.copy'} style={styles.textButtonHeader} />
-                        </TouchableOpacity>}
-                    {data.status === "Đã giao" ?
-                        <TouchableOpacity style={{ marginLeft: scaleWidth(margin.margin_6), alignItems: 'center' }}>
-                            <Images.icon_clipboard height={16} width={16} />
-                            <Text tx={'order.return'} style={styles.textButtonHeader} />
-                        </TouchableOpacity>
-                        : null
-                    }
-                    {data.status === "Hủy đơn" ?
-                        <TouchableOpacity style={{ marginLeft: scaleWidth(margin.margin_6), alignItems: 'center' }}>
-                            <Images.icon_printer height={16} width={16} />
-                            <Text tx={'order.printInvoice'} style={styles.textButtonHeader} />
-                        </TouchableOpacity>
-                        : null
-                    }
-                    <View style={styles.logoHeader}>
-                        <Images.icon_Logo />
-                    </View>
+                    {/* <View style={{ height: 1, width: 48, backgroundColor: '#858992' }} /> */}
+                    <Text style={{ fontSize: fontSize.size10, width: scaleWidth(70), textAlign: 'center', paddingTop: scaleHeight(5) }}>{item.status}</Text>
+                    {/* {!isFirstStep && <View style={styles.leftBar} />} */}
+                    {!isLastStep && <View style={styles.rightBar} />}
                 </View>
+            );
+        };
+        return (
+            // <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
+            //     colors={[colors.palette.navyBlue, colors.palette.malibu]}
+            //     style={{ flex: 1 }}
+            // >
+            //     <View style={[styles.viewHeader, {
+            //         marginTop: scaleHeight(paddingTop),
+            //         marginRight: scaleWidth(margin.margin_16)
+            //     }]}>
+            //         <TouchableOpacity onPress={() => navigation.goBack()}
+            //             style={{ marginLeft: scaleWidth(margin.margin_16) }} >
+            //             <Images.back width={20} height={20} />
+            //         </TouchableOpacity>
+            //         <View style={{
+            //             marginLeft: scaleWidth(margin.margin_2),
+            //             flex: 1, marginBottom: scaleHeight(margin.margin_2)
+            //         }}>
+            //             <Text tx={'order.orderDetail'}
+            //                 style={styles.textHeader} />
+            //         </View>
+            //         {/* {data.status === "Đã gửi YC" || data.status === "Trả hàng" ? null : */}
+            //             <TouchableOpacity style={{ alignItems: 'center' }}
+            //             // onPress={() => navigation.navigate('orderCopy' as any, { data: promotions })}
+            //             >
+            //                 <Images.icon_copy height={16} width={16} />
+            //                 <Text tx={'order.copy'} style={styles.textButtonHeader} />
+            //             </TouchableOpacity>
+            //             {/* } */}
+            //         {/* {data.status === "Đã giao" ? */}
+            //             <TouchableOpacity style={{ marginLeft: scaleWidth(margin.margin_6), alignItems: 'center' }}>
+            //                 <Images.icon_clipboard height={16} width={16} />
+            //                 <Text tx={'order.return'} style={styles.textButtonHeader} />
+            //             </TouchableOpacity>
+            //             {/* : null
+            //         } */}
+            //         {/* {data.status === "Hủy đơn" ? */}
+            //             <TouchableOpacity style={{ marginLeft: scaleWidth(margin.margin_6), alignItems: 'center' }}>
+            //                 <Images.icon_printer height={16} width={16} />
+            //                 <Text tx={'order.printInvoice'} style={styles.textButtonHeader} />
+            //             </TouchableOpacity>
+            //             {/* : null
+            //         } */}
+            //         <View style={styles.logoHeader}>
+            //             <Images.icon_Logo />
+            //         </View>
+            //     </View>
+
+            // </LinearGradient>
+            <View style={{ flex: 1 }}>
+                <Header
+                    type={"AntDesign"}
+                    LeftIcon={Images.back}
+                    onLeftPress={() => navigation.goBack()}
+                    colorIcon={colors.text}
+                    headerTx={'order.orderDetail'}
+                    RightIcon={Images.icon_copy}
+                    TitleIcon="order.copy"
+                    RightIcon1={Images.icon_clipboard}
+                    TitleIcon1="order.return"
+                    RightIcon2={Images.icon_printer}
+                    TitleIcon2="order.printInvoice"
+                    btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
+                    onRightPress1={() => {
+                        Dialog.show({
+                            type: ALERT_TYPE.SUCCESS,
+                            title: translate("txtDialog.txt_title_dialog"),
+                            textBody: translate("txtDialog.delete_order"),
+                            button: translate("common.cancel"),
+                            button2: translate("common.confirm"),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                                navigation.goBack()
+                                Dialog.hide();
+                            }
+                        })
+                    }}
+                    // RightIcon2={activeTab === "product" ? isGridView ? Images.ic_squareFour : Images.ic_grid : null}
+                    // onRightPress={handleOpenSearch}
+                    // onRightPress2={toggleView}
+                    // RightIcon={openSearch ? Images.icon_close : Images.search}
+                    // headerInput={openSearch}
+                    // searchValue={activeTab === "product" ? searchValue : searchCategory}
+                    // onSearchValueChange={
+                    //     activeTab === "product"
+                    //         ? handleSearchValueChange
+                    //         : handleSearchCategoryChange
+                    // }
+                    // handleOnSubmitSearch={
+                    //     activeTab === "product"
+                    //         ? handleSubmitSearch
+                    //         : handleSubmitSearchCategory
+                    // }
+                    titleMiddleStyle={styles.titleHeader}
+                    widthRightIcon={20}
+                    heightRightIcon={20}
+                    style={{ height: scaleHeight(54), }}
+                />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={styles.viewScrollView}>
                     <View style={styles.viewCode}>
                         <View style={styles.viewContentCode}>
-                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(margin.margin_2) }}>
+                            <View style={{ flexDirection: 'row', }}>
                                 <View style={{ flex: 1 }}>
                                     <Text text={data?.code} style={styles.textListProduct} />
                                 </View>
@@ -316,7 +388,7 @@ export const OrderDetails: FC = observer(
                                     } text={data?.status} />
                                 </View>
                             </View>
-                            <Text text={data?.time}
+                            <Text text={formatDateTime(data?.quoteCreationDate)}
                                 style={styles.textContent}
                             />
                         </View>
@@ -327,7 +399,7 @@ export const OrderDetails: FC = observer(
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ flex: 1 }} >
-                                    <Text text={data.totalAmount} />
+                                    <Text text={formatCurrency(data.totalPrice)} />
                                 </View>
                                 <Button tx={'order.sendInvoice'}
                                     onPress={() => { }}
@@ -336,48 +408,43 @@ export const OrderDetails: FC = observer(
                             <Text text={data.payStatus} style={styles.textPayStatus} />
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.viewAddress}
-                        onPress={() => setShowAddress(true)}>
-                        <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
-                        <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
-                            <Text text={addressChoice.name} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                            <Text text={addressChoice.phone} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                            <Text text={addressChoice.address} style={[styles.textMoney2, {
-                                lineHeight: scaleHeight(14.52),
-                                marginBottom: scaleHeight(margin.margin_8)
-                            }]} />
-                        </View>
-                    </TouchableOpacity>
                     <View style={styles.viewName}>
                         <View style={styles.viewImageName}>
                             <AutoHeightImage
-                                width={32} height={32} style={{ borderRadius: 16 }}
+                                width={scaleWidth(32)} height={scaleHeight(32)} style={{ borderRadius: 16 }}
                                 source={{ uri: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg" }}
                                 fallbackSource={Images.avatarError}
                             />
                         </View>
-                        <View>
-                            {info.name !== "" ? <View style={{
-                                flexDirection: 'row', alignItems: 'flex-end',
-                                marginBottom: scaleHeight(margin.margin_4)
-                            }}>
-                                <Text tx={'order.staff'} style={styles.textMoney2} />
-                                <Text text={info.name} style={styles.textListProduct} />
-                                <Text text=" - " style={styles.textMoney2} />
-                                <Text text={info.phone} style={styles.textMoney2} />
-                            </View> : null}
-                            <Text text={info.company} style={styles.textMoney2} />
+                        <View >
+                            <Text text={data?.partner?.name} style={styles.textListProduct} />
                         </View>
-                        <TouchableOpacity>
+                        {/* <TouchableOpacity>
                             <Images.icon_copy2 style={{ marginLeft: scaleWidth(margin.margin_4) }} />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
+                    <TouchableOpacity style={styles.viewAddress}
+                        onPress={() => setShowAddress(true)}>
+                        <View>
+                            <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
+                            <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
+                                <Text text={addressChoice.name} style={[styles.textMoney2, {
+                                    lineHeight: scaleHeight(14.52),
+                                    marginBottom: scaleHeight(margin.margin_8)
+                                }]} />
+                                <Text text={addressChoice.phone} style={[styles.textMoney2, {
+                                    lineHeight: scaleHeight(14.52),
+                                    marginBottom: scaleHeight(margin.margin_8)
+                                }]} />
+                                <Text text={addressChoice.address} style={[styles.textMoney2, {
+                                    lineHeight: scaleHeight(14.52),
+                                    marginBottom: scaleHeight(margin.margin_8)
+                                }]} />
+                            </View>
+                        </View>
+                        <Images.icon_caretRight width={scaleWidth(16)} height={scaleHeight(16)} />
+                    </TouchableOpacity>
+
                     <View style={{ borderRadius: 8, backgroundColor: colors.palette.neutral100 }}>
                         {
                             promotions.map((item) => {
@@ -391,17 +458,20 @@ export const OrderDetails: FC = observer(
                                                 <Text text={item.name} style={styles.textListProduct} />
                                             </View>
                                             <View style={{ flexDirection: 'row' }}>
-                                                <Text tx={"order.quantity"} style={[styles.textContent, { fontSize: fontSize.size12 }]} />
+                                                <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} />
                                                 <Text text={item.amount.toString()} style={styles.textListProduct} />
                                             </View>
                                         </View>
-                                        <Text text={item.cost} style={styles.textListProduct} />
+                                        <View>
+                                            <Text text={item.cost} style={styles.textListProduct} />
+                                            <Text text={item.cost} style={styles.priceOriginal} />
+                                        </View>
                                     </TouchableOpacity>
                                 )
                             })
                         }
                     </View>
-                    {data.status === "Hủy đơn" || data.status === "Trả hàng" ? null :
+                    {/* {data.status === "Hủy đơn" || data.status === "Trả hàng" ? null :
                         <View style={styles.viewPay}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text tx={'order.paymentMethods'} style={[styles.textListProduct,
@@ -445,43 +515,45 @@ export const OrderDetails: FC = observer(
                                     </View>
                                 </View>
                             }
-                        </View>}
+                        </View>} */}
                     <ItemOrder
                         money={data.money}
                         discount={data.discount}
-                        totalAmount={data.totalAmount}
+                        totalAmount={formatCurrency(data.totalPrice)}
                         weight={data.weight}
                         payStatus={data.payStatus}
                         styleViewItemOrder={{
+                            marginTop : scaleHeight(15),
                             borderBottomLeftRadius: 0,
                             borderBottomRightRadius: 0
                         }}
                     />
-                    {data.status === "Hủy đơn" ?
+                    {/* {data.status === "Hủy đơn" ?
                         <View style={styles.viewDateMoney}>
                             <Text tx={'order.reasonForCancellation'} style={styles.textDateMoney} />
                         </View>
-                        : data.status === "Đang xử lỹ" || data.status === "Đã giao" ?
-                            <View style={styles.viewDateMoney}>
-                                <Text tx={'order.sellerConfirm'} style={styles.textDateMoney} />
-                            </View>
-                            :
+                        : data.status === "Đang xử lỹ" || data.status === "Đã giao" ? */}
+                    <View style={styles.viewDateMoney}>
+                        <Text tx={'order.sellerConfirm'} style={[styles.textDateMoney, { flex: 1 }]} />
+                        <Text text="Đã thanh toán" style={styles.textPayStatus2} />
+                    </View>
+                    {/* :
                             <View style={styles.viewDateMoney}>
                                 <View style={{ flex: 1 }}>
                                     <Text tx={'order.date'} style={styles.textDateMoney} />
                                 </View>
                                 <Text tx={'order.money'} style={styles.textDateMoney} />
-                            </View>}
+                            </View>} */}
 
 
                     {/* 2 thẻ giống nhau data trả về thì viết riêng component */}
                     <View style={styles.viewCash}>
-                        <View style={{ flexDirection: 'row' }}>
+                        {/* <View style={{ flexDirection: 'row' }}>
                             <View style={styles.viewPayStatus}>
                                 <Text text={data.payStatus} style={styles.textPayStatus3} />
                             </View>
                             <View style={{ flex: 1 }}></View>
-                        </View>
+                        </View> */}
                         <View style={{
                             flexDirection: 'row', alignItems: 'center',
                             marginBottom: scaleHeight(margin.margin_15)
@@ -497,15 +569,15 @@ export const OrderDetails: FC = observer(
                                 <Text text="56.000.000" />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
+                        {/* <View style={{ flexDirection: 'row' }}>
                             <View style={styles.viewPayStatus}>
                                 <Text text={data.payStatus} style={styles.textPayStatus3} />
                             </View>
                             <View style={{ flex: 1 }}></View>
-                        </View>
+                        </View> */}
                         <View style={{
                             flexDirection: 'row', alignItems: 'center',
-                            marginBottom: scaleHeight(margin.margin_15)
+                            // marginBottom: scaleHeight(margin.margin_15)
                         }}>
                             <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
                                 <Text text={"02/03/2024 13:56"} style={styles.textContent} />
@@ -519,11 +591,44 @@ export const OrderDetails: FC = observer(
                             </View>
                         </View>
                     </View>
-                    <TouchableOpacity onPress={()=> navigation.navigate('orderTracking' as never)}>
-                        <Text text="Theo doi giao hang"/>
+                    <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)} style={{
+                        paddingHorizontal: scaleWidth(padding.padding_16),
+                        backgroundColor: colors.palette.neutral100,
+                        // backgroundColor : 'red' , 
+                        paddingVertical: scaleHeight(padding.padding_12),
+                        borderRadius: 8,
+                        marginBottom: scaleHeight(margin.margin_20),
+                        alignItems: 'center',
+                        // flexDirection: 'row'
+                    }}>
+                        {/* <View style={{}}>
+                            <View style={{flexDirection:'row'}}>
+                                <Images.icon_checkGreen width={13} height={10} />
+                                <View style={{ height: scaleHeight(1), width: scaleWidth(48), backgroundColor: '#858992' }}>
+                                </View>
+                            </View>
+                            <Text tx="order.waitingPickup" style={{ fontSize: fontSize.size10 }} />
+                        </View> */}
+                        {/* <ProgressSteps>
+                            <ProgressStep label="First Step" >
+                            </ProgressStep>
+                            <ProgressStep label="Second Step"  >
+                            </ProgressStep>
+                            <ProgressStep label="Third Step" removeBtnRow = {true}>
+                            </ProgressStep>
+                            <ProgressStep label="Third Step" removeBtnRow = {true}>
+                            </ProgressStep>
+                        </ProgressSteps> */}
+                        <View style={{ flexDirection: 'row' }}>
+                            {dataStatus.map((item, index) => (
+                                <OrderStatusItem key={item.status} item={item} isFirstStep={index === 0}
+                                    isLastStep={index === dataStatus.length - 1} />
+                            ))}
+                        </View>
                     </TouchableOpacity>
                 </ScrollView>
-                {data.status === 'Đang xử lý' ?
+
+                {/* {data.status === 'Đang xử lý' ?
                     <View style={styles.viewButtonCancel}>
                         <Button tx={'order.requestCancellation'}
                             onPress={() => setShowCancelOrder(true)}
@@ -539,7 +644,7 @@ export const OrderDetails: FC = observer(
                                 }]}
                                 textStyle={styles.textButtonCancel} />
                         </View> : null
-                }
+                } */}
                 <Modal isVisible={showCancelOrder}
                     onBackdropPress={() => setShowCancelOrder(false)}>
                     <View style={styles.viewModal}>
@@ -653,12 +758,12 @@ export const OrderDetails: FC = observer(
                                                         </View>
                                                     </View>
                                                     <View>
-                                                        {addressChoice.id ===item.item.id ? 
-                                                        <Images.icon_checkGreen width={17} height={13} /> : null }
+                                                        {addressChoice.id === item.item.id ?
+                                                            <Images.icon_checkGreen width={17} height={13} /> : null}
                                                     </View>
                                                 </View>
                                                 {item.item.default === true ? <View >
-                                                    <Text tx={'order.deFault'} style={[styles.textMoney2,{
+                                                    <Text tx={'order.deFault'} style={[styles.textMoney2, {
                                                         color: colors.palette.radicalRed
                                                     }]} />
                                                 </View> : null}
@@ -691,7 +796,7 @@ export const OrderDetails: FC = observer(
                                                 keyboardType={null}
                                                 labelTx={"order.phone"}
                                                 style={styles.viewTextField}
-                                                inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8): 0 }}
+                                                inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0 }}
                                                 value={value}
                                                 onBlur={onBlur}
                                                 onChangeText={(value) => onChange(value)}
@@ -785,7 +890,7 @@ export const OrderDetails: FC = observer(
                             </View>}
                     </View>
                 </Modal>
-            </LinearGradient>
+            </View>
         )
     }
 );

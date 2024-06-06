@@ -119,6 +119,10 @@ export type NavigatorParamList = {
   orderTracking: undefined;
   orderDetailsSupplier: undefined;
   selectClient: undefined;
+  deliveryAddress: undefined;
+  editDelivery: undefined;
+  newDelivery: undefined;
+  addProductOrder: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -295,6 +299,26 @@ export const AppStack = () => {
         name="newAttribute"
         options={{ gestureEnabled: false }}
         component={Screens.NewAttribute}
+      />
+      <Stack.Screen
+        name="deliveryAddress"
+        options={{ gestureEnabled: false }}
+        component={Screens.DeliveryAddress}
+      />
+      <Stack.Screen
+        name="editDelivery"
+        options={{ gestureEnabled: false }}
+        component={Screens.EditDelivery}
+      />
+      <Stack.Screen
+        name="newDelivery"
+        options={{ gestureEnabled: false }}
+        component={Screens.NewDelivery}
+      />
+      <Stack.Screen
+        name="addProductOrder"
+        options={{ gestureEnabled: false }}
+        component={Screens.AddProductOrder}
       />
       <Stack.Screen
         name="orderDetails"

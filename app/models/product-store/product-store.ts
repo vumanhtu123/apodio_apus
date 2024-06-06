@@ -30,7 +30,8 @@ export const ProductStoreModel = types
     isEditing: types.optional(types.boolean, false),
     imagesLimit: types.optional(types.number, 0),
     reloadProductScreen: types.optional(types.boolean, false),
-    viewProductType : types.optional(types.string , "VIEW_PRODUCT")
+    viewProductType : types.optional(types.string , "VIEW_PRODUCT"),
+    isLoadMore : types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -82,6 +83,9 @@ export const ProductStoreModel = types
     },
     setViewProductType (viewProductType : string) {
       self.viewProductType = viewProductType
+    },
+    setIsLoadMore (isLoadMore : boolean) {
+      self.isLoadMore = isLoadMore
     }
   }))
   .actions((self) => ({
@@ -92,7 +96,8 @@ export const ProductStoreModel = types
       productCategoryId: number,
       search: string,
       tagId: number,
-      sortId: string
+      sortId: string,
+      isLoadMore : boolean
     ) {
       const productApi = new ProductApi(self.environment.api);
       const result: ProductResult = yield productApi.getListProduct(
@@ -102,7 +107,8 @@ export const ProductStoreModel = types
         productCategoryId,
         search,
         tagId,
-        sortId
+        sortId,
+        isLoadMore
       );
       if (result.kind === "ok") {
         console.log("product", result);
@@ -235,7 +241,6 @@ export const ProductStoreModel = types
           if (traceId) {
             console.log("errorCodes", errorCodes);
             if (errorCodes !== undefined && errorCodes[0].code) {
-              // showDialog(translate("imageUploadExceedLimitedSize"), "danger", "", "OK", "", "");
               return null;
             } else {
               self.setImageUrl(data.url);

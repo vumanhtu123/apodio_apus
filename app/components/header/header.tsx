@@ -23,8 +23,8 @@ const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: "center" }
 const LEFT: ViewStyle = { width: 32 }
 // const TOP: ViewStyle = { height: Platform.OS === 'ios' ? scaleHeight(44) : scaleHeight(32) }
 const RIGHT: ViewStyle = { width: 32, marginRight: 2, zIndex: 2 }
-const BTNLEFT: ViewStyle = { width : scaleWidth(30) , height : scaleHeight(30),  alignItems : 'center' }
-const BTNRIGHT: ViewStyle = {  width : scaleWidth(30) , height : scaleHeight(30) ,  alignItems : 'center' }
+const BTNLEFT: ViewStyle = { width: scaleWidth(30), height: scaleHeight(30), alignItems: 'center' }
+const BTNRIGHT: ViewStyle = { width: scaleWidth(25), height: scaleHeight(20), alignItems: 'center'  }
 const LOGO: ViewStyle = {
   position: 'absolute', opacity: 1, top: 0, right: 40, height: 40, width: 40, zIndex: 1
 }
@@ -43,6 +43,9 @@ export function Header(props: HeaderProps) {
     RightIcon,
     RightIcon1,
     RightIcon2,
+    TitleIcon,
+    TitleIcon1,
+    TitleIcon2,
     RightIconTextInput,
     RightIconTextInputCenter,
     LeftIcon,
@@ -56,6 +59,8 @@ export function Header(props: HeaderProps) {
     rightTx1,
     style,
     titleStyle,
+    searchTx,
+    searchText,
     titleMiddleStyle,
     btnRightStyle,
     widthRightIcon,
@@ -72,6 +77,7 @@ export function Header(props: HeaderProps) {
   const header = headerText || (headerTx && translate(headerTx)) || ""
   const textRight = rightText || (rightTx && translate(rightTx)) || ""
   const textRight1 = rightText1 || (rightTx1 && translate(rightTx1)) || ""
+  const searchPlaceholder = searchText || (searchTx && translate(searchTx)) || ""
   // const [searchText, setSearchText] = useState(searchValue);
   // const [searchValue, setSearchValue] = useState("");
   // const handleSearch = (text: any) => setSearchText(text);
@@ -97,8 +103,8 @@ export function Header(props: HeaderProps) {
           <View style={LEFT} />
         )}
         {leftText && (
-          <TouchableOpacity onPress={onLeftTextPress} style={{ width:80, justifyContent: 'center'}}>
-            <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center',  }} />
+          <TouchableOpacity onPress={onLeftTextPress} style={{ width: 80, justifyContent: 'center' }}>
+            <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center', }} />
           </TouchableOpacity>
         )
         }
@@ -180,16 +186,28 @@ export function Header(props: HeaderProps) {
           {RightIcon && (
             <Button preset="link" onPress={onRightPress} style={[BTNRIGHT, btnRightStyle]}>
               <RightIcon width={scaleWidth(16)} height={scaleHeight(16)} />
+              {TitleIcon && (<Text tx={TitleIcon} numberOfLines={1} style={{
+                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite, 
+              }} />
+              )}
             </Button>
           )}
           {RightIcon1 && (
             <Button preset="link" onPress={onRightPress1} style={[BTNRIGHT, btnRightStyle]}>
-              <RightIcon1 width={scaleWidth(16)} height={scaleHeight(16)}/>
+              <RightIcon1 width={scaleWidth(16)} height={scaleHeight(16)} />
+              {TitleIcon1 && (<Text tx={TitleIcon1} numberOfLines={1} style={{
+                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite, 
+              }} />
+              )}
             </Button>
           )}
           {RightIcon2 && (
             <Button preset="link" onPress={onRightPress2} style={[BTNRIGHT, btnRightStyle]}>
               <RightIcon2 width={scaleWidth(16)} height={scaleHeight(16)} />
+              {TitleIcon2 && (<Text tx={TitleIcon2} numberOfLines={1} style={{
+                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite, 
+              }} />
+              )}
             </Button>
           )}
           {rightText && (
@@ -203,13 +221,13 @@ export function Header(props: HeaderProps) {
               <Button
                 preset="link"
                 onPress={onRightIconAndTextBelow}
-                style={{width:scaleWidth(40),marginRight:10, alignItems: 'center', justifyContent:'center'}}
+                style={{ width: scaleWidth(40), marginRight: 10, alignItems: 'center', justifyContent: 'center' }}
               >
                 <RightIconAndTextBelow width={widthRightIcon} height={heightRightIcon} />
                 {
                   textBelowIconRight && (
                     <Text text={textBelowIconRight}
-                      style={{ fontSize:scaleWidth(8) , color: '#FFF' }}
+                      style={{ fontSize: scaleWidth(8), color: '#FFF' }}
                     />
                   )
                 }
@@ -252,6 +270,7 @@ export function Header(props: HeaderProps) {
             enterKeyHint="search"
             onSubmitEditing={handleOnSubmitSearch}
             enablesReturnKeyAutomatically
+            placeholder={searchPlaceholder}
 
           // placeholder="Tìm kiếm..."
           />

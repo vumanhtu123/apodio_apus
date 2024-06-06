@@ -1,8 +1,7 @@
-import { placeholder } from "i18n-js";
 
 const en = {
   common: {
-    ok: "OK!",
+    ok: "OK",
     cancel: "Hủy",
     back: "Back",
     confirm: "Xác nhận",
@@ -11,6 +10,7 @@ const en = {
     filter: " Bộ lọc",
 
     continue: "Tiếp tục",
+    saveAndContinue : 'Lưu và tiếp tục'
     // @demo remove-current-line
   },
   txtToats: {
@@ -46,6 +46,10 @@ const en = {
       "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
+    delete_order : 'Bạn có chắc chắn muốn hủy đơn hàng bán này không?'
+  },
+  ruleController : {
+    emptyText : 'Vui lòng nhập dữ liệu'
   },
   welcomeScreen: {
     postscript:
@@ -127,7 +131,7 @@ const en = {
   },
   dashboard: {
     storeInformation: "Store information",
-    promotions: "Promotions",
+    promotions: "Chiết khấu",
     transactionHistory: "Transaction history",
     sampleRequest: "Sample request",
     orders: "Orders",
@@ -141,16 +145,16 @@ const en = {
     titleOrder: "Orders being processed",
     start: "Start: ",
     end: "End: ",
-    goods: "Goods:",
+    goods: "Tiền hàng: ",
     promotionsInvoice: "Promotions:",
-    totalAmount: "Total amount to be paid:",
-    estimated: "Estimated order tonnage:",
+    totalAmount: "Tổng thanh toán:",
+    estimated: "Trọng tải đơn hàng dự tính:",
     orderNCC: "Order NCC",
     orderApodio: "Order Apodio",
     request: "Sample issuance request",
-    amountProduct: "Amount product:",
+    amountProduct: "Số lượng sản phẩm",
     client: "Khách hàng",
-    totalTax: "Total tax:",
+    totalTax: "Tổng thuế:",
   },
   order: {
     orderTracking: "Theo dõi hành trình đơn hàng",
@@ -163,20 +167,29 @@ const en = {
     shipping_status: "Trạng thái vận chuyển",
     update_shipping_status: "Cập nhật trạng thái vận chuyển",
     update_status: "Cập nhật trạng thái",
-    orderDetail: "Order detail",
-    copy: "Copy",
-    return: "Return",
-    printInvoice: "Print",
-    sendInvoice: "Send invoice",
-    quantity: "Qty: ",
+    copy: "Sao chép",
+    return: "Trả/Huỷ",
+    printInvoice: "In hoá đơn",
+    arrange: 'Sắp xếp',
+    searchCodeName: "Tìm kiếm theo mã và tên",
+    orderDetail: "Chi tiết đơn hàng",
+    sendInvoice: "Tạo hóa đơn",
+    quantity: "SL: ",
+    promotions: 'Chiết khấu:',
+    totalAmountNoTax: "Tổng tiền(chưa thuế):",
+    tax: 'Thuế:',
+    totalAmount: 'Tổng thanh toán:',
+    estimated: 'Trọng tải đơn hàng dự tính:',
     date: "Date",
     money: "Money",
     cash: "Cash",
     confirm: "Confirm",
-    addProduct: "Add product",
+    addProduct: "Chọn sản phẩm",
+    editDelivery: "Sửa địa chỉ giao hàng",
+    newDelivery: "Tạo địa chỉ giao hàng",
     cancellationReason: "Cancellation reason",
-    sellerConfirm: "Seller confirmed",
-    deliveryAddress: "Delivery address",
+    sellerConfirm: "Thông tin thanh toán",
+    deliveryAddress: "Địa chỉ giao hàng",
     staff: "Staff: ",
     paymentMethods: "Payment methods",
     selectPayment: "Select a payment method",
@@ -191,17 +204,17 @@ const en = {
     reason: "Reason",
     placeholderReason: "Enter reason for cancellation",
     addAddress: "Add new address",
-    phone: "Phone",
-    address: "Address",
-    deFault: "Default",
-    addressDefault: "Set address as default",
-    district: "District",
-    city: "City",
-    ward: "Ward",
-    chooseDistrict: "Choose the district",
-    chooseCity: "Choose the city",
-    chooseWard: "Choose the ward",
-    order: "Order",
+    phone: "Số điện thoại",
+    address: "Địa chỉ",
+    deFault: "Mặc định",
+    addressDefault: "Đặt làm địa chỉ mặc định",
+    district: "Quận/Huyện",
+    city: "Tỉnh/Thành phố",
+    ward: "Phường/Xã",
+    chooseDistrict: "Chọn quận/huyện",
+    chooseCity: "Chọn tỉnh/thành phố",
+    chooseWard: "Chọn phường/xã",
+    order: "Đặt hàng",
     moreInformation: "More information",
     promotionHint: "Enter promo code or gift code here.",
     note: "Note",
@@ -222,6 +235,7 @@ const en = {
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",
+    waitingPickup : 'Chờ lấy hàng'
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -504,6 +518,7 @@ const en = {
     NotifyCloseModal: "Bạn có chắc chắn muốn thoát ?",
     Perspective: "Xem phối cảnh 3D",
     validateMin: "Số lượng không được trùng lặp",
+    product : 'sản phẩm',
     addBank: "Thêm ngân hàng"
   },
   detailScreen : {
@@ -585,6 +600,9 @@ const en = {
     header : 'Chọn thuộc tính',
     addAttribute : 'Tạo nhóm thuộc tính mới',
     selectedValue : 'Chọn giá trị'
+  },
+  editAttribute : {
+    headerText : 'Sửa thuộc tính'
   },
   vendorScreen : {
     vendor : 'nhà cung cấp',

@@ -12,19 +12,21 @@ export const View3D: FC = observer(
         const paddingTop = useSafeAreaInsets().top
         const navigation = useNavigation()
         const route = useRoute()
-        const scene = route?.params?.upc
+        const scene = route?.params?.scene
         return (
-            <WebView style={{ flex: 1, marginTop: paddingTop }}
-                source={{ uri: scene }}
-            >
+            <View style={{ flex: 1, marginTop: paddingTop }} >
+                <WebView style={{ flex: 1, marginTop: paddingTop }}
+                    source={{ uri: scene }}
+                >
+                </WebView>
                 <TouchableOpacity onPress={() => navigation.goBack()}
                     style={{
-                        position: 'absolute', top: scaleHeight( 15),
-                        left: scaleWidth(16), zIndex: 1
+                        position: 'absolute', top: scaleHeight(15),
+                        left: scaleWidth(16)
                     }}>
                     <Images.icon_deleteBlue />
                 </TouchableOpacity>
-            </WebView>
+            </View>
         )
     }
 )

@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Text as TextRN, View, PermissionsAndroid, Platform, Alert, Linking, KeyboardAvoidingView } from 'react-native';
-import { SvgIcon } from '../../../components/svg-icon/index';
-import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { navigate } from '../../../navigators';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Images } from '../../../../assets';
-import { AutoImage, Button, TextField } from '../../../components';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
+import { KeyboardAvoidingView, Linking, Platform, StyleSheet, Text, Text as TextRN, TouchableOpacity, View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import Modal from 'react-native-modal';
+import { RESULTS } from 'react-native-permissions';
+import { Images } from '../../../../assets';
+import { AutoImage, TextField } from '../../../components';
+import { translate } from '../../../i18n/translate';
 import { useStores } from '../../../models';
-import { hideDialog, hideLoading, showDialog } from '../../../utils/toast';
-import { translate } from 'i18n-js';
-import { validateFileSize } from '../../../utils/validate';
+import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
-import Modal from 'react-native-modal'
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { validateFileSize } from '../../../utils/validate';
 
 const CreateDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, onCreateDirectory } = props;
@@ -44,8 +42,14 @@ const CreateDirectoryModal = (props: any) => {
             const checkFileSize = validateFileSize(fileSize);
 
             if (checkFileSize) {
-                hideLoading();
-                showDialog(translate("imageUploadExceedLimitedSize"), "danger", "", "OK", "", "");
+                Loading.hide();
+                Dialog.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: translate("imageUploadExceedLimitedSize"),
+                    button: translate("common.ok"),
+                    closeOnOverlayTap: false
+                })
                 return;
             }
 
@@ -114,9 +118,17 @@ const CreateDirectoryModal = (props: any) => {
                 console.log("Permission granted");
             } else {
                 console.log("Permission denied");
-                showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
-                    Linking.openSettings()
-                    hideDialog();
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.permission_allow"),
+                    textBody: translate("txtDialog.allow_permission_in_setting"),
+                    button: translate("common.cancel"),
+                    button2: translate("txtDialog.settings"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        Linking.openSettings()
+                        Dialog.hide();
+                    }
                 })
             }
         } else if (permissionStatus === RESULTS.BLOCKED) {
@@ -161,9 +173,17 @@ const CreateDirectoryModal = (props: any) => {
                 console.log("Permission granted");
             } else {
                 console.log("Permission denied");
-                showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
-                    Linking.openSettings()
-                    hideDialog();
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.permission_allow"),
+                    textBody: translate("txtDialog.allow_permission_in_setting"),
+                    button: translate("common.cancel"),
+                    button2: translate("txtDialog.settings"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        Linking.openSettings()
+                        Dialog.hide();
+                    }
                 })
             }
         } else if (permissionStatus === RESULTS.BLOCKED) {

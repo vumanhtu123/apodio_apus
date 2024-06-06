@@ -14,7 +14,13 @@ const getDomain = () => {
   console.log("Domain", domain);
   return domain;
 };
-
+const getDomainOrder = () => {
+  const env = CONFIG.ENV;
+  const domain = CONFIG.API.DEV.URL_ORDER;
+  // console.log('URL',CONFIG.API.PRODUCT.URL);
+  console.log("Domainmm", domain);
+  return domain;
+};
 const getDomainErp = () => {
   const env = CONFIG.ENV;
   //const domain = CONFIG.API.DEV.URL_ERP;
@@ -95,5 +101,9 @@ export const DEFAULT_API_CONFIG_GET_WAY: ApiConfig = {
 
 export const DEFAULT_API_CONFIG_UAA: ApiConfig = {
   url: getDomainUAA(),
+  timeout: 10000,
+};
+export const DEFAULT_API_CONFIG_ORDER: ApiConfig = {
+  url: getDomainOrder(),
   timeout: 10000,
 };

@@ -30,10 +30,10 @@ import DropdownModal from "./component/multiSelect";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
 import { useStores } from "../../models";
-import { hideDialog, showDialog, showToast } from "../../utils/toast";
 import { translate } from "../../i18n/";
 import { AttributeResult } from "../../models/attribute-store/list-attribute-model";
 import { AttributeDataResult } from "../../models/attribute-store/data-attribute-model";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 export const AddAttribute: FC = observer(function AddAttribute(props) {
     const navigation = useNavigation();
@@ -230,7 +230,11 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
 
     const onConfirm = () => {
         if (selectedItems.length === 0) {
-            showToast("txtToats.please_select_attribute", "error");
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: '',
+                textBody: translate('txtToats.please_select_attribute'),
+              })
         } else {
             const newArr = selectedGroup.map((items) => {
                 const a = items.attributeOutputList?.map((item) => {
@@ -245,7 +249,11 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
             const setNewArr2 = new Set(newArr2);
             const newArr3 = newArr1.some((element) => !setNewArr2.has(element));
             if (newArr3 === true) {
-                showToast("txtToats.please_select_attribute", "error");
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: '',
+                    textBody: translate('txtToats.please_select_attribute'),
+                  })
             } else {
                 if (editScreen?.editScreen === true) {
                     const newArr = selectedItems.map((item) => {
@@ -287,17 +295,18 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
         if (selectedItems.length === 0) {
             navigation.goBack();
         } else {
-            showDialog(
-                translate("txtDialog.txt_title_dialog"),
-                "danger",
-                translate("txtDialog.content_exit_dialog"),
-                translate("common.cancel"),
-                translate("common.ok"),
-                () => {
-                    navigation.goBack();
-                    hideDialog();
+            Dialog.show({
+                type: ALERT_TYPE.SUCCESS,
+                title: translate("txtDialog.txt_title_dialog"),
+                textBody: translate("txtDialog.content_exit_dialog"),
+                button: translate("common.cancel"),
+                button2: translate("common.ok"),
+                closeOnOverlayTap: false,
+                onPressButton: () => {
+                  navigation.goBack()
+                  Dialog.hide();
                 }
-            );
+              }) 
         }
     };
 

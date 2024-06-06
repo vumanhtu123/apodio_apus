@@ -13,7 +13,7 @@ import ItemlistUnpaid from "../client/Item/Item-list-unpaid";
 import { AttributeResult } from "../../models/attribute-store/list-attribute-model";
 import { AttributeDataResult } from "../../models/attribute-store/data-attribute-model";
 import { translate } from "../../i18n/translate";
-import { hideDialog, showDialog, showToast } from "../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 export const EditAttributeByEdit: FC = observer(
     function EditAttributeByEdit(props) {
@@ -149,7 +149,13 @@ export const EditAttributeByEdit: FC = observer(
 
         const handleItemSelect = (item: any) => {
             if (item.isUsing === true) {
-                showToast('txtToats.cannot_be_deselected', 'error')
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: '',
+                    textBody: translate('txtToats.cannot_be_deselected'),
+            
+                  })
+                
             } else {
                 var indexArr = arrSelect.findIndex((selectedItem: { value: any, id: any }) => selectedItem.value === item.value && selectedItem.id === item.id)
                 if (indexArr === -1) {
@@ -164,9 +170,18 @@ export const EditAttributeByEdit: FC = observer(
         };
 
         const onConfirm = () => {
-            showDialog(translate("txtDialog.txt_title_dialog"), 'danger', translate("txtDialog.attribute_deletion_warning"), translate("common.cancel"), translate("common.ok"), () => {
-                navigation.navigate('ProductEditScreen' as never, { check: true, attributeArr: selectedItems, dropdownSelected: arrSelectDrop })
-                hideDialog()
+            Dialog.show({
+                type: ALERT_TYPE.WARNING,
+                title: translate("txtDialog.txt_title_dialog"),
+                textBody: translate("txtDialog.attribute_deletion_warning"),
+                button: translate("common.cancel"),
+                button2: translate("common.ok"),
+                closeOnOverlayTap: false,
+                onPressButton: () => {
+                    navigation.navigate('ProductEditScreen' as never, { check: true, attributeArr: selectedItems, dropdownSelected: arrSelectDrop })
+                    Dialog.hide();
+                   
+                }
             })
         }
 
@@ -174,9 +189,18 @@ export const EditAttributeByEdit: FC = observer(
             if (selectedItems.length === 0) {
                 navigation.goBack()
             } else {
-                showDialog(translate("txtDialog.txt_title_dialog"), 'danger', translate("txtDialog.confirm_edit_attribute"), translate("common.cancel"), translate("common.ok"), () => {
-                    navigation.goBack()
-                    hideDialog()
+                Dialog.show({
+                    type: ALERT_TYPE.WARNING,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: translate("txtDialog.confirm_edit_attribute"),
+                    button: translate("common.cancel"),
+                    button2: translate("common.ok"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        navigation.goBack()
+                        Dialog.hide();
+                       
+                    }
                 })
             }
         }
@@ -221,7 +245,7 @@ export const EditAttributeByEdit: FC = observer(
                 <Header
                     LeftIcon={Images.back}
                     onLeftPress={() => navigation.goBack()}
-                    headerText="Sửa thuộc tính"
+                    headerTx="editAttribute.headerText"
                     style={{ height: scaleHeight(52) }}
                 />
                 <View style={[styles.viewBody, { top: scaleHeight(52) + scaleHeight(paddingTop), }]}>
@@ -230,7 +254,7 @@ export const EditAttributeByEdit: FC = observer(
                         arrData={attributeData}
                         // onPressChoice={handleSelect}
                         // onRemove={handleRemove}
-                        titleText="Nhóm thuộc tính"
+                        titleTx="addAttribute.title"
                         // hintText="Chọn nhóm thuộc tính"
                         dataEdit={dropdownSelected}
                         disable={true}
@@ -268,7 +292,13 @@ export const EditAttributeByEdit: FC = observer(
                                                                             return (
                                                                                 <TouchableOpacity onPress={() => {
                                                                                     if (item.isUsing === true) {
-                                                                                        showToast('txtToats.attribute_is_using', 'error')
+                                                                                        Toast.show({
+                                                                                            type: ALERT_TYPE.DANGER,
+                                                                                            title: '',
+                                                                                            textBody: translate('txtToats.attribute_is_using'),
+                                                                                    
+                                                                                          })
+                                                                                       
                                                                                     } else {
                                                                                         const newArr = selectedItems.slice()
                                                                                         const a = newArr.filter(items => items.id !== item.id)

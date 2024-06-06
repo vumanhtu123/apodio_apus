@@ -180,6 +180,7 @@ import ic_oto from "./Images/oto.svg";
 import ClipboardText from "./Images/ClipboardText.svg";
 import icon_chart from "./Images/icon_chart.svg";
 import ic_x from "./Images/ic_x.svg";
+import ic_grid from "./Images/ic_grid-list.svg";
 import ic_downLoadBlue from "./Images/ic_downLoadBlue.svg";
 import ic_Feild from "./Images/ic_field .svg";
 import ic_system_uico from "./Images/ic_System_Uicons.svg";
@@ -210,6 +211,8 @@ import icon_pickup_blue from "./Images/icon_pickupBlue.svg"
 import icon_delivery from "./Images/icon_delivery.svg"
 import tag from "./Images/Tag.svg";
 import ic_plus_blue from "./Images/PlusBlue.svg";
+import ic_dot from "./Images/ic_dot.svg";
+import icon_plus_blue2 from "./Images/icon_plus_blue2.svg";
 
 export const Images = {
   icon_test: _test,
@@ -387,6 +390,7 @@ export const Images = {
   ClipboardText: ClipboardText,
   icon_chart: icon_chart,
   ic_x: ic_x,
+  ic_grid : ic_grid,
   img_test: img_test,
   ic_downLoadBlue: ic_downLoadBlue,
   ic_Feilter: ic_Feild,
@@ -416,4 +420,6 @@ export const Images = {
   icon_delivery: icon_delivery,
   ic_tag: tag,
   icon_plus_blue: ic_plus_blue,
+  ic_dot:ic_dot,
+  icon_plus_blue2: icon_plus_blue2,
 };

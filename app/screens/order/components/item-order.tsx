@@ -32,7 +32,9 @@ export default function ItemOrder(props: ItemOrder) {
             activeOpacity={0.8}
             style={[ROOT, styleViewItemOrder]}
             onPress={onPress}>
-            {name && code && time && amount && status !== "" ?
+            {/* {name && code && time && amount && status !== "" ? */}
+            {name && code && time && amount !== "" ?
+
                 <View>
                     <View style={{ flexDirection: 'row', marginBottom: -2 }}>
                         <View style={{ flex: 1 }}>
@@ -64,36 +66,42 @@ export default function ItemOrder(props: ItemOrder) {
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={TEXTCONTENT} tx={'dashboard.promotions'} />
+                    <Text style={TEXTCONTENT} tx={'order.promotions'} />
                 </View>
                 <Text style={TEXTMONEY} text={discount} />
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={TEXTCONTENT} tx={'dashboard.totalTax'} />
+                    <Text style={TEXTCONTENT} tx={'order.totalAmountNoTax'} />
                 </View>
                 <Text style={TEXTMONEY} text={totalTax} />
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={TEXTCONTENT} tx={'dashboard.totalAmount'} />
+                    <Text style={TEXTCONTENT} tx={'order.tax'} />
+                </View>
+                <Text style={TEXTMONEY} text={totalTax} />
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
+                    <Text style={TEXTCONTENT} tx={'order.totalAmount'} />
                 </View>
                 <Text style={TEXTTOTALAMOUNT} text={totalAmount} />
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}>
-                    <Text style={TEXTCONTENT} tx={'dashboard.estimated'} />
+                    <Text style={TEXTCONTENT} tx={'order.estimated'} />
                 </View>
                 <Text style={TEXTMONEY} text={weight} />
             </View>
-            {payStatus !== "" ? 
+            {/* {payStatus !== "" ? 
             <View style={{ flex: 1 }}>
                 <Text style={[{
                     fontWeight: '400',
                     fontSize: 10, color: colors.palette.malachite
                 }, styleTextPayStatus]} text={payStatus} />
             </View> 
-            : null}
+            : null} */}
         </TouchableOpacity>
     )
 };
@@ -132,8 +140,8 @@ const TEXTMONEY: TextStyle = {
 };
 
 const TEXTCONTENT: TextStyle = {
-    fontWeight: "600",
-    fontSize: 12,
+    fontWeight: "400",
+    fontSize: 10,
     color: colors.palette.dolphin,
     marginBottom: scaleHeight(margin.margin_8),
 };

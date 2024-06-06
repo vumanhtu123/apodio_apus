@@ -40,8 +40,7 @@ import { useStores } from "../../../models";
 import { addCommas, checkArrayIsEmptyOrNull, convertAttributeRetailPrice, convertAttributeWholesalePrice, convertRetailPrice, convertWholesalePrice, formatCurrency, formatNumber, formatNumberByString, isFormValid, mapDataDistribute, parternValidateSku, removeNonNumeric, validateFileSize } from "../../../utils/validate";
 import { G } from "react-native-svg";
 import UnitModal from "../component/modal-unit";
-import { hideDialog, hideLoading, showDialog, showToast } from "../../../utils/toast";
-import Dialog from "../../../components/dialog/dialog";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Modal from "react-native-modal/dist/modal";
 import { translate } from "../../../i18n/translate";
@@ -311,12 +310,15 @@ export const ProductCreateScreen: FC = (item) => {
       })
     );
   };
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isModalNotifyVisible, setIsModalNotifyVisible] = useState(false);
 
   const submitAdd = async () => {
     if (uomId.id === "") {
-      showToast("txtToats.required_information", "error");
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.required_information'),
+    
+    })
     } else {
       console.log(
         "post-product-data---retailPriceProduct---- : ",
@@ -326,7 +328,6 @@ export const ProductCreateScreen: FC = (item) => {
         return {
           name: nameProduct + ' - ' + item.name,
           imageUrls: item.imageUrls,
-          // imageUri: item.imageUri,
           costPrice: item.costPrice,
           retailPrice: item.retailPrice,
           listPrice: item.listPrice,
@@ -381,9 +382,13 @@ export const ProductCreateScreen: FC = (item) => {
       if (data.kind === 'ok') {
         navigation.navigate("successScreen" as any, { idProduct: data.result.data.id })
       } else {
-        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', data.result.errorCodes[0].message, translate("common.ok"), '', () => {
-          //navigation.goBack()
-        })
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: translate("txtDialog.txt_title_dialog"),
+          textBody: data.result.errorCodes[0].message,
+          button: translate("common.ok"),
+          closeOnOverlayTap: false
+      })
       };
     }
   }
@@ -394,7 +399,7 @@ export const ProductCreateScreen: FC = (item) => {
 
     if (permissionStatus === RESULTS.GRANTED) {
       console.log("You can use the camera");
-      // showToast('txtToats.permission_granted', 'success')
+      
       const options = {
         cameraType: "back",
         quality: 1,
@@ -419,18 +424,36 @@ export const ProductCreateScreen: FC = (item) => {
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
-        // showToast('txtToats.permission_granted', 'success')
+       
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
-        showToast('txtToats.permission_denied', 'error')
-        showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
-          Linking.openSettings()
-          hideDialog();
-        })
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: '',
+          textBody: translate('txtToats.permission_denied'),
+      
+      })
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+              Linking.openSettings()
+              Dialog.hide();
+          }
+      })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
-      showToast('txtToats.permission_blocked', 'error')
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.permission_blocked'),
+    
+    })
       console.log("Permission blocked, you need to enable it from settings");
     }
   };
@@ -441,8 +464,14 @@ export const ProductCreateScreen: FC = (item) => {
         const { fileSize, uri, type, fileName } = image
         const checkFileSize = validateFileSize(fileSize)
         if (checkFileSize) {
-          hideLoading()
-          showDialog(translate("imageUploadExceedLimitedSize"), "danger", "", "OK", "", "")
+          Loading.hide();
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: translate("txtDialog.txt_title_dialog"),
+            textBody: translate("imageUploadExceedLimitedSize"),
+            button: translate("common.ok"),
+            closeOnOverlayTap: false
+        })
         } else {
           const formData = new FormData()
           formData.append("file", {
@@ -510,18 +539,37 @@ export const ProductCreateScreen: FC = (item) => {
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
-        // showToast('txtToats.permission_granted', 'success')
+        
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
-        showToast('txtToats.permission_denied', 'error')
-        showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
-          Linking.openSettings()
-          hideDialog();
-        })
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: '',
+          textBody: translate('txtToats.permission_denied'),
+      
+      })
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+              Linking.openSettings()
+              Dialog.hide();
+          }
+      })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
-      showToast('txtToats.permission_blocked', 'error')
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.permission_blocked'),
+    
+    })
+      
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
       const options = {
@@ -542,7 +590,12 @@ export const ProductCreateScreen: FC = (item) => {
         } else if (response?.assets && response.assets.length > 0) {
           const selectedAssets = response.assets.map((asset) => asset);
           if (selectedAssets.length + imagesNote.length > 6) {
-            showToast('txtToats.required_maximum_number_of_photos', 'error')
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: '',
+              textBody: translate('txtToats.required_maximum_number_of_photos'),
+          
+          })
           } else {
             uploadImages(selectedAssets, true, -1);
           }
@@ -589,32 +642,51 @@ export const ProductCreateScreen: FC = (item) => {
           const selectedAssets = response.assets.map((asset) => asset);
           console.log('first ', selectedAssets.length + productStore.imagesLimit)
           if (selectedAssets.length + productStore.imagesLimit > 6) {
-            showToast('txtToats.required_maximum_number_of_photos', 'error')
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: '',
+              textBody: translate('txtToats.required_maximum_number_of_photos'),
+          
+          })
           } else {
             uploadImages(selectedAssets, false, indexItem);
           }
-          // const newArr = dataCreateProduct.slice()
-          // const newArr1 = newArr[indexItem].imageUri.concat(selectedAssets)
-          // console.log("newArr1-------------------111111", newArr1);
-          // dataCreateProduct[indexItem].imageUri = newArr1
-          // setDataCreateProduct(newArr)
         }
       });
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        // showToast('txtToats.permission_granted', 'success')
+        
       } else {
         console.log("Permission denied");
-        showToast('txtToats.permission_denied', 'error')
-        showDialog(translate("txtDialog.permission_allow"), 'danger', translate("txtDialog.allow_permission_in_setting"), translate("common.cancel"), translate("txtDialog.settings"), () => {
-          Linking.openSettings()
-          hideDialog();
-        })
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: '',
+          textBody: translate('txtToats.permission_denied'),
+      
+      })
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("txtDialog.permission_allow"),
+          textBody: translate("txtDialog.allow_permission_in_setting"),
+          button: translate("common.cancel"),
+          button2: translate("txtDialog.settings"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+              Linking.openSettings()
+              Dialog.hide();
+          }
+      })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
-      showToast('txtToats.permission_blocked', 'error')
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.permission_blocked'),
+    
+    })
+  
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
       const options = {
@@ -637,7 +709,13 @@ export const ProductCreateScreen: FC = (item) => {
           // uploadImages(selectedAssets, false, indexItem);
           console.log('first ', selectedAssets.length + productStore.imagesLimit)
           if (selectedAssets.length + productStore.imagesLimit > 6) {
-            showToast('txtToats.required_maximum_number_of_photos', 'error')
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: '',
+              textBody: translate('txtToats.required_maximum_number_of_photos'),
+          
+          })
+            
           } else {
             uploadImages(selectedAssets, false, indexItem);
           }
@@ -1110,7 +1188,13 @@ export const ProductCreateScreen: FC = (item) => {
                                     handleLibraryUseProduct(item.imageUrls, index)
                                     productStore.setImagesLimit(item.imageUrls.length)
                                   } else {
-                                    showToast('txtToats.required_maximum_number_of_photos', 'error')
+                                    Toast.show({
+                                      type: ALERT_TYPE.DANGER,
+                                      title: '',
+                                      textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                  
+                                  })
+                                    
                                   }
                                 }
                                 }
@@ -1351,14 +1435,7 @@ export const ProductCreateScreen: FC = (item) => {
           </View>
         </View>
       </ScrollView>
-      <Dialog
-        isVisible={isModalNotifyVisible}
-        title={"productScreen.Notification"}
-        errorMessage={errorMessage}
-        titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: colors.palette.navyBlue, borderRadius: 8 }}
-        onPressAccept={() => setIsModalNotifyVisible(false)}
-      />
+      
       <PriceModal isVisible={modalRetailPrice}
         setIsVisible={() => setModalRetailPrice(false)}
         title={'productDetail.retailPrice'}

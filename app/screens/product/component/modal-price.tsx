@@ -1,7 +1,7 @@
 import 'numeral/locales/vi';
 import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Dimensions, FlatList, Platform, TouchableOpacity, View , KeyboardAvoidingView} from 'react-native';
+import { Dimensions, FlatList, Platform, TouchableOpacity, View , KeyboardAvoidingView, ViewStyle} from 'react-native';
 import Modal from 'react-native-modal';
 import { Images } from '../../../../assets/index';
 import { Button, Text, TextField } from '../../../components';
@@ -20,6 +20,11 @@ interface PriceModalProps {
     onCancel: () => void
     onConfirm: (value: any) => void
     dataAdd?: {}[]
+}
+
+const VIEWMODAL: ViewStyle = {
+    justifyContent: 'flex-end',
+    margin: 0, 
 }
 
 const PriceModal = (props: PriceModalProps) => {
@@ -94,13 +99,13 @@ const PriceModal = (props: PriceModalProps) => {
             animationIn={'fadeIn'}
             animationOut={'fadeOut'}
             isVisible={isVisible}
+            style={VIEWMODAL}
             avoidKeyboard={true}
-            style={{margin: 0}}
         >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}
         >
             <View style={{
                 maxHeight: Dimensions.get('screen').height * 0.6,

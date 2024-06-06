@@ -26,9 +26,8 @@ import {
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import Modal from "react-native-modal";
 import { useStores } from "../../models";
-import { hideDialog, showDialog, showToast } from "../../utils/toast";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { translate } from "../../i18n";
-import Dialog from "../../components/dialog/dialog";
 
 export const NewAttribute: FC = observer(function NewAttribute(props) {
   const navigation = useNavigation();
@@ -72,10 +71,20 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
 
   const addAttribute = () => {
     if (name.trim() === "") {
-      showToast('txtToats.required_value_null', 'error')
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.required_value_null'),
+    
+    })
     } else {
       if (nameAttribute.some(item => item.name.trim() === name.trim())) {
-        showToast('txtToats.cannot_create_duplicate', 'error')
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: '',
+          textBody: translate('txtToats.cannot_create_duplicate'),
+      
+      })
       } else {
         const id = generateRandomString(8);
         const nameArr = [{ name: name, id: id }];
@@ -97,38 +106,14 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       }
     }
   };
-  const addAttribute1 = (event) => {
-    const textInput = event.nativeEvent.text
-    if (textInput.trim() === "") {
-      showToast('txtToats.required_value_null', 'error')
-    } else {
-      if (nameAttribute.some(item => item.name.trim() === textInput.trim())) {
-        showToast('txtToats.cannot_create_duplicate', 'error')
-      } else {
-        const id = generateRandomString(8);
-        const nameArr = [{ name: textInput, id: id }];
-        const newArr = nameAttribute.concat(nameArr);
-        const newInput = [...inputText, ""];
-        setInputText(newInput);
-        setNameAttribute(newArr);
-        setName("");
-        const newData = [
-          {
-            name: textInput,
-            displayType: "Checkbox",
-            productAttributeValues: [],
-            id: id,
-          },
-        ];
-        const newArrData = dataAttribute?.concat(newData);
-        setDataAttribute(newArrData);
-      }
-    }
-  };
-
   const addDataAttribute = (data: any, index: any) => {
     if (dataCheckbox.length === 0 || dataCheckbox[dataCheckbox.length - 1]?.value.trim() === "") {
-      showToast('txtToats.required_value_null', 'error')
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.required_value_null'),
+    
+    })
     } else {
       const newArr = extractAndRemove(
         dataCheckbox,
@@ -138,7 +123,12 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       const newArray = dataAttribute.map((obj) => {
         if (obj.id === data) {
           if (obj.productAttributeValues.some(dto => dto.value === dataAdd.value)) {
-            showToast('txtToats.cannot_create_duplicate', 'error')
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: '',
+              textBody: translate('txtToats.cannot_create_duplicate'),
+          
+          })
           } else {
             const newValues = obj.productAttributeValues.concat(dataAdd);
             return { ...obj, productAttributeValues: newValues };
@@ -172,7 +162,12 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
 
   const onSubmit = async (data: any) => {
     if (data.attribute === '') {
-      showToast('txtToats.required_information', 'error')
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.required_information'),
+    
+    })
     }
     else {
       try {
@@ -220,11 +215,25 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         nameGroupAttribute.id
       );
       if (response && response.kind === "ok") {
-        setOpenDialog(true)
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("productScreen.Notification"),
+          textBody: translate("newAttribute.newAttributeDialog"),
+          button2: translate("productScreen.BtnNotificationAccept"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            navigation.goBack()
+            Dialog.hide();
+          }
+      })
       } else {
-        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
-          hideDialog();
-        })
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: translate("txtDialog.txt_title_dialog"),
+          textBody: response.response.errorCodes[0].message,
+          button: translate("common.ok"),
+          closeOnOverlayTap: false
+      })
         console.error("Failed to fetch categories:", response.response.message);
       }
     } catch (error) {
@@ -260,11 +269,30 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       );
       // console.log('first')
       if (response && response.kind === "ok") {
-        setOpenDialogAttribute(true)
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("productScreen.Notification"),
+          textBody: translate("newAttribute.newAttributeDialog"),
+          button2: translate("productScreen.BtnNotificationAccept"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            navigation.navigate("addAttribute" as never, {
+              data: {
+                value: nameGroupAttribute.id,
+                text: nameGroupAttribute.name,
+              },
+            }),
+            Dialog.hide();
+          }
+      })
       } else {
-        showDialog(translate("txtDialog.txt_title_dialog"), 'danger', response.response.message, translate("common.ok"), '', () => {
-          hideDialog();
-        })
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: translate("txtDialog.txt_title_dialog"),
+          textBody: response.response.errorCodes[0].message,
+          button: translate("common.ok"),
+          closeOnOverlayTap: false
+      })
         console.error("Failed to fetch categories:", response);
       }
     } catch (error) {
@@ -284,8 +312,6 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
   };
 
   const arrDataType = ["Checkbox", "Textfield"];
-  const [openDialog, setOpenDialog] = useState(false)
-  const [openDialogAttribute, setOpenDialogAttribute] = useState(false)
   return (
     <View style={styles.ROOT}>
       <Header
@@ -578,7 +604,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
             textStyle={styles.textButtonCancel}
           />
           <Button
-            text="Lưu và tiếp tục"
+            tx="common.saveAndContinue"
             style={styles.viewButtonConfirm}
             textStyle={[
               styles.textButtonCancel,
@@ -650,33 +676,6 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
           />
         </View>
       </Modal>
-      <Dialog
-        isVisible={openDialog}
-        title={"productScreen.Notification"}
-        content={'newAttribute.newAttributeDialog'}
-        titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-        onPressAccept={() => {
-          navigation.goBack()
-          setOpenDialog(false)
-        }}
-      />
-      <Dialog
-        isVisible={openDialogAttribute}
-        title={"productScreen.Notification"}
-        content={'newAttribute.newAttributeDialog'}
-        titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-        onPressAccept={() => {
-          navigation.navigate("addAttribute" as never, {
-            data: {
-              value: nameGroupAttribute.id,
-              text: nameGroupAttribute.name,
-            },
-          }),
-            setOpenDialogAttribute(false)
-        }}
-      />
     </View>
   );
 });
