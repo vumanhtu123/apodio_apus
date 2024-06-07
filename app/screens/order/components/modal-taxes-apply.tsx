@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Alert, View } from "react-native";
+import { Platform, View } from "react-native";
 import Modal from "react-native-modal";
-import { scaleHeight } from "../../../theme";
+import { margin, scaleHeight } from "../../../theme";
 import { Text } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import DropdownModal from "../../product/component/multiSelect";
@@ -24,7 +24,9 @@ export const ModalTaxes = (data: InputSelect) => {
         justifyContent: "flex-end",
         // paddingTop: showMore ? scaleHeight(160) : null,
       }}>
-      <View style={{ backgroundColor: "white" }}>
+      <View style={{ backgroundColor: "white", 
+        borderTopLeftRadius: margin.border_top_left_radius, 
+        borderTopRightRadius: margin.border_top_right_radius }}>
         <View
           style={{
             height: 5,
@@ -74,7 +76,7 @@ export const ModalTaxes = (data: InputSelect) => {
             flexDirection: "row",
             marginHorizontal: 15,
             justifyContent: "space-between",
-            marginBottom: 15,
+            marginBottom: Platform.OS === 'ios' ? 50 : 15,
             marginTop: 5,
           }}>
           <View
@@ -90,7 +92,7 @@ export const ModalTaxes = (data: InputSelect) => {
                 color: "#747475",
                 fontSize: 14,
                 fontWeight: "600",
-                marginHorizontal: 50,
+                marginHorizontal: 65,
                 marginVertical: 12,
               }}></Text>
           </View>
@@ -105,7 +107,7 @@ export const ModalTaxes = (data: InputSelect) => {
                 color: "white",
                 fontSize: 14,
                 fontWeight: "600",
-                marginHorizontal: 50,
+                marginHorizontal: 65,
                 marginVertical: 12,
               }}></Text>
           </View>

@@ -9,7 +9,6 @@ const en = {
     filter: " Bộ lọc",
     saveChange: "Lưu thay đổi",
 
-
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     // @demo remove-current-line
@@ -232,6 +231,13 @@ const en = {
     input_texas: "Nhập chiết khấu",
     sum_no_texas: "Tổng tiền (chưa thuế):",
     sum_yes_texas: "Tổng tiền (gồm thuế)",
+    DOMESTICALLY: "Trong nước",
+    EXPORTED: "Xuất khẩu",
+    CASH: "Tiền mặt",
+    BANK_TRANSFER: "Chuyển khoản ngân hàng",
+    BANK: "Ngân hàng",
+    CREDIT: "Tín dụng",
+    DEDUCTION_OF_LIABILITIES: "Công nợ",
     cancellationReason: "Cancellation reason",
     sellerConfirm: "Thông tin thanh toán",
     deliveryAddress: "Địa chỉ giao hàng",

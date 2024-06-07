@@ -41,7 +41,6 @@ import { translate } from "../../../i18n";
 import moment from "moment";
 import CustomCalendar from "../../../components/calendar";
 import ItemListProduct from "../components/item-list-product";
-import { hideDialog, showDialog } from "../../../utils/toast";
 import {
   AddressOrder,
   HeaderOrder,
@@ -49,21 +48,8 @@ import {
 } from "../components/header-order";
 import { ModalPayment } from "../components/modal-payment-method";
 import { ModalTaxes } from "../components/modal-taxes-apply";
-
-export const dataPromotion = [
-  {
-    percent: "VAT 10%",
-    amount: "2.000.000",
-  },
-  {
-    percent: "VAT 5%",
-    amount: "2.000.000",
-  },
-  {
-    percent: "VAT 9%",
-    amount: "2.000.000",
-  },
-];
+import { ShowNote } from "../components/note-new-order-component";
+import { arrPayment, arrProducts, dataPromotion, methodData } from "./data";
 
 export const NewOrder: FC = observer(function NewOrder(props) {
   const navigation = useNavigation();
@@ -74,10 +60,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     scaleHeight(52) -
     paddingTop;
   const route = useRoute();
-  const {
-    control,
-    formState: { errors },
-  } = useForm();
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [payment, setPayment] = useState({ label: "" });
@@ -93,165 +75,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [deposit, setDeposit] = useState<number>(0);
   const [buttonSelect, setButtonSelect] = useState<boolean>(false);
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
+  const [method, setMethod] = useState<number>(0);
+  const countRef = useRef("");
 
-  const requestLibraryPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
-        return result;
-      } else {
-        const result = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
 
-  const checkLibraryPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await check(PERMISSIONS.IOS.MEDIA_LIBRARY);
-        return result;
-      } else {
-        const result = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const handleLibraryUse = async () => {
-    // const permissionStatus = await checkLibraryPermission();
-    // console.log('ads')
-    // console.log(permissionStatus)
-
-    // if (permissionStatus === RESULTS.GRANTED) {
-    const options = {
-      cameraType: "back",
-      quality: 1,
-      maxHeight: 500,
-      maxWidth: 500,
-    };
-    launchImageLibrary(options, (response: any) => {
-      console.log("==========> response4564546", response);
-      if (response.didCancel) {
-        console.log("User cancelled photo picker1");
-      } else if (response.errorCode) {
-        console.log("ImagePicker Error2: ", response.errorCode);
-      } else if (response.errorCode) {
-        console.log("User cancelled photo picker1");
-      } else if (response?.assets[0].uri) {
-        //xử lý uri ảnh hoặc video
-        setImagesNote(response?.assets[0].uri);
-        console.log(response?.assets[0].uri);
-        setModalImage(false);
-      }
-    });
-    // } else if (permissionStatus === RESULTS.DENIED) {
-    //     const newStatus = await requestLibraryPermission();
-    //     if (newStatus === RESULTS.GRANTED) {
-    //         console.log("Permission granted");
-    //     } else {
-    //         console.log("Permission denied");
-    //         Alert.alert('Permission allow', 'Allow permission in setting', [{
-    //             text: 'Settings',
-    //             onPress: () => Linking.openSettings()
-    //         },
-    //         {
-    //             text: 'Cancel',
-    //             onPress: () => console.log('cancel')
-    //         },
-    //         ])
-    //     }
-    // } else if (permissionStatus === RESULTS.BLOCKED) {
-    //     console.log("Permission blocked, you need to enable it from settings");
-    // }
-  };
-
-  const requestCameraPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await request(PERMISSIONS.IOS.CAMERA);
-        return result;
-      } else {
-        const result = await request(PERMISSIONS.ANDROID.CAMERA);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const checkCameraPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await check(PERMISSIONS.IOS.CAMERA);
-        return result;
-      } else {
-        const result = await check(PERMISSIONS.ANDROID.CAMERA);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const handleCameraUse = async () => {
-    const permissionStatus = await checkCameraPermission();
-    console.log(permissionStatus);
-
-    if (permissionStatus === RESULTS.GRANTED) {
-      console.log("You can use the camera");
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-      };
-      launchCamera(options, (response: any) => {
-        console.log("==========> response1233123", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets[0].uri) {
-          console.log(response?.assets[0].uri);
-          setImagesNote(response?.assets[0].uri);
-          setModalImage(false);
-        }
-      });
-    } else if (permissionStatus === RESULTS.DENIED) {
-      const newStatus = await requestCameraPermission();
-      if (newStatus === RESULTS.GRANTED) {
-        console.log("Permission granted");
-      } else {
-        console.log("Permission denied");
-
-        Dialog.show({
-          type: ALERT_TYPE.WARNING,
-          title: translate("txtDialog.permission_allow"),
-          textBody: translate("txtDialog.allow_permission_in_setting"),
-          button: translate("common.cancel"),
-          button2: translate("txtDialog.settings"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Linking.openSettings();
-            Dialog.hide();
-          },
-        });
-      }
-    } else if (permissionStatus === RESULTS.BLOCKED) {
-      console.log("Permission blocked, you need to enable it from settings");
-    }
-  };
 
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
@@ -298,52 +125,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     const newArr = arrProduct.filter((item: any) => item.id !== id);
     setArrProduct(newArr);
   };
-
-  const arrPayment = [
-    {
-      id: 1,
-      label: "Payment on delivery",
-    },
-    {
-      id: 2,
-      label: "Pay immediately",
-    },
-    {
-      id: 3,
-      label: "Debt",
-    },
-  ];
-
-  const arrProducts = [
-    {
-      images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-      name: "Gạch 1566CB503 60x60 wrw asfsada ads",
-      unit: "Hop",
-      qty: 1,
-      cost: "28.000.000",
-      price: "28.000.000",
-      id: 1,
-      VAT: "10%",
-      valueVAT: "2.000.000đ",
-      sumTexas: "30.000.000đ",
-      addTaxes: false,
-      selectTexas: false,
-    },
-    {
-      images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-      name: "Gạch 1566CB503 60x60",
-      unit: "Hop",
-      qty: 2,
-      cost: "28.000.000",
-      price: "28.000.000",
-      id: 2,
-      VAT: "12%",
-      valueVAT: "2.500.000đ",
-      sumTexas: "30.000.000đ",
-      addTaxes: true,
-      selectTexas: false,
-    },
-  ];
 
   useEffect(() => {
     setArrProduct(arrProducts);
@@ -447,26 +228,29 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             sumNoVat={6000.0}
             sumVat={12}
           />
-          <View
-            style={{
-              flexDirection: "row",
-              borderRadius: 8,
-              backgroundColor: "white",
-              paddingHorizontal: 16,
-              paddingVertical: 15,
-              justifyContent: "space-between",
+          <TouchableOpacity
+            onPress={() => {
+              setButtonPayment(true);
             }}>
-            <Text
-              tx="order.method_pay"
+            <View
               style={{
-                fontSize: 10,
-                fontWeight: "400",
-                color: "#242424",
-              }}></Text>
-            <TouchableOpacity onPress={() => { }}>
+                flexDirection: "row",
+                borderRadius: 8,
+                backgroundColor: "white",
+                paddingHorizontal: 16,
+                paddingVertical: 15,
+                justifyContent: "space-between",
+              }}>
+              <Text
+                tx="order.method_pay"
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#242424",
+                }}></Text>
               <View style={{ flexDirection: "row" }}>
                 <Text
-                  tx="order.later_order"
+                  text={countRef.current.toString()}
                   style={{
                     fontSize: 10,
                     fontWeight: "400",
@@ -475,94 +259,19 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   }}></Text>
                 <Images.icon_caretRight2 />
               </View>
-            </TouchableOpacity>
-          </View>
-          {note === true ? (
-            <View style={styles.viewNote}>
-              <View style={{ flex: 1 }}>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <TextField
-                      keyboardType={null}
-                      // labelTx={"order.address"}
-                      style={styles.viewTextfieldNote}
-                      inputStyle={{
-                        marginBottom:
-                          Platform.OS === "ios"
-                            ? scaleHeight(padding.padding_8)
-                            : 0,
-                      }}
-                      value={value}
-                      onBlur={onBlur}
-                      onChangeText={(value) => onChange(value)}
-                      onClearText={() => onChange("")}
-                      RightIconClear={Images.icon_delete2}
-                      multiline={true}
-                      placeholderTx={"order.placeNote"}
-                      placeholderTextColor={colors.palette.nero}
-                    // isImportant={true}
-                    // error={errors?.phone?.message}
-                    />
-                  )}
-                  name="noteText"
-                // rules={{ required: "Address is required" }}
-                />
-              </View>
-              {imagesNote === "" ? (
-                <TouchableOpacity onPress={() => setModalImage(true)}>
-                  <Images.icon_image />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity onPress={() => setModalImage(true)}>
-                  {/* <Image
-                    source={{ uri: imagesNote }}
-                    height={scaleHeight(48)}
-                    width={scaleWidth(48)}
-                    resizeMode="cover"
-                    style={{ borderRadius: 8 }}
-                  /> */}
-
-                  <TouchableOpacity
-                    // key={index}
-                    onPress={() => {
-                      setModalImage(true);
-                      // setModalImages(true);
-                      // setActiveSlide(index);
-                    }}>
-                    <AutoImage
-                      style={{
-                        width: scaleWidth(107),
-                        height: scaleHeight(70),
-                        borderRadius: 8,
-                      }}
-                      source={{ uri: imagesNote }}
-                    />
-                    <TouchableOpacity
-                      style={{
-                        position: "absolute",
-                        right: scaleWidth(5),
-                        top: scaleHeight(5),
-                      }}
-                      onPress={() => {
-                        setNote(false);
-                        console.log("aaa");
-                      }}>
-                      <Images.circle_close
-                        width={scaleWidth(16)}
-                        height={scaleHeight(16)}
-                      />
-                    </TouchableOpacity>
-                  </TouchableOpacity>
-                </TouchableOpacity>
-              )}
-              <TouchableOpacity
-                onPress={() => setNote(false)}
-                style={{ position: "absolute", right: 6, top: 6 }}>
-                {/* <Images.icon_deleteDolphin /> */}
-              </TouchableOpacity>
             </View>
-          ) : null}
+          </TouchableOpacity>
+
+          <ShowNote
+            note={note}
+            setNote={function (item: boolean): void {
+              setNote(item);
+            }}
+            imagesNote={imagesNote}
+            setModalImage={function (item: boolean): void {
+              setModalImage(item);
+            }}
+          />
           {desiredDate === true ? (
             <View
               style={{
@@ -782,16 +491,17 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         isOneDate={true}
         toggleModalDate={toggleModalDate}
       />
-      {/* <ModalTaxes
-        isVisible={buttonSelect}
-        closeDialog={function (): void {
-          setButtonSelect(false);
-        }}
-      /> */}
       <ModalPayment
         isVisible={buttonPayment}
         closeDialog={function (): void {
           setButtonPayment(false);
+        }}
+        arrData={methodData}
+        method={method}
+        setMethod={function (item: number, name: string): void {
+          setMethod(item);
+          countRef.current = name;
+          console.log("tuvm2", countRef);
         }}
       />
       <ModalTaxes
