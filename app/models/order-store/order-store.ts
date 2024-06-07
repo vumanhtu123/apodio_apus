@@ -5,10 +5,14 @@ import { OrderApi } from "../../services/api/api_oder_screen";
 import { OrderProductResult } from "./order-product-model";
 import { OrderVariantResult } from "./order-variant-model";
 import { VendorApi } from "../../services/api/api-vendor";
+import { AddClientAPI } from "../../services/api/api-add-client";
+import { SelectClienAPI } from "../../services/api/api_selectClient";
+import { OderListResspose } from "../order-list-select-clien-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
   .props({
+
     isModalTracking: types.optional(types.boolean, false),
     dataFatherStatus: types.optional(types.array(types.frozen<InputSelectModel>()), []),
     fatherStatus: types.optional(types.frozen<InputSelectModel>(), { id: '', label: '' }),
@@ -17,6 +21,8 @@ export const OrderStoreModel = types
     dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
     dataProductAddOrderNew: types.optional(types.array(types.frozen<never>()), []),
     checkPriceList: types.optional(types.boolean, false),
+    sortCreateClient: types.optional(types.string,''),
+    search: types.optional(types.string,''),
     sort: types.optional(types.array(types.string), []),
     isLoadMore : types.optional(types.boolean, false),
     productId: types.optional(types.number, 0),
@@ -44,6 +50,12 @@ export const OrderStoreModel = types
     },
     setViewGrid(viewGird: boolean) {
       self.viewGrid = viewGird;
+    },
+    setSearch(search: any) {
+      self.search = search
+    },
+    setSortCreateClient( sort: any) {
+      self.sortCreateClient = sort
     },
     setSelectedProductId(productId: number) {
       self.productId = productId;
@@ -88,6 +100,28 @@ export const OrderStoreModel = types
         return result;
       }
     }),
+
+    getListSelectClient: flow(function * (page: number, size: number, sort: string , search: string ) {
+      try {
+        const clientAPI = new SelectClienAPI(self.environment.apiErp)
+        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size, sort, search)
+        console.log("SlectClientResult-------------",JSON.stringify(result.data))
+        return result.data
+      } catch (error) {
+        console.log("Get list info company", error)
+      }
+    }),
+
+    postClient: flow(function * (clientData){
+      const client = new AddClientAPI(self.environment.apiErp)
+      const result = yield client.createClient(clientData)
+      if (result.kind === 'ok') {
+        return result
+      } else {
+        return result
+    }
+    }),
+
     getListOrderProduct: flow(function* (
       page: number,
       size: number,
