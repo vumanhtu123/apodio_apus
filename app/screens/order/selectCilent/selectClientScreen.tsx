@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { FC, useState } from "react";
-import { Image, TouchableOpacity, View, FlatList, Platform, RefreshControl, ActivityIndicator } from "react-native";
+import { Image, TouchableOpacity, View, FlatList, Platform, RefreshControl, ActivityIndicator, Alert } from "react-native";
 import { ScreenStackProps } from "react-native-screens";
 import { NavigatorParamList } from "../../../navigators";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
@@ -22,7 +22,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "selectClient">> = observer(
     function SelectClientScreen(props) {
-        const navigation = useNavigation()
         const [indexSelect, setIndexSelect] = useState<any>()
         const [onClick, setOnClick] = useState('successfully')
         const [isVisible, setIsVisible] = useState(false);
@@ -33,7 +32,9 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
         const [page, setPage] = useState(0)
         const getAPi = useStores()
         const [isVisibleCreateClient, setisVisibleCreateClient] = useState(false);
-        const [totalPage, setTotalPage] = useState(0)
+        const [valueSearch, setValueSearch] = useState('')
+        const [isShowSearch, setisShowSearch] = useState(false)
+
         // const dataFace = [
         //     {
         //         code: "MTH",
@@ -61,12 +62,15 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
         // console.log("doannnnn", totalPage);
 
 
-        const sort = getAPi.vendorStore.sort
+        const sort = getAPi.orderStore.sort
         console.log("doann log sort", sort);
 
+        console.log('====================================');
+        console.log('valueSearch', valueSearch);
+        console.log('====================================');
 
         const getListClient = () => {
-            getAPi.vendorStore.getListSelectClient(0, size, sort).then((data) => {
+            getAPi.orderStore.getListSelectClient(0, size, sort, valueSearch).then((data) => {
                 console.log("dataaaaaaaaa", data);
 
                 // setTotalPage(data?.totalPages)
@@ -84,7 +88,10 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
         useEffect(() => {
             getListClient()
-        }, [getAPi.vendorStore.sort])
+        }, [getAPi.orderStore.sort])
+
+
+
 
         console.log("load more", isLoadingMore)
 
@@ -106,7 +113,13 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
             setIsLoadingMore(true)
             setsize(size + 3)
             getListClient()
+            setTimeout(() => {
+                setIsLoadingMore(false)
+            }, 3000);
         };
+        const handelSearch = () => {
+            getListClient()
+        }
 
         return (
             <View style={{ flex: 1 }}>
@@ -117,10 +130,20 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                     RightIcon={Images.icon_funnel}
                     RightIcon1={Images.icon_search}
                     style={{ height: scaleWidth(52) }}
+                    headerInput={isShowSearch}
+                    handleOnSubmitSearch={() => {
+                        handelSearch()
+                    }}
+                    onSearchValueChange={(txt: any) => {
+                        setValueSearch(txt)
+                    }}
                     onRightPress={() => {
                         // openTypeFilter
                         props.navigation.navigate("filterSelectScreen")
 
+                    }}
+                    onRightPress1={() => {
+                        setisShowSearch(!isShowSearch)
                     }}
 
                 />
@@ -181,7 +204,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
                         }
                         onEndReached={() => handleLoadMore()}
-                        onEndReachedThreshold={0.7}
+                        onEndReachedThreshold={0.1}
                         ListFooterComponent={() => {
                             return (
                                 <View>
@@ -191,9 +214,6 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                         }}
 
                     />
-
-
-
 
                     <TouchableOpacity style={{
                         flexDirection: 'row', justifyContent: 'center', alignItems: 'center', borderRadius: 30, position: 'absolute', paddingHorizontal: scaleWidth(18),
@@ -247,6 +267,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                 <ModalCreateClient
                     isVisible={isVisibleCreateClient}
                     setIsVisible={setisVisibleCreateClient}
+                    handleRefresh={() => getListClient()}
                 />
 
             </View>

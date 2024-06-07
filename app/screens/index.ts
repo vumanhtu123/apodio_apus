@@ -55,14 +55,14 @@ export * from "../screens/check-inventory/inventory-management";
 export * from "../screens/ware-house/wareHouse";
 
 export * from "./goods-delivery-book/GoodsDeliveryBook";
-export * from "../screens/import-goods-book/importGoodsBook";
+export * from "../screens/product-import-screen/importGoodsBook";
 export * from "../screens/goods-delivery-book/Ballot-Details/ballotDetail";
 export * from "../screens/goods-delivery-book/Detail-Export-Goods/detailExportGoods";
 // export * from './goods-delivery-book/Create-Export-Goods/createExportGoods';
-export *from "../screens/import-goods-book/Create-Goods-Book/createImportGoods";
-export *from "../screens/import-goods-book/Create-goods-receipt/createGoodsReceipt";
-export *from "../screens/import-goods-book/Detail-Import-Receipt/detailImportReceipt"
-export *from "../screens/import-goods-book/Voucher-detais/voucherDetail"
+export *from "../screens/product-import-screen/product-import-screen/createImportGoods";
+export *from "../screens/product-import-screen/create-goods-receipt/createGoodsReceipt";
+export *from "../screens/product-import-screen/detail-import-receipt/detailImportReceipt"
+export *from "../screens/product-import-screen/voucher-details/voucherDetail"
 export * from "../screens/warehouse-book/warehouseBook"
 export * from "../screens/warehouse-book/filter-warehouse-book/filterInWarehouseBook"
 export * from "../screens/goods-delivery-book/Create-Delivery-Note/createDeliveryNote";

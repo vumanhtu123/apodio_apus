@@ -46,7 +46,12 @@ const en = {
       "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
-    delete_order : 'Bạn có chắc chắn muốn hủy đơn hàng bán này không?'
+    delete_order : 'Bạn có chắc chắn muốn hủy đơn hàng bán này không?',
+    createClientSuccessful: "Thêm khách hàng thành công" ,
+    createClientFail: "Thêm khách hàng thất bại công", 
+    ok: "Ok",
+    notification: "Thông báo",
+
   },
   ruleController : {
     emptyText : 'Vui lòng nhập dữ liệu'

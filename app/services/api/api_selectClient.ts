@@ -2,7 +2,7 @@ import { ApiResponse } from "apisauce";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { ApiErp } from "../base-api/api-config-erp";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { OderListResspose,  } from "../../models/order-list-select-clien";
+import { OderListResspose,  } from "../../models/order-list-select-clien-model";
 
 export class SelectClienAPI {
    private api: ApiErp; 
@@ -15,7 +15,8 @@ export class SelectClienAPI {
    async getListSelectClient (
     page: number,
     size: number,
-    sort: string
+    sort: string,
+    search: string,
    ): Promise<any> {
         showLoading()
         try {
@@ -28,7 +29,8 @@ export class SelectClienAPI {
                 {
                   page: page,
                   size: size,
-                  sort: sort
+                  sort: sort,
+                  search: search,
                 }
               );
               hideLoading();

@@ -3,10 +3,6 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { VendorApi } from "../../services/api/api-vendor"
 import { withEnvironment } from "../extensions/with-environment"
 import { VendorResult } from "./vendor-model"
-import { SelectClienAPI } from "../../services/api/api_selectClient"
-import { OderListResspose } from "../order-list-select-clien"
-import { clientData } from '../add-client-props';
-import { AddClientAPI } from '../../services/api/api-add-client';
 
 
 export const VendorStoreModel = types
@@ -16,7 +12,7 @@ export const VendorStoreModel = types
     sort: types.optional(types.string, '')
   
   })
-  
+
   .extend(withEnvironment)
   .actions((self) => ({
     setCheckSeparator(value: any) {
@@ -48,27 +44,27 @@ export const VendorStoreModel = types
         return error
       }
     }),
-    getListSelectClient: flow(function * (page: number, size: number, sort: string ) {
-      try {
-        const clientAPI = new SelectClienAPI(self.environment.apiErp)
-        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size, sort)
-        console.log("SlectClientResult-------------",JSON.stringify(result.data))
-        return result.data
-      } catch (error) {
-        console.log("Get list info company", error)
-      }
-    }),
-    postClient: flow(function * (clientData){
-      const client = new AddClientAPI(self.environment.apiErp)
-      const result = yield client.createClient(clientData)
-      if (result.kind === "ok") {
-        console.log("post-Client-Success : ", result);
-        return result;
-      } else {
-        console.log("post-Client-Failed : ", result.result.errorCodes);
-        return result;
-      }
-    }), 
+    // // getListSelectClient: flow(function * (page: number, size: number, sort: string ) {
+    // //   try {
+    // //     const clientAPI = new SelectClienAPI(self.environment.apiErp)
+    // //     const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size, sort)
+    // //     console.log("SlectClientResult-------------",JSON.stringify(result.data))
+    // //     return result.data
+    // //   } catch (error) {
+    // //     console.log("Get list info company", error)
+    // //   }
+    // // }),
+    // // postClient: flow(function * (clientData){
+    // //   const client = new AddClientAPI(self.environment.apiErp)
+    // //   const result = yield client.createClient(clientData)
+    // //   if (result.kind === "ok") {
+    // //     console.log("post-Client-Success : ", result);
+    // //     return result;
+    // //   } else {
+    // //     console.log("post-Client-Failed : ", result.result.errorCodes);
+    // //     return result;
+    // //   }
+    // }), 
 
   }))
 

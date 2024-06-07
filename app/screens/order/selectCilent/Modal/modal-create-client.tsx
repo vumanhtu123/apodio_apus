@@ -11,16 +11,17 @@ import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { useStores } from "../../../../models";
 import { boolean } from "mobx-state-tree/dist/internal";
 import { RectButton } from "react-native-gesture-handler";
+import { Dialog } from "../../../../components/dialog-notification";
+import { translate } from "i18n-js";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
+    handleRefresh: () => void;
 }
 
 
-const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisible }) => {
+const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisible, handleRefresh }) => {
 
-    const [showFindClient, setShowFindClient] = useState(false)
-    const [selectFindClient, setSelectFindClient] = useState(0)
     const [selectCustomerType, setSelectCustomerType] = useState({ label: "" })
     const [phoneNumber, setPhoneNumber] = useState<any>()
     const [nameClient, setNameClient] = useState<any>()
@@ -41,20 +42,41 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
     console.log('====================================');
     console.log("checkk ", checkStatusCompany());
     console.log('====================================');
-    const addClient = () => {
-        getAPIcreateClient.vendorStore.postClient({
-
+    const addClient = async () => {
+        const result = await getAPIcreateClient.orderStore.postClient({
             "name": nameClient,
             "phoneNumber": phoneNumber,
-            "isCompany": true,
+            "isCompany": checkStatusCompany(),
             "deleteContacts": [],
             "branches": [],
             "deleteAddress": [],
             "sharingModeB2c": "PRIVATE",
             "partnerTagIds": []
-
-
         })
+        console.log('====================================');
+        console.log('test', result);
+        console.log('====================================');
+        if (result.kind === "ok") {
+            Dialog.show({
+                title: translate("txtDialog.txt_title_dialog"),
+                button: '',
+                button2: translate("common.ok"),
+                textBody: result.result.message,
+                closeOnOverlayTap: false,
+                onPressButton: () => {
+                    Dialog.hide();
+                }
+            })
+        } else {
+            Dialog.show({
+                title: translate("productScreen.Notification"),
+                button: translate("common.ok"),
+                textBody: result.result.errorCodes[0].message,
+                closeOnOverlayTap: false
+            })
+        }
+        handleRefresh()
+        setIsVisible(!isVisible)
     }
 
 
@@ -65,6 +87,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
     ]
 
     console.log('doandev', phoneNumber, nameClient, selectCustomerType);
+
     const arrGroupCustomerType = dataFindClient.map((item) => {
         return { label: item.title, id: item.id }
     })
