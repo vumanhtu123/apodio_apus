@@ -1,8 +1,8 @@
 import { ErrorCode } from "../errors"
 
 export interface Root {
-  totalPages: number
   totalElements: number
+  totalPages: number
   size: number
   content: Content[]
   number: number
@@ -21,6 +21,7 @@ export interface Content {
   uom: Uom
   variantCount: number
   quantityInventory: number
+  productImage: string[]
 }
 
 export interface Uom {
@@ -39,8 +40,8 @@ export interface Pageable {
   sort: Sort2
   pageNumber: number
   pageSize: number
-  unpaged: boolean
   paged: boolean
+  unpaged: boolean
 }
 
 export interface Sort2 {

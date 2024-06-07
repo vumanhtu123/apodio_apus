@@ -306,7 +306,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
   useEffect(() => {
     setArrProduct(arrProducts);
-    // orderStore.setCheckPriceList(true)
+    // orderStore.setCheckPriceList(false)
   }, []);
 
   return (

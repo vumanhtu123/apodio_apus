@@ -4,6 +4,7 @@ import { InputSelectModel, OrderResult } from "./order-store-model";
 import { OrderApi } from "../../services/api/api_oder_screen";
 import { OrderProductResult } from "./order-product-model";
 import { OrderVariantResult } from "./order-variant-model";
+import { VendorApi } from "../../services/api/api-vendor";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -227,7 +228,7 @@ export const OrderStoreModel = types
       regionId: number,
     ) {
       // console.log('page' , page)
-      const orderApi = new OrderApi(self.environment.apiOrder);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderVariantResult = yield orderApi.getListCity(
         page,
         size,

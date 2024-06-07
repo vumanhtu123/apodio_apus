@@ -32,53 +32,52 @@ export const NewDelivery: FC = observer(
 
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
 
-        // useEffect(()=>{
-        //     getListCity()
-        // }, [])
+        useEffect(()=>{
+            getListCity()
+        }, [])
 
-        // const getListCity = async ()=>{
-        //     try {
-                
-        //         const response: any = await orderStore.getListCity(
-        //             page,
-        //             size,
-        //             searchCity,
-        //             366,
-        //             undefined,
-        //         );
-        //         // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
-        //         if (response && response.kind === "ok") {
-        //             if (page === 0) {
-        //                 console.log(
-        //                     "getListAttribute---------------------",
-        //                     JSON.stringify(response.response.data)
-        //                 );
-        //                 const newArr = response.response.data.content;
-        //                 const formatArr = newArr.map((item: any) => ({
-        //                     text: item.name,
-        //                     value: item.id,
-        //                 }));
-        //                 setDataCity(formatArr);
-        //             } else {
-        //                 console.log(
-        //                     "getListAttribute---------------------",
-        //                     JSON.stringify(response.response.data)
-        //                 );
-        //                 const newArr = response.response.data.content;
-        //                 const formatArr = newArr.map((item: any) => ({
-        //                     text: item.name,
-        //                     value: item.id,
-        //                 }));
-        //                 const endArr = dataCity.concat(formatArr);
-        //                 setDataCity(endArr);
-        //             }
-        //         } else {
-        //             console.error("Failed to fetch categories:", response);
-        //         }
-        //     } catch (error) {
-        //         console.error("Error fetching product:", error);
-        //     }
-        // }
+        const getListCity = async ()=>{
+            try {
+                const response: any = await orderStore.getListCity(
+                    page,
+                    size,
+                    searchCity,
+                    366,
+                    undefined,
+                );
+                // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+                if (response && response.kind === "ok") {
+                    if (page === 0) {
+                        console.log(
+                            "getListAttribute---------------------",
+                            JSON.stringify(response.response.data)
+                        );
+                        const newArr = response.response.data.content;
+                        const formatArr = newArr.map((item: any) => ({
+                            text: item.name,
+                            value: item.id,
+                        }));
+                        setDataCity(formatArr);
+                    } else {
+                        console.log(
+                            "getListAttribute---------------------",
+                            JSON.stringify(response.response.data)
+                        );
+                        const newArr = response.response.data.content;
+                        const formatArr = newArr.map((item: any) => ({
+                            text: item.name,
+                            value: item.id,
+                        }));
+                        const endArr = dataCity.concat(formatArr);
+                        setDataCity(endArr);
+                    }
+                } else {
+                    console.error("Failed to fetch categories:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
+        }
 
         const handleSelectCity = (data: any)=>{
             setCity(data)
@@ -214,7 +213,7 @@ export const NewDelivery: FC = observer(
                         titleTx={'order.city'}
                         hintTx={'order.chooseCity'}
                         required={true}
-                        arrData={arrCity}
+                        arrData={dataCity}
                         dataDefault={city.label}
                         onPressChoice={(item) => handleSelectCity(item)}
                         styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
