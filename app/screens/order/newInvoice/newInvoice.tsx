@@ -26,7 +26,7 @@ import {
 } from "../../../theme";
 import { styles } from "./styles";
 import { InputSelect } from "../../../components/input-select/inputSelect";
-import AddProduct from "../components/itemListProduct";
+// import AddProduct from "../components/itemListProduct";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AutoHeightImage from "react-native-auto-height-image";
 import { Positions } from "react-native-calendars/src/expandableCalendar";
@@ -42,8 +42,13 @@ import { translate } from "../../../i18n";
 import moment from "moment";
 import CustomCalendar from "../../../components/calendar";
 import { MakeResult } from "mobx/dist/internal";
-import ItemListProduct from "../components/itemListProduct";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import ItemListProduct from "../components/item-list-product";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+  Loading,
+} from "../../../components/dialog-notification";
 
 export const NewInvoice: FC = observer(function NewInvoice(props) {
   const navigation = useNavigation();
@@ -189,9 +194,8 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
           onPressButton: () => {
             Linking.openSettings();
             Dialog.hide();
-             
-          }
-      })
+          },
+        });
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       console.log("Permission blocked, you need to enable it from settings");
@@ -337,7 +341,6 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 : Dimensions.get("window").height - scaleHeight(120),
           },
         ]}>
-       
         {isDeposit === true ? (
           <View
             style={{

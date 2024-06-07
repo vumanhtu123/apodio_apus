@@ -198,22 +198,26 @@ import img_addImg from "./Images/ic_addImg.svg";
 import img_Camera from "./Images/img_camera.svg";
 import ic_debt from "./Images/ic_debt.svg";
 import ic_toPay from "./Images/ic_topay.svg";
-import ic_receivables from "./Images/ic_receivables.svg"
-import ic_calender_white from "./Images/ic_calender_white.svg"
-import ic_slider from "./Images/ic_sliders.svg"
+import ic_receivables from "./Images/ic_receivables.svg";
+import ic_calender_white from "./Images/ic_calender_white.svg";
+import ic_slider from "./Images/ic_sliders.svg";
 import icon_ellipse_tracking from "./Images/icon_ellipse_tracking.svg";
-import icon_order_success from "./Images/icon_orderSuccess.svg"
-import icon_pickup from "./Images/icon_pickup.svg"
-import icon_deliveryBlue from "./Images/icon_deliveryBlue.svg"
+import icon_order_success from "./Images/icon_orderSuccess.svg";
+import icon_pickup from "./Images/icon_pickup.svg";
+import icon_deliveryBlue from "./Images/icon_deliveryBlue.svg";
 import icon_ellipse_tracking_blue from "./Images/icon_ellipse_tracking_blue.svg";
-import icon_order_success_blue from "./Images/icon_orderSuccessBlue.svg"
-import icon_pickup_blue from "./Images/icon_pickupBlue.svg"
-import icon_delivery from "./Images/icon_delivery.svg"
+import icon_order_success_blue from "./Images/icon_orderSuccessBlue.svg";
+import icon_pickup_blue from "./Images/icon_pickupBlue.svg";
+import icon_delivery from "./Images/icon_delivery.svg";
 import tag from "./Images/Tag.svg";
 import ic_plus_blue from "./Images/PlusBlue.svg";
 import ic_dot from "./Images/ic_dot.svg";
 import icon_plus_blue2 from "./Images/icon_plus_blue2.svg";
 import icon_QRCode from "./Images/ic_QRCode.svg";
+import ic_avatar_order from "./Images/AvatarInOrder.svg";
+import ic_warning_yellow from "./Images/warning_yellow.svg";
+import ic_plus_orange from "./Images/ic_plus_orange.svg";
+import minus_ic from "./Images/minus_ic.svg";
 
 export const Images = {
   icon_test: _test,
@@ -391,7 +395,7 @@ export const Images = {
   ClipboardText: ClipboardText,
   icon_chart: icon_chart,
   ic_x: ic_x,
-  ic_grid : ic_grid,
+  ic_grid: ic_grid,
   img_test: img_test,
   ic_downLoadBlue: ic_downLoadBlue,
   ic_Feilter: ic_Feild,
@@ -421,7 +425,11 @@ export const Images = {
   icon_delivery: icon_delivery,
   ic_tag: tag,
   icon_plus_blue: ic_plus_blue,
-  ic_dot:ic_dot,
+  ic_dot: ic_dot,
   icon_plus_blue2: icon_plus_blue2,
-  icon_QRCode : icon_QRCode
+  icon_QRCode: icon_QRCode,
+  ic_avatar_order: ic_avatar_order,
+  ic_warning_yellow: ic_warning_yellow,
+  ic_plus_orange: ic_plus_orange,
+  minus_ic: minus_ic,
 };
