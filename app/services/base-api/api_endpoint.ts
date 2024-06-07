@@ -41,5 +41,10 @@ export const ApiEndpoint = {
   COMPANY_INFO: "/api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
   GET_LIST_ORDER : '/api/v1/retail/sale-order/list',
+  GET_LIST_ORDER_PRODUCT: '/api/v1/retail/sale-order/product-templates',
+  GET_LIST_ORDER_VARIANT: '/api/v1/retail/sale-order/products',
+  GET_LIST_ORDER_PRODUCT_PRICE: '/api/v1/retail/sale-order/price-list/product-templates',
+  GET_LIST_ORDER_VARIANT_PRICE: '/api/v1/retail/sale-order/price-list/products',
+  GET_LIST_CITY: '/api/v1/cities/list/city-country',
   GET_DETAIL_ORDER : '/api/v1/retail/sale-order',
 };

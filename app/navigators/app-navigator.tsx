@@ -123,6 +123,8 @@ export type NavigatorParamList = {
   editDelivery: undefined;
   newDelivery: undefined;
   addProductOrder: undefined;
+  selectVariant: undefined;
+  filterOrderScreen: undefined;
   printInvoiceScreen: undefined;
   newInvoice: undefined;
 };
@@ -338,6 +340,16 @@ export const AppStack = () => {
         name="addProductOrder"
         options={{ gestureEnabled: false }}
         component={Screens.AddProductOrder}
+      />
+      <Stack.Screen
+        name="selectVariant"
+        options={{ gestureEnabled: false }}
+        component={Screens.SelectVariant}
+      />
+      <Stack.Screen
+        name="filterOrderScreen"
+        options={{ gestureEnabled: false }}
+        component={Screens.FilterOrderScreen}
       />
       <Stack.Screen
         name="orderDetails"

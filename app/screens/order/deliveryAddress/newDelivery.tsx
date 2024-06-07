@@ -1,5 +1,5 @@
 import { Observer, observer } from 'mobx-react-lite';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import React, { KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import { Button, Header, Switch, Text, TextField } from '../../../components';
@@ -8,26 +8,113 @@ import { Images } from '../../../../assets';
 import { InputSelect } from '../../../components/input-select/inputSelect';
 import { colors, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { useNavigation } from '@react-navigation/native';
+import { ALERT_TYPE, Toast } from '../../../components/dialog-notification';
+import { useStores } from '../../../models';
+
 export const NewDelivery: FC = observer(
     function NewDelivery() {
         const navigation = useNavigation()
-        const [city, setCity] = useState({id: '', label: ''})
-        const [district, setDistrict] = useState({id: '', label: ''})
-        const [wards, setWards] = useState({id: '', label: ''})
-        const [phone, setPhone] = useState('')
-        const [addressChange, setAddressChange] = useState('')
+        const {orderStore} = useStores()
+        const [dataCity, setDataCity] = useState([])
+        const [dataDistrict, setDataDistrict] = useState([])
+        const [dataWards, setDataWards] = useState([])
+        const [city, setCity] = useState({ id: '', label: '' })
+        const [district, setDistrict] = useState({ id: '', label: '' })
+        const [wards, setWards] = useState({ id: '', label: '' })
         const [valueSwitch, setValueSwitch] = useState(false)
-        const [showAddAddress, setShowAddAddress] = useState(false)
+        const [page, setPage] = useState(0)
+        const [pageDistrict, setPageDistrict] = useState(0)
+        const [pageWards, setPageWards] = useState(0)
+        const [size, setSize] = useState(20)
+        const [searchCity, setSearchCity] = useState('')
+        const [searchDistrict, setSearchDistrict] = useState('')
+        const [searchWards, setSearchWards] = useState('')
 
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
 
-        const addressChoice = {
-            name: 'Công ty TNHH Mặt Trời Hồng',
-            phone: '02468876656',
-            address: "85 Hàng Bài, Hoàn Kiếm, Hà Nội",
-            default: false,
-            id: 1
+        useEffect(()=>{
+            getListCity()
+        }, [])
+
+        const getListCity = async ()=>{
+            try {
+                const response: any = await orderStore.getListCity(
+                    page,
+                    size,
+                    searchCity,
+                    366,
+                    undefined,
+                );
+                // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+                if (response && response.kind === "ok") {
+                    if (page === 0) {
+                        console.log(
+                            "getListAttribute---------------------",
+                            JSON.stringify(response.response.data)
+                        );
+                        const newArr = response.response.data.content;
+                        const formatArr = newArr.map((item: any) => ({
+                            text: item.name,
+                            value: item.id,
+                        }));
+                        setDataCity(formatArr);
+                    } else {
+                        console.log(
+                            "getListAttribute---------------------",
+                            JSON.stringify(response.response.data)
+                        );
+                        const newArr = response.response.data.content;
+                        const formatArr = newArr.map((item: any) => ({
+                            text: item.name,
+                            value: item.id,
+                        }));
+                        const endArr = dataCity.concat(formatArr);
+                        setDataCity(endArr);
+                    }
+                } else {
+                    console.error("Failed to fetch categories:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
         }
+
+        const handleSelectCity = (data: any)=>{
+            setCity(data)
+            //call api lấy data quận/huyện
+        }
+
+        const handleSelectDistrict = (data: any)=>{
+            setDistrict(data)
+            //call api lấy data phường xã
+        }
+
+        const handleSelectWards = (data: any)=>{
+            setWards(data)
+        }
+        const handleSelectDistrict1 = ()=>{
+            Toast.show({type: ALERT_TYPE.DANGER,
+                textBody: 'Vui lòng chọn Tỉnh/Thành phố'
+            })
+        }
+
+        const handleSelectWards1 = ()=>{
+            if(city.label === ''){
+                Toast.show({type: ALERT_TYPE.DANGER,
+                    textBody: 'Vui lòng chọn Tỉnh/Thành phố'
+                })
+            }else{
+                Toast.show({type: ALERT_TYPE.DANGER,
+                    textBody: 'Vui lòng chọn Quận/Huyện'
+                })
+            }
+        }
+
+        const submitAdd = (data: any)=>{
+            console.log(city, district,wards, valueSwitch)
+            console.log(data)
+        }
+
         const arrTest = [
             {
                 "name": "An Giang",
@@ -91,17 +178,17 @@ export const NewDelivery: FC = observer(
         })
 
         return (
-            <View style={{flex: 1, backgroundColor: 'white'}}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <Header
-                LeftIcon={Images.back}
-                onLeftPress={()=> navigation.goBack()}
-                headerTx={'order.newDelivery'}
-                style={{height: scaleHeight(54)}}
+                    LeftIcon={Images.back}
+                    onLeftPress={() => navigation.goBack()}
+                    headerTx={'order.newDelivery'}
+                    style={{ height: scaleHeight(54) }}
                 />
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
-                    style={{ marginHorizontal: scaleWidth(16), marginTop: scaleHeight(10)}}>
+                    style={{ marginHorizontal: scaleWidth(16), marginTop: scaleHeight(10) }}>
                     <Controller
                         control={control}
                         render={({ field: { onChange, value, onBlur } }) => (
@@ -118,7 +205,7 @@ export const NewDelivery: FC = observer(
                                 isImportant={true}
                                 error={errors?.phone?.message}
                             />)}
-                        defaultValue={phone}
+                        defaultValue={''}
                         name="phone"
                         rules={{ required: "Phone is required" }}
                     />
@@ -126,12 +213,11 @@ export const NewDelivery: FC = observer(
                         titleTx={'order.city'}
                         hintTx={'order.chooseCity'}
                         required={true}
-                        arrData={arrCity}
+                        arrData={dataCity}
                         dataDefault={city.label}
-                        onPressChoice={(item) => {
-                            setCity(item)
-                        }}
+                        onPressChoice={(item) => handleSelectCity(item)}
                         styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+                        onLoadMore={()=> setPage(page+1)}
                     />
                     <InputSelect
                         titleTx={'order.district'}
@@ -139,10 +225,10 @@ export const NewDelivery: FC = observer(
                         required={true}
                         arrData={arrCity}
                         dataDefault={district.label}
-                        onPressChoice={(item) => {
-                            setDistrict(item)
-                        }}
-                        styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+                        onPressChoice={(item) => handleSelectDistrict(item)}
+                        styleView={{ marginVertical: scaleHeight(margin.margin_8)}}
+                        onPressNotUse={()=> handleSelectDistrict1()}
+                        checkUse={city.label !== ''? false: true}
                     />
                     <InputSelect
                         titleTx={'order.ward'}
@@ -150,10 +236,10 @@ export const NewDelivery: FC = observer(
                         required={true}
                         arrData={arrCity}
                         dataDefault={wards.label}
-                        onPressChoice={(item) => {
-                            setWards(item)
-                        }}
-                        styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+                        onPressChoice={(item) => handleSelectWards(item)}
+                        styleView={{ marginVertical: scaleHeight(margin.margin_8)}}
+                        onPressNotUse={()=> handleSelectWards1()}
+                        checkUse={city.label !== '' && district.label !== '' ? false: true}
                     />
                     <Controller
                         control={control}
@@ -171,7 +257,7 @@ export const NewDelivery: FC = observer(
                                 isImportant={true}
                                 error={errors?.phone?.message}
                             />)}
-                        defaultValue={addressChange}
+                        defaultValue={''}
                         name="address"
                         rules={{ required: "Address is required" }}
                     />
@@ -185,20 +271,20 @@ export const NewDelivery: FC = observer(
                     </View>
                 </KeyboardAvoidingView>
                 <View
-        style={styles.viewGroupBtn}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack()
-          }}
-          style={styles.viewBtnCancel}>
-          <Text tx={"common.cancel"} style={styles.textBtnCancel}/>
-        </TouchableOpacity>
-        <TouchableOpacity
-        //   onPress={handleSubmit(submitAdd)}
-          style={styles.viewBtnConfirm}>
-          <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm}/>
-        </TouchableOpacity>
-      </View>
+                    style={styles.viewGroupBtn}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.goBack()
+                        }}
+                        style={styles.viewBtnCancel}>
+                        <Text tx={"common.cancel"} style={styles.textBtnCancel} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                          onPress={handleSubmit(submitAdd)}
+                        style={styles.viewBtnConfirm}>
+                        <Text tx={"common.saveChange"} style={styles.textBtnConfirm} />
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     })

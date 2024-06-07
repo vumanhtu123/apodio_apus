@@ -1,9 +1,9 @@
 import { Observer, observer } from 'mobx-react-lite';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import React, { Dimensions, FlatList, KeyboardAvoidingView, Platform, TouchableOpacity, View } from 'react-native';
 import { Button, Header, Switch, Text, TextField } from '../../../components';
 import { Images } from '../../../../assets';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { InputSelect } from '../../../components/input-select/inputSelect';
 import { Controller, useForm } from 'react-hook-form';
 import { styles } from './styles';
@@ -13,31 +13,24 @@ import { translate } from '../../../i18n';
 export const DeliveryAddress: FC = observer(
     function DeliveryAddress() {
         const navigation = useNavigation()
-        const [reason, setReason] = useState({ label: '' })
-        const [city, setCity] = useState({})
-        const [district, setDistrict] = useState({})
-        const [wards, setWards] = useState({})
-        const [phone, setPhone] = useState('')
-        const [addressChange, setAddressChange] = useState('')
-        const [valueSwitch, setValueSwitch] = useState(false)
-        const [showAddAddress, setShowAddAddress] = useState(false)
+        const [addressChoice, setAddressChoice] = useState('')
+        const route = useRoute()
+        const dataAddress = route?.params?.dataAddress
 
-        const { control, reset, handleSubmit, formState: { errors } } = useForm();
-
-        const handleChangeAddress = (data: any) => {
-            console.log(control)
-            let arrText = data.item.address.split(",")
-            console.log(arrText)
-            setShowAddAddress(true)
-            setCity({ label: arrText[3] })
-            setDistrict({ label: arrText[2] })
-            setWards({ label: arrText[1] })
-            setPhone(data.item.phone)
-            setAddressChange(arrText[0])
-            setValueSwitch(data.item.default)
-            console.log(data.item.phone)
-            reset()
+        const handlePress = (data: any) =>{
+            setAddressChoice(data.id)
+            navigation.navigate('newOrder' as never, {dataAddress: data})
         }
+        useEffect(()=>{
+            if(dataAddress === undefined){
+            userAddress.map(items=> {
+                if(items.default===true){
+                    setAddressChoice(items.id)
+                }
+            })}else{
+                setAddressChoice(dataAddress.id)
+            }
+        }, [])
 
         const userAddress = [
             {
@@ -95,13 +88,6 @@ export const DeliveryAddress: FC = observer(
                 default: false,
             },
         ]
-        const addressChoice = {
-            name: 'Công ty TNHH Mặt Trời Hồng',
-            phone: '02468876656',
-            address: "85 Hàng Bài, Hoàn Kiếm, Hà Nội",
-            default: false,
-            id: 1
-        }
         const arrTest = [
             {
                 "name": "An Giang",
@@ -164,74 +150,72 @@ export const DeliveryAddress: FC = observer(
             return { label: item.name, id: item.code }
         })
 
-        const addNewAddress = () => {
-            setShowAddAddress(true)
-            setCity({ label: '' })
-            setDistrict({ label: '' })
-            setWards({ label: '' })
-            setPhone('')
-            setAddressChange('')
-            setValueSwitch(false)
-            reset()
-        }
-
         return (
-            <View>
+            <View style={styles.ROOT}>
                 <Header
                     LeftIcon={Images.back}
                     onLeftPress={() => navigation.goBack()}
-                    headerTx={'order.deliveryAddress'}
+                    headerTx={'order.changeDeliveryAddress'}
                     style={{ height: scaleHeight(54) }}
                 />
-                <View style={[styles.viewModal]}>
+                <View style={[styles.viewModal, {maxHeight: '85%'}]}>
                     <View>
                         <FlatList
                             data={userAddress}
-                            style={{ height: '90%' }}
+                            style={{ maxHeight: '100%' }}
                             showsVerticalScrollIndicator={false}
                             renderItem={(item) => {
                                 return (
-                                    <View>
-                                        <View style={{
-                                            flexDirection: 'row', flex: 1,
-                                            marginTop: scaleHeight(margin.margin_15),
-                                        }}>
-                                            <View style={{ flex: 1, }}>
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Text style={styles.textListProduct}>
-                                                        {translate("order.phone") + ': '}
-                                                    </Text>
-                                                    <Text text={item.item.phone} style={styles.textMoney2} />
-                                                    <TouchableOpacity
-                                                        onPress={() => navigation.navigate('editDelivery' as never, {dataEdit: item})}>
-                                                        <Images.icon_edit style={{ marginLeft: scaleWidth(margin.margin_4) }} />
-                                                    </TouchableOpacity>
-                                                </View>
+                                    <TouchableOpacity onPress={()=> handlePress(item.item)}>
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <View style={{flex: 1, maxWidth:'80%'}}>
                                                 <View style={{
-                                                    flexDirection: 'row',
-                                                    marginVertical: scaleHeight(margin.margin_6)
+                                                    flexDirection: 'row', flex: 1,
+                                                    marginTop: scaleHeight(margin.margin_15),
                                                 }}>
-                                                    <Text style={styles.textListProduct} >
-                                                        {translate("order.address") + ': '}
-                                                        <Text style={styles.textMoney2} >{item.item.address}</Text>
-                                                    </Text>
+                                                    <View style={{ flex: 1 }}>
+                                                        <View style={{ flexDirection: 'row' }}>
+                                                            <Text style={styles.textListProduct}>
+                                                                {translate("order.phone") + ': '}
+                                                            </Text>
+                                                            <Text text={item.item.phone} style={styles.textMoney2} />
+                                                            <TouchableOpacity
+                                                                onPress={() => navigation.navigate('editDelivery' as never, { dataEdit: item.item })}>
+                                                                <Images.icon_edit style={{ marginLeft: scaleWidth(margin.margin_4) }} />
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                        <View style={{
+                                                            flexDirection: 'row',
+                                                            marginVertical: scaleHeight(margin.margin_6)
+                                                        }}>
+                                                            <Text style={styles.textListProduct} >
+                                                                {translate("order.address") + ': '}
+                                                                <Text style={styles.textMoney2} >{item.item.address}</Text>
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                </View>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <View style={styles.viewBorder}>
+                                                        <Text text='loại địa chỉ' style={styles.textDolphin400} />
+                                                    </View>
+                                                    {item.item.default === true ? <View >
+                                                        <Text tx={'order.deFault'} style={[styles.textDolphin400, {
+                                                            color: colors.palette.radicalRed
+                                                        }]} />
+                                                    </View> : null}
                                                 </View>
                                             </View>
-                                            <View>
-                                                {addressChoice.id === item.item.id ?
+                                            <View style={{justifyContent: 'center', alignItems: 'flex-end',width: "20%"}} > 
+                                                {addressChoice === item.item.id ?
                                                     <Images.icon_checkGreen width={17} height={13} /> : null}
                                             </View>
                                         </View>
-                                        {item.item.default === true ? <View >
-                                            <Text tx={'order.deFault'} style={[styles.textMoney2, {
-                                                color: colors.palette.radicalRed
-                                            }]} />
-                                        </View> : null}
                                         <View style={{
                                             height: 1, backgroundColor: '#E7EFFF',
                                             marginTop: scaleHeight(margin.margin_15)
                                         }}></View>
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             }}
                         />

@@ -2,6 +2,7 @@ import React from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { Images } from "../../../../assets";
 import { Text } from "../../../components";
+import { useNavigation } from "@react-navigation/native";
 interface InputData {
   openDialog: () => void;
 }
@@ -82,6 +83,7 @@ export const PriceList = () => {
 };
 
 export const AddressOrder = () => {
+  const navigation = useNavigation()
   return (
     <View
       style={{
@@ -114,7 +116,9 @@ export const AddressOrder = () => {
             fontWeight: "400",
           }}></Text>
       </View>
+      <TouchableOpacity onPress={()=> navigation.navigate('deliveryAddress' as never)} >
       <Images.icon_caretRight2 />
+      </TouchableOpacity>
     </View>
   );
 };
