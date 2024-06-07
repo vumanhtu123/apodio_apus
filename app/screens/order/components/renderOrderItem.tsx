@@ -6,6 +6,7 @@ import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../.
 import { Text } from '../../../components';
 import { TurboModuleRegistry } from 'react-native-windows';
 import { useStores } from '../../../models';
+import AutoHeightImage from 'react-native-auto-height-image';
 
 const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDetail, handleClassifyDetail }: any) => {
     const { orderStore } = useStores()
@@ -24,14 +25,14 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
         const newArr2 = newArr1.map(items => {
             if (items.id === data.id) {
                 const amounts = items.amount - 1
-                if(amounts === 0){
-                    return 
-                }else{
+                if (amounts === 0) {
+                    return
+                } else {
                     return { ...items, amount: amounts }
                 }
             } else { return items }
         })
-        const newArr3 = newArr2.filter(items=> items !== undefined)
+        const newArr3 = newArr2.filter(items => items !== undefined)
         setDataProductAddOrderNew(newArr3)
         console.log(dataProductAddOrderNew)
     }
@@ -46,7 +47,7 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
         console.log(dataProductAddOrderNew)
     }
 
-    const idItemCheck = dataProductAddOrderNew.filter(items=> items.id === item.id)
+    const idItemCheck = dataProductAddOrderNew.filter(items => items.id === item.id)
 
     if (isGridView) {
         return (
@@ -84,20 +85,22 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                                 borderTopLeftRadius: 12,
                                 borderTopRightRadius: 12,
                             }}
-                            source={require("../../../../assets/Images/no_images.png")}>
-                            <FastImage
-                                style={{
-                                    width: scaleWidth(107),
-                                    height: scaleHeight(50),
-                                    borderTopLeftRadius: 12,
-                                    borderTopRightRadius: 12,
-                                }}
-                                source={{
-                                    uri: item.imageUrls && item.imageUrls.length > 0 ? `${item.imageUrls[0]}` : '',
-                                    cache: FastImage.cacheControl.immutable,
-                                }}
-                                defaultSource={require("../../../../assets/Images/no_images.png")}
-                            />
+                            source={require("../../../../assets/Images/no_images.png")}
+                        >
+                            {viewProduct === "VIEW_PRODUCT" ? null :
+                                <FastImage
+                                    style={{
+                                        width: scaleWidth(107),
+                                        height: scaleHeight(50),
+                                        borderTopLeftRadius: 12,
+                                        borderTopRightRadius: 12,
+                                    }}
+                                    source={{
+                                        uri: item.productImage && item?.productImage?.length !== 0 ? item.productImage[0] : '',
+                                        cache: FastImage.cacheControl.immutable,
+                                    }}
+                                    defaultSource={require("../../../../assets/Images/no_images.png")}
+                                />}
                         </ImageBackground>
                     </View>
                     <View
@@ -111,17 +114,28 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                         <Text numberOfLines={1} style={stylesItem.textName}>
                             {item.name}
                         </Text>
-                        <Text style={stylesItem.amount} numberOfLines={1}>
-                            {item.variantCount} <Text text='hop' style={stylesItem.amount}></Text>
-                        </Text>
+                        {viewProduct === "VIEW_PRODUCT" ?
+                            <Text style={stylesItem.amount} numberOfLines={1}>
+                                {item.quantityInventory} <Text text={item?.uom?.name} style={stylesItem.amount}></Text>
+                            </Text>
+                            : viewProduct === "VIEW_VARIANT" && orderStore.checkPriceList === true ?
+                                <Text style={stylesItem.amount} numberOfLines={1}>
+                                    {item.quantityInventory} <Text text={item?.uomName} style={stylesItem.amount}></Text>
+                                </Text>
+                                : null}
                         {viewProduct === "VIEW_PRODUCT" ? (
                             <Text style={stylesItem.content} numberOfLines={1}>
                                 {item.variantCount} <Text tx="productScreen.productClassification" style={stylesItem.content}></Text>
                             </Text>
                         ) : null}
-                        {item.check === "Het hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
-                            item.check === "Con hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
-                                <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />}
+                        {viewProduct === "VIEW_PRODUCT" ?
+                            (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
+                                    <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />)
+                            : viewProduct === "VIEW_VARIANT" && orderStore.checkPriceList === true ?
+                                (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                    item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
+                                        <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />) : null}
                         {viewProduct === "VIEW_PRODUCT" ? null :
                             (idItemCheck.length === 0 ?
                                 <TouchableOpacity style={{ marginVertical: scaleHeight(5.5) }}
@@ -174,7 +188,7 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                         backgroundColor: "#F6F7F9",
                         zIndex: 1,
                     }}>
-                    {viewProduct === 'VIEW_VARIANT' && item.scene?.url !== '' ?
+                    {viewProduct === 'VIEW_VARIANT' && item.upc !== null ?
                         <TouchableOpacity >
                             <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
                         </TouchableOpacity> : null
@@ -193,17 +207,19 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                             }}
                             imageStyle={{ borderRadius: 8 }}
                             source={require("../../../../assets/Images/no_images.png")}>
-                            <FastImage
-                                style={{
-                                    width: scaleWidth(70),
-                                    height: scaleHeight(70),
-                                    borderRadius: 8,
-                                }}
-                                source={{
-                                    uri: item.imageUrls && item.imageUrls.length > 0 ? `${item.imageUrls[0]}` : '',
-                                    cache: FastImage.cacheControl.immutable,
-                                }}
-                            />
+                            {viewProduct === "VIEW_PRODUCT" ? null :
+                                <FastImage
+                                    style={{
+                                        width: scaleWidth(70),
+                                        height: scaleHeight(70),
+                                        borderRadius: 8
+                                    }}
+                                    source={{
+                                        uri: item.productImage && item?.productImage?.length !== 0 ? item.productImage[0] : '',
+                                        cache: FastImage.cacheControl.immutable,
+                                    }}
+                                    defaultSource={require("../../../../assets/Images/no_images.png")}
+                                />}
                         </ImageBackground>
                     </View>
                     <View
@@ -211,23 +227,34 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                             stylesItem.titleView,
                             { marginTop: scaleHeight(10), marginHorizontal: scaleWidth(6) },
                         ]}>
-                        <View style={{ flexDirection: 'row', maxWidth: scaleWidth(100) }}>
-                            <Text numberOfLines={1} style={[stylesItem.title, { marginRight: scaleWidth(5) }]}>{item.sku}</Text>
+                        <Text numberOfLines={1} style={[stylesItem.title, { marginRight: scaleWidth(5) }]}>{item.sku}</Text>
+                        <View style={{ width: scaleWidth(200) }}>
                             <Text numberOfLines={1} style={stylesItem.textName}>
                                 {item.name}
                             </Text>
-                            </View>
-                        <Text style={stylesItem.amount} numberOfLines={1}>
-                            {item.variantCount} <Text text='hop' style={stylesItem.amount}></Text>
-                        </Text>
+                        </View>
+                        {viewProduct === "VIEW_PRODUCT" ?
+                            <Text style={stylesItem.amount} numberOfLines={1}>
+                                {item.quantityInventory} <Text text={item?.uom?.name} style={stylesItem.amount}></Text>
+                            </Text>
+                            : viewProduct === "VIEW_VARIANT" && orderStore.checkPriceList === true ?
+                                <Text style={stylesItem.amount} numberOfLines={1}>
+                                    {item.quantityInventory} <Text text={item?.uomName} style={stylesItem.amount}></Text>
+                                </Text>
+                                : null}
                         {viewProduct === "VIEW_PRODUCT" ? (
                             <Text style={stylesItem.content} numberOfLines={1}>
                                 {item.variantCount} <Text tx="productScreen.productClassification" style={stylesItem.content}></Text>
                             </Text>
                         ) : null}
-                        {item.check === "Het hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
-                            item.check === "Con hang" ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
-                                <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />}
+                        {viewProduct === "VIEW_PRODUCT" ?
+                            (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
+                                    <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />)
+                            : viewProduct === "VIEW_VARIANT" && orderStore.checkPriceList === true ?
+                                (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                    item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
+                                        <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />) : null}
                         {viewProduct === "VIEW_PRODUCT" ? null :
                             (idItemCheck.length === 0 ?
                                 <TouchableOpacity style={{ marginVertical: scaleHeight(5.5) }}

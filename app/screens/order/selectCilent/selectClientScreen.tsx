@@ -62,7 +62,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
         // console.log("doannnnn", totalPage);
 
 
-        const sort = getAPi.orderStore.sort
+        const sort = getAPi.orderStore.sortCreateClient
         console.log("doann log sort", sort);
 
         console.log('====================================');
@@ -88,7 +88,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
         useEffect(() => {
             getListClient()
-        }, [getAPi.orderStore.sort])
+        }, [getAPi.orderStore.sortCreateClient])
 
 
 

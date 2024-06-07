@@ -21,6 +21,7 @@ import { ProductList } from "./renderList/product-list";
 import { styles } from "./styles";
 
 
+
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
   const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);

@@ -6,6 +6,8 @@ import { scaleHeight, scaleWidth } from '../../../theme';
 import { styles } from '../styles';
 import CategoryModalFilter from '../component/modal-category';
 import RenderProductItem from './renderItemProduct';
+
+
 interface ProductListProps {
     navigation: any;
     tabTypes: string[];

@@ -154,10 +154,10 @@ export class Dialog extends React.Component<IProps, IState> {
     let animations = [
       opacity
         ? Animated.timing(this._opacity, {
-            toValue: action === ACTION.OPEN ? 1 : 0,
-            duration: 300,
-            useNativeDriver: false,
-          })
+          toValue: action === ACTION.OPEN ? 1 : 0,
+          duration: 300,
+          useNativeDriver: false,
+        })
         : null!,
       Animated[open ? 'spring' : 'timing'](this._positionDialog, {
         toValue: open ? ENV.WINDOWS.HEIGHT / 2 - this._popupHeight / 2 : ENV.WINDOWS.HEIGHT + 30,
@@ -198,18 +198,18 @@ export class Dialog extends React.Component<IProps, IState> {
   private _buttonRender = (): JSX.Element => {
     const { styles } = this.state;
     const { type, onPressButton, button, button2 } = this.state.config!;
-      return (
-        <View style={styles.viewButton}>
+    return (
+      <View style={styles.viewButton}>
 
-        {button && ( <TouchableOpacity style={StyleSheet.flatten([styles.button])} onPress={this._close}>
-          <Text style={styles.buttonLabel}>{button}</Text>
+        {button && (<TouchableOpacity style={StyleSheet.flatten([button2 ? styles.button : styles.buttonBackground ])} onPress={this._close}>
+          <Text style={[styles.buttonLabel , {color: button2 ? '#747475' : '#fff'}] }>{button}</Text>
         </TouchableOpacity>)}
         {button && button2 && <View style={{ width: scaleWidth(9) }} />}
         {button2 && ( <TouchableOpacity style={StyleSheet.flatten([styles.buttonAccept])} onPress={this.onPressBTN ?? this._close}>
           <Text style={styles.buttonLabelAccept}>{button2}</Text>
         </TouchableOpacity>)}
-        </View>
-      );
+      </View>
+    );
   };
 
   /**
@@ -294,7 +294,7 @@ const __styles = (isDark: boolean) =>
       backgroundColor: Color.get('card', isDark),
     },
 
-    viewButton:{
+    viewButton: {
       flexDirection: 'row',
       justifyContent: 'space-around',
       width: '100%',
@@ -316,12 +316,12 @@ const __styles = (isDark: boolean) =>
     descLabel: {
       textAlign: 'center',
       color: Color.get('label', isDark),
-      marginVertical : scaleHeight(15)
+      marginVertical: scaleHeight(15)
     },
     button: {
       flex: 1,
       // backgroundColor : 'red',
-      borderColor :"#d5d5d5",
+      borderColor: "#d5d5d5",
       borderWidth: 1,
       borderRadius: 8,
       height: scaleHeight(44),
@@ -330,7 +330,18 @@ const __styles = (isDark: boolean) =>
       alignItems: 'center',
       alignSelf: 'center',
     },
-    buttonAccept:{
+    buttonBackground: {
+      flex: 1,
+      borderColor: "#d5d5d5",
+      borderWidth: 1,
+      borderRadius: 8,
+      height: scaleHeight(44),
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignSelf: 'center',
+      backgroundColor: '#0078d4'
+    },
+    buttonAccept: {
       flex: 1,
       borderRadius: 8,
       height: scaleHeight(44),
@@ -338,14 +349,14 @@ const __styles = (isDark: boolean) =>
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      backgroundColor : '#0078d4'
+      backgroundColor: '#0078d4'
     },
     buttonLabel: {
-      color: '#747475',
+      // color: '#747475',
       fontWeight: 'bold',
       fontSize: fontSize.size14,
     },
-    buttonLabelAccept : {
+    buttonLabelAccept: {
       color: '#fff',
       fontWeight: 'bold',
       fontSize: fontSize.size14,

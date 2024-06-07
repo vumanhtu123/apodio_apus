@@ -29,8 +29,8 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
 
 
         const handleNewOrOld = () => {
-            orderStore.setSort(newOrOld)
-            console.log("sorttttttt", orderStore.sort);
+            orderStore.setSortCreateClient(newOrOld)
+            console.log("sorttttttt", orderStore.sortCreateClient);
             console.log('====================================');
             console.log("111111");
             console.log('====================================');
@@ -39,8 +39,8 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
         }
 
         const handleAtoZ = () => {
-            orderStore.setSort(aToz)
-            console.log("sorttttttt", orderStore.sort);
+            orderStore.setSortCreateClient(aToz)
+            console.log("sorttttttt", orderStore.sortCreateClient);
             console.log('====================================');
             console.log("2222");
             console.log('====================================');

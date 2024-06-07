@@ -84,7 +84,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           50,
         );
         if (response && response.kind === "ok") {
-          // console.log('orderLisst', data[0].code)
+          console.log('orderLisst', JSON.stringify(response.response.data.content) )
           setArrData(response.response.data.content)
         } else {
           console.error("Failed to fetch order:", response);
@@ -265,7 +265,11 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const toggleModalDate = () => {
       setIsSortByDate(!isSortByDate)
     }
-    
+    const handleDetailOrder = (id : number) => {
+      orderStore.setOrderId(id)
+      console.log('first' , orderStore.orderId)
+      navigation.navigate('orderDetails' as never)
+    }
 
     return (
       <View style={styles.ROOT}>
@@ -323,18 +327,18 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <ItemOrder
-              onPress={() => navigation.navigate('orderDetails', { data: item })}
+              onPress={() => handleDetailOrder(item.id)}
               name={item.partner.name}
               time={formatDateTime(item.quoteCreationDate)}
               code={item.code}
               status={item.status}
               amount={item.amount}
-              discount={item.discount}
+              discount={formatCurrency(item.amountDiscount)}
               payStatus={item.payStatus}
               weight={item.weight}
-              totalAmount={formatCurrency(item.totalPrice)}
-              totalTax={item.totalTax}
-              money={item.money}
+              totalAmount={formatCurrency(item.amountTotal)}
+              totalTax={formatCurrency(item.amountTax)}
+              money={formatCurrency(item.totalPrice)}
               styleViewStatus={{
                 backgroundColor: item.status === 'Đã xử lý' ? colors.palette.solitude
                   : item.status === 'Chờ xử lý' ? colors.palette.floralWhite : colors.palette.amour,

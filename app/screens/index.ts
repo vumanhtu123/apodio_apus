@@ -14,12 +14,14 @@ export * from "./setting_screen/notification_screen/notification-setting-screen"
 export * from "./notifications/notification-screen";
 export * from "./product/product-screen";
 export * from "./order/orderDetail/orderDetails";
-export * from "./order/newOrder/newOrder";
 export * from "./order/deliveryAddress/deliveryAddress";
 export * from "./order/deliveryAddress/editDelivery";
 export * from "./order/deliveryAddress/newDelivery";
+export * from "./order/new-order/new-order-screen";
 export * from "./order/orderTracking/orderTracking";
 export * from "./order/addProduct/addProductOrder";
+export * from "./order/addProduct/selectVariant";
+export * from "./order/addProduct/filterOrderScreen";
 export * from "./promotions/promotions";
 export * from "./product/arrange-product";
 export * from "./product/component/modal-select-filter";
@@ -72,7 +74,11 @@ export * from "../screens/users/inforAccount/inforAccount";
 export * from "../screens/suppliers/screens/details-suppliers-screen";
 export * from "../screens/suppliers/screens/details-order-screen";
 export * from "../screens/debt/screen/debt-screen";
-export * from "../screens/debt/screen/mustPayScreen"
+export * from "../screens/debt/screen/mustPayScreen";
 export * from "../screens/suppliers/screens/order-details-screen";
 export * from "../screens/order/selectCilent/selectClientScreen"
 export * from "../screens/order/selectCilent/filter-selected-client";
+export * from "../screens/order/printInvoice/printInvoiceScreen";
+export * from "../screens/order/newInvoice/newInvoice";
+
+export * from "./order/new-order/payment-method-screen";

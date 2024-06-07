@@ -120,11 +120,16 @@ export type NavigatorParamList = {
   orderTracking: undefined;
   orderDetailsSupplier: undefined;
   selectClient: undefined;
+  paymentBuy: undefined;
   deliveryAddress: undefined;
   editDelivery: undefined;
   newDelivery: undefined;
   addProductOrder: undefined;
   filterSelectScreen: undefined;
+  selectVariant: undefined;
+  filterOrderScreen: undefined;
+  printInvoiceScreen: undefined;
+  newInvoice: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -147,10 +152,7 @@ export const AppStack = () => {
         name="accountSecurity"
         component={Screens.AccountSecurity}
       />
-      <Stack.Screen
-        name="Introduce"
-        component={Screens.IntroductionScreen2}
-      />
+      <Stack.Screen name="Introduce" component={Screens.IntroductionScreen2} />
       <Stack.Screen name="changePass" component={Screens.changePassScreen} />
       <Stack.Screen
         name="termsAndAgreement"
@@ -202,20 +204,41 @@ export const AppStack = () => {
       />
 
       <Stack.Screen name="inforAccount" component={Screens.InforAccount} />
-      <Stack.Screen name="notificationSetting" component={Screens.NotificationSetting} />
+      <Stack.Screen
+        name="notificationSetting"
+        component={Screens.NotificationSetting}
+      />
       <Stack.Screen name="ballotDetail" component={Screens.BallotDetail} />
-      <Stack.Screen name="detaiExportGoods" component={Screens.DetailExportGoods} />
+      <Stack.Screen
+        name="detaiExportGoods"
+        component={Screens.DetailExportGoods}
+      />
 
       {/* màn sổ nhập */}
-      <Stack.Screen name="importGoodsBook" component={Screens.ImprotGoodsBook} />
-      <Stack.Screen name="createImportGoods" component={Screens.CreateImportGoods} />
-      <Stack.Screen name="createGoodsReceipt" component={Screens.CreateGoodsReceipt} />
-      <Stack.Screen name="detailImportReceipt" component={Screens.DetailImportReceipt} />
+      <Stack.Screen
+        name="importGoodsBook"
+        component={Screens.ImprotGoodsBook}
+      />
+      <Stack.Screen
+        name="createImportGoods"
+        component={Screens.CreateImportGoods}
+      />
+      <Stack.Screen
+        name="createGoodsReceipt"
+        component={Screens.CreateGoodsReceipt}
+      />
+      <Stack.Screen
+        name="detailImportReceipt"
+        component={Screens.DetailImportReceipt}
+      />
       <Stack.Screen name="voucherDetail" component={Screens.VoucherDetail} />
 
       {/* màn hình sô kho */}
       <Stack.Screen name="warehouseBook" component={Screens.warehouseBook} />
-      <Stack.Screen name="filterInWarehouseBook" component={Screens.FilterWarehouseBook} />
+      <Stack.Screen
+        name="filterInWarehouseBook"
+        component={Screens.FilterWarehouseBook}
+      />
 
       {/* Màn hình công nợ */}
       <Stack.Screen name="debt" component={Screens.DebtScreen} />
@@ -324,9 +347,29 @@ export const AppStack = () => {
         component={Screens.AddProductOrder}
       />
       <Stack.Screen
+        name="selectVariant"
+        options={{ gestureEnabled: false }}
+        component={Screens.SelectVariant}
+      />
+      <Stack.Screen
+        name="filterOrderScreen"
+        options={{ gestureEnabled: false }}
+        component={Screens.FilterOrderScreen}
+      />
+      <Stack.Screen
         name="orderDetails"
         options={{ gestureEnabled: false }}
         component={Screens.OrderDetails}
+      />
+      <Stack.Screen
+        name="printInvoiceScreen"
+        options={{ gestureEnabled: false }}
+        component={Screens.PrintInvoiceScreen}
+      />
+      <Stack.Screen
+        name="newInvoice"
+        options={{ gestureEnabled: false }}
+        component={Screens.NewInvoice}
       />
       <Stack.Screen
         name="newOrder"
@@ -377,6 +420,11 @@ export const AppStack = () => {
         name="detailsSupplier"
         options={{ gestureEnabled: false }}
         component={Screens.DetailsSupplierScreen}
+      />
+      <Stack.Screen
+        name="paymentBuy"
+        options={{ gestureEnabled: false }}
+        component={Screens.PaymentMethodScreen}
       />
       {/* <Stack.Screen
         name="detailsOrderScreen"
