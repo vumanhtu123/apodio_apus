@@ -49,6 +49,7 @@ import {
 } from "../components/header-order";
 import { ModalPayment } from "../components/modal-payment-method";
 import { ModalTaxes } from "../components/modal-taxes-apply";
+import { useStores } from "../../../models";
 
 export const dataPromotion = [
   {
@@ -78,6 +79,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     control,
     formState: { errors },
   } = useForm();
+
+  const {orderStore} = useStores()
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [payment, setPayment] = useState({ label: "" });
@@ -347,6 +350,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
   useEffect(() => {
     setArrProduct(arrProducts);
+    orderStore.setCheckPriceList(true)
   }, []);
 
   return (
