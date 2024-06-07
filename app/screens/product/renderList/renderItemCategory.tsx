@@ -89,9 +89,9 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
             <View
               style={[
                 stylesItem.titleView,
-                { justifyContent: "center" },
+                { justifyContent: "center" , maxWidth : scaleWidth(230)  },
               ]}>
-              <Text style={stylesItem.title}>{item.name}</Text>
+              <Text numberOfLines={2} style={stylesItem.title}>{item.name}</Text>
               <Text style={stylesItem.description}>
                 {item.productCount} <Text style={stylesItem.description} tx='productScreen.product'></Text>
               </Text>

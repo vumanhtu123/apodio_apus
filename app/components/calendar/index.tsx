@@ -228,9 +228,9 @@ const CustomCalendar = (props:any) => {
       <View
         style={{
           position: 'absolute',
-          bottom: scaleHeight(30),
-          width: '93%',
-          borderRadius: 15,
+          bottom: 0,
+          width: '100%',
+          // borderRadius: 15,
           alignSelf: 'center',
         }}>
         <View style={styles.main}>
@@ -297,7 +297,9 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: 'white',
-    borderRadius: 8,
+    // borderRadius: 8,
+    borderTopLeftRadius : 8,
+    borderTopRightRadius : 8
   },
   content: {
     flex: 1,

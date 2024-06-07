@@ -41,7 +41,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const [isShow, setIsShow] = useState(false);
     const [markedDatesS, setMarkedDatesS] = useState("")
     const [markedDatesE, setMarkedDatesE] = useState("")
-    const [selectedStatus, setSelectedStatus] = useState(0)
+    // const [selectedStatus, setSelectedStatus] = useState(0)
     const [isSortByDate, setIsSortByDate] = useState<boolean>(false)
     const today = new Date()
     const sevenDaysBefore = new Date(today)
@@ -84,7 +84,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           50,
         );
         if (response && response.kind === "ok") {
-          console.log('orderLisst', JSON.stringify(response.response.data.content) )
+          console.log('orderLisst', JSON.stringify(response.response.data.content))
           setArrData(response.response.data.content)
         } else {
           console.error("Failed to fetch order:", response);
@@ -265,9 +265,9 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const toggleModalDate = () => {
       setIsSortByDate(!isSortByDate)
     }
-    const handleDetailOrder = (id : number) => {
+    const handleDetailOrder = (id: number) => {
       orderStore.setOrderId(id)
-      console.log('first' , orderStore.orderId)
+      console.log('first', orderStore.orderId)
       navigation.navigate('orderDetails' as never)
     }
 
@@ -283,26 +283,28 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           rightText1={moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
-            {selectStatus.map((item, index) => {
-              return (
-                <TouchableOpacity onPress={() => {
-                  store.onSelectStatus(index)
-                  console.log(index)
-                  // console.log(store.selectedStatus)
-                  console.log(arrData)
-                }}
-                  key={index}
-                  style={[styles.viewItemSelect, {
-                    backgroundColor: store.selectedStatus === index ? colors.palette.aliceBlue2 : colors.palette.whiteSmoke,
-                  }]}>
-                  <Text text={item.textStatus} style={[styles.textSelect, {
-                    color: store.selectedStatus === index ? colors.palette.navyBlue : colors.palette.nero,
-                  }]}
-                  />
-                </TouchableOpacity>
-              )
-            })}
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  >
+            <View style={{ marginLeft: scaleHeight(16) , flexDirection : 'row'}}>
+              {selectStatus.map((item, index) => {
+                return (
+                  <TouchableOpacity onPress={() => {
+                    store.onSelectStatus(index)
+                    console.log(index)
+                    // console.log(store.selectedStatus)
+                    console.log(arrData)
+                  }}
+                    key={index}
+                    style={[styles.viewItemSelect, {
+                      backgroundColor: store.selectedStatus === index ? colors.palette.aliceBlue2 : colors.palette.whiteSmoke,
+                    }]}>
+                    <Text text={item.textStatus} style={[styles.textSelect, {
+                      color: store.selectedStatus === index ? colors.palette.navyBlue : colors.palette.nero,
+                    }]}
+                    />
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
           </ScrollView>
         </View>
         <View style={{ height: 1, marginVertical: 0 }}></View>

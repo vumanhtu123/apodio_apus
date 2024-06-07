@@ -57,7 +57,6 @@ export class OrderApi {
       return { kind: "bad-data", response: data }
     } catch (e) {
       Loading.hide();
-
       return { kind: "bad-data" }
     }
   }  

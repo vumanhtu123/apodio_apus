@@ -61,7 +61,7 @@ export const OrderStoreModel = types
       const result: OrderResult = yield orderApi.getDetailOrder(
         id
       );
-      console.log('-----------dsa' , result)
+      console.log('-----------dsa' , result.response.errorCodes)
       if (result.kind === "ok") {
         console.log("order", result);
         return result;

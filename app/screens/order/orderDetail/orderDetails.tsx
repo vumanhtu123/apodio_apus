@@ -54,9 +54,21 @@ export const OrderDetails: FC = observer(
               console.error("Error fetching detail:", error);
             }
           };
-          useEffect(()=>{
+        //   useEffect(()=>{
+        //     handleGetDetailOrder()
+        //   },[])
+          useEffect(() => {
             handleGetDetailOrder()
-          },[])
+          }, [orderId]);
+        
+          useEffect(() => {
+            console.log("---------useEffect---------reload------------------");
+            const unsubscribe = navigation.addListener('focus', () => {
+                handleGetDetailOrder()
+            });
+        
+            return unsubscribe;
+          }, [ navigation]);
         const arrData = [
             {
                 id: 1,
