@@ -117,6 +117,7 @@ export const CreateConversionGroup: FC = observer(
                 goBackToProductCreateScreen(data.id, data.name);
 
             } else {
+                await Dialog.hideDialog();
                 Dialog.show({
                     type: ALERT_TYPE.DANGER,
                     title: translate("productScreen.Notification"),
@@ -158,7 +159,6 @@ export const CreateConversionGroup: FC = observer(
                         params.unitGroupLines = jsonArray;
                         console.log(conversionWatch)
                         createUnitGroupLine(params, true);
-                       
                     }
                 })
             }

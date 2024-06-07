@@ -224,6 +224,7 @@ export const ProductDetailScreen: FC = (item) => {
     const result = await productStore.deleteProduct(productId);
     console.log("deleteProduct-----------", result);
     if (result.kind === "ok") {
+      await Dialog.hideDialog();
       Dialog.show({
         type: ALERT_TYPE.SUCCESS,
         title: translate("txtDialog.txt_title_dialog"),
@@ -238,6 +239,7 @@ export const ProductDetailScreen: FC = (item) => {
         }
       })  
     } else {
+      await Dialog.hideDialog();
       Dialog.show({
         type: ALERT_TYPE.DANGER,
         title: translate("productScreen.Notification"),

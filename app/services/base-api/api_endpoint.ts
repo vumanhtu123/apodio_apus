@@ -1,5 +1,3 @@
-import { ListCompany } from "../../screens/company/company-screen";
-
 export const ApiEndpoint = {
   SIGN_UP: "/auth/register",
   SIGN_IN: "/oauth/login",

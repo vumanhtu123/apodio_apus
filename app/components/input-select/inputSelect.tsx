@@ -188,7 +188,7 @@ export function InputSelect(props: InputSelectProps) {
         <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'height' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+            keyboardVerticalOffset={0}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
             <View style={VIEWMODAL}>
@@ -199,7 +199,7 @@ export function InputSelect(props: InputSelectProps) {
                   onChangeText={(text) => handleSearch(text)}
                   value={search}
                   placeholder="Tìm kiếm..."
-                // enterKeyHint="search"
+                  enterKeyHint="search"
                 // onSubmitEditing={handleOnSubmitSearch}
                 // enablesReturnKeyAutomatically
                 /> : null}
