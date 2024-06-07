@@ -92,7 +92,7 @@ export class ApiErp {
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
-          "X-TenantId": 79,
+          "X-TenantId": tenantId,
         };
         const token = await getAccessToken();
         if (token) {

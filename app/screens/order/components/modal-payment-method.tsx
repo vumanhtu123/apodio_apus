@@ -8,11 +8,12 @@ import { InputSelect } from "../../../components/input-select/inputSelect";
 interface InputSelect {
   isVisible: boolean;
   closeDialog: () => void;
+  arrData: {}[];
+  method: number;
+  setMethod: (item: number, name: string) => void;
 }
 
 export const ModalPayment = (data: InputSelect) => {
-  const [method, setMethod] = useState<number>(0);
-
   return (
     <Modal
       onBackdropPress={() => data.closeDialog()}
@@ -43,14 +44,20 @@ export const ModalPayment = (data: InputSelect) => {
             marginHorizontal: 24,
             marginTop: 25,
           }}></Text>
-        <Item_Payment
-          setData={function (value: any): void {
-            setMethod(value);
-            console.log("tuvm", value);
-          }}
-          data={method}
-          debt={0}
-        />
+        {data.arrData.map((payment: any, index) => {
+          return (
+            <Item_Payment
+              setData={function (value: any, name: any): void {
+                data.setMethod(value, name);
+                console.log("tuvm", value);
+              }}
+              debt={0}
+              name={payment.label}
+              id={data.method}
+              index={index}
+            />
+          );
+        })}
         <View
           style={{
             flexDirection: "row",
@@ -81,21 +88,23 @@ export const ModalPayment = (data: InputSelect) => {
                 }}></Text>
             </View>
           </TouchableOpacity>
-          <View
-            style={{
-              backgroundColor: "#0078D4",
-              borderRadius: 8,
-            }}>
-            <Text
-              tx="order.apply"
+          <TouchableOpacity onPress={() => {}}>
+            <View
               style={{
-                color: "white",
-                fontSize: 14,
-                fontWeight: "600",
-                marginHorizontal: 50,
-                marginVertical: 12,
-              }}></Text>
-          </View>
+                backgroundColor: "#0078D4",
+                borderRadius: 8,
+              }}>
+              <Text
+                tx="order.apply"
+                style={{
+                  color: "white",
+                  fontSize: 14,
+                  fontWeight: "600",
+                  marginHorizontal: 50,
+                  marginVertical: 12,
+                }}></Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -103,9 +112,11 @@ export const ModalPayment = (data: InputSelect) => {
 };
 
 interface InputItem {
-  setData: (value: any) => void;
-  data: number;
+  setData: (value: any, name: string) => void;
+  name: string;
+  id: number;
   debt: number;
+  index: number;
 }
 
 const Item_Payment = (data: InputItem) => {
@@ -125,8 +136,8 @@ const Item_Payment = (data: InputItem) => {
       />
       <TouchableOpacity
         onPress={() => {
-          data.setData(0);
-          console.log("0");
+          data.setData(data.index, data.name);
+          console.log("0", data.name);
         }}>
         <View
           style={{
@@ -147,66 +158,41 @@ const Item_Payment = (data: InputItem) => {
                 borderRadius: 50,
                 width: 16,
                 height: 16,
-                backgroundColor: data.data == 0 ? "#0078D4" : "white",
+                backgroundColor: data.id == data.index ? "#0078D4" : "white",
                 alignSelf: "center",
               }}></View>
           </View>
           <Text
-            tx="order.COD"
+            text={data.name}
             style={{
               fontSize: 14,
               fontWeight: "500",
               color: "#242424",
               paddingHorizontal: 8,
             }}></Text>
+          {data.index === 4 ? (
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                tx="order.available_limit"
+                style={{
+                  fontWeight: "400",
+                  fontSize: 12,
+                  color: "#747475",
+                  alignContent: "center",
+                }}></Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  color: "#FF0000",
+                }}>
+                20.000.000)
+              </Text>
+            </View>
+          ) : null}
         </View>
       </TouchableOpacity>
-      <View
-        style={{
-          height: 1,
-          backgroundColor: "#E7EFFF",
-          marginVertical: 16,
-        }}
-      />
-      <TouchableOpacity
-        onPress={() => {
-          data.setData(1);
-          console.log("1");
-        }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginHorizontal: 11,
-          }}>
-          <View
-            style={{
-              borderRadius: 50,
-              borderWidth: 1,
-              borderColor: "#DFE0EB",
-              alignSelf: "center",
-              padding: 2,
-            }}>
-            <View
-              style={{
-                borderRadius: 50,
-                width: 16,
-                height: 16,
-                backgroundColor: data.data == 1 ? "#0078D4" : "white",
-                alignSelf: "center",
-              }}></View>
-          </View>
-          <Text
-            tx="order.bank"
-            style={{
-              fontSize: 14,
-              fontWeight: "500",
-              color: "#242424",
-              paddingHorizontal: 8,
-            }}></Text>
-        </View>
-      </TouchableOpacity>
-      {data.debt != 0 ? (
+      {/* {data.debt != 0 ? (
         <TouchableOpacity
           onPress={() => {
             data.setData(2);
@@ -239,7 +225,7 @@ const Item_Payment = (data: InputItem) => {
                     borderRadius: 50,
                     width: 16,
                     height: 16,
-                    backgroundColor: data.data == 2 ? "#0078D4" : "white",
+                    backgroundColor: data.id == 2 ? "#0078D4" : "white",
                     alignSelf: "center",
                   }}></View>
               </View>
@@ -330,7 +316,7 @@ const Item_Payment = (data: InputItem) => {
             </Text>
           </View>
         </View>
-      )}
+      )} */}
     </View>
   );
 };

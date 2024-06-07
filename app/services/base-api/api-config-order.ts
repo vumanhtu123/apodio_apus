@@ -82,7 +82,7 @@ export class ApiOrder {
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
-          "X-TenantId": 77,
+          "X-TenantId": tenantId,
         };
         const token = await getAccessToken();
         if (token) {
@@ -98,17 +98,6 @@ export class ApiOrder {
       try {
         if (response) {
           console.log("responseUpload", response);
-          // if (response.data.errorCodes){
-          //   if (response.data.errorCodes[0].code === 4567) {
-          //     showDialog(
-          //       'Error',
-          //       'danger',
-          //       `${response.data.errorCodes[0].message}`,
-          //       '',
-          //       'OK',
-          //       () => hideDialog())
-          //   }
-          // }
         }
       } catch (error) {
         console.log("ERROR", error);

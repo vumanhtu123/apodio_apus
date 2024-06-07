@@ -234,7 +234,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
           button: translate("common.ok"),
           closeOnOverlayTap: false
       })
-        console.error("Failed to fetch categories:", response.response.message);
+        console.error("Failed to fetch categories11111111:", response.response.message);
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
