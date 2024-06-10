@@ -18,6 +18,7 @@ export function isFormValid(error: FieldErrors<FieldValues>, ...fields: any[]) {
   return allFieldsFilled && noErrors;
 }
 
+export const phoneNumberPattern = /^0[0-9]{9}$/;
 export const patternPassword =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[,.!@#\/$&*~"|:]).{8,}$/;
 export const patternvalidateBiCard = /^[a-zA-Z0-9]{0,17}$/;
@@ -255,7 +256,7 @@ export function addCommas(num: any) {
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(".").toString();
 }
-// export function formatPhoneNumber(phoneNumber) {
+// export function formatPhoneNumber(phoneNumber: any) {
 //   // Remove leading zeros and spaces
 //   const cleanedNumber = phoneNumber.replace(/^0+|\s+/g, "")
 
