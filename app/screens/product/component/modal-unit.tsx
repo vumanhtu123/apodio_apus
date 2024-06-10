@@ -91,8 +91,9 @@ const UnitModal = (props: UnitModalProps) => {
                 <View style={{
                     maxHeight: Dimensions.get('screen').height * 0.6,
                     width: '100%', backgroundColor: colors.palette.neutral100,
-                    borderTopRightRadius: 8,
-                    borderTopLeftRadius: 8, position: 'absolute', bottom: 0,
+                    borderTopLeftRadius: margin.border_top_left_radius, 
+                    borderTopRightRadius: margin.border_top_right_radius,
+                    position: 'absolute', bottom: 0,
                 }}>
                     <Text style={{
                         fontWeight: '700', fontSize: fontSize.size14,

@@ -8,13 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* BaseAppRNTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BaseAppRNTests.m */; };
-		0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		219CEB30F18C4A66928D3B90 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD6FB0BE81448F9B8C30A37 /* Inter-Black.ttf */; };
 		2A49F91A487A4FAC9B279193 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3194A19E9F384C169161DE43 /* Inter-Regular.ttf */; };
 		4187739582BD4B70B86C150A /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 417F95C6F7E9412D8EBD484A /* Inter-Thin.ttf */; };
+		4DD454C22C12AE7C00F7410B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 4DD454C12C12AE7C00F7410B /* main.jsbundle */; };
+		4DD454C32C12AE7C00F7410B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 4DD454C12C12AE7C00F7410B /* main.jsbundle */; };
+		4DD454C42C12AE7C00F7410B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 4DD454C12C12AE7C00F7410B /* main.jsbundle */; };
 		4DDCF3DE2BDA47FC006F3C8E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		4DDCF3DF2BDA47FC006F3C8E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4DDCF3E32BDA47FC006F3C8E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -78,6 +81,7 @@
 		3194A19E9F384C169161DE43 /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
 		417F95C6F7E9412D8EBD484A /* Inter-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Thin.ttf"; path = "../assets/fonts/Inter-Thin.ttf"; sourceTree = "<group>"; };
 		4226C2A85160AE554A8A8CCA /* libPods-BaseAppRN.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaseAppRN.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4DD454C12C12AE7C00F7410B /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		4DDCF3F42BDA47FC006F3C8E /* BaseAppRN-Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BaseAppRN-Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DDCF3F52BDA47FD006F3C8E /* BaseAppRN stage-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BaseAppRN stage-Info.plist"; path = "/Users/ngoandang/Desktop/React-Native/apo_merchant_staff_v2/ios/BaseAppRN stage-Info.plist"; sourceTree = "<absolute>"; };
 		4DDCF40F2BDA4813006F3C8E /* BaseAppRN-Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BaseAppRN-Stage.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,7 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
 				E7BE3531A74C7447C312AA01 /* libPods-BaseAppRN.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,6 +164,7 @@
 		13B07FAE1A68108700A75B9A /* BaseAppRN */ = {
 			isa = PBXGroup;
 			children = (
+				4DD454C12C12AE7C00F7410B /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -389,6 +394,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				219CEB30F18C4A66928D3B90 /* Inter-Black.ttf in Resources */,
+				4DD454C22C12AE7C00F7410B /* main.jsbundle in Resources */,
 				C4278B8221164167A0CFB972 /* Inter-Bold.ttf in Resources */,
 				F79525CB41DF46BAB8BD1142 /* Inter-ExtraBold.ttf in Resources */,
 				D0EA1B3BC0404B95B95AC2DA /* Inter-ExtraLight.ttf in Resources */,
@@ -407,6 +413,7 @@
 				4DDCF3E32BDA47FC006F3C8E /* LaunchScreen.storyboard in Resources */,
 				4DDCF3E42BDA47FC006F3C8E /* Images.xcassets in Resources */,
 				4DDCF3E52BDA47FC006F3C8E /* Inter-Black.ttf in Resources */,
+				4DD454C32C12AE7C00F7410B /* main.jsbundle in Resources */,
 				4DDCF3E62BDA47FC006F3C8E /* Inter-Bold.ttf in Resources */,
 				4DDCF3E72BDA47FC006F3C8E /* Inter-ExtraBold.ttf in Resources */,
 				4DDCF3E82BDA47FC006F3C8E /* Inter-ExtraLight.ttf in Resources */,
@@ -425,6 +432,7 @@
 				4DDCF3FE2BDA4813006F3C8E /* LaunchScreen.storyboard in Resources */,
 				4DDCF3FF2BDA4813006F3C8E /* Images.xcassets in Resources */,
 				4DDCF4002BDA4813006F3C8E /* Inter-Black.ttf in Resources */,
+				4DD454C42C12AE7C00F7410B /* main.jsbundle in Resources */,
 				4DDCF4012BDA4813006F3C8E /* Inter-Bold.ttf in Resources */,
 				4DDCF4022BDA4813006F3C8E /* Inter-ExtraBold.ttf in Resources */,
 				4DDCF4032BDA4813006F3C8E /* Inter-ExtraLight.ttf in Resources */,
@@ -818,7 +826,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D48XZP23CT;
+				DEVELOPMENT_TEAM = FGZ68537BL;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BaseAppRN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -846,7 +854,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = D48XZP23CT;
+				DEVELOPMENT_TEAM = FGZ68537BL;
 				INFOPLIST_FILE = BaseAppRN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1042,10 +1050,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1113,10 +1118,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

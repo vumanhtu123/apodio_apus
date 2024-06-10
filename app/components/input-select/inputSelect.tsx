@@ -62,10 +62,10 @@ const TEXTHINT: TextStyle = {
 };
 const VIEWMODAL: ViewStyle = {
   // width: Dimensions.get('screen').width - 32,
-  height: Dimensions.get("screen").height * 0.4,
+  // height: Dimensions.get("screen").height * 0.4,
   backgroundColor: colors.palette.neutral100,
   borderTopRightRadius: 8,
-  borderTopLeftRadius: 8, 
+  borderTopLeftRadius: 8,
   paddingVertical: scaleHeight(padding.padding_12),
   paddingHorizontal: scaleWidth(padding.padding_16),
   position: "absolute",
@@ -107,7 +107,7 @@ export function InputSelect(props: InputSelectProps) {
   } = props;
   const title = titleText || (titleTx && translate(titleTx)) || "";
   const hint = hintText || (hintTx && translate(hintTx)) || "";
-  const _ = require('lodash');
+  const _ = require("lodash");
   const [data, setData] = useState("");
   const [dataChoice, setDataChoice] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -118,7 +118,7 @@ export function InputSelect(props: InputSelectProps) {
     // onChangeText(text)
     setSearch(text);
     if (text) {
-      const dataChoiceItem = arrData.filter(item => item.label !== data);
+      const dataChoiceItem = arrData.filter((item) => item.label !== data);
       const newData = dataChoiceItem.filter((item) => {
         const itemData = item.label.toUpperCase();
         const textData = text.toUpperCase();
@@ -126,7 +126,7 @@ export function InputSelect(props: InputSelectProps) {
       });
       setFilteredData(newData);
     } else {
-      const dataChoiceItem = arrData.filter(item => item.label !== data);
+      const dataChoiceItem = arrData.filter((item) => item.label !== data);
       setFilteredData(dataChoiceItem);
     }
   };
@@ -138,9 +138,15 @@ export function InputSelect(props: InputSelectProps) {
     }
   };
   useEffect(() => {
-    if (dataDefault !== undefined && dataDefault !== null && dataDefault !== '') {
-      console.log('dataDefault---------------------------', dataDefault)
-      const dataChoiceItem = arrData.filter(item => item.label !== dataDefault);
+    if (
+      dataDefault !== undefined &&
+      dataDefault !== null &&
+      dataDefault !== ""
+    ) {
+      console.log("dataDefault---------------------------", dataDefault);
+      const dataChoiceItem = arrData.filter(
+        (item) => item.label !== dataDefault
+      );
       setFilteredData(dataChoiceItem);
     } else {
       setFilteredData(arrData);
@@ -153,8 +159,10 @@ export function InputSelect(props: InputSelectProps) {
         disabled={disabled}
         onPress={() => {
           if (checkUse === true) {
-            onPressNotUse()
-          } else { setShowModal(true); }
+            onPressNotUse();
+          } else {
+            setShowModal(true);
+          }
         }}
         style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
@@ -175,34 +183,40 @@ export function InputSelect(props: InputSelectProps) {
             )}
           </View>
         </View>
-        {disabled === true ? null : <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Images.dropDown />
-        </View>}
+        {disabled === true ? null : (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Images.dropDown />
+          </View>
+        )}
       </TouchableOpacity>
       <Modal
         isVisible={showModal}
         onBackdropPress={() => {
           setShowModal(false);
         }}
-        style={{margin: 0}}>
-        <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
+        style={{ margin: 0 }}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setShowModal(false);
+          }}>
           <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'height' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+            keyboardVerticalOffset={0}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
             <View style={VIEWMODAL}>
               {/* <Text text="chon ly do" /> */}
-              {isSearch ?
+              {isSearch ? (
                 <TextInput
                   style={{ fontSize: 16, fontWeight: "400" }}
                   onChangeText={(text) => handleSearch(text)}
                   value={search}
                   placeholder="Tìm kiếm..."
-                // enterKeyHint="search"
-                // onSubmitEditing={handleOnSubmitSearch}
-                // enablesReturnKeyAutomatically
-                /> : null}
+                  // enterKeyHint="search"
+                  // onSubmitEditing={handleOnSubmitSearch}
+                  // enablesReturnKeyAutomatically
+                />
+              ) : null}
               <FlatList
                 data={filteredData}
                 style={{
@@ -220,7 +234,9 @@ export function InputSelect(props: InputSelectProps) {
                           setData(item.label);
                           onPressChoice(item);
                           setShowModal(false);
-                          const dataChoiceItem = arrData.filter(i => i.label !== item.label);
+                          const dataChoiceItem = arrData.filter(
+                            (i) => i.label !== item.label
+                          );
                           setFilteredData(dataChoiceItem);
                         }}>
                         <Text text={item.label} style={TEXTLABELFLATLIST} />
