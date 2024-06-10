@@ -62,7 +62,7 @@ const TEXTHINT: TextStyle = {
 };
 const VIEWMODAL: ViewStyle = {
   // width: Dimensions.get('screen').width - 32,
-  // height: Dimensions.get("screen").height * 0.4,
+  height: Dimensions.get("screen").height * 0.4,
   backgroundColor: colors.palette.neutral100,
   borderTopRightRadius: 8,
   borderTopLeftRadius: 8,
