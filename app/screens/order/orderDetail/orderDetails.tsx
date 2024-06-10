@@ -351,8 +351,8 @@ export const OrderDetails: FC = observer(
                     onRightPress1={() => {
                         Dialog.show({
                             type: ALERT_TYPE.SUCCESS,
-                            title: translate("txtDialog.txt_title_dialog"),
-                            textBody: translate("txtDialog.delete_order"),
+                            title:  translate("txtDialog.txt_title_dialog") ,
+                            textBody: translate("txtDialog.delete_order") + `${data?.code}` +' '+ translate('txtDialog.delete_order1') ,
                             button: translate("common.cancel"),
                             button2: translate("common.confirm"),
                             closeOnOverlayTap: false,
@@ -441,8 +441,7 @@ export const OrderDetails: FC = observer(
                             <Images.icon_copy2 style={{ marginLeft: scaleWidth(margin.margin_4) }} />
                         </TouchableOpacity> */}
                     </View>
-                    <TouchableOpacity style={styles.viewAddress}
-                        onPress={() => setShowAddress(true)}>
+                    <TouchableOpacity style={styles.viewAddress}>
                         <View>
                             <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
                             <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
@@ -462,6 +461,7 @@ export const OrderDetails: FC = observer(
                         </View>
                         <Images.icon_caretRight width={scaleWidth(16)} height={scaleHeight(16)} />
                     </TouchableOpacity>
+
 
                     <View style={{ borderRadius: 8, backgroundColor: colors.palette.neutral100 }}>
                         {
@@ -727,186 +727,6 @@ export const OrderDetails: FC = observer(
                                 tx={'order.confirm'}
                             />
                         </View>
-                    </View>
-                </Modal>
-                <Modal isVisible={showAddress}
-                    onBackdropPress={() => setShowAddress(false)}>
-                    <View style={[styles.viewModal, {
-                        maxHeight: Dimensions.get('screen').height * 0.65
-                    }]}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: scaleHeight(margin.margin_16) }} >
-                            <Text tx={'order.deliveryAddress'}
-                                style={styles.textAddressModal} />
-                            <TouchableOpacity>
-                                <Text tx={'common.cancel'} style={styles.textCancelModal} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ height: 1, backgroundColor: '#E7EFFF' }} ></View>
-                        {showAddAddress === false ?
-                            <View style={{ flex: 1, height: Dimensions.get('screen').height * 0.5 }}>
-                                <FlatList
-                                    data={userAddress}
-                                    style={{ flex: 1, }}
-                                    showsVerticalScrollIndicator={false}
-                                    renderItem={(item) => {
-                                        return (
-                                            <View>
-                                                <View style={{
-                                                    flexDirection: 'row', flex: 1,
-                                                    marginTop: scaleHeight(margin.margin_15),
-                                                }}>
-                                                    <View style={{ flex: 1, }}>
-                                                        <View style={{ flexDirection: 'row' }}>
-                                                            <Text style={styles.textListProduct}>
-                                                                {translate("order.phone") + ': '}
-                                                            </Text>
-                                                            <Text text={item.item.phone} style={styles.textMoney2} />
-                                                            <TouchableOpacity
-                                                                onPress={() => handleChangeAddress(item)}>
-                                                                <Images.icon_edit style={{ marginLeft: scaleWidth(margin.margin_4) }} />
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                        <View style={{
-                                                            flexDirection: 'row',
-                                                            marginVertical: scaleHeight(margin.margin_6)
-                                                        }}>
-                                                            <Text style={styles.textListProduct} >
-                                                                {translate("order.address") + ': '}
-                                                                <Text style={styles.textMoney2} >{item.item.address}</Text>
-                                                            </Text>
-                                                        </View>
-                                                    </View>
-                                                    <View>
-                                                        {addressChoice.id === item.item.id ?
-                                                            <Images.icon_checkGreen width={17} height={13} /> : null}
-                                                    </View>
-                                                </View>
-                                                {item.item.default === true ? <View >
-                                                    <Text tx={'order.deFault'} style={[styles.textMoney2, {
-                                                        color: colors.palette.radicalRed
-                                                    }]} />
-                                                </View> : null}
-                                                <View style={{
-                                                    height: 1, backgroundColor: '#E7EFFF',
-                                                    marginTop: scaleHeight(margin.margin_15)
-                                                }}></View>
-                                            </View>
-                                        )
-                                    }}
-                                />
-                                <TouchableOpacity style={{
-                                    flexDirection: 'row',
-                                    marginTop: scaleHeight(margin.margin_15),
-                                }}
-                                    onPress={() => addNewAddress()}
-                                >
-                                    <Images.icon_add width={14} height={14} />
-                                    <Text tx={'order.addAddress'} style={styles.textAddAddress} />
-                                </TouchableOpacity>
-                            </View> :
-                            <View>
-                                <KeyboardAvoidingView
-                                    behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
-                                    keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
-                                    <Controller
-                                        control={control}
-                                        render={({ field: { onChange, value, onBlur } }) => (
-                                            <TextField
-                                                keyboardType={null}
-                                                labelTx={"order.phone"}
-                                                style={styles.viewTextField}
-                                                inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0 }}
-                                                value={value}
-                                                onBlur={onBlur}
-                                                onChangeText={(value) => onChange(value)}
-                                                onClearText={() => onChange('')}
-                                                RightIconClear={Images.icon_delete2}
-                                                isImportant={true}
-                                                error={errors?.phone?.message}
-                                            />)}
-                                        defaultValue={phone}
-                                        name="phone"
-                                        rules={{ required: "Phone is required" }}
-                                    />
-                                    <InputSelect
-                                        titleTx={'order.city'}
-                                        hintTx={'order.chooseCity'}
-                                        required={true}
-                                        arrData={arrCity}
-                                        dataDefault={city.label}
-                                        onPressChoice={(item) => {
-                                            setCity(item)
-                                        }}
-                                        styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
-                                    />
-                                    <InputSelect
-                                        titleTx={'order.district'}
-                                        hintTx={'order.chooseDistrict'}
-                                        required={true}
-                                        arrData={arrCity}
-                                        dataDefault={district.label}
-                                        onPressChoice={(item) => {
-                                            setDistrict(item)
-                                        }}
-                                        styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
-                                    />
-                                    <InputSelect
-                                        titleTx={'order.ward'}
-                                        hintTx={'order.chooseWard'}
-                                        required={true}
-                                        arrData={arrCity}
-                                        dataDefault={wards.label}
-                                        onPressChoice={(item) => {
-                                            setWards(item)
-                                        }}
-                                        styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
-                                    />
-                                    <Controller
-                                        control={control}
-                                        render={({ field: { onChange, value, onBlur } }) => (
-                                            <TextField
-                                                keyboardType={null}
-                                                labelTx={"order.address"}
-                                                style={styles.viewTextField}
-                                                inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0 }}
-                                                value={value}
-                                                onBlur={onBlur}
-                                                onChangeText={(value) => onChange(value)}
-                                                onClearText={() => onChange('')}
-                                                RightIconClear={Images.icon_delete2}
-                                                isImportant={true}
-                                                error={errors?.phone?.message}
-                                            />)}
-                                        defaultValue={addressChange}
-                                        name="address"
-                                        rules={{ required: "Address is required" }}
-                                    />
-                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Text style={{ flex: 1 }} tx={'order.addressDefault'} />
-                                        <Switch
-
-                                            value={valueSwitch}
-                                            onToggle={() => { setValueSwitch(!valueSwitch) }}
-                                        />
-                                    </View>
-                                </KeyboardAvoidingView>
-                                <View style={{
-                                    flexDirection: 'row',
-                                    marginTop: scaleHeight(margin.margin_10),
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Button style={styles.buttonCancelModal}
-                                        tx={'common.cancel'}
-                                        textStyle={{ color: colors.palette.navyBlue }}
-                                        onPress={() => setShowAddAddress(false)}
-                                    />
-                                    <Button
-                                        onPress={handleSubmit(handleChangeAddress)}
-                                        style={styles.buttonConfirmModal}
-                                        tx={'order.confirm'}
-                                    />
-                                </View>
-                            </View>}
                     </View>
                 </Modal>
             </View>

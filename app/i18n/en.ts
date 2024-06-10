@@ -1,4 +1,3 @@
-
 const en = {
   common: {
     ok: "OK",
@@ -8,9 +7,11 @@ const en = {
     logOut: "Log Out",
     listCompany: "Danh sách công ty",
     filter: " Bộ lọc",
+    saveChange: "Lưu thay đổi",
+
 
     continue: "Tiếp tục",
-    saveAndContinue: 'Lưu và tiếp tục'
+    saveAndContinue: "Lưu và tiếp tục",
     // @demo remove-current-line
   },
   txtToats: {
@@ -26,7 +27,8 @@ const en = {
     attribute_is_using: "Thuộc tính đang được sử dụng, không thể xóa",
     cannot_be_deselected: "Không thể bỏ chọn thuộc tính này",
     cannot_create_duplicate: "Không thể tạo giá trị trùng",
-    product_is_using: "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
+    product_is_using:
+      "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -46,7 +48,8 @@ const en = {
       "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
-    delete_order: 'Bạn có chắc chắn muốn hủy đơn hàng bán này không?'
+    delete_order: 'Bạn có chắc chắn muốn hủy đơn hàng bán ',
+    delete_order1 : 'này không?'
   },
   ruleController: {
     emptyText: 'Vui lòng nhập dữ liệu'
@@ -161,38 +164,78 @@ const en = {
     time: "Thời gian",
     back: "Quay lại",
     select_father_status: "Chọn trạng thái cha",
-    select_child_status: 'Chọn trạng thái con',
+    select_child_status: "Chọn trạng thái con",
     father_status: "Trạng thái cha",
-    child_status: 'Trạng thái con',
+    child_status: "Trạng thái con",
     shipping_status: "Trạng thái vận chuyển",
     update_shipping_status: "Cập nhật trạng thái vận chuyển",
     update_status: "Cập nhật trạng thái",
     copy: "Sao chép",
     return: "Trả/Huỷ",
     printInvoice: "In hoá đơn",
-    arrange: 'Sắp xếp',
+    arrange: "Sắp xếp",
     searchCodeName: "Tìm kiếm theo mã và tên",
     orderDetail: "Chi tiết đơn hàng",
     sendInvoice: "Tạo hóa đơn",
     quantity: "SL: ",
-    promotions: 'Chiết khấu:',
+    promotions: "Chiết khấu:",
     totalAmountNoTax: "Tổng tiền(chưa thuế):",
-    tax: 'Tổng thuế:',
-    totalAmount: 'Tổng thanh toán:',
-    estimated: 'Trọng tải đơn hàng dự tính:',
+    tax: "Tổng thuế:",
+    totalAmount: "Tổng thanh toán:",
+    estimated: "Trọng tải đơn hàng dự tính:",
     date: "Date",
     money: "Money",
     cash: "Cash",
-    confirm: "Confirm",
     addProduct: "Chọn sản phẩm",
     editDelivery: "Sửa địa chỉ giao hàng",
-    newDelivery: "Tạo địa chỉ giao hàng",
+    newDelivery: "Thêm địa chỉ giao hàng",
+    addToCart: "Thêm vào giỏ hàng",
+    seeDetail: "Xem chi tiết",
+    price2: "Giá bán: ",
+    miniumQuanlity: "SL tối thiểu cần bán: ",
+    quanlity: "Số lượng:",
+    confirm: "Tạo đơn hàng",
+    choose_customer: "Chọn khách hàng",
+    price_list: "Bảng giá áp dụng",
+    no_price_list: "Không áp dụng bảng giá",
+    address_order: "Địa chỉ giao hàng",
+    no_address_order: "Chưa có địa chỉ giao hàng",
+    info_more: "Thông tin thêm",
+    selectTaxes: "Chọn loại thuế",
+    taxes: "Loại thuế",
+    taxes_apply: "Thuế áp dụng",
+    payment_method: "Phương thức thanh toán",
+    apply: "Áp dụng",
+    cancel: "Hủy",
+    available_limit: "(Hạn mức khả dụng: ",
+    COD: "COD",
+    bank: "Ngân hàng",
+    debt: "Công nợ",
+    sum: "Tổng cộng",
+    amount_paid: "Số tiền còn lại cần phải trả: ",
+    warning_payment: "Thanh toán trước",
+    text_money_limit: "Số tiền tối thiểu cần thanh toán trước:",
+    tittle_warning:
+      " Vui lòng chọn một phương thức thanh toán trước để kết hợp với hạn mức công nợ khả dụng",
+    customer_paid: "Khách đã trả",
+    method_payment: "Phương thức thanh toán",
+    money_face: "Tiền mặt",
+    taxes_vat: "Thuế VAT ",
+    select_texas: "Chọn thuế",
+    add_texas: "Thêm chiết khấu",
+    sum_texas: "Thành tiền",
+    method_pay: "Phương thức thanh toán",
+    later_order: "Sau khi nhận hàng",
+    input_texas: "Nhập chiết khấu",
+    sum_no_texas: "Tổng tiền (chưa thuế):",
+    sum_yes_texas: "Tổng tiền (gồm thuế)",
     cancellationReason: "Cancellation reason",
     sellerConfirm: "Thông tin thanh toán",
     deliveryAddress: "Địa chỉ giao hàng",
+    changeDeliveryAddress: "Chọn địa chỉ giao hàng",
     staff: "Staff: ",
-    paymentMethods: "Payment methods",
-    selectPayment: "Select a payment method",
+    paymentMethods: "Loại chứng từ",
+    selectPayment: "Chọn loại chứng từ",
     requestCancellation: "Request cancellation",
     payer: "Payer",
     timePay: "Payment date and time",
@@ -203,7 +246,7 @@ const en = {
       "Are you sure you want to cancel this order? After agreeing to your cancellation request, your order will be sent to the seller for confirmation!",
     reason: "Reason",
     placeholderReason: "Enter reason for cancellation",
-    addAddress: "Add new address",
+    addAddress: "Thêm địa chỉ mới",
     phone: "Số điện thoại",
     address: "Địa chỉ",
     deFault: "Mặc định",
@@ -217,21 +260,22 @@ const en = {
     order: "Đặt hàng",
     moreInformation: "More information",
     promotionHint: "Enter promo code or gift code here.",
-    note: "Note",
-    placNote: "Order notes",
+    note: "Ghi chú",
+    placeNote: "Ghi chú đơn hàng",
     selectReason: "Select cancellation reason",
-    chooseImage: "Choose image",
-    newImage: "Take new photos",
-    chooseLibrary: "Select available photos",
+    chooseImage: "Chọn ảnh",
+    newImage: "Chụp ảnh mới",
+    chooseLibrary: "Chọn ảnh có sẵn",
     supplier: "Supplier",
     warehouseAddress: "Receive goods at the warehouse",
     specificAddress: "Receive goods at a specific address",
-    deposit: "Deposit",
-    desiredDate: "Desired date to receive goods",
-    noMoreInformation: "No further information available",
-    total: "Total",
-    prepayment: "Prepayment",
-    stillInDebt: "Still in debt",
+    deposit: "Thanh toán trước",
+    desiredDate: "Ngày mong muốn nhận hàng",
+    noMoreInformation: "Không còn thông tin thêm nào",
+    total: "Tổng thanh toán",
+    prepayment: "Thanh toán trước",
+    contrast: "(Đối trừ côn nợ)",
+    stillInDebt: "Còn nợ",
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",
@@ -471,15 +515,14 @@ const en = {
     dayBirth: "Ngày sinh",
     personalIdentification: "Số giấy tờ định danh cá nhân",
     placeholderPersonalIdentification: "Nhập số giấy tờ",
-
-
   },
   debtScreen: {
     receivables: "Phải thu",
     mustPay: "phải trả",
     toPaydebt: "Công nợ phải trả",
-    totalNumberOfSuppliersIncurringDebt: "Tổng số nhà cung cấp đang phát sinh công nợ",
-    totalDebtMustPay: "Tổng số công nợ phải trả"
+    totalNumberOfSuppliersIncurringDebt:
+      "Tổng số nhà cung cấp đang phát sinh công nợ",
+    totalDebtMustPay: "Tổng số công nợ phải trả",
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -529,23 +572,23 @@ const en = {
     NotifyCloseModal: "Bạn có chắc chắn muốn thoát ?",
     Perspective: "Xem phối cảnh 3D",
     validateMin: "Số lượng không được trùng lặp",
-    product: 'sản phẩm',
-    addBank: "Thêm ngân hàng"
+    product: "sản phẩm",
+    addBank: "Thêm ngân hàng",
   },
   detailScreen: {
-    headerClassify: 'Chi tiết phân loại',
-    information: 'Thông tin chung',
-    productCode: 'Mã sản phẩm',
+    headerClassify: "Chi tiết phân loại",
+    information: "Thông tin chung",
+    productCode: "Mã sản phẩm",
     nameProduct: "Tên sản phẩm",
-    status: 'Trạng thái',
-    minimumPurchase: 'Mua tối thiểu',
-    priceProduct: 'Giá sản phẩm',
-    tag: 'Tag',
-    brand: 'Thương hiệu',
-    management: 'Hình thức quản lý',
-    unit: 'Đơn vị tính gốc',
-    properties: 'Thuộc tính chung',
-    detailProperty: 'Xem chi tiết thuộc tính'
+    status: "Trạng thái",
+    minimumPurchase: "Mua tối thiểu",
+    priceProduct: "Giá sản phẩm",
+    tag: "Tag",
+    brand: "Thương hiệu",
+    management: "Hình thức quản lý",
+    unit: "Đơn vị tính gốc",
+    properties: "Thuộc tính chung",
+    detailProperty: "Xem chi tiết thuộc tính",
   },
   createProductScreen: {
     classify: "Phân loại",
@@ -583,8 +626,8 @@ const en = {
     zToA: "Từ Z -> A",
     priceHighToLow: "Cao đến thấp",
     priceLowToHigh: "Thấp đến cao",
-    filterTime: 'Thời gian tạo',
-    filterName: 'Theo tên'
+    filterTime: "Thời gian tạo",
+    filterName: "Theo tên",
   },
   tranSacTionHistory: {
     tranSactionHistory: "Lịch sử giao dịch",
@@ -598,9 +641,7 @@ const en = {
     transactionTime: "Thời gian giao dịch",
     amount: "Thành tiền",
     fee: "Thuế ",
-    totalAmount: "Tổng cộng"
-
-
+    totalAmount: "Tổng cộng",
   },
   chooseSupplierScreen: {
     placeholderSearch: "Tìm nhà cung cấp theo mã và tên",
@@ -651,7 +692,7 @@ const en = {
     confirm: "Xác nhận",
     createOder: "Xuất hàng",
     createProduct: "Kiểm kho",
-    createBatchProduct: "Nhập hàng"
+    createBatchProduct: "Nhập hàng",
   },
 
   GoodsExportBook: {
@@ -663,7 +704,7 @@ const en = {
     submitBallot: "Gửi phiếu",
     dowloadBallot: "Tải phiếu",
     collapse: "Thu gọn",
-    notCreateExportGoods: "Chưa có phiếu xuất nào được tạo"
+    notCreateExportGoods: "Chưa có phiếu xuất nào được tạo",
   },
   detailPallot: {
     ballotDetail: "Chi tiết phiếu",
@@ -673,7 +714,7 @@ const en = {
     inPallot: "In phiếu",
     printerIsNotConnected: "Máy in chưa được kết nối",
     later: "Để sau",
-    settingPrinter: " Cài đặt máy in"
+    settingPrinter: " Cài đặt máy in",
   },
   checkInventory: {
     createInventorySeets: "Tạo phiếu xuất hàng",
@@ -711,8 +752,9 @@ const en = {
     recordTheTransactionInDebt: "Ghi lại giao dịch vào công nợ",
     back: "Quay lại",
     confrim: "Xác nhận",
-    deletionWarning: "Các giao dịch liên quan đến đơn nhập hàng này sẽ bị xóa. Bạn muốn xóa giao dịch liên quan?",
-    importCoupon: "Phiếu nhập hàng"
+    deletionWarning:
+      "Các giao dịch liên quan đến đơn nhập hàng này sẽ bị xóa. Bạn muốn xóa giao dịch liên quan?",
+    importCoupon: "Phiếu nhập hàng",
   },
   itemConversion: {
     dialogNoti: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",
@@ -778,7 +820,6 @@ const en = {
     downloadNow: "Tải ngay",
     reset: "Thiết lập lại",
     apply: "Áp dụng",
-
   },
   printInvoiceScreen: {
     printInvoice: 'In hoá đơn',

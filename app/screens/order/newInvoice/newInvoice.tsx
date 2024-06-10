@@ -26,7 +26,7 @@ import {
 } from "../../../theme";
 import { styles } from "./styles";
 import { InputSelect } from "../../../components/input-select/inputSelect";
-import AddProduct from "../components/itemListProduct";
+// import AddProduct from "../components/itemListProduct";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AutoHeightImage from "react-native-auto-height-image";
 import { Positions } from "react-native-calendars/src/expandableCalendar";
@@ -101,6 +101,11 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         const newArr = arrProduct.filter((item) => item.id !== id);
         setArrProduct(newArr);
     };
+    useEffect(() => {
+        console.log('first', moment(
+            markedDatesS === "" ? new Date() : markedDatesS
+        ).format("DD/MM/YYYY"))
+    })
     const promotions = [
         {
             images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
@@ -244,6 +249,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                     <TextField
                                         // maxLength={maxLenngthPhoneNumber}
                                         isImportant
+                                        editable= {false}
                                         keyboardType={null}
                                         labelTx={"order.invoiceDate"}
                                         style={{
@@ -251,8 +257,10 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                             marginBottom: scaleHeight(5),
                                             justifyContent: 'center',
                                         }}
-                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
+                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' , color : '#000000' }}
                                         value={value}
+                                        valueInput={moment(markedDatesS === "" ? new Date() : markedDatesS).format("DD/MM/YYYY")}
+                                        pressRightIcon={toggleModalDate}
                                         onBlur={onBlur}
                                         // RightIconClear={Images.icon_delete2}/
                                         RightIcon={Images.icon_CalenderBlank}
@@ -274,6 +282,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <TextField
                                     // maxLength={maxLenngthPhoneNumber}
+                                    editable={false}
                                     keyboardType={null}
                                     labelTx={"order.invoiceDateExpiration"}
                                     style={{
@@ -281,14 +290,15 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         marginBottom: scaleHeight(5),
                                         justifyContent: 'center',
                                     }}
-                                    inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
-                                    value={value}
+                                    inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: '#000000' }}
+                                    valueInput={moment(markedDatesS === "" ? new Date() : markedDatesS).format("DD/MM/YYYY")}
                                     onBlur={onBlur}
                                     // RightIconClear={Images.icon_delete2}/
                                     RightIcon={Images.icon_CalenderBlank}
+                                    pressRightIcon={toggleModalDate}
                                     error={errors?.invoiceCode?.message}
                                     onClearText={() => onChange('')}
-                                    onChangeText={value => onChange(value)}
+                                    // onChangeText={onChange}
                                     placeholderTx={"order.placeholderDate"}
                                 />
                             )}
@@ -322,42 +332,42 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                         />
                         <Text style={{ fontSize: fontSize.size12, fontWeight: '600', marginVertical: scaleHeight(15) }}>Thông tin hoá đơn</Text>
                         <View style={{ borderRadius: 8, backgroundColor: colors.palette.neutral100 }}>
-                        {
-                            promotions.map((item) => {
-                                return (
-                                    <TouchableOpacity onPress={() => { }} style={styles.viewItemListProduct}>
-                                        <AutoHeightImage width={48} height={48}
-                                            style={styles.viewImageListProduct}
-                                            source={{ uri: item.images }} />
-                                        <View style={{ flex: 1 }}>
-                                            <View style={{ width: (Dimensions.get('screen').width - 64) * 0.45 }}>
-                                                <Text text={item.name} style={styles.textListProduct} />
+                            {
+                                promotions.map((item) => {
+                                    return (
+                                        <TouchableOpacity onPress={() => { }} style={styles.viewItemListProduct}>
+                                            <AutoHeightImage width={48} height={48}
+                                                style={styles.viewImageListProduct}
+                                                source={{ uri: item.images }} />
+                                            <View style={{ flex: 1 }}>
+                                                <View style={{ width: (Dimensions.get('screen').width - 64) * 0.45 }}>
+                                                    <Text text={item.name} style={styles.textListProduct} />
+                                                </View>
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} />
+                                                    <Text text={item.amount.toString()} style={styles.textListProduct} />
+                                                </View>
                                             </View>
-                                            <View style={{ flexDirection: 'row' }}>
-                                                <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} />
-                                                <Text text={item.amount.toString()} style={styles.textListProduct} />
+                                            <View>
+                                                <Text text={item.cost} style={styles.textListProduct} />
+                                                <Text text={item.cost} style={styles.priceOriginal} />
                                             </View>
-                                        </View>
-                                        <View>
-                                            <Text text={item.cost} style={styles.textListProduct} />
-                                            <Text text={item.cost} style={styles.priceOriginal} />
-                                        </View>
-                                    </TouchableOpacity>
-                                )
-                            })
-                        }
-                    </View>
+                                        </TouchableOpacity>
+                                    )
+                                })
+                            }
+                        </View>
                         <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(12), marginTop: scaleHeight(15) }}>
-                            <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600' , marginBottom :scaleHeight(12) }} />
+                            <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
                                 value='84.000.000'
                             />
-                             <ProductAttribute
+                            <ProductAttribute
                                 labelTx="tranSacTionHistory.fee"
                                 value='84.000.000'
                             />
-                             <ProductAttribute
+                            <ProductAttribute
                                 labelTx="order.totalInvoice"
                                 value='84.000.000'
                             />
@@ -380,6 +390,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
 
             <CustomCalendar
                 isReset={isReset}
+                minDate={markedDatesS}
                 handleReset={() => setIReset(!isReset)}
                 handleShort={() => {
                     // handleOrderMerchant()
