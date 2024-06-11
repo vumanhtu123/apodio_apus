@@ -443,4 +443,22 @@ export const OrderStoreModel = types
         console.log(err);
       }
     }),
+    getDebtLimit: flow(function* (partnerId: any) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<any, ErrorCode> =
+          yield orderApi.getDebtLimit(partnerId);
+        if (result.data !== null) {
+          console.log("tuvm getDebt success");
+          return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
   }));

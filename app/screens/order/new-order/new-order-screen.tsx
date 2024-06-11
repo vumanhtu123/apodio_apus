@@ -93,11 +93,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const handleIncrease = (id: any) => {
     let newArr = arrProduct!.map((item: any) => {
       if (item.id === id) {
-        return { ...item, qty: item.qty + 1 };
+        return { ...item, amount: item.amount + 1 };
       }
       return item;
     });
     setArrProduct(newArr);
+    console.log("+tuvm", arrProduct);
   };
 
   const handleAddTaxes = (id: any) => {
@@ -117,6 +118,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   };
 
   const handleSelectTaxes = (id: any) => {
+    selectTexas(id);
     setButtonSelect(true);
   };
 
@@ -124,13 +126,13 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     let newArr = arrProduct!
       .map((item: any) => {
         if (item.id === id) {
-          return { ...item, qty: item.qty - 1 };
+          return { ...item, amount: item.amount - 1 };
         }
         return item;
       })
-      .filter((item) => item.qty > 0);
+      .filter((item) => item.amount > 0);
     setArrProduct(newArr);
-    console.log(arrProduct);
+    console.log("-tuvm", arrProduct);
   };
 
   const deleteItemProduct = (id: any) => {
@@ -145,7 +147,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       20,
       "DOMESTICALLY"
     );
-    console.log("id name", result);
     setArrTax(
       result.content.map((item: { name: any; id: any }) => {
         return { text: item.name, value: item.id };
@@ -153,11 +154,37 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     );
   };
 
+  const selectTexas = (id: any) => {
+    let newArr = arrProduct.map((item: any) => {
+      if (item.id === id) {
+        return { ...item, VAT: arrName };
+      }
+      return item;
+    });
+    setArrProduct(newArr);
+    console.log("+taxes", arrProduct);
+  };
+
+  const selectProduct = () => {
+    setArrProduct(orderStore.dataProductAddOrder.slice());
+  };
+
+  const getDebtLimit = () => {
+    // if(orderStore.dataClientSelect)
+    orderStore.getDebtLimit(1606).then((data) => {
+      console.log(data);
+    });
+  };
+
   useEffect(() => {
-    setArrProduct(arrProducts);
+    getDebtLimit();
+    const unsubscribe = navigation.addListener("focus", () => {
+      selectProduct();
+    });
     getListTax();
     orderStore.setCheckPriceList(true);
-  }, []);
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
@@ -215,7 +242,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           <View style={styles.viewListProduct}>
             <Button
               style={styles.buttonListProduct}
-              onPress={() => navigation.navigate("addProductOrder" as never)}>
+              onPress={() => {
+                navigation.navigate("addProductOrder" as never);
+                selectProduct();
+              }}>
               <Images.icon_add />
               <Text
                 tx={"order.addProduct"}
@@ -236,14 +266,14 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                       VAT={item.VAT}
                       valueVAT={item.valueVAT}
                       name={item.name}
-                      unit={item.unit}
+                      unit={item.uomName}
                       images={item.images}
-                      cost={item.cost}
-                      qty={item.qty.toString()}
+                      cost={item.price}
+                      qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
                       onPress={() => deleteItemProduct(item.id)}
-                      addTaxes={item.addTaxes}
+                      addTaxes={item.addTaxes ?? false}
                     />
                     {index !== arrProduct.length - 1 ? (
                       <View
@@ -542,7 +572,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       <ModalTaxes
         arrName={function (name: any): void {
           setArrName(name);
-          console.log("tuvm09", arrName);
+          console.log("tuvm09", name);
         }}
         arrTaxes={arrTax}
         isVisible={buttonSelect}

@@ -10,7 +10,7 @@ interface InputSelect {
   isVisible: boolean;
   closeDialog: () => void;
   arrName: (name: any) => void;
-  arrTaxes?: [];
+  arrTaxes?: {}[];
 }
 
 export const ModalTaxes = (data: InputSelect) => {

@@ -35,7 +35,7 @@ interface AddProduct {
   unit?: string;
   cost?: string;
   qty?: string;
-  VAT?: string;
+  VAT?: {}[];
   valueVAT?: string;
   sumTexas: string;
   addTaxes?: boolean;
@@ -69,7 +69,7 @@ export default function ItemListProduct(props: AddProduct) {
   } = useForm({
     mode: "all",
   });
-
+  console.log("taxes VAT", VAT);
   return (
     <View>
       <TouchableOpacity
@@ -91,7 +91,11 @@ export default function ItemListProduct(props: AddProduct) {
         }}>
         <View style={{ marginRight: scaleWidth(margin.margin_10) }}>
           <AutoHeightImage
-            source={{ uri: images ?? "" }}
+            source={{
+              uri:
+                images ??
+                "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
+            }}
             height={scaleHeight(48)}
             width={scaleHeight(48)}
             style={{ borderRadius: 16 }}
@@ -107,7 +111,7 @@ export default function ItemListProduct(props: AddProduct) {
               color: colors.palette.nero,
             }}
           />
-          <View style={{ flexDirection: "row", marginVertical: 6 }}>
+          <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
             <Text
               text={cost + " "}
               style={{
@@ -131,27 +135,33 @@ export default function ItemListProduct(props: AddProduct) {
               }}
             />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Images.ic_tag />
-            <Text
-              style={{
-                fontSize: 10,
-                fontWeight: "400",
-                color: "#242424",
-              }}>
-              {translate("order.taxes_vat")}
-              {VAT + " "}
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  fontStyle: "italic",
-                  color: "#F4AD22",
-                }}>
-                {valueVAT}
-              </Text>
-            </Text>
-          </View>
+          {VAT != null
+            ? VAT.map((item: any, index) => {
+                return (
+                  <View style={{ flexDirection: "row", marginTop: 6 }}>
+                    <Images.ic_tag />
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        fontWeight: "400",
+                        color: "#242424",
+                      }}>
+                      {translate("order.taxes_vat")}
+                      {item + " "}
+                      <Text
+                        style={{
+                          fontSize: 10,
+                          fontWeight: "400",
+                          fontStyle: "italic",
+                          color: "#F4AD22",
+                        }}>
+                        {valueVAT}
+                      </Text>
+                    </Text>
+                  </View>
+                );
+              })
+            : null}
           <TouchableOpacity onPress={(item) => onPressSelectTexas(item)}>
             <View
               style={{
@@ -226,25 +236,27 @@ export default function ItemListProduct(props: AddProduct) {
               </View>
             </TouchableOpacity>
           )}
-          <Text
-            style={{
-              fontSize: 10,
-              fontWeight: "400",
-              color: "#242424",
-              fontStyle: "italic",
-              marginVertical: 6,
-            }}>
-            {translate("order.sum_texas")}
+          {sumTexas != null ? (
             <Text
               style={{
                 fontSize: 10,
                 fontWeight: "400",
-                color: "#FF4956",
+                color: "#242424",
                 fontStyle: "italic",
+                marginVertical: 6,
               }}>
-              {" " + sumTexas}
+              {translate("order.sum_texas")}
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#FF4956",
+                  fontStyle: "italic",
+                }}>
+                {" " + sumTexas}
+              </Text>
             </Text>
-          </Text>
+          ) : null}
         </View>
         <View
           style={{

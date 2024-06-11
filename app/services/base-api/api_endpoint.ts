@@ -53,4 +53,6 @@ export const ApiEndpoint = {
   CREATE_ADDRESS: "/api/v1/b2c/partners/address",
   GET_LIST_ADDRESS: "/api/v1/b2c/partners/address/list",
   GET_LIST_TAX: "/api/v1/tax/list",
+  GET_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
+  GET_DEBT_LIMIT: "/api/v1/retail/sale-order/debt-limit",
 };
