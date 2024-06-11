@@ -12,7 +12,7 @@ import { useStores } from "../../../../models";
 import { boolean } from "mobx-state-tree/dist/internal";
 import { RectButton } from "react-native-gesture-handler";
 import { Dialog } from "../../../../components/dialog-notification";
-import { translate } from "i18n-js";
+import { translate } from "../../../../i18n/translate";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
@@ -58,8 +58,6 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
         console.log('====================================');
         if (result.kind === "ok") {
             setIsVisible(!isVisible)
-
-            handleRefresh()
             Dialog.show({
                 title: translate("txtDialog.txt_title_dialog"),
                 button: '',
@@ -68,6 +66,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                 closeOnOverlayTap: false,
                 onPressButton: () => {
                     Dialog.hide();
+                    handleRefresh()
                 }
             })
         } else {
@@ -97,7 +96,10 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
 
     return (
         <Modal
-
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
+            animationInTiming={500}
+            animationOutTiming={750}
             isVisible={isVisible}
             style={{ margin: 0 }}
             avoidKeyboard={true}

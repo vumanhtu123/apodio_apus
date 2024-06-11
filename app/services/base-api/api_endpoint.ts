@@ -52,4 +52,5 @@ export const ApiEndpoint = {
   CREATE_ADDRESS: '/api/v1/b2c/partners/address',
   GET_LIST_ADDRESS: '/api/v1/b2c/partners/address/list',
   GET_LIST_PRICE_LIST: '/api/v1/b2c/price-list/list?trackingState=OPERATION&page=0&size=20',
+  GET_LIST_TAX: "/api/v1/tax/list",
 };
