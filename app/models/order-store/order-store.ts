@@ -29,6 +29,7 @@ export const OrderStoreModel = types
     viewProductType : types.optional(types.string , "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
     orderId : types.optional(types.number, 0),
+    dataClientSelect: types.optional(types.string,'')
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -77,6 +78,9 @@ export const OrderStoreModel = types
     },
     setOrderId (id : number) {
       self.orderId = id
+    },
+    setDataClientSelect(value: any){
+      self.dataClientSelect = value
     }
   }))
   .actions((self) => ({

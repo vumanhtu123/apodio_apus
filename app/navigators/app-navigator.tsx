@@ -130,6 +130,7 @@ export type NavigatorParamList = {
   filterOrderScreen: undefined;
   printInvoiceScreen: undefined;
   newInvoice: undefined;
+  selectApplicablePriceList: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -246,6 +247,8 @@ export const AppStack = () => {
 
       <Stack.Screen name="selectClient" component={Screens.SelectClientScreen} />
       <Stack.Screen name="filterSelectScreen" component={Screens.FilterSelectScreen} />
+      <Stack.Screen name="selectApplicablePriceList" component={Screens.SelectApplicablePriceList} />
+
       <Stack.Screen
         name="mainBottom"
         options={{ gestureEnabled: false }}

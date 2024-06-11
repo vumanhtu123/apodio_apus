@@ -159,8 +159,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
               props.navigation.navigate('selectClient')
             }}
           />
-          <AddressOrder />
-          <PriceList />
+          <AddressOrder
+
+          />
+          <PriceList
+
+          />
           <InputSelect
             styleView={{
               backgroundColor: "white",

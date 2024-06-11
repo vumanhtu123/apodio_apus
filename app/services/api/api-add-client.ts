@@ -26,7 +26,9 @@ export class AddClientAPI {
             
             const result = response.data;
             if (response.data.data) {
+                
               return { kind: "ok", result };
+
             } else {
               return { kind: "bad-data", result };
             }

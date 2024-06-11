@@ -3,25 +3,19 @@ import React, { useEffect } from "react";
 import { FC, useState } from "react";
 import { Image, TouchableOpacity, View, FlatList, Platform, RefreshControl, ActivityIndicator, Alert } from "react-native";
 import { ScreenStackProps } from "react-native-screens";
-import { NavigatorParamList } from "../../../navigators";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
-import { Header, Text } from "../../../components";
-import { Images } from "../../../../assets";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { Header, Text } from "../../components";
+import { Images } from "../../../assets";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { number } from "mobx-state-tree/dist/internal";
-import { Styles, } from "./styles";
+import { Styles, } from "./styles";;
+import { NavigatorParamList } from "../../navigators";
 import SelectFilterModal from "./Modal/modal-select-filter";
-import { SelectClienAPI } from "../../../services/api/api_selectClient";
-import { useStores } from "../../../models";
-import ModalCreateClient from "./Modal/modal-create-client";
-import Loading from "../../../components/loading/loading";
-import { showLoading } from "../../../utils/toast";
-import { useNavigation } from "@react-navigation/native";
 
 
-export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "selectClient">> = observer(
-    function SelectClientScreen(props) {
+export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, "selectApplicablePriceList">> = observer(
+    function SelectApplicablePriceList(props) {
         const [indexSelect, setIndexSelect] = useState<any>()
         const [onClick, setOnClick] = useState('successfully')
         const [isVisible, setIsVisible] = useState(false);
@@ -30,34 +24,10 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
         const [isLoadingMore, setIsLoadingMore] = useState(false);
         const [size, setsize] = useState(15)
         const [page, setPage] = useState(0)
-        const getAPi = useStores()
+        // const getAPi = useStores()
         const [isVisibleCreateClient, setisVisibleCreateClient] = useState(false);
         const [valueSearch, setValueSearch] = useState('')
         const [isShowSearch, setisShowSearch] = useState(false)
-        const [dataItemSelect, setdataItemSelect] = useState()
-
-
-
-
-        // const dataFace = [
-        //     {
-        //         code: "MTH",
-        //         name: "Công ty TNHH MISUKO VIệt Nam",
-        //         phone: "0123214155",
-        //         id: "NCC00001"
-        //     },
-        //     {
-        //         code: "TH",
-        //         name: "Công ty TNHH MISUKO VIệt Nam",
-        //         phone: "0123214155",
-        //         id: "NCC00002"
-        //     }, {
-        //         code: "TH",
-        //         name: "Công ty TNHH MISUKO VIệt Nam",
-        //         phone: "0123214155",
-        //         id: "NCC00003"
-        //     }
-        // ]
 
         const openTypeFilter = () => {
             setIsVisible(true)
@@ -65,37 +35,38 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
         // console.log("doannnnn", totalPage);
 
+        const dataFake = [
+            { nameTable: "Bảng giá tháng 12/2023", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" },
+            { nameTable: "Bảng giá tháng 12/2024", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" }
+        ]
 
-        const sort = getAPi.orderStore.sortCreateClient
-        console.log("doann log sort", sort);
+        // const sort = getAPi.orderStore.sortCreateClient
+        // console.log("doann log sort", sort);
 
         console.log('====================================');
         console.log('valueSearch', valueSearch);
         console.log('====================================');
-        const sendataClientSelected = () => {
-            getAPi.orderStore.setDataClientSelect(dataItemSelect)
-        }
 
         const getListClient = () => {
-            getAPi.orderStore.getListSelectClient(0, size, sort, valueSearch).then((data) => {
-                console.log("dataaaaaaaaa", data);
+            // getAPi.orderStore.getListSelectClient(0, size, sort, valueSearch).then((data) => {
+            //     console.log("dataaaaaaaaa", data);
 
-                // setTotalPage(data?.totalPages)
+            //     // setTotalPage(data?.totalPages)
 
-                const dataSelectClien = data?.content.map((item) => {
-                    return {
-                        name: item.name,
-                        code: item.code,
-                        phoneNumber: item.phoneNumber
-                    }
-                })
-                setmyDataSlectClient(dataSelectClien)
-            })
+            //     const dataSelectClien = data?.content.map((item) => {
+            //         return {
+            //             name: item.name,
+            //             code: item.code,
+            //             phoneNumber: item.phoneNumber
+            //         }
+            //     })
+            //     setmyDataSlectClient(dataSelectClien)
+            // })
         }
 
-        useEffect(() => {
-            getListClient()
-        }, [getAPi.orderStore.sortCreateClient])
+        // useEffect(() => {
+        //     getListClient()
+        // }, [getAPi.orderStore.sortCreateClient])
 
 
 
@@ -162,7 +133,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                 </View>
                 <View style={{ flex: 1, }}>
                     <FlatList
-                        data={myDataSlectClient}
+                        data={dataFake}
                         renderItem={({ item, index }): any => {
                             return (
                                 <TouchableOpacity style={{
@@ -175,21 +146,15 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                                     marginBottom: 1.5,
                                     justifyContent: 'space-between',
                                 }}
-                                    onPress={() => {
-                                        console.log('====================================');
-                                        console.log("DataItemSelect", item);
-                                        console.log('====================================');
-                                        setdataItemSelect(item)
-                                        setIndexSelect(index)
-                                    }}
+                                    onPress={() => { setIndexSelect(index) }}
                                 >
                                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                        <View style={{ width: 40, height: 40, backgroundColor: '#EFF8FF', borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+                                        {/* <View style={{ width: 40, height: 40, backgroundColor: '#EFF8FF', borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
                                             <Text style={{ fontSize: fontSize.size10, color: '#0078D4' }}>{item.code}</Text>
-                                        </View>
+                                        </View> */}
                                         <View style={{ marginHorizontal: 6 }}>
-                                            <Text style={{ fontSize: fontSize.size10 }}>{item.name}</Text>
-                                            <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.phoneNumber}</Text>
+                                            <Text style={{ fontSize: fontSize.size10 }}>{item.nameTable}</Text>
+                                            <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.container}</Text>
                                         </View>
                                     </View>
                                     <TouchableOpacity>
@@ -228,22 +193,6 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
                     />
 
-                    <TouchableOpacity style={{
-                        flexDirection: 'row', justifyContent: 'center', alignItems: 'center', borderRadius: 30, position: 'absolute', paddingHorizontal: scaleWidth(18),
-                        paddingVertical: scaleHeight(8),
-                        backgroundColor: colors.palette.navyBlue,
-                        bottom: Platform.OS === 'ios' ? scaleHeight(20) : scaleHeight(5),
-                        right: scaleWidth(16)
-                    }}
-                        onPress={() => {
-                            setisVisibleCreateClient(!isVisibleCreateClient)
-
-                        }}
-                    >
-                        <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
-                        <Text style={{ color: 'white', fontSize: fontSize.size14 }} tx='dashboard.client' ></Text>
-                    </TouchableOpacity>
-
                 </View>
 
 
@@ -262,10 +211,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
                     <TouchableOpacity
                         style={onClick === 'successfully' ? Styles.btnSuccessfully : Styles.btnSave}
-                        onPress={() => {
-                            sendataClientSelected()
-                            setOnClick('successfully')
-                        }}
+                        onPress={() => setOnClick('successfully')}
                     >
                         <Text
                             style={{ color: onClick === 'successfully' ? colors.palette.white : colors.palette.navyBlue }}
@@ -280,11 +226,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                     isVisible={isVisible}
                     setIsVisible={() => setIsVisible(!isVisible)}
                 />
-                <ModalCreateClient
-                    isVisible={isVisibleCreateClient}
-                    setIsVisible={setisVisibleCreateClient}
-                    handleRefresh={() => getListClient()}
-                />
+
 
             </View>
         )

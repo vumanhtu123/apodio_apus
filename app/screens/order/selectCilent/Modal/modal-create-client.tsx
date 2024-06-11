@@ -57,6 +57,9 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
         console.log('test', result);
         console.log('====================================');
         if (result.kind === "ok") {
+            setIsVisible(!isVisible)
+
+            handleRefresh()
             Dialog.show({
                 title: translate("txtDialog.txt_title_dialog"),
                 button: '',
@@ -75,8 +78,8 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                 closeOnOverlayTap: false
             })
         }
-        handleRefresh()
-        setIsVisible(!isVisible)
+
+
     }
 
 
@@ -132,6 +135,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                     <Controller
                         control={control}
                         name="phoneNumber"
+
                         render={({ field: { onBlur, onChange, value } }) => (
 
                             <TextField
@@ -157,14 +161,17 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                                 placeholder="VD 01231254"
                                 RightIconClear={Images.icon_delete2}
                                 error={errors?.phoneNumber?.message}
+
                             />
                         )}
                         rules={{
                             required: "Please input data"
                         }}
                     />
-
-
+                    {
+                        phoneNumber?.length < 10 || phoneNumber?.length > 10 ?
+                            <Text style={{ fontSize: 12, color: 'red' }}>Vui lòng nhập đủ 10 số</Text> : null
+                    }
                     <Controller
                         control={control}
                         name="NameClient"
