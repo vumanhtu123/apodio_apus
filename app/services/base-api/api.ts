@@ -22,7 +22,7 @@ export class  Api {
    * Creates the api.
    * @param config The configuration to use.
    */
-  constructor(config: ApiConfig = DEFAULT_API_CONFIG) {
+  constructor(config: ApiConfig = DEFAULT_API_CONFIG ) {
     this.config = config;
   }
 
