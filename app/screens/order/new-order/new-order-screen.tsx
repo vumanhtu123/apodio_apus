@@ -167,7 +167,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           ]}>
           <HeaderOrder
             openDialog={function (): void {
-              setButtonSelect(true);
+              props.navigation.navigate('selectClient')
             }}
           />
           <AddressOrder

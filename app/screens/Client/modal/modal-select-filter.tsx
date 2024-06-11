@@ -51,6 +51,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
     // type SortType = 'new' | 'bestSeller' | 'hightToLow' | 'lowToHight' | 'aToZ' | 'zToA' | 'highPriceToLow' | 'lowPriceToHigh' | 'custom';
 
     const [showSortOption, setShowSortOption] = useState(true);
+
     const toggleShowSortOption = () => {
         setShowSortOption(!showSortOption);
     };
@@ -95,11 +96,11 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
     //     // navigation.navigate("arrangeProduct" as never, { selectedTypes });
     //     setIsVisible(false);
     // };
-    const setOpenDialog2 = () => { 
-        
+    const setOpenDialog2 = () => {
+
     }
 
-  
+
 
     return (
         <Modal animationType="slide" transparent={true} visible={isVisible}>

@@ -39,6 +39,8 @@ export const ApiEndpoint = {
   COMPANY_INFO: "/api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
   GET_LIST_ORDER : '/api/v1/retail/sale-order/list',
+  GET_LIST_SLECT_CLIENT:'/api/v1/b2c/partners/list',
+  CREATE_CLIENT:'/api/v1/b2c/partners',
   GET_LIST_ORDER_PRODUCT: '/api/v1/retail/sale-order/product-templates',
   GET_LIST_ORDER_VARIANT: '/api/v1/retail/sale-order/products',
   GET_LIST_ORDER_PRODUCT_PRICE: '/api/v1/retail/sale-order/price-list/product-templates',

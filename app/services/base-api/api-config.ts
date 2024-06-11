@@ -23,8 +23,8 @@ const getDomainOrder = () => {
 };
 const getDomainErp = () => {
   const env = CONFIG.ENV;
-  //const domain = CONFIG.API.STAGING.URL_ERP;
-  const domain = CONFIG.API.STAGING.URL_ERP;
+  //const domain = CONFIG.API.DEV.URL_ERP;
+  const domain = CONFIG.API.DEV.URL_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("ERP", domain);
   return domain;
@@ -37,6 +37,7 @@ const getDomainAddress = () => {
   console.log("ERP", domain);
   return domain;
 };
+
 
 const getDomainGetWay = () => {
   const env = CONFIG.ENV;
