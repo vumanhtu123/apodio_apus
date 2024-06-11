@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
+import { Alert, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { margin, scaleHeight } from "../../../theme";
 import { Text } from "../../../components";

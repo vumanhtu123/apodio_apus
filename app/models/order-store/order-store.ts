@@ -1,21 +1,28 @@
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
-import { InputSelectModel, OrderResult } from "./order-store-model";
-import { CreateAddressResult, OrderProductResult } from "./order-product-model";
+import { InputSelectModel, OrderResult } from "./entities/order-store-model";
+import {
+  CreateAddressResult,
+  OrderProductResult,
+} from "./entities/order-product-model";
 import { OrderApi } from "../../services/api/api_oder";
 import { VendorApi } from "../../services/api/api-vendor";
 import { AddClientAPI } from "../../services/api/api-add-client";
 import { SelectClienAPI } from "../../services/api/api_selectClient";
 import { OderListResspose } from "../order-list-select-clien-model";
 import { AddressApi } from "../../services/api/api_address";
-import { OrderCityResult, OrderDistrictResult, OrderListAddressResult, OrderWardResult } from "./order-address-model";
+import {
+  OrderCityResult,
+  OrderDistrictResult,
+  OrderListAddressResult,
+  OrderWardResult,
+} from "./entities/order-address-model";
 import { OrderVariantResult } from "./entities/order-variant-model";
 import { TaxModel, Content } from "./entities/order-tax-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
   .props({
-
     isModalTracking: types.optional(types.boolean, false),
     dataFatherStatus: types.optional(
       types.array(types.frozen<InputSelectModel>()),
@@ -39,16 +46,16 @@ export const OrderStoreModel = types
       []
     ),
     checkPriceList: types.optional(types.boolean, false),
-    sortCreateClient: types.optional(types.string,''),
-    search: types.optional(types.string,''),
+    sortCreateClient: types.optional(types.string, ""),
+    search: types.optional(types.string, ""),
     reloadAddressScreen: types.optional(types.boolean, false),
     sort: types.optional(types.array(types.string), []),
     isLoadMore: types.optional(types.boolean, false),
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
-    orderId : types.optional(types.number, 0),
-    dataClientSelect: types.optional(types.string,'')
+    orderId: types.optional(types.number, 0),
+    dataClientSelect: types.optional(types.string, ""),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -72,10 +79,10 @@ export const OrderStoreModel = types
       self.viewGrid = viewGird;
     },
     setSearch(search: any) {
-      self.search = search
+      self.search = search;
     },
-    setSortCreateClient( sort: any) {
-      self.sortCreateClient = sort
+    setSortCreateClient(sort: any) {
+      self.sortCreateClient = sort;
     },
     setSelectedProductId(productId: number) {
       self.productId = productId;
@@ -90,7 +97,7 @@ export const OrderStoreModel = types
       self.dataProductAddOrder = value;
     },
     setReloadAddressScreen(value: boolean) {
-      self.reloadAddressScreen = value
+      self.reloadAddressScreen = value;
     },
     setDataProductAddOrderNew(value: any) {
       self.dataProductAddOrderNew = value;
@@ -101,12 +108,9 @@ export const OrderStoreModel = types
     setOrderId(id: number) {
       self.orderId = id;
     },
-    setOrderId (id : number) {
-      self.orderId = id
+    setDataClientSelect(value: any) {
+      self.dataClientSelect = value;
     },
-    setDataClientSelect(value: any){
-      self.dataClientSelect = value
-    }
   }))
   .actions((self) => ({
     getListOrder: flow(function* (page: number, size: number) {
@@ -126,25 +130,34 @@ export const OrderStoreModel = types
       }
     }),
 
-    getListSelectClient: flow(function * (page: number, size: number, sort: string , search: string ) {
+    getListSelectClient: flow(function* (
+      page: number,
+      size: number,
+      sort: string,
+      search: string
+    ) {
       try {
-        const clientAPI = new SelectClienAPI(self.environment.apiErp)
-        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size, sort, search)
-        console.log("SlectClientResult-------------",JSON.stringify(result.data))
-        return result.data
+        const clientAPI = new SelectClienAPI(self.environment.apiErp);
+        const result: BaseResponse<OderListResspose, ErrorCode> =
+          yield clientAPI.getListSelectClient(page, size, sort, search);
+        console.log(
+          "SlectClientResult-------------",
+          JSON.stringify(result.data)
+        );
+        return result.data;
       } catch (error) {
-        console.log("Get list info company", error)
+        console.log("Get list info company", error);
       }
     }),
 
-    postClient: flow(function * (clientData){
-      const client = new AddClientAPI(self.environment.apiErp)
-      const result = yield client.createClient(clientData)
-      if (result.kind === 'ok') {
-        return result
+    postClient: flow(function* (clientData) {
+      const client = new AddClientAPI(self.environment.apiErp);
+      const result = yield client.createClient(clientData);
+      if (result.kind === "ok") {
+        return result;
       } else {
-        return result
-    }
+        return result;
+      }
     }),
 
     getListOrderProduct: flow(function* (
@@ -307,10 +320,10 @@ export const OrderStoreModel = types
         page,
         size,
         search,
-        countryId,
+        countryId
         // regionId,
       );
-      console.log('-----------dsa' , result)
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -323,7 +336,7 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       search: string,
-      cityId: number,
+      cityId: number
     ) {
       // console.log('page' , page)
       const orderApi = new AddressApi(self.environment.apiAddress);
@@ -331,9 +344,9 @@ export const OrderStoreModel = types
         page,
         size,
         search,
-        cityId,
+        cityId
       );
-      console.log('-----------dsa' , result)
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -346,7 +359,7 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       search: string,
-      districtId: number,
+      districtId: number
     ) {
       // console.log('page' , page)
       const orderApi = new AddressApi(self.environment.apiAddress);
@@ -354,9 +367,9 @@ export const OrderStoreModel = types
         page,
         size,
         search,
-        districtId,
+        districtId
       );
-      console.log('-----------dsa' , result)
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -365,14 +378,11 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    getListAddress: flow(function* (
-      partnerId: number,
-    ) {
+    getListAddress: flow(function* (partnerId: number) {
       // console.log('page' , page)
       const orderApi = new AddressApi(self.environment.apiAddress);
       const result: OrderListAddressResult = yield orderApi.getListAddress(
         partnerId
-        regionId
       );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
@@ -385,9 +395,7 @@ export const OrderStoreModel = types
     }),
     createAddress: flow(function* (value: any) {
       const orderApi = new AddressApi(self.environment.apiAddress);
-      const result: CreateAddressResult = yield orderApi.createAddress(
-        value
-      );
+      const result: CreateAddressResult = yield orderApi.createAddress(value);
       // console.log('resulttt' , result)
       if (result.kind === "ok") {
         return result;

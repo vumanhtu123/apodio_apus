@@ -1,4 +1,4 @@
-import { ErrorCode } from "../../errors";
+import { ErrorCode } from "../errors";
 
 export interface Root {
   totalElements: number;
@@ -53,9 +53,21 @@ export interface Sort2 {
 export interface Response {
   message: string;
   traceId: string;
-  data: Root[];
+  data: Root;
   errorCodes: ErrorCode[];
+}
+export interface Response1 {
+  message: string;
+  traceId: string;
+  data: Root1;
+  errorCodes: ErrorCode[];
+}
+export interface Root1 {
+  id: number;
 }
 export type OrderProductResult =
   | { kind: "ok"; response: Response }
   | { kind: "bad-data"; response: Response };
+export type CreateAddressResult =
+  | { kind: "ok"; response: Response1 }
+  | { kind: "bad-data"; response: Response1 };
