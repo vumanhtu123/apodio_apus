@@ -2,12 +2,8 @@ import { ApisauceInstance, create } from "apisauce";
 import DeviceInfo from "react-native-device-info";
 import { resetRoot } from "../../navigators";
 import { getAccessToken, getTenantId } from "../../utils/storage";
-import {
-  hideDialog,
-  hideLoading,
-  showDialog
-} from "../../utils/toast";
-import { ApiConfig, DEFAULT_API_CONFIG_ACCOUNTING, DEFAULT_API_CONFIG_ORDER } from "./api-config";
+import { hideDialog, hideLoading, showDialog } from "../../utils/toast";
+import { ApiConfig, DEFAULT_API_CONFIG_ACCOUNTING } from "./api-config";
 /**
  * Manages all requests to the API.
  */
@@ -30,7 +26,7 @@ export class ApiAccounting {
   }
   async setup() {
     // construct the apisauce instance
-    console.log("apisauceOrder", this.config.url);
+    console.log("apisauce accounting", this.config.url);
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
@@ -41,7 +37,7 @@ export class ApiAccounting {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         hideLoading();
-        console.log("RESPONSEmmmmmmm :", response);
+        console.log("RESPONSE accounting :", response);
         return response;
       },
       async (error) => {
@@ -69,7 +65,7 @@ export class ApiAccounting {
           );
         }
         if (error.response.status === 500 || error.response.status === 404) {
-          console.log('first-----------', error)
+          console.log("first-----------", error);
           showDialog("Error", "danger", "System Busy!", "", "OK", () =>
             hideDialog()
           );
@@ -82,7 +78,6 @@ export class ApiAccounting {
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
-          // "X-TenantId": tenantId,
           "X-TenantId": 77,
         };
         // const token = await getAccessToken();
@@ -99,6 +94,17 @@ export class ApiAccounting {
       try {
         if (response) {
           console.log("responseUpload", response);
+          // if (response.data.errorCodes){
+          //   if (response.data.errorCodes[0].code === 4567) {
+          //     showDialog(
+          //       'Error',
+          //       'danger',
+          //       `${response.data.errorCodes[0].message}`,
+          //       '',
+          //       'OK',
+          //       () => hideDialog())
+          //   }
+          // }
         }
       } catch (error) {
         console.log("ERROR", error);

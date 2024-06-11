@@ -120,7 +120,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                         // Alert.alert("ok")
                         setisVisibleDeleteReceipt(!isVisibleDeleteReceipt)
                     }}
-                    
+
                     onRightPress2={() => props.navigation.navigate("voucherDetail")}
                     widthRightIcon={scaleWidth(16)}
                     heightRightIcon={scaleHeight(16)}
@@ -160,7 +160,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                     </View>
                     <TouchableOpacity
                         style={{ backgroundColor: '#FFFFFF', borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
-                        // onPress={() => props.navigation.navigate('ballotDetail')}
+                    // onPress={() => props.navigation.navigate('ballotDetail')}
                     >
                         <View style={Styles.flexRow}>
                             <Text style={{ fontWeight: '600' }} >{dataItemGoodsImportBook.id}</Text>
@@ -449,9 +449,9 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
 
                                 <TouchableOpacity
                                     style={onClick === 'confirm' ? Styles.btnConfirm : Styles.btnBack}
-                                    onPress={() =>{ 
+                                    onPress={() => {
                                         setOnClick('confirm')
-                                        
+
                                         setIsVisibleConfirmDelete(!isVisibleConfirmDelete)
                                         setisVisibleDeleteReceipt(false)
                                     }}
@@ -499,7 +499,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                     style={[
                                         onClick === 'confirm' ? Styles.btnBack2 : Styles.btnConfirm2
                                     ]}
-                                    onPress={() =>{ 
+                                    onPress={() => {
                                         setisVisibleDeleteReceipt(!isVisibleDeleteReceipt)
                                         setIsVisibleConfirmDelete(false)
                                     }}
@@ -514,7 +514,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
 
                                 <TouchableOpacity
                                     style={onClick === 'confirm' ? Styles.btnConfirm2 : Styles.btnBack2}
-                                onPress={() => setIsVisibleConfirmDelete(false)}
+                                    onPress={() => setIsVisibleConfirmDelete(false)}
                                 >
                                     <Text
                                         style={{ color: onClick === 'confirm' ? colors.palette.white : colors.palette.navyBlue, fontWeight: '600' }}

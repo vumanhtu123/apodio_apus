@@ -1,7 +1,12 @@
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+  Loading,
+} from "../../components/dialog-notification";
 import { GetWayAPI } from "../base-api/api-config-get-way";
 import DeviceInfo from "react-native-device-info";
 import { getGeneralApiProblem } from "./api-problem";
@@ -18,7 +23,7 @@ export class AuthApi {
   }
   async login(username: string, password: string): Promise<LoginResponse> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<BaseResponse<LoginResponse, ErrorCode>> =
@@ -26,8 +31,7 @@ export class AuthApi {
           username,
           password,
           deviceInfo: DeviceInfo.getUniqueIdSync() + 2,
-        }
-      );
+        });
       Loading.hide();
       console.log("response", response.data);
       const data = response.data;
@@ -50,7 +54,7 @@ export class AuthApi {
 
   async logout(jti: string): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.getway.apisauce.post(
@@ -82,7 +86,7 @@ export class AuthApi {
 
   async forgotPass(otpReceiver: string, receiverType: string): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.uaa.apisauce.post(
@@ -95,7 +99,7 @@ export class AuthApi {
       console.log("response", response.data);
       const data = response.data;
       // if (!response.ok) {
-        Loading.hide();
+      Loading.hide();
       //   const problem = getGeneralApiProblem(response);
       //   if (problem) return problem;
       // }

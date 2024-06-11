@@ -30,6 +30,7 @@ import { CreateExportGoods } from "../screens/goods-delivery-book/Create-Export-
 import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
+
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
@@ -118,15 +119,19 @@ export type NavigatorParamList = {
   detailsOrderScreen: undefined;
   orderTracking: undefined;
   orderDetailsSupplier: undefined;
+  selectClient: undefined;
   paymentBuy: undefined;
   deliveryAddress: undefined;
   editDelivery: undefined;
   newDelivery: undefined;
   addProductOrder: undefined;
+  filterSelectScreen: undefined;
   selectVariant: undefined;
   filterOrderScreen: undefined;
   printInvoiceScreen: undefined;
   newInvoice: undefined;
+  selectApplicablePriceList: undefined;
+  filterSelectApplicablePriceList: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -241,6 +246,10 @@ export const AppStack = () => {
       <Stack.Screen name="debt" component={Screens.DebtScreen} />
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
 
+      <Stack.Screen name="selectClient" component={Screens.SelectClientScreen} />
+      <Stack.Screen name="filterSelectScreen" component={Screens.FilterSelectScreen} />
+      <Stack.Screen name="selectApplicablePriceList" component={Screens.SelectApplicablePriceList} />
+      <Stack.Screen name="filterSelectApplicablePriceList" component={Screens.FilterSelectApplicablePriceList} />
       <Stack.Screen
         name="mainBottom"
         options={{ gestureEnabled: false }}
@@ -436,7 +445,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()

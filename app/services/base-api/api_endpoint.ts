@@ -39,6 +39,8 @@ export const ApiEndpoint = {
   COMPANY_INFO: "api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
   GET_LIST_ORDER : '/api/v1/retail/sale-order/list',
+  GET_LIST_SLECT_CLIENT:'/api/v1/b2c/partners/list',
+  CREATE_CLIENT:'/api/v1/b2c/partners',
   GET_LIST_ORDER_PRODUCT: '/api/v1/retail/sale-order/product-templates',
   GET_LIST_ORDER_VARIANT: '/api/v1/retail/sale-order/products',
   GET_LIST_ORDER_PRODUCT_PRICE: '/api/v1/retail/sale-order/price-list/product-templates',
@@ -49,5 +51,7 @@ export const ApiEndpoint = {
   GET_DETAIL_ORDER : '/api/v1/retail/sale-order',
   CREATE_ADDRESS: '/api/v1/b2c/partners/address',
   GET_LIST_ADDRESS: '/api/v1/b2c/partners/address/list',
-  GET_DETAIL_INVOICE : '/api/v1/account-move/b2c'
+  GET_DETAIL_INVOICE : '/api/v1/account-move/b2c',
+  GET_LIST_PRICE_LIST: '/api/v1/b2c/price-list/list?trackingState=OPERATION&page=0&size=20',
+  GET_LIST_TAX: "/api/v1/tax/list",
 };

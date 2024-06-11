@@ -57,6 +57,7 @@ export const DeliveryAddress: FC = observer(
             getListAddress()
         }, [])
         useEffect(() => {
+            console.log(dataAddress, '1231245234123')
             if (dataAddress === undefined) {
                 arrAddress.map(items => {
                     if (items.isDefault === true) {

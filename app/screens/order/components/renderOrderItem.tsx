@@ -10,18 +10,18 @@ import AutoHeightImage from 'react-native-auto-height-image';
 
 const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDetail, handleClassifyDetail }: any) => {
     const { orderStore } = useStores()
-    const { dataProductAddOrderNew, setDataProductAddOrderNew } = orderStore
+    const { dataProductAddOrder, setDataProductAddOrder } = orderStore
 
     const handleAddProduct = (data: any) => {
         console.log(data)
         const newArr1 = { ...data, amount: 1 }
-        const newArr = dataProductAddOrderNew.concat(newArr1)
-        setDataProductAddOrderNew(newArr)
-        console.log(dataProductAddOrderNew)
+        const newArr = dataProductAddOrder.concat(newArr1)
+        setDataProductAddOrder(newArr)
+        console.log(dataProductAddOrder)
     }
 
     const handleMinus = (data: any) => {
-        const newArr1 = dataProductAddOrderNew.slice()
+        const newArr1 = dataProductAddOrder.slice()
         const newArr2 = newArr1.map(items => {
             if (items.id === data.id) {
                 const amounts = items.amount - 1
@@ -33,26 +33,27 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
             } else { return items }
         })
         const newArr3 = newArr2.filter(items => items !== undefined)
-        setDataProductAddOrderNew(newArr3)
-        console.log(dataProductAddOrderNew)
+        setDataProductAddOrder(newArr3)
+        console.log(dataProductAddOrder)
     }
     const handlePlus = (data: any) => {
-        const newArr1 = dataProductAddOrderNew.slice()
+        const newArr1 = dataProductAddOrder.slice()
         const newArr2 = newArr1.map(items => {
             if (items.id === data.id) {
                 return { ...items, amount: items.amount + 1 }
             } else { return items }
         })
-        setDataProductAddOrderNew(newArr2)
-        console.log(dataProductAddOrderNew)
+        setDataProductAddOrder(newArr2)
+        console.log(dataProductAddOrder)
     }
 
-    const idItemCheck = dataProductAddOrderNew.filter(items => items.id === item.id)
+    const idItemCheck = dataProductAddOrder.filter(items => items.id === item.id)
 
     if (isGridView) {
         return (
             <TouchableOpacity
                 key={index}
+                disabled={item.quantityInventory === 0 ? true : false}
                 onPress={() => {
                     viewProduct === 'VIEW_PRODUCT' ? handleProductDetail(item.id) : handleClassifyDetail(item.id);
                 }}
@@ -62,6 +63,7 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                         width: scaleWidth(107),
                         // height: scaleHeight(124),
                         marginRight: scaleWidth(11),
+                        opacity: item.quantityInventory === 0 ? 0.5 : 1
                     },
                 ]}>
                 <View
@@ -129,19 +131,22 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                             </Text>
                         ) : null}
                         {viewProduct === "VIEW_PRODUCT" ?
-                            (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
-                                item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
-                                    <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />)
+                            (item.quantityInventory === 0 ?
+                                <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' />
+                            )
                             : viewProduct === "VIEW_VARIANT" && orderStore.checkPriceList === true ?
-                                (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
-                                    item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
-                                        <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />) : null}
+                                (item.quantityInventory === 0 ?
+                                    <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                    <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' />
+                                ) : null}
                         {viewProduct === "VIEW_PRODUCT" ? null :
                             (idItemCheck.length === 0 ?
-                                <TouchableOpacity style={{ marginVertical: scaleHeight(5.5) }}
-                                    onPress={() => handleAddProduct(item)}>
-                                    <Images.icon_plus_blue2 />
-                                </TouchableOpacity>
+                                (item.quantityInventory === 0 ? null :
+                                    <TouchableOpacity style={{ marginVertical: scaleHeight(5.5) }}
+                                        onPress={() => handleAddProduct(item)}>
+                                        <Images.icon_plus_blue2 />
+                                    </TouchableOpacity>)
                                 : <View style={{
                                     // marginLeft: scaleWidth(margin.margin_12),
                                     marginTop: scaleHeight(2),
@@ -175,10 +180,11 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
         return (
             <TouchableOpacity
                 key={index}
+                disabled={item.quantityInventory === 0 ? true : false}
                 onPress={() => viewProduct === 'VIEW_PRODUCT' ? handleProductDetail(item.id) : handleClassifyDetail(item.id)}
                 style={[
                     stylesItem.item,
-                    { width: scaleWidth(343) },
+                    { width: scaleWidth(343), opacity: item.quantityInventory === 0 ? 0.5 : 1 },
                 ]}>
                 <View
                     style={{
@@ -248,19 +254,22 @@ const RenderOrderItem = ({ item, index, isGridView, viewProduct, handleProductDe
                             </Text>
                         ) : null}
                         {viewProduct === "VIEW_PRODUCT" ?
-                            (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
-                                item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
-                                    <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />)
+                            (item.quantityInventory === 0 ?
+                                <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' />
+                            )
                             : viewProduct === "VIEW_VARIANT" && orderStore.checkPriceList === true ?
-                                (item.quantityInventory === 0 ? <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
-                                    item.quantityInventory >= 10 ? <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' /> :
-                                        <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.yellow, fontStyle: 'italic' }]} text='Sắp hết hàng' />) : null}
+                                (item.quantityInventory === 0 ?
+                                    <Text numberOfLines={1} style={[stylesItem.amount, { fontStyle: 'italic' }]} text='Hết hàng' /> :
+                                    <Text numberOfLines={1} style={[stylesItem.amount, { color: colors.palette.malachite, fontStyle: 'italic' }]} text='Còn hàng' />
+                                ) : null}
                         {viewProduct === "VIEW_PRODUCT" ? null :
                             (idItemCheck.length === 0 ?
-                                <TouchableOpacity style={{ marginVertical: scaleHeight(5.5) }}
-                                    onPress={() => handleAddProduct(item)}>
-                                    <Images.icon_plus_blue2 />
-                                </TouchableOpacity>
+                                (item.quantityInventory === 0 ? null :
+                                    <TouchableOpacity style={{ marginVertical: scaleHeight(5.5) }}
+                                        onPress={() => handleAddProduct(item)}>
+                                        <Images.icon_plus_blue2 />
+                                    </TouchableOpacity>)
                                 : <View style={{
                                     // marginLeft: scaleWidth(margin.margin_12),
                                     marginTop: scaleHeight(2),

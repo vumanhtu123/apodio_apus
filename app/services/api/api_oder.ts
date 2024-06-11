@@ -1,24 +1,23 @@
-import { ApiResponse } from "apisauce"
-import { hideLoading, showLoading } from "../../utils/toast"
-import { ApiOrder } from "../base-api/api-config-order"
-import { ApiEndpoint } from "../base-api/api_endpoint"
-import { Loading } from "../../components/dialog-notification"
-import { ApiAccounting } from "../base-api/api-config-accounting"
-
-
+import { ApiResponse } from "apisauce";
+import { hideLoading, showLoading } from "../../utils/toast";
+import { ApiOrder } from "../base-api/api-config-order";
+import { ApiEndpoint } from "../base-api/api_endpoint";
+import { Loading } from "../../components/dialog-notification";
+import { ApiAccounting } from "../base-api/api-config-accounting";
+import { TaxModel } from "../../models/order-store/entities/order-tax-model";
 
 export class OrderApi {
   private api: ApiOrder;
-  private apiAccounting: ApiAccounting; 
+  private apiAccount: ApiAccounting;
 
-  constructor(api: ApiOrder , apiAccounting : ApiAccounting ) {
+  constructor(api: ApiOrder, apiAccount: ApiAccounting) {
     this.api = api;
-    this.apiAccounting = apiAccounting
+    this.apiAccount = apiAccount;
   }
 
   async getListOrder(page: number, size: number , state : string): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
@@ -30,16 +29,16 @@ export class OrderApi {
       }
       )
       Loading.hide();
-      console.log('-----------------respone' , response)
-      const data = response.data
-      console.log('-----------------data' , data)
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
       Loading.hide();
-      return { kind: "bad-data" }
+      return { kind: "bad-data" };
     }
   }  
   async getDetailInvoice(id : number): Promise<any> {
@@ -72,8 +71,8 @@ export class OrderApi {
     search: string,
     // tagId: number,
     sort: string,
-    isLoadMore : boolean,
-    warehouseId: number,
+    isLoadMore: boolean,
+    warehouseId: number
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -99,7 +98,7 @@ export class OrderApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide()
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
@@ -110,9 +109,9 @@ export class OrderApi {
     search: string,
     // tagId: number,
     sort: string,
-    isLoadMore : boolean,
+    isLoadMore: boolean,
     warehouseId: number,
-    productTemplateId: number,
+    productTemplateId: number
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -139,7 +138,7 @@ export class OrderApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide()
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
@@ -150,9 +149,9 @@ export class OrderApi {
     search: string,
     // tagId: number,
     sort: string,
-    isLoadMore : boolean,
+    isLoadMore: boolean,
     warehouseId: number,
-    priceListId: number,
+    priceListId: number
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -179,7 +178,7 @@ export class OrderApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide()
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
@@ -190,10 +189,10 @@ export class OrderApi {
     search: string,
     // tagId: number,
     sort: string,
-    isLoadMore : boolean,
+    isLoadMore: boolean,
     warehouseId: number,
     productTemplateId: number,
-    priceListId: number,
+    priceListId: number
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -221,31 +220,57 @@ export class OrderApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide()
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }
 
   async getDetailOrder(id: number): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
-      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.GET_DETAIL_ORDER, {
-        id
-      }
-      )
+      const response: ApiResponse<any> = await this.api.apisauce.get(
+        ApiEndpoint.GET_DETAIL_ORDER,
+        {
+          id,
+        }
+      );
       Loading.hide();
-      console.log('-----------------respone' , response)
-      const data = response.data
-      console.log('-----------------data' , data.message)
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data.message);
       if (response.data.data) {
-        return { kind: "ok", response: data }
+        return { kind: "ok", response: data };
       }
-      return { kind: "bad-data", response: data }
+      return { kind: "bad-data", response: data };
     } catch (e) {
       Loading.hide();
       return { kind: "bad-data" }
     }
-  }  
+  }
+
+  async getTaxList(
+    type: any,
+    scopeType: any
+  ): Promise<BaseResponse<TaxModel, ErrorCode>> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<BaseResponse<TaxModel, ErrorCode>> =
+        await this.apiAccount.apisauce.get(ApiEndpoint.GET_LIST_TAX, {
+          type: type,
+          scopeType: scopeType,
+        });
+      const data = response.data;
+      if (response.status === 200) {
+        return data;
+      }
+      return data;
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
 }

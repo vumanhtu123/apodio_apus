@@ -48,7 +48,12 @@ const en = {
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
     delete_order: 'Bạn có chắc chắn muốn hủy đơn hàng bán ',
-    delete_order1 : 'này không?'
+    delete_order1 : 'này không?',
+    createClientSuccessful: "Thêm khách hàng thành công" ,
+    createClientFail: "Thêm khách hàng thất bại công", 
+    ok: "Ok",
+    notification: "Thông báo",
+
   },
   ruleController: {
     emptyText: 'Vui lòng nhập dữ liệu'
@@ -196,6 +201,7 @@ const en = {
     miniumQuanlity: "SL tối thiểu cần bán: ",
     quanlity: "Số lượng:",
     confirm: "Tạo đơn hàng",
+    select: "Chọn",
     choose_customer: "Chọn khách hàng",
     price_list: "Bảng giá áp dụng",
     no_price_list: "Không áp dụng bảng giá",
@@ -833,6 +839,7 @@ const en = {
     downloadNow: "Tải ngay",
     reset: "Thiết lập lại",
     apply: "Áp dụng",
+
   },
   printInvoiceScreen: {
     printInvoice: 'In hoá đơn',
@@ -856,6 +863,32 @@ const en = {
     toInvoice : 'Chờ thanh toán',
     partialInvoice : 'Thanh toán một phần',
     invoiced : 'Thanh toán đầy đủ'
+  },
+  selectClient: {
+    selectClient: "Chọn khách hàng",
+    selectCustomerForSalesOrder : "Chọn khách hàng cho đơn bán",
+    selected: "Lựa chọn",
+    add: "Thêm mới",
+    nameClient: "Tên khách hàng",
+    customerType: "Kiểu khách hàng",
+    selectCustomerType: "Chọn kiểu khách hàng",
+    filter: "Bộ lọc",
+    followName: "Theo tên",
+    timeCreate: "Thời gian tạo",
+    tag : "Tag",
+    new : "Mới nhất",
+    old: "Cũ nhất",
+    aToz: "Từ A -> Z",
+    zToa: "Từ Z -> A",
+    floorTiles: "Gạch lát",
+    wallTiles: "Gạch ốp",
+    brick40x40: "Gạch 40*40",
+    brick60x60: "Gạch 60*60",
+    brick80x80: "Gạch 80*80",
+
+  },
+  selectPriceListApply: {
+    selectPriceListApply: "Chọn bảng giá áp dụng",
   }
 
   // @demo remove-block-end

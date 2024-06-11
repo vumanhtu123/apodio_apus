@@ -9,7 +9,7 @@ import CONFIG from "../../config.json";
 
 const getDomain = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL;
+  const domain = CONFIG.API.DEV.URL;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Domain", domain);
   return domain;
@@ -22,15 +22,13 @@ const getDomainOrder = () => {
   return domain;
 };
 const getDomainAccounting = () => {
-  const env = CONFIG.ENV;
   const domain = CONFIG.API.DEV.URL_ACCOUNTING;
-  // console.log('URL',CONFIG.API.PRODUCT.URL);
-  console.log("Domainmm", domain);
+  console.log("Domain accounting", domain);
   return domain;
 };
 const getDomainErp = () => {
   const env = CONFIG.ENV;
-  //const domain = CONFIG.API.STAGING.URL_ERP;
+  //const domain = CONFIG.API.DEV.URL_ERP;
   const domain = CONFIG.API.DEV.URL_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("ERP", domain);
@@ -44,6 +42,7 @@ const getDomainAddress = () => {
   console.log("ERP", domain);
   return domain;
 };
+
 
 const getDomainGetWay = () => {
   const env = CONFIG.ENV;
@@ -126,6 +125,7 @@ export const DEFAULT_API_CONFIG_ORDER: ApiConfig = {
   url: getDomainOrder(),
   timeout: 10000,
 };
+
 export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
   url: getDomainAccounting(),
   timeout: 10000,
