@@ -139,7 +139,7 @@ export interface Root {
   export interface Response {
     message: string
     traceId: string
-    data: Root[]
+    data: Root
     errorCodes: ErrorCode[]
   }
   export type OrderVariantResult = { kind: "ok", response: Response } | { kind: "bad-data", response: Response };

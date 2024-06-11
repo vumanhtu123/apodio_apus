@@ -2,12 +2,14 @@ import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { InputSelectModel, OrderResult } from "./order-store-model";
 import { OrderApi } from "../../services/api/api_oder_screen";
-import { OrderProductResult } from "./order-product-model";
+import { CreateAddressResult, OrderProductResult } from "./order-product-model";
 import { OrderVariantResult } from "./order-variant-model";
 import { VendorApi } from "../../services/api/api-vendor";
 import { AddClientAPI } from "../../services/api/api-add-client";
 import { SelectClienAPI } from "../../services/api/api_selectClient";
 import { OderListResspose } from "../order-list-select-clien-model";
+import { AddressApi } from "../../services/api/api_address";
+import { OrderCityResult, OrderDistrictResult, OrderListAddressResult, OrderWardResult } from "./order-address-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -23,6 +25,7 @@ export const OrderStoreModel = types
     checkPriceList: types.optional(types.boolean, false),
     sortCreateClient: types.optional(types.string,''),
     search: types.optional(types.string,''),
+    reloadAddressScreen: types.optional(types.boolean, false),
     sort: types.optional(types.array(types.string), []),
     isLoadMore : types.optional(types.boolean, false),
     productId: types.optional(types.number, 0),
@@ -69,6 +72,9 @@ export const OrderStoreModel = types
     },
     setDataProductAddOrder(value: any) {
       self.dataProductAddOrder = value
+    },
+    setReloadAddressScreen(value: boolean) {
+      self.reloadAddressScreen = value
     },
     setDataProductAddOrderNew(value: any) {
       self.dataProductAddOrderNew = value
@@ -263,20 +269,96 @@ export const OrderStoreModel = types
       size: number,
       search: string,
       countryId: number,
-      regionId: number,
+      // regionId: number,
     ) {
       // console.log('page' , page)
-      const orderApi = new VendorApi(self.environment.apiErp);
-      const result: OrderVariantResult = yield orderApi.getListCity(
+      const orderApi = new AddressApi(self.environment.apiAddress);
+      const result: OrderCityResult = yield orderApi.getListCity(
         page,
         size,
         search,
         countryId,
-        regionId,
+        // regionId,
       );
       console.log('-----------dsa' , result)
       if (result.kind === "ok") {
         console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getListDistrict: flow(function* (
+      page: number,
+      size: number,
+      search: string,
+      cityId: number,
+    ) {
+      // console.log('page' , page)
+      const orderApi = new AddressApi(self.environment.apiAddress);
+      const result: OrderDistrictResult = yield orderApi.getListDistrict(
+        page,
+        size,
+        search,
+        cityId,
+      );
+      console.log('-----------dsa' , result)
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getListWard: flow(function* (
+      page: number,
+      size: number,
+      search: string,
+      districtId: number,
+    ) {
+      // console.log('page' , page)
+      const orderApi = new AddressApi(self.environment.apiAddress);
+      const result: OrderWardResult = yield orderApi.getListWard(
+        page,
+        size,
+        search,
+        districtId,
+      );
+      console.log('-----------dsa' , result)
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getListAddress: flow(function* (
+      partnerId: number,
+    ) {
+      // console.log('page' , page)
+      const orderApi = new AddressApi(self.environment.apiAddress);
+      const result: OrderListAddressResult = yield orderApi.getListAddress(
+        partnerId
+      );
+      console.log('-----------dsa' , result)
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    createAddress: flow(function* (value: any) {
+      const orderApi = new AddressApi(self.environment.apiAddress);
+      const result: CreateAddressResult = yield orderApi.createAddress(
+        value
+      );
+      // console.log('resulttt' , result)
+      if (result.kind === "ok") {
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
