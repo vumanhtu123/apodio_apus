@@ -73,10 +73,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [note, setNote] = useState(false);
   const [desiredDate, setDesiredDate] = useState(false);
   const [isDeposit, setIsDeposit] = useState(false);
-  const [modalImage, setModalImage] = useState(false);
   const [isSortByDate, setIsSortByDate] = useState(false);
   const [isReset, setIReset] = useState<boolean>(false);
-  const [imagesNote, setImagesNote] = useState("");
+  const [imagesNote, setImagesNote] = useState<any>([]);
   const [markedDatesS, setMarkedDatesS] = useState("");
   const [markedDatesE, setMarkedDatesE] = useState("");
   const [deposit, setDeposit] = useState<number>(0);
@@ -329,12 +328,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
           <ShowNote
             note={note}
-            setNote={function (item: boolean): void {
-              setNote(item);
-            }}
-            imagesNote={imagesNote}
-            setModalImage={function (item: boolean): void {
-              setModalImage(item);
+            setNoteData={function (note: String, arr: []) : void {
+              console.log("note---------", note)
+              console.log("arr---------", arr)
             }}
           />
           {desiredDate === true ? (
@@ -580,26 +576,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           setButtonSelect(false);
         }}
       />
-      <Modal isVisible={modalImage} style={{ alignItems: "center" }}>
-        <View style={styles.viewModalImage}>
-          <Text tx={"order.chooseImage"} style={styles.textTitleModalImage} />
-          <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => handleCameraUse()}>
-            <Text tx={"order.newImage"} style={styles.textButtonModalImage} />
-          </TouchableOpacity>
-          <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => handleLibraryUse()}>
-            <Text
-              tx={"order.chooseLibrary"}
-              style={styles.textButtonModalImage}
-            />
-          </TouchableOpacity>
-          <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => setModalImage(false)}>
-            <Text tx={"common.cancel"} style={styles.textButtonModalImage} />
-          </TouchableOpacity>
-        </View>
-      </Modal>
     </View>
   );
 });

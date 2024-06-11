@@ -46,6 +46,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
     // type SortType = 'new' | 'bestSeller' | 'hightToLow' | 'lowToHight' | 'aToZ' | 'zToA' | 'highPriceToLow' | 'lowPriceToHigh' | 'custom';
 
     const [showSortOption, setShowSortOption] = useState(true);
+
     const toggleShowSortOption = () => {
         setShowSortOption(!showSortOption);
     };

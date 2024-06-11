@@ -1,4 +1,9 @@
-
+  export interface ClientSlected{
+    id:string,
+    name:string,
+    code: string,
+    phoneNumber: string
+    }
   
   export interface OderListResspose {
     content: Content[]

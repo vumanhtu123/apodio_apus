@@ -43,6 +43,7 @@ export default function ImagesGroup(props: ImagesGroup) {
         return [];
     }
 
+    console.log("arr_image-------", arrData)
     return (
         <View>
             {arrData?.length === 0 ?
