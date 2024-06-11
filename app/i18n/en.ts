@@ -850,7 +850,10 @@ const en = {
     brick80x80: "Gạch 80*80",
 
   },
-  
+  selectPriceListApply: {
+    selectPriceListApply: "Chọn bảng giá áp dụng",
+
+  }
 
   // @demo remove-block-end
 };

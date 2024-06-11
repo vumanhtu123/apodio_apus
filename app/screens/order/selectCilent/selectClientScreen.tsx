@@ -72,6 +72,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
         console.log('====================================');
         console.log('valueSearch', valueSearch);
         console.log('====================================');
+
         const sendataClientSelected = () => {
             getAPi.orderStore.setDataClientSelect(dataItemSelect)
         }
@@ -84,6 +85,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
                 const dataSelectClien = data?.content.map((item) => {
                     return {
+                        id: item.id,
                         name: item.name,
                         code: item.code,
                         phoneNumber: item.phoneNumber
