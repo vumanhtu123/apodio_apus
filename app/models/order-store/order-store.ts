@@ -77,6 +77,7 @@ export const OrderStoreModel = types
     getListOrder: flow(function* (
       page: number,
       size: number,
+      state : string
     ) {
       
       console.log('page' , page)
@@ -84,6 +85,7 @@ export const OrderStoreModel = types
       const result: OrderResult = yield orderApi.getListOrder(
         page,
         size,
+        state
       );
       console.log('-----------dsa' , result)
       if (result.kind === "ok") {
@@ -333,6 +335,23 @@ export const OrderStoreModel = types
       console.log('page' , id)
       const orderApi = new OrderApi(self.environment.apiOrder);
       const result: OrderResult = yield orderApi.getDetailOrder(
+        id
+      );
+      console.log('-----------dsa' , result.response.errorCodes)
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getDetailInvoice: flow(function* (
+      id: number,
+    ) {
+      console.log('page' , id)
+      const orderApi = new OrderApi(self.environment.apiAccounting);
+      const result: OrderResult = yield orderApi.getDetailInvoice(
         id
       );
       console.log('-----------dsa' , result.response.errorCodes)

@@ -1,5 +1,5 @@
 // import { ApiOrder } from './../services/base-api/api-config-order';
-import { Api, ApiErp, GetWayAPI, ApiUpload, ApiOrder } from "../services/api";
+import { Api, ApiErp, GetWayAPI, ApiUpload, ApiOrder, ApiAccounting } from "../services/api";
 import { ApiAddress } from "../services/base-api/api-config-address";
 import { UAA_API } from "../services/base-api/api-config-uaa";
 
@@ -27,13 +27,15 @@ export class Environment {
     this.apiUaa = new UAA_API();
     this.apiOrder = new ApiOrder();
     this.apiAddress = new ApiAddress();
+    this.apiAccounting = new ApiAccounting();
+
     global.api = new Api();
     global.apiErp = new ApiErp();
     global.apiGetWay = new GetWayAPI();
     global.apiUpload = new ApiUpload();
     global.apiUaa = new UAA_API();
     global.ApiOrder = new ApiOrder();
-    global.apiAddress = new ApiAddress();
+    global.apiAddress = new ApiAccounting();
   }
 
   async setup() {
@@ -48,6 +50,8 @@ export class Environment {
     await this.apiUaa.setup();
     await this.apiOrder.setup();
     await this.apiAddress.setup();
+    await this.apiAccounting.setup();
+
 
     global.api = new Api();
     global.apiErp = new ApiErp();
@@ -56,6 +60,7 @@ export class Environment {
     global.apiUaa = new UAA_API();
     global.ApiOrder = new ApiOrder();
     global.apiAddress = new ApiAddress();
+    global.apiAccounting = new ApiAccounting();
 
   }
 
@@ -72,6 +77,7 @@ export class Environment {
   apiErp: ApiErp;
   apiGetWay: GetWayAPI;
   apiUpload: ApiUpload;
+  apiAccounting : ApiAccounting;
   apiOrder: ApiOrder;
   apiAddress: ApiAddress
 }

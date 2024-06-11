@@ -21,10 +21,17 @@ const getDomainOrder = () => {
   console.log("Domainmm", domain);
   return domain;
 };
+const getDomainAccounting = () => {
+  const env = CONFIG.ENV;
+  const domain = CONFIG.API.DEV.URL_ACCOUNTING;
+  // console.log('URL',CONFIG.API.PRODUCT.URL);
+  console.log("Domainmm", domain);
+  return domain;
+};
 const getDomainErp = () => {
   const env = CONFIG.ENV;
   //const domain = CONFIG.API.STAGING.URL_ERP;
-  const domain = CONFIG.API.STAGING.URL_ERP;
+  const domain = CONFIG.API.DEV.URL_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("ERP", domain);
   return domain;
@@ -117,5 +124,9 @@ export const DEFAULT_API_CONFIG_UAA: ApiConfig = {
 };
 export const DEFAULT_API_CONFIG_ORDER: ApiConfig = {
   url: getDomainOrder(),
+  timeout: 10000,
+};
+export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
+  url: getDomainAccounting(),
   timeout: 10000,
 };

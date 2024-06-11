@@ -7,11 +7,11 @@ import {
   hideLoading,
   showDialog
 } from "../../utils/toast";
-import { ApiConfig, DEFAULT_API_CONFIG_ORDER } from "./api-config";
+import { ApiConfig, DEFAULT_API_CONFIG_ACCOUNTING, DEFAULT_API_CONFIG_ORDER } from "./api-config";
 /**
  * Manages all requests to the API.
  */
-export class ApiOrder {
+export class ApiAccounting {
   /**
    * The underlying apisauce instance which performs the requests.
    */
@@ -25,7 +25,7 @@ export class ApiOrder {
    * Creates the api.
    * @param config The configuration to use.
    */
-  constructor(config: ApiConfig = DEFAULT_API_CONFIG_ORDER) {
+  constructor(config: ApiConfig = DEFAULT_API_CONFIG_ACCOUNTING) {
     this.config = config;
   }
   async setup() {

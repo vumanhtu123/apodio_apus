@@ -838,7 +838,24 @@ const en = {
     printInvoice: 'In hoá đơn',
     name: 'Tên khách hàng:',
     address: 'Địa chỉ:',
-    phone: 'Số điện thoại:'
+    phone: 'Số điện thoại:',
+    product : 'Sản phẩm',
+    unitPrice : 'Đơn giá',
+    quality : 'Số lượng',
+    amountPrice : 'Thành tiền',
+    amountUntaxed : 'Cộng tiền hàng',
+    totalPrice : 'Tổng tiền thanh toán',
+    invoice : 'Hoá đơn'
+  },
+  orderDetailScreen : {
+    sent : 'Chờ xác nhận' ,
+    sale : 'Đang thực hiện' , 
+    done : 'Đã hoàn thành',
+    cancel : 'Đã huỷ',
+    no : 'Chưa thanh toán' ,
+    toInvoice : 'Chờ thanh toán',
+    partialInvoice : 'Thanh toán một phần',
+    invoiced : 'Thanh toán đầy đủ'
   }
 
   // @demo remove-block-end
