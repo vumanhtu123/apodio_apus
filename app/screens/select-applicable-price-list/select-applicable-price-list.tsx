@@ -12,19 +12,21 @@ import { number } from "mobx-state-tree/dist/internal";
 import { Styles, } from "./styles";;
 import { NavigatorParamList } from "../../navigators";
 import SelectFilterModal from "./Modal/modal-select-filter";
+import { useStores } from "../../models";
+import { id } from "date-fns/locale";
 
 
 export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, "selectApplicablePriceList">> = observer(
     function SelectApplicablePriceList(props) {
         const [indexSelect, setIndexSelect] = useState<any>()
-        const [onClick, setOnClick] = useState('successfully')
+        const [onClick, setOnClick] = useState('select')
         const [isVisible, setIsVisible] = useState(false);
-        const [myDataSlectClient, setmyDataSlectClient] = useState([])
+        const [myDataSelectPriceList, setMyDataSelectPriceList] = useState([])
         const [refreshing, setRefreshing] = useState(false);
         const [isLoadingMore, setIsLoadingMore] = useState(false);
         const [size, setsize] = useState(15)
         const [page, setPage] = useState(0)
-        // const getAPi = useStores()
+        const getAPi = useStores()
         const [isVisibleCreateClient, setisVisibleCreateClient] = useState(false);
         const [valueSearch, setValueSearch] = useState('')
         const [isShowSearch, setisShowSearch] = useState(false)
@@ -40,33 +42,34 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
             { nameTable: "Bảng giá tháng 12/2024", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" }
         ]
 
-        // const sort = getAPi.orderStore.sortCreateClient
-        // console.log("doann log sort", sort);
+        const sort = getAPi.orderStore.sortPriceList
+        console.log("doann log sort", sort);
 
         console.log('====================================');
         console.log('valueSearch', valueSearch);
         console.log('====================================');
 
-        const getListClient = () => {
-            // getAPi.orderStore.getListSelectClient(0, size, sort, valueSearch).then((data) => {
-            //     console.log("dataaaaaaaaa", data);
+        const getListPriceListApply = () => {
+            getAPi.orderStore.getListPriceList(0, size, sort, valueSearch).then((data) => {
+                console.log("dataaaaaaaa", data?.content)
 
-            //     // setTotalPage(data?.totalPages)
+                const dataSlectPriceList = data?.content.map((item) => {
+                    return {
+                        id: item.id,
+                        name: item.name,
+                        priceListCategory: item.priceListCategory.name
+                    }
+                })
 
-            //     const dataSelectClien = data?.content.map((item) => {
-            //         return {
-            //             name: item.name,
-            //             code: item.code,
-            //             phoneNumber: item.phoneNumber
-            //         }
-            //     })
-            //     setmyDataSlectClient(dataSelectClien)
-            // })
+                setMyDataSelectPriceList(dataSlectPriceList)
+            })
+
+
         }
 
-        // useEffect(() => {
-        //     getListClient()
-        // }, [getAPi.orderStore.sortCreateClient])
+        useEffect(() => {
+            getListPriceListApply()
+        }, [getAPi.orderStore.sortCreateClient, props.navigation])
 
 
 
@@ -77,9 +80,9 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
             setRefreshing(true);
             try {
                 // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
-                const newData: any = await getListClient();
+                const newData: any = await getListPriceListApply();
                 // Cập nhật state của danh sách dữ liệu
-                setmyDataSlectClient(newData);
+                setMyDataSelectPriceList(newData);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -90,19 +93,19 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
         const handleLoadMore = () => {
             setIsLoadingMore(true)
             setsize(size + 3)
-            getListClient()
+            getListPriceListApply()
             setTimeout(() => {
                 setIsLoadingMore(false)
             }, 3000);
         };
         const handelSearch = () => {
-            getListClient()
+            getListPriceListApply()
         }
 
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    headerTx="selectClient.selectClient"
+                    headerTx="selectPriceListApply.selectPriceListApply"
                     LeftIcon={Images.back}
                     onLeftPress={() => props.navigation.goBack()}
                     RightIcon={Images.icon_funnel}
@@ -117,7 +120,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                     }}
                     onRightPress={() => {
                         // openTypeFilter
-                        props.navigation.navigate("filterSelectScreen")
+                        props.navigation.navigate("filterSelectApplicablePriceList")
 
                     }}
                     onRightPress1={() => {
@@ -125,15 +128,40 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                     }}
 
                 />
-                <View style={{ alignItems: 'center', padding: 8 }}>
+                <TouchableOpacity style={{
+                    height: scaleHeight(56),
+                    alignItems: 'center',
+                    paddingVertical: scaleHeight(16),
+                    backgroundColor: indexSelect === "noApply" ? '#DBEFFF' : 'white',
+                    paddingHorizontal: scaleWidth(16),
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+
+
+                }}
+                    onPress={() => setIndexSelect('noApply')}
+                >
                     <Text
-                        style={{ fontSize: scaleWidth(12), color: colors.palette.dolphin, }}
+                        style={{ fontSize: fontSize.size10, color: colors.palette.black, fontWeight: '500' }}
                         tx="selectClient.selectCustomerForSalesOrder"
                     ></Text>
-                </View>
+                    <TouchableOpacity>
+                        {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
+                        <View style={{
+                            borderRadius: scaleHeight(8),
+                            borderWidth: 1,
+                            borderColor: colors.palette.lightGrey,
+                            width: scaleHeight(16),
+                            height: scaleHeight(16),
+                            backgroundColor: indexSelect === 'noApply' ? colors.palette.navyBlue : colors.palette.white
+                        }}>
+
+                        </View>
+                    </TouchableOpacity>
+                </TouchableOpacity>
                 <View style={{ flex: 1, }}>
                     <FlatList
-                        data={dataFake}
+                        data={myDataSelectPriceList}
                         renderItem={({ item, index }): any => {
                             return (
                                 <TouchableOpacity style={{
@@ -153,8 +181,8 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                                             <Text style={{ fontSize: fontSize.size10, color: '#0078D4' }}>{item.code}</Text>
                                         </View> */}
                                         <View style={{ marginHorizontal: 6 }}>
-                                            <Text style={{ fontSize: fontSize.size10 }}>{item.nameTable}</Text>
-                                            <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.container}</Text>
+                                            <Text style={{ fontSize: fontSize.size10, fontWeight: '500' }}>{item.name}</Text>
+                                            <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.priceListCategory}</Text>
                                         </View>
                                     </View>
                                     <TouchableOpacity>
@@ -198,11 +226,11 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
 
                 <View style={Styles.stylesBtnBottom}>
                     <TouchableOpacity
-                        style={[onClick === 'save' ? Styles.btnSuccessfully : Styles.btnSave, { marginRight: 13 }]}
-                    // onPress={() => setOnClick('save')}
+                        style={[onClick === 'cancel' ? Styles.btnSuccessfully : Styles.btnSave, { marginRight: 13 }]}
+                        onPress={() => setOnClick('cancel')}
                     >
                         <Text
-                            style={{ color: onClick === 'save' ? colors.palette.white : colors.palette.navyBlue }}
+                            style={{ color: onClick === 'cancel' ? colors.palette.white : colors.palette.navyBlue }}
                             tx="common.cancel"
                         >
 
@@ -210,11 +238,11 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={onClick === 'successfully' ? Styles.btnSuccessfully : Styles.btnSave}
-                        onPress={() => setOnClick('successfully')}
+                        style={onClick === 'select' ? Styles.btnSuccessfully : Styles.btnSave}
+                        onPress={() => setOnClick('select')}
                     >
                         <Text
-                            style={{ color: onClick === 'successfully' ? colors.palette.white : colors.palette.navyBlue }}
+                            style={{ color: onClick === 'select' ? colors.palette.white : colors.palette.navyBlue }}
                             tx="selectClient.selected"
                         >
                         </Text>
