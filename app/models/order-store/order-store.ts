@@ -1,37 +1,53 @@
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
-import { InputSelectModel, OrderResult } from "./order-store-model";
-import { OrderApi } from "../../services/api/api_oder_screen";
-import { OrderProductResult } from "./order-product-model";
-import { OrderVariantResult } from "./order-variant-model";
+import { InputSelectModel, OrderResult } from "./entities/order-store-model";
+import { OrderApi } from "../../services/api/api_oder";
+import { OrderProductResult } from "./entities/order-product-model";
 import { VendorApi } from "../../services/api/api-vendor";
+import { OrderVariantResult } from "./entities/order-variant-model";
+import { TaxModel, Content } from "./entities/order-tax-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
   .props({
     isModalTracking: types.optional(types.boolean, false),
-    dataFatherStatus: types.optional(types.array(types.frozen<InputSelectModel>()), []),
-    fatherStatus: types.optional(types.frozen<InputSelectModel>(), { id: '', label: '' }),
-    dataChildStatus: types.optional(types.array(types.frozen<InputSelectModel>()), []),
-    childStatus: types.optional(types.frozen<InputSelectModel>(), { id: '', label: '' }),
+    dataFatherStatus: types.optional(
+      types.array(types.frozen<InputSelectModel>()),
+      []
+    ),
+    fatherStatus: types.optional(types.frozen<InputSelectModel>(), {
+      id: "",
+      label: "",
+    }),
+    dataChildStatus: types.optional(
+      types.array(types.frozen<InputSelectModel>()),
+      []
+    ),
+    childStatus: types.optional(types.frozen<InputSelectModel>(), {
+      id: "",
+      label: "",
+    }),
     dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
-    dataProductAddOrderNew: types.optional(types.array(types.frozen<never>()), []),
+    dataProductAddOrderNew: types.optional(
+      types.array(types.frozen<never>()),
+      []
+    ),
     checkPriceList: types.optional(types.boolean, false),
     sort: types.optional(types.array(types.string), []),
-    isLoadMore : types.optional(types.boolean, false),
+    isLoadMore: types.optional(types.boolean, false),
     productId: types.optional(types.number, 0),
-    viewProductType : types.optional(types.string , "VIEW_PRODUCT"),
+    viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
-    orderId : types.optional(types.number, 0),
+    orderId: types.optional(types.number, 0),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
   .actions((self) => ({
     setFatherStatus(value: InputSelectModel) {
-      self.fatherStatus = value
+      self.fatherStatus = value;
     },
     setChildStatus(value: InputSelectModel) {
-      self.childStatus = value
+      self.childStatus = value;
     },
     openModalTracking() {
       self.isModalTracking = true;
@@ -39,8 +55,8 @@ export const OrderStoreModel = types
     closeModalTracking() {
       self.isModalTracking = false;
     },
-    setViewProductType (viewProductType : string) {
-      self.viewProductType = viewProductType
+    setViewProductType(viewProductType: string) {
+      self.viewProductType = viewProductType;
     },
     setViewGrid(viewGird: boolean) {
       self.viewGrid = viewGird;
@@ -52,34 +68,30 @@ export const OrderStoreModel = types
       self.sort = sort;
     },
     setCheckPriceList(value: any) {
-      self.checkPriceList = value
+      self.checkPriceList = value;
     },
     setDataProductAddOrder(value: any) {
-      self.dataProductAddOrder = value
+      self.dataProductAddOrder = value;
     },
     setDataProductAddOrderNew(value: any) {
-      self.dataProductAddOrderNew = value
+      self.dataProductAddOrderNew = value;
     },
-    setIsLoadMore (isLoadMore : boolean) {
-      self.isLoadMore = isLoadMore
+    setIsLoadMore(isLoadMore: boolean) {
+      self.isLoadMore = isLoadMore;
     },
-    setOrderId (id : number) {
-      self.orderId = id
-    }
+    setOrderId(id: number) {
+      self.orderId = id;
+    },
   }))
   .actions((self) => ({
-    getListOrder: flow(function* (
-      page: number,
-      size: number,
-    ) {
-      
-      console.log('page' , page)
-      const orderApi = new OrderApi(self.environment.apiOrder);
-      const result: OrderResult = yield orderApi.getListOrder(
-        page,
-        size,
+    getListOrder: flow(function* (page: number, size: number) {
+      console.log("page", page);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
       );
-      console.log('-----------dsa' , result)
+      const result: OrderResult = yield orderApi.getListOrder(page, size);
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -95,11 +107,14 @@ export const OrderStoreModel = types
       search: string,
       // tagId: number,
       sortId: string,
-      isLoadMore : boolean,
-      warehouseId: number,
+      isLoadMore: boolean,
+      warehouseId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new OrderApi(self.environment.apiOrder);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
       const result: OrderProductResult = yield orderApi.getListOrderProduct(
         page,
         size,
@@ -107,10 +122,10 @@ export const OrderStoreModel = types
         search,
         // tagId,
         sortId,
-        isLoadMore, 
+        isLoadMore,
         warehouseId
       );
-      console.log('-----------dsa' , result)
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -126,12 +141,15 @@ export const OrderStoreModel = types
       search: string,
       // tagId: number,
       sortId: string,
-      isLoadMore : boolean,
+      isLoadMore: boolean,
       warehouseId: number,
-      productTemplateId: number,
+      productTemplateId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new OrderApi(self.environment.apiOrder);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
       const result: OrderVariantResult = yield orderApi.getListOrderVariant(
         page,
         size,
@@ -139,11 +157,11 @@ export const OrderStoreModel = types
         search,
         // tagId,
         sortId,
-        isLoadMore, 
+        isLoadMore,
         warehouseId,
-        productTemplateId,
+        productTemplateId
       );
-      console.log('-----------dsa' , result)
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -159,24 +177,28 @@ export const OrderStoreModel = types
       search: string,
       // tagId: number,
       sortId: string,
-      isLoadMore : boolean,
+      isLoadMore: boolean,
       warehouseId: number,
-      priceListId: number,
+      priceListId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new OrderApi(self.environment.apiOrder);
-      const result: OrderProductResult = yield orderApi.getListOrderProductPrice(
-        page,
-        size,
-        productCategoryId,
-        search,
-        // tagId,
-        sortId,
-        isLoadMore, 
-        warehouseId,
-        priceListId
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
       );
-      console.log('-----------dsa' , result)
+      const result: OrderProductResult =
+        yield orderApi.getListOrderProductPrice(
+          page,
+          size,
+          productCategoryId,
+          search,
+          // tagId,
+          sortId,
+          isLoadMore,
+          warehouseId,
+          priceListId
+        );
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -192,26 +214,30 @@ export const OrderStoreModel = types
       search: string,
       // tagId: number,
       sortId: string,
-      isLoadMore : boolean,
+      isLoadMore: boolean,
       warehouseId: number,
       productTemplateId: number,
-      priceListId: number,
+      priceListId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new OrderApi(self.environment.apiOrder);
-      const result: OrderVariantResult = yield orderApi.getListOrderVariantPrice(
-        page,
-        size,
-        productCategoryId,
-        search,
-        // tagId,
-        sortId,
-        isLoadMore, 
-        warehouseId,
-        productTemplateId,
-        priceListId,
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
       );
-      console.log('-----------dsa' , result)
+      const result: OrderVariantResult =
+        yield orderApi.getListOrderVariantPrice(
+          page,
+          size,
+          productCategoryId,
+          search,
+          // tagId,
+          sortId,
+          isLoadMore,
+          warehouseId,
+          productTemplateId,
+          priceListId
+        );
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -225,7 +251,7 @@ export const OrderStoreModel = types
       size: number,
       search: string,
       countryId: number,
-      regionId: number,
+      regionId: number
     ) {
       // console.log('page' , page)
       const orderApi = new VendorApi(self.environment.apiErp);
@@ -234,9 +260,9 @@ export const OrderStoreModel = types
         size,
         search,
         countryId,
-        regionId,
+        regionId
       );
-      console.log('-----------dsa' , result)
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -245,21 +271,43 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    getDetailOrder: flow(function* (
-      id: number,
-    ) {
-      console.log('page' , id)
-      const orderApi = new OrderApi(self.environment.apiOrder);
-      const result: OrderResult = yield orderApi.getDetailOrder(
-        id
+    getDetailOrder: flow(function* (id: number) {
+      console.log("page", id);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
       );
-      console.log('-----------dsa' , result)
+      const result: OrderResult = yield orderApi.getDetailOrder(id);
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
         return result;
+      }
+    }),
+    getListTax: flow(function* (
+      type: string,
+      page: number,
+      size: number,
+      scopeType: string
+    ) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<TaxModel, ErrorCode> =
+          yield orderApi.getTaxList(type, scopeType);
+        if (result.data !== null) {
+          console.log("tuvm getTax success");
+          return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
       }
     }),
   }));

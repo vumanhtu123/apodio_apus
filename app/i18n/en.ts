@@ -192,6 +192,7 @@ const en = {
     miniumQuanlity: "SL tối thiểu cần bán: ",
     quanlity: "Số lượng:",
     confirm: "Tạo đơn hàng",
+    select: "Chọn",
     choose_customer: "Chọn khách hàng",
     price_list: "Bảng giá áp dụng",
     no_price_list: "Không áp dụng bảng giá",
