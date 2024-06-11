@@ -6,6 +6,7 @@
   "ENV": "PRODUCT",
   "API": {
     "DEV": {
+      "URL_ACCOUNTING": "https://accounting.dev.apusplatform.com",
       "URL_ORDER": "https://sales-order-service.dev.apusplatform.com",
       "URL": "https://product-manufactor-service.dev.apusplatform.com",
       "URL_UPLOAD": "https://product-manufactor-service.dev.apusplatform.com",
