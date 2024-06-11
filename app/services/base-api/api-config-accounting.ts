@@ -2,16 +2,12 @@ import { ApisauceInstance, create } from "apisauce";
 import DeviceInfo from "react-native-device-info";
 import { resetRoot } from "../../navigators";
 import { getAccessToken, getTenantId } from "../../utils/storage";
-import {
-  hideDialog,
-  hideLoading,
-  showDialog
-} from "../../utils/toast";
-import { ApiConfig, DEFAULT_API_CONFIG_ORDER } from "./api-config";
+import { hideDialog, hideLoading, showDialog } from "../../utils/toast";
+import { ApiConfig, DEFAULT_API_CONFIG_ACCOUNTING } from "./api-config";
 /**
  * Manages all requests to the API.
  */
-export class ApiOrder {
+export class ApiAccounting {
   /**
    * The underlying apisauce instance which performs the requests.
    */
@@ -25,12 +21,12 @@ export class ApiOrder {
    * Creates the api.
    * @param config The configuration to use.
    */
-  constructor(config: ApiConfig = DEFAULT_API_CONFIG_ORDER) {
+  constructor(config: ApiConfig = DEFAULT_API_CONFIG_ACCOUNTING) {
     this.config = config;
   }
   async setup() {
     // construct the apisauce instance
-    console.log("apisauceOrder", this.config.url);
+    console.log("apisauce accounting", this.config.url);
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
@@ -41,7 +37,7 @@ export class ApiOrder {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         hideLoading();
-        console.log("RESPONSEmmmmmmm :", response);
+        console.log("RESPONSE accounting :", response);
         return response;
       },
       async (error) => {
@@ -69,7 +65,7 @@ export class ApiOrder {
           );
         }
         if (error.response.status === 500 || error.response.status === 404) {
-          console.log('first-----------', error)
+          console.log("first-----------", error);
           showDialog("Error", "danger", "System Busy!", "", "OK", () =>
             hideDialog()
           );
@@ -98,6 +94,17 @@ export class ApiOrder {
       try {
         if (response) {
           console.log("responseUpload", response);
+          // if (response.data.errorCodes){
+          //   if (response.data.errorCodes[0].code === 4567) {
+          //     showDialog(
+          //       'Error',
+          //       'danger',
+          //       `${response.data.errorCodes[0].message}`,
+          //       '',
+          //       'OK',
+          //       () => hideDialog())
+          //   }
+          // }
         }
       } catch (error) {
         console.log("ERROR", error);

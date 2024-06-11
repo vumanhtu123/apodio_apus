@@ -35,7 +35,7 @@ export const AddProductOrder: FC = observer(
         const [nameDirectory, setNameDirectory] = useState('')
         const [viewProduct, setViewProduct] = useState(orderStore.viewProductType);
         const [index, setIndex] = useState()
-        const { dataProductAddOrder, setDataProductAddOrder, dataProductAddOrderNew, setDataProductAddOrderNew } = orderStore
+        const { dataProductAddOrder } = orderStore
 
         useFocusEffect(
             useCallback(() => {
@@ -165,7 +165,7 @@ export const AddProductOrder: FC = observer(
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
-                    6203,
+                    14061,
                 );
                 // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
                 if (response && response.kind === "ok") {
@@ -205,7 +205,7 @@ export const AddProductOrder: FC = observer(
                     orderStore.isLoadMore,
                     undefined,
                     undefined,
-                    6203,
+                    14061,
                 );
                 // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
                 if (response && response.kind === "ok") {
@@ -350,8 +350,8 @@ export const AddProductOrder: FC = observer(
             setIsGridView(!isGridView);
         };
         const handleProductDetail = (idProduct: number) => {
-            // productStore.setSelectedProductId(idProduct);
-            navigation.navigate("selectVariant" as never);
+            productStore.setSelectedProductId(idProduct);
+            navigation.navigate("selectVariant" as never, {productTemplateId: idProduct});
         };
         const handleClassifyDetail = (idProduct: number) => {
             productStore.setSelectedProductId(idProduct);
@@ -372,7 +372,6 @@ export const AddProductOrder: FC = observer(
                     LeftIcon={Images.back}
                     onLeftPress={() => {
                         navigation.goBack()
-                        setDataProductAddOrderNew(dataProductAddOrder.slice())
                         orderStore.setSort([]);
                     }}
                     colorIcon={colors.text}
@@ -488,12 +487,8 @@ export const AddProductOrder: FC = observer(
                         </View>
                     </>
                 </View>
-                {dataProductAddOrderNew.length !== 0 ?
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate('newOrder' as never),
-                            setDataProductAddOrder(dataProductAddOrderNew.slice())
-                        setDataProductAddOrderNew([])
-                    }}
+                {dataProductAddOrder.length !== 0 ?
+                    <TouchableOpacity onPress={() => navigation.navigate('newOrder' as never)}
                         style={{
                             flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderRadius: 8,
                             paddingHorizontal: scaleWidth(16),
@@ -516,12 +511,12 @@ export const AddProductOrder: FC = observer(
                                     right: scaleWidth(1),
                                     top: 0
                                 }}>
-                                    <Text style={{ fontSize: fontSize.size9, fontWeight: '500', color: '#ffffff' }}>{dataProductAddOrderNew.length}</Text>
+                                    <Text style={{ fontSize: fontSize.size9, fontWeight: '500', color: '#ffffff' }}>{dataProductAddOrder.length}</Text>
                                 </View>
                                 <Images.ic_shopping width={scaleWidth(20)} height={scaleHeight(20)} style={{ marginRight: 6, marginTop: 2 }} />
                             </View>
                             <Text style={{ color: 'white', fontSize: fontSize.size14, fontWeight: '600' }}>
-                                100000
+                                Giỏ hàng
                             </Text>
                         </View>
                         <View>

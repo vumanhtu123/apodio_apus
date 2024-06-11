@@ -9,7 +9,7 @@ import CONFIG from "../../config.json";
 
 const getDomain = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL;
+  const domain = CONFIG.API.DEV.URL;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Domain", domain);
   return domain;
@@ -21,14 +21,28 @@ const getDomainOrder = () => {
   console.log("Domainmm", domain);
   return domain;
 };
+const getDomainAccounting = () => {
+  const domain = CONFIG.API.DEV.URL_ACCOUNTING;
+  console.log("Domain accounting", domain);
+  return domain;
+};
 const getDomainErp = () => {
   const env = CONFIG.ENV;
-  //const domain = CONFIG.API.STAGING.URL_ERP;
-  const domain = CONFIG.API.STAGING.URL_ERP;
+  //const domain = CONFIG.API.DEV.URL_ERP;
+  const domain = CONFIG.API.DEV.URL_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("ERP", domain);
   return domain;
 };
+const getDomainAddress = () => {
+  const env = CONFIG.ENV;
+  //const domain = CONFIG.API.STAGING.URL_ERP;
+  const domain = CONFIG.API.DEV.URL_ERP;
+  // console.log('URL',CONFIG.API.PRODUCT.URL);
+  console.log("ERP", domain);
+  return domain;
+};
+
 
 const getDomainGetWay = () => {
   const env = CONFIG.ENV;
@@ -93,6 +107,11 @@ export const DEFAULT_API_CONFIG_ERP: ApiConfig = {
   timeout: 100000,
 };
 
+export const DEFAULT_API_CONFIG_ADDRESS: ApiConfig = {
+  url: getDomainAddress(),
+  timeout: 100000,
+};
+
 export const DEFAULT_API_CONFIG_GET_WAY: ApiConfig = {
   url: getDomainGetWay(),
   timeout: 100000,
@@ -104,5 +123,10 @@ export const DEFAULT_API_CONFIG_UAA: ApiConfig = {
 };
 export const DEFAULT_API_CONFIG_ORDER: ApiConfig = {
   url: getDomainOrder(),
+  timeout: 10000,
+};
+
+export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
+  url: getDomainAccounting(),
   timeout: 10000,
 };
