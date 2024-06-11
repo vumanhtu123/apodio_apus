@@ -21,7 +21,6 @@ export const OrderStoreModel = types
     dataChildStatus: types.optional(types.array(types.frozen<InputSelectModel>()), []),
     childStatus: types.optional(types.frozen<InputSelectModel>(), { id: '', label: '' }),
     dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
-    dataProductAddOrderNew: types.optional(types.array(types.frozen<never>()), []),
     checkPriceList: types.optional(types.boolean, false),
     sortCreateClient: types.optional(types.string,''),
     search: types.optional(types.string,''),
@@ -75,9 +74,6 @@ export const OrderStoreModel = types
     },
     setReloadAddressScreen(value: boolean) {
       self.reloadAddressScreen = value
-    },
-    setDataProductAddOrderNew(value: any) {
-      self.dataProductAddOrderNew = value
     },
     setIsLoadMore (isLoadMore : boolean) {
       self.isLoadMore = isLoadMore

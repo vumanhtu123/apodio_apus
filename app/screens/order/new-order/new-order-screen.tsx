@@ -62,7 +62,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     paddingTop;
   const route = useRoute();
 
-  const {orderStore} = useStores()
+  const { orderStore } = useStores()
+  const dataAddress = route?.params?.dataAddress
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [payment, setPayment] = useState({ label: "" });
@@ -107,6 +108,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     setArrProduct(newArr);
   };
 
+  const handleBack = () => {
+    navigation.goBack()
+    orderStore.setDataProductAddOrder([])
+    orderStore.setViewProductType("VIEW_PRODUCT")
+  }
+
   const handleSelectTaxes = (id: any) => {
     setButtonSelect(true);
   };
@@ -138,7 +145,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
       <Header
         LeftIcon={Images.back}
-        onLeftPress={() => navigation.goBack()}
+        onLeftPress={() => handleBack()}
         style={{ height: scaleHeight(70) }}
         headerTx={"order.confirm"}
         titleStyle={styles.textTitle}
@@ -164,11 +171,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             }}
           />
           <AddressOrder
-
-          />
-          <PriceList
-
-          />
+            onPressAddress={() => navigation.navigate('deliveryAddress' as never, { dataAddress: dataAddress })} />
+          <PriceList />
           <InputSelect
             styleView={{
               backgroundColor: "white",

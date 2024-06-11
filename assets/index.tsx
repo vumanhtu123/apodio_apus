@@ -152,6 +152,7 @@ import ic_introScreen2 from "./Images/ic_introScreen2.svg";
 import ic_introScreen3 from "./Images/ic_introScreen3.svg";
 import ic_minusCircle from "./Images/icon_minusCircle.svg";
 import ic_checkCircleBlue from "./Images/ic_checkCircleBlue.svg";
+import icon_checkCircleBlue from "./Images/icon_checkCircleBlue.svg";
 import img_not_init from "./Images/img_Not_Init.svg";
 import ic_pay from "./Images/ic_pay.svg";
 import ic_billPay from "./Images/ic_billPay.svg";
@@ -369,6 +370,7 @@ export const Images = {
   ic_arrowDownRight: ic_arrowDownRight,
   ic_minusCircle: ic_minusCircle,
   ic_checkCircleBlue: ic_checkCircleBlue,
+  icon_checkCircleBlue: icon_checkCircleBlue,
   img_not_init: img_not_init,
   ic_pay: ic_pay,
   ic_billPay: ic_billPay,
