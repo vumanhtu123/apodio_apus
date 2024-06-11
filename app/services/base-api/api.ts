@@ -1,6 +1,6 @@
 import { ApisauceInstance, create } from "apisauce";
 import { ApiConfig, DEFAULT_API_CONFIG } from "./api-config";
-import { getAccessToken } from "../../utils/storage";
+import { getAccessToken, getTenantId } from "../../utils/storage";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { navigate, resetRoot } from "../../navigators";
 import DeviceInfo from "react-native-device-info";
@@ -86,6 +86,7 @@ export class  Api {
     );
     this.apisauce.addAsyncRequestTransform((request) => async () => {
       try {
+        const tenantId = await getTenantId();
         if (request.data instanceof FormData) {
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
@@ -96,7 +97,7 @@ export class  Api {
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "vi",
-            "X-TenantId": 79,
+            // "X-TenantId": 79,
           };
         }
 
@@ -113,17 +114,6 @@ export class  Api {
     this.apisauce.addResponseTransform(async (response) => {
       try {
         if (response) {
-          // if (response.data.errorCodes){
-          //   if (response.data.errorCodes[0].code === 4567) {
-          //     showDialog(
-          //       'Error',
-          //       'danger',
-          //       `${response.data.errorCodes[0].message}`,
-          //       '',
-          //       'OK',
-          //       () => hideDialog())
-          //   }
-          // }
           console.log("firstzz", response);
         }
       } catch (error) {

@@ -62,7 +62,7 @@ const TEXTHINT: TextStyle = {
 };
 const VIEWMODAL: ViewStyle = {
   // width: Dimensions.get('screen').width - 32,
-  // height: Dimensions.get("screen").height * 0.4,
+  height: Dimensions.get("screen").height * 0.4,
   backgroundColor: colors.palette.neutral100,
   borderTopRightRadius: 8,
   borderTopLeftRadius: 8,
@@ -200,9 +200,10 @@ export function InputSelect(props: InputSelectProps) {
             setShowModal(false);
           }}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "height" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+            keyboardVerticalOffset={0}
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
             <View style={VIEWMODAL}>
               {/* <Text text="chon ly do" /> */}
               {isSearch ? (

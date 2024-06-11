@@ -1,17 +1,13 @@
 import { ApisauceInstance, create } from "apisauce";
-import DeviceInfo from "react-native-device-info";
-import { resetRoot } from "../../navigators";
+import { ApiConfig, DEFAULT_API_CONFIG_ADDRESS } from "./api-config";
 import { getAccessToken, getTenantId } from "../../utils/storage";
-import {
-  hideDialog,
-  hideLoading,
-  showDialog
-} from "../../utils/toast";
-import { ApiConfig, DEFAULT_API_CONFIG_ORDER } from "./api-config";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import { navigate, resetRoot } from "../../navigators";
+import DeviceInfo from "react-native-device-info";
 /**
  * Manages all requests to the API.
  */
-export class ApiOrder {
+export class ApiAddress {
   /**
    * The underlying apisauce instance which performs the requests.
    */
@@ -25,12 +21,19 @@ export class ApiOrder {
    * Creates the api.
    * @param config The configuration to use.
    */
-  constructor(config: ApiConfig = DEFAULT_API_CONFIG_ORDER) {
+  constructor(config: ApiConfig = DEFAULT_API_CONFIG_ADDRESS) {
     this.config = config;
   }
+
+  /**
+   * Sets up the API.  This will be called during the bootup
+   * sequence and will happen before the first React component
+   * is mounted.
+   *
+   * Be as quick as possible in here.
+   */
   async setup() {
     // construct the apisauce instance
-    console.log("apisauceOrder", this.config.url);
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
@@ -38,41 +41,48 @@ export class ApiOrder {
         Accept: "application/json",
       },
     });
+    console.log("apisauce", this.config.url);
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
-        hideLoading();
-        console.log("RESPONSEmmmmmmm :", response);
+        Loading.hide();
+        console.log("RESPONSE :", response);
         return response;
       },
       async (error) => {
-        hideLoading();
+        Loading.hide();
         console.log("error==", error);
         if (error.toJSON().message === "Network Error") {
-          showDialog("Error", "danger", "Network Error!", "", "OK", () =>
-            hideDialog()
-          );
-        }
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'Network Error!',
+            closeOnOverlayTap: false})  
+          }
         if (error.response.status === 401) {
-          showDialog(
-            "Error",
-            "danger",
-            "Your session was expired. Please login again to continue using Mosan",
-            "",
-            "OK",
-            () => {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'Your session was expired',
+            closeOnOverlayTap: false,
+            onPressButton: () => {
               resetRoot({
                 index: 1,
-                routes: [{ name: "authStack" }],
-              });
-              hideDialog();
+                routes: [{ name: 'authStack' }],
+              })
+              Dialog.hide();              
+              Loading.hide();
             }
-          );
+          }) 
         }
         if (error.response.status === 500 || error.response.status === 404) {
-          console.log('first-----------', error)
-          showDialog("Error", "danger", "System Busy!", "", "OK", () =>
-            hideDialog()
-          );
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            button: 'OK',
+            textBody: 'System Busy!',
+            closeOnOverlayTap: false}) 
         }
       }
     );
@@ -82,7 +92,6 @@ export class ApiOrder {
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
-          "X-TenantId": 77,
         };
         const token = await getAccessToken();
         if (token) {
@@ -91,13 +100,24 @@ export class ApiOrder {
         console.log("REQUEST--222: ", request);
       } catch (err) {
         console.log("Catch err", err);
-        hideLoading();
+        Loading.hide();
       }
     });
     this.apisauce.addResponseTransform(async (response) => {
       try {
         if (response) {
           console.log("responseUpload", response);
+          // if (response.data.errorCodes){
+          //   if (response.data.errorCodes[0].code === 4567) {
+          //     showDialog(
+          //       'Error',
+          //       'danger',
+          //       `${response.data.errorCodes[0].message}`,
+          //       '',
+          //       'OK',
+          //       () => hideDialog())
+          //   }
+          // }
         }
       } catch (error) {
         console.log("ERROR", error);

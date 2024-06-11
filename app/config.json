@@ -1,5 +1,5 @@
 {
-  "apiVersion": 7.6,
+  "apiVersion": 1.0,
   "versionNative": "0.0.1",
   "versionCodePush": "202312220242",
   "enableItunesAndOthersSource": true,
@@ -15,6 +15,7 @@
       "UAA": "https://uaa.dev.apusplatform.com"
     },
     "STAGING": {
+      "URL_ORDER": "https://sales-order-service.stg.apusplatform.com",
       "URL": "https://product-manufactor-service.stg.apusplatform.com",
       "URL_UPLOAD": "https://product-manufactor-service.stg.apusplatform.com",
       "URL_ERP": "https://resources-service.stg.apusplatform.com",

@@ -18,6 +18,9 @@ export const margin = {
   margin_32: 32,
   margin_48: 48,
   margin_64: 64,
+  border_top_left_radius: 20,
+  border_top_right_radius: 20,
+  margin_bottom_modal: 20,
 } as const;
 
 export type Margin = keyof typeof margin;

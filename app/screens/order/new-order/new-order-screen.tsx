@@ -64,6 +64,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const route = useRoute();
 
   const [arrName, setArrName] = useState<{}[]>([]);
+  const { orderStore } = useStores();
+  const dataAddress = route?.params?.dataAddress;
+
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
   const [payment, setPayment] = useState({ label: "" });
@@ -82,165 +85,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [method, setMethod] = useState<number>(0);
   const countRef = useRef("");
   const store = useStores();
-
-  const requestLibraryPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
-        return result;
-      } else {
-        const result = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const checkLibraryPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await check(PERMISSIONS.IOS.MEDIA_LIBRARY);
-        return result;
-      } else {
-        const result = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const handleLibraryUse = async () => {
-    // const permissionStatus = await checkLibraryPermission();
-    // console.log('ads')
-    // console.log(permissionStatus)
-
-    // if (permissionStatus === RESULTS.GRANTED) {
-    const options = {
-      cameraType: "back",
-      quality: 1,
-      maxHeight: 500,
-      maxWidth: 500,
-    };
-    launchImageLibrary(options, (response: any) => {
-      console.log("==========> response4564546", response);
-      if (response.didCancel) {
-        console.log("User cancelled photo picker1");
-      } else if (response.errorCode) {
-        console.log("ImagePicker Error2: ", response.errorCode);
-      } else if (response.errorCode) {
-        console.log("User cancelled photo picker1");
-      } else if (response?.assets[0].uri) {
-        //xử lý uri ảnh hoặc video
-        setImagesNote(response?.assets[0].uri);
-        console.log(response?.assets[0].uri);
-        setModalImage(false);
-      }
-    });
-    // } else if (permissionStatus === RESULTS.DENIED) {
-    //     const newStatus = await requestLibraryPermission();
-    //     if (newStatus === RESULTS.GRANTED) {
-    //         console.log("Permission granted");
-    //     } else {
-    //         console.log("Permission denied");
-    //         Alert.alert('Permission allow', 'Allow permission in setting', [{
-    //             text: 'Settings',
-    //             onPress: () => Linking.openSettings()
-    //         },
-    //         {
-    //             text: 'Cancel',
-    //             onPress: () => console.log('cancel')
-    //         },
-    //         ])
-    //     }
-    // } else if (permissionStatus === RESULTS.BLOCKED) {
-    //     console.log("Permission blocked, you need to enable it from settings");
-    // }
-  };
-
-  const requestCameraPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await request(PERMISSIONS.IOS.CAMERA);
-        return result;
-      } else {
-        const result = await request(PERMISSIONS.ANDROID.CAMERA);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const checkCameraPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await check(PERMISSIONS.IOS.CAMERA);
-        return result;
-      } else {
-        const result = await check(PERMISSIONS.ANDROID.CAMERA);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const handleCameraUse = async () => {
-    const permissionStatus = await checkCameraPermission();
-    console.log(permissionStatus);
-
-    if (permissionStatus === RESULTS.GRANTED) {
-      console.log("You can use the camera");
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-      };
-      launchCamera(options, (response: any) => {
-        console.log("==========> response1233123", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets[0].uri) {
-          console.log(response?.assets[0].uri);
-          setImagesNote(response?.assets[0].uri);
-          setModalImage(false);
-        }
-      });
-    } else if (permissionStatus === RESULTS.DENIED) {
-      const newStatus = await requestCameraPermission();
-      if (newStatus === RESULTS.GRANTED) {
-        console.log("Permission granted");
-      } else {
-        console.log("Permission denied");
-
-        Dialog.show({
-          type: ALERT_TYPE.WARNING,
-          title: translate("txtDialog.permission_allow"),
-          textBody: translate("txtDialog.allow_permission_in_setting"),
-          button: translate("common.cancel"),
-          button2: translate("txtDialog.settings"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Linking.openSettings();
-            Dialog.hide();
-          },
-        });
-      }
-    } else if (permissionStatus === RESULTS.BLOCKED) {
-      console.log("Permission blocked, you need to enable it from settings");
-    }
-  };
 
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
@@ -264,6 +108,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       return item;
     });
     setArrProduct(newArr);
+  };
+
+  const handleBack = () => {
+    navigation.goBack();
+    orderStore.setDataProductAddOrder([]);
+    orderStore.setViewProductType("VIEW_PRODUCT");
   };
 
   const handleSelectTaxes = (id: any) => {
@@ -306,13 +156,14 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   useEffect(() => {
     setArrProduct(arrProducts);
     getListTax();
+    orderStore.setCheckPriceList(true);
   }, []);
 
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
       <Header
         LeftIcon={Images.back}
-        onLeftPress={() => navigation.goBack()}
+        onLeftPress={() => handleBack()}
         style={{ height: scaleHeight(70) }}
         headerTx={"order.confirm"}
         titleStyle={styles.textTitle}
@@ -334,10 +185,16 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           ]}>
           <HeaderOrder
             openDialog={function (): void {
-              setButtonSelect(true);
+              props.navigation.navigate("selectClient");
             }}
           />
-          <AddressOrder />
+          <AddressOrder
+            onPressAddress={() =>
+              navigation.navigate("deliveryAddress" as never, {
+                dataAddress: dataAddress,
+              })
+            }
+          />
           <PriceList />
           <InputSelect
             styleView={{
