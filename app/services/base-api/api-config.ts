@@ -9,7 +9,7 @@ import CONFIG from "../../config.json";
 
 const getDomain = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL;
+  const domain = CONFIG.API.DEV.URL;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Domain", domain);
   return domain;

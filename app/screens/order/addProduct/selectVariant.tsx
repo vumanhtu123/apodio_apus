@@ -1,59 +1,177 @@
 import { Observer, observer } from 'mobx-react-lite';
-import { FC, useRef, useState } from 'react';
-import React, { Dimensions, FlatList, Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import { FC, useEffect, useRef, useState } from 'react';
+import React, { Dimensions, FlatList, Image, ImageBackground, ScrollView, TouchableOpacity, View } from 'react-native';
 import { AutoImage, Button, Header, Text } from '../../../components';
 import { Images } from '../../../../assets';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Modal from 'react-native-modal'
 import ProductAttribute from '../../product/component/productAttribute';
 import FastImage from 'react-native-fast-image';
+import { Content, OrderVariantResult } from '../../../models/order-store/order-variant-model';
+import { useStores } from '../../../models';
+import AutoHeightImage from 'react-native-auto-height-image';
+import { ProductResult } from '../../../models/product-store/product-store-model';
+import { ItemSelectVariant } from '../components/itemSelectVariant';
+import { ALERT_TYPE, Toast } from '../../../components/dialog-notification';
 
 export const SelectVariant: FC = observer(
     function SelectVariant() {
         const navigation = useNavigation()
+        const { orderStore, productStore } = useStores()
+        const route = useRoute()
         const [modalImages, setModalImages] = useState(false);
         const [activeSlide, setActiveSlide] = useState(0);
+        const [dataSelect, setDataSelect] = useState([])
+        const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
+        const [page, setPage] = useState(0);
+        const [size, setSize] = useState(20);
+        const [arrImagesProduct, setArrImagesProduct] = useState([])
+        const [detailProduct, setDetailProduct] = useState<any>([])
+        const [dataVariant, setDataVariant] = useState<Content[]>([])
         const refCarousel = useRef(null);
+        const productTemplateId = route?.params?.productTemplateId
 
-        const arrImagesProduct = ["https://inkythuatso.com/uploads/thumbnails/800/2023/03/1-hinh-anh-ngay-moi-hanh-phuc-sieu-cute-inkythuatso-09-13-35-50.jpg",
-            "https://baothainguyen.vn/file/oldimage/baothainguyen/UserFiles/image/d1(21).jpg",
-            "https://inkythuatso.com/uploads/thumbnails/800/2023/03/1-hinh-anh-ngay-moi-hanh-phuc-sieu-cute-inkythuatso-09-13-35-50.jpg",
-            "https://baothainguyen.vn/file/oldimage/baothainguyen/UserFiles/image/d1(21).jpg",
-            "https://baothainguyen.vn/file/oldimage/baothainguyen/UserFiles/image/d1(21).jpg",
-        ]
+        const handleGetDetailProduct = async () => {
+            try {
+                const response = await productStore.getDetailProduct(productStore.productId);
+                console.log("productId", productStore.productId);
+                if (response && response.kind === "ok") {
+                    const data: any = response.response.data;
+                    setDetailProduct(response.response.data);
 
-        const dataFlatlist = [
-            {
-                name: 'gachj 123-132-asd',
-                images: "https://baothainguyen.vn/file/oldimage/baothainguyen/UserFiles/image/d1(21).jpg",
-                amount: 0,
-                price: '20000',
-                id: '1',
-            },
-            {
-                name: 'gachj 123-132-asd',
-                images: "https://baothainguyen.vn/file/oldimage/baothainguyen/UserFiles/image/d1(21).jpg",
-                amount: 0,
-                price: '20000',
-                id: '2',
-            },
-            {
-                name: 'gachj 123-132-asd',
-                images: "https://baothainguyen.vn/file/oldimage/baothainguyen/UserFiles/image/d1(21).jpg",
-                amount: 0,
-                price: '20000',
-                id: '3',
-            },
-            {
-                name: 'gachj 123-132-asd',
-                images: "https://baothainguyen.vn/file/oldimage/baothainguyen/UserFiles/image/d1(21).jpg",
-                amount: 0,
-                price: '20000',
-                id: '4',
-            },
-        ]
+                    console.log("response---getDetailProduct-------", data);
+
+                    setArrImagesProduct(data.imageUrls);
+
+                } else {
+                    console.error("Failed to fetch detail:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching detail:", error);
+            }
+        };
+
+        const getDataVariant = async () => {
+            try {
+                const response: OrderVariantResult = await orderStore.getListOrderVariantPrice(
+                    page,
+                    size,
+                    undefined,
+                    undefined,
+                    '',
+                    orderStore.isLoadMore,
+                    undefined,
+                    productTemplateId,
+                    14061,
+                );
+                console.log('data variant ///////', JSON.stringify(response.response.data.content))
+                if (response && response.kind === "ok") {
+                    setTotalPagesProduct(response.response.data.totalPages)
+                    const aMap = new Map(orderStore.dataProductAddOrder.map(item => [item.id, item]));
+                    console.log('////////////////', response.response.data.totalPages)
+                    if (page === 0) {
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0, isSelect: false } })
+
+                        const newArr1 = newArr.map(item => {
+                            if (aMap.has(item.id)) {
+                                return {
+                                    ...item,
+                                    isSelect: true,
+                                    amount: aMap.get(item.id).amount
+                                };
+                            }
+                            return item;
+                        });
+                        setDataVariant(newArr1);
+                    } else {
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0, isSelect: false } })
+                        const newArr1 = newArr.map(item => {
+                            if (aMap.has(item.id)) {
+                                return {
+                                    ...item,
+                                    isSelect: true,
+                                    amount: aMap.get(item.id).amount
+                                };
+                            }
+                            return item;
+                        });
+                        setDataVariant((prevProducts: any) => [
+                            ...prevProducts,
+                            ...newArr1
+                        ]);
+                    }
+                } else {
+                    console.error("Failed to fetch variant:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
+        }
+
+        useEffect(() => {
+            handleGetDetailProduct()
+        }, [])
+
+        useEffect(() => {
+            if (orderStore.checkPriceList === true) {
+                getDataVariant()
+            }
+        }, [page])
+
+        const handleEndReached = () => {
+            if (dataVariant.length < 20) {
+                console.log('123')
+            } else {
+                if (page <= totalPagesProduct - 1) {
+                    orderStore.setIsLoadMore(true)
+                    setPage((prevPage) => prevPage + 1);
+                }
+            }
+        };
+
+        const handlePlus = (data: any) => {
+            const newArr1 = dataVariant.map(items => {
+                if (items.id === data.id) {
+                    return { ...data, amount: data.amount + 1, isSelect: true }
+                } else {
+                    return items
+                }
+            })
+            setDataVariant(newArr1)
+        }
+        const handleMinus = (data: any) => {
+            const newArr1 = dataVariant.slice()
+            const newArr2 = newArr1.map((items: any) => {
+                if (items.id === data.id) {
+                    if (items.amount === 0) {
+                        Toast.show({
+                            type: ALERT_TYPE.DANGER,
+                            textBody: 'Số lượng không thể âm'
+                        })
+                        return items
+                    } else {
+                        if (items.amount - 1 === 0) {
+                            return { ...items, amount: 0, isSelect: false }
+                        } else {
+                            return { ...items, amount: items.amount - 1, isSelect: true }
+                        }
+                    }
+                } else { return items }
+            })
+            setDataVariant(newArr2)
+        }
+        const addVariantToCart = () => {
+            const newArr1 = dataVariant.filter((items: any) => items.isSelect === true)
+            console.log(newArr1)
+            const idSetB = new Set(dataVariant.map(item => item.id));
+            const newArr2 = orderStore.dataProductAddOrder.filter(item => !idSetB.has(item.id));
+            const newArr3 = newArr2.concat(newArr1)
+            console.log(newArr3)
+            orderStore.setDataProductAddOrder(newArr3)
+            navigation.goBack()
+        }
 
         return (
             <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
@@ -61,6 +179,8 @@ export const SelectVariant: FC = observer(
                     LeftIcon={Images.back}
                     onLeftPress={() => navigation.goBack()}
                     style={{ height: scaleHeight(54) }}
+                    headerText={`${detailProduct.sku}` + "/Chọn biến thể"}
+                    titleMiddleStyle={{ alignItems: 'flex-start' }}
                 />
                 <View style={{ flex: 1, marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(20), justifyContent: 'flex-start' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -124,108 +244,37 @@ export const SelectVariant: FC = observer(
                             />
                         </View>
                     )}
-                    <ProductAttribute label='Mã sản phẩm' value={'max casd'} />
-                    <ProductAttribute label='Tên sản phẩm' value={'max casd'} />
+                    <ProductAttribute label='Mã sản phẩm' value={detailProduct.sku} />
+                    <ProductAttribute label='Tên sản phẩm' value={detailProduct.name} />
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: scaleHeight(12) }}>
                         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                            <Text text={'4'} style={{ lineHeight: scaleHeight(14.52), fontWeight: '400', fontSize: fontSize.size12, color: colors.nero }} />
+                            <Text text={dataVariant.length.toString()} style={{ lineHeight: scaleHeight(14.52), fontWeight: '400', fontSize: fontSize.size12, color: colors.nero }} />
                             <Text text=' phân loại sản phẩm' style={{ lineHeight: scaleHeight(14.52), fontWeight: '400', fontSize: fontSize.size12, color: colors.nero }} />
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text text='Đã chọn ' style={{ lineHeight: scaleHeight(14.52), fontWeight: '400', fontSize: fontSize.size12, color: colors.nero }} />
-                            <Text text={'2'} style={{ lineHeight: scaleHeight(14.52), fontWeight: '400', fontSize: fontSize.size12, color: colors.nero }} />
+                            <Text text={dataSelect.length.toString()} style={{ lineHeight: scaleHeight(14.52), fontWeight: '400', fontSize: fontSize.size12, color: colors.nero }} />
                         </View>
                     </View>
                     <FlatList
-                        data={dataFlatlist}
-                        keyExtractor={item => item.id}
-                        renderItem={(item) => {
-                            return (
-                                <View style={{
-                                    alignItems: 'center',
-                                    backgroundColor: colors.palette.aliceBlue, paddingHorizontal: scaleWidth(6),
-                                    flexDirection: 'row', paddingVertical: scaleHeight(10), borderRadius: 8, marginBottom: scaleHeight(15)
-                                }}>
-                                    <AutoImage
-                                        source={{ uri: item.item.images }}
-                                        style={{ marginRight: scaleWidth(6), width: scaleWidth(50), height: scaleHeight(50) }}
-                                    />
-                                    <View style={{ width: '100%' }}>
-                                        <Text text='teen san pham'
-                                            style={{
-                                                fontWeight: '500', fontSize: fontSize.size12, lineHeight: scaleHeight(14.52),
-                                                color: colors.nero
-                                            }} />
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3) }}>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
-                                                <Text style={{
-                                                    fontWeight: '400', fontSize: fontSize.size12, lineHeight: scaleHeight(14.52),
-                                                    color: colors.nero
-                                                }} tx={'order.price2'} />
-                                                <Text style={{
-                                                    fontWeight: '400', fontSize: fontSize.size12, lineHeight: scaleHeight(14.52),
-                                                    color: colors.palette.radicalRed, fontStyle: 'italic'
-                                                }} text='20000' />
-                                            </View>
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', width: '60%' }}>
-                                                <Text style={{
-                                                    fontWeight: '400', fontSize: fontSize.size12, lineHeight: scaleHeight(14.52),
-                                                    color: colors.nero
-                                                }} tx={'order.miniumQuanlity'} />
-                                                <Text style={{
-                                                    fontWeight: '400', fontSize: fontSize.size12, lineHeight: scaleHeight(14.52),
-                                                    color: colors.palette.radicalRed, fontStyle: 'italic'
-                                                }} text='20' />
-                                            </View>
-                                        </View>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{
-                                                fontWeight: '400', fontSize: fontSize.size10, lineHeight: scaleHeight(12.1),
-                                                color: colors.nero, marginRight: scaleWidth(6)
-                                            }} tx={'order.quanlity'} />
-                                            <View style={{
-                                                // marginLeft: scaleWidth(margin.margin_12),
-                                                marginTop: scaleHeight(2),
-                                                flexDirection: 'row',
-                                                backgroundColor: colors.palette.white,
-                                                alignItems: "center",
-                                                paddingVertical: scaleHeight(3),
-                                                borderRadius: 8,
-                                                width: '25%'
-                                            }}>
-                                                <TouchableOpacity onPress={() => handleMinus(item)}
-                                                    style={{ width: '25%', alignItems: 'center' }}
-                                                >
-                                                    <Images.icon_minus />
-                                                </TouchableOpacity>
-                                                <Text style={{
-                                                    width: '50%',
-                                                    textAlign: 'center',
-                                                }} >0</Text>
-                                                <TouchableOpacity onPress={() => handlePlus(item)}
-                                                    style={{ width: '25%', alignItems: 'center' }}
-                                                >
-                                                    <Images.icon_plusGreen />
-                                                </TouchableOpacity>
-                                            </View>
-                                            <View style={{ marginHorizontal: scaleWidth(6),flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{fontWeight: '400', fontSize: fontSize.size10, lineHeight: scaleHeight(12.1),
-                                                color: colors.nero
-                                            }} text={'hop'} />
-                                            <Images.icon_caretRightDown/>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </View>
-                            )
-                        }}
+                        data={dataVariant}
+                        // keyExtractor={item => item.id.toString()}
+                        onEndReached={() => handleEndReached()}
+                        renderItem={({ item, index }) =>
+                        (<ItemSelectVariant
+                            item={item}
+                            handleMinus={handleMinus}
+                            handlePlus={handlePlus}
+                        />)
+                        }
                     />
                 </View>
-                <TouchableOpacity style={{
-                    flexDirection: 'row', alignItems: 'center', height: scaleHeight(48),
-                    backgroundColor: colors.palette.navyBlue, marginHorizontal: scaleWidth(16), marginBottom: scaleHeight(20),
-                    borderRadius: 8, justifyContent: 'center'
-                }}>
+                <TouchableOpacity onPress={() => addVariantToCart()}
+                    style={{
+                        flexDirection: 'row', alignItems: 'center', height: scaleHeight(48),
+                        backgroundColor: colors.palette.navyBlue, marginHorizontal: scaleWidth(16), marginBottom: scaleHeight(20),
+                        borderRadius: 8, justifyContent: 'center'
+                    }}>
                     <Images.ic_ShoopingCar />
                     <Text tx={'order.addToCart'} style={{
                         marginLeft: scaleWidth(12), fontWeight: '600', fontSize: fontSize.size14,

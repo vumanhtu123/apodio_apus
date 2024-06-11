@@ -3,8 +3,12 @@ import { Dimensions, TouchableOpacity, View } from "react-native";
 import { Images } from "../../../../assets";
 import { Text } from "../../../components";
 import { useNavigation } from "@react-navigation/native";
+import { OnProgressEvent } from "react-native-fast-image";
 interface InputData {
   openDialog: () => void;
+}
+interface AddressData {
+  onPressAddress: ()=> void;
 }
 export const HeaderOrder = (data: InputData) => {
   return (
@@ -82,7 +86,7 @@ export const PriceList = () => {
   );
 };
 
-export const AddressOrder = () => {
+export const AddressOrder = (data: AddressData) => {
   const navigation = useNavigation()
   return (
     <View
@@ -116,7 +120,7 @@ export const AddressOrder = () => {
             fontWeight: "400",
           }}></Text>
       </View>
-      <TouchableOpacity onPress={()=> navigation.navigate('deliveryAddress' as never)} >
+      <TouchableOpacity onPress={()=> data.onPressAddress()} >
       <Images.icon_caretRight2 />
       </TouchableOpacity>
     </View>

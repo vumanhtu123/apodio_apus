@@ -34,7 +34,9 @@ export const EditDelivery: FC = observer(
         const [searchWards, setSearchWards] = useState('')
         const dataEdit: Root1 = route?.params?.dataEdit
 
-        const { control, reset, handleSubmit, formState: { errors }, setError } = useForm();
+        const { control, reset, handleSubmit, formState: { errors }, setError } = useForm({
+            defaultValues: {phone: dataEdit.phoneNumber, address: dataEdit.address}
+        });
 
         useEffect(() => {
             console.log(dataEdit)
@@ -287,17 +289,17 @@ export const EditDelivery: FC = observer(
                                 onBlur={onBlur}
                                 onChangeText={(value) => {
                                     onChange(value)
-                                    // if (phoneNumberPattern.test(value) === false) {
-                                    //     setError('phone', { type: 'validate', message: 'Số điện thoại gồm 10 chữ số bắt đầu bằng số 0' })
-                                    // }else{
-                                    //     setError('phone', null)
-                                    // }
+                                    if (phoneNumberPattern.test(value) === false) {
+                                        setError('phone', { type: 'validate', message: 'Số điện thoại gồm 10 chữ số bắt đầu bằng số 0' })
+                                    }else{
+                                        setError('phone', null)
+                                    }
                                 }}
                                 onClearText={() => onChange('')}
                                 RightIconClear={Images.icon_delete2}
                                 isImportant={true}
                                 error={errors?.phone?.message}
-                                defaultValue={dataEdit.phone}
+                                // defaultValue={dataEdit.phoneNumber}
                             />)}
                         name="phone"
                         rules={{ required: "Số điện thoại là bắt buộc" }}
@@ -354,7 +356,7 @@ export const EditDelivery: FC = observer(
                                 RightIconClear={Images.icon_delete2}
                                 isImportant={true}
                                 error={errors?.address?.message}
-                                defaultValue={dataEdit.address}
+                                // defaultValue={dataEdit.address}
                             />)}
                         name="address"
                         rules={{ required: "Địa chỉ là bắt buộc" }}

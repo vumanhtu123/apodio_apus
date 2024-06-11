@@ -97,7 +97,7 @@ export class  Api {
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "vi",
-            "X-TenantId": 79,
+            // "X-TenantId": 79,
           };
         }
 
