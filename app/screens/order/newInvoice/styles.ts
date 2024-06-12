@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: colors.palette.navyBlue,
     height: scaleHeight(48),
-    marginBottom: scaleHeight(margin.margin_20),
+    marginHorizontal: scaleWidth(margin.margin_16),
   },
   buttonFeature: {
     marginHorizontal: scaleWidth(margin.margin_4),
@@ -98,17 +98,13 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   viewButtonOrder: {
-    paddingHorizontal: scaleHeight(margin.margin_16),
+    // paddingHorizontal: scaleHeight(margin.margin_16),
     backgroundColor: colors.palette.neutral100,
-    position: "absolute",
-    top: Dimensions.get("window").height - scaleHeight(180),
-    right: 0,
-    left: 0,
-    // bottom: 0,
+    marginVertical : scaleHeight(12)
   },
   viewScrollVertical: {
     paddingHorizontal: scaleWidth(padding.padding_16),
-    backgroundColor: colors.palette.aliceBlue,
+    backgroundColor: colors.palette.white,
   },
   viewSupplier: {
     borderRadius: 8,
@@ -200,7 +196,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.palette.neutral100,
     paddingHorizontal: scaleWidth(padding.padding_16),
     borderRadius: 8,
-    paddingVertical: scaleHeight(padding.padding_10),
+    // paddingVertical: scaleHeight(padding.padding_10),
   },
   buttonListProduct: {
     flexDirection: "row",
@@ -210,5 +206,26 @@ export const styles = StyleSheet.create({
     paddingVertical: scaleHeight(padding.padding_7),
     marginBottom: scaleHeight(margin.margin_10),
     borderRadius: 8,
+  },
+  viewItemListProduct: {
+    marginVertical: scaleHeight(margin.margin_12),
+    marginHorizontal: scaleWidth(margin.margin_16),
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  viewImageListProduct: {
+    borderRadius: 16,
+    marginRight: scaleWidth(margin.margin_10),
+  },
+  textListProduct: {
+    fontWeight: "600",
+    fontSize: fontSize.size12,
+    color: colors.palette.nero,
+  },
+  priceOriginal : {
+    textDecorationLine :'line-through',
+    marginTop : scaleHeight(8),
+    color : colors.palette.dolphin,
+    fontSize: fontSize.size12,
   },
 });

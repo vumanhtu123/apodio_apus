@@ -215,6 +215,7 @@ import ic_plus_blue from "./Images/PlusBlue.svg";
 import ic_dot from "./Images/ic_dot.svg";
 import icon_plus_blue2 from "./Images/icon_plus_blue2.svg";
 import icon_QRCode from "./Images/ic_QRCode.svg";
+import icon_CalenderBlank from "./Images/ic_CalendarBlank.svg";
 import ic_avatar_order from "./Images/AvatarInOrder.svg";
 import ic_warning_yellow from "./Images/warning_yellow.svg";
 import ic_plus_orange from "./Images/ic_plus_orange.svg";
@@ -429,7 +430,8 @@ export const Images = {
   icon_plus_blue: ic_plus_blue,
   ic_dot: ic_dot,
   icon_plus_blue2: icon_plus_blue2,
-  icon_QRCode: icon_QRCode,
+  icon_QRCode : icon_QRCode,
+  icon_CalenderBlank :icon_CalenderBlank,
   ic_avatar_order: ic_avatar_order,
   ic_warning_yellow: ic_warning_yellow,
   ic_plus_orange: ic_plus_orange,

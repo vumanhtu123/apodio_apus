@@ -36,7 +36,7 @@ export const ApiEndpoint = {
   UPLOAD_IMAGES: "/api/v1/file-upload",
   DELETE_CHECK: "/api/v1/goods/product-template/delete-check",
   USING_PRODUCT_CHECK: "/api/v1/product-template/use-in-another-service",
-  COMPANY_INFO: "/api/v1/companies/info1",
+  COMPANY_INFO: "api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
   GET_LIST_ORDER : '/api/v1/retail/sale-order/list',
   GET_LIST_SLECT_CLIENT:'/api/v1/b2c/partners/list',
@@ -52,5 +52,6 @@ export const ApiEndpoint = {
   CREATE_ADDRESS: '/api/v1/b2c/partners/address',
   GET_LIST_ADDRESS: '/api/v1/b2c/partners/address/list',
   GET_LIST_PRICE_LIST: '/api/v1/b2c/price-list/list',
+  GET_DETAIL_INVOICE : '/api/v1/account-move/b2c',
   GET_LIST_TAX: "/api/v1/tax/list",
 };

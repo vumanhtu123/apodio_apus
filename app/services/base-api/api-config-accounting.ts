@@ -80,10 +80,10 @@ export class ApiAccounting {
           "Accept-Language": "en",
           "X-TenantId": 77,
         };
-        const token = await getAccessToken();
-        if (token) {
-          request.headers!.Authorization = "Bearer " + token;
-        }
+        // const token = await getAccessToken();
+        // if (token) {
+        //   request.headers!.Authorization = "Bearer " + token;
+        // }
         console.log("REQUEST--222: ", request);
       } catch (err) {
         console.log("Catch err", err);
