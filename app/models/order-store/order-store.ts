@@ -480,8 +480,8 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<TaxModel, ErrorCode> =
-          yield orderApi.getTaxList(type, scopeType);
+        const result: BaseResponse<TaxModel, ErrorCode> = yield orderApi.getTaxList(type, scopeType);
+        console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");
           return result.data;

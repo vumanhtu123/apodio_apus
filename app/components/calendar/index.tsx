@@ -207,6 +207,7 @@ const CustomCalendar = (props: any) => {
   };
   const today = new Date();
   today.setDate(today.getDate() - 1);
+  console.log('----------maxDate', props.maxDate)
   return (
     <Modal
       animationType="none"
@@ -248,8 +249,8 @@ const CustomCalendar = (props: any) => {
             <View style={styles.modalView}>
               <Calendar
                 minDate={props.minDate ? props.minDate : ''}
-                //@ts-ignore
-                maxDate={props.maxData == true ? today : null}
+                maxDate={props.maxDate ? props.maxDate : ''}
+                //maxDate="2024-6-20"
                 monthFormat={"MMMM yyyy"}
                 markedDates={
                   (console.log("calender", markedDates), markedDates)

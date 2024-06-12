@@ -78,12 +78,12 @@ export class ApiAccounting {
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
-          "X-TenantId": 77,
+          "X-TenantId": tenantId,
         };
-        // const token = await getAccessToken();
-        // if (token) {
-        //   request.headers!.Authorization = "Bearer " + token;
-        // }
+        const token = await getAccessToken();
+        if (token) {
+          request.headers!.Authorization = "Bearer " + token;
+        }
         console.log("REQUEST--222: ", request);
       } catch (err) {
         console.log("Catch err", err);
@@ -94,17 +94,6 @@ export class ApiAccounting {
       try {
         if (response) {
           console.log("responseUpload", response);
-          // if (response.data.errorCodes){
-          //   if (response.data.errorCodes[0].code === 4567) {
-          //     showDialog(
-          //       'Error',
-          //       'danger',
-          //       `${response.data.errorCodes[0].message}`,
-          //       '',
-          //       'OK',
-          //       () => hideDialog())
-          //   }
-          // }
         }
       } catch (error) {
         console.log("ERROR", error);

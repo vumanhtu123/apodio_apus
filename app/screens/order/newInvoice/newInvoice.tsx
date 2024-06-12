@@ -42,7 +42,6 @@ import { translate } from "../../../i18n";
 import moment from "moment";
 import CustomCalendar from "../../../components/calendar";
 import { MakeResult } from "mobx/dist/internal";
-import ItemListProduct from "../components/itemListProduct";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 import ProductAttribute from "../../product/component/productAttribute";
 
@@ -60,6 +59,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         formState: { errors },
     } = useForm();
 
+    const [minDateS, setMinDateS] = useState("")
+    const [minDateE, setMinDateE] = useState("")
+    const [choiseCalendar, setChoiseCalendar] = useState(0)
     const [arrProduct, setArrProduct] = useState<{}[]>([]);
     const [isDeposit, setIsDeposit] = useState(false);
     const [modalImage, setModalImage] = useState(false);
@@ -74,7 +76,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         setIsSortByDate(!isSortByDate);
     };
 
-    const handleIncrease = (id) => {
+    const handleIncrease = (id: any) => {
         let newArr = arrProduct!.map((item) => {
             if (item.id === id) {
                 return { ...item, qty: item.qty + 1 };
@@ -84,7 +86,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         setArrProduct(newArr);
     };
 
-    const handleDecrease = (id) => {
+    const handleDecrease = (id: any) => {
         let newArr = arrProduct!
             .map((item) => {
                 if (item.id === id) {
@@ -97,7 +99,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         console.log(arrProduct);
     };
 
-    const deleteItemProduct = (id) => {
+    const deleteItemProduct = (id: any) => {
         const newArr = arrProduct.filter((item) => item.id !== id);
         setArrProduct(newArr);
     };
@@ -259,8 +261,12 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         }}
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' , color : '#000000' }}
                                         value={value}
-                                        valueInput={moment(markedDatesS === "" ? new Date() : markedDatesS).format("DD/MM/YYYY")}
-                                        pressRightIcon={toggleModalDate}
+                                        valueInput={moment(minDateS === "" ? new Date() : minDateS).format("DD/MM/YYYY")}
+                                        pressRightIcon={() => {
+                                            toggleModalDate(),
+                                            setChoiseCalendar(1)
+                                        }  
+                                        }
                                         onBlur={onBlur}
                                         // RightIconClear={Images.icon_delete2}/
                                         RightIcon={Images.icon_CalenderBlank}
@@ -291,11 +297,14 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         justifyContent: 'center',
                                     }}
                                     inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: '#000000' }}
-                                    valueInput={moment(markedDatesS === "" ? new Date() : markedDatesS).format("DD/MM/YYYY")}
+                                    valueInput={moment(minDateE === "" ? new Date() : minDateE).format("DD/MM/YYYY")}
                                     onBlur={onBlur}
                                     // RightIconClear={Images.icon_delete2}/
                                     RightIcon={Images.icon_CalenderBlank}
-                                    pressRightIcon={toggleModalDate}
+                                    pressRightIcon={() => {
+                                        toggleModalDate(),
+                                        setChoiseCalendar(2)
+                                    }}
                                     error={errors?.invoiceCode?.message}
                                     onClearText={() => onChange('')}
                                     // onChangeText={onChange}
@@ -390,16 +399,17 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
 
             <CustomCalendar
                 isReset={isReset}
-                minDate={markedDatesS}
+                minDate={minDateS}
+                maxDate={minDateE}
                 handleReset={() => setIReset(!isReset)}
                 handleShort={() => {
-                    // handleOrderMerchant()
                     toggleModalDate();
+                    choiseCalendar == 1 ?  setMinDateS(markedDatesS) : setMinDateE(markedDatesS)
                 }}
-                onMarkedDatesChangeS={(markedDatesS) => {
+                onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
                     setMarkedDatesS(markedDatesS);
                 }}
-                onMarkedDatesChangeE={(markedDatesE) => {
+                onMarkedDatesChangeE={(markedDatesE: React.SetStateAction<string>) => {
                     setMarkedDatesE(markedDatesE);
                 }}
                 isShowTabs={false}
