@@ -14,11 +14,13 @@ export class ProductApi {
     this.api = api;
   }
 
+
   async getBalance(): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
+      
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_PRODUCT,
         {

@@ -377,6 +377,7 @@ export const ProductCreateScreen: FC = (item) => {
         listPrice: Number(formatNumberByString(listPriceProduct)),
         wholesalePrice: dataPrice,
         deleteVariantIds: [],
+        activated: true
       });
       console.log('data test---------', JSON.stringify(data))
       if (data.kind === 'ok') {

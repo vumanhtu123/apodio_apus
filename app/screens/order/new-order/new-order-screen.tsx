@@ -48,9 +48,10 @@ import {
 } from "../components/header-order";
 import { ModalPayment } from "../components/modal-payment-method";
 import { ModalTaxes } from "../components/modal-taxes-apply";
-import { useStores } from "../../../models";
 import { ShowNote } from "../components/note-new-order-component";
 import { arrPayment, arrProducts, dataPromotion, methodData } from "./data";
+import { useStores } from "../../../models";
+import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 
 export const NewOrder: FC = observer(function NewOrder(props) {
   const navigation = useNavigation();
@@ -62,18 +63,19 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     paddingTop;
   const route = useRoute();
 
-  const { orderStore } = useStores()
-  const dataAddress = route?.params?.dataAddress
+  const [arrName, setArrName] = useState<{}[]>([]);
+  const { orderStore } = useStores();
+  const dataAddress = route?.params?.dataAddress;
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
+  const [arrTax, setArrTax] = useState<{}[]>([]);
   const [payment, setPayment] = useState({ label: "" });
   const [note, setNote] = useState(false);
   const [desiredDate, setDesiredDate] = useState(false);
   const [isDeposit, setIsDeposit] = useState(false);
-  const [modalImage, setModalImage] = useState(false);
   const [isSortByDate, setIsSortByDate] = useState(false);
   const [isReset, setIReset] = useState<boolean>(false);
-  const [imagesNote, setImagesNote] = useState("");
+  const [imagesNote, setImagesNote] = useState<any>([]);
   const [markedDatesS, setMarkedDatesS] = useState("");
   const [markedDatesE, setMarkedDatesE] = useState("");
   const [deposit, setDeposit] = useState<number>(0);
@@ -81,8 +83,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
   const countRef = useRef("");
-
-
+  const store = useStores();
 
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
@@ -109,10 +110,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   };
 
   const handleBack = () => {
-    navigation.goBack()
-    orderStore.setDataProductAddOrder([])
-    orderStore.setViewProductType("VIEW_PRODUCT")
-  }
+    navigation.goBack();
+    orderStore.setDataProductAddOrder([]);
+    orderStore.setViewProductType("VIEW_PRODUCT");
+  };
 
   const handleSelectTaxes = (id: any) => {
     setButtonSelect(true);
@@ -136,9 +137,25 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     setArrProduct(newArr);
   };
 
+  const getListTax = async () => {
+    const result: TaxModel = await store.orderStore.getListTax(
+      "VAT_RATES",
+      0,
+      20,
+      "DOMESTICALLY"
+    );
+    console.log("id name", result);
+    setArrTax(
+      result.content.map((item: { name: any; id: any }) => {
+        return { text: item.name, value: item.id };
+      })
+    );
+  };
+
   useEffect(() => {
     setArrProduct(arrProducts);
-    orderStore.setCheckPriceList(true)
+    getListTax();
+    orderStore.setCheckPriceList(true);
   }, []);
 
   return (
@@ -167,11 +184,16 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           ]}>
           <HeaderOrder
             openDialog={function (): void {
-              setButtonSelect(true);
+              props.navigation.navigate("selectClient");
             }}
           />
           <AddressOrder
-            onPressAddress={() => navigation.navigate('deliveryAddress' as never, { dataAddress: dataAddress })} />
+            onPressAddress={() =>
+              navigation.navigate("deliveryAddress" as never, {
+                dataAddress: dataAddress,
+              })
+            }
+          />
           <PriceList />
           <InputSelect
             styleView={{
@@ -276,12 +298,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
           <ShowNote
             note={note}
-            setNote={function (item: boolean): void {
-              setNote(item);
-            }}
-            imagesNote={imagesNote}
-            setModalImage={function (item: boolean): void {
-              setModalImage(item);
+            setNoteData={function (note: String, arr: []) : void {
+              console.log("note---------", note)
+              console.log("arr---------", arr)
             }}
           />
           {desiredDate === true ? (
@@ -479,7 +498,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           </View>
         ) : null}
         <Button
-          onPress={() => { }}
+          onPress={() => {}}
           tx={"order.order"}
           style={styles.buttonOrder}
           textStyle={styles.textButtonOrder}
@@ -517,31 +536,16 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         }}
       />
       <ModalTaxes
+        arrName={function (name: any): void {
+          setArrName(name);
+          console.log("tuvm09", arrName);
+        }}
+        arrTaxes={arrTax}
         isVisible={buttonSelect}
         closeDialog={function (): void {
           setButtonSelect(false);
         }}
       />
-      <Modal isVisible={modalImage} style={{ alignItems: "center" }}>
-        <View style={styles.viewModalImage}>
-          <Text tx={"order.chooseImage"} style={styles.textTitleModalImage} />
-          <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => handleCameraUse()}>
-            <Text tx={"order.newImage"} style={styles.textButtonModalImage} />
-          </TouchableOpacity>
-          <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => handleLibraryUse()}>
-            <Text
-              tx={"order.chooseLibrary"}
-              style={styles.textButtonModalImage}
-            />
-          </TouchableOpacity>
-          <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => setModalImage(false)}>
-            <Text tx={"common.cancel"} style={styles.textButtonModalImage} />
-          </TouchableOpacity>
-        </View>
-      </Modal>
     </View>
   );
 });
@@ -569,18 +573,18 @@ const SumMoney = (props: DataSumMoney) => {
           style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
         {props.arrVat != null
           ? props.arrVat.map((data) => {
-            return (
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  color: "#747475",
-                  marginTop: 8,
-                }}>
-                {data.percent}
-              </Text>
-            );
-          })
+              return (
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "400",
+                    color: "#747475",
+                    marginTop: 8,
+                  }}>
+                  {data.percent}
+                </Text>
+              );
+            })
           : null}
         <Text
           tx="order.sum_yes_texas"
@@ -597,18 +601,18 @@ const SumMoney = (props: DataSumMoney) => {
         </Text>
         {props.arrVat != null
           ? props.arrVat.map((data) => {
-            return (
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  color: "#747475",
-                  marginTop: 8,
-                }}>
-                {data.amount}
-              </Text>
-            );
-          })
+              return (
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "400",
+                    color: "#747475",
+                    marginTop: 8,
+                  }}>
+                  {data.amount}
+                </Text>
+              );
+            })
           : null}
         <Text
           style={{

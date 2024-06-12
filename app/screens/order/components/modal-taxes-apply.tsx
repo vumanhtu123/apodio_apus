@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Platform, View } from "react-native";
+import { Alert, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { margin, scaleHeight } from "../../../theme";
 import { Text } from "../../../components";
@@ -9,9 +9,12 @@ import DropdownModal from "../../product/component/multiSelect";
 interface InputSelect {
   isVisible: boolean;
   closeDialog: () => void;
+  arrName: (name: any) => void;
+  arrTaxes?: [];
 }
 
 export const ModalTaxes = (data: InputSelect) => {
+  var items: any;
   return (
     <Modal
       onBackdropPress={() => data.closeDialog()}
@@ -24,9 +27,12 @@ export const ModalTaxes = (data: InputSelect) => {
         justifyContent: "flex-end",
         // paddingTop: showMore ? scaleHeight(160) : null,
       }}>
-      <View style={{ backgroundColor: "white", 
-        borderTopLeftRadius: margin.border_top_left_radius, 
-        borderTopRightRadius: margin.border_top_right_radius }}>
+      <View
+        style={{
+          backgroundColor: "white",
+          borderTopLeftRadius: margin.border_top_left_radius,
+          borderTopRightRadius: margin.border_top_right_radius,
+        }}>
         <View
           style={{
             height: 5,
@@ -55,9 +61,9 @@ export const ModalTaxes = (data: InputSelect) => {
         />
         <DropdownModal
           required={true}
-          arrData={[]}
+          arrData={data.arrTaxes ?? []}
           onPressChoice={(item: any) => {
-            const items = item.map((item: { value: any }) => item.value);
+            items = item.map((item: { value: any; text: any }) => item.text);
             // handleSelect(items);
           }}
           // dataEdit={}
@@ -76,41 +82,53 @@ export const ModalTaxes = (data: InputSelect) => {
             flexDirection: "row",
             marginHorizontal: 15,
             justifyContent: "space-between",
-            marginBottom: Platform.OS === 'ios' ? 50 : 15,
+            marginBottom: Platform.OS === "ios" ? 50 : 15,
             marginTop: 5,
           }}>
-          <View
-            style={{
-              backgroundColor: "white",
-              borderRadius: 8,
-              borderWidth: 1,
-              borderColor: "#747475",
+          <TouchableOpacity
+            onPress={() => {
+              data.closeDialog();
             }}>
-            <Text
-              tx="order.back"
+            <View
               style={{
-                color: "#747475",
-                fontSize: 14,
-                fontWeight: "600",
-                marginHorizontal: 65,
-                marginVertical: 12,
-              }}></Text>
-          </View>
-          <View
-            style={{
-              backgroundColor: "#0078D4",
-              borderRadius: 8,
+                backgroundColor: "white",
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: "#747475",
+              }}>
+              <Text
+                tx="order.back"
+                style={{
+                  color: "#747475",
+                  fontSize: 14,
+                  fontWeight: "600",
+                  marginHorizontal: 60,
+                  marginVertical: 12,
+                }}></Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              data.arrName(items);
+              data.closeDialog();
+              console.log("item", items);
             }}>
-            <Text
-              tx="order.back"
+            <View
               style={{
-                color: "white",
-                fontSize: 14,
-                fontWeight: "600",
-                marginHorizontal: 65,
-                marginVertical: 12,
-              }}></Text>
-          </View>
+                backgroundColor: "#0078D4",
+                borderRadius: 8,
+              }}>
+              <Text
+                tx="order.select"
+                style={{
+                  color: "white",
+                  fontSize: 14,
+                  fontWeight: "600",
+                  marginHorizontal: 65,
+                  marginVertical: 12,
+                }}></Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>

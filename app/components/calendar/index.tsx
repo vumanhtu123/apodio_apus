@@ -207,6 +207,7 @@ const CustomCalendar = (props: any) => {
   };
   const today = new Date();
   today.setDate(today.getDate() - 1);
+  console.log('----------maxDate', props.maxDate)
   return (
     <Modal
       animationType="none"
@@ -227,11 +228,11 @@ const CustomCalendar = (props: any) => {
       </TouchableWithoutFeedback>
       <View
         style={{
-          position: "absolute",
-          bottom: scaleHeight(30),
-          width: "93%",
-          borderRadius: 15,
-          alignSelf: "center",
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          // borderRadius: 15,
+          alignSelf: 'center',
         }}>
         <View style={styles.main}>
           <View style={styles.content}>
@@ -247,9 +248,9 @@ const CustomCalendar = (props: any) => {
             )}
             <View style={styles.modalView}>
               <Calendar
-                // minDate={Date()}
-                //@ts-ignore
-                maxDate={props.maxData == true ? today : null}
+                minDate={props.minDate ? props.minDate : ''}
+                maxDate={props.maxDate ? props.maxDate : ''}
+                //maxDate="2024-6-20"
                 monthFormat={"MMMM yyyy"}
                 markedDates={
                   (console.log("calender", markedDates), markedDates)
@@ -300,8 +301,10 @@ const CustomCalendar = (props: any) => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "white",
-    borderRadius: 8,
+    backgroundColor: 'white',
+    // borderRadius: 8,
+    borderTopLeftRadius : 8,
+    borderTopRightRadius : 8
   },
   content: {
     flex: 1,

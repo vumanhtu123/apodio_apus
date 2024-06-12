@@ -8,9 +8,10 @@ interface InputData {
   openDialog: () => void;
 }
 interface AddressData {
-  onPressAddress: ()=> void;
+  onPressAddress: () => void;
 }
 export const HeaderOrder = (data: InputData) => {
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -50,8 +51,9 @@ export const HeaderOrder = (data: InputData) => {
 };
 
 export const PriceList = () => {
+  const navigation = useNavigation();
   return (
-    <View
+    <TouchableOpacity
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -60,7 +62,9 @@ export const PriceList = () => {
         paddingVertical: 12,
         borderRadius: 8,
         justifyContent: "space-between",
-      }}>
+      }}
+      onPress={() => navigation.navigate('selectApplicablePriceList')}
+    >
       <View
         style={{
           flexDirection: "column",
@@ -82,7 +86,7 @@ export const PriceList = () => {
           }}></Text>
       </View>
       <Images.icon_caretRight2 />
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -120,8 +124,8 @@ export const AddressOrder = (data: AddressData) => {
             fontWeight: "400",
           }}></Text>
       </View>
-      <TouchableOpacity onPress={()=> data.onPressAddress()} >
-      <Images.icon_caretRight2 />
+      <TouchableOpacity onPress={() => navigation.navigate('deliveryAddress' as never)} >
+        <Images.icon_caretRight2 />
       </TouchableOpacity>
     </View>
   );

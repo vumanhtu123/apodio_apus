@@ -114,17 +114,6 @@ export class ApiUpload {
     this.apisauce.addResponseTransform(async (response) => {
       try {
         if (response) {
-          // if (response.data.errorCodes){
-          //   if (response.data.errorCodes[0].code === 4567) {
-          //     showDialog(
-          //       'Error',
-          //       'danger',
-          //       `${response.data.errorCodes[0].message}`,
-          //       '',
-          //       'OK',
-          //       () => hideDialog())
-          //   }
-          // }
           console.log('firstzz' , response)
         }
       } catch (error) {

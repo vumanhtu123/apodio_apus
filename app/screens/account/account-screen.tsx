@@ -10,6 +10,7 @@ import { scaleHeight, colors, margin } from "../../theme";
 import ItemExample from "../example/components/Item-example";
 import { styles } from "./style";
 import { TabScreenProps } from "../../navigators/bottom-navigation";
+import { NavigatorParamList, navigate } from "../../navigators"
 
 export const AccountScreen: FC<TabScreenProps<"account">> = observer(
   function AccountScreen(props) {
@@ -203,6 +204,7 @@ export const AccountScreen: FC<TabScreenProps<"account">> = observer(
               <ItemExample
                 onPress={() =>
                   props.navigation.navigate("detaiExample", { data: item })
+                  //navigate("detaiExample", { data: item })
                 }
                 id={item.id}
                 status={item.status}
