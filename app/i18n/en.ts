@@ -47,7 +47,8 @@ const en = {
       "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
-    delete_order : 'Bạn có chắc chắn muốn hủy đơn hàng bán này không?',
+    delete_order: 'Bạn có chắc chắn muốn hủy đơn hàng bán ',
+    delete_order1 : 'này không?',
     createClientSuccessful: "Thêm khách hàng thành công" ,
     createClientFail: "Thêm khách hàng thất bại công", 
     ok: "Ok",
@@ -55,7 +56,7 @@ const en = {
 
   },
   ruleController: {
-    emptyText: "Vui lòng nhập dữ liệu",
+    emptyText: 'Vui lòng nhập dữ liệu'
   },
   welcomeScreen: {
     postscript:
@@ -126,8 +127,9 @@ const en = {
     continue: "Tiếp tục",
   },
   dialog: {
-    title: "Mã xác thực",
-    content: "Vui lòng nhập OTP được gửi tới số điện thoại của bạn",
+    title: 'Mã xác thực',
+    content: 'Vui lòng nhập OTP được gửi tới số điện thoại của bạn',
+
   },
   changePass: {
     changePass: "Change Pass",
@@ -296,7 +298,18 @@ const en = {
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",
-    waitingPickup: "Chờ lấy hàng",
+    waitingPickup: 'Chờ lấy hàng',
+    invoiceCode : 'Mã hoá đơn' , 
+    invoiceDate : 'Ngày tạo hoá đơn',
+    placeholderDate : 'dd/mm/yyyy',
+    invoiceDateExpiration : 'Ngày đến hạn',
+    termsOfPayment : 'Hoặc điều khoản thanh toán',
+    placeholderTermsOfPayment : 'Chọn điều khoản thanh toán',
+    accountingBook : 'Sổ kế toán' ,
+    placeholderAccountingBook : 'Chọn sổ kế toán',
+    provisional : 'Tạm tính',
+    totalPrice : "Tổng tiền (chưa thuế)",
+    totalInvoice : 'Tổng hoá đơn' 
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -653,18 +666,18 @@ const en = {
     placeholderSearch: "Tìm nhà cung cấp theo mã và tên",
   },
   addAttribute: {
-    title: "Nhóm thuộc tính",
-    hint: "Chọn nhóm thuộc tính",
-    header: "Chọn thuộc tính",
-    addAttribute: "Tạo nhóm thuộc tính mới",
-    selectedValue: "Chọn giá trị",
+    title: 'Nhóm thuộc tính',
+    hint: 'Chọn nhóm thuộc tính',
+    header: 'Chọn thuộc tính',
+    addAttribute: 'Tạo nhóm thuộc tính mới',
+    selectedValue: 'Chọn giá trị'
   },
   editAttribute: {
-    headerText: "Sửa thuộc tính",
+    headerText: 'Sửa thuộc tính'
   },
   vendorScreen: {
-    vendor: "nhà cung cấp",
-    header: "Chọn nhà cung cấp",
+    vendor: 'nhà cung cấp',
+    header: 'Chọn nhà cung cấp'
   },
   productDetail: {
     productClassification: "product classification",
@@ -828,6 +841,29 @@ const en = {
     apply: "Áp dụng",
 
   },
+  printInvoiceScreen: {
+    printInvoice: 'In hoá đơn',
+    name: 'Tên khách hàng:',
+    address: 'Địa chỉ:',
+    phone: 'Số điện thoại:',
+    product : 'Sản phẩm',
+    unitPrice : 'Đơn giá',
+    quality : 'Số lượng',
+    amountPrice : 'Thành tiền',
+    amountUntaxed : 'Cộng tiền hàng',
+    totalPrice : 'Tổng tiền thanh toán',
+    invoice : 'Hoá đơn'
+  },
+  orderDetailScreen : {
+    sent : 'Chờ xác nhận' ,
+    sale : 'Đang thực hiện' , 
+    done : 'Đã hoàn thành',
+    cancel : 'Đã huỷ',
+    no : 'Chưa thanh toán' ,
+    toInvoice : 'Chờ thanh toán',
+    partialInvoice : 'Thanh toán một phần',
+    invoiced : 'Thanh toán đầy đủ'
+  },
   selectClient: {
     selectClient: "Chọn khách hàng",
     selectCustomerForSalesOrder : "Chọn khách hàng cho đơn bán",
@@ -853,7 +889,6 @@ const en = {
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",
-
   }
 
   // @demo remove-block-end

@@ -15,20 +15,19 @@ export class OrderApi {
     this.apiAccount = apiAccount;
   }
 
-  async getListOrder(page: number, size: number): Promise<any> {
+  async getListOrder(page: number, size: number , state : string): Promise<any> {
     Loading.show({
       text: "Loading...",
     });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
-      const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER,
-        {
-          page,
-          size,
-          // activated
-        }
-      );
+      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.GET_LIST_ORDER, {
+        page,
+        size,
+        state
+        // activated
+      }
+      )
       Loading.hide();
       console.log("-----------------respone", response);
       const data = response.data;
@@ -41,7 +40,30 @@ export class OrderApi {
       Loading.hide();
       return { kind: "bad-data" };
     }
-  }
+  }  
+  async getDetailInvoice(id : number): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
+    try {
+      // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
+      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.GET_DETAIL_INVOICE, {
+        id
+      }
+      )
+      Loading.hide();
+      console.log('-----------------respone' , response)
+      const data = response.data
+      console.log('-----------------data' , data)
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" }
+    }
+  }  
   async getListOrderProduct(
     page: number,
     size: number,
@@ -224,8 +246,7 @@ export class OrderApi {
       return { kind: "bad-data", response: data };
     } catch (e) {
       Loading.hide();
-
-      return { kind: "bad-data" };
+      return { kind: "bad-data" }
     }
   }
 

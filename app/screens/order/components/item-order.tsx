@@ -1,6 +1,7 @@
 import React from "react";
 import {
   colors,
+  fontSize,
   margin,
   padding,
   scaleHeight,
@@ -26,6 +27,7 @@ interface ItemOrder {
   styleTextStatus?: TextStyle;
   styleTextPayStatus?: TextStyle;
   styleViewItemOrder?: ViewStyle;
+  dataTax?: any
 }
 
 export default function ItemOrder(props: ItemOrder) {
@@ -46,6 +48,7 @@ export default function ItemOrder(props: ItemOrder) {
     styleTextStatus,
     styleViewStatus,
     styleTextPayStatus,
+    dataTax
   } = props;
 
   return (
@@ -53,14 +56,14 @@ export default function ItemOrder(props: ItemOrder) {
       activeOpacity={0.8}
       style={[ROOT, styleViewItemOrder]}
       onPress={onPress}>
-      {name && code && time && amount && status !== "" ? (
+      {name && code && time && amount !== "" ? (
         <View>
           <View style={{ flexDirection: "row", marginBottom: -2 }}>
             <View style={{ flex: 1 }}>
               <Text style={TEXTNAME} text={name} />
             </View>
             <View style={[VIEWSTATUS, styleViewStatus]}>
-              <Text style={[TEXTSTATUS, styleTextStatus]} text={status} />
+              <Text style={[TEXTSTATUS, styleTextStatus]} tx={status} />
             </View>
           </View>
           <View style={{ flex: 1 }}>
@@ -95,12 +98,22 @@ export default function ItemOrder(props: ItemOrder) {
         </View>
         <Text style={TEXTMONEY} text={discount} />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <View style={{ flex: 1 }}>
-          <Text style={TEXTCONTENT} tx={"dashboard.totalTax"} />
+      {totalTax ? (
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={TEXTCONTENT} tx={"dashboard.totalTax"} />
+          </View>
+          <Text style={TEXTMONEY} text={totalTax} />
         </View>
-        <Text style={TEXTMONEY} text={totalTax} />
-      </View>
+      ) : null}
+      {dataTax?.map((item: any) => (
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={TEXTCONTENT} text={item.taxName} />
+          </View>
+          <Text style={TEXTMONEY} text={item.amount} />
+        </View>
+      ))}
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
           <Text style={TEXTCONTENT} tx={"dashboard.totalAmount"} />
@@ -113,7 +126,7 @@ export default function ItemOrder(props: ItemOrder) {
         </View>
         <Text style={TEXTMONEY} text={weight} />
       </View>
-      {payStatus !== "" ? (
+      {payStatus ? (
         <View style={{ flex: 1 }}>
           <Text
             style={[
@@ -124,7 +137,7 @@ export default function ItemOrder(props: ItemOrder) {
               },
               styleTextPayStatus,
             ]}
-            text={payStatus}
+            tx={payStatus}
           />
         </View>
       ) : null}
@@ -164,7 +177,13 @@ const TEXTMONEY: TextStyle = {
   fontWeight: "400",
   fontSize: 10,
 };
-
+// const TEXTLISTTAX: TextStyle = {
+//   fontWeight: "600",
+//   fontSize: fontSize.size10,
+//   color: colors.palette.dolphin,
+//   marginBottom: scaleHeight(margin.margin_8),
+//   marginLeft: scaleWidth(5)
+// }
 const TEXTCONTENT: TextStyle = {
   fontWeight: "600",
   fontSize: 12,

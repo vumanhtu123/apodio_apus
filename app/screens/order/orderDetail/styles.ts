@@ -95,7 +95,6 @@ export const styles = StyleSheet.create({
     paddingVertical: scaleHeight(padding.padding_12),
     flexDirection : 'row',
     alignItems : 'center' , 
-    justifyContent : 'space-between'
   },
   viewPay: {
     marginVertical: scaleHeight(margin.margin_15),

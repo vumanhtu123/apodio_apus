@@ -53,10 +53,10 @@ export const OrderStoreModel = types
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
-    orderId : types.optional(types.number, 0),
-    dataClientSelect: types.optional(types.frozen<ClientSlected>(),{id: '', name: '', code: '', phoneNumber: ''}),
-    sortPriceList : types.optional(types.string,'')
-    
+    orderId: types.optional(types.number, 0),
+    dataClientSelect: types.optional(types.frozen<ClientSlected>(), { id: '', name: '', code: '', phoneNumber: '' }),
+    sortPriceList: types.optional(types.string, '')
+
 
   })
   .extend(withEnvironment)
@@ -110,21 +110,30 @@ export const OrderStoreModel = types
     setOrderId(id: number) {
       self.orderId = id;
     },
-    setDataClientSelect(value: any){
+    setDataClientSelect(value: any) {
       self.dataClientSelect = value
     },
-    setSortPriceList(sort: any){
+    setSortPriceList(sort: any) {
       self.sortPriceList = sort
     }
   }))
   .actions((self) => ({
-    getListOrder: flow(function* (page: number, size: number) {
-      console.log("page", page);
+    getListOrder: flow(function* (
+      page: number,
+      size: number,
+      state: string
+    ) {
+
+      console.log('page', page)
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
       );
-      const result: OrderResult = yield orderApi.getListOrder(page, size);
+      const result: OrderResult = yield orderApi.getListOrder(
+        page,
+        size,
+        state
+      );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
@@ -143,26 +152,26 @@ export const OrderStoreModel = types
     ) {
       try {
         const clientAPI = new SelectClienAPI(self.environment.apiErp)
-        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size, sort, search)
-        console.log("SlectClientResult-------------",JSON.stringify(result.data))
+        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page, size, sort, search)
+        console.log("SlectClientResult-------------", JSON.stringify(result.data))
         return result.data
       } catch (error) {
         console.log("Get list info company", error)
       }
     }),
 
-    getListPriceList: flow(function * (page: number, size: number, sort: string , search: string){
+    getListPriceList: flow(function* (page: number, size: number, sort: string, search: string) {
       try {
         const PriceListAPI = new SelectPriceListAPI(self.environment.api)
-        const result: BaseResponse<PriceListResponse,ErrorCode> = yield PriceListAPI.getSelectPriceListAPI(page,size,sort,search)
-        console.log("SlectPriceList-------------",JSON.stringify(result.data))
+        const result: BaseResponse<PriceListResponse, ErrorCode> = yield PriceListAPI.getSelectPriceListAPI(page, size, sort, search)
+        console.log("SlectPriceList-------------", JSON.stringify(result.data))
         return result.data
       } catch (error) {
         console.log("Get list SlectPriceList error", error)
       }
     }),
 
-    postClient: flow(function * (clientData){
+    postClient: flow(function* (clientData) {
       const client = new AddClientAPI(self.environment.apiErp)
       const result = yield client.createClient(clientData)
       if (result.kind === 'ok') {
@@ -424,6 +433,24 @@ export const OrderStoreModel = types
       );
       const result: OrderResult = yield orderApi.getDetailOrder(id);
       console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getDetailInvoice: flow(function* (
+      id: number,
+    ) {
+      console.log('page', id)
+      const orderApi = new OrderApi(self.environment.apiOrder, self.environment.apiAccount);
+      const result: OrderResult = yield orderApi.getDetailInvoice(
+        id
+      );
+      // console.log('-----------dsa', result.response.errorCodes)
+
       if (result.kind === "ok") {
         console.log("order", result);
         return result;

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { observer, useLocalStore } from 'mobx-react-lite';
+import { observer, useLocalObservable, useLocalStore } from 'mobx-react-lite';
 import {
   Dimensions,
   Image,
@@ -41,7 +41,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const [isShow, setIsShow] = useState(false);
     const [markedDatesS, setMarkedDatesS] = useState("")
     const [markedDatesE, setMarkedDatesE] = useState("")
-    const [selectedStatus, setSelectedStatus] = useState(0)
+    // const [selectedStatus, setSelectedStatus] = useState(0)
     const [isSortByDate, setIsSortByDate] = useState<boolean>(false)
     const today = new Date()
     const sevenDaysBefore = new Date(today)
@@ -63,28 +63,32 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const paddingTop = useSafeAreaInsets().top;
     // let bankAccount
     // let amount
-    useEffect(() => {
-      store.onLoad()
-    }, [])
-
-    const selectStatus = [{ status: 'Tất cả', textStatus: 'Tất cả' },
-    { status: 'Đã gửi YC', textStatus: 'Chờ xác nhận' },
-    { status: 'Đang xử lý', textStatus: 'Đang xử lý' },
-    { status: 'Đang vận chuyển', textStatus: 'Đang vận chuyển' },
-    { status: 'Đã giao', textStatus: 'Hoàn thành' },
-    { status: 'Hủy đơn', textStatus: 'Hủy đơn' },
+    // useEffect(() => {
+    //   store.onLoad()
+    // }, [])
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [selectedIndexStatus, setSelectedIndexStatus] = useState(0);
+    const selectStatus = [{ status: '', textStatus: 'Tất cả' },
+    { status: 'SENT', textStatus: 'Chờ xác nhận' },
+    { status: 'SALE', textStatus: 'Đang thực hiện' },
+    { status: 'DONE', textStatus: 'Hoàn thành' },
+    { status: 'CANCEL', textStatus: 'Hủy đơn' },
     ]
     useEffect(() => {
       getListOrder()
-    }, [])
+    }, []) 
+    useEffect(() => {
+      getListOrder()
+    }, [selectedStatus])
     const getListOrder = async () => {
       try {
         const response = await orderStore.getListOrder(
           0,
           50,
+          selectedStatus
         );
         if (response && response.kind === "ok") {
-          console.log('orderLisst', JSON.stringify(response.response.data.content) )
+          console.log('orderLisst', JSON.stringify(response.response.data.content))
           setArrData(response.response.data.content)
         } else {
           console.error("Failed to fetch order:", response);
@@ -93,184 +97,82 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         console.error("Error fetching order:", error);
       }
     };
-    const arrPromotions: Array<{}> = [
-      {
-        id: 1,
-        name: 'Nguyen Ha Dung',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Đã gửi YC',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Thanh toán một phần ',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 2,
-        name: 'Nguyen Ha Dung',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Đang xử lý',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Chưa thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 3,
-        name: 'Nguyen Ha Dung',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Hủy đơn',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Đã thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 4,
-        name: 'Nguyen Ha Dung',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Chờ lấy hàng',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Chưa thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 5,
-        name: 'Nguyen Ha Dung',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Đã giao',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Đã thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 6,
-        name: 'Nguyen Ha Dung 6',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Đang vận chuyển',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Chưa thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 7,
-        name: 'Nguyen Ha Dung 7',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Đang xử lý',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Đã thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 8,
-        name: 'Nguyen Ha Dung 8',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Chờ lấy hàng',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Đã thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-      {
-        id: 9,
-        name: 'Nguyen Ha Dung 9',
-        time: '13:56 01/03',
-        code: 'Dh_21090930',
-        status: 'Đã giao',
-        money: '89.000.000',
-        discount: '5.000.000',
-        totalAmount: '84.000.000',
-        weight: '37kg',
-        payStatus: 'Đã thanh toán',
-        amount: "7",
-        totalTax: "5000000",
-      },
-    ]
-
     // const { newOderStore } = useStores()
-
     const handleOrderMerchant = async () => {
       // const res = await newOderStore.getOrderMerchant(
       //   moment(markedDatesS ? markedDatesS : sevenDaysBefore).format("YYYY-MM-DD"),
       //   moment(markedDatesE ? markedDatesE : today).format("YYYY-MM-DD"),
       // )
       // setData(res.response.data.content)
-
     }
-    const store = useLocalStore(() => ({
-      selectedStatus: 0,
-      arrData: arrData,
-      selectStatus: [{ status: 'Tất cả', textStatus: 'Tất cả' },
-      { status: 'Đã gửi YC', textStatus: 'Chờ xác nhận' },
-      { status: 'Đang xử lý', textStatus: 'Đang xử lý' },
-      { status: 'Đang vận chuyển', textStatus: 'Đang vận chuyển' },
-      { status: 'Đã giao', textStatus: 'Hoàn thành' },
-      { status: 'Hủy đơn', textStatus: 'Hủy đơn' },
-      ],
+    // const store = useLocalObservable(() => ({
+    //   selectedStatus: 0,
+    //   arrData: arrData,
+    //   selectStatus: [{ status: 'Tất cả', textStatus: 'Tất cả' },
+    //   { status: 'Đã gửi YC', textStatus: 'Chờ xác nhận' },
+    //   { status: 'Đang xử lý', textStatus: 'Đang xử lý' },
+    //   { status: 'Đang vận chuyển', textStatus: 'Đang vận chuyển' },
+    //   { status: 'Đã giao', textStatus: 'Hoàn thành' },
+    //   { status: 'Hủy đơn', textStatus: 'Hủy đơn' },
+    //   ],
 
-      onLoad() {
-        store.arrData = arrData
-        // console.log('first', arrData)
-      },
-      onSelectStatus(index: any) {
-        store.selectedStatus = index;
-        var t = store.selectStatus[store.selectedStatus].status
-        console.log(t)
-        if (store.selectedStatus === 0) {
-          store.arrData = arrPromotions
-          console.log(8)
-        } else {
-          store.arrData = arrPromotions.filter((item) => {
-            return item.status === t
-          })
-        }
-      },
-    }))
-
+    //   onLoad() {
+    //     store.arrData = arrData
+    //     // console.log('first', arrData)
+    //   },
+    //   onSelectStatus(index: any) {
+    //     store.selectedStatus = index;
+    //     var t = store.selectStatus[store.selectedStatus].status
+    //     console.log(t)
+    //     if (store.selectedStatus === 0) {
+    //       store.arrData = arrPromotions
+    //       console.log(8)
+    //     } else {
+    //       store.arrData = arrPromotions.filter((item) => {
+    //         return item.status === t
+    //       })
+    //     }
+    //   },
+    // }))
     const toggleModalDate = () => {
       setIsSortByDate(!isSortByDate)
     }
-    const handleDetailOrder = (id : number) => {
+    const handleDetailOrder = (id: number) => {
       orderStore.setOrderId(id)
-      console.log('first' , orderStore.orderId)
+      console.log('first', orderStore.orderId)
       navigation.navigate('orderDetails' as never)
     }
-
+    function getOrderStateText(state: string) {
+      if (state === 'SENT') {
+        return 'orderDetailScreen.sent';
+      } else if (state === 'SALE') {
+        return 'orderDetailScreen.sale';
+      } else if (state === 'DONE') {
+        return 'orderDetailScreen.done';
+      } else if (state === 'CANCEL') {
+        return 'orderDetailScreen.cancel';
+      } else {
+        return '';
+      }
+    }
+    function getInvoiceStateText(state: string) {
+      if (state === 'NO') {
+        return 'orderDetailScreen.no';
+      } else if (state === 'TO_INVOICE') {
+        return 'orderDetailScreen.toInvoice';
+      } else if (state === 'PARTIAL_INVOICE') {
+        return 'orderDetailScreen.partialInvoice';
+      } else if (state === 'INVOICED') {
+        return 'orderDetailScreen.invoiced';
+      } else {
+        return '';
+      }
+    }
+    const onSelectStatus = (index: any) => {
+      setSelectedIndexStatus(index);
+      const status = selectStatus[index].status;
+      setSelectedStatus(status);
+    };
     return (
       <View style={styles.ROOT}>
         <Header headerTx={'dashboard.orders'}
@@ -283,26 +185,38 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           rightText1={moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
-            {selectStatus.map((item, index) => {
-              return (
-                <TouchableOpacity onPress={() => {
-                  store.onSelectStatus(index)
-                  console.log(index)
-                  // console.log(store.selectedStatus)
-                  console.log(arrData)
-                }}
-                  key={index}
-                  style={[styles.viewItemSelect, {
-                    backgroundColor: store.selectedStatus === index ? colors.palette.aliceBlue2 : colors.palette.whiteSmoke,
-                  }]}>
-                  <Text text={item.textStatus} style={[styles.textSelect, {
-                    color: store.selectedStatus === index ? colors.palette.navyBlue : colors.palette.nero,
-                  }]}
-                  />
-                </TouchableOpacity>
-              )
-            })}
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  >
+            <View style={{ marginLeft: scaleHeight(16), flexDirection: 'row' }}>
+              {selectStatus.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => onSelectStatus(index)}
+                    style={[
+                      styles.viewItemSelect,
+                      {
+                        backgroundColor: selectedIndexStatus === index
+                          ? colors.palette.aliceBlue2
+                          : colors.palette.whiteSmoke,
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.textSelect,
+                        {
+                          color: selectedIndexStatus === index
+                            ? colors.palette.navyBlue
+                            : colors.palette.nero,
+                        },
+                      ]}
+                    >
+                      {item.textStatus}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })}
+            </View>
           </ScrollView>
         </View>
         <View style={{ height: 1, marginVertical: 0 }}></View>
@@ -328,27 +242,36 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           renderItem={({ item }) => (
             <ItemOrder
               onPress={() => handleDetailOrder(item.id)}
-              name={item.partner.name}
+              name={item.partner?.name}
               time={formatDateTime(item.quoteCreationDate)}
               code={item.code}
-              status={item.status}
+              status={getOrderStateText(item.state)}
               amount={item.amount}
               discount={formatCurrency(item.amountDiscount)}
-              payStatus={item.payStatus}
+              payStatus={getInvoiceStateText(item.invoiceStatus)}
               weight={item.weight}
               totalAmount={formatCurrency(item.amountTotal)}
               totalTax={formatCurrency(item.amountTax)}
               money={formatCurrency(item.totalPrice)}
               styleViewStatus={{
-                backgroundColor: item.status === 'Đã xử lý' ? colors.palette.solitude
-                  : item.status === 'Chờ xử lý' ? colors.palette.floralWhite : colors.palette.amour,
+                backgroundColor: item.state === 'SALE' ? colors.palette.solitude
+                  : item.state === 'SENT' ? colors.palette.floralWhite :
+                    item.state === 'CANCEL' ? colors.palette.amour :
+                      item.state === 'DONE' ? colors.palette.mintCream : '',
                 justifyContent: 'center'
               }}
               styleTextStatus={{
-                color: item.status === 'Đã xử lý' ? colors.palette.metallicBlue
-                  : item.status === 'Chờ xử lý' ? colors.palette.yellow : colors.palette.radicalRed,
+                color: item.state === 'SALE' ? colors.palette.metallicBlue
+                  : item.state === 'SENT' ? colors.palette.yellow :
+                    item.state === 'CANCEL' ? colors.palette.radicalRed :
+                      item.state === 'DONE' ? colors.palette.malachite : ''
               }}
-              styleTextPayStatus={{ color: item.payStatus === 'Đã thanh toán' ? colors.palette.malachite : colors.palette.darkTangerine }}
+              styleTextPayStatus={{
+                color: item.invoiceStatus === 'NO' ? colors.palette.darkTangerine :
+                  item.invoiceStatus === 'PARTIAL_INVOICE' ? colors.palette.darkTangerine :
+                    item.invoiceStatus === 'TO_INVOICE' ? colors.palette.darkTangerine :
+                      colors.palette.malachite
+              }}
             />
           )}
         />

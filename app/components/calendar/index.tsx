@@ -227,11 +227,11 @@ const CustomCalendar = (props: any) => {
       </TouchableWithoutFeedback>
       <View
         style={{
-          position: "absolute",
-          bottom: scaleHeight(30),
-          width: "93%",
-          borderRadius: 15,
-          alignSelf: "center",
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          // borderRadius: 15,
+          alignSelf: 'center',
         }}>
         <View style={styles.main}>
           <View style={styles.content}>
@@ -247,7 +247,7 @@ const CustomCalendar = (props: any) => {
             )}
             <View style={styles.modalView}>
               <Calendar
-                // minDate={Date()}
+                // minDate={props.minDate}
                 //@ts-ignore
                 maxDate={props.maxData == true ? today : null}
                 monthFormat={"MMMM yyyy"}
@@ -300,8 +300,10 @@ const CustomCalendar = (props: any) => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "white",
-    borderRadius: 8,
+    backgroundColor: 'white',
+    // borderRadius: 8,
+    borderTopLeftRadius : 8,
+    borderTopRightRadius : 8
   },
   content: {
     flex: 1,

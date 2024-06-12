@@ -34,6 +34,8 @@ export class Environment {
     this.apiUaa = new UAA_API();
     this.apiOrder = new ApiOrder();
     this.apiAddress = new ApiAddress();
+    this.apiAccounting = new ApiAccounting();
+
     this.apiAccount = new ApiAccounting();
     global.api = new Api();
     global.apiErp = new ApiErp();
@@ -57,6 +59,8 @@ export class Environment {
     await this.apiUaa.setup();
     await this.apiOrder.setup();
     await this.apiAddress.setup();
+    await this.apiAccounting.setup();
+
     await this.apiAccount.setup();
 
     global.api = new Api();
@@ -66,6 +70,7 @@ export class Environment {
     global.apiUaa = new UAA_API();
     global.ApiOrder = new ApiOrder();
     global.apiAddress = new ApiAddress();
+    global.apiAccounting = new ApiAccounting();
 
     global.apiAccount = new ApiAccounting();
   }
@@ -84,6 +89,7 @@ export class Environment {
   apiAccount: ApiAccounting;
   apiGetWay: GetWayAPI;
   apiUpload: ApiUpload;
+  apiAccounting : ApiAccounting;
   apiOrder: ApiOrder;
   apiAddress: ApiAddress;
 }
