@@ -20,6 +20,7 @@ import {
   BottomParamList,
   TabScreenProps,
 } from '../../../navigators/bottom-navigation';
+import { NavigatorParamList, navigate } from "../../../navigators"
 import { Images } from '../../../../assets/index';
 import { Header } from '../../../components/header/header';
 import moment from "moment";
@@ -283,10 +284,12 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
             handleOrderMerchant()
             toggleModalDate()
           }}
-          onMarkedDatesChangeS={(markedDatesS) => {
+          onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
+            console.log('markedDatesS------', markedDatesS)
             setMarkedDatesS(markedDatesS)
           }}
-          onMarkedDatesChangeE={(markedDatesE) => {
+          onMarkedDatesChangeE={(markedDatesE: React.SetStateAction<string>) => {
+            console.log('markedDatesE------', markedDatesE)
             setMarkedDatesE(markedDatesE)
           }}
           isShowTabs={true}
@@ -294,7 +297,11 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           isOneDate={false}
           toggleModalDate={toggleModalDate}
         />
-        <TouchableOpacity onPress={() => { navigation.navigate('newOrder' as any) }} style={styles.btnShowModal}>
+        <TouchableOpacity onPress={() => {
+          //navigate("newOrder")
+           navigation.navigate('newOrder' as any)
+            }} 
+          style={styles.btnShowModal}>
           <Images.icon_addOrder />
         </TouchableOpacity>
       </View>

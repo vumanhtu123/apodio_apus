@@ -19,7 +19,7 @@ export const RootNavigation = {
 }
 /* eslint-enable */
 
-export const navigationRef = createNavigationContainerRef<AppStackParamList>()
+export const navigationRef = createNavigationContainerRef()
 
 /**
  * Gets the current screen from any navigation state.
@@ -132,7 +132,7 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
  */
 export function navigate(name: any, params?: any) {
   if (navigationRef.isReady()) {
-    navigationRef.navigate(name as never, params as never)
+    navigationRef.navigate(name, params)
   }
 }
 
