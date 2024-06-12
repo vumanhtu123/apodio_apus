@@ -37,10 +37,10 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
 
         // console.log("doannnnn", totalPage);
 
-        const dataFake = [
-            { nameTable: "Bảng giá tháng 12/2023", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" },
-            { nameTable: "Bảng giá tháng 12/2024", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" }
-        ]
+        // const dataFake = [
+        //     { nameTable: "Bảng giá tháng 12/2023", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" },
+        //     { nameTable: "Bảng giá tháng 12/2024", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" }
+        // ]
 
         const sort = getAPi.orderStore.sortPriceList
         console.log("doann log sort", sort);
