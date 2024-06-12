@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FC, useState } from "react";
 import { Image, TouchableOpacity, View, FlatList, Platform, RefreshControl, ActivityIndicator, Alert } from "react-native";
 import { ScreenStackProps } from "react-native-screens";
@@ -27,9 +27,10 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
         const [size, setsize] = useState(15)
         const [page, setPage] = useState(0)
         const getAPi = useStores()
-        const [isVisibleCreateClient, setisVisibleCreateClient] = useState(false);
         const [valueSearch, setValueSearch] = useState('')
         const [isShowSearch, setisShowSearch] = useState(false)
+        const [dataPriceListSelected, setDataPriceListSelected] = useState({})
+        const [watching, setWatching] = useState<boolean>()
 
         const openTypeFilter = () => {
             setIsVisible(true)
@@ -45,9 +46,21 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
         const sort = getAPi.orderStore.sortPriceList
         console.log("doann log sort", sort);
 
-        console.log('====================================');
-        console.log('valueSearch', valueSearch);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('valueSearch', valueSearch);
+        // console.log('====================================');
+
+        const senDataPriceListSelect = () => {
+            getAPi.orderStore.setDataPriceListSelect(dataPriceListSelected)
+            // console.log('====================================');
+            // console.log("dataSelect", dataPriceListSelected);
+            // console.log('====================================');
+        }
+        const setPriceListNoApply = () => {
+            getAPi.orderStore.setDataPriceListSelect({ id: '', name: "No Apply", priceListCategory: '' })
+
+        }
+
 
         const getListPriceListApply = () => {
             getAPi.orderStore.getListPriceList(0, size, sort, valueSearch).then((data) => {
@@ -70,6 +83,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
         useEffect(() => {
             getListPriceListApply()
         }, [getAPi.orderStore.sortCreateClient, props.navigation])
+
 
 
 
@@ -139,11 +153,18 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
 
 
                 }}
-                    onPress={() => setIndexSelect('noApply')}
+                    onPress={() => {
+                        setWatching(false)
+                        setPriceListNoApply()
+                        // setNoApply()
+                        console.log("dataNoApply", dataPriceListSelected);
+
+                        setIndexSelect('noApply')
+                    }}
                 >
                     <Text
                         style={{ fontSize: fontSize.size10, color: colors.palette.black, fontWeight: '500' }}
-                        tx="selectClient.selectCustomerForSalesOrder"
+                        tx="selectPriceListApply.noApplyPriceList"
                     ></Text>
                     <TouchableOpacity>
                         {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
@@ -174,7 +195,12 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                                     marginBottom: 1.5,
                                     justifyContent: 'space-between',
                                 }}
-                                    onPress={() => { setIndexSelect(index) }}
+                                    onPress={() => {
+                                        console.log("data Item :", item);
+                                        setWatching(true)
+                                        setDataPriceListSelected(item)
+                                        setIndexSelect(index)
+                                    }}
                                 >
                                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                                         {/* <View style={{ width: 40, height: 40, backgroundColor: '#EFF8FF', borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
@@ -227,7 +253,14 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                 <View style={Styles.stylesBtnBottom}>
                     <TouchableOpacity
                         style={[onClick === 'cancel' ? Styles.btnSuccessfully : Styles.btnSave, { marginRight: 13 }]}
-                        onPress={() => setOnClick('cancel')}
+                        onPress={() => {
+                            // const data = getAPi.orderStore.dataPriceListSelected
+                            // console.log('====================================');
+                            // console.log("dataSave", data);
+                            // console.log('====================================');
+                            props.navigation.goBack()
+                            setOnClick('cancel')
+                        }}
                     >
                         <Text
                             style={{ color: onClick === 'cancel' ? colors.palette.white : colors.palette.navyBlue }}
@@ -239,7 +272,20 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
 
                     <TouchableOpacity
                         style={onClick === 'select' ? Styles.btnSuccessfully : Styles.btnSave}
-                        onPress={() => setOnClick('select')}
+                        onPress={() => {
+                            if (watching == true) {
+                                senDataPriceListSelect()
+                                props.navigation.goBack()
+
+                            } else if (watching == false) {
+                                props.navigation.goBack()
+                            } else {
+                                setPriceListNoApply()
+                                props.navigation.goBack()
+
+                            }
+                            setOnClick('select')
+                        }}
                     >
                         <Text
                             style={{ color: onClick === 'select' ? colors.palette.white : colors.palette.navyBlue }}

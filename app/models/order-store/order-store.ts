@@ -16,7 +16,7 @@ import { AddressApi } from "../../services/api/api_address";
 import { OrderCityResult, OrderDistrictResult, OrderListAddressResult, OrderWardResult } from "./entities/order-address-model";
 import { number } from 'mobx-state-tree/dist/internal';
 import { SelectPriceListAPI } from '../../services/api/api-select-price-list';
-import { PriceListResponse } from '../select-price-list/select-price-list.-model';
+import { PriceListResponse, PriceListSelect } from '../select-price-list/select-price-list.-model';
 import { OrderVariantResult, TaxModel } from './entities';
 
 export const OrderStoreModel = types
@@ -55,8 +55,8 @@ export const OrderStoreModel = types
     viewGrid: types.optional(types.boolean, true),
     orderId : types.optional(types.number, 0),
     dataClientSelect: types.optional(types.frozen<ClientSlected>(),{id: '', name: '', code: '', phoneNumber: ''}),
-    sortPriceList : types.optional(types.string,'')
-    
+    sortPriceList : types.optional(types.string,''),
+    dataPriceListSelected : types.optional(types.frozen<PriceListSelect>(),{id: '', name: '', priceListCategory: ''})
 
   })
   .extend(withEnvironment)
@@ -110,11 +110,21 @@ export const OrderStoreModel = types
     setOrderId(id: number) {
       self.orderId = id;
     },
+
+    // chú ý phải clear khi xong
     setDataClientSelect(value: any){
       self.dataClientSelect = value
     },
     setSortPriceList(sort: any){
       self.sortPriceList = sort
+    },
+
+    // chú ý phải clear khi xong
+    setDataPriceListSelect( value: any){
+      console.log('doanlog', value);
+      
+      self.dataPriceListSelected = value
+
     }
   }))
   .actions((self) => ({

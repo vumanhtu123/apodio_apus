@@ -853,6 +853,7 @@ const en = {
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",
+    noApplyPriceList: "Không áp dụng bảng giá"
 
   }
 
