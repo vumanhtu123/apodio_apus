@@ -183,7 +183,7 @@ export function TextField(props: TextFieldProps) {
   };
 
 
-  console.log("error------------------------", error);
+  // console.log("error------------------------", error);
   // const actualPlaceholder = (placeholderTx || placeholder) ? (placeholderTx ? translate(placeholderTx) : placeholder) : '';
   return (
     <View style={{}}>

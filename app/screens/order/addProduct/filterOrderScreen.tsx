@@ -62,7 +62,7 @@ import { useStores } from "../../../models";
       React.useCallback(() => {
         setSelectedNameFilter(orderStore.sort[1]);
         setSelectedTimeFilter(orderStore.sort[0]);
-        setSelectedTagFilter(productStore.tagId);
+        setSelectedTagFilter(orderStore.tagId);
       }, [])
     );
     
@@ -70,8 +70,8 @@ import { useStores } from "../../../models";
       const filterData = getFilterData();
       orderStore.setSort(Object.values(filterData));
       console.log(orderStore.sort)
-      productStore.setTagId(indexItemTag);
-      console.log(productStore.tagId)
+      orderStore.setTagId(indexItemTag);
+      console.log(orderStore.tagId)
       navigation.navigate("addProductOrder" as never);
     }
     useEffect(() => {

@@ -1,6 +1,5 @@
 // import { ApiOrder } from './../services/base-api/api-config-order';
 import { Api, ApiErp, GetWayAPI, ApiUpload, ApiOrder } from "../services/api";
-import { ApiAddress } from "../services/base-api/api-config-address";
 import { UAA_API } from "../services/base-api/api-config-uaa";
 
 let ReactotronDev;
@@ -26,14 +25,12 @@ export class Environment {
     this.apiUpload = new ApiUpload();
     this.apiUaa = new UAA_API();
     this.apiOrder = new ApiOrder();
-    this.apiAddress = new ApiAddress();
     global.api = new Api();
     global.apiErp = new ApiErp();
     global.apiGetWay = new GetWayAPI();
     global.apiUpload = new ApiUpload();
     global.apiUaa = new UAA_API();
     global.ApiOrder = new ApiOrder();
-    global.apiAddress = new ApiAddress();
   }
 
   async setup() {
@@ -47,7 +44,6 @@ export class Environment {
     await this.apiUpload.setup();
     await this.apiUaa.setup();
     await this.apiOrder.setup();
-    await this.apiAddress.setup();
 
     global.api = new Api();
     global.apiErp = new ApiErp();
@@ -55,7 +51,6 @@ export class Environment {
     global.apiUpload = new ApiUpload(); 
     global.apiUaa = new UAA_API();
     global.ApiOrder = new ApiOrder();
-    global.apiAddress = new ApiAddress();
 
   }
 
@@ -73,5 +68,4 @@ export class Environment {
   apiGetWay: GetWayAPI;
   apiUpload: ApiUpload;
   apiOrder: ApiOrder;
-  apiAddress: ApiAddress
 }

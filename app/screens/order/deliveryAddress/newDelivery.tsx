@@ -230,6 +230,7 @@ export const NewDelivery: FC = observer(
                     district: newDistrict,
                     ward: newWard,
                     address: data.address,
+                    isDefault: valueSwitch,
                 }
                 try {
                     const response = await orderStore.createAddress(dataCreate)

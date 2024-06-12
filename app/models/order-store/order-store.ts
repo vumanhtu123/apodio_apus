@@ -3,10 +3,10 @@ import { withEnvironment } from "../extensions/with-environment";
 import { InputSelectModel, OrderResult } from "./order-store-model";
 import { OrderApi } from "../../services/api/api_oder_screen";
 import { CreateAddressResult, OrderProductResult } from "./order-product-model";
-import { OrderVariantResult } from "./order-variant-model";
-import { VendorApi } from "../../services/api/api-vendor";
-import { AddressApi } from "../../services/api/api_address";
+import { OrderVariantResult, PriceVariantResult } from "./order-variant-model";
 import { OrderCityResult, OrderDistrictResult, OrderListAddressResult, OrderWardResult } from "./order-address-model";
+import { ProductApi } from "../../services/api/api-product";
+import { VendorApi } from "../../services/api/api-vendor";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -25,6 +25,9 @@ export const OrderStoreModel = types
     viewProductType : types.optional(types.string , "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
     orderId : types.optional(types.number, 0),
+    tagId: types.optional(types.number, 0),
+    productCategoryId: types.optional(types.number, 0),
+    nameCategory: types.optional(types.string, "")
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -52,6 +55,15 @@ export const OrderStoreModel = types
     },
     setSort(sort: any) {
       self.sort = sort;
+    },
+    setTagId(tagId: number) {
+      self.tagId = tagId;
+    },
+    setProductCategoryId(value: any) {
+      self.productCategoryId = value
+    },
+    setNameCategory(value: any) {
+      self.nameCategory = value
     },
     setCheckPriceList(value: any) {
       self.checkPriceList = value
@@ -154,6 +166,23 @@ export const OrderStoreModel = types
         return result;
       }
     }),
+    getPriceOrderVariant: flow(function* (
+      value: any,
+    ) {
+      // console.log('page' , page)
+      const orderApi = new ProductApi(self.environment.api);
+      const result: PriceVariantResult = yield orderApi.getPriceOrderVariant(
+        value
+      );
+      console.log('-----------dsa' , result)
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
     getListOrderProductPrice: flow(function* (
       page: number,
       size: number,
@@ -230,7 +259,7 @@ export const OrderStoreModel = types
       // regionId: number,
     ) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderCityResult = yield orderApi.getListCity(
         page,
         size,
@@ -254,7 +283,7 @@ export const OrderStoreModel = types
       cityId: number,
     ) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);;
       const result: OrderDistrictResult = yield orderApi.getListDistrict(
         page,
         size,
@@ -277,7 +306,7 @@ export const OrderStoreModel = types
       districtId: number,
     ) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderWardResult = yield orderApi.getListWard(
         page,
         size,
@@ -297,7 +326,7 @@ export const OrderStoreModel = types
       partnerId: number,
     ) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new  VendorApi(self.environment.apiErp);
       const result: OrderListAddressResult = yield orderApi.getListAddress(
         partnerId
       );
@@ -311,7 +340,7 @@ export const OrderStoreModel = types
       }
     }),
     createAddress: flow(function* (value: any) {
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: CreateAddressResult = yield orderApi.createAddress(
         value
       );

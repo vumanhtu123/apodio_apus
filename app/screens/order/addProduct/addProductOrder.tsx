@@ -24,7 +24,6 @@ export const AddProductOrder: FC = observer(
         const [indexItem, setIndexItem] = useState(0);
         const [page, setPage] = useState(0);
         const [isRefreshing, setIsRefreshing] = useState(false);
-        const [selectedCategory, setSelectedCategory] = useState<any>();
         const [isDeleteFailModalVisible, setIsDeleteFailModalVisible] = useState(false);
         const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
         const [dataCategoryFilter, setDataCategoryFilter] = useState<any>([]);
@@ -32,7 +31,6 @@ export const AddProductOrder: FC = observer(
         const { orderStore, categoryStore, productStore } = useStores();
         const [errorMessage, setErrorMessage] = useState("");
         const [size, setSize] = useState(20);
-        const [nameDirectory, setNameDirectory] = useState('')
         const [viewProduct, setViewProduct] = useState(orderStore.viewProductType);
         const [index, setIndex] = useState()
         const { dataProductAddOrder } = orderStore
@@ -69,7 +67,19 @@ export const AddProductOrder: FC = observer(
         };
         const handleSubmitSearch = () => {
             setPage(0);
-            handleGetProduct(searchValue);
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_PRODUCT") {
+                handleGetProduct(searchValue);
+            }
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_VARIANT") {
+                handleGetVariant(searchValue);
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_PRODUCT") {
+                handleGetProductPrice(searchValue);
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
+                handleGetVariantPrice(searchValue);
+            }
+            console.log('tim kiem')
         };
         const handleGetProduct = async (searchValue?: any) => {
             var parseSort = "";
@@ -83,8 +93,9 @@ export const AddProductOrder: FC = observer(
                 const response: any = await orderStore.getListOrderProduct(
                     page,
                     size,
-                    selectedCategory,
+                    orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
+                    // orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -94,8 +105,12 @@ export const AddProductOrder: FC = observer(
                     setTotalPagesProduct(response.response.data.totalPages)
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
+                        // if(response.response.data.content.length ===0 ){
+                        //     setDataProduct([])
+                        // }else{
                         const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
                         setDataProduct(newArr);
+                        // }
                     } else {
                         setDataProduct((prevProducts: any) => [
                             ...prevProducts,
@@ -121,8 +136,9 @@ export const AddProductOrder: FC = observer(
                 const response: any = await orderStore.getListOrderVariant(
                     page,
                     size,
-                    selectedCategory,
+                    orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
+                    // orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -133,8 +149,8 @@ export const AddProductOrder: FC = observer(
                     setTotalPagesProduct(response.response.data.totalPages)
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
-                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
-                        setDataProduct(newArr);
+                            const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
+                            setDataProduct(newArr);
                     } else {
                         setDataProduct((prevProducts: any) => [
                             ...prevProducts,
@@ -160,8 +176,9 @@ export const AddProductOrder: FC = observer(
                 const response: any = await orderStore.getListOrderProductPrice(
                     page,
                     size,
-                    selectedCategory,
+                    orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
+                    // orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -199,8 +216,9 @@ export const AddProductOrder: FC = observer(
                 const response: any = await orderStore.getListOrderVariantPrice(
                     page,
                     size,
-                    selectedCategory,
+                    orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
+                    // orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -230,6 +248,7 @@ export const AddProductOrder: FC = observer(
         const handlePressViewProduct = (type: any) => {
             viewProductType(type);
             setPage(0)
+            orderStore.setSort([])
         };
         const viewProductType = (type: any) => {
             const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
@@ -250,6 +269,7 @@ export const AddProductOrder: FC = observer(
             if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
                 handleGetVariantPrice();
             }
+            console.log('moi vao man')
             handleGetCategoryFilter();
         }, []);
         useEffect(() => {
@@ -265,7 +285,8 @@ export const AddProductOrder: FC = observer(
             if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
                 handleGetVariantPrice();
             }
-        }, [viewProduct, selectedCategory]);
+            console.log('chon category')
+        }, [viewProduct, orderStore.productCategoryId]);
 
         useEffect(() => {
             const unsubscribe = navigation.addListener("focus", () => {
@@ -282,12 +303,13 @@ export const AddProductOrder: FC = observer(
                     handleGetVariantPrice();
                 }
             });
+            console.log('sap xep')
             return unsubscribe;
         }, [navigation, orderStore.sort]);
 
         const handleEndReached = () => {
             console.log('--------totalPagesProduct---------------', totalPagesProduct, '----', isRefreshing, '-----', page)
-            if (!isRefreshing && page <= totalPagesProduct - 1) {
+            if (!isRefreshing && page <= totalPagesProduct - 1 && size * (page+1) === dataProduct.length ) {
                 orderStore.setIsLoadMore(true)
                 setPage((prevPage) => prevPage + 1);
             }
@@ -313,26 +335,40 @@ export const AddProductOrder: FC = observer(
                     orderStore.setIsLoadMore(false);
                 }
             };
+            console.log('load more')
 
             if (orderStore.isLoadMore) {
                 fetchMoreProducts();
             }
         }, [page]);
-        useEffect(() => {
-            if (index == 0) {
-                refreshProduct()
-            }
-        }, [index])
+        // useEffect(() => {
+        //     if (index == 0) {
+        //         refreshProduct()
+        //     }
+        // }, [index])
         const refreshProduct = async () => {
             // setIsRefreshing(true);
-            setSelectedCategory(undefined);
+            // setSelectedCategory(undefined);
+            orderStore.setProductCategoryId(0)
             setPage(0);
             setSearchValue("");
-            setNameDirectory("");
+            orderStore.setNameCategory("");
             setDataProduct([]);
-            // productStore.setTagId(0);
+            productStore.setTagId(0);
             orderStore.setSort([]);
-            await handleGetProduct();
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_PRODUCT") {
+                await handleGetProduct(searchValue);
+            }
+            if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_VARIANT") {
+                await handleGetVariant(searchValue);
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_PRODUCT") {
+                await handleGetProductPrice(searchValue);
+            }
+            if (orderStore.checkPriceList === true && orderStore.viewProductType === "VIEW_VARIANT") {
+                await handleGetVariantPrice(searchValue);
+            }
+            console.log('refreshProduct')
             // setIsRefreshing(false);
         };
         const renderFooter = () => {
@@ -351,7 +387,7 @@ export const AddProductOrder: FC = observer(
         };
         const handleProductDetail = (idProduct: number) => {
             productStore.setSelectedProductId(idProduct);
-            navigation.navigate("selectVariant" as never, {productTemplateId: idProduct});
+            navigation.navigate("selectVariant" as never, { productTemplateId: idProduct });
         };
         const handleClassifyDetail = (idProduct: number) => {
             productStore.setSelectedProductId(idProduct);
@@ -373,6 +409,8 @@ export const AddProductOrder: FC = observer(
                     onLeftPress={() => {
                         navigation.goBack()
                         orderStore.setSort([]);
+                        orderStore.setProductCategoryId(0)
+                        orderStore.setNameCategory('')
                     }}
                     colorIcon={colors.text}
                     headerTx={'order.order'}
@@ -430,10 +468,10 @@ export const AddProductOrder: FC = observer(
                                     }}
                                     style={styles.btnFilterByCategory}>
                                     <Text
-                                        tx={nameDirectory === "" ? "productScreen.directory" : null}
+                                        tx={orderStore.nameCategory === "" ? "productScreen.directory" : null}
                                         numberOfLines={1}
                                         style={styles.textBtnFilter}>
-                                        {nameDirectory}
+                                        {orderStore.nameCategory}
                                     </Text>
                                     <View style={{ marginRight: scaleWidth(8) }}>
                                         <Images.iconDownBlue
@@ -448,9 +486,9 @@ export const AddProductOrder: FC = observer(
                             showCategory={showCategory}
                             setShowCategory={setShowCategory}
                             dataCategory={dataCategoryFilter}
-                            selectedCategory={selectedCategory}
-                            setSelectedCategory={setSelectedCategory}
-                            setNameDirectory={setNameDirectory}
+                            selectedCategory={orderStore.productCategoryId}
+                            setSelectedCategory={orderStore.setProductCategoryId}
+                            setNameDirectory={orderStore.setNameCategory}
                             isSearchBarVisible={openSearch}
                             setIndex={setIndex}
                         />

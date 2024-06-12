@@ -30,6 +30,7 @@ export const SelectVariant: FC = observer(
         const [arrImagesProduct, setArrImagesProduct] = useState([])
         const [detailProduct, setDetailProduct] = useState<any>([])
         const [dataVariant, setDataVariant] = useState<Content[]>([])
+        const [uomGroupLine, setUomGroupLine] = useState({})
         const refCarousel = useRef(null);
         const productTemplateId = route?.params?.productTemplateId
 
@@ -52,8 +53,45 @@ export const SelectVariant: FC = observer(
                 console.error("Error fetching detail:", error);
             }
         };
+        const handleGetPriceVariant = async (value: any) => {
+            try {
+                const response = await orderStore.getPriceOrderVariant(value);
+                console.log("productId", productStore.productId);
+                if (response && response.kind === "ok") {
+                    const data = response.response.data;
+                    const newArr = dataVariant.map((items: any) => {
+                        if (items.id === value.productId) {
+                            if (value.quantity === items.minQuantity) {
+                                return { ...items, price: data.price, amount: value.quantity, isSelect: false }
+                            } else {
+                                return { ...items, price: data.price, amount: value.quantity, isSelect: true }
+                            }
+                        }
+                    })
+                    setDataVariant(newArr)
+                } else {
+                    console.error("Failed to fetch detail:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching detail:", error);
+            }
+        };
+        const getPriceVariant = async (value: any) => {
+            try {
+                const response = await orderStore.getPriceOrderVariant(value);
+                console.log("productId", productStore.productId);
+                if (response && response.kind === "ok") {
+                    const data = response.response.data;
+                    return data.price
+                } else {
+                    console.error("Failed to fetch detail:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching detail:", error);
+            }
+        };
 
-        const getDataVariant = async () => {
+        const getDataVariantPrice = async () => {
             try {
                 const response: OrderVariantResult = await orderStore.getListOrderVariantPrice(
                     page,
@@ -72,6 +110,88 @@ export const SelectVariant: FC = observer(
                     const aMap = new Map(orderStore.dataProductAddOrder.map(item => [item.id, item]));
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: items.minQuantity, isSelect: false } })
+
+                        const newArr2 = await Promise.all(newArr.map(async (items: any) => {
+                                const dataGetPrice = {
+                                    productCategoryId: items.productTemplate.productCategoryId,
+                                    productTemplateId: items.productTemplate.id,
+                                    productId: items.id,
+                                    priceListId: 14061,
+                                    quantity: items.amount
+                                }
+                                const newPrice = await getPriceVariant(dataGetPrice)
+                                console.log(newPrice, 'newPrice')
+                                return { ...items, price: newPrice }
+                        }))
+                        const newArr1 = newArr2.map(item => {
+                            if (aMap.has(item.id)) {
+                                return {
+                                    ...item,
+                                    isSelect: true,
+                                    amount: aMap.get(item.id).amount,
+                                    price: aMap.get(item.id).price,
+                                };
+                            }
+                            return item;
+                        });
+                        setDataVariant(newArr1);
+                    } else {
+                        const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: items.minQuantity, isSelect: false } })
+                        const newArr2 = await Promise.all(newArr.map(async (items: any) => {
+                            const dataGetPrice = {
+                                productCategoryId: items.productTemplate.productCategoryId,
+                                productTemplateId: items.productTemplate.id,
+                                productId: items.id,
+                                priceListId: 14061,
+                                quantity: items.amount
+                            }
+                            const newPrice = await getPriceVariant(dataGetPrice)
+                            console.log(newPrice, 'newPrice')
+                            return { ...items, price: newPrice }
+                        }))
+                        const newArr1 = newArr2.map(item => {
+                            if (aMap.has(item.id)) {
+                                return {
+                                    ...item,
+                                    isSelect: true,
+                                    amount: aMap.get(item.id).amount,
+                                    price: aMap.get(item.id).price,
+                                };
+                            }
+                            return item;
+                        });
+                        setDataVariant((prevProducts: any) => [
+                            ...prevProducts,
+                            ...newArr1
+                        ]);
+                    }
+                } else {
+                    console.error("Failed to fetch variant:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+            }
+        }
+
+        const getDataVariant = async () => {
+            try {
+                const response: OrderVariantResult = await orderStore.getListOrderVariant(
+                    page,
+                    size,
+                    undefined,
+                    undefined,
+                    '',
+                    orderStore.isLoadMore,
+                    undefined,
+                    productTemplateId,
+                );
+                console.log('data variant ///////', JSON.stringify(response.response.data.content))
+                if (response && response.kind === "ok") {
+                    setTotalPagesProduct(response.response.data.totalPages)
+                    const aMap = new Map(orderStore.dataProductAddOrder.map(item => [item.id, item]));
+                    console.log('////////////////', response.response.data.totalPages)
+                    if (page === 0) {
                         const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0, isSelect: false } })
 
                         const newArr1 = newArr.map(item => {
@@ -79,7 +199,8 @@ export const SelectVariant: FC = observer(
                                 return {
                                     ...item,
                                     isSelect: true,
-                                    amount: aMap.get(item.id).amount
+                                    amount: aMap.get(item.id).amount,
+                                    price: 0,
                                 };
                             }
                             return item;
@@ -92,7 +213,8 @@ export const SelectVariant: FC = observer(
                                 return {
                                     ...item,
                                     isSelect: true,
-                                    amount: aMap.get(item.id).amount
+                                    amount: aMap.get(item.id).amount,
+                                    price: 0,
                                 };
                             }
                             return item;
@@ -116,6 +238,9 @@ export const SelectVariant: FC = observer(
 
         useEffect(() => {
             if (orderStore.checkPriceList === true) {
+                getDataVariantPrice()
+            }
+            if (orderStore.checkPriceList === false) {
                 getDataVariant()
             }
         }, [page])
@@ -131,33 +256,70 @@ export const SelectVariant: FC = observer(
             }
         };
 
-        const handlePlus = (data: any) => {
+        const handleAddToCart = (data: any) => {
             const newArr1 = dataVariant.map(items => {
                 if (items.id === data.id) {
-                    return { ...data, amount: data.amount + 1, isSelect: true }
+                    return { ...data, isSelect: !data.isSelect }
                 } else {
                     return items
                 }
             })
+            console.log(data)
+            setDataVariant(newArr1)
+        }
+
+        const handleSelectUom = (data: any, uomData: any) => {
+            const newArr1 = dataVariant.map( async items => {
+                if (items.id === data.id) {
+                    const newAmount = Math.ceil(data.amount / uomData.conversionRate)
+                    const dataGetPrice = {
+                        productCategoryId: data.productTemplate.productCategoryId,
+                        productTemplateId: data.productTemplate.id,
+                        productId: data.id,
+                        priceListId: 14061,
+                        quantity: newAmount * uomData.conversionRate
+                    }
+                    const newPrice = await getPriceVariant(dataGetPrice)
+                    return { ...data, saleUom: { id: uomData.uomId, name: uomData.uomName }, conversionRate: uomData.conversionRate, price: newPrice }
+                } else {
+                    return items
+                }
+            })
+            console.log(data)
+            setDataVariant(newArr1)
+        }
+        const handlePlus = async (data: Content) => {
+            const newArr1 = dataVariant.map(items => {
+                if (items.id === data.id) {
+                    const dataGetPrice = {
+                        productCategoryId: data.productTemplate.productCategoryId,
+                        productTemplateId: data.productTemplate.id,
+                        productId: data.id,
+                        priceListId: 14061,
+                        quantity: data.amount + 1
+                    }
+                    handleGetPriceVariant(dataGetPrice)
+                    return { ...data }
+                } else {
+                    return items
+                }
+            })
+            console.log(data)
             setDataVariant(newArr1)
         }
         const handleMinus = (data: any) => {
             const newArr1 = dataVariant.slice()
             const newArr2 = newArr1.map((items: any) => {
                 if (items.id === data.id) {
-                    if (items.amount === 0) {
-                        Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            textBody: 'Số lượng không thể âm'
-                        })
-                        return items
-                    } else {
-                        if (items.amount - 1 === 0) {
-                            return { ...items, amount: 0, isSelect: false }
-                        } else {
-                            return { ...items, amount: items.amount - 1, isSelect: true }
-                        }
+                    const dataGetPrice = {
+                        productCategoryId: data.productTemplate.productCategoryId,
+                        productTemplateId: data.productTemplate.id,
+                        productId: data.id,
+                        priceListId: 14061,
+                        quantity: data.amount - 1
                     }
+                    handleGetPriceVariant(dataGetPrice)
+                    return { ...data }
                 } else { return items }
             })
             setDataVariant(newArr2)
@@ -265,6 +427,8 @@ export const SelectVariant: FC = observer(
                             item={item}
                             handleMinus={handleMinus}
                             handlePlus={handlePlus}
+                            handleAddToCart={handleAddToCart}
+                            selectUom={handleSelectUom}
                         />)
                         }
                     />

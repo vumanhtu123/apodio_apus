@@ -45,6 +45,15 @@ export const DeliveryAddress: FC = observer(
                         JSON.stringify(response.response.data)
                     );
                     const newArr = response.response.data;
+                    if (dataAddress === undefined) {
+                        newArr.map(items => {
+                            if (items.isDefault === true) {
+                                setAddressChoice(items.id)
+                            }
+                        })
+                    } else {
+                        setAddressChoice(dataAddress.id)
+                    }
                     setArrAddress(newArr);
                 } else {
                     console.error("Failed to fetch categories:", response);
@@ -56,18 +65,19 @@ export const DeliveryAddress: FC = observer(
         useEffect(() => {
             getListAddress()
         }, [])
-        useEffect(() => {
-            console.log(dataAddress, '1231245234123')
-            if (dataAddress === undefined) {
-                arrAddress.map(items => {
-                    if (items.isDefault === true) {
-                        setAddressChoice(items.id)
-                    }
-                })
-            } else {
-                setAddressChoice(dataAddress.id)
-            }
-        }, [])
+        // useEffect(() => {
+        //     console.log(dataAddress, '1231245234123')
+        //     if (dataAddress === undefined) {
+        //         arrAddress.map(items => {
+        //             if (items.isDefault === true) {
+        //                 setAddressChoice(items.id)
+        //             }
+        //         })
+        //     } else {
+        //         setAddressChoice(dataAddress.id)
+        //     }
+        //     console.log(arrAddress, 'data address')
+        // }, [])
 
         return (
             <View style={styles.ROOT}>

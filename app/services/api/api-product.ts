@@ -338,4 +338,28 @@ export class ProductApi {
     }
   }
   
+  async getPriceOrderVariant(
+    value: any,
+  ): Promise<any> {
+    // Loading.show({
+    //   text: "Loading...",
+    // });
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.post(
+        ApiEndpoint.POST_PRICE_VARIANT ,
+        value
+      );
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
+      // Loading.hide();
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      // Loading.hide()
+      return { kind: "bad-data" };
+    }
+  }
 }
