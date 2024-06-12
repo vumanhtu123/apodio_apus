@@ -247,7 +247,7 @@ const CustomCalendar = (props: any) => {
             )}
             <View style={styles.modalView}>
               <Calendar
-                // minDate={Date()}
+                minDate={props.minDate ? props.minDate : ''}
                 //@ts-ignore
                 maxDate={props.maxData == true ? today : null}
                 monthFormat={"MMMM yyyy"}

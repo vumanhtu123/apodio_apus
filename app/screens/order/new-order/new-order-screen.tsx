@@ -517,6 +517,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         onMarkedDatesChangeE={(markedDatesE: any) => {
           setMarkedDatesE(markedDatesE);
         }}
+        minDate={new Date()}
         isShowTabs={false}
         isSortByDate={isSortByDate}
         isOneDate={true}
