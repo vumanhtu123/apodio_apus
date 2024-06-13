@@ -54,7 +54,7 @@ export const OrderStoreModel = types
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
     orderId : types.optional(types.number, 0),
-    tagId: types.optional(types.number, 0),
+    tagId: types.optional(types.array(types.number), []),
     productCategoryId: types.optional(types.number, 0),
     nameCategory: types.optional(types.string, ""),
     dataClientSelect: types.optional(types.frozen<ClientSlected>(),{id: '', name: '', code: '', phoneNumber: ''}),
@@ -95,7 +95,7 @@ export const OrderStoreModel = types
     setSort(sort: any) {
       self.sort = sort;
     },
-    setTagId(tagId: number) {
+    setTagId(tagId: any) {
       self.tagId = tagId;
     },
     setProductCategoryId(value: any) {
@@ -208,7 +208,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number
@@ -223,7 +223,7 @@ export const OrderStoreModel = types
         size,
         productCategoryId,
         search,
-        // tagId,
+        tagIds,
         sortId,
         isLoadMore,
         warehouseId
@@ -242,7 +242,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number,
@@ -258,7 +258,7 @@ export const OrderStoreModel = types
         size,
         productCategoryId,
         search,
-        // tagId,
+        tagIds,
         sortId,
         isLoadMore,
         warehouseId,
@@ -295,7 +295,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number,
@@ -312,7 +312,7 @@ export const OrderStoreModel = types
           size,
           productCategoryId,
           search,
-          // tagId,
+          tagIds,
           sortId,
           isLoadMore,
           warehouseId,
@@ -332,7 +332,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number,
@@ -350,7 +350,7 @@ export const OrderStoreModel = types
           size,
           productCategoryId,
           search,
-          // tagId,
+          tagIds,
           sortId,
           isLoadMore,
           warehouseId,
@@ -372,7 +372,7 @@ export const OrderStoreModel = types
       search: string,
       countryId: number,
       // regionId: number,
-      regionId: number
+      // regionId: number
     ) {
       // console.log('page' , page)
       const orderApi = new VendorApi(self.environment.apiErp);

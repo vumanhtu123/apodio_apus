@@ -155,7 +155,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   useEffect(() => {
     setArrProduct(arrProducts);
     getListTax();
-    orderStore.setCheckPriceList(true);
+    orderStore.setCheckPriceList(false);
   }, []);
 
   return (

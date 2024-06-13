@@ -7,14 +7,9 @@ import { Images } from '../../../../assets';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { useStores } from '../../../models';
 import CategoryModalFilter from '../../product/component/modal-category';
-import RenderProductItem from '../../product/renderList/renderItemProduct';
-import { CategoryList } from '../../product/renderList/category-list';
-import CreateDirectoryModal from '../../product/component/modal-createDirectory';
-import EditDirectoryModal from '../../product/component/modal-editDirectory';
 import Dialog from '../../../components/dialog/dialog';
 import { styles } from './styles';
 import RenderOrderItem from '../components/renderOrderItem';
-import Modal from 'react-native-modal';
 
 export const AddProductOrder: FC = observer(
     function AddProductOrder() {
@@ -40,7 +35,6 @@ export const AddProductOrder: FC = observer(
                 setIndexItem(orderStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
             }, [viewProduct])
         );
-        console.log(orderStore.checkPriceList)
 
         const handleGetCategoryFilter = async () => {
             try {
@@ -82,20 +76,17 @@ export const AddProductOrder: FC = observer(
             console.log('tim kiem')
         };
         const handleGetProduct = async (searchValue?: any) => {
-            var parseSort = "";
             try {
-                if (orderStore.sort.length > 0) {
-                    parseSort =
-                        "?sort=" +
-                        orderStore.sort[0] +
-                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
-                }
+                const parseSort = orderStore.sort.length === 0? '' :
+                       orderStore.sort[0] !== "" ? ("&sort=" +
+                        orderStore.sort[0]): "" +
+                        (orderStore.sort[1] !== "" ? ("&sort=" + orderStore.sort[1]) : "");
                 const response: any = await orderStore.getListOrderProduct(
                     page,
                     size,
                     orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
-                    // orderStore.tagId,
+                    orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -105,12 +96,12 @@ export const AddProductOrder: FC = observer(
                     setTotalPagesProduct(response.response.data.totalPages)
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
-                        // if(response.response.data.content.length ===0 ){
-                        //     setDataProduct([])
-                        // }else{
+                        if(response.response.data.content.length ===0 ){
+                            setDataProduct([])
+                        }else{
                         const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
                         setDataProduct(newArr);
-                        // }
+                        }
                     } else {
                         setDataProduct((prevProducts: any) => [
                             ...prevProducts,
@@ -125,20 +116,17 @@ export const AddProductOrder: FC = observer(
             }
         };
         const handleGetVariant = async (searchValue?: any) => {
-            var parseSort = "";
             try {
-                if (orderStore.sort.length > 0) {
-                    parseSort =
-                        "?sort=" +
-                        orderStore.sort[0] +
-                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
-                }
+                const parseSort = orderStore.sort.length === 0? '' :
+                       orderStore.sort[0] !== "" ? ("&sort=" +
+                        orderStore.sort[0]): "" +
+                        (orderStore.sort[1] !== "" ? ("&sort=" + orderStore.sort[1]) : "");
                 const response: any = await orderStore.getListOrderVariant(
                     page,
                     size,
                     orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
-                    // orderStore.tagId,
+                    orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -149,8 +137,12 @@ export const AddProductOrder: FC = observer(
                     setTotalPagesProduct(response.response.data.totalPages)
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
+                        if(response.response.data.content.length ===0 ){
+                            setDataProduct([])
+                        }else{
                             const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
                             setDataProduct(newArr);
+                        }
                     } else {
                         setDataProduct((prevProducts: any) => [
                             ...prevProducts,
@@ -165,20 +157,17 @@ export const AddProductOrder: FC = observer(
             }
         };
         const handleGetProductPrice = async (searchValue?: any) => {
-            var parseSort = "";
             try {
-                if (orderStore.sort.length > 0) {
-                    parseSort =
-                        "?sort=" +
-                        orderStore.sort[0] +
-                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
-                }
+                const parseSort = orderStore.sort.length === 0? '' :
+                       orderStore.sort[0] !== "" ? ("&sort=" +
+                        orderStore.sort[0]): "" +
+                        (orderStore.sort[1] !== "" ? ("&sort=" + orderStore.sort[1]) : "");
                 const response: any = await orderStore.getListOrderProductPrice(
                     page,
                     size,
                     orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
-                    // orderStore.tagId,
+                    orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -189,12 +178,16 @@ export const AddProductOrder: FC = observer(
                     setTotalPagesProduct(response.response.data.totalPages)
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
+                        if(response.response.data.content.length ===0 ){
+                            setDataProduct([])
+                        }else{
                         const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
                         setDataProduct(newArr);
+                        }
                     } else {
                         setDataProduct((prevProducts: any) => [
                             ...prevProducts,
-                            ...response.response.data.content.map((items: any) => { return { ...items, amount: 0 } }),
+                            ...response.response.data.content?.map((items: any) => { return { ...items, amount: 0 } }),
                         ]);
                     }
                 } else {
@@ -205,20 +198,19 @@ export const AddProductOrder: FC = observer(
             }
         };
         const handleGetVariantPrice = async (searchValue?: any) => {
-            var parseSort = "";
             try {
-                if (orderStore.sort.length > 0) {
-                    parseSort =
-                        "?sort=" +
-                        orderStore.sort[0] +
-                        (orderStore.sort.length > 1 ? "&sort=" + orderStore.sort[1] : "");
-                }
+                
+                const parseSort = orderStore.sort.length === 0? '' :
+                orderStore.sort[0] !== "" ? ("&sort=" +
+                 orderStore.sort[0]): "" +
+                 (orderStore.sort[1] !== "" ? ("&sort=" + orderStore.sort[1]) : "");
+                
                 const response: any = await orderStore.getListOrderVariantPrice(
                     page,
                     size,
                     orderStore.productCategoryId === 0 ? undefined : orderStore.productCategoryId,
                     searchValue,
-                    // orderStore.tagId,
+                    orderStore.tagId,
                     parseSort,
                     orderStore.isLoadMore,
                     undefined,
@@ -230,8 +222,12 @@ export const AddProductOrder: FC = observer(
                     setTotalPagesProduct(response.response.data.totalPages)
                     console.log('////////////////', response.response.data.totalPages)
                     if (page === 0) {
+                        if(response.response.data.content.length ===0 ){
+                            setDataProduct([])
+                        }else{
                         const newArr = response.response.data.content.map((items: any) => { return { ...items, amount: 0 } })
                         setDataProduct(newArr);
+                        }
                     } else {
                         setDataProduct((prevProducts: any) => [
                             ...prevProducts,
@@ -249,6 +245,7 @@ export const AddProductOrder: FC = observer(
             viewProductType(type);
             setPage(0)
             orderStore.setSort([])
+            orderStore.setTagId([])
         };
         const viewProductType = (type: any) => {
             const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
@@ -354,8 +351,8 @@ export const AddProductOrder: FC = observer(
             setSearchValue("");
             orderStore.setNameCategory("");
             setDataProduct([]);
-            productStore.setTagId(0);
             orderStore.setSort([]);
+            orderStore.setTagId([])
             if (orderStore.checkPriceList === false && orderStore.viewProductType === "VIEW_PRODUCT") {
                 await handleGetProduct(searchValue);
             }
@@ -411,6 +408,7 @@ export const AddProductOrder: FC = observer(
                         orderStore.setSort([]);
                         orderStore.setProductCategoryId(0)
                         orderStore.setNameCategory('')
+                        orderStore.setTagId([])
                     }}
                     colorIcon={colors.text}
                     headerTx={'order.order'}

@@ -4,13 +4,11 @@ import React, { Dimensions, FlatList, KeyboardAvoidingView, Platform, TouchableO
 import { Button, Header, Switch, Text, TextField } from '../../../components';
 import { Images } from '../../../../assets';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { InputSelect } from '../../../components/input-select/inputSelect';
-import { Controller, useForm } from 'react-hook-form';
 import { styles } from './styles';
 import { colors, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { OrderListAddressResult, Root1 } from '../../../models/order-store/order-address-model';
+import { OrderListAddressResult, Root1 } from '../../../models/order-store/entities/order-address-model';
 
 export const DeliveryAddress: FC = observer(
     function DeliveryAddress() {
