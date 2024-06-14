@@ -31,7 +31,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
         const [size, setsize] = useState(15)
         const [page, setPage] = useState(0)
         const getAPi = useStores()
-        const [isVisibleCreateClient, setisVisibleCreateClient] = useState(false);
+        const [isVisibleCreateClient, setIsVisibleCreateClient] = useState(false);
         const [valueSearch, setValueSearch] = useState('')
         const [isShowSearch, setisShowSearch] = useState(false)
         const [dataItemSelect, setdataItemSelect] = useState()
@@ -75,6 +75,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
         const sendataClientSelected = () => {
             getAPi.orderStore.setDataClientSelect(dataItemSelect)
+            props.navigation.goBack()
         }
 
         const getListClient = () => {
@@ -238,7 +239,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                         right: scaleWidth(16)
                     }}
                         onPress={() => {
-                            setisVisibleCreateClient(!isVisibleCreateClient)
+                            setIsVisibleCreateClient(!isVisibleCreateClient)
 
                         }}
                     >
@@ -252,7 +253,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                 <View style={Styles.stylesBtnBottom}>
                     <TouchableOpacity
                         style={[onClick === 'save' ? Styles.btnSuccessfully : Styles.btnSave, { marginRight: 13 }]}
-                    // onPress={() => setOnClick('save')}
+                        onPress={() => props.navigation.goBack()}
                     >
                         <Text
                             style={{ color: onClick === 'save' ? colors.palette.white : colors.palette.navyBlue }}
@@ -284,7 +285,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
                 />
                 <ModalCreateClient
                     isVisible={isVisibleCreateClient}
-                    setIsVisible={setisVisibleCreateClient}
+                    setIsVisible={setIsVisibleCreateClient}
                     handleRefresh={() => getListClient()}
                 />
 

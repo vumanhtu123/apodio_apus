@@ -18,6 +18,7 @@ import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { useStores } from "../../models";
 import FastImage from "react-native-fast-image";
 import { StackScreenProps } from "@react-navigation/stack";
+import { getDomain, getRefreshToken, setAccessToken, setDomain, setTenantId } from "../../utils/storage";
 
 export const ListCompany: FC<
   StackScreenProps<NavigatorParamList, "listCompany">
@@ -35,48 +36,20 @@ export const ListCompany: FC<
     hotline: String;
   }
 
-  // const dataCompany = [
-  //     {
-  //         id: "1",
-  //         name: "Công ty TNHH Mặt Trời Hồng",
-  //         code: "MTH",
-  //         hotline: '02466989909'
-  //     },
-  //     {
-  //         id: "2",
-  //         name: "Công ty TNHH MISUKO Việt Nam",
-  //         code: "MSI",
-  //         hotline: '02466989909'
-  //     },
-  //     {
-  //         id: "3",
-  //         name: "Công ty TNHH xây dựng kỹ ...",
-  //         code: "HĐ",
-  //         hotline: '02466989909'
-  //     },
-  //     {
-  //         id: "4",
-  //         name: "Công ty TNHH tư vân ROPA",
-  //         code: "RP",
-  //         hotline: '02466989909'
-  //     },
-  //     {
-  //         id: "5",
-  //         name: "Công ty TNHH xây dựng và sản...",
-  //         code: "TCT",
-  //         hotline: '02466989909'
-  //     }
-
-  // ]
-
   const getListCompany = async (userID: any) => {
     console.log("doan dccc ", userID);
     await HomeStore.getListCompany(userID).then((result) => {
       console.log("doannnnnnn2222222", result);
-      setData(result.response.data.data);
+      setData(result.data);
     });
   };
-
+  const getTokenCompany = async (refreshToken : string) => {
+    console.log("doan dccc ", refreshToken);
+    await authenticationStore.getRefreshToken(refreshToken).then((result) => {
+      console.log("getRefreshToken", result);
+      // setData(result.data);
+    });
+  };
   useEffect(() => {
     getListCompany(authenticationStore.userId);
   }, []);
@@ -94,8 +67,18 @@ export const ListCompany: FC<
       </View>
     );
   };
-
-  const ItemListCompany = ({ item }: { item: Item }) => {
+  const getNewToken = async (item : any) => {
+    try {
+      await setTenantId(item.id);
+      await setAccessToken('')
+      const refreshToken = await getRefreshToken();
+      await getTokenCompany(refreshToken);
+      props.navigation.navigate("mainBottom");
+    } catch (error) {
+      console.error("Error getting new token:", error);
+    }
+  }
+  const ItemListCompany = ({ item }: any) => {
     return (
       <View
         style={{
@@ -155,12 +138,7 @@ export const ListCompany: FC<
               paddingHorizontal: 8,
               backgroundColor: colors.palette.navyBlue,
             }}
-            onPress={() => {
-              // authenticationStore.setIdCompany(item.id)
-              setIdCompany(item.id);
-              props.navigation.navigate("mainBottom");
-              // Alert.alert("ok")
-            }}>
+            onPress={() => getNewToken(item)}>
             <Text
               style={{
                 fontSize: scaleHeight(10),
@@ -189,52 +167,52 @@ export const ListCompany: FC<
         renderItem={({ item }) => <ItemListCompany item={item} />}
         keyExtractor={(item: any, index: any) => index}
         showsVerticalScrollIndicator={false}
-        // "để hiện hình quay quay khi kéo xuống"
-        // refreshControl={
-        //     <RefreshControl refreshing={refresControl} onRefresh={() => {
-        //         setRefresControl(true)
-        //         console.log('====================================');
-        //         console.log("doandev");
-        //         console.log('====================================');
-        //         setRefresControl(false)
-        //     }}
-        //         colors={['red']}
-        //     />
-        // }
+      // "để hiện hình quay quay khi kéo xuống"
+      // refreshControl={
+      //     <RefreshControl refreshing={refresControl} onRefresh={() => {
+      //         setRefresControl(true)
+      //         console.log('====================================');
+      //         console.log("doandev");
+      //         console.log('====================================');
+      //         setRefresControl(false)
+      //     }}
+      //         colors={['red']}
+      //     />
+      // }
 
-        // Để hiện hình quay quay khi kéo lên
-        // ListFooterComponent={() => (
-        //     isLoading ? <View
+      // Để hiện hình quay quay khi kéo lên
+      // ListFooterComponent={() => (
+      //     isLoading ? <View
 
-        //     style={{
+      //     style={{
 
-        //         marginTop:30,
-        //         alignItems:'center',
-        //         justifyContent:'center',
-        //         // justifyContent:'space-between',
-        //         flexDirection:'row',
+      //         marginTop:30,
+      //         alignItems:'center',
+      //         justifyContent:'center',
+      //         // justifyContent:'space-between',
+      //         flexDirection:'row',
 
-        //         padding:10
-        //     }}>
-        //         <ActivityIndicator size={"large"} color={'blue'} />
+      //         padding:10
+      //     }}>
+      //         <ActivityIndicator size={"large"} color={'blue'} />
 
-        //     </View>
+      //     </View>
 
-        //         : null
-        //     )}
+      //         : null
+      //     )}
 
-        // "Phần sử lý logic khi load more"
-        // onEndReached={() =>{
-        //     setIsLoading(true)
-        //     // setPrevPaget(prevPaget+1)
-        //     console.log("doandev load more");
-        //     setdata(data.concat([{id:"10",name: "Cong Ty A", code: "123",hotline:"836666"}]))
-        //     setTimeout(() => {
-        //         setIsLoading(false)
-        //     }, 3000);
-        // }}
+      // "Phần sử lý logic khi load more"
+      // onEndReached={() =>{
+      //     setIsLoading(true)
+      //     // setPrevPaget(prevPaget+1)
+      //     console.log("doandev load more");
+      //     setdata(data.concat([{id:"10",name: "Cong Ty A", code: "123",hotline:"836666"}]))
+      //     setTimeout(() => {
+      //         setIsLoading(false)
+      //     }, 3000);
+      // }}
 
-        // onEndReachedThreshold={0.2}
+      // onEndReachedThreshold={0.2}
       />
     </View>
   );

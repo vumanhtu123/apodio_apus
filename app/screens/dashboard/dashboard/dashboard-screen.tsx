@@ -105,7 +105,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
       console.log("date one of the month", formattedDateNow);
       console.log('====================================');
       getAPI.dashBoardStore
-        .getDataRevenueThisMonth(formattedDateStart, formattedDateNow)
+        .getDataRevenueThisMonth("2024-06-12T00:00:00+07:00", "2024-06-12T00:00:00+07:00")
         .then((data) => {
           console.log('====================================');
           console.log("data revenue this month:", data);
