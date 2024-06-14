@@ -93,7 +93,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                     orderStore.isLoadMore,
                     undefined,
                     productTemplateId,
-                    14061
+                    Number(orderStore.dataPriceListSelected.id)
                 );
             console.log("data variant ///////",JSON.stringify(response.response.data.content));
             if (response && response.kind === "ok") {
@@ -134,7 +134,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 productCategoryId: items.productTemplate.productCategoryId,
                                 productTemplateId: items.productTemplate.id,
                                 productId: items.id,
-                                priceListId: 14061,
+                                priceListId: Number(orderStore.dataPriceListSelected.id),
                                 quantity: items.amount * items.conversionRate,
                             };
                             const newPrice = await getPriceVariant(dataGetPrice);
@@ -151,6 +151,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 conversionRate: aMap.get(item.id).conversionRate,
                                 saleUom: aMap.get(item.id).saleUom,
                                 originAmount: aMap.get(item.id).originAmount,
+                                taxValue: aMap.get(item.id).taxValue,
+                                VAT: aMap.get(item.id).VAT,
                             };
                         }
                         return item;
@@ -188,14 +190,14 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 productCategoryId: items.productTemplate.productCategoryId,
                                 productTemplateId: items.productTemplate.id,
                                 productId: items.id,
-                                priceListId: 14061,
+                                priceListId: Number(orderStore.dataPriceListSelected.id),
                                 quantity: items.amount * items.conversionRate,
                             };
                             const newPrice = await getPriceVariant(dataGetPrice);
                             return { ...items, price: newPrice };
                         })
                     );
-                    const newArr1 = newArr2.map((item) => {
+                    const newArr1 = newArr2.map((item: any) => {
                         if (aMap.has(item.id)) {
                             return {
                                 ...item,
@@ -205,6 +207,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 conversionRate: aMap.get(item.id).conversionRate,
                                 saleUom: aMap.get(item.id).saleUom,
                                 originAmount: aMap.get(item.id).originAmount,
+                                taxValue: aMap.get(item.id).taxValue,
+                                VAT: aMap.get(item.id).VAT,
                             };
                         }
                         return item;
@@ -262,7 +266,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                             };
                         }
                     });
-                    const newArr1 = newArr.map((item) => {
+                    const newArr1 = newArr.map((item: any) => {
                         if (aMap.has(item.id)) {
                             return {
                                 ...item,
@@ -272,6 +276,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 conversionRate: aMap.get(item.id).conversionRate,
                                 saleUom: aMap.get(item.id).saleUom,
                                 originAmount: aMap.get(item.id).originAmount,
+                                taxValue: aMap.get(item.id).taxValue,
+                                VAT: aMap.get(item.id).VAT,
                             };
                         }
                         return item;
@@ -300,7 +306,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                             };
                         }
                     });
-                    const newArr1 = newArr.map((item) => {
+                    const newArr1 = newArr.map((item: any) => {
                         if (aMap.has(item.id)) {
                             return {
                                 ...item,
@@ -310,6 +316,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 conversionRate: aMap.get(item.id).conversionRate,
                                 saleUom: aMap.get(item.id).saleUom,
                                 originAmount: aMap.get(item.id).originAmount,
+                                taxValue: aMap.get(item.id).taxValue,
+                                VAT: aMap.get(item.id).VAT,
                             };
                         }
                         return item;
@@ -460,7 +468,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                         productCategoryId: data.productTemplate.productCategoryId,
                         productTemplateId: data.productTemplate.id,
                         productId: data.id,
-                        priceListId: 14061,
+                        priceListId: Number(orderStore.dataPriceListSelected.id),
                         quantity: newAmount * uomData.conversionRate,
                     };
                     const newPrice = await getPriceVariant(dataGetPrice);
@@ -488,7 +496,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                             productCategoryId: data.productTemplate.productCategoryId,
                             productTemplateId: data.productTemplate.id,
                             productId: data.id,
-                            priceListId: 14061,
+                            priceListId: Number(orderStore.dataPriceListSelected.id),
                             quantity: data.amount + 1,
                         };
                         const newPrice = await getPriceVariant(dataGetPrice);
@@ -505,7 +513,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                             productCategoryId: data.productTemplate.productCategoryId,
                             productTemplateId: data.productTemplate.id,
                             productId: data.id,
-                            priceListId: 14061,
+                            priceListId: Number(orderStore.dataPriceListSelected.id),
                             quantity: (data.amount + 1) * data.conversionRate,
                         };
                         const newPrice = await getPriceVariant(dataGetPrice);
@@ -535,7 +543,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                             productCategoryId: data.productTemplate.productCategoryId,
                             productTemplateId: data.productTemplate.id,
                             productId: data.id,
-                            priceListId: 14061,
+                            priceListId: Number(orderStore.dataPriceListSelected.id),
                             quantity: data.amount - 1,
                         };
                         const newPrice = await getPriceVariant(dataGetPrice);
@@ -565,7 +573,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 productCategoryId: data.productTemplate.productCategoryId,
                                 productTemplateId: data.productTemplate.id,
                                 productId: data.id,
-                                priceListId: 14061,
+                                priceListId: Number(orderStore.dataPriceListSelected.id),
                                 quantity: (data.amount - 1) * data.conversionRate,
                             };
                             const newPrice = await getPriceVariant(dataGetPrice);
@@ -581,7 +589,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                                 productCategoryId: data.productTemplate.productCategoryId,
                                 productTemplateId: data.productTemplate.id,
                                 productId: data.id,
-                                priceListId: 14061,
+                                priceListId: Number(orderStore.dataPriceListSelected.id),
                                 quantity: (data.amount - 1) * data.conversionRate,
                             };
                             const newPrice = await getPriceVariant(dataGetPrice);
@@ -603,6 +611,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     };
 
     const  changePrice = (data: any, text: any)=>{
+        console.log(text, 'text=====')
         const newArr1 = dataVariant.map( (items) => {
             if (items.id === data.id) {
                     return {
@@ -718,7 +727,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                             style={[styles.textViewInfo,{color: colors.nero,}]}
                         />
                         <Text
-                            text={dataSelect.length.toString()}
+                            text={dataVariant.filter((items: any)=> items.isSelect === true).length.toString()}
                             style={[styles.textViewInfo,{color: colors.nero,}]}
                         />
                     </View>

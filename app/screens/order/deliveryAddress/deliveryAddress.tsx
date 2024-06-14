@@ -33,7 +33,7 @@ export const DeliveryAddress: FC = observer(
         const getListAddress = async () => {
             try {
                 const response = await orderStore.getListAddress(
-                    953,
+                    Number(orderStore.dataClientSelect.id),
                 );
                 orderStore.setReloadAddressScreen(false)
                 // console.log('mm------------------' , JSON.stringify(response.response.data.content) )

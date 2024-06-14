@@ -35,6 +35,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
         const [valueSearch, setValueSearch] = useState('')
         const [isShowSearch, setisShowSearch] = useState(false)
         const [dataItemSelect, setdataItemSelect] = useState()
+        const navigation = useNavigation() 
 
 
 
@@ -75,6 +76,7 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
         const sendataClientSelected = () => {
             getAPi.orderStore.setDataClientSelect(dataItemSelect)
+            navigation.goBack()
         }
 
         const getListClient = () => {

@@ -113,6 +113,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     navigation.goBack();
     orderStore.setDataProductAddOrder([]);
     orderStore.setViewProductType("VIEW_PRODUCT");
+    orderStore.setDataClientSelect({id: '', name: '', code: '', phoneNumber: ''})
+    orderStore.setDataPriceListSelect({id: '', name: '', priceListCategory: ''})
+    orderStore.setCheckPriceList(false)
+    orderStore.setViewGrid(true)
   };
 
   const handleSelectTaxes = (id: any) => {
@@ -155,7 +159,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   useEffect(() => {
     setArrProduct(arrProducts);
     getListTax();
-    orderStore.setCheckPriceList(false);
+    // orderStore.setCheckPriceList(true);
   }, []);
 
   return (

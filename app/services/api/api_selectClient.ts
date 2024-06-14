@@ -24,7 +24,7 @@ export class SelectClienAPI {
             console.log("doandev url " , this.api.config.url);
             
             const response:  ApiResponse<BaseResponse<OderListResspose, ErrorCode>> = await this.api.apisauce.get(
-                ApiEndpoint.GET_LIST_SLECT_CLIENT,
+                ApiEndpoint.GET_LIST_SELECT_CLIENT,
                 // truyền params.
                 {
                   page: page,

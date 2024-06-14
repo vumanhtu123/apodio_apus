@@ -223,7 +223,7 @@ export const EditDelivery: FC = observer(
                 const newWard = { id: wards.id, name: wards.label }
                 const dataCreate = {
                     id: dataEdit.id,
-                    partnerId: 953,
+                    partnerId: Number(orderStore.dataClientSelect.id),
                     phoneNumber: data.phone,
                     addressType: "DELIVERY_ADDRESS",
                     country: newCountry,

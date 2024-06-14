@@ -55,4 +55,5 @@ export const ApiEndpoint = {
   GET_LIST_TAX: "/api/v1/tax/list",
   GET_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
   GET_DEBT_LIMIT: "/api/v1/retail/sale-order/debt-limit",
+  GET_LIST_SELECT_CLIENT: "/api/v1/b2c/partners/list",
 };
