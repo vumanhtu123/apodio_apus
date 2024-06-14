@@ -1,7 +1,7 @@
 import { ApisauceInstance, create } from "apisauce";
 import DeviceInfo from "react-native-device-info";
 import { resetRoot } from "../../navigators";
-import { getAccessToken, getTenantId } from "../../utils/storage";
+import { getAccessToken, getDomain, getTenantId } from "../../utils/storage";
 import {
   hideDialog,
   hideLoading,
@@ -79,10 +79,12 @@ export class ApiOrder {
     this.apisauce.addAsyncRequestTransform((request) => async () => {
       try {
         const tenantId = await getTenantId();
+        const domain = await getDomain()
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
           "X-TenantId": tenantId,
+          // "current-domain" : `https://${domain}`
         };
         const token = await getAccessToken();
         if (token) {

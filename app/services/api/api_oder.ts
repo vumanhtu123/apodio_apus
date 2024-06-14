@@ -15,7 +15,7 @@ export class OrderApi {
     this.apiAccount = apiAccount;
   }
 
-  async getListOrder(page: number, size: number , state : string): Promise<any> {
+  async getListOrder(page: number, size: number, state: string): Promise<any> {
     Loading.show({
       text: "Loading...",
     });
@@ -40,8 +40,8 @@ export class OrderApi {
       Loading.hide();
       return { kind: "bad-data" };
     }
-  }  
-  async getDetailInvoice(id : number): Promise<any> {
+  }
+  async getDetailInvoice(id: number): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
@@ -52,9 +52,9 @@ export class OrderApi {
       }
       )
       Loading.hide();
-      console.log('-----------------respone' , response)
+      console.log('-----------------respone', response)
       const data = response.data
-      console.log('-----------------data' , data)
+      console.log('-----------------data', data)
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
@@ -63,7 +63,7 @@ export class OrderApi {
       Loading.hide();
       return { kind: "bad-data" }
     }
-  }  
+  }
   async getListOrderProduct(
     page: number,
     size: number,
@@ -271,6 +271,30 @@ export class OrderApi {
     } catch (e) {
       Loading.hide();
       return { kind: "bad-data" };
+    }
+  }
+  async cancelOrder(id: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+      onShow: () => console.log('Loading shown'),
+      onHide: () => console.log('Loading hidden'),
+    });
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.put(
+        ApiEndpoint.CANCEL_ORDER + "?id=" + id
+      );
+      Loading.hide();
+      console.log('----------delete', response.status)
+      const result = response.data;
+      if (response.data.errorCodes) {
+        return { kind: "bad-data", result };
+      } else {
+        return { kind: "ok", result };
+      }
+
+    } catch (error) {
+      Loading.hide();
+      return { kind: "bad-data", result: error };
     }
   }
 }

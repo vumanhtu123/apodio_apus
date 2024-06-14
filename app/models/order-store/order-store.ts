@@ -492,4 +492,24 @@ export const OrderStoreModel = types
         console.log(err);
       }
     }),
+    cancelOrder: flow(function* (
+      id: number
+    ) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<any, ErrorCode> = yield orderApi.cancelOrder(id)
+        console.log("tuvm getTax result", JSON.stringify(result));
+        if (result.data !== null) {
+          console.log("tuvm getTax success");
+          return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
   }));

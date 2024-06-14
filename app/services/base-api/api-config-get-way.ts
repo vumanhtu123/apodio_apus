@@ -88,7 +88,7 @@ export class GetWayAPI {
         if (token) {
           request.headers!.Authorization = "Bearer " + token;
         }
-        console.log("REQUEST--222: ", request);
+        console.log("REQUEST--GATEWAY: ", request);
       } catch (err) {
         console.log("Catch err", err);
         Loading.hide();

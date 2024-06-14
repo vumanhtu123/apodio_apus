@@ -149,7 +149,7 @@ export const AppStack = () => {
         gestureDirection: "horizontal",
         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
-      initialRouteName={"mainBottom"}>
+      initialRouteName={"listCompany"}>
       <Stack.Screen
         name="accountSecurity"
         component={Screens.AccountSecurity}

@@ -32,8 +32,8 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
 
   const [isShowPassword, setIsShowPassword] = useState<boolean>(true);
   const [emptyInputData, setEmptyInputData] = useState<boolean>(true);
-  const [userName, setUserName] = useState<String>("");
-  const [password, setPassWord] = useState<String>("");
+  const [userName, setUserName] = useState<String>("apodio@gmail.com");
+  const [password, setPassWord] = useState<String>("system@123456");
   // Pull in navigation via hook
   const navigation = useNavigation();
 
@@ -107,7 +107,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
             )}
             // Account test setup new pin
             // defaultValue={""}
-            defaultValue={"system_admin"}
+            defaultValue={"apodio@gmail.com"}
             // Account test
             // defaultValue={"67076743544"}
             name="username"
@@ -116,7 +116,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
           <Controller
             control={control}
             // Account test setup new pin
-            defaultValue={"system_admin"}
+            defaultValue={"system@123456"}
             // Account test
             // defaultValue={""}
             render={({ field: { onChange, value, onBlur } }) => (
