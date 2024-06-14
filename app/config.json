@@ -13,13 +13,17 @@
       // "URL_ERP": "https://resources-service.dev.apusplatform.com",
       // "URL_GET_WAY_ERP": "https://gateway-erp.dev.apusplatform.com",
       // "UAA": "https://uaa.dev.apusplatform.com",
+
+
+      // https://gateway-erp.dev.apusplatform.com/services/sales
       "URL_ACCOUNTING": "https://gateway-erp.dev.apusplatform.com/services/accounting",
-      "URL_ORDER": "https://gateway-erp.dev.apusplatform.com/services/sales",
+      "URL_ORDER": "https://sales-order-service.dev.apusplatform.com",
       "URL": "https://gateway-erp.dev.apusplatform.com/services/product",
       "URL_UPLOAD": "https://product-manufactor-service.dev.apusplatform.com",
       "URL_ERP": "https://gateway-erp.dev.apusplatform.com/services/resources",
       "URL_GET_WAY_ERP": "https://gateway-erp.dev.apusplatform.com",
       "UAA": "https://gateway-erp.dev.apusplatform.com/services/uaa"
+
 
     },
     "STAGING": {

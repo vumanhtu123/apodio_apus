@@ -52,13 +52,14 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
 
         const senDataPriceListSelect = () => {
             getAPi.orderStore.setDataPriceListSelect(dataPriceListSelected)
+            getAPi.orderStore.setCheckPriceList(true)
             // console.log('====================================');
             // console.log("dataSelect", dataPriceListSelected);
             // console.log('====================================');
         }
         const setPriceListNoApply = () => {
             getAPi.orderStore.setDataPriceListSelect({ id: '', name: "No Apply", priceListCategory: '' })
-
+            getAPi.orderStore.setCheckPriceList(false)
         }
 
 
