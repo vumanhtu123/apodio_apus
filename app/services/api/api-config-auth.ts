@@ -1,3 +1,4 @@
+import { id } from 'date-fns/locale';
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
@@ -109,6 +110,36 @@ export class AuthApi {
       // }
       // return { kind: "bad-data", LoginModelResult: data };
       return { kind: "ok", data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+  async refreshToken(refreshToken: string, ): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<BaseResponse<LoginResponse, ErrorCode>> =
+        await this.getway.apisauce.post(ApiEndpoint.REFRESH_TOKEN, {
+          refreshToken,
+          branchId: 0,
+          deviceInfo: DeviceInfo.getUniqueIdSync() + 2,
+        });
+      Loading.hide();
+      console.log("response", response.data);
+      const data = response.data;
+      // if (!response.ok) {
+      //   // hideLoading()
+      //   const problem = getGeneralApiProblem(response);
+      //   if (problem) return problem;
+      // }
+      // if (response.data.message == "Success") {
+      //   // hideLoading()
+      //   return { kind: "ok", LoginModelResult: data };
+      // }
+      // return { kind: "bad-data", LoginModelResult: data };
+      return data;
     } catch (e) {
       Loading.hide();
       return { kind: "bad-data" };

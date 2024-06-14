@@ -2,7 +2,7 @@ import { Instance, SnapshotOut, flow, types } from "mobx-state-tree";
 import { withEnvironment } from "./extensions/with-environment";
 import { AuthApi } from "../services/api/api-config-auth";
 import { LoginResponse } from "./login-model";
-import { getAccessToken, setAccessToken, setTenantId } from "../utils/storage";
+import { getAccessToken, setAccessToken, setRefreshToken, setTenantId } from "../utils/storage";
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
@@ -87,10 +87,9 @@ export const AuthenticationStoreModel = types
           store.setUserID(result.data.userId);
           store.setJTI(result.data.jti);
           setAccessToken(store.accessToken);
-          setTenantId(store.tenantId);
+          setRefreshToken(store.refreshToken)
+          // setTenantId(store.tenantId);
           store.setTenantId(result.data.tenantId);
-          const access = getAccessToken();
-          console.log("access: ", access);
           return result.data;
         } else {
           const errorM = result.errorCodes.find((error) => error.code)?.message;
@@ -137,6 +136,39 @@ export const AuthenticationStoreModel = types
       } else {
         __DEV__ && console.tron.log(result.kind);
         return result;
+      }
+    }),
+    getRefreshToken: flow(function* (refreshToken : string) {
+      // store.setUserName(username);
+      // store.setPassWord(password);
+      const authApi = new AuthApi(
+        store.environment.apiGetWay,
+        store.environment.apiUaa
+      );
+      try {
+        const result: BaseResponse<any, ErrorCode> =
+          yield authApi.refreshToken(refreshToken);
+        if (result.data != undefined) {
+          // console.log("tuvm", result);
+          // store.setAccessToken(result.data.accessToken);
+          // store.setRefreshToken(result.data.refreshToken);
+          store.setUserID(result.data.userId);
+          store.setJTI(result.data.jti);
+          setAccessToken(result.data.accessToken);
+          setRefreshToken(result.data.refreshToken)
+          // setTenantId(store.tenantId);
+          store.setTenantId(result.data.tenantId);
+          return result.data;
+        } else {
+          const errorM = result.errorCodes.find((error) => error.code)?.message;
+          console.log("err", errorM);
+          store.setErrorMessage(errorM ?? "");
+          __DEV__ && console.tron.log(result.errorCodes);
+          console.log("error");
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
       }
     }),
   }));

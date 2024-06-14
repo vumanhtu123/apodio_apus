@@ -1,3 +1,4 @@
+import { id } from 'date-fns/locale';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import _const from "../const";
 
@@ -102,7 +103,26 @@ export async function setTenantId(id: any) {
     console.log(err);
   }
 }
+export async function getDomain() {
+  try {
+    const userData = await AsyncStorage.getItem(_const.DomainStatus.DOMAIN);
+    if (userData !== null) {
+      return JSON.parse(userData);
+    } else {
+      return null;
+    }
+  } catch (err) {
+    return null;
+  }
+}
 
+export async function setDomain(value: any) {
+  try {
+    await AsyncStorage.setItem(_const.DomainStatus.DOMAIN,  JSON.stringify(value));
+  } catch (err) {
+    console.log(err);
+  }
+}
 export async function removeRefreshToken() {
   try {
     await AsyncStorage.removeItem(_const.UserStatus.REFRESH_TOKEN);

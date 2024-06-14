@@ -77,7 +77,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     ]
     useEffect(() => {
       getListOrder()
-    }, []) 
+    }, [])
     useEffect(() => {
       getListOrder()
     }, [selectedStatus])
@@ -88,6 +88,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           50,
           selectedStatus
         );
+        // console.log('firstxxxxxxxxxx' , response)
         if (response && response.kind === "ok") {
           console.log('orderLisst', JSON.stringify(response.response.data.content))
           setArrData(response.response.data.content)
@@ -98,6 +99,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         console.error("Error fetching order:", error);
       }
     };
+    
     // const { newOderStore } = useStores()
     const handleOrderMerchant = async () => {
       // const res = await newOderStore.getOrderMerchant(
@@ -299,8 +301,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         />
         <TouchableOpacity onPress={() => {
           //navigate("newOrder")
-           navigation.navigate('newOrder' as any)
-            }} 
+          navigation.navigate('newOrder' as any)
+        }}
           style={styles.btnShowModal}>
           <Images.icon_addOrder />
         </TouchableOpacity>
