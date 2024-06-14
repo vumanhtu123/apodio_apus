@@ -11,8 +11,8 @@ import {
 import { OrderApi } from "../../services/api/api_oder";
 import { VendorApi } from "../../services/api/api-vendor";
 import { AddClientAPI } from "../../services/api/api-add-client";
-import { SelectClienAPI } from "../../services/api/api_selectClient";
-import { OderListResspose } from "../order-list-select-clien-model";
+import { SelectClientAPI } from "../../services/api/api_selectClient";
+import { OderListResponse } from "../order-list-select-clien-model";
 import { OrderCityResult, OrderDistrictResult, OrderListAddressResult, OrderWardResult } from "./entities/order-address-model";
 import { number } from 'mobx-state-tree/dist/internal';
 import { SelectPriceListAPI } from '../../services/api/api-select-price-list';
@@ -166,8 +166,8 @@ export const OrderStoreModel = types
       search: string
     ) {
       try {
-        const clientAPI = new SelectClienAPI(self.environment.apiErp)
-        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page, size, sort, search)
+        const clientAPI = new SelectClientAPI(self.environment.apiErp)
+        const result: BaseResponse<OderListResponse, ErrorCode> = yield clientAPI.getListSelectClient(page, size, sort, search)
         console.log("SlectClientResult-------------", JSON.stringify(result.data))
         return result.data
       } catch (error) {
@@ -505,6 +505,26 @@ export const OrderStoreModel = types
       );
       try {
         const result: BaseResponse<TaxModel, ErrorCode> = yield orderApi.getTaxList(type, scopeType);
+        console.log("tuvm getTax result", JSON.stringify(result));
+        if (result.data !== null) {
+          console.log("tuvm getTax success");
+          return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+    cancelOrder: flow(function* (
+      id: number
+    ) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<any, ErrorCode> = yield orderApi.cancelOrder(id)
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");

@@ -38,7 +38,7 @@ const getDomainErp = () => {
 
 const getDomainGetWay = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL_GET_WAY_ERP;
+  const domain = CONFIG.API.DEV.URL_GET_WAY_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Getway", domain);
   return domain;
@@ -46,8 +46,8 @@ const getDomainGetWay = () => {
 
 const getDomainUAA = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.UAA;
-  console.log("URL", CONFIG.API.STAGING.UAA);
+  const domain = CONFIG.API.DEV.UAA;
+  console.log("URL", CONFIG.API.DEV.UAA);
   return domain;
 };
 

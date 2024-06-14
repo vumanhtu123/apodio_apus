@@ -9,7 +9,9 @@ export const UserStatus = {
   CURRENT_LANG: "CURRENT_LANG",
   TENANT_ID: "TENANT_ID",
 };
-
+export const CompanyDomain = {
+  DOMAIN : "DOMAIN"
+};
 export const ApiStatus = {
   MESSAGE_VALID: "message.valid",
   FORGOT_SEND_MAIL_VALID: "auth.send_mail_success",
@@ -28,4 +30,5 @@ export default {
   UserStatus: UserStatus,
   ApiStatus: ApiStatus,
   LinkStatus: LinkStatus,
+  DomainStatus : CompanyDomain,
 };

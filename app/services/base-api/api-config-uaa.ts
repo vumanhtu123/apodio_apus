@@ -38,7 +38,7 @@ export class UAA_API {
       },
       async (error) => {
         Loading.hide();
-        console.log("error==", error);
+        console.log("error====", error);
         if (error.toJSON().message === "Network Error") {
           Dialog.show({
             type: ALERT_TYPE.DANGER,
