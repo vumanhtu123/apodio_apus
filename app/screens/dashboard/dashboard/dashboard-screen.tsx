@@ -35,6 +35,10 @@ import { Screen } from "../../../components/screen/screen";
 import ItemOrder from "../../order/components/item-order";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useStores } from "../../../models";
+import { da } from "date-fns/locale/da";
+import { set } from "date-fns/set";
+import moment from "moment";
+import 'moment-timezone';
 
 export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
   function DashBoardScreen(props) {
@@ -46,6 +50,11 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
     const [activeSlide, setactiveSlide] = useState(0);
     const [scrollHeight, setScrollHeight] = useState(0);
     const scrollY = useRef(new Animated.Value(0)).current;
+    const [debt, setDebt] = useState('')
+    const [revenue, setRevenue] = useState('')
+    const [order, setOrder] = useState('')
+    const getAPI = useStores()
+
 
     // const { accountStore, promotionStore, notifitionStoreModel } = useStores()
     // const { userId } = accountStore
@@ -75,8 +84,42 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
       authenticationStore.onLogin();
     }
 
-    const revenue = 1235780000;
-    const debt = 1235780;
+    // const revenue = 1235780000;
+    // const debt = 1235780;
+
+    const getDataRevenueThisMonth = () => {
+
+      // Lấy ngày hiện tại theo giờ Việt Nam
+      const today = moment().tz('Asia/Ho_Chi_Minh');
+
+      // Lấy ngày mồng 1 của tháng hiện tại
+      const firstDayOfMonth = today.clone().startOf('month');
+
+
+      // Định dạng ngày thành chuỗi "YYYY-MM-DDTHH:mm:ss+07:00"
+      const formattedDateStart = firstDayOfMonth.format('YYYY-MM-DDTHH:mm:ssZ');
+      const formattedDateNow = today.format('YYYY-MM-DDTHH:mm:ssZ');
+
+
+      console.log('====================================');
+      console.log("date one of the month", formattedDateNow);
+      console.log('====================================');
+      getAPI.dashBoardStore
+        .getDataRevenueThisMonth("2024-06-12T00:00:00+07:00", "2024-06-12T00:00:00+07:00")
+        .then((data) => {
+          console.log('====================================');
+          console.log("data revenue this month:", data);
+          console.log('====================================');
+          setDebt(data?.totalDebtAmount)
+          setOrder(data?.totalOrder)
+          setRevenue(data?.totalAmount)
+        })
+
+    }
+
+    useEffect(() => {
+      getDataRevenueThisMonth()
+    }, [navigation])
 
     const hideRevenue = "*".repeat(revenue.toString().length);
     const hideDebt = "*".repeat(debt.toString().length);
@@ -381,7 +424,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.orders"} />
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.textRevenue} text="78" />
+                    <Text style={styles.textRevenue}  >{order}</Text>
                   </View>
                 </View>
               </View>
@@ -482,7 +525,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text="78"
+                      text={order}
                     />
                   </View>
                 </View>
@@ -542,7 +585,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
             image={""}
             // name={accountStore.name}
             name="Công ty Thang Long"
-            onPress={() => setIsShow(!isShow)}
+            onPress={() => props.navigation.navigate('inforAccount')}
             showInfo={isShow}
             // kind={KIND_SCREEN.HOME}
             kind={1}

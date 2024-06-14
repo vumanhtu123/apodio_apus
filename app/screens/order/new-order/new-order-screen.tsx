@@ -153,9 +153,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   };
 
   useEffect(() => {
-    setArrProduct(arrProducts);
-    getListTax();
-    orderStore.setCheckPriceList(true);
+    // setArrProduct(arrProducts);
+    // getListTax();
+    // orderStore.setCheckPriceList(true);
   }, []);
 
   return (
@@ -298,7 +298,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
           <ShowNote
             note={note}
-            setNoteData={function (note: String, arr: []) : void {
+            setNoteData={function (note: String, arr: []): void {
               console.log("note---------", note)
               console.log("arr---------", arr)
             }}
@@ -498,7 +498,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           </View>
         ) : null}
         <Button
-          onPress={() => {}}
+          onPress={() => { }}
           tx={"order.order"}
           style={styles.buttonOrder}
           textStyle={styles.textButtonOrder}
@@ -573,18 +573,18 @@ const SumMoney = (props: DataSumMoney) => {
           style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
         {props.arrVat != null
           ? props.arrVat.map((data) => {
-              return (
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: "400",
-                    color: "#747475",
-                    marginTop: 8,
-                  }}>
-                  {data.percent}
-                </Text>
-              );
-            })
+            return (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data.percent}
+              </Text>
+            );
+          })
           : null}
         <Text
           tx="order.sum_yes_texas"
@@ -601,18 +601,18 @@ const SumMoney = (props: DataSumMoney) => {
         </Text>
         {props.arrVat != null
           ? props.arrVat.map((data) => {
-              return (
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: "400",
-                    color: "#747475",
-                    marginTop: 8,
-                  }}>
-                  {data.amount}
-                </Text>
-              );
-            })
+            return (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data.amount}
+              </Text>
+            );
+          })
           : null}
         <Text
           style={{

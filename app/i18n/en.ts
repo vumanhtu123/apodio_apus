@@ -442,7 +442,7 @@ const en = {
     inforBank: "Thông tin ngân hàng",
     cancel: "Hủy",
     logout: "Thoát",
-    titalLogOut: "Bạn có trắc muốn đăng xuất",
+    titleLogOut: "Bạn có chắc chắn muốn đăng xuất",
     loading: "Loading",
     introduction: "Giới thiệu",
     introductionbody: "Điều khoản và thỏa thuận",

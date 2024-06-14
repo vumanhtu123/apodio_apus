@@ -460,56 +460,61 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             paddingBottom: 15,
           }}
           isVisible={diaLogLogout}>
-          <View style={{ width: "100%" }}>
-            <View style={styles.viewModal}>
-              <Text
-                tx="inforMerchant.titalLogOut"
-                style={{
-                  width: "100%",
-                  textAlign: "center",
-                  justifyContent: "center",
-                  paddingVertical: 16,
-                }}
-              />
-              <View
-                style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
-              />
-              <TouchableOpacity
-                style={{ width: "100%", alignItems: "center" }}
-                onPress={() => {
-                  console.log("log out app");
-                  navigation.navigate("SplashScreen" as never);
-                }}>
-                <Text
-                  tx="inforMerchant.logout"
-                  style={{ padding: 15, color: colors.palette.radicalRed }}
-                />
-              </TouchableOpacity>
-            </View>
+
+          <View style={styles.viewModal}>
+            <Text
+
+              tx="inforMerchant.titleLogOut"
+              style={{
+                width: "100%",
+                textAlign: "center",
+                justifyContent: "center",
+                paddingVertical: 16,
+                fontWeight: "700"
+              }}
+            />
             <View
-              style={[
-                {
-                  backgroundColor: colors.palette.neutral100,
-                  borderRadius: 8,
-                  marginTop: 10,
-                  width: "100%",
-                },
-              ]}>
-              <TouchableOpacity
-                style={{
-                  width: "100%",
-                  alignItems: "center",
-                  paddingVertical: 12,
-                }}
-                onPress={() => {
-                  setDiaLogout(!diaLogLogout);
-                }}>
-                <Text
-                  tx="inforMerchant.cancel"
-                  style={{ color: colors.palette.malibu }}
-                />
-              </TouchableOpacity>
-            </View>
+
+              style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
+            />
+            <TouchableOpacity
+              style={{ marginVertical: 15, alignItems: 'center' }}
+              onPress={() => {
+                console.log("log out app");
+                navigation.navigate("SplashScreen" as never);
+              }}>
+              <Text
+                tx="inforMerchant.logout"
+                style={{ color: colors.palette.radicalRed, fontWeight: "700" }}
+              />
+            </TouchableOpacity>
+
+
+          </View>
+          <View
+            style={[
+              {
+                backgroundColor: colors.palette.neutral100,
+                borderRadius: 8,
+                marginTop: 10,
+                width: "100%",
+              },
+            ]}>
+            <TouchableOpacity
+              style={{
+                width: "100%",
+                alignItems: "center",
+                paddingVertical: 12,
+
+              }}
+              onPress={() => {
+                setDiaLogout(!diaLogLogout);
+              }}>
+              <Text
+                tx="inforMerchant.cancel"
+                style={{ color: colors.palette.malibu, fontWeight: "700" }}
+              />
+            </TouchableOpacity>
           </View>
         </ReactNativeModal>
 

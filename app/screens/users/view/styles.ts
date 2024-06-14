@@ -194,7 +194,7 @@ export const styles = StyleSheet.create({
   viewModal: {
     backgroundColor: colors.palette.neutral100,
     borderRadius: 8,
-    paddingBottom:scaleHeight(26),
+    // paddingBottom:scaleHeight(26),
     paddingHorizontal:scaleHeight(14),
     width: "100%",
    
