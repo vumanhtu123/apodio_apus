@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { margin, scaleHeight } from "../../../theme";
 import { Text } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
-import DropdownModal from "../../product/component/multiSelect";
 
 interface InputSelect {
   isVisible: boolean;
   closeDialog: () => void;
   arrName: (name: any) => void;
   arrTaxes?: {}[];
+  arrEditName: any;
 }
 
 export const ModalTaxes = (data: InputSelect) => {
-  var items: any;
+  const [name, setName] = useState({ label: "", value: "" });
+  useEffect(() => {}, [name]);
+  console.log("tuvm apply", name);
   return (
     <Modal
       onBackdropPress={() => data.closeDialog()}
@@ -59,16 +61,17 @@ export const ModalTaxes = (data: InputSelect) => {
             marginHorizontal: 15,
           }}
         />
-        <DropdownModal
-          required={true}
-          arrData={data.arrTaxes ?? []}
-          onPressChoice={(item: any) => {
-            items = item.map((item: { value: any; text: any }) => item.text);
-            // handleSelect(items);
-          }}
-          // dataEdit={}
+        <InputSelect
           titleTx={"order.taxes"}
           hintTx={"order.selectTaxes"}
+          isSearch={false}
+          required={true}
+          arrData={data.arrTaxes ?? []}
+          dataDefault={name.label ?? ""}
+          onPressChoice={(item: any) => {
+            setName(item);
+            console.log("name", name);
+          }}
           styleView={{
             backgroundColor: "#F6F7F9",
             paddingHorizontal: 15,
@@ -109,9 +112,8 @@ export const ModalTaxes = (data: InputSelect) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              data.arrName(items);
-              data.closeDialog();
-              console.log("item", items);
+              data.arrName(name);
+              console.log("item b", name);
             }}>
             <View
               style={{

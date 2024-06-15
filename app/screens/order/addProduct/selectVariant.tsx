@@ -105,7 +105,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 ...item,
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
-                price: 28000000,
+                price: 28000,
               };
             }
             return item;
@@ -121,7 +121,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 ...item,
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
-                price: 28000000,
+                price: 28000,
               };
             }
             return item;

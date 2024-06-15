@@ -1,5 +1,5 @@
-import { PriceList } from './../../screens/order/components/header-order';
-import { ClientSlected } from './../order-list-select-clien-model';
+import { PriceList } from "./../../screens/order/components/header-order";
+import { ClientSlected } from "./../order-list-select-clien-model";
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { InputSelectModel, OrderResult } from "./entities/order-store-model";
@@ -13,11 +13,18 @@ import { AddClientAPI } from "../../services/api/api-add-client";
 import { SelectClienAPI } from "../../services/api/api_selectClient";
 import { OderListResspose } from "../order-list-select-clien-model";
 import { AddressApi } from "../../services/api/api_address";
-import { OrderCityResult, OrderDistrictResult, OrderListAddressResult, OrderWardResult } from "./entities/order-address-model";
-import { number } from 'mobx-state-tree/dist/internal';
-import { SelectPriceListAPI } from '../../services/api/api-select-price-list';
-import { PriceListResponse } from '../select-price-list/select-price-list.-model';
-import { OrderVariantResult, TaxModel } from './entities';
+import {
+  OrderCityResult,
+  OrderDistrictResult,
+  OrderListAddressResult,
+  OrderWardResult,
+} from "./entities/order-address-model";
+import { boolean, number } from "mobx-state-tree/dist/internal";
+import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
+import { PriceListResponse } from "../select-price-list/select-price-list.-model";
+import { OrderVariantResult, TaxModel } from "./entities";
+import { InputTaxLine, TaxLineModel } from "./entities/order-tax-lines-model";
+import { DebtModel } from "./entities/order-debt-limit-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -53,11 +60,19 @@ export const OrderStoreModel = types
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
-    orderId : types.optional(types.number, 0),
-    dataClientSelect: types.optional(types.frozen<ClientSlected>(),{id: '', name: '', code: '', phoneNumber: ''}),
-    sortPriceList : types.optional(types.string,'')
-    
-
+    orderId: types.optional(types.number, 0),
+    dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
+      id: "",
+      name: "",
+      code: "",
+      phoneNumber: "",
+    }),
+    dataDebtLimit: types.optional(types.frozen<any>(), {
+      isHaveDebtLimit: false,
+      debtAmount: 0,
+      amountOwed: "",
+    }),
+    sortPriceList: types.optional(types.string, ""),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -110,12 +125,15 @@ export const OrderStoreModel = types
     setOrderId(id: number) {
       self.orderId = id;
     },
-    setDataClientSelect(value: any){
-      self.dataClientSelect = value
+    setDataClientSelect(value: any) {
+      self.dataClientSelect = value;
     },
-    setSortPriceList(sort: any){
-      self.sortPriceList = sort
-    }
+    setDataDebtLimit(value: any) {
+      self.dataDebtLimit = value;
+    },
+    setSortPriceList(sort: any) {
+      self.sortPriceList = sort;
+    },
   }))
   .actions((self) => ({
     getListOrder: flow(function* (page: number, size: number) {
@@ -142,31 +160,41 @@ export const OrderStoreModel = types
       search: string
     ) {
       try {
-        const clientAPI = new SelectClienAPI(self.environment.apiErp)
-        const result: BaseResponse<OderListResspose, ErrorCode> = yield clientAPI.getListSelectClient(page,size, sort, search)
-        console.log("SlectClientResult-------------",JSON.stringify(result.data))
-        return result.data
+        const clientAPI = new SelectClienAPI(self.environment.apiErp);
+        const result: BaseResponse<OderListResspose, ErrorCode> =
+          yield clientAPI.getListSelectClient(page, size, sort, search);
+        console.log(
+          "SlectClientResult-------------",
+          JSON.stringify(result.data)
+        );
+        return result.data;
       } catch (error) {
-        console.log("Get list info company", error)
+        console.log("Get list info company", error);
       }
     }),
 
-    getListPriceList: flow(function * (page: number, size: number, sort: string , search: string){
+    getListPriceList: flow(function* (
+      page: number,
+      size: number,
+      sort: string,
+      search: string
+    ) {
       try {
-        const PriceListAPI = new SelectPriceListAPI(self.environment.api)
-        const result: BaseResponse<PriceListResponse,ErrorCode> = yield PriceListAPI.getSelectPriceListAPI(page,size,sort,search)
-        console.log("SlectPriceList-------------",JSON.stringify(result.data))
-        return result.data
+        const PriceListAPI = new SelectPriceListAPI(self.environment.api);
+        const result: BaseResponse<PriceListResponse, ErrorCode> =
+          yield PriceListAPI.getSelectPriceListAPI(page, size, sort, search);
+        console.log("SlectPriceList-------------", JSON.stringify(result.data));
+        return result.data;
       } catch (error) {
-        console.log("Get list SlectPriceList error", error)
+        console.log("Get list SlectPriceList error", error);
       }
     }),
 
-    postClient: flow(function * (clientData){
-      const client = new AddClientAPI(self.environment.apiErp)
-      const result = yield client.createClient(clientData)
-      if (result.kind === 'ok') {
-        return result
+    postClient: flow(function* (clientData) {
+      const client = new AddClientAPI(self.environment.apiErp);
+      const result = yield client.createClient(clientData);
+      if (result.kind === "ok") {
+        return result;
       } else {
         return result;
       }
@@ -461,11 +489,30 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<any, ErrorCode> =
+        const result: BaseResponse<DebtModel, ErrorCode> =
           yield orderApi.getDebtLimit(partnerId);
         if (result.data !== null) {
           console.log("tuvm getDebt success");
           return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
+    postTaxLine: flow(function* (dataForm: any) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      console.log("data form:", dataForm);
+      try {
+        const result: BaseResponse<TaxLineModel, ErrorCode> =
+          yield orderApi.postTaxLines(dataForm);
+        if (result.data !== null) {
+          return result.data.taxLines;
         } else {
           return result.errorCodes;
         }

@@ -22,6 +22,7 @@ import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typesc
 import AutoHeightImage from "react-native-auto-height-image";
 import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
+import { number } from "mobx-state-tree/dist/internal";
 
 interface AddProduct {
   onPress: ({}) => void;
@@ -35,7 +36,7 @@ interface AddProduct {
   unit?: string;
   cost?: string;
   qty?: string;
-  VAT?: {}[];
+  VAT?: string;
   valueVAT?: string;
   sumTexas: string;
   addTaxes?: boolean;
@@ -69,7 +70,11 @@ export default function ItemListProduct(props: AddProduct) {
   } = useForm({
     mode: "all",
   });
-  console.log("taxes VAT", VAT);
+  console.log("taxes VAT", props.cost);
+  const Sum = (): Number => {
+    return Number(props.cost) + Number(props.valueVAT ?? 0);
+  };
+  console.log("sum", props.valueVAT);
   return (
     <View>
       <TouchableOpacity
@@ -135,33 +140,32 @@ export default function ItemListProduct(props: AddProduct) {
               }}
             />
           </View>
-          {VAT != null
-            ? VAT.map((item: any, index) => {
-                return (
-                  <View style={{ flexDirection: "row", marginTop: 6 }}>
-                    <Images.ic_tag />
-                    <Text
-                      style={{
-                        fontSize: 10,
-                        fontWeight: "400",
-                        color: "#242424",
-                      }}>
-                      {translate("order.taxes_vat")}
-                      {item + " "}
-                      <Text
-                        style={{
-                          fontSize: 10,
-                          fontWeight: "400",
-                          fontStyle: "italic",
-                          color: "#F4AD22",
-                        }}>
-                        {valueVAT}
-                      </Text>
-                    </Text>
-                  </View>
-                );
-              })
-            : null}
+          {VAT != undefined ? (
+            <View style={{ flexDirection: "column", marginTop: 6 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Images.ic_tag />
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "400",
+                    color: "#242424",
+                    marginHorizontal: 4,
+                  }}>
+                  {/* {translate("order.taxes_vat")} */}
+                  {VAT + " "}
+                </Text>
+              </View>
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  fontStyle: "italic",
+                  color: "#F4AD22",
+                }}>
+                {valueVAT}
+              </Text>
+            </View>
+          ) : null}
           <TouchableOpacity onPress={(item) => onPressSelectTexas(item)}>
             <View
               style={{
@@ -236,27 +240,27 @@ export default function ItemListProduct(props: AddProduct) {
               </View>
             </TouchableOpacity>
           )}
-          {sumTexas != null ? (
+          {/* {sumTexas != null ? ( */}
+          <Text
+            style={{
+              fontSize: 10,
+              fontWeight: "400",
+              color: "#242424",
+              fontStyle: "italic",
+              marginVertical: 6,
+            }}>
+            {translate("order.sum_texas")}
             <Text
               style={{
                 fontSize: 10,
                 fontWeight: "400",
-                color: "#242424",
+                color: "#FF4956",
                 fontStyle: "italic",
-                marginVertical: 6,
               }}>
-              {translate("order.sum_texas")}
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  color: "#FF4956",
-                  fontStyle: "italic",
-                }}>
-                {" " + sumTexas}
-              </Text>
+              {" " + Sum()}
             </Text>
-          ) : null}
+          </Text>
+          {/* ) : null} */}
         </View>
         <View
           style={{

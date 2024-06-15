@@ -1,4 +1,5 @@
-export interface DebtLimit {
-  debtLimit: any;
-  canAcceptDebtLimit: boolean;
+export interface DebtModel {
+  isHaveDebtLimit: boolean;
+  debtAmount: number;
+  amountOwed: any;
 }

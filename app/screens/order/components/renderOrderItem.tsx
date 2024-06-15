@@ -33,7 +33,7 @@ const RenderOrderItem = ({
 
   const handleAddProduct = (data: any) => {
     console.log(data);
-    const newArr1 = { ...data, amount: 1, price: "28.000.000" };
+    const newArr1 = { ...data, amount: 1, price: "28000" };
     const newArr = dataProductAddOrder.concat(newArr1);
     setDataProductAddOrder(newArr);
     console.log(dataProductAddOrder);
