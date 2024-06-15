@@ -2,6 +2,7 @@ import { PriceList } from "./../../screens/order/components/header-order";
 import { ClientSlected } from "./../order-list-select-clien-model";
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
+import { ProductApi } from "../../services/api/api-product";
 import { InputSelectModel, OrderResult } from "./entities/order-store-model";
 import {
   CreateAddressResult,
@@ -12,20 +13,19 @@ import { VendorApi } from "../../services/api/api-vendor";
 import { AddClientAPI } from "../../services/api/api-add-client";
 import { SelectClientAPI } from "../../services/api/api_selectClient";
 import { OderListResponse } from "../order-list-select-clien-model";
-import { AddressApi } from "../../services/api/api_address";
 import {
   OrderCityResult,
   OrderDistrictResult,
   OrderListAddressResult,
   OrderWardResult,
 } from "./entities/order-address-model";
-import { boolean, number } from "mobx-state-tree/dist/internal";
+import { number } from "mobx-state-tree/dist/internal";
 import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
 import {
   PriceListResponse,
   PriceListSelect,
 } from "../select-price-list/select-price-list.-model";
-import { OrderVariantResult, TaxModel } from "./entities";
+import { OrderVariantResult, PriceVariantResult, TaxModel } from "./entities";
 import { TaxLineModel } from "./entities/order-tax-lines-model";
 import { DebtModel } from "./entities/order-debt-limit-model";
 
@@ -50,10 +50,6 @@ export const OrderStoreModel = types
       label: "",
     }),
     dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
-    dataProductAddOrderNew: types.optional(
-      types.array(types.frozen<never>()),
-      []
-    ),
     checkPriceList: types.optional(types.boolean, false),
     sortCreateClient: types.optional(types.string, ""),
     search: types.optional(types.string, ""),
@@ -64,22 +60,25 @@ export const OrderStoreModel = types
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
     orderId: types.optional(types.number, 0),
+    tagId: types.optional(types.array(types.number), []),
+    productCategoryId: types.optional(types.number, 0),
+    nameCategory: types.optional(types.string, ""),
     dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
       id: "",
       name: "",
       code: "",
       phoneNumber: "",
     }),
-    dataDebtLimit: types.optional(types.frozen<any>(), {
-      isHaveDebtLimit: false,
-      debtAmount: 0,
-      amountOwed: "",
-    }),
     sortPriceList: types.optional(types.string, ""),
     dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {
       id: "",
       name: "",
       priceListCategory: "",
+    }),
+    dataDebtLimit: types.optional(types.frozen<any>(), {
+      isHaveDebtLimit: false,
+      debtAmount: 0,
+      amountOwed: "",
     }),
   })
   .extend(withEnvironment)
@@ -115,6 +114,15 @@ export const OrderStoreModel = types
     setSort(sort: any) {
       self.sort = sort;
     },
+    setTagId(tagId: any) {
+      self.tagId = tagId;
+    },
+    setProductCategoryId(value: any) {
+      self.productCategoryId = value;
+    },
+    setNameCategory(value: any) {
+      self.nameCategory = value;
+    },
     setCheckPriceList(value: any) {
       self.checkPriceList = value;
     },
@@ -123,9 +131,6 @@ export const OrderStoreModel = types
     },
     setReloadAddressScreen(value: boolean) {
       self.reloadAddressScreen = value;
-    },
-    setDataProductAddOrderNew(value: any) {
-      self.dataProductAddOrderNew = value;
     },
     setIsLoadMore(isLoadMore: boolean) {
       self.isLoadMore = isLoadMore;
@@ -221,7 +226,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number
@@ -236,7 +241,7 @@ export const OrderStoreModel = types
         size,
         productCategoryId,
         search,
-        // tagId,
+        tagIds,
         sortId,
         isLoadMore,
         warehouseId
@@ -255,7 +260,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number,
@@ -271,11 +276,26 @@ export const OrderStoreModel = types
         size,
         productCategoryId,
         search,
-        // tagId,
+        tagIds,
         sortId,
         isLoadMore,
         warehouseId,
         productTemplateId
+      );
+      console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getPriceOrderVariant: flow(function* (value: any) {
+      // console.log('page' , page)
+      const orderApi = new ProductApi(self.environment.api);
+      const result: PriceVariantResult = yield orderApi.getPriceOrderVariant(
+        value
       );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
@@ -291,7 +311,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number,
@@ -308,7 +328,7 @@ export const OrderStoreModel = types
           size,
           productCategoryId,
           search,
-          // tagId,
+          tagIds,
           sortId,
           isLoadMore,
           warehouseId,
@@ -328,7 +348,7 @@ export const OrderStoreModel = types
       size: number,
       productCategoryId: number,
       search: string,
-      // tagId: number,
+      tagIds: [],
       sortId: string,
       isLoadMore: boolean,
       warehouseId: number,
@@ -346,7 +366,7 @@ export const OrderStoreModel = types
           size,
           productCategoryId,
           search,
-          // tagId,
+          tagIds,
           sortId,
           isLoadMore,
           warehouseId,
@@ -366,12 +386,12 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       search: string,
-      countryId: number,
+      countryId: number
       // regionId: number,
-      regionId: number
+      // regionId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderCityResult = yield orderApi.getListCity(
         page,
         size,
@@ -395,7 +415,7 @@ export const OrderStoreModel = types
       cityId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderDistrictResult = yield orderApi.getListDistrict(
         page,
         size,
@@ -418,7 +438,7 @@ export const OrderStoreModel = types
       districtId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderWardResult = yield orderApi.getListWard(
         page,
         size,
@@ -436,7 +456,7 @@ export const OrderStoreModel = types
     }),
     getListAddress: flow(function* (partnerId: number) {
       // console.log('page' , page)
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderListAddressResult = yield orderApi.getListAddress(
         partnerId
       );
@@ -450,7 +470,7 @@ export const OrderStoreModel = types
       }
     }),
     createAddress: flow(function* (value: any) {
-      const orderApi = new AddressApi(self.environment.apiAddress);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: CreateAddressResult = yield orderApi.createAddress(value);
       // console.log('resulttt' , result)
       if (result.kind === "ok") {

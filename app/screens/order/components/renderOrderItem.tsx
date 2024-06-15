@@ -27,58 +27,22 @@ const RenderOrderItem = ({
   viewProduct,
   handleProductDetail,
   handleClassifyDetail,
+  handleAddProduct,
+  handleMinus,
+  handlePlus,
 }: any) => {
   const { orderStore } = useStores();
-  const { dataProductAddOrder, setDataProductAddOrder } = orderStore;
-
-  const handleAddProduct = (data: any) => {
-    console.log(data);
-    const newArr1 = { ...data, amount: 1, price: "28000" };
-    const newArr = dataProductAddOrder.concat(newArr1);
-    setDataProductAddOrder(newArr);
-    console.log(dataProductAddOrder);
-  };
-
-  const handleMinus = (data: any) => {
-    const newArr1 = dataProductAddOrder.slice();
-    const newArr2 = newArr1.map((items) => {
-      if (items.id === data.id) {
-        const amounts = items.amount - 1;
-        if (amounts === 0) {
-          return;
-        } else {
-          return { ...items, amount: amounts };
-        }
-      } else {
-        return items;
-      }
-    });
-    const newArr3 = newArr2.filter((items) => items !== undefined);
-    setDataProductAddOrder(newArr3);
-    console.log(dataProductAddOrder);
-  };
-  const handlePlus = (data: any) => {
-    const newArr1 = dataProductAddOrder.slice();
-    const newArr2 = newArr1.map((items) => {
-      if (items.id === data.id) {
-        return { ...items, amount: items.amount + 1 };
-      } else {
-        return items;
-      }
-    });
-    setDataProductAddOrder(newArr2);
-    console.log(dataProductAddOrder);
-  };
-
-  const idItemCheck = dataProductAddOrder.filter(
-    (items) => items.id === item.id
-  );
 
   if (isGridView) {
     return (
       <TouchableOpacity
-        key={index}
-        disabled={item.quantityInventory === 0 ? true : false}
+        key={item.id}
+        disabled={
+          item.quantityInventory === 0 ||
+          item.quantityInventory < item.minQuantity
+            ? true
+            : false
+        }
         onPress={() => {
           viewProduct === "VIEW_PRODUCT"
             ? handleProductDetail(item.id)
@@ -90,7 +54,11 @@ const RenderOrderItem = ({
             width: scaleWidth(107),
             // height: scaleHeight(124),
             marginRight: scaleWidth(11),
-            opacity: item.quantityInventory === 0 ? 0.5 : 1,
+            opacity:
+              item.quantityInventory === 0 ||
+              item.quantityInventory < item.minQuantity
+                ? 0.5
+                : 1,
           },
         ]}>
         <View
@@ -204,9 +172,9 @@ const RenderOrderItem = ({
                 />
               )
             ) : null}
-            {viewProduct === "VIEW_PRODUCT" ? null : idItemCheck.length ===
-              0 ? (
-              item.quantityInventory === 0 ? null : (
+            {viewProduct === "VIEW_PRODUCT" ? null : item.isSelect === false ? (
+              item.quantityInventory === 0 ||
+              item.quantityInventory < item.minQuantity ? null : (
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
@@ -227,6 +195,17 @@ const RenderOrderItem = ({
                 }}>
                 <TouchableOpacity
                   onPress={() => handleMinus(item)}
+                  disabled={
+                    orderStore.checkPriceList === true
+                      ? item.amount === item.minQuantity ||
+                        item.amount ===
+                          Math.ceil(item.minQuantity / item.conversionRate)
+                        ? true
+                        : false
+                      : item.amount === 1
+                      ? true
+                      : false
+                  }
                   style={{ width: "30%", alignItems: "center" }}>
                   <Images.icon_minus />
                 </TouchableOpacity>
@@ -235,10 +214,23 @@ const RenderOrderItem = ({
                     width: "40%",
                     textAlign: "center",
                   }}>
-                  {idItemCheck[0].amount}
+                  {item.amount}
                 </Text>
                 <TouchableOpacity
                   onPress={() => handlePlus(item)}
+                  disabled={
+                    orderStore.checkPriceList === true
+                      ? item.amount === item.quantityInventory ||
+                        item.amount ===
+                          Math.floor(
+                            item.quantityInventory / item.conversionRate
+                          )
+                        ? true
+                        : false
+                      : item.amount === item.quantityInventory
+                      ? true
+                      : false
+                  }
                   style={{ width: "30%", alignItems: "center" }}>
                   <Images.icon_plusGreen />
                 </TouchableOpacity>
@@ -251,8 +243,13 @@ const RenderOrderItem = ({
   } else {
     return (
       <TouchableOpacity
-        key={index}
-        disabled={item.quantityInventory === 0 ? true : false}
+        key={item.id}
+        disabled={
+          item.quantityInventory === 0 ||
+          item.quantityInventory < item.minQuantity
+            ? true
+            : false
+        }
         onPress={() =>
           viewProduct === "VIEW_PRODUCT"
             ? handleProductDetail(item.id)
@@ -262,7 +259,11 @@ const RenderOrderItem = ({
           stylesItem.item,
           {
             width: scaleWidth(343),
-            opacity: item.quantityInventory === 0 ? 0.5 : 1,
+            opacity:
+              item.quantityInventory === 0 ||
+              item.quantityInventory < item.minQuantity
+                ? 0.5
+                : 1,
           },
         ]}>
         <View
@@ -382,9 +383,9 @@ const RenderOrderItem = ({
                 />
               )
             ) : null}
-            {viewProduct === "VIEW_PRODUCT" ? null : idItemCheck.length ===
-              0 ? (
-              item.quantityInventory === 0 ? null : (
+            {viewProduct === "VIEW_PRODUCT" ? null : item.isSelect === false ? (
+              item.quantityInventory === 0 ||
+              item.quantityInventory < item.minQuantity ? null : (
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
@@ -405,6 +406,17 @@ const RenderOrderItem = ({
                 }}>
                 <TouchableOpacity
                   onPress={() => handleMinus(item)}
+                  disabled={
+                    orderStore.checkPriceList === true
+                      ? item.amount === item.minQuantity ||
+                        item.amount ===
+                          Math.ceil(item.minQuantity / item.conversionRate)
+                        ? true
+                        : false
+                      : item.amount === 1
+                      ? true
+                      : false
+                  }
                   style={{ width: "15%", alignItems: "center" }}>
                   <Images.icon_minus />
                 </TouchableOpacity>
@@ -413,10 +425,23 @@ const RenderOrderItem = ({
                     width: "25%",
                     textAlign: "center",
                   }}>
-                  {idItemCheck[0].amount}
+                  {item.amount}
                 </Text>
                 <TouchableOpacity
                   onPress={() => handlePlus(item)}
+                  disabled={
+                    orderStore.checkPriceList === true
+                      ? item.amount === item.quantityInventory ||
+                        item.amount ===
+                          Math.floor(
+                            item.quantityInventory / item.conversionRate
+                          )
+                        ? true
+                        : false
+                      : item.amount === item.quantityInventory
+                      ? true
+                      : false
+                  }
                   style={{ width: "15%", alignItems: "center" }}>
                   <Images.icon_plusGreen />
                 </TouchableOpacity>

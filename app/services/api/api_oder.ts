@@ -72,7 +72,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number
@@ -81,14 +81,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_PRODUCT + sort,
+        ApiEndpoint.GET_LIST_ORDER_PRODUCT + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
         }
       );
@@ -110,7 +111,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number,
@@ -120,14 +121,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_VARIANT + sort,
+        ApiEndpoint.GET_LIST_ORDER_VARIANT + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
           productTemplateId: productTemplateId,
         }
@@ -150,7 +152,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number,
@@ -160,14 +162,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_PRODUCT_PRICE + sort,
+        ApiEndpoint.GET_LIST_ORDER_PRODUCT_PRICE + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
           priceListId: priceListId,
         }
@@ -190,7 +193,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number,
@@ -201,14 +204,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_VARIANT_PRICE + sort,
+        ApiEndpoint.GET_LIST_ORDER_VARIANT_PRICE + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
           productTemplateId: productTemplateId,
           priceListId: priceListId,
@@ -267,6 +271,7 @@ export class OrderApi {
           scopeType: scopeType,
         });
       const data = response.data;
+      Loading.hide()
       if (response.status === 200) {
         Loading.hide();
         return data;

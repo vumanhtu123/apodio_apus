@@ -222,7 +222,7 @@ export const NewDelivery: FC = observer(
                 const newDistrict = { id: district.id, name: district.label }
                 const newWard = { id: wards.id, name: wards.label }
                 const dataCreate = {
-                    partnerId: 953,
+                    partnerId: Number(orderStore.dataClientSelect.id),
                     phoneNumber: data.phone,
                     addressType: "DELIVERY_ADDRESS",
                     country: newCountry,
@@ -230,6 +230,7 @@ export const NewDelivery: FC = observer(
                     district: newDistrict,
                     ward: newWard,
                     address: data.address,
+                    isDefault: valueSwitch,
                 }
                 try {
                     const response = await orderStore.createAddress(dataCreate)
