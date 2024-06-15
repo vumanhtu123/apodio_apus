@@ -1,5 +1,4 @@
 // import { ApiOrder } from './../services/base-api/api-config-order';
-import { ApiAddress } from "../services/base-api/api-config-address";
 import {
   Api,
   ApiErp,
@@ -33,7 +32,6 @@ export class Environment {
     this.apiUpload = new ApiUpload();
     this.apiUaa = new UAA_API();
     this.apiOrder = new ApiOrder();
-    this.apiAddress = new ApiAddress();
     this.apiAccounting = new ApiAccounting();
 
     this.apiAccount = new ApiAccounting();
@@ -43,7 +41,6 @@ export class Environment {
     global.apiUpload = new ApiUpload();
     global.apiUaa = new UAA_API();
     global.ApiOrder = new ApiOrder();
-    global.apiAddress = new ApiAddress();
     global.apiAccount = new ApiAccounting();
   }
 
@@ -58,7 +55,6 @@ export class Environment {
     await this.apiUpload.setup();
     await this.apiUaa.setup();
     await this.apiOrder.setup();
-    await this.apiAddress.setup();
     await this.apiAccounting.setup();
 
     await this.apiAccount.setup();
@@ -69,7 +65,6 @@ export class Environment {
     global.apiUpload = new ApiUpload();
     global.apiUaa = new UAA_API();
     global.ApiOrder = new ApiOrder();
-    global.apiAddress = new ApiAddress();
     global.apiAccounting = new ApiAccounting();
 
     global.apiAccount = new ApiAccounting();
@@ -91,5 +86,4 @@ export class Environment {
   apiUpload: ApiUpload;
   apiAccounting : ApiAccounting;
   apiOrder: ApiOrder;
-  apiAddress: ApiAddress;
 }

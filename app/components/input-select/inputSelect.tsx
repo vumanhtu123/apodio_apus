@@ -200,10 +200,9 @@ export function InputSelect(props: InputSelectProps) {
             setShowModal(false);
           }}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+            behavior={Platform.OS === "ios" ? "height" : "height"}
             keyboardVerticalOffset={0}
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <View style={VIEWMODAL}>
               {/* <Text text="chon ly do" /> */}
               {isSearch ? (

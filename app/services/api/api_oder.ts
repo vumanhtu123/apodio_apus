@@ -5,6 +5,9 @@ import { ApiEndpoint } from "../base-api/api_endpoint";
 import { Loading } from "../../components/dialog-notification";
 import { ApiAccounting } from "../base-api/api-config-accounting";
 import { TaxModel } from "../../models/order-store/entities/order-tax-model";
+import { DebtLimit } from "../../models/order-store/entities/order-debt-limit-model";
+import { TaxLineModel } from "../../models/order-store/entities/order-tax-lines-model";
+import { TYPE_DEBT, CONTRACT_TYPE } from "../../utils/enum";
 
 export class OrderApi {
   private api: ApiOrder;
@@ -69,7 +72,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number
@@ -78,14 +81,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_PRODUCT + sort,
+        ApiEndpoint.GET_LIST_ORDER_PRODUCT + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
         }
       );
@@ -107,7 +111,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number,
@@ -117,14 +121,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_VARIANT + sort,
+        ApiEndpoint.GET_LIST_ORDER_VARIANT + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
           productTemplateId: productTemplateId,
         }
@@ -147,7 +152,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number,
@@ -157,14 +162,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_PRODUCT_PRICE + sort,
+        ApiEndpoint.GET_LIST_ORDER_PRODUCT_PRICE + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
           priceListId: priceListId,
         }
@@ -187,7 +193,7 @@ export class OrderApi {
     size: number,
     productCategoryId: number,
     search: string,
-    // tagId: number,
+    tagIds: [],
     sort: string,
     isLoadMore: boolean,
     warehouseId: number,
@@ -198,14 +204,15 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
+      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_VARIANT_PRICE + sort,
+        ApiEndpoint.GET_LIST_ORDER_VARIANT_PRICE + "?size=" + size + sort + tagString ,
         {
           page: page,
-          size: size,
+          // size: size,
           productCategoryId: productCategoryId,
           search: search,
-          // tagId: tagId == 0 ? null : tagId,
+          // tagIds: tagIds.length === 0 ? null : tagIds,
           warehouseId: warehouseId,
           productTemplateId: productTemplateId,
           priceListId: priceListId,
@@ -264,9 +271,66 @@ export class OrderApi {
           scopeType: scopeType,
         });
       const data = response.data;
+      Loading.hide()
       if (response.status === 200) {
+        Loading.hide();
         return data;
       }
+      Loading.hide();
+      return data;
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+
+  async getDebtLimit(
+    partnerId: any
+    // type: any,
+    // contractType: any
+  ): Promise<BaseResponse<DebtLimit, ErrorCode>> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<BaseResponse<DebtLimit, ErrorCode>> =
+        await this.apiAccount.apisauce.get(ApiEndpoint.GET_DEBT_LIMIT, {
+          partnerId: partnerId,
+          type: TYPE_DEBT.EXTERNAL,
+          contractType: CONTRACT_TYPE.SALE,
+        });
+      const data = response.data;
+      if (response.status === 200) {
+        console.log("tuvm debt", data);
+        Loading.hide();
+        return data;
+      }
+      Loading.hide();
+      return data;
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+
+  async postTaxLines(
+    formTax: []
+  ): Promise<BaseResponse<TaxLineModel, ErrorCode>> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<BaseResponse<TaxLineModel, ErrorCode>> =
+        await this.apiAccount.apisauce.post(
+          ApiEndpoint.POST_LIST_TAX_LINES,
+          formTax
+        );
+      const data = response.data;
+      if (response.status === 200) {
+        Loading.hide();
+        return data;
+      }
+      Loading.hide();
       return data;
     } catch (e) {
       Loading.hide();
