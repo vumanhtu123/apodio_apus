@@ -48,6 +48,7 @@ export class SelectClientAPI {
                 return result?.errorCodes ;
               }   
         } catch (error) {
+          Loading.hide();
             return { kind: "bad-data", result: error };
             
         }

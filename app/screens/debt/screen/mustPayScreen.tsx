@@ -4,7 +4,7 @@ import { FC } from "react";
 import { TabScreenProps } from "../../../navigators/bottom-navigation";
 import { NavigatorParamList } from "../../../navigators";
 import React from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
@@ -12,9 +12,34 @@ import { Images } from "../../../../assets";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Styles } from "./styles";
+import { ItemListMustPay } from "../component/itemListMustPay";
 
 export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> = observer(
     function mustPayScreen(props) {
+        const faceData = [
+            {
+                id: 1,
+                name: "NCC",
+                totalLiabilities: "2.000.000",
+                paid: "1.000.000",
+                musPay: "1.000.000"
+            },
+            {
+                id: 2,
+                name: "NCC",
+                totalLiabilities: "2.000.000",
+                paid: "1.000.000",
+                musPay: "1.000.000"
+            },
+            {
+                id: 3,
+                name: "NCC",
+                totalLiabilities: "2.000.000",
+                paid: "1.000.000",
+                musPay: "1.000.000"
+            }
+        ]
+
         return (
             <View style={{ flex: 1, backgroundColor: 'red' }}>
                 <Header
@@ -37,7 +62,6 @@ export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> 
                 <View
                     style={Styles.bodyCardMusPay}
                 >
-
                     <View
                         style={{ flexDirection: "row", justifyContent: 'space-between' }}
                     >
@@ -53,6 +77,10 @@ export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> 
                         </TouchableOpacity>
                     </View>
                 </View>
+                <FlatList
+                    data={faceData}
+                    renderItem={({ item }) => <ItemListMustPay item={item} />}
+                />
             </View>
         )
     }
