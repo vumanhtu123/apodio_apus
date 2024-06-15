@@ -150,7 +150,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                 }}
                     onPress={() => {
                         setWatching(false)
-                        setPriceListNoApply()
+                        // setPriceListNoApply()
                         // setNoApply()
                         console.log("dataNoApply", dataPriceListSelected);
 
@@ -164,7 +164,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                     <TouchableOpacity
                         onPress={() => {
                             setWatching(false)
-                            setPriceListNoApply()
+                            // setPriceListNoApply()
                             // setIdIndexSelect('noApply')
                         }}
                     >

@@ -64,6 +64,7 @@ export const ApiEndpoint = {
   GET_DATA_REVENUE_THIS_MONTH: "/api/v1/retail/sale-order/dashboard",
   CANCEL_ORDER : '/api/v1/retail/sale-order/cancel',
   GET_INFOR_ACCOUNT: "/api/v1/merchant/partners",
+
   POST_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
   GET_DEBT_LIMIT1: "/api/v1/mobile/account-move/debt",
 };

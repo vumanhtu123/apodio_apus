@@ -6,6 +6,7 @@ import { ApiUpload } from "../base-api/api_upload";
 import { hideLoading, showLoading } from '../../utils/toast';
 import { PriceListResponse } from '../../models/select-price-list/select-price-list.-model';
 import { ApiEndpoint } from '../base-api/api_endpoint';
+import { Loading } from '../../components/dialog-notification';
 
 export class SelectPriceListAPI {
     private api : Api;
@@ -20,7 +21,9 @@ export class SelectPriceListAPI {
         sort: string,
         search: string
     ): Promise<any> {
-        showLoading()
+        Loading.show({
+            text: 'Loading...',
+          })
         try {
             console.log("doan dev :" , this.api.config.url)
             
@@ -34,7 +37,7 @@ export class SelectPriceListAPI {
                     search : search
                 }
             );
-            hideLoading();
+            Loading.hide();
             const result  = response.data;
             if (result?.data != null){
                 return result
