@@ -8,6 +8,7 @@ const en = {
     listCompany: "Danh sách công ty",
     filter: " Bộ lọc",
     saveChange: "Lưu thay đổi",
+    edit: "Sửa",
 
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
@@ -190,6 +191,7 @@ const en = {
     date: "Date",
     money: "Money",
     cash: "Cash",
+    editOrder: "Sửa đơn hàng",
     newAddressDialog: "Thêm địa chỉ mới thành công",
     editAddressDialog: "Sửa địa chỉ thành công",
     addProduct: "Chọn sản phẩm",

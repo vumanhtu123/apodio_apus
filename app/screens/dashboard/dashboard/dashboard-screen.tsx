@@ -121,8 +121,8 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
       getDataRevenueThisMonth()
     }, [navigation])
 
-    const hideRevenue = "*".repeat(revenue.toString().length);
-    const hideDebt = "*".repeat(debt.toString().length);
+    // const hideRevenue = "*".repeat(revenue.toString().length);
+    // const hideDebt = "*".repeat(debt.toString().length);
 
     const arrBanner = [
       {
@@ -404,7 +404,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.revenue"} />
                   {showRevenue === false ? (
-                    <Text style={styles.textRevenue} text={hideRevenue} />
+                    <Text style={styles.textRevenue} text={'hideRevenue'} />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
                       <Text
@@ -436,7 +436,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.debt"} />
                   {showRevenue === false ? (
-                    <Text style={styles.textRevenue} text={hideDebt} />
+                    <Text style={styles.textRevenue} text={'hideDebt'} />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
                       <Text style={styles.textRevenue} text={debt.toString()} />
@@ -484,7 +484,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text={hideRevenue}
+                      text={'hideRevenue'}
                     />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
@@ -549,7 +549,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text={hideDebt}
+                      text={'hideDebt'}
                     />
                   ) : (
                     <View style={{ flexDirection: "row" }}>

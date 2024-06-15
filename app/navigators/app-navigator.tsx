@@ -55,6 +55,7 @@ export type NavigatorParamList = {
   infoMerchant: undefined;
   orderDetails: undefined;
   newOrder: undefined;
+  newAndEditOrder: undefined;
   promotion: undefined;
   arrangeProduct: undefined;
   selectFilter: undefined;
@@ -391,6 +392,11 @@ export const AppStack = () => {
         name="newOrder"
         options={{ gestureEnabled: false }}
         component={Screens.NewOrder}
+      />
+      <Stack.Screen
+        name="newAndEditOrder"
+        options={{ gestureEnabled: false }}
+        component={Screens.NewAndEditOrder}
       />
       <Stack.Screen
         name="orderTracking"
