@@ -25,9 +25,13 @@ import {
   PriceListResponse,
   PriceListSelect,
 } from "../select-price-list/select-price-list.-model";
-import { OrderVariantResult, PriceVariantResult, TaxModel } from "./entities";
 import { TaxLineModel } from "./entities/order-tax-lines-model";
 import { DebtModel } from "./entities/order-debt-limit-model";
+import {
+  OrderVariantResult,
+  PriceVariantResult,
+} from "./entities/order-variant-model";
+import { TaxModel } from "./entities/order-tax-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -74,6 +78,8 @@ export const OrderStoreModel = types
       id: "",
       name: "",
       priceListCategory: "",
+      currencyId: "",
+      pricelistId: "",
     }),
     dataDebtLimit: types.optional(types.frozen<any>(), {
       isHaveDebtLimit: false,
@@ -178,12 +184,13 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       sort: string,
-      search: string
+      search: string,
+      b2cActivated : boolean
     ) {
       try {
         const clientAPI = new SelectClientAPI(self.environment.apiErp);
         const result: BaseResponse<OderListResponse, ErrorCode> =
-          yield clientAPI.getListSelectClient(page, size, sort, search);
+          yield clientAPI.getListSelectClient(page, size, sort, search, b2cActivated);
         console.log(
           "SlectClientResult-------------",
           JSON.stringify(result.data)
@@ -284,7 +291,7 @@ export const OrderStoreModel = types
       );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
-        console.log("order", result);
+        console.log("order 2", result);
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
@@ -587,6 +594,24 @@ export const OrderStoreModel = types
           yield orderApi.postTaxLines(dataForm);
         if (result.data !== null) {
           return result.data.taxLines;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
+    postAddOrderSale: flow(function* (form: any) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<any, ErrorCode> =
+          yield orderApi.postNewOrder(form);
+        if (result.data !== null) {
+          return result.data;
         } else {
           return result.errorCodes;
         }

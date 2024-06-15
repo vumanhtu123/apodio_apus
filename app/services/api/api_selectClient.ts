@@ -18,6 +18,8 @@ export class SelectClientAPI {
     size: number,
     sort: string,
     search: string,
+    b2cActivated: boolean
+
    ): Promise<any> {
     Loading.show({
       text: 'Loading...',
@@ -34,6 +36,7 @@ export class SelectClientAPI {
                   size: size,
                   sort: sort,
                   search: search,
+                  b2cActivated: b2cActivated
                 }
               );
               Loading.hide();
@@ -45,6 +48,7 @@ export class SelectClientAPI {
                 return result?.errorCodes ;
               }   
         } catch (error) {
+          Loading.hide();
             return { kind: "bad-data", result: error };
             
         }

@@ -24,13 +24,15 @@ export class OrderApi {
     });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
-      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.GET_LIST_ORDER, {
-        page,
-        size,
-        state
-        // activated
-      }
-      )
+      const response: ApiResponse<any> = await this.api.apisauce.get(
+        ApiEndpoint.GET_LIST_ORDER,
+        {
+          page,
+          size,
+          state,
+          // activated
+        }
+      );
       Loading.hide();
       console.log("-----------------respone", response);
       const data = response.data;
@@ -46,25 +48,27 @@ export class OrderApi {
   }
   async getDetailInvoice(id: number): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
-      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.GET_DETAIL_INVOICE, {
-        id
-      }
-      )
+      const response: ApiResponse<any> = await this.api.apisauce.get(
+        ApiEndpoint.GET_DETAIL_INVOICE,
+        {
+          id,
+        }
+      );
       Loading.hide();
-      console.log('-----------------respone', response)
-      const data = response.data
-      console.log('-----------------data', data)
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
       Loading.hide();
-      return { kind: "bad-data" }
+      return { kind: "bad-data" };
     }
   }
   async getListOrderProduct(
@@ -81,9 +85,10 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
-      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
+      const tagString =
+        tagIds.length === 0 ? "" : "&tagIds=" + tagIds.join("&tagIds=");
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_PRODUCT + "?size=" + size + sort + tagString ,
+        ApiEndpoint.GET_LIST_ORDER_PRODUCT + "?size=" + size + sort + tagString,
         {
           page: page,
           // size: size,
@@ -121,9 +126,10 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
-      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
+      const tagString =
+        tagIds.length === 0 ? "" : "&tagIds=" + tagIds.join("&tagIds=");
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_VARIANT + "?size=" + size + sort + tagString ,
+        ApiEndpoint.GET_LIST_ORDER_VARIANT + "?size=" + size + sort + tagString,
         {
           page: page,
           // size: size,
@@ -162,9 +168,14 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
-      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
+      const tagString =
+        tagIds.length === 0 ? "" : "&tagIds=" + tagIds.join("&tagIds=");
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_PRODUCT_PRICE + "?size=" + size + sort + tagString ,
+        ApiEndpoint.GET_LIST_ORDER_PRODUCT_PRICE +
+          "?size=" +
+          size +
+          sort +
+          tagString,
         {
           page: page,
           // size: size,
@@ -204,9 +215,14 @@ export class OrderApi {
       text: "Loading...",
     });
     try {
-      const tagString = tagIds.length === 0 ? '' : "&tagIds=" + tagIds.join('&tagIds=')
+      const tagString =
+        tagIds.length === 0 ? "" : "&tagIds=" + tagIds.join("&tagIds=");
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.GET_LIST_ORDER_VARIANT_PRICE + "?size=" + size + sort + tagString ,
+        ApiEndpoint.GET_LIST_ORDER_VARIANT_PRICE +
+          "?size=" +
+          size +
+          sort +
+          tagString,
         {
           page: page,
           // size: size,
@@ -253,7 +269,7 @@ export class OrderApi {
       return { kind: "bad-data", response: data };
     } catch (e) {
       Loading.hide();
-      return { kind: "bad-data" }
+      return { kind: "bad-data" };
     }
   }
 
@@ -271,7 +287,7 @@ export class OrderApi {
           scopeType: scopeType,
         });
       const data = response.data;
-      Loading.hide()
+      Loading.hide();
       if (response.status === 200) {
         Loading.hide();
         return data;
@@ -339,26 +355,44 @@ export class OrderApi {
   }
   async cancelOrder(id: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
-      onShow: () => console.log('Loading shown'),
-      onHide: () => console.log('Loading hidden'),
+      text: "Loading...",
+      onShow: () => console.log("Loading shown"),
+      onHide: () => console.log("Loading hidden"),
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         ApiEndpoint.CANCEL_ORDER + "?id=" + id
       );
       Loading.hide();
-      console.log('----------delete', response.status)
+      console.log("----------delete", response.status);
       const result = response.data;
       if (response.data.errorCodes) {
         return { kind: "bad-data", result };
       } else {
         return { kind: "ok", result };
       }
-
     } catch (error) {
       Loading.hide();
       return { kind: "bad-data", result: error };
+    }
+  }
+  async postNewOrder(form: any): Promise<BaseResponse<any, ErrorCode>> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<BaseResponse<any, ErrorCode>> =
+        await this.api.apisauce.post(ApiEndpoint.POST_ADD_SALE_ORDER, form);
+      const data = response.data;
+      if (response.status === 200) {
+        Loading.hide();
+        return data;
+      }
+      Loading.hide();
+      return data;
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
     }
   }
 }

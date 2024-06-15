@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FC, useState } from "react";
 import {
     Image,
@@ -21,7 +21,6 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { number } from "mobx-state-tree/dist/internal";
 import { Styles } from "./styles";
 import SelectFilterModal from "./Modal/modal-select-filter";
-import { SelectClienAPI } from "../../../services/api/api_selectClient";
 import { useStores } from "../../../models";
 import ModalCreateClient from "./Modal/modal-create-client";
 import Loading from "../../../components/loading/loading";
@@ -34,40 +33,17 @@ export const SelectClientScreen: FC<
     const [indexSelect, setIndexSelect] = useState<any>();
     const [onClick, setOnClick] = useState("successfully");
     const [isVisible, setIsVisible] = useState(false);
-    const [myDataSlectClient, setmyDataSlectClient] = useState([]);
+    const [myDataSelectClient, setMyDataSelectClient] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
-    const [size, setsize] = useState(15);
-    const [page, setPage] = useState(0);
+    // const [size, setsize] = useState<any>();
     const getAPi = useStores();
     const [isVisibleCreateClient, setIsVisibleCreateClient] = useState(false);
     const [valueSearch, setValueSearch] = useState("");
     const [isShowSearch, setisShowSearch] = useState(false);
     const [dataItemSelect, setdataItemSelect] = useState();
 
-    // const dataFace = [
-    //     {
-    //         code: "MTH",
-    //         name: "Công ty TNHH MISUKO VIệt Nam",
-    //         phone: "0123214155",
-    //         id: "NCC00001"
-    //     },
-    //     {
-    //         code: "TH",
-    //         name: "Công ty TNHH MISUKO VIệt Nam",
-    //         phone: "0123214155",
-    //         id: "NCC00002"
-    //     }, {
-    //         code: "TH",
-    //         name: "Công ty TNHH MISUKO VIệt Nam",
-    //         phone: "0123214155",
-    //         id: "NCC00003"
-    //     }
-    // ]
-
-    const openTypeFilter = () => {
-        setIsVisible(true);
-    };
+    const size = useRef(20);
 
     // console.log("doannnnn", totalPage);
 
@@ -85,7 +61,7 @@ export const SelectClientScreen: FC<
 
     const getListClient = () => {
         getAPi.orderStore
-            .getListSelectClient(0, size, sort, valueSearch)
+            .getListSelectClient(0, size.current, sort, valueSearch, true)
             .then((data) => {
                 console.log("dataaaaaaaaa", data);
 
@@ -99,13 +75,22 @@ export const SelectClientScreen: FC<
                         phoneNumber: item.phoneNumber,
                     };
                 });
-                setmyDataSlectClient(dataSelectClien);
+
+                setMyDataSelectClient(dataSelectClien);
+                // getDebtLimit()
             });
     };
 
     useEffect(() => {
+
         getListClient();
-    }, [getAPi.orderStore.sortCreateClient]);
+
+    }, [getAPi.orderStore.sortCreateClient,]);
+
+    useEffect(() => {
+        getListClient()
+    }, [size])
+
 
     const getDebtLimit = () => {
         if (getAPi.orderStore.dataClientSelect !== null) {
@@ -120,24 +105,28 @@ export const SelectClientScreen: FC<
 
     console.log("load more", isLoadingMore);
 
-    const handleRefresh = React.useCallback(async () => {
+    // const handleRefresh = React.useCallback(async () => {
+
+    // }, []);
+
+    const handleRefresh = () => {
         setRefreshing(true);
         try {
             // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
-            const newData: any = await getListClient();
+            getListClient();
             // Cập nhật state của danh sách dữ liệu
-            setmyDataSlectClient(newData);
+            // setmyDataSlectClient(newData);
         } catch (error) {
             console.error(error);
         } finally {
             setRefreshing(false);
         }
-    }, []);
+    };
 
     const handleLoadMore = () => {
         setIsLoadingMore(true);
-        setsize(size + 3);
-        getListClient();
+        size.current = (size.current + 3);
+        // getListClient();
         setTimeout(() => {
             setIsLoadingMore(false);
         }, 3000);
@@ -177,7 +166,7 @@ export const SelectClientScreen: FC<
             </View>
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={myDataSlectClient}
+                    data={myDataSelectClient}
                     renderItem={({ item, index }): any => {
                         return (
                             <TouchableOpacity
@@ -223,7 +212,15 @@ export const SelectClientScreen: FC<
                                         </Text>
                                     </View>
                                 </View>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        console.log("====================================");
+                                        console.log("DataItemSelect", item);
+                                        console.log("====================================");
+                                        setdataItemSelect(item);
+                                        setIndexSelect(index);
+                                    }}>
+
                                     {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
                                     <View
                                         style={{
@@ -241,7 +238,7 @@ export const SelectClientScreen: FC<
                             </TouchableOpacity>
                         );
                     }}
-                    // keyExtractor={(item: any, index: any) => item.code.toString()}
+                    keyExtractor={(item: any, index: any) => index.toString() + item.id}
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                     }
