@@ -38,14 +38,15 @@ export const ApiEndpoint = {
   USING_PRODUCT_CHECK: "/api/v1/product-template/use-in-another-service",
   COMPANY_INFO: "/api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
-  GET_LIST_ORDER_PRODUCT: '/api/v1/retail/sale-order/product-templates',
-  GET_LIST_ORDER_VARIANT: '/api/v1/retail/sale-order/products',
-  GET_LIST_ORDER_PRODUCT_PRICE: '/api/v1/retail/sale-order/price-list/product-templates',
-  GET_LIST_ORDER_VARIANT_PRICE: '/api/v1/retail/sale-order/price-list/products',
-  GET_DETAIL_ORDER : '/api/v1/retail/sale-order',
-  POST_PRICE_VARIANT: '/api/v1/b2c/request-price-list/request/price',
-  GET_LIST_PRICE_LIST: '/api/v1/b2c/price-list/list',
-  GET_DETAIL_INVOICE : '/api/v1/account-move/b2c',
+  GET_LIST_ORDER_PRODUCT: "/api/v1/retail/sale-order/product-templates",
+  GET_LIST_ORDER_VARIANT: "/api/v1/retail/sale-order/products",
+  GET_LIST_ORDER_PRODUCT_PRICE:
+    "/api/v1/retail/sale-order/price-list/product-templates",
+  GET_LIST_ORDER_VARIANT_PRICE: "/api/v1/retail/sale-order/price-list/products",
+  GET_DETAIL_ORDER: "/api/v1/retail/sale-order",
+  POST_PRICE_VARIANT: "/api/v1/b2c/request-price-list/request/price",
+  GET_LIST_PRICE_LIST: "/api/v1/b2c/price-list/list",
+  GET_DETAIL_INVOICE: "/api/v1/account-move/b2c",
   GET_LIST_TAX: "/api/v1/tax/list",
   GET_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
   GET_DEBT_LIMIT: "/api/v1/retail/sale-order/debt-limit",
@@ -57,8 +58,11 @@ export const ApiEndpoint = {
   GET_LIST_WARD: "/api/v1/ward/list/ward-district",
   CREATE_ADDRESS: "/api/v1/b2c/partners/address",
   GET_LIST_ADDRESS: "/api/v1/b2c/partners/address/list",
+  // GET_LIST_PRICE_LIST:
+  //   "/api/v1/b2c/price-list/list?trackingState=OPERATION&page=0&size=20",
+  GET_LIST_SLECT_CLIENT: "/api/v1/b2c/partners/list",
   GET_DATA_REVENUE_THIS_MONTH: "/api/v1/retail/sale-order/dashboard",
-  CANCEL_ORDER : '/api/v1/retail/sale-order/cancel'
-
+  CANCEL_ORDER: "/api/v1/retail/sale-order/cancel",
+  POST_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
+  GET_DEBT_LIMIT1: "/api/v1/mobile/account-move/debt",
 };
-

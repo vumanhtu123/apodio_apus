@@ -22,6 +22,7 @@ import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typesc
 import AutoHeightImage from "react-native-auto-height-image";
 import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
+import { number } from "mobx-state-tree/dist/internal";
 
 interface AddProduct {
   onPress: ({}) => void;
@@ -69,7 +70,11 @@ export default function ItemListProduct(props: AddProduct) {
   } = useForm({
     mode: "all",
   });
-
+  console.log("taxes VAT", props.cost);
+  const Sum = (): Number => {
+    return Number(props.cost) + Number(props.valueVAT ?? 0);
+  };
+  console.log("sum", props.valueVAT);
   return (
     <View>
       <TouchableOpacity
@@ -91,7 +96,11 @@ export default function ItemListProduct(props: AddProduct) {
         }}>
         <View style={{ marginRight: scaleWidth(margin.margin_10) }}>
           <AutoHeightImage
-            source={{ uri: images ?? "" }}
+            source={{
+              uri:
+                images ??
+                "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
+            }}
             height={scaleHeight(48)}
             width={scaleHeight(48)}
             style={{ borderRadius: 16 }}
@@ -107,7 +116,7 @@ export default function ItemListProduct(props: AddProduct) {
               color: colors.palette.nero,
             }}
           />
-          <View style={{ flexDirection: "row", marginVertical: 6 }}>
+          <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
             <Text
               text={cost + " "}
               style={{
@@ -131,16 +140,21 @@ export default function ItemListProduct(props: AddProduct) {
               }}
             />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Images.ic_tag />
-            <Text
-              style={{
-                fontSize: 10,
-                fontWeight: "400",
-                color: "#242424",
-              }}>
-              {translate("order.taxes_vat")}
-              {VAT + " "}
+          {VAT != undefined ? (
+            <View style={{ flexDirection: "column", marginTop: 6 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Images.ic_tag />
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "400",
+                    color: "#242424",
+                    marginHorizontal: 4,
+                  }}>
+                  {/* {translate("order.taxes_vat")} */}
+                  {VAT + " "}
+                </Text>
+              </View>
               <Text
                 style={{
                   fontSize: 10,
@@ -150,8 +164,8 @@ export default function ItemListProduct(props: AddProduct) {
                 }}>
                 {valueVAT}
               </Text>
-            </Text>
-          </View>
+            </View>
+          ) : null}
           <TouchableOpacity onPress={(item) => onPressSelectTexas(item)}>
             <View
               style={{
@@ -226,6 +240,7 @@ export default function ItemListProduct(props: AddProduct) {
               </View>
             </TouchableOpacity>
           )}
+          {/* {sumTexas != null ? ( */}
           <Text
             style={{
               fontSize: 10,
@@ -242,9 +257,10 @@ export default function ItemListProduct(props: AddProduct) {
                 color: "#FF4956",
                 fontStyle: "italic",
               }}>
-              {" " + sumTexas}
+              {" " + Sum()}
             </Text>
           </Text>
+          {/* ) : null} */}
         </View>
         <View
           style={{

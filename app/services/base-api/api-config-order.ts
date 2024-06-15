@@ -2,11 +2,7 @@ import { ApisauceInstance, create } from "apisauce";
 import DeviceInfo from "react-native-device-info";
 import { resetRoot } from "../../navigators";
 import { getAccessToken, getDomain, getTenantId } from "../../utils/storage";
-import {
-  hideDialog,
-  hideLoading,
-  showDialog
-} from "../../utils/toast";
+import { hideDialog, hideLoading, showDialog } from "../../utils/toast";
 import { ApiConfig, DEFAULT_API_CONFIG_ORDER } from "./api-config";
 /**
  * Manages all requests to the API.
@@ -69,7 +65,7 @@ export class ApiOrder {
           );
         }
         if (error.response.status === 500 || error.response.status === 404) {
-          console.log('first-----------', error)
+          console.log("first-----------", error);
           showDialog("Error", "danger", "System Busy!", "", "OK", () =>
             hideDialog()
           );
@@ -79,7 +75,7 @@ export class ApiOrder {
     this.apisauce.addAsyncRequestTransform((request) => async () => {
       try {
         const tenantId = await getTenantId();
-        const domain = await getDomain()
+        const domain = await getDomain();
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",

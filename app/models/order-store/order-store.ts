@@ -1,5 +1,5 @@
-import { PriceList } from './../../screens/order/components/header-order';
-import { ClientSlected } from './../order-list-select-clien-model';
+import { PriceList } from "./../../screens/order/components/header-order";
+import { ClientSlected } from "./../order-list-select-clien-model";
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { ProductApi } from "../../services/api/api-product";
@@ -13,11 +13,21 @@ import { VendorApi } from "../../services/api/api-vendor";
 import { AddClientAPI } from "../../services/api/api-add-client";
 import { SelectClientAPI } from "../../services/api/api_selectClient";
 import { OderListResponse } from "../order-list-select-clien-model";
-import { OrderCityResult, OrderDistrictResult, OrderListAddressResult, OrderWardResult } from "./entities/order-address-model";
-import { number } from 'mobx-state-tree/dist/internal';
-import { SelectPriceListAPI } from '../../services/api/api-select-price-list';
-import { PriceListResponse, PriceListSelect } from '../select-price-list/select-price-list.-model';
-import { OrderVariantResult, PriceVariantResult, TaxModel } from './entities';
+import {
+  OrderCityResult,
+  OrderDistrictResult,
+  OrderListAddressResult,
+  OrderWardResult,
+} from "./entities/order-address-model";
+import { number } from "mobx-state-tree/dist/internal";
+import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
+import {
+  PriceListResponse,
+  PriceListSelect,
+} from "../select-price-list/select-price-list.-model";
+import { OrderVariantResult, PriceVariantResult, TaxModel } from "./entities";
+import { TaxLineModel } from "./entities/order-tax-lines-model";
+import { DebtModel } from "./entities/order-debt-limit-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -49,14 +59,27 @@ export const OrderStoreModel = types
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
-    orderId : types.optional(types.number, 0),
+    orderId: types.optional(types.number, 0),
     tagId: types.optional(types.array(types.number), []),
     productCategoryId: types.optional(types.number, 0),
     nameCategory: types.optional(types.string, ""),
-    dataClientSelect: types.optional(types.frozen<ClientSlected>(),{id: '', name: '', code: '', phoneNumber: ''}),
-    sortPriceList : types.optional(types.string,''),
-    dataPriceListSelected : types.optional(types.frozen<PriceListSelect>(),{id: '', name: '', priceListCategory: ''})
-
+    dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
+      id: "",
+      name: "",
+      code: "",
+      phoneNumber: "",
+    }),
+    sortPriceList: types.optional(types.string, ""),
+    dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {
+      id: "",
+      name: "",
+      priceListCategory: "",
+    }),
+    dataDebtLimit: types.optional(types.frozen<any>(), {
+      isHaveDebtLimit: false,
+      debtAmount: 0,
+      amountOwed: "",
+    }),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -95,10 +118,10 @@ export const OrderStoreModel = types
       self.tagId = tagId;
     },
     setProductCategoryId(value: any) {
-      self.productCategoryId = value
+      self.productCategoryId = value;
     },
     setNameCategory(value: any) {
-      self.nameCategory = value
+      self.nameCategory = value;
     },
     setCheckPriceList(value: any) {
       self.checkPriceList = value;
@@ -115,31 +138,23 @@ export const OrderStoreModel = types
     setOrderId(id: number) {
       self.orderId = id;
     },
-
-    // chú ý phải clear khi xong
-    setDataClientSelect(value: any){
-      self.dataClientSelect = value
+    setDataClientSelect(value: any) {
+      self.dataClientSelect = value;
+    },
+    setDataDebtLimit(value: any) {
+      self.dataDebtLimit = value;
     },
     setSortPriceList(sort: any) {
-      self.sortPriceList = sort
+      self.sortPriceList = sort;
     },
-
-    // chú ý phải clear khi xong
-    setDataPriceListSelect( value: any){
-      console.log('doanlog', value);
-      
-      self.dataPriceListSelected = value
-
-    }
+    setDataPriceListSelect(value: any) {
+      console.log("doanlog", value);
+      self.dataPriceListSelected = value;
+    },
   }))
   .actions((self) => ({
-    getListOrder: flow(function* (
-      page: number,
-      size: number,
-      state: string
-    ) {
-
-      console.log('page', page)
+    getListOrder: flow(function* (page: number, size: number, state: string) {
+      console.log("page", page);
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
@@ -166,31 +181,41 @@ export const OrderStoreModel = types
       search: string
     ) {
       try {
-        const clientAPI = new SelectClientAPI(self.environment.apiErp)
-        const result: BaseResponse<OderListResponse, ErrorCode> = yield clientAPI.getListSelectClient(page, size, sort, search)
-        console.log("SlectClientResult-------------", JSON.stringify(result.data))
-        return result.data
+        const clientAPI = new SelectClientAPI(self.environment.apiErp);
+        const result: BaseResponse<OderListResponse, ErrorCode> =
+          yield clientAPI.getListSelectClient(page, size, sort, search);
+        console.log(
+          "SlectClientResult-------------",
+          JSON.stringify(result.data)
+        );
+        return result.data;
       } catch (error) {
-        console.log("Get list info company", error)
+        console.log("Get list info company", error);
       }
     }),
 
-    getListPriceList: flow(function* (page: number, size: number, sort: string, search: string) {
+    getListPriceList: flow(function* (
+      page: number,
+      size: number,
+      sort: string,
+      search: string
+    ) {
       try {
-        const PriceListAPI = new SelectPriceListAPI(self.environment.api)
-        const result: BaseResponse<PriceListResponse, ErrorCode> = yield PriceListAPI.getSelectPriceListAPI(page, size, sort, search)
-        console.log("SlectPriceList-------------", JSON.stringify(result.data))
-        return result.data
+        const PriceListAPI = new SelectPriceListAPI(self.environment.api);
+        const result: BaseResponse<PriceListResponse, ErrorCode> =
+          yield PriceListAPI.getSelectPriceListAPI(page, size, sort, search);
+        console.log("SlectPriceList-------------", JSON.stringify(result.data));
+        return result.data;
       } catch (error) {
-        console.log("Get list SlectPriceList error", error)
+        console.log("Get list SlectPriceList error", error);
       }
     }),
 
     postClient: flow(function* (clientData) {
-      const client = new AddClientAPI(self.environment.apiErp)
-      const result = yield client.createClient(clientData)
-      if (result.kind === 'ok') {
-        return result
+      const client = new AddClientAPI(self.environment.apiErp);
+      const result = yield client.createClient(clientData);
+      if (result.kind === "ok") {
+        return result;
       } else {
         return result;
       }
@@ -266,15 +291,13 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    getPriceOrderVariant: flow(function* (
-      value: any,
-    ) {
+    getPriceOrderVariant: flow(function* (value: any) {
       // console.log('page' , page)
       const orderApi = new ProductApi(self.environment.api);
       const result: PriceVariantResult = yield orderApi.getPriceOrderVariant(
         value
       );
-      console.log('-----------dsa' , result)
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -363,7 +386,7 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       search: string,
-      countryId: number,
+      countryId: number
       // regionId: number,
       // regionId: number
     ) {
@@ -392,7 +415,7 @@ export const OrderStoreModel = types
       cityId: number
     ) {
       // console.log('page' , page)
-      const orderApi = new VendorApi(self.environment.apiErp);;
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderDistrictResult = yield orderApi.getListDistrict(
         page,
         size,
@@ -433,7 +456,7 @@ export const OrderStoreModel = types
     }),
     getListAddress: flow(function* (partnerId: number) {
       // console.log('page' , page)
-      const orderApi = new  VendorApi(self.environment.apiErp);
+      const orderApi = new VendorApi(self.environment.apiErp);
       const result: OrderListAddressResult = yield orderApi.getListAddress(
         partnerId
       );
@@ -448,9 +471,7 @@ export const OrderStoreModel = types
     }),
     createAddress: flow(function* (value: any) {
       const orderApi = new VendorApi(self.environment.apiErp);
-      const result: CreateAddressResult = yield orderApi.createAddress(
-        value
-      );
+      const result: CreateAddressResult = yield orderApi.createAddress(value);
       // console.log('resulttt' , result)
       if (result.kind === "ok") {
         return result;
@@ -475,14 +496,13 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    getDetailInvoice: flow(function* (
-      id: number,
-    ) {
-      console.log('page', id)
-      const orderApi = new OrderApi(self.environment.apiOrder, self.environment.apiAccount);
-      const result: OrderResult = yield orderApi.getDetailInvoice(
-        id
+    getDetailInvoice: flow(function* (id: number) {
+      console.log("page", id);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
       );
+      const result: OrderResult = yield orderApi.getDetailInvoice(id);
       // console.log('-----------dsa', result.response.errorCodes)
 
       if (result.kind === "ok") {
@@ -504,7 +524,8 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<TaxModel, ErrorCode> = yield orderApi.getTaxList(type, scopeType);
+        const result: BaseResponse<TaxModel, ErrorCode> =
+          yield orderApi.getTaxList(type, scopeType);
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");
@@ -516,19 +537,56 @@ export const OrderStoreModel = types
         console.log(err);
       }
     }),
-    cancelOrder: flow(function* (
-      id: number
-    ) {
+    cancelOrder: flow(function* (id: number) {
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<any, ErrorCode> = yield orderApi.cancelOrder(id)
+        const result: BaseResponse<any, ErrorCode> = yield orderApi.cancelOrder(
+          id
+        );
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");
           return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+    getDebtLimit: flow(function* (partnerId: any) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<DebtModel, ErrorCode> =
+          yield orderApi.getDebtLimit(partnerId);
+        if (result.data !== null) {
+          console.log("tuvm getDebt success");
+          return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+
+    postTaxLine: flow(function* (dataForm: any) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      console.log("data form:", dataForm);
+      try {
+        const result: BaseResponse<TaxLineModel, ErrorCode> =
+          yield orderApi.postTaxLines(dataForm);
+        if (result.data !== null) {
+          return result.data.taxLines;
         } else {
           return result.errorCodes;
         }
