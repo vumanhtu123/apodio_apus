@@ -1,6 +1,6 @@
 
 import { NavigatorParamList } from "../../../navigators";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { StyleSheet, View } from "react-native";
 import React from "react";
@@ -13,8 +13,26 @@ import { Text } from "../../../components";
 export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount">> = observer(
 
     function inforAccount(props) {
+        const [inforAccount, setInforAccount] = useState<any>()
 
-        const MerchantInfo = ({ label, value }) => {
+        const getApi = useStores()
+
+        const getInforAccount = () => {
+            getApi.userStore.getInforAccount('1403').then((data: any) => {
+                console.log("data inforAccount", data)
+
+                setInforAccount(data)
+            })
+
+        }
+
+        useEffect(() => {
+
+            getInforAccount()
+        }, [props.navigation])
+
+
+        const MerchantInfo = ({ label, value }: any) => {
             return (
                 <View
                     style={{
@@ -22,7 +40,7 @@ export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount
                         justifyContent: 'space-between',
                         marginTop: 9,
                     }}>
-                    <Text style={{ fontSize: 14, color: '#84888D' }}>{label}</Text>
+                    <Text style={{ fontSize: 14, color: '#84888D' }} tx={label}></Text>
                     <Text
                         numberOfLines={1}
                         style={{
@@ -83,50 +101,50 @@ export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount
 
 
                             <MerchantInfo
-                                label={'Mã merchant'}
-                                value={data.inforMer.merChantCode}
+                                label={"inforMerchant.loading"}
+                                value={inforAccount?.code ?? ""}
                             />
 
                             <MerchantInfo
-                                label={'Tỉnh/Thành phố'}
-                                value={data.inforMer.province}
+                                label={'inforMerchant.city'}
+                                value={inforAccount?.city ?? ""}
                             />
 
-                            <MerchantInfo label={'Quận/Huyện'} value={data.inforMer.district} />
-                            <MerchantInfo label={'Phường/Xã'} value={data.inforMer.precinct} />
-                            <MerchantInfo label={'Địa chỉ'} value={data.inforMer.addRess} />
-                            <MerchantInfo label={'Giới tính:'} value={data.inforMer.gener} />
+                            <MerchantInfo label={'inforMerchant.district'} value={inforAccount?.district ?? ""} />
+                            <MerchantInfo label={'inforMerchant.ward'} value={inforAccount?.ward ?? ""} />
+                            <MerchantInfo label={'inforMerchant.address'} value={inforAccount?.address ?? ""} />
+                            <MerchantInfo label={'inforMerchant.gender'} value={inforAccount?.contacts[0]?.gender ?? ""} />
                             <MerchantInfo
-                                label={'Email'}
-                                value={data.inforMer.email}
+                                label={'inforMerchant.email'}
+                                value={inforAccount?.email ?? ""}
                             />
                             <MerchantInfo
-                                label={'Số điện thoại'}
-                                value={data.inforMer.phoneNumber}
+                                label={'inforMerchant.phoneNumber'}
+                                value={inforAccount?.phoneNumber ?? ""}
                             />
                         </View>
                     </View>
-                    <View style={[styles.merchantInfor, {marginTop:scaleHeight(20)}]}>
-                    <Text style={styles.text}>Thông tin ngân hàng</Text>
-                    <View style={styles.line} />
-                    <View style={{ marginHorizontal: 24, marginTop: 9 }}>
-                        <MerchantInfo
-                            label={'Tên ngân hàng'}
-                            value={data.ifnorBank.bankName}
-                        />
-                        <MerchantInfo
-                            label={'Số tài khoản'}
-                            value={data.ifnorBank.bankNumber}
-                        />
-                        <MerchantInfo
-                            label={'Tên tài khoản ngân hàng'}
-                            value={data.ifnorBank.bankNameAccount}
-                        />
-                        <MerchantInfo label={'Chi nhánh'} value={data.ifnorBank.branch} />
+                    <View style={[styles.merchantInfor, { marginTop: scaleHeight(20) }]}>
+                        <Text style={styles.text}>Thông tin ngân hàng</Text>
+                        <View style={styles.line} />
+                        <View style={{ marginHorizontal: 24, marginTop: 9 }}>
+                            <MerchantInfo
+                                label={'inforMerchant.bank'}
+                                value={inforAccount?.bankAccounts[0]?.bank ?? ""}
+                            />
+                            <MerchantInfo
+                                label={'inforMerchant.accountNumber'}
+                                value={inforAccount?.bankAccounts[0]?.accountNumber ?? ""}
+                            />
+                            <MerchantInfo
+                                label={'inforMerchant.accountHolder'}
+                                value={inforAccount?.bankAccounts[0]?.accountHolder ?? ""}
+                            />
+                            <MerchantInfo label={'inforMerchant.bankBranch'} value={inforAccount?.bankAccounts[0]?.bankBranch ?? ""} />
+                        </View>
                     </View>
                 </View>
-                </View>
-                
+
             </View>
         )
     }
@@ -134,6 +152,7 @@ export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount
 )
 
 import { Dimensions } from 'react-native';
+import { useStores } from "../../../models";
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
     header: {

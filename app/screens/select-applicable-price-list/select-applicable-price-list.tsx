@@ -18,7 +18,6 @@ import { id } from "date-fns/locale";
 
 export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, "selectApplicablePriceList">> = observer(
     function SelectApplicablePriceList(props) {
-        const [indexSelect, setIndexSelect] = useState<any>()
         const [onClick, setOnClick] = useState('select')
         const [isVisible, setIsVisible] = useState(false);
         const [myDataSelectPriceList, setMyDataSelectPriceList] = useState([])
@@ -28,20 +27,11 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
         const [page, setPage] = useState(0)
         const getAPi = useStores()
         const [valueSearch, setValueSearch] = useState('')
-        const [isShowSearch, setisShowSearch] = useState(false)
-        const [dataPriceListSelected, setDataPriceListSelected] = useState({})
+        const [isShowSearch, setIsShowSearch] = useState(false)
+        const [dataPriceListSelected, setDataPriceListSelected] = useState(getAPi.orderStore.dataPriceListSelected)
         const [watching, setWatching] = useState<boolean>()
 
-        const openTypeFilter = () => {
-            setIsVisible(true)
-        }
 
-        // console.log("doannnnn", totalPage);
-
-        // const dataFake = [
-        //     { nameTable: "Bảng giá tháng 12/2023", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" },
-        //     { nameTable: "Bảng giá tháng 12/2024", container: "Bảng giá áp dụng đến khi hết số lượng hàng trong kho" }
-        // ]
 
         const sort = getAPi.orderStore.sortPriceList
         console.log("doann log sort", sort);
@@ -52,22 +42,29 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
 
         const senDataPriceListSelect = () => {
             getAPi.orderStore.setDataPriceListSelect(dataPriceListSelected)
-            getAPi.orderStore.setCheckPriceList(true)
+            if (dataPriceListSelected.id === "") {
+                getAPi.orderStore.setCheckPriceList(false)
+            } else {
+                getAPi.orderStore.setCheckPriceList(true)
+            }
+            if (dataPriceListSelected.id !== getAPi.orderStore.dataPriceListSelected.id) {
+                getAPi.orderStore.setDataProductAddOrder([])
+            }
             // console.log('====================================');
             // console.log("dataSelect", dataPriceListSelected);
             // console.log('====================================');
         }
-        const setPriceListNoApply = () => {
-            getAPi.orderStore.setDataPriceListSelect({ id: '', name: "No Apply", priceListCategory: '' })
-            getAPi.orderStore.setCheckPriceList(false)
-        }
+        // const setPriceListNoApply = () => {
+        //     getAPi.orderStore.setDataPriceListSelect({ id: '', name: "No Apply", priceListCategory: '' })
+        //     getAPi.orderStore.setCheckPriceList(false)
+        // }
 
 
         const getListPriceListApply = () => {
             getAPi.orderStore.getListPriceList(0, size, sort, valueSearch).then((data) => {
                 console.log("dataaaaaaaa", data?.content)
 
-                const dataSlectPriceList = data?.content.map((item) => {
+                const dataSelectPriceList = data?.content.map((item) => {
                     return {
                         id: item.id,
                         name: item.name,
@@ -75,7 +72,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                     }
                 })
 
-                setMyDataSelectPriceList(dataSlectPriceList)
+                setMyDataSelectPriceList(dataSelectPriceList)
             })
 
 
@@ -84,9 +81,6 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
         useEffect(() => {
             getListPriceListApply()
         }, [getAPi.orderStore.sortCreateClient, props.navigation])
-
-
-
 
 
         console.log("load more", isLoadingMore)
@@ -139,7 +133,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
 
                     }}
                     onRightPress1={() => {
-                        setisShowSearch(!isShowSearch)
+                        setIsShowSearch(!isShowSearch)
                     }}
 
                 />
@@ -147,7 +141,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                     height: scaleHeight(56),
                     alignItems: 'center',
                     paddingVertical: scaleHeight(16),
-                    backgroundColor: indexSelect === "noApply" ? '#DBEFFF' : 'white',
+                    backgroundColor: dataPriceListSelected.id === "" ? '#DBEFFF' : 'white',
                     paddingHorizontal: scaleWidth(16),
                     flexDirection: 'row',
                     justifyContent: 'space-between',
@@ -160,14 +154,20 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                         // setNoApply()
                         console.log("dataNoApply", dataPriceListSelected);
 
-                        setIndexSelect('noApply')
+                        setDataPriceListSelected({ id: "", name: "khong ap dung", priceListCategory: "" })
                     }}
                 >
                     <Text
                         style={{ fontSize: fontSize.size10, color: colors.palette.black, fontWeight: '500' }}
                         tx="selectPriceListApply.noApplyPriceList"
                     ></Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setWatching(false)
+                            setPriceListNoApply()
+                            // setIdIndexSelect('noApply')
+                        }}
+                    >
                         {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
                         <View style={{
                             borderRadius: scaleHeight(8),
@@ -175,7 +175,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                             borderColor: colors.palette.lightGrey,
                             width: scaleHeight(16),
                             height: scaleHeight(16),
-                            backgroundColor: indexSelect === 'noApply' ? colors.palette.navyBlue : colors.palette.white
+                            backgroundColor: dataPriceListSelected.id === '' ? colors.palette.navyBlue : colors.palette.white
                         }}>
 
                         </View>
@@ -192,7 +192,7 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                                     width: scaleWidth(375),
                                     height: scaleHeight(56),
                                     paddingHorizontal: 16,
-                                    backgroundColor: indexSelect === index ? '#DBEFFF' : 'white',
+                                    backgroundColor: dataPriceListSelected.id === item.id ? '#DBEFFF' : 'white',
                                     marginBottom: 1.5,
                                     justifyContent: 'space-between',
                                 }}
@@ -200,27 +200,27 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                                         console.log("data Item :", item);
                                         setWatching(true)
                                         setDataPriceListSelected(item)
-                                        setIndexSelect(index)
                                     }}
                                 >
                                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                                        {/* <View style={{ width: 40, height: 40, backgroundColor: '#EFF8FF', borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
-                                            <Text style={{ fontSize: fontSize.size10, color: '#0078D4' }}>{item.code}</Text>
-                                        </View> */}
                                         <View style={{ marginHorizontal: 6 }}>
                                             <Text style={{ fontSize: fontSize.size10, fontWeight: '500' }}>{item.name}</Text>
                                             <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.priceListCategory}</Text>
                                         </View>
                                     </View>
-                                    <TouchableOpacity>
-                                        {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            setWatching(true)
+                                            setDataPriceListSelected(item)
+                                        }}
+                                    >
                                         <View style={{
                                             borderRadius: scaleHeight(8),
                                             borderWidth: 1,
                                             borderColor: colors.palette.lightGrey,
                                             width: scaleHeight(16),
                                             height: scaleHeight(16),
-                                            backgroundColor: indexSelect === index ? colors.palette.navyBlue : colors.palette.white
+                                            backgroundColor: dataPriceListSelected.id === item.id ? colors.palette.navyBlue : colors.palette.white
                                         }}>
 
                                         </View>
@@ -228,7 +228,6 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                                 </TouchableOpacity>
                             )
                         }}
-                        // keyExtractor={(item: any, index: any) => item.code.toString()}
                         refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}
@@ -274,17 +273,14 @@ export const SelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, 
                     <TouchableOpacity
                         style={onClick === 'select' ? Styles.btnSuccessfully : Styles.btnSave}
                         onPress={() => {
-                            if (watching == true) {
-                                senDataPriceListSelect()
-                                props.navigation.goBack()
+                            // if (watching == true) {
+                            senDataPriceListSelect()
+                            props.navigation.goBack()
 
-                            } else if (watching == false) {
-                                props.navigation.goBack()
-                            } else {
-                                setPriceListNoApply()
-                                props.navigation.goBack()
-
-                            }
+                            // } else if (watching == false) {
+                            //     setPriceListNoApply()
+                            //     props.navigation.goBack()
+                            // }
                             setOnClick('select')
                         }}
                     >
