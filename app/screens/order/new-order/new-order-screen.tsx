@@ -177,12 +177,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             quantity: data.warehouses.quantity,
           },
         },
-        // quantity: ,
+        quantity: data.originAmount,
         uomId: data.uomId,
-        // orderQty: number,
-        // orderUomId: number,
-        unitPrice: data.price,
-        // amountUntaxed: number,
+        orderQty: data.mount,
+        // orderUomId: number, //chon
+        unitPrice: data.price, //don gia cua bang gia
+        // amountUntaxed: data.price,
         amountTotal: data.amountTotal ?? data.price,
         taxes: [{ id: data.VAT.value, name: data.VAT.label }],
         // discount: number,
@@ -190,7 +190,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         type: "PRODUCT",
         // note: string,
         isPriceChange: true,
-        // quantityInventory: number,
+        quantityInventory: data.quantityInventory,
       };
     });
     console.log("data new", JSON.stringify(newArr));
@@ -201,32 +201,32 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       partnerId: 0,
       invoiceAddressId: 0,
       deliveryAddressId: 0,
-      quotationDate: "",
-      orderDate: "",
-      quoteCreationDate: "",
-      expireHoldDate: "",
+      // quotationDate: "",
+      // orderDate: "",
+      // quoteCreationDate: "",
+      // expireHoldDate: "",
       pricelistId: 0,
       currencyId: 0,
-      paymentTermId: 0,
-      promotionIds: [],
+      // paymentTermId: 0,
+      // promotionIds: [],
       paymentMethod: "",
-      salePersonIds: [],
-      saleUserIds: [],
+      // salePersonIds: [],
+      // saleUserIds: [],
       deliveryType: "",
-      warehouseId: 0,
-      commitmentDate: "",
-      deliveryStatus: "",
-      campaignId: 0,
-      discount: 0,
-      discountComputeType: "",
+      // warehouseId: 0,
+      // commitmentDate: "",
+      // deliveryStatus: "",
+      // campaignId: 0,
+      // discount: 0,
+      // discountComputeType: "",
       note: "",
       isOptionPrice: false,
-      deliveryPolicy: "",
-      totalPrice: 0,
-      saleOrderLines: [],
-      saleOrderLineDeleteIds: [],
+      // deliveryPolicy: "",
+      // totalPrice: 0,
+      saleOrderLines: newArr,
+      // saleOrderLineDeleteIds: [],
       isRetail: false,
-      scopeType: "",
+      scopeType: "", //trong nuoc hoac xuat khau
     };
   };
 
@@ -260,10 +260,19 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     navigation.goBack();
     orderStore.setDataProductAddOrder([]);
     orderStore.setViewProductType("VIEW_PRODUCT");
-    orderStore.setDataClientSelect({id: '', name: '', code: '', phoneNumber: ''})
-    orderStore.setDataPriceListSelect({id: '', name: '', priceListCategory: ''})
-    orderStore.setCheckPriceList(false)
-    orderStore.setViewGrid(true)
+    orderStore.setDataClientSelect({
+      id: "",
+      name: "",
+      code: "",
+      phoneNumber: "",
+    });
+    orderStore.setDataPriceListSelect({
+      id: "",
+      name: "",
+      priceListCategory: "",
+    });
+    orderStore.setCheckPriceList(false);
+    orderStore.setViewGrid(true);
   };
 
   const handleSelectTaxes = (id: any) => {
@@ -388,6 +397,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     price.current = all;
     console.log("sum all: ", all);
   };
+  console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
+  console.log("post add tuvm 2", JSON.stringify(arrProduct));
+  // console.log("post add tuvm 2", JSON.stringify(  dataPriceListSelected  ));
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -395,8 +407,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       priceAll(orderStore.dataProductAddOrder.slice());
       getListTax();
       getListAddress();
+      orderStore.setCheckPriceList(false);
     });
-    orderStore.setCheckPriceList(true);
     return unsubscribe;
   }, [navigation]);
 

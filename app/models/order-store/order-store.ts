@@ -25,9 +25,13 @@ import {
   PriceListResponse,
   PriceListSelect,
 } from "../select-price-list/select-price-list.-model";
-import { OrderVariantResult, PriceVariantResult, TaxModel } from "./entities";
 import { TaxLineModel } from "./entities/order-tax-lines-model";
 import { DebtModel } from "./entities/order-debt-limit-model";
+import {
+  OrderVariantResult,
+  PriceVariantResult,
+} from "./entities/order-variant-model";
+import { TaxModel } from "./entities/order-tax-model";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -284,7 +288,7 @@ export const OrderStoreModel = types
       );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
-        console.log("order", result);
+        console.log("order 2", result);
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);

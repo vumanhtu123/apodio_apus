@@ -385,7 +385,7 @@ export interface Order {
   isOptionPrice: boolean;
   deliveryPolicy: string;
   totalPrice: number;
-  saleOrderLines: SaleOrderLine[];
+  saleOrderLines: any;
   saleOrderLineDeleteIds: number[];
   isRetail: boolean;
   scopeType: string;

@@ -100,6 +100,7 @@ export const SelectClientScreen: FC<
           };
         });
         setmyDataSlectClient(dataSelectClien);
+        getDebtLimit();
       });
   };
 
@@ -301,7 +302,7 @@ export const SelectClientScreen: FC<
             onClick === "successfully" ? Styles.btnSuccessfully : Styles.btnSave
           }
           onPress={() => {
-            sendDataClientSelected();
+            sendataClientSelected();
             setOnClick("successfully");
           }}>
           <Text
