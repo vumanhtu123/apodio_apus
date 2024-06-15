@@ -5,7 +5,7 @@
     phoneNumber: string
     }
   
-  export interface OderListResspose {
+  export interface OderListResponse {
     content: Content[]
     page: number
     size: number

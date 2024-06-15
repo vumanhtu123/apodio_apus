@@ -14,37 +14,27 @@ import { Styles } from "./styles"
 export const FilterSelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, "filterSelectApplicablePriceList">> = observer(
     function filterSelect(props) {
         const [onClick, setOnClick] = useState('successfully')
-        const [newOrOld, setnewOrOld] = useState<any>()
-        const [aToz, setaToz] = useState<any>()
+        const [sort, setSort] = useState<any>()
         const { orderStore } = useStores()
 
-        console.log('====================================');
-        console.log('tessss', newOrOld);
-        console.log('====================================');
-        console.log('====================================');
-        console.log('tessss2', aToz);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('tessss', newOrOld);
+        // console.log('====================================');
+        // console.log('====================================');
+        // console.log('tessss2', aToz);
+        // console.log('====================================');
 
 
 
 
-        const handleNewOrOld = () => {
-            orderStore.setSortPriceList(newOrOld)
-            console.log("sorttttttt", orderStore.sortCreateClient);
-            console.log('====================================');
-            console.log("111111");
-            console.log('====================================');
+        const handleSort = () => {
+            orderStore.setSortPriceList(sort)
+            // console.log("sorttttttt", orderStore.sortCreateClient);
+            // console.log('====================================');
+            // console.log("111111");
+            // console.log('====================================');
             props.navigation.goBack()
             // initData()
-        }
-
-        const handleAtoZ = () => {
-            orderStore.setSortPriceList(aToz)
-            console.log("sorttttttt", orderStore.sortCreateClient);
-            console.log('====================================');
-            console.log("2222");
-            console.log('====================================');
-            props.navigation.goBack()
         }
 
 
@@ -62,60 +52,52 @@ export const FilterSelectApplicablePriceList: FC<StackScreenProps<NavigatorParam
                     style={{ padding: scaleHeight(16), }}
                 >
 
-                    {
-                        aToz
-                            ?
-                            <View /> :
-                            <View style={{ marginBottom: 20 }}>
-                                <Text tx="selectClient.timeCreate" style={Styles.stylesTitle} />
-                                <View style={Styles.flexRow}>
-                                    <TouchableOpacity style={[newOrOld == "createdAt,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
-                                        onPress={() => {
-                                            setnewOrOld('createdAt,desc')
+                    <View style={{ marginBottom: 20 }}>
+                        <Text tx="selectClient.timeCreate" style={Styles.stylesTitle} />
+                        <View style={Styles.flexRow}>
+                            <TouchableOpacity style={[sort == "createdAt,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
+                                onPress={() => {
+                                    setSort('createdAt,desc')
 
-                                        }}
-                                    >
-                                        <Text tx="selectClient.new" style={{ color: newOrOld == "createdAt,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
-                                    </TouchableOpacity>
+                                }}
+                            >
+                                <Text tx="selectClient.new" style={{ color: sort == "createdAt,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
+                            </TouchableOpacity>
 
-                                    <TouchableOpacity style={newOrOld == "createdAt,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
-                                        onPress={() => setnewOrOld('createdAt,asc')}
-                                    >
-                                        <Text tx="selectClient.old" style={{ color: newOrOld == "createdAt,asc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                    }
+                            <TouchableOpacity style={sort == "createdAt,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
+                                onPress={() => setSort('createdAt,asc')}
+                            >
+                                <Text tx="selectClient.old" style={{ color: sort == "createdAt,asc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
 
 
 
 
-                    {
-                        newOrOld ?
-                            null :
-                            <View style={{ marginBottom: 20 }}>
-                                <Text tx="selectClient.followName" style={Styles.stylesTitle} />
-                                <View style={Styles.flexRow}>
-                                    <TouchableOpacity style={[aToz == "name,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
-                                        onPress={() => {
-                                            setaToz('name,desc')
+                    <View style={{ marginBottom: 20 }}>
+                        <Text tx="selectClient.followName" style={Styles.stylesTitle} />
+                        <View style={Styles.flexRow}>
+                            <TouchableOpacity style={[sort == "name,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
+                                onPress={() => {
+                                    setSort('name,desc')
 
-                                        }}
-                                    >
-                                        <Text tx="selectClient.aToz" style={{ color: aToz == "name,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
-                                    </TouchableOpacity>
+                                }}
+                            >
+                                <Text tx="selectClient.aToz" style={{ color: sort == "name,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
+                            </TouchableOpacity>
 
-                                    <TouchableOpacity style={aToz == "name,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
-                                        onPress={() => {
-                                            setaToz('name,asc')
+                            <TouchableOpacity style={sort == "name,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
+                                onPress={() => {
+                                    setSort('name,asc')
 
-                                        }}
-                                    >
-                                        <Text tx="selectClient.zToa" style={{ color: aToz == "zTOa" ? colors.palette.navyBlue : colors.palette.dolphin }} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                    }
+                                }}
+                            >
+                                <Text tx="selectClient.zToa" style={{ color: sort == "zTOa" ? colors.palette.navyBlue : colors.palette.dolphin }} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
 
 
                 </View>
@@ -136,14 +118,7 @@ export const FilterSelectApplicablePriceList: FC<StackScreenProps<NavigatorParam
                     <TouchableOpacity
                         style={onClick === 'successfully' ? Styles.btnSuccessfully : Styles.btnSave}
                         onPress={() => {
-                            if (newOrOld !== undefined) {
-                                handleNewOrOld()
-
-                            }
-                            if (aToz !== undefined) {
-                                handleAtoZ()
-                            }
-
+                            handleSort()
                         }}
 
                     >

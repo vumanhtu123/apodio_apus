@@ -51,7 +51,7 @@ export class HomeApi {
           userId,
         }
       );
-      console.log("company", response.data);
+      console.log("company", response);
       const data = response.data;
       // if (!response.ok) {
         Loading.hide();

@@ -10,8 +10,8 @@ import {
 import { OrderApi } from "../../services/api/api_oder";
 import { VendorApi } from "../../services/api/api-vendor";
 import { AddClientAPI } from "../../services/api/api-add-client";
-import { SelectClienAPI } from "../../services/api/api_selectClient";
-import { OderListResspose } from "../order-list-select-clien-model";
+import { SelectClientAPI } from "../../services/api/api_selectClient";
+import { OderListResponse } from "../order-list-select-clien-model";
 import { AddressApi } from "../../services/api/api_address";
 import {
   OrderCityResult,
@@ -21,9 +21,12 @@ import {
 } from "./entities/order-address-model";
 import { boolean, number } from "mobx-state-tree/dist/internal";
 import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
-import { PriceListResponse } from "../select-price-list/select-price-list.-model";
+import {
+  PriceListResponse,
+  PriceListSelect,
+} from "../select-price-list/select-price-list.-model";
 import { OrderVariantResult, TaxModel } from "./entities";
-import { InputTaxLine, TaxLineModel } from "./entities/order-tax-lines-model";
+import { TaxLineModel } from "./entities/order-tax-lines-model";
 import { DebtModel } from "./entities/order-debt-limit-model";
 
 export const OrderStoreModel = types
@@ -73,6 +76,11 @@ export const OrderStoreModel = types
       amountOwed: "",
     }),
     sortPriceList: types.optional(types.string, ""),
+    dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {
+      id: "",
+      name: "",
+      priceListCategory: "",
+    }),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -134,15 +142,23 @@ export const OrderStoreModel = types
     setSortPriceList(sort: any) {
       self.sortPriceList = sort;
     },
+    setDataPriceListSelect(value: any) {
+      console.log("doanlog", value);
+      self.dataPriceListSelected = value;
+    },
   }))
   .actions((self) => ({
-    getListOrder: flow(function* (page: number, size: number) {
+    getListOrder: flow(function* (page: number, size: number, state: string) {
       console.log("page", page);
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
       );
-      const result: OrderResult = yield orderApi.getListOrder(page, size);
+      const result: OrderResult = yield orderApi.getListOrder(
+        page,
+        size,
+        state
+      );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
@@ -160,8 +176,8 @@ export const OrderStoreModel = types
       search: string
     ) {
       try {
-        const clientAPI = new SelectClienAPI(self.environment.apiErp);
-        const result: BaseResponse<OderListResspose, ErrorCode> =
+        const clientAPI = new SelectClientAPI(self.environment.apiErp);
+        const result: BaseResponse<OderListResponse, ErrorCode> =
           yield clientAPI.getListSelectClient(page, size, sort, search);
         console.log(
           "SlectClientResult-------------",
@@ -460,6 +476,23 @@ export const OrderStoreModel = types
         return result;
       }
     }),
+    getDetailInvoice: flow(function* (id: number) {
+      console.log("page", id);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      const result: OrderResult = yield orderApi.getDetailInvoice(id);
+      // console.log('-----------dsa', result.response.errorCodes)
+
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
     getListTax: flow(function* (
       type: string,
       page: number,
@@ -473,6 +506,27 @@ export const OrderStoreModel = types
       try {
         const result: BaseResponse<TaxModel, ErrorCode> =
           yield orderApi.getTaxList(type, scopeType);
+        console.log("tuvm getTax result", JSON.stringify(result));
+        if (result.data !== null) {
+          console.log("tuvm getTax success");
+          return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+    cancelOrder: flow(function* (id: number) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<any, ErrorCode> = yield orderApi.cancelOrder(
+          id
+        );
+        console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");
           return result.data;

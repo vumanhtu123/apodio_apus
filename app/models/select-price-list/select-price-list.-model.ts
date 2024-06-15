@@ -4,6 +4,11 @@
 //     data: Data
 //   }
   
+  export interface PriceListSelect {
+    id: string,
+    name: string, 
+    priceListCategory: string
+  }
   export interface PriceListResponse {
     content: Content[]
     page: number

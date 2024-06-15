@@ -45,8 +45,8 @@ export const styles = StyleSheet.create({
     height: scaleHeight(32),
   },
   viewSelect: {
-    // marginLeft: scaleWidth(padding.padding_16),    // paddingHorizontal: scaleWidth(padding.padding_16),
-    flexDirection: "row",
+    // marginLeft: scaleWidth(padding.padding_16),    
+    // paddingHorizontal: scaleWidth(padding.padding_16),
     height: scaleHeight(48),
     backgroundColor: colors.palette.neutral100,
     paddingTop: scaleHeight(padding.padding_4),

@@ -39,7 +39,7 @@ export const ApiEndpoint = {
   COMPANY_INFO: "/api/v1/companies/info1",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
   GET_LIST_ORDER: "/api/v1/retail/sale-order/list",
-  GET_LIST_SLECT_CLIENT: "/api/v1/b2c/partners/list",
+  GET_LIST_SELECT_CLIENT: "/api/v1/b2c/partners/list",
   CREATE_CLIENT: "/api/v1/b2c/partners",
   GET_LIST_ORDER_PRODUCT: "/api/v1/retail/sale-order/product-templates",
   GET_LIST_ORDER_VARIANT: "/api/v1/retail/sale-order/products",
@@ -54,7 +54,12 @@ export const ApiEndpoint = {
   GET_LIST_ADDRESS: "/api/v1/b2c/partners/address/list",
   GET_LIST_PRICE_LIST:
     "/api/v1/b2c/price-list/list?trackingState=OPERATION&page=0&size=20",
+  GET_LIST_SLECT_CLIENT: "/api/v1/b2c/partners/list",
   GET_LIST_TAX: "/api/v1/tax/list",
+  GET_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
+  GET_DEBT_LIMIT: "/api/v1/retail/sale-order/debt-limit",
+  GET_DATA_REVENUE_THIS_MONTH: "/api/v1/retail/sale-order/dashboard",
+  CANCEL_ORDER: "/api/v1/retail/sale-order/cancel",
   POST_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
-  GET_DEBT_LIMIT: "/api/v1/mobile/account-move/debt",
+  GET_DEBT_LIMIT1: "/api/v1/mobile/account-move/debt",
 };

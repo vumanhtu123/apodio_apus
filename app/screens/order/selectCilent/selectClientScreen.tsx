@@ -40,7 +40,7 @@ export const SelectClientScreen: FC<
   const [size, setsize] = useState(15);
   const [page, setPage] = useState(0);
   const getAPi = useStores();
-  const [isVisibleCreateClient, setisVisibleCreateClient] = useState(false);
+  const [isVisibleCreateClient, setIsVisibleCreateClient] = useState(false);
   const [valueSearch, setValueSearch] = useState("");
   const [isShowSearch, setisShowSearch] = useState(false);
   const [dataItemSelect, setdataItemSelect] = useState();
@@ -78,9 +78,8 @@ export const SelectClientScreen: FC<
   console.log("valueSearch", valueSearch);
   console.log("====================================");
 
-  const sendDataClientSelected = () => {
+  const sendataClientSelected = () => {
     getAPi.orderStore.setDataClientSelect(dataItemSelect);
-    getDebtLimit();
     props.navigation.goBack();
   };
 
@@ -267,7 +266,7 @@ export const SelectClientScreen: FC<
             right: scaleWidth(16),
           }}
           onPress={() => {
-            setisVisibleCreateClient(!isVisibleCreateClient);
+            setIsVisibleCreateClient(!isVisibleCreateClient);
           }}>
           <Images.icon_plus
             width={scaleWidth(16)}
@@ -286,8 +285,7 @@ export const SelectClientScreen: FC<
             onClick === "save" ? Styles.btnSuccessfully : Styles.btnSave,
             { marginRight: 13 },
           ]}
-          // onPress={() => setOnClick('save')}
-        >
+          onPress={() => props.navigation.goBack()}>
           <Text
             style={{
               color:
@@ -323,7 +321,7 @@ export const SelectClientScreen: FC<
       />
       <ModalCreateClient
         isVisible={isVisibleCreateClient}
-        setIsVisible={setisVisibleCreateClient}
+        setIsVisible={setIsVisibleCreateClient}
         handleRefresh={() => getListClient()}
       />
     </View>

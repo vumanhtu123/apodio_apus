@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Dimensions, FlatList, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import Modal from "react-native-modal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -17,6 +17,7 @@ import ItemOrder from "../components/item-order";
 import { styles } from "./styles";
 import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { useStores } from "../../../models";
+import FastImage from "react-native-fast-image";
 export const OrderDetails: FC = observer(
     function OrderDetails(props) {
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
@@ -35,28 +36,68 @@ export const OrderDetails: FC = observer(
         const { orderStore } = useStores();
         const { orderId } = orderStore;
         const [data, setData] = useState<any>([]);
+        const [dataPayment, setDataPayment] = useState<any>([]);
 
         useEffect(() => {
-            console.log('id' , orderId)
+            console.log('id', orderId)
         })
         const handleGetDetailOrder = async () => {
             try {
-              const response = await orderStore.getDetailOrder(orderId);
-              console.log("productId", orderId);
-              if (response && response.kind === "ok") {
-                const data = response.response.data;
-                console.log('dataDetail' , data)
-                setData(data);
-              } else {
-                console.error("Failed to fetch detail:", response);
-              }
+                const response = await orderStore.getDetailOrder(orderId);
+                console.log("productId", orderId);
+                if (response && response.kind === "ok") {
+                    const data = response.response.data;
+                    console.log('dataDetail', JSON.stringify(data))
+                    setData(data);
+                } else {
+                    console.error("Failed to fetch detail:", response);
+                }
             } catch (error) {
-              console.error("Error fetching detail:", error);
+                console.error("Error fetching detail:", error);
             }
-          };
-          useEffect(()=>{
+        };
+        const handleGetDetailInvoice = async () => {
+            try {
+                const response = await orderStore.getDetailInvoice(328);
+                if (response && response.kind === "ok") {
+                    const data = response.response.data;
+                    console.log('dataDetailInvoice', JSON.stringify(data))
+                    setDataPayment(data);
+                } else {
+                    console.error("Failed to fetch detail:", response);
+                }
+            } catch (error) {
+                console.error("Error fetching detail:", error);
+            }
+        };
+        const cancelOrder = async () => {
+            const result = await orderStore.cancelOrder(orderId);
+            console.log('//////////' , result)
+            if (result.kind === "ok") {
+                console.log("Xoá danh mục thành công", result.response);
+            } else {
+                console.log(
+                    "Xoá danh mục thất bại",
+                    result.response.errorCodes[0].message
+                );
+            }
+        }
+        //   useEffect(()=>{
+        //     handleGetDetailOrder()
+        //   },[])
+        useEffect(() => {
             handleGetDetailOrder()
-          },[])
+            handleGetDetailInvoice()
+        }, [orderId]);
+
+        useEffect(() => {
+            console.log("---------useEffect---------reload------------------");
+            const unsubscribe = navigation.addListener('focus', () => {
+                handleGetDetailOrder()
+            });
+
+            return unsubscribe;
+        }, [navigation]);
         const arrData = [
             {
                 id: 1,
@@ -221,32 +262,6 @@ export const OrderDetails: FC = observer(
             console.log(data.reasonText)
             setShowCancelOrder(false)
         }
-
-        const handleChangeAddress = (data: any) => {
-            console.log(control)
-            let arrText = data.item.address.split(",")
-            console.log(arrText)
-            setShowAddAddress(true)
-            setCity({ label: arrText[3] })
-            setDistrict({ label: arrText[2] })
-            setWards({ label: arrText[1] })
-            setPhone(data.item.phone)
-            setAddressChange(arrText[0])
-            setValueSwitch(data.item.default)
-            console.log(data.item.phone)
-            reset()
-        }
-
-        const addNewAddress = () => {
-            setShowAddAddress(true)
-            setCity({ label: '' })
-            setDistrict({ label: '' })
-            setWards({ label: '' })
-            setPhone('')
-            setAddressChange('')
-            setValueSwitch(false)
-            reset()
-        }
         const dataStatus = [
             { status: 'Chờ lấy hàng', complete: true },
             { status: 'Đã lấy hàng', complete: true },
@@ -258,9 +273,9 @@ export const OrderDetails: FC = observer(
             return (
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: scaleHeight(12) }}>
                     {/* Replace Images component with Image */}
-                    <View style={{   }}>
+                    <View style={{}}>
                         {item.complete ? <Images.icon_checkGreen width={scaleWidth(13)} height={scaleHeight(13)} /> :
-                            <View style={{width : scaleWidth(13) , height: scaleHeight(13) , alignItems : 'center'  , justifyContent: 'center'}}>
+                            <View style={{ width: scaleWidth(13), height: scaleHeight(13), alignItems: 'center', justifyContent: 'center' }}>
 
                                 <Images.ic_dot width={scaleWidth(5)} height={scaleHeight(5)} />
                             </View>
@@ -334,17 +349,18 @@ export const OrderDetails: FC = observer(
                     TitleIcon1="order.return"
                     RightIcon2={Images.icon_printer}
                     TitleIcon2="order.printInvoice"
-                    onRightPress2={()=> navigation.navigate('printInvoiceScreen' as never)}
+                    onRightPress2={() => navigation.navigate('printInvoiceScreen' as never)}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
                     onRightPress1={() => {
                         Dialog.show({
                             type: ALERT_TYPE.SUCCESS,
                             title: translate("txtDialog.txt_title_dialog"),
-                            textBody: translate("txtDialog.delete_order"),
+                            textBody: translate("txtDialog.delete_order") + `${data?.code}` + ' ' + translate('txtDialog.delete_order1'),
                             button: translate("common.cancel"),
                             button2: translate("common.confirm"),
                             closeOnOverlayTap: false,
                             onPressButton: () => {
+                                cancelOrder()
                                 navigation.goBack()
                                 Dialog.hide();
                             }
@@ -382,16 +398,25 @@ export const OrderDetails: FC = observer(
                                 </View>
                                 <View style={[styles.viewStatus,
                                 {
-                                    backgroundColor: data.status === 'Đã xử lý' ? colors.palette.solitude
-                                        : data.status === 'Chờ xử lý' ? colors.palette.floralWhite : colors.palette.amour,
+                                    backgroundColor: data.state === 'SALE' ? colors.palette.solitude
+                                        : data.state === 'SENT' ? colors.palette.floralWhite :
+                                            data.state === 'CANCEL' ? colors.palette.amour :
+                                                data.state === 'DONE' ? colors.palette.mintCream : ''
                                 }]}>
                                     <Text style={
                                         [styles.textStatus, {
 
-                                            color: data.status === 'Đã xử lý' ? colors.palette.metallicBlue
-                                                : data.status === 'Chờ xử lý' ? colors.palette.yellow : colors.palette.radicalRed,
+                                            color: data.state === 'SALE' ? colors.palette.metallicBlue
+                                                : data.state === 'SENT' ? colors.palette.yellow :
+                                                    data.state === 'CANCEL' ? colors.palette.radicalRed :
+                                                        data.state === 'DONE' ? colors.palette.malachite : ''
                                         }]
-                                    } text={data?.status} />
+                                    } tx={
+                                        data.state === 'SENT' ? 'orderDetailScreen.sent' :
+                                            data.state === 'SALE' ? 'orderDetailScreen.sale' :
+                                                data.state === 'DONE' ? 'orderDetailScreen.done' :
+                                                    data.state === 'CANCEL' ? 'orderDetailScreen.cancel' : ''
+                                    } />
                                 </View>
                             </View>
                             <Text text={formatDateTime(data?.orderDate)}
@@ -408,7 +433,7 @@ export const OrderDetails: FC = observer(
                                     <Text text={formatCurrency(data.amountTotal)} />
                                 </View>
                                 <Button tx={'order.sendInvoice'}
-                                    onPress={() => {navigation.navigate('newInvoice' as never) }}
+                                    onPress={() => { navigation.navigate('newInvoice' as never) }}
                                     style={styles.buttonSend} />
                             </View>
                             <Text text={data.payStatus} style={styles.textPayStatus} />
@@ -429,7 +454,7 @@ export const OrderDetails: FC = observer(
                             <Images.icon_copy2 style={{ marginLeft: scaleWidth(margin.margin_4) }} />
                         </TouchableOpacity> */}
                     </View>
-                    <TouchableOpacity style={styles.viewAddress}>
+                    <View style={styles.viewAddress}>
                         <View>
                             <Text tx={'order.deliveryAddress'} style={styles.textListProduct} />
                             <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
@@ -447,30 +472,56 @@ export const OrderDetails: FC = observer(
                                 }]} />
                             </View>
                         </View>
-                        <Images.icon_caretRight width={scaleWidth(16)} height={scaleHeight(16)} />
-                    </TouchableOpacity>
+                    </View>
 
 
                     <View style={{ borderRadius: 8, backgroundColor: colors.palette.neutral100 }}>
                         {
-                            promotions.map((item) => {
+                            data.saleOrderLines?.map((item) => {
                                 return (
                                     <TouchableOpacity onPress={() => { }} style={styles.viewItemListProduct}>
-                                        <AutoHeightImage width={48} height={48}
-                                            style={styles.viewImageListProduct}
-                                            source={{ uri: item.images }} />
+                                        {/* <FastImage
+                                            style={{
+                                                width: scaleWidth(48),
+                                                height: scaleHeight(48),
+                                            }}
+                                            source={{
+                                                uri: item.productInfo?.productImage,
+                                                cache: FastImage.cacheControl.immutable,
+                                            }}
+                                            defaultSource={require("../../../../assets/Images/no_images.png")}
+                                        /> */}
+                                        <ImageBackground
+                                            style={{ width: scaleWidth(48), height: scaleHeight(48), marginRight: scaleWidth(10) }}
+                                            imageStyle={{
+                                                borderRadius: 16
+                                            }}
+                                            source={require("../../../../assets/Images/no_images.png")}>
+                                            <FastImage
+                                                style={{
+                                                    width: scaleWidth(48),
+                                                    height: scaleHeight(48),
+                                                    borderRadius: 16
+                                                }}
+                                                source={{
+                                                    uri: `${item.productInfo?.productImage ?? ""}`,
+                                                    cache: FastImage.cacheControl.immutable,
+                                                }}
+                                                defaultSource={require("../../../../assets/Images/no_images.png")}
+                                            />
+                                        </ImageBackground>
                                         <View style={{ flex: 1 }}>
                                             <View style={{ width: (Dimensions.get('screen').width - 64) * 0.45 }}>
-                                                <Text text={item.name} style={styles.textListProduct} />
+                                                <Text text={item.productInfo?.name} style={styles.textListProduct} />
                                             </View>
                                             <View style={{ flexDirection: 'row' }}>
                                                 <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} />
-                                                <Text text={item.amount.toString()} style={styles.textListProduct} />
+                                                <Text text={item.quantity} style={styles.textListProduct} />
                                             </View>
                                         </View>
                                         <View>
-                                            <Text text={item.cost} style={styles.textListProduct} />
-                                            <Text text={item.cost} style={styles.priceOriginal} />
+                                            <Text text={formatCurrency(item.amountTotal)} style={styles.textListProduct} />
+                                            <Text text={formatCurrency(item.amountUntaxed)} style={styles.priceOriginal} />
                                         </View>
                                     </TouchableOpacity>
                                 )
@@ -524,15 +575,16 @@ export const OrderDetails: FC = observer(
                         </View>} */}
                     <ItemOrder
                         money={formatCurrency(data?.totalPrice)}
-                        totalTax={data?.amountTax}
+                        // totalTax={formatCurrency(data.computeTaxInfo?.taxLines?.[0]?.amount)}
                         discount={data?.amountDiscount}
                         totalAmount={formatCurrency(data?.amountTotal)}
                         weight={data?.weight}
-                        payStatus={data?.payStatus}
+                        // payStatus={data?.payStatus}
+                        dataTax={data.computeTaxInfo?.taxLines?.[0]?.items}
                         styleViewItemOrder={{
-                            marginTop : scaleHeight(15),
+                            marginTop: scaleHeight(15),
                             borderBottomLeftRadius: 0,
-                            borderBottomRightRadius: 0
+                            borderBottomRightRadius: 0,
                         }}
                     />
                     {/* {data.status === "Hủy đơn" ?
@@ -561,28 +613,30 @@ export const OrderDetails: FC = observer(
                             </View>
                             <View style={{ flex: 1 }}></View>
                         </View> */}
-                        <View style={{
-                            flexDirection: 'row', alignItems: 'center',
-                            marginBottom: scaleHeight(margin.margin_15)
-                        }}>
-                            <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                <Text text={"02/03/2024 13:56"} style={styles.textContent} />
+                        {dataPayment.paymentResponses?.map((item: any) => (
+                            <View style={{
+                                flexDirection: 'row', alignItems: 'center',
+                                marginBottom: scaleHeight(margin.margin_15)
+                            }}>
+                                <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                    <Text text={item.timePayment} style={styles.textContent} />
+                                </View>
+                                <View style={styles.viewLineCash}>
+                                    <Images.icon_ellipse />
+                                </View>
+                                <View style={styles.viewTextCash}>
+                                    <Text text={item.paymentPopUpResponse?.paymentMethod} style={[styles.textContent, { flex: 1 }]} />
+                                    <Text text={formatCurrency(item.amount)} />
+                                </View>
                             </View>
-                            <View style={styles.viewLineCash}>
-                                <Images.icon_ellipse />
-                            </View>
-                            <View style={styles.viewTextCash}>
-                                <Text tx={'order.cash'} style={[styles.textContent, { flex: 1 }]} />
-                                <Text text="56.000.000" />
-                            </View>
-                        </View>
+                        ))}
                         {/* <View style={{ flexDirection: 'row' }}>
                             <View style={styles.viewPayStatus}>
                                 <Text text={data.payStatus} style={styles.textPayStatus3} />
                             </View>
                             <View style={{ flex: 1 }}></View>
                         </View> */}
-                        <View style={{
+                        {/* <View style={{
                             flexDirection: 'row', alignItems: 'center',
                             // marginBottom: scaleHeight(margin.margin_15)
                         }}>
@@ -596,7 +650,7 @@ export const OrderDetails: FC = observer(
                                 <Text tx={'order.cash'} style={[styles.textContent, { flex: 1 }]} />
                                 <Text text="56.000.000" />
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)} style={{
                         paddingHorizontal: scaleWidth(padding.padding_16),
