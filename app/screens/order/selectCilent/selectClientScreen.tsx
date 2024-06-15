@@ -78,7 +78,7 @@ export const SelectClientScreen: FC<
   console.log("valueSearch", valueSearch);
   console.log("====================================");
 
-  const sendataClientSelected = () => {
+  const senDataClientSelected = () => {
     getAPi.orderStore.setDataClientSelect(dataItemSelect);
     props.navigation.goBack();
   };
@@ -100,7 +100,6 @@ export const SelectClientScreen: FC<
           };
         });
         setmyDataSlectClient(dataSelectClien);
-        getDebtLimit();
       });
   };
 
@@ -302,7 +301,7 @@ export const SelectClientScreen: FC<
             onClick === "successfully" ? Styles.btnSuccessfully : Styles.btnSave
           }
           onPress={() => {
-            sendataClientSelected();
+            senDataClientSelected();
             setOnClick("successfully");
           }}>
           <Text

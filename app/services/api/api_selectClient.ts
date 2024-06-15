@@ -3,6 +3,7 @@ import { hideLoading, showLoading } from "../../utils/toast";
 import { ApiErp } from "../base-api/api-config-erp";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { OderListResponse  } from "../../models/order-list-select-clien-model";
+import { Loading } from "../../components/dialog-notification";
 
 export class SelectClientAPI {
    private api: ApiErp; 
@@ -18,7 +19,9 @@ export class SelectClientAPI {
     sort: string,
     search: string,
    ): Promise<any> {
-        showLoading()
+    Loading.show({
+      text: 'Loading...',
+    })
         try {
          
             console.log("doandev url " , this.api.config.url);
@@ -33,7 +36,7 @@ export class SelectClientAPI {
                   search: search,
                 }
               );
-              hideLoading();
+              Loading.hide();
               const result = response.data;
 
               if (result?.data != null) {

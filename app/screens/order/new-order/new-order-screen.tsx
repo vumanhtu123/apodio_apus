@@ -45,6 +45,7 @@ import { ShowNote } from "../components/note-new-order-component";
 import { Order, arrPayment, dataPromotion, methodData } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
+import { values } from "mobx";
 
 export const NewOrder: FC = observer(function NewOrder(props) {
   const navigation = useNavigation();
@@ -81,14 +82,17 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const priceSumVAT = useRef(0);
   const arrTaxAll = useRef([{ percent: "", amount: "" }]);
   const idItemOrder = useRef(0);
-  const address = useRef<any>();
+  const address = useRef<{}>();
   const store = useStores();
 
   address.current = route?.params?.dataAddress;
+  console.log("adr", route?.params?.dataAddress);
 
   const getListAddress = async () => {
     try {
-      const response = await orderStore.getListAddress(953);
+      const response = await orderStore.getListAddress(
+        Number(store.orderStore.dataClientSelect.id)
+      );
       orderStore.setReloadAddressScreen(false);
       // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
@@ -111,7 +115,30 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     }
   };
 
+  const handleNamMethod = (): string => {
+    switch (countRef.current) {
+      case translate("order.CASH"):
+        console.log("aaa 1");
+        return "CASH";
+      case translate("order.BANK_TRANSFER"):
+        return "BANK_TRANSFER";
+      case translate("order.BANK"):
+        return "BANK";
+      case translate("order.CREDIT"):
+        return "CREDIT";
+      case translate("order.DEDUCTION_OF_LIABILITIES"):
+        return "DEDUCTION_OF_LIABILITIES";
+      default:
+        return "";
+    }
+  };
+
   const addProduct = () => {
+    if (handleNamMethod() == "") {
+      return navigation.navigate("paymentBuy", {
+        params: { type: true },
+      });
+    }
     const newArr = arrProduct.map((data: any) => {
       return {
         productId: data.id,
@@ -171,11 +198,16 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             uomLineType: data.saleUom.uomLineType,
           },
           brand: null,
-          warehouses: {
-            id: data.warehouses.id,
-            name: data.warehouses.name,
-            quantity: data.warehouses.quantity,
-          },
+          warehouses:
+            data.warehouses == undefined
+              ? []
+              : [
+                  {
+                    id: data.warehouses.id,
+                    name: data.warehouses.name,
+                    quantity: data.warehouses.quantity,
+                  },
+                ],
         },
         quantity: data.originAmount,
         uomId: data.uomId,
@@ -184,7 +216,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         unitPrice: data.price, //don gia cua bang gia
         // amountUntaxed: data.price,
         amountTotal: data.amountTotal ?? data.price,
-        taxes: [{ id: data.VAT.value, name: data.VAT.label }],
+        taxes:
+          data.VAT == undefined
+            ? null
+            : [{ id: data.VAT.value, name: data.VAT.label }],
         // discount: number,
         // discountComputeType: string,
         type: "PRODUCT",
@@ -194,25 +229,23 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       };
     });
     console.log("data new", JSON.stringify(newArr));
-    const order: Order = {
-      id: 0,
-      code: "",
+    const order: any = {
       state: "SALE",
-      partnerId: 0,
-      invoiceAddressId: 0,
-      deliveryAddressId: 0,
+      partnerId: store.orderStore.dataClientSelect.id,
+      // invoiceAddressId: 0,
+      deliveryAddressId: address.current?.id,
       // quotationDate: "",
       // orderDate: "",
       // quoteCreationDate: "",
       // expireHoldDate: "",
-      pricelistId: 0,
-      currencyId: 0,
+      pricelistId: orderStore.dataPriceListSelected.pricelistId ?? null,
+      currencyId: orderStore.dataPriceListSelected.currencyId ?? null,
       // paymentTermId: 0,
       // promotionIds: [],
-      paymentMethod: "",
+      paymentMethod: handleNamMethod(),
       // salePersonIds: [],
       // saleUserIds: [],
-      deliveryType: "",
+      deliveryType: "SHIP", //
       // warehouseId: 0,
       // commitmentDate: "",
       // deliveryStatus: "",
@@ -221,13 +254,23 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       // discountComputeType: "",
       note: "",
       isOptionPrice: false,
-      // deliveryPolicy: "",
+      deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
       saleOrderLines: newArr,
       // saleOrderLineDeleteIds: [],
       isRetail: false,
-      scopeType: "", //trong nuoc hoac xuat khau
+      scopeType:
+        payment.label == translate("order.DOMESTICALLY")
+          ? "DOMESTICALLY"
+          : "EXPORTED", //trong nuoc hoac xuat khau
+      isMobile: true,
+      isPrepayment: false, // boolean thanh toan truoc
+      amountPrePayment: "", // so tien gui len
     };
+    console.log("done new order: ", JSON.stringify(order));
+    store.orderStore.postAddOrderSale(order).then((values) => {
+      console.log("success data sale order:", JSON.stringify(values));
+    });
   };
 
   const toggleModalDate = () => {
@@ -399,7 +442,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   };
   console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
   console.log("post add tuvm 2", JSON.stringify(arrProduct));
-  // console.log("post add tuvm 2", JSON.stringify(  dataPriceListSelected  ));
+  console.log(
+    "post add tuvm 3",
+    JSON.stringify(orderStore.dataPriceListSelected)
+  );
+
+  // console.log("data adres", address.current.address);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -805,6 +853,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           setMethod(item);
           countRef.current = name;
           console.log("tuvm2", countRef);
+          handleNamMethod();
         }}
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,

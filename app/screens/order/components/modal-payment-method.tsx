@@ -46,7 +46,7 @@ export const ModalPayment = (data: InputSelect) => {
             marginHorizontal: 24,
             marginTop: 25,
           }}></Text>
-        {data.arrData.map((payment: any, index) => {
+        {data.arrData?.map((payment: any, index) => {
           return (
             <Item_Payment
               setData={function (value: any, name: any): void {
