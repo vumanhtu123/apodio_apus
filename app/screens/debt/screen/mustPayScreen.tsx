@@ -28,26 +28,27 @@ export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> 
                     RightIcon1={Images.ic_slider}
                     btnRightStyle={{}}
                     headerInput={true}
+                    searchText="Tên nhà cung cấp"
                 />
                 <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
                     colors={[colors.palette.navyBlue, colors.palette.malibu]}
-                    style={{ height: scaleHeight(80) }}
+                    style={{ height: scaleHeight(50) }}
                 ></LinearGradient>
                 <View
-                    style={Styles.bodyCard}
+                    style={Styles.bodyCardMusPay}
                 >
 
                     <View
-                        style={{ flexDirection: "row", marginTop: scaleWidth(16), justifyContent: 'space-between' }}
+                        style={{ flexDirection: "row", justifyContent: 'space-between' }}
                     >
-                        <TouchableOpacity style={Styles.bodyItem}>
+                        <TouchableOpacity style={[{ alignItems: 'center', flex: 1 }]}>
 
-                            <Text style={Styles.upcase}>0</Text>
+                            <Text style={[Styles.styleNumber, { color: colors.palette.navyBlue }]}>10</Text>
                             <Text style={{ fontSize: (12), textAlign: 'center' }} tx="debtScreen.totalNumberOfSuppliersIncurringDebt"></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={Styles.bodyItem}>
+                        <TouchableOpacity style={[{ alignItems: 'center', flex: 1 }]}>
 
-                            <Text style={Styles.upcase}>0</Text>
+                            <Text style={[Styles.styleNumber, { color: colors.palette.textExCancle }]}>{`10 ${'đ'}`}</Text>
                             <Text style={{ fontSize: (12) }} tx="debtScreen.totalDebtMustPay"></Text>
                         </TouchableOpacity>
                     </View>
