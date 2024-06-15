@@ -51,7 +51,8 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
             "branches": [],
             "deleteAddress": [],
             "sharingModeB2c": "PRIVATE",
-            "partnerTagIds": []
+            "partnerTagIds": [],
+            "b2cActivated": true,
         })
         console.log('====================================');
         console.log('test', result);

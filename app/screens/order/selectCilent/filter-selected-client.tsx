@@ -81,22 +81,22 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                     <View style={{ marginBottom: 20 }}>
                         <Text tx="selectClient.followName" style={Styles.stylesTitle} />
                         <View style={Styles.flexRow}>
-                            <TouchableOpacity style={[sort == "name,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
-                                onPress={() => {
-                                    setSort('name,desc')
-
-                                }}
-                            >
-                                <Text tx="selectClient.aToz" style={{ color: sort == "name,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={sort == "name,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
+                            <TouchableOpacity style={[sort == "name,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
                                 onPress={() => {
                                     setSort('name,asc')
 
                                 }}
                             >
-                                <Text tx="selectClient.zToa" style={{ color: sort == "zTOa" ? colors.palette.navyBlue : colors.palette.dolphin }} />
+                                <Text tx="selectClient.aToz" style={{ color: sort == "name,asc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={sort == "name,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
+                                onPress={() => {
+                                    setSort('name,desc')
+
+                                }}
+                            >
+                                <Text tx="selectClient.zToa" style={{ color: sort == "name,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
                             </TouchableOpacity>
                         </View>
                     </View>
