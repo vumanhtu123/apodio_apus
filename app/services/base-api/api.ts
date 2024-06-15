@@ -92,13 +92,13 @@ export class  Api {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "en",
             "Content-Type": "multipart/form-data",
-            "X-TenantId": tenantId,
+            "X-TenantId": 77,
           };
         } else {
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "vi",
-            "X-TenantId": tenantId,
+            "X-TenantId": 77,
           };
         }
 

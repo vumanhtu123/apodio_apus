@@ -34,14 +34,6 @@ const getDomainErp = () => {
   console.log("ERP", domain);
   return domain;
 };
-const getDomainAddress = () => {
-  const env = CONFIG.ENV;
-  //const domain = CONFIG.API.STAGING.URL_ERP;
-  const domain = CONFIG.API.DEV.URL_ERP;
-  // console.log('URL',CONFIG.API.PRODUCT.URL);
-  console.log("ERP", domain);
-  return domain;
-};
 
 
 const getDomainGetWay = () => {
@@ -104,11 +96,6 @@ export const DEFAULT_API_CONFIG_UPLOAD: ApiConfig = {
 
 export const DEFAULT_API_CONFIG_ERP: ApiConfig = {
   url: getDomainErp(),
-  timeout: 100000,
-};
-
-export const DEFAULT_API_CONFIG_ADDRESS: ApiConfig = {
-  url: getDomainAddress(),
   timeout: 100000,
 };
 

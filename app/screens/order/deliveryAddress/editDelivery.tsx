@@ -34,7 +34,7 @@ export const EditDelivery: FC = observer(
         const [searchWards, setSearchWards] = useState('')
         const dataEdit: Root1 = route?.params?.dataEdit
 
-        const { control, reset, handleSubmit, formState: { errors }, setError } = useForm({
+        const { control, reset, handleSubmit,formState: { errors }, setError } = useForm({
             defaultValues: {phone: dataEdit.phoneNumber, address: dataEdit.address}
         });
 
@@ -223,7 +223,7 @@ export const EditDelivery: FC = observer(
                 const newWard = { id: wards.id, name: wards.label }
                 const dataCreate = {
                     id: dataEdit.id,
-                    partnerId: 953,
+                    partnerId: Number(orderStore.dataClientSelect.id),
                     phoneNumber: data.phone,
                     addressType: "DELIVERY_ADDRESS",
                     country: newCountry,
@@ -231,6 +231,7 @@ export const EditDelivery: FC = observer(
                     district: newDistrict,
                     ward: newWard,
                     address: data.address,
+                    isDefault: valueSwitch,
                 }
                 try {
                     const response = await orderStore.createAddress(dataCreate)

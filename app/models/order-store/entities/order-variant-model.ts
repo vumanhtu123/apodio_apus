@@ -145,3 +145,16 @@ export interface Response {
 export type OrderVariantResult =
   | { kind: "ok"; response: Response }
   | { kind: "bad-data"; response: Response };
+  export interface Response1 {
+    message: string
+    traceId: string
+    data: Root3
+    errorCodes: ErrorCode[]
+  }
+  
+  export interface Root3 {
+    productId: number
+    quantity: number
+    price: number
+  }
+  export type PriceVariantResult = { kind: "ok", response: Response1 } | { kind: "bad-data", response: Response1 };

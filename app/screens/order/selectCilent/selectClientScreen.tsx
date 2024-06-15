@@ -38,7 +38,6 @@ export const SelectClientScreen: FC<StackScreenProps<NavigatorParamList, "select
 
 
 
-
         // const dataFace = [
         //     {
         //         code: "MTH",

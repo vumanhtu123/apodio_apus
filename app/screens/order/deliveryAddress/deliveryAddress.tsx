@@ -4,13 +4,11 @@ import React, { Dimensions, FlatList, KeyboardAvoidingView, Platform, TouchableO
 import { Button, Header, Switch, Text, TextField } from '../../../components';
 import { Images } from '../../../../assets';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { InputSelect } from '../../../components/input-select/inputSelect';
-import { Controller, useForm } from 'react-hook-form';
 import { styles } from './styles';
 import { colors, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { OrderListAddressResult, Root1 } from '../../../models/order-store/order-address-model';
+import { OrderListAddressResult, Root1 } from '../../../models/order-store/entities/order-address-model';
 
 export const DeliveryAddress: FC = observer(
     function DeliveryAddress() {
@@ -35,7 +33,7 @@ export const DeliveryAddress: FC = observer(
         const getListAddress = async () => {
             try {
                 const response = await orderStore.getListAddress(
-                    953,
+                    Number(orderStore.dataClientSelect.id),
                 );
                 orderStore.setReloadAddressScreen(false)
                 // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
@@ -45,6 +43,15 @@ export const DeliveryAddress: FC = observer(
                         JSON.stringify(response.response.data)
                     );
                     const newArr = response.response.data;
+                    if (dataAddress === undefined) {
+                        newArr.map(items => {
+                            if (items.isDefault === true) {
+                                setAddressChoice(items.id)
+                            }
+                        })
+                    } else {
+                        setAddressChoice(dataAddress.id)
+                    }
                     setArrAddress(newArr);
                 } else {
                     console.error("Failed to fetch categories:", response);
@@ -56,18 +63,19 @@ export const DeliveryAddress: FC = observer(
         useEffect(() => {
             getListAddress()
         }, [])
-        useEffect(() => {
-            console.log(dataAddress, '1231245234123')
-            if (dataAddress === undefined) {
-                arrAddress.map(items => {
-                    if (items.isDefault === true) {
-                        setAddressChoice(items.id)
-                    }
-                })
-            } else {
-                setAddressChoice(dataAddress.id)
-            }
-        }, [])
+        // useEffect(() => {
+        //     console.log(dataAddress, '1231245234123')
+        //     if (dataAddress === undefined) {
+        //         arrAddress.map(items => {
+        //             if (items.isDefault === true) {
+        //                 setAddressChoice(items.id)
+        //             }
+        //         })
+        //     } else {
+        //         setAddressChoice(dataAddress.id)
+        //     }
+        //     console.log(arrAddress, 'data address')
+        // }, [])
 
         return (
             <View style={styles.ROOT}>

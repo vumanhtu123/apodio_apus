@@ -202,6 +202,29 @@ export const styles = StyleSheet.create({
         fontSize: fontSize.size14,
         lineHeight: scaleHeight(24),
       },
+      viewImageSelectVariant: {
+        width: scaleWidth(70),
+        height: scaleHeight(70),
+        borderRadius: 10,
+        marginRight: 12,
+    },
+    viewBodySelectVariant: {
+      flex: 1,
+      marginHorizontal: scaleWidth(16),
+      marginVertical: scaleHeight(20),
+      justifyContent: "flex-start",
+  },textDetailInfor: {
+    flex: 1,
+    fontWeight: "700",
+    fontSize: fontSize.size12,
+    lineHeight: scaleHeight(14.52),
+    color: colors.nero,
+},textViewInfo: {
+  fontWeight: "400",
+  fontSize: fontSize.size12,
+  lineHeight: scaleHeight(14.52),
+  color: colors.navyBlue,
+},
   });
 
   export const stylesVariant = StyleSheet.create({
