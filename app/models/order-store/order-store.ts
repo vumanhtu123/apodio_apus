@@ -178,12 +178,13 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       sort: string,
-      search: string
+      search: string,
+      b2cActivated : boolean
     ) {
       try {
         const clientAPI = new SelectClientAPI(self.environment.apiErp);
         const result: BaseResponse<OderListResponse, ErrorCode> =
-          yield clientAPI.getListSelectClient(page, size, sort, search);
+          yield clientAPI.getListSelectClient(page, size, sort, search, b2cActivated);
         console.log(
           "SlectClientResult-------------",
           JSON.stringify(result.data)

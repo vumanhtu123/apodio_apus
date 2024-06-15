@@ -21,7 +21,6 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { number } from "mobx-state-tree/dist/internal";
 import { Styles } from "./styles";
 import SelectFilterModal from "./Modal/modal-select-filter";
-import { SelectClienAPI } from "../../../services/api/api_selectClient";
 import { useStores } from "../../../models";
 import ModalCreateClient from "./Modal/modal-create-client";
 import Loading from "../../../components/loading/loading";
@@ -34,10 +33,10 @@ export const SelectClientScreen: FC<
     const [indexSelect, setIndexSelect] = useState<any>();
     const [onClick, setOnClick] = useState("successfully");
     const [isVisible, setIsVisible] = useState(false);
-    const [myDataSlectClient, setmyDataSlectClient] = useState([]);
+    const [myDataSelectClient, setMyDataSelectClient] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
-    const [size, setsize] = useState(15);
+    const [size, setsize] = useState<any>();
     const [page, setPage] = useState(0);
     const getAPi = useStores();
     const [isVisibleCreateClient, setIsVisibleCreateClient] = useState(false);
@@ -85,7 +84,7 @@ export const SelectClientScreen: FC<
 
     const getListClient = () => {
         getAPi.orderStore
-            .getListSelectClient(0, size, sort, valueSearch)
+            .getListSelectClient(0, size, sort, valueSearch, true)
             .then((data) => {
                 console.log("dataaaaaaaaa", data);
 
@@ -99,45 +98,52 @@ export const SelectClientScreen: FC<
                         phoneNumber: item.phoneNumber,
                     };
                 });
-                setmyDataSlectClient(dataSelectClien);
+
+                setMyDataSelectClient(dataSelectClien);
             });
     };
 
     useEffect(() => {
-        getListClient();
-    }, [getAPi.orderStore.sortCreateClient]);
 
-    const getDebtLimit = () => {
-        if (getAPi.orderStore.dataClientSelect !== null) {
-            getAPi.orderStore
-                .getDebtLimit(getAPi.orderStore.dataClientSelect.id)
-                .then((data: any) => {
-                    console.log(data);
-                    getAPi.orderStore.setDataDebtLimit(data);
-                });
-        }
-    };
+        getListClient();
+
+    }, [getAPi.orderStore.sortCreateClient, size]);
+
+    // const getDebtLimit = () => {
+    //     if (getAPi.orderStore.dataClientSelect !== null) {
+    //         getAPi.orderStore
+    //             .getDebtLimit(getAPi.orderStore.dataClientSelect.id)
+    //             .then((data: any) => {
+    //                 console.log(data);
+    //                 getAPi.orderStore.setDataDebtLimit(data);
+    //             });
+    //     }
+    // };
 
     console.log("load more", isLoadingMore);
 
-    const handleRefresh = React.useCallback(async () => {
+    // const handleRefresh = React.useCallback(async () => {
+
+    // }, []);
+
+    const handleRefresh = () => {
         setRefreshing(true);
         try {
             // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
-            const newData: any = await getListClient();
+            getListClient();
             // Cập nhật state của danh sách dữ liệu
-            setmyDataSlectClient(newData);
+            // setmyDataSlectClient(newData);
         } catch (error) {
             console.error(error);
         } finally {
             setRefreshing(false);
         }
-    }, []);
+    }
 
     const handleLoadMore = () => {
         setIsLoadingMore(true);
         setsize(size + 3);
-        getListClient();
+        // getListClient();
         setTimeout(() => {
             setIsLoadingMore(false);
         }, 3000);
@@ -177,7 +183,7 @@ export const SelectClientScreen: FC<
             </View>
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={myDataSlectClient}
+                    data={myDataSelectClient}
                     renderItem={({ item, index }): any => {
                         return (
                             <TouchableOpacity
@@ -241,7 +247,7 @@ export const SelectClientScreen: FC<
                             </TouchableOpacity>
                         );
                     }}
-                    // keyExtractor={(item: any, index: any) => item.code.toString()}
+                    keyExtractor={(item: any, index: any) => index.toString() + item.id}
                     refreshControl={
                         <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                     }
