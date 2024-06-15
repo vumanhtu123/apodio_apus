@@ -186,6 +186,15 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         closeDialog={function (): void {
           setButtonPayment(false);
         }}
+        arrData={[]}
+        method={0}
+        setMethod={function (item: number, name: string): void {
+          throw new Error("Function not implemented.");
+        }}
+        debt={{
+          isHaveDebtLimit: undefined,
+          debtAmount: undefined,
+        }}
       />
     </View>
   );

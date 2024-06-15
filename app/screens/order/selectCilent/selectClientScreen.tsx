@@ -121,7 +121,7 @@ export const SelectClientScreen: FC<
         } finally {
             setRefreshing(false);
         }
-    }
+    };
 
     const handleLoadMore = () => {
         setIsLoadingMore(true);
