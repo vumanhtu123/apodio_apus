@@ -121,7 +121,7 @@ export type NavigatorParamList = {
   orderDetailsSupplier: undefined;
   selectClient: undefined;
   paymentBuy: undefined;
-  deliveryAddress: undefined;
+  deliveryAddress: { dataAddress: any };
   editDelivery: undefined;
   newDelivery: undefined;
   addProductOrder: undefined;
@@ -149,7 +149,7 @@ export const AppStack = () => {
         gestureDirection: "horizontal",
         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
-      initialRouteName={"mainBottom"}>
+      initialRouteName={"listCompany"}>
       <Stack.Screen
         name="accountSecurity"
         component={Screens.AccountSecurity}
@@ -246,10 +246,22 @@ export const AppStack = () => {
       <Stack.Screen name="debt" component={Screens.DebtScreen} />
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
 
-      <Stack.Screen name="selectClient" component={Screens.SelectClientScreen} />
-      <Stack.Screen name="filterSelectScreen" component={Screens.FilterSelectScreen} />
-      <Stack.Screen name="selectApplicablePriceList" component={Screens.SelectApplicablePriceList} />
-      <Stack.Screen name="filterSelectApplicablePriceList" component={Screens.FilterSelectApplicablePriceList} />
+      <Stack.Screen
+        name="selectClient"
+        component={Screens.SelectClientScreen}
+      />
+      <Stack.Screen
+        name="filterSelectScreen"
+        component={Screens.FilterSelectScreen}
+      />
+      <Stack.Screen
+        name="selectApplicablePriceList"
+        component={Screens.SelectApplicablePriceList}
+      />
+      <Stack.Screen
+        name="filterSelectApplicablePriceList"
+        component={Screens.FilterSelectApplicablePriceList}
+      />
       <Stack.Screen
         name="mainBottom"
         options={{ gestureEnabled: false }}
@@ -445,7 +457,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()

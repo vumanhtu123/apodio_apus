@@ -70,6 +70,18 @@ export const OrderDetails: FC = observer(
                 console.error("Error fetching detail:", error);
             }
         };
+        const cancelOrder = async () => {
+            const result = await orderStore.cancelOrder(orderId);
+            console.log('//////////' , result)
+            if (result.kind === "ok") {
+                console.log("Xoá danh mục thành công", result.response);
+            } else {
+                console.log(
+                    "Xoá danh mục thất bại",
+                    result.response.errorCodes[0].message
+                );
+            }
+        }
         //   useEffect(()=>{
         //     handleGetDetailOrder()
         //   },[])
@@ -250,32 +262,6 @@ export const OrderDetails: FC = observer(
             console.log(data.reasonText)
             setShowCancelOrder(false)
         }
-
-        const handleChangeAddress = (data: any) => {
-            console.log(control)
-            let arrText = data.item.address.split(",")
-            console.log(arrText)
-            setShowAddAddress(true)
-            setCity({ label: arrText[3] })
-            setDistrict({ label: arrText[2] })
-            setWards({ label: arrText[1] })
-            setPhone(data.item.phone)
-            setAddressChange(arrText[0])
-            setValueSwitch(data.item.default)
-            console.log(data.item.phone)
-            reset()
-        }
-
-        const addNewAddress = () => {
-            setShowAddAddress(true)
-            setCity({ label: '' })
-            setDistrict({ label: '' })
-            setWards({ label: '' })
-            setPhone('')
-            setAddressChange('')
-            setValueSwitch(false)
-            reset()
-        }
         const dataStatus = [
             { status: 'Chờ lấy hàng', complete: true },
             { status: 'Đã lấy hàng', complete: true },
@@ -374,6 +360,7 @@ export const OrderDetails: FC = observer(
                             button2: translate("common.confirm"),
                             closeOnOverlayTap: false,
                             onPressButton: () => {
+                                cancelOrder()
                                 navigation.goBack()
                                 Dialog.hide();
                             }
@@ -626,7 +613,7 @@ export const OrderDetails: FC = observer(
                             </View>
                             <View style={{ flex: 1 }}></View>
                         </View> */}
-                        {dataPayment.paymentResponses?.map((item : any) => (
+                        {dataPayment.paymentResponses?.map((item: any) => (
                             <View style={{
                                 flexDirection: 'row', alignItems: 'center',
                                 marginBottom: scaleHeight(margin.margin_15)

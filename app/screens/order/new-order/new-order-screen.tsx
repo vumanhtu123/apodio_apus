@@ -30,13 +30,6 @@ import { styles } from "./styles";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Controller, useForm } from "react-hook-form";
-import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
-import {
-  MediaType,
-  launchCamera,
-  launchImageLibrary,
-} from "react-native-image-picker";
-import Modal from "react-native-modal";
 import { translate } from "../../../i18n";
 import moment from "moment";
 import CustomCalendar from "../../../components/calendar";
@@ -49,7 +42,7 @@ import {
 import { ModalPayment } from "../components/modal-payment-method";
 import { ModalTaxes } from "../components/modal-taxes-apply";
 import { ShowNote } from "../components/note-new-order-component";
-import { arrPayment, arrProducts, dataPromotion, methodData } from "./data";
+import { Order, arrPayment, dataPromotion, methodData } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 
@@ -62,14 +55,13 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     scaleHeight(52) -
     paddingTop;
   const route = useRoute();
-
-  const [arrName, setArrName] = useState<{}[]>([]);
   const { orderStore } = useStores();
-  const dataAddress = route?.params?.dataAddress;
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
-  const [payment, setPayment] = useState({ label: "" });
+  const [payment, setPayment] = useState({
+    label: translate("order.DOMESTICALLY"),
+  });
   const [note, setNote] = useState(false);
   const [desiredDate, setDesiredDate] = useState(false);
   const [isDeposit, setIsDeposit] = useState(false);
@@ -83,20 +75,175 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
   const countRef = useRef("");
+  const [arrDataPostTax, setArrDataPostTax] = useState<{}[]>([]);
+  const nameTax = useRef("");
+  const price = useRef(0);
+  const priceSumVAT = useRef(0);
+  const arrTaxAll = useRef([{ percent: "", amount: "" }]);
+  const idItemOrder = useRef(0);
+  const address = useRef<any>();
   const store = useStores();
+
+  address.current = route?.params?.dataAddress;
+
+  const getListAddress = async () => {
+    try {
+      const response = await orderStore.getListAddress(953);
+      orderStore.setReloadAddressScreen(false);
+      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+      if (response && response.kind === "ok") {
+        console.log(
+          "getListAddress---------------------",
+          JSON.stringify(response.response.data)
+        );
+        const newArr = response.response.data;
+        newArr.map((data: any) => {
+          if (data.isDefault === true) {
+            address.current = data;
+          }
+          console.log("tuvm address", address.current);
+        });
+      } else {
+        console.error("Failed to fetch categories:", response);
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
+
+  const addProduct = () => {
+    const newArr = arrProduct.map((data: any) => {
+      return {
+        productId: data.id,
+        productInfo: {
+          id: data.id,
+          name: data.name,
+          sku: data.sku,
+          upc: data.upc,
+          uomId: data.uomId,
+          uomCode: data.uomCode,
+          uomName: data.uomName,
+          productImage: data.productImage,
+          productTemplate: {
+            id: data.productTemplate.id,
+            hasVariant: data.productTemplate.hasVariant,
+            sku: data.productTemplate.sku,
+            upc: data.productTemplate.upc,
+            name: data.productTemplate.name,
+            productCategoryId: data.productTemplate.productCategoryId,
+            productCategoryName: data.productTemplate.productCategoryName,
+            uomId: data.productTemplate.uomId,
+            uomName: data.productTemplate.uomName,
+            managementForm: data.productTemplate.managementForm,
+            isInternal: data.productTemplate.isInternal,
+            isMaterial: data.productTemplate.isMaterial,
+            isGoods: data.productTemplate.isGoods,
+            isSemiFinished: data.productTemplate.isSemiFinished,
+            isOEM: data.productTemplate.isOEM,
+          },
+          quantityInventory: data.quantityInventory,
+          minQuantity: data.minQuantity,
+          uomGroup: {
+            id: data.uomGroup.id,
+            code: data.uomGroup.code,
+            name: data.uomGroup.name,
+            uomOriginId: data.uomGroup.uomOriginId,
+            uomOriginName: data.uomGroup.uomOriginName,
+            uomGroupLineItems: [
+              {
+                id: data.uomGroup.uomGroupLineItems.id,
+                uomId: data.uomGroup.uomGroupLineItems.uomId,
+                uomName: data.uomGroup.uomGroupLineItems.uomName,
+                conversionRate: data.uomGroup.uomGroupLineItems.conversionRate,
+                accuracy: data.uomGroup.uomGroupLineItems.accuracy,
+                uomLineType: data.uomGroup.uomGroupLineItems.uomLineType,
+              },
+            ],
+          },
+          baseProductPackingLine: null,
+          productPackingLines: [],
+          saleUom: {
+            id: data.saleUom.id,
+            uomId: data.saleUom.uomId,
+            uomName: data.saleUom.uomName,
+            conversionRate: data.saleUom.conversionRate,
+            accuracy: data.saleUom.accuracy,
+            uomLineType: data.saleUom.uomLineType,
+          },
+          brand: null,
+          warehouses: {
+            id: data.warehouses.id,
+            name: data.warehouses.name,
+            quantity: data.warehouses.quantity,
+          },
+        },
+        // quantity: ,
+        uomId: data.uomId,
+        // orderQty: number,
+        // orderUomId: number,
+        unitPrice: data.price,
+        // amountUntaxed: number,
+        amountTotal: data.amountTotal ?? data.price,
+        taxes: [{ id: data.VAT.value, name: data.VAT.label }],
+        // discount: number,
+        // discountComputeType: string,
+        type: "PRODUCT",
+        // note: string,
+        isPriceChange: true,
+        // quantityInventory: number,
+      };
+    });
+    console.log("data new", JSON.stringify(newArr));
+    const order: Order = {
+      id: 0,
+      code: "",
+      state: "SALE",
+      partnerId: 0,
+      invoiceAddressId: 0,
+      deliveryAddressId: 0,
+      quotationDate: "",
+      orderDate: "",
+      quoteCreationDate: "",
+      expireHoldDate: "",
+      pricelistId: 0,
+      currencyId: 0,
+      paymentTermId: 0,
+      promotionIds: [],
+      paymentMethod: "",
+      salePersonIds: [],
+      saleUserIds: [],
+      deliveryType: "",
+      warehouseId: 0,
+      commitmentDate: "",
+      deliveryStatus: "",
+      campaignId: 0,
+      discount: 0,
+      discountComputeType: "",
+      note: "",
+      isOptionPrice: false,
+      deliveryPolicy: "",
+      totalPrice: 0,
+      saleOrderLines: [],
+      saleOrderLineDeleteIds: [],
+      isRetail: false,
+      scopeType: "",
+    };
+  };
 
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
   };
 
   const handleIncrease = (id: any) => {
+    idItemOrder.current = id;
     let newArr = arrProduct!.map((item: any) => {
       if (item.id === id) {
-        return { ...item, qty: item.qty + 1 };
+        return { ...item, amount: item.amount + 1 };
       }
       return item;
     });
     setArrProduct(newArr);
+    postTaxLines(newArr);
   };
 
   const handleAddTaxes = (id: any) => {
@@ -113,23 +260,34 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     navigation.goBack();
     orderStore.setDataProductAddOrder([]);
     orderStore.setViewProductType("VIEW_PRODUCT");
+    orderStore.setDataClientSelect({id: '', name: '', code: '', phoneNumber: ''})
+    orderStore.setDataPriceListSelect({id: '', name: '', priceListCategory: ''})
+    orderStore.setCheckPriceList(false)
+    orderStore.setViewGrid(true)
   };
 
   const handleSelectTaxes = (id: any) => {
+    idItemOrder.current = id;
+    console.log("tuuup", idItemOrder.current);
     setButtonSelect(true);
   };
 
   const handleDecrease = (id: any) => {
+    idItemOrder.current = id;
     let newArr = arrProduct!
       .map((item: any) => {
         if (item.id === id) {
-          return { ...item, qty: item.qty - 1 };
+          return {
+            ...item,
+            amount: item.amount - 1,
+          };
         }
         return item;
       })
-      .filter((item) => item.qty > 0);
+      .filter((item) => item.amount > 0);
     setArrProduct(newArr);
-    console.log(arrProduct);
+    postTaxLines(newArr);
+    console.log("-tuvm", arrProduct);
   };
 
   const deleteItemProduct = (id: any) => {
@@ -142,21 +300,107 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       "VAT_RATES",
       0,
       20,
-      "DOMESTICALLY"
+      payment.label == translate("order.DOMESTICALLY")
+        ? "DOMESTICALLY"
+        : "EXPORTED"
     );
-    console.log("id name", result);
     setArrTax(
       result.content.map((item: { name: any; id: any }) => {
-        return { text: item.name, value: item.id };
+        return { label: item.name, value: item.id };
       })
     );
   };
 
+  const postTaxLines = async (data: any) => {
+    const newItem = data.filter((item: any) => item.id === idItemOrder.current);
+    const valueApi = {
+      quantity: newItem[0].amount,
+      unitPrice: newItem[0].price,
+      discount: 0,
+      taxes: [
+        {
+          id: newItem[0].VAT ? newItem[0].VAT.value : 0,
+          name: newItem[0].VAT ? newItem[0].VAT.label : "",
+        },
+      ],
+      importTax: 0,
+      specialConsumptionTax: 0,
+      environmentalResourceTax: 0,
+      vat: 0,
+    };
+    console.log("tuvm tax 1234", JSON.stringify(arrTaxAll.current));
+    await store.orderStore.postTaxLine([valueApi]).then((value: any) => {
+      console.log("tuvm tax post", JSON.stringify(value));
+      handleTaxes(value, data);
+    });
+  };
+
+  const handleTaxes = (arrTaxLine: any, data: any) => {
+    const newArr = data.map((value: any) => {
+      console.log("log b1", arrTaxLine);
+      if (value.id === idItemOrder.current) {
+        return {
+          ...value,
+          taxValue: arrTaxLine[0].items[0].amount,
+          amountTotal: Number(
+            arrTaxLine[0].items[0].amount + Number(value.price)
+          ),
+        };
+      }
+      return value;
+    });
+    handleSumAmountVAT(newArr);
+    setArrProduct(newArr);
+    console.log("data new tuvm", JSON.stringify(newArr));
+  };
+
+  const handleSumAmountVAT = (value: any) => {
+    const all = value.reduce((sum: any, item: any) => {
+      if (item.taxValue !== undefined) {
+        return sum + item.taxValue;
+      }
+      return;
+    }, 0);
+    priceSumVAT.current = Number(all) + Number(price.current);
+  };
+
+  const selectTexas = () => {
+    console.log("select Texas", idItemOrder.current);
+    let newArr = arrProduct.map((item: any) => {
+      if (item.id === idItemOrder.current) {
+        console.log("select :", JSON.stringify(nameTax.current));
+        return { ...item, VAT: nameTax.current };
+      }
+      return item;
+    });
+    setArrProduct(newArr);
+    postTaxLines(newArr);
+  };
+
+  const selectProduct = () => {
+    orderStore.setDataProductAddOrder(arrProduct.slice());
+  };
+
+  const priceAll = (data: any) => {
+    const all = data.reduce((sum: any, item: any) => {
+      return sum + Number(item.price);
+    }, 0);
+    price.current = all;
+    console.log("sum all: ", all);
+  };
+
   useEffect(() => {
-    setArrProduct(arrProducts);
-    getListTax();
+    const unsubscribe = navigation.addListener("focus", () => {
+      setArrProduct(orderStore.dataProductAddOrder.slice());
+      priceAll(orderStore.dataProductAddOrder.slice());
+      getListTax();
+      getListAddress();
+    });
     orderStore.setCheckPriceList(true);
-  }, []);
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {}, [arrProduct]);
 
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
@@ -186,13 +430,18 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             openDialog={function (): void {
               props.navigation.navigate("selectClient");
             }}
+            data={store.orderStore.dataClientSelect}
           />
           <AddressOrder
             onPressAddress={() =>
-              navigation.navigate("deliveryAddress" as never, {
-                dataAddress: dataAddress,
-              })
+              navigation.navigate([
+                "deliveryAddress",
+                {
+                  dataAddress: dataAddress,
+                },
+              ] as never)
             }
+            data={address.current}
           />
           <PriceList />
           <InputSelect
@@ -208,13 +457,17 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             arrData={arrPayment}
             onPressChoice={(item: any) => {
               setPayment(item);
+              getListTax();
             }}
             dataDefault={payment.label}
           />
           <View style={styles.viewListProduct}>
             <Button
               style={styles.buttonListProduct}
-              onPress={() => navigation.navigate("addProductOrder" as never)}>
+              onPress={() => {
+                navigation.navigate("addProductOrder" as never);
+                selectProduct();
+              }}>
               <Images.icon_add />
               <Text
                 tx={"order.addProduct"}
@@ -226,23 +479,24 @@ export const NewOrder: FC = observer(function NewOrder(props) {
               scrollEnabled={false}
               keyExtractor={(item: any) => item.id}
               renderItem={({ item, index }: any) => {
+                console.log("item list", item);
                 return (
                   <View>
                     <ItemListProduct
                       onPressAddTexas={() => handleAddTaxes(item.id)}
                       onPressSelectTexas={() => handleSelectTaxes(item.id)}
                       sumTexas={item.sumTexas}
-                      VAT={item.VAT}
-                      valueVAT={item.valueVAT}
+                      VAT={item.VAT?.label ?? undefined}
+                      valueVAT={item.taxValue}
                       name={item.name}
-                      unit={item.unit}
+                      unit={item.uomName}
                       images={item.images}
-                      cost={item.cost}
-                      qty={item.qty.toString()}
+                      cost={item.price}
+                      qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
                       onPress={() => deleteItemProduct(item.id)}
-                      addTaxes={item.addTaxes}
+                      addTaxes={item.addTaxes ?? false}
                     />
                     {index !== arrProduct.length - 1 ? (
                       <View
@@ -257,11 +511,15 @@ export const NewOrder: FC = observer(function NewOrder(props) {
               }}
             />
           </View>
-          <SumMoney
-            arrVat={dataPromotion as any}
-            sumNoVat={6000.0}
-            sumVat={12}
-          />
+          {arrProduct.length > 0 ? (
+            <SumMoney
+              sumNoVat={price.current}
+              sumVat={priceSumVAT.current}
+              arrVat={arrProduct}
+            />
+          ) : (
+            <View style={{ marginTop: 15 }}></View>
+          )}
           <TouchableOpacity
             onPress={() => {
               setButtonPayment(true);
@@ -298,9 +556,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
           <ShowNote
             note={note}
-            setNoteData={function (note: String, arr: []) : void {
-              console.log("note---------", note)
-              console.log("arr---------", arr)
+            setNoteData={function (note: String, arr: []): void {
+              console.log("note---------", note);
+              console.log("arr---------", arr);
             }}
           />
           {desiredDate === true ? (
@@ -451,7 +709,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           }}>
           <Text tx={"order.sum"} style={[styles.textTotal, { flex: 1 }]} />
           <Text style={isDeposit === true ? styles.textTotal : styles.textCost}>
-            84000000000
+            0
           </Text>
         </View>
         {isDeposit === true ? (
@@ -498,7 +756,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           </View>
         ) : null}
         <Button
-          onPress={() => {}}
+          onPress={() => {
+            addProduct();
+          }}
           tx={"order.order"}
           style={styles.buttonOrder}
           textStyle={styles.textButtonOrder}
@@ -534,28 +794,36 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           countRef.current = name;
           console.log("tuvm2", countRef);
         }}
+        debt={{
+          isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
+          debtAmount: store.orderStore.dataDebtLimit.debtLimit,
+        }}
       />
       <ModalTaxes
         arrName={function (name: any): void {
-          setArrName(name);
-          console.log("tuvm09", arrName);
+          nameTax.current = name;
+          selectTexas();
+          setButtonSelect(false);
+          console.log("tuvm09", nameTax);
         }}
         arrTaxes={arrTax}
         isVisible={buttonSelect}
         closeDialog={function (): void {
           setButtonSelect(false);
         }}
+        arrEditName={nameTax}
       />
     </View>
   );
 });
 interface DataSumMoney {
-  arrVat: [{ percent: number; amount: number }];
+  arrVat: any;
   sumNoVat: number;
   sumVat: number;
 }
 
 const SumMoney = (props: DataSumMoney) => {
+  var sumValue;
   return (
     <View
       style={{
@@ -572,8 +840,8 @@ const SumMoney = (props: DataSumMoney) => {
           tx="order.sum_no_texas"
           style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
         {props.arrVat != null
-          ? props.arrVat.map((data) => {
-              return (
+          ? props.arrVat.map((data: any) => {
+              return data.VAT != undefined ? (
                 <Text
                   style={{
                     fontSize: 10,
@@ -581,9 +849,9 @@ const SumMoney = (props: DataSumMoney) => {
                     color: "#747475",
                     marginTop: 8,
                   }}>
-                  {data.percent}
+                  {data?.VAT?.label ?? null}
                 </Text>
-              );
+              ) : null;
             })
           : null}
         <Text
@@ -599,9 +867,13 @@ const SumMoney = (props: DataSumMoney) => {
         <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
           {props.sumNoVat ?? ""}
         </Text>
-        {props.arrVat != null
-          ? props.arrVat.map((data) => {
-              return (
+        {props.arrVat != undefined
+          ? props.arrVat.map((data: any) => {
+              if (data.taxValue !== undefined) {
+                sumValue = Number(data.taxValue) + Number(props.sumNoVat);
+                console.log("tutu", data.taxValue, props.sumNoVat);
+              }
+              return data.taxValue != undefined ? (
                 <Text
                   style={{
                     fontSize: 10,
@@ -609,9 +881,9 @@ const SumMoney = (props: DataSumMoney) => {
                     color: "#747475",
                     marginTop: 8,
                   }}>
-                  {data.amount}
+                  {data?.taxValue ?? null}
                 </Text>
-              );
+              ) : null;
             })
           : null}
         <Text
@@ -621,7 +893,7 @@ const SumMoney = (props: DataSumMoney) => {
             color: "#FF4956",
             marginTop: 8,
           }}>
-          {props.sumVat ?? ""}
+          {(isNaN(props.sumVat) ? sumValue : props.sumVat) ?? 0}
         </Text>
       </View>
     </View>

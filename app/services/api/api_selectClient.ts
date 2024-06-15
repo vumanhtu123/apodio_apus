@@ -2,9 +2,10 @@ import { ApiResponse } from "apisauce";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { ApiErp } from "../base-api/api-config-erp";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { OderListResspose,  } from "../../models/order-list-select-clien-model";
+import { OderListResponse  } from "../../models/order-list-select-clien-model";
+import { Loading } from "../../components/dialog-notification";
 
-export class SelectClienAPI {
+export class SelectClientAPI {
    private api: ApiErp; 
    
    constructor(api: ApiErp){
@@ -18,13 +19,15 @@ export class SelectClienAPI {
     sort: string,
     search: string,
    ): Promise<any> {
-        showLoading()
+    Loading.show({
+      text: 'Loading...',
+    })
         try {
          
             console.log("doandev url " , this.api.config.url);
             
-            const response:  ApiResponse<BaseResponse<OderListResspose, ErrorCode>> = await this.api.apisauce.get(
-                ApiEndpoint.GET_LIST_SLECT_CLIENT,
+            const response:  ApiResponse<BaseResponse<OderListResponse, ErrorCode>> = await this.api.apisauce.get(
+                ApiEndpoint.GET_LIST_SELECT_CLIENT,
                 // truyền params.
                 {
                   page: page,
@@ -33,7 +36,7 @@ export class SelectClienAPI {
                   search: search,
                 }
               );
-              hideLoading();
+              Loading.hide();
               const result = response.data;
 
               if (result?.data != null) {

@@ -10,9 +10,16 @@ import { HomeApi } from "../../services/api/api-home";
 
 export const HomeStoreModel = types
   .model("HomeStoreModel")
-  .props({})
+  .props({
+    domain: types.maybe(types.string),
+  })
   .extend(withEnvironment)
   .views((self) => ({}))
+  .actions((store) => ({
+    setDomain(value: string) {
+      store.domain = value;
+    }
+  }))
   .actions((self) => ({
     getListCompany: flow(function* (userId: any) {
       try {
@@ -30,10 +37,10 @@ export const HomeStoreModel = types
     }),
   }));
 
-export interface HomeStoreModel extends Instance<typeof HomeStoreModel> {}
+export interface HomeStoreModel extends Instance<typeof HomeStoreModel> { }
 export interface HomeStoreModelSnapshotOut
-  extends SnapshotOut<typeof HomeStoreModel> {}
+  extends SnapshotOut<typeof HomeStoreModel> { }
 export interface HomeStoreSnapshotIn
-  extends SnapshotIn<typeof HomeStoreModel> {}
+  extends SnapshotIn<typeof HomeStoreModel> { }
 export const createProductStoreDefaultModel = () =>
   types.optional(HomeStoreModel, {});

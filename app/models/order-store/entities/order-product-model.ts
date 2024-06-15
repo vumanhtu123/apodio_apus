@@ -1,5 +1,3 @@
-import { ErrorCode } from "../errors";
-
 export interface Root {
   totalElements: number;
   totalPages: number;
