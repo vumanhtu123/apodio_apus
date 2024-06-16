@@ -10,7 +10,7 @@ import {
 
 export const styles = StyleSheet.create({
   textTitle: {
-    alignSelf: "flex-start",
+    // alignSelf: "flex-start",
     fontSize: fontSize.size16,
     lineHeight: scaleHeight(24),
     fontWeight: "700",
@@ -221,6 +221,11 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: fontSize.size12,
     color: colors.palette.nero,
+  },
+  textUomName : {
+    fontSize: fontSize.size12,
+    color: colors.palette.dolphin,
+
   },
   priceOriginal : {
     textDecorationLine :'line-through',

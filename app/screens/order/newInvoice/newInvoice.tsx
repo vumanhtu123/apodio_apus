@@ -1,48 +1,35 @@
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { observer } from "mobx-react-lite";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
-    Alert,
     Dimensions,
-    FlatList,
-    Image,
+    ImageBackground,
     KeyboardAvoidingView,
-    Linking,
     Platform,
     ScrollView,
-    TextInput,
     TouchableOpacity,
-    View,
+    View
 } from "react-native";
-import { Button, Header, Screen, Text, TextField } from "../../../components";
 import { Images } from "../../../../assets";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { Button, Header, Text, TextField } from "../../../components";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import {
     colors,
     fontSize,
-    margin,
-    padding,
     scaleHeight,
-    scaleWidth,
+    scaleWidth
 } from "../../../theme";
 import { styles } from "./styles";
-import { InputSelect } from "../../../components/input-select/inputSelect";
 // import AddProduct from "../components/itemListProduct";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import AutoHeightImage from "react-native-auto-height-image";
-import { Positions } from "react-native-calendars/src/expandableCalendar";
-import { Controller, useForm } from "react-hook-form";
-import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
-import {
-    MediaType,
-    launchCamera,
-    launchImageLibrary,
-} from "react-native-image-picker";
-import Modal from "react-native-modal";
-import { translate } from "../../../i18n";
 import moment from "moment";
+import { Controller, useForm } from "react-hook-form";
+import FastImage from "react-native-fast-image";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomCalendar from "../../../components/calendar";
-import { MakeResult } from "mobx/dist/internal";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
+import { translate } from "../../../i18n";
+import { useStores } from "../../../models";
+import { formatCurrency } from "../../../utils/validate";
 import ProductAttribute from "../../product/component/productAttribute";
 
 export const NewInvoice: FC = observer(function NewInvoice(props) {
@@ -56,144 +43,247 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const route = useRoute();
     const {
         control,
+        handleSubmit,
         formState: { errors },
     } = useForm();
 
     const [minDateS, setMinDateS] = useState("")
     const [minDateE, setMinDateE] = useState("")
     const [choiseCalendar, setChoiseCalendar] = useState(0)
-    const [arrProduct, setArrProduct] = useState<{}[]>([]);
     const [isDeposit, setIsDeposit] = useState(false);
-    const [modalImage, setModalImage] = useState(false);
     const [isSortByDate, setIsSortByDate] = useState(false);
     const [isReset, setIReset] = useState<boolean>(false);
-    const [imagesNote, setImagesNote] = useState("");
     const [markedDatesS, setMarkedDatesS] = useState("");
     const [markedDatesE, setMarkedDatesE] = useState("");
-    const [deposit, setDeposit] = useState<number>(0);
-    const [payment, setPayment] = useState({ label: "" });;
+    const [payment, setPayment] = useState({ label: "" })
+    const [invoiceTypeLabel, setInvoiceTypeLabel] = useState({ label: "" })
+    const [invoiceType, setInvoiceType] = useState('')
+    const [data, setData] = useState<any>([])
+    const [dataPayment, setDataPayment] = useState<any>([])
+    const { orderStore } = useStores();
+    const { orderId } = orderStore;
+    const [invoiceCode, setInvoiceCode] = useState('')
     const toggleModalDate = () => {
         setIsSortByDate(!isSortByDate);
-    };
-
-    const handleIncrease = (id: any) => {
-        let newArr = arrProduct!.map((item) => {
-            if (item.id === id) {
-                return { ...item, qty: item.qty + 1 };
-            }
-            return item;
-        });
-        setArrProduct(newArr);
-    };
-
-    const handleDecrease = (id: any) => {
-        let newArr = arrProduct!
-            .map((item) => {
-                if (item.id === id) {
-                    return { ...item, qty: item.qty - 1 };
-                }
-                return item;
-            })
-            .filter((item) => item.qty > 0);
-        setArrProduct(newArr);
-        console.log(arrProduct);
-    };
-
-    const deleteItemProduct = (id: any) => {
-        const newArr = arrProduct.filter((item) => item.id !== id);
-        setArrProduct(newArr);
     };
     useEffect(() => {
         console.log('first', moment(
             markedDatesS === "" ? new Date() : markedDatesS
         ).format("DD/MM/YYYY"))
     })
-    const promotions = [
-        {
-            images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-            name: "Gạch 1566CB503 60x60 - Hộp",
-            amount: 1,
-            cost: "28.000.000",
-            id: 1,
-        },
-        {
-            images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-            name: "Gạch 1566CB503 60x60 - Hộp",
-            amount: 1,
-            cost: "28.000.000",
-            id: 2,
-        },
-        {
-            images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-            name: "Gạch 1566CB503 60x60 - Hộp",
-            amount: 1,
-            cost: "28.000.000",
-            id: 3,
-        },
-        {
-            images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-            name: "Gạch 1566CB503 60x60 - Hộp",
-            amount: 1,
-            cost: "28.000.000",
-            id: 4,
-        },
-    ]
-    const arrPayment = [
-        {
-            id: 1,
-            label: "Payment on delivery",
-        },
-        {
-            id: 2,
-            label: "Pay immediately",
-        },
-        {
-            id: 3,
-            label: "Debt",
-        },
-    ];
-
-    const arrProducts = [
-        {
-            images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-            name: "Gạch 1566CB503 60x60 wrw asfsada ads",
-            unit: "Hop",
-            qty: 1,
-            cost: "28.000.000",
-            price: "28.000.000",
-            id: 1,
-        },
-        {
-            images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-            name: "Gạch 1566CB503 60x60",
-            unit: "Hop",
-            qty: 2,
-            cost: "28.000.000",
-            price: "28.000.000",
-            id: 2,
-        },
-        {
-            images: "https://th.bing.com/th/id/OIG.ey_KYrwhZnirAkSgDhmg",
-            name: "Gạch 1566CB503 60x60",
-            unit: "Hop",
-            qty: 2,
-            cost: "28.000.000",
-            price: "28.000.000",
-            id: 3,
-        },
-    ];
-
+    const handleGetDetailOrder = async () => {
+        try {
+            const response = await orderStore.getDetailOrder(orderId);
+            console.log("productId", orderId);
+            if (response && response.kind === "ok") {
+                const data = response.response.data;
+                console.log('dataDetail', JSON.stringify(data))
+                setData(data);
+            } else {
+                console.error("Failed to fetch detail:", response);
+            }
+        } catch (error) {
+            console.error("Error fetching detail:", error);
+        }
+    };
+    const handleGetPayment = async () => {
+        try {
+            const response = await orderStore.getPayment(0, 50);
+            // console.log("productId", orderId);
+            if (response && response.kind === "ok") {
+                const data = response.response.data;
+                console.log('dataPayment', JSON.stringify(data))
+                setDataPayment(data.content);
+            } else {
+                console.error("Failed to fetch detail:", response);
+            }
+        } catch (error) {
+            console.error("Error fetching detail:", error);
+        }
+    };
+    const submitAdd = async () => {
+        const dataSubmit = ({
+            code: invoiceCode,
+            paymentStatus: "NOT_PAYMENT",
+            state: "POSTED",
+            scopeType: data.scopeType,
+            paymentTerm: null,
+            partner: { id: data.partner?.id },
+            incomeExpense: null,
+            date: minDateS, // ngày tạo
+            dueDate: minDateE, // ngày hết hạn
+            accountingDate: minDateS,
+            accountJournal: null,
+            purchaseOrderId: null, // Set to null if not applicable
+            returnPurchaseOrderId: null, // Set to null if not applicable
+            saleOrderId: data.id,
+            returnSaleOrderId: null, // Set to null if not applicable
+            amountUntaxed: 0,
+            amountTotal: 0,
+            policyId: null, // Consider setting to null if there's no policy
+            currency: null,
+            isPolicyException: null,
+            isAnotherBook: null,
+            isCreateAnotherBook: null,
+            invoiceLines: data.saleOrderLines?.map((saleOrderLine: any, index: any,) => ({
+                sequence: saleOrderLine?.sequence,
+                product: {
+                    id: saleOrderLine.productInfo?.id,
+                    name: saleOrderLine.productInfo?.name,
+                    sku: saleOrderLine.productInfo?.sku,
+                    upc: saleOrderLine.productInfo?.upc,
+                    productImage: saleOrderLine.productInfo?.productImage || [],
+                    uomId: saleOrderLine.productInfo?.uomId,
+                    uomCode: saleOrderLine.productInfo?.uomCode,
+                    uomName: saleOrderLine.productInfo?.uomName,
+                    brandName: saleOrderLine.productInfo?.brand?.name || null,
+                    checkingType: null,
+                    productTemplate: saleOrderLine.productInfo,
+                    quantity: saleOrderLine.productInfo?.quantityInventory,
+                    uomGroup: {
+                        id: saleOrderLine.productInfo?.uomGroup?.id,
+                        code: saleOrderLine.productInfo?.uomGroup?.code,
+                        name: saleOrderLine.productInfo?.uomGroup?.name,
+                        uomOriginId: saleOrderLine.productInfo?.uomGroup?.uomOriginId,
+                        uomOriginName: saleOrderLine.productInfo?.uomGroup?.uomOriginName,
+                        uomGroupLineItems: saleOrderLine.productInfo?.uomGroup?.uomGroupLineItems?.map((item: any) => ({
+                            uomId: item.uomId,
+                            uomName: item.uomName,
+                            conversionRate: item.conversionRate,
+                            accuracy: item.accuracy,
+                            uomLineType: item.uomLineType
+                        }))
+                    },
+                    saleUom: {
+                        id: saleOrderLine.productInfo?.saleUom?.id,
+                        name: saleOrderLine.productInfo?.saleUom?.name
+                    },
+                    purchaseUom: {
+                        id: saleOrderLine.productInfo?.purchaseUom?.id,
+                        name: saleOrderLine.productInfo?.purchaseUom?.name
+                    },
+                    brand: {
+                        id: saleOrderLine.productInfo?.brand?.id,
+                        name: saleOrderLine.productInfo?.brand?.name
+                    },
+                    baseProductPackingLine: saleOrderLine.productInfo?.baseProductPackingLine
+                        ? {
+                            id: saleOrderLine.productInfo?.baseProductPackingLine?.id,
+                            uomId: saleOrderLine.productInfo?.baseProductPackingLine?.uomId,
+                            uomName: saleOrderLine.productInfo?.baseProductPackingLine?.uomName || "",
+                            uomGroupLineId: saleOrderLine?.productInfo?.baseProductPackingLine?.uomGroupLineId,
+                            productId: saleOrderLine.productInfo?.baseProductPackingLine?.productId,
+                            amount: saleOrderLine.productInfo?.baseProductPackingLine?.amount,
+                            uomLineType: saleOrderLine.productInfo?.baseProductPackingLine?.uomLineType,
+                            length: saleOrderLine.productInfo?.baseProductPackingLine?.length,
+                            high: saleOrderLine.productInfo?.baseProductPackingLine?.high,
+                            wide: saleOrderLine.productInfo?.baseProductPackingLine?.wide,
+                            weight: saleOrderLine.productInfo?.baseProductPackingLine?.weight,
+                            volume: saleOrderLine.productInfo?.baseProductPackingLine?.volume
+                        }
+                        : null,
+                    productPackingLines: saleOrderLine.productInfo?.productPackingLines?.length > 0 // Check if productPackingLines exist and have data
+                        ? saleOrderLine.productInfo?.productPackingLines?.map((packingLine: any) => ({
+                            id: packingLine.id,
+                            uomId: packingLine.uomId,
+                            uomName: packingLine.uomName,
+                            uomGroupLineId: packingLine.uomGroupLineId,
+                            productId: packingLine.productId,
+                            amount: packingLine.amount,
+                            uomLineType: packingLine.uomLineType,
+                            length: packingLine.length,
+                            high: packingLine.high,
+                            wide: packingLine.wide,
+                            weight: packingLine.weight,
+                            volume: packingLine.volume,
+                        })) : null,
+                },
+                quantity: saleOrderLine.quantity || null,
+                uom: {
+                    id: saleOrderLine.uomId,
+                },
+                unitPrice: saleOrderLine.unitPrice,
+                amountUntaxed: saleOrderLine.amountUntaxed,
+                amountTotal: saleOrderLine.amountTotal,
+                discount: saleOrderLine.discount || 0,
+                displayType: "PRODUCT",
+                note: saleOrderLine.note || "",
+                taxes:
+                    saleOrderLine.tax?.map((taxId: any) => ({
+                        id: taxId.id,
+                    })),
+                taxNames: [],
+                accountMoveId: 0,
+                // taxInfo: [],
+                importTax: 0,
+                specialConsumptionTax: 0,
+                environmentalResourceTax: 0,
+                vat: 0,
+                warehouseType: null,
+                warehouse: null,
+            })),
+            moveLines: [],
+            ledgerRefs: [],
+            accountLedger: null,
+            moveType: "OUT_INVOICE",
+            saleType: 'B2C',
+            type: "EXTERNAL",
+            isWithInvoice: true,
+            isWithDeliveryNote: false,
+            isTakePricePolicy: false,
+            priceList: { id: data.priceList?.id },
+            warehouse: { id: data.warehouse?.id },
+            deliveryAddress: { id: data.deliveryAddress?.id },
+            codeInvoice: null,
+            invoiceFormNumber: invoiceType,
+            symbol: "string",
+            invoiceDate: minDateS,
+            paymentMethod: data.paymentMethod,
+            bankAccountPartner: { id: data?.bankAccountPartner?.id },
+            bankAccount: { id: data?.bankAccount?.id },
+            pickingCode: "",
+            applyDate: null,
+            isOptionPrice: data?.isOptionPrice,
+            isPrepayment: null,
+        });
+        try {
+            const submit = await orderStore.createInvoice(dataSubmit);
+            if (submit.kind === "ok") {
+                // console.log("Invoice created:", submit.data);
+                navigation.navigate("orderDetails", { idInvoices: submit.response.data.id } )
+                // Perform any success actions here (e.g., navigation)
+            } else {
+                Dialog.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: submit.response.message,
+                    button: translate("common.ok"),
+                    closeOnOverlayTap: false
+                })
+            }
+        } catch (error) {
+            console.error("Error creating invoice:", error);
+        }
+    };
     useEffect(() => {
-        setArrProduct(arrProducts);
-    }, []);
-
+        handleGetDetailOrder()
+        handleGetPayment();
+    }, [orderId])
+    const arrPayment = dataPayment.map((item: any) => {
+        return { label: item.name, id: item.id }
+    })
+    const scopeTypeOptions = [
+        { id: 1, value: 'ELECTRONIC_BILL', label: 'Hóa đơn giá trị gia tăng (HĐ điện tử)' },
+        { id: 2, value: 'VAT_BILL', label: 'Hóa đơn giá trị gia tăng' },
+        { id: 3, value: 'SALE_BILL', label: 'Hóa đơn bán hàng (HĐ điện tử)' },
+    ];
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
                 LeftIcon={Images.back}
                 onLeftPress={() => navigation.goBack()}
                 style={{ height: scaleHeight(52) }}
-                headerTx={"order.confirm"}
+                headerTx={"order.sendInvoice"}
                 titleStyle={styles.textTitle}
             />
             <View style={{ flex: 1 }}>
@@ -231,19 +321,62 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         RightIconClear={Images.icon_delete2}
                                         error={errors?.invoiceCode?.message}
                                         onClearText={() => onChange('')}
-                                        onChangeText={value => onChange(value)}
+                                        onChangeText={value => { onChange(value), setInvoiceCode(value) }}
                                         placeholderTx={"order.invoiceCode"}
                                     />
                                 )}
                                 // defaultValue={''}
                                 name="invoiceCode"
-                                rules={{
-                                    required: translate('ruleController.emptyText'),
-                                }}
+                                // rules={{
+                                //     required: translate('ruleController.emptyText'),
+                                // }}
                             />
                         </View>
                         <Text tx="ClientScreen.client" style={{ fontSize: fontSize.size12, color: '#747475' }} />
-                        <Text text="Nguyễn Hoàng Minh" style={{ fontSize: fontSize.size16, fontWeight: '600' }} />
+                        <Text text={data.partner?.name} style={{ fontSize: fontSize.size16, fontWeight: '600' }} />
+                        <View style={{ marginVertical: scaleHeight(15) }}>
+                            <InputSelect
+                                // required={true}
+                                hintTx={"order.invoiceType"}
+                                titleTx={"order.invoiceType"}
+                                arrData={scopeTypeOptions}
+                                onPressChoice={(item: any) => {
+                                    setInvoiceTypeLabel(item);
+                                    setInvoiceType(item.value)
+                                }}
+                                dataDefault={invoiceTypeLabel.label}
+                            />
+                        </View>
+                        <View style={{}}>
+                            <Controller
+                                control={control}
+                                render={({ field: { onChange, value, onBlur } }) => (
+                                    <TextField
+                                        // maxLength={maxLenngthPhoneNumber}
+                                        keyboardType={null}
+                                        labelTx={"order.symbol"}
+                                        style={{
+                                            // marginBottom: scaleHeight(10),
+                                            marginBottom: scaleHeight(5),
+                                            justifyContent: 'center',
+                                        }}
+                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
+                                        value={value}
+                                        onBlur={onBlur}
+                                        RightIconClear={Images.icon_delete2}
+                                        error={errors?.symbol?.message}
+                                        onClearText={() => onChange('')}
+                                        onChangeText={value => onChange(value)}
+                                        placeholderTx={"order.symbol"}
+                                    />
+                                )}
+                                // defaultValue={''}
+                                name="symbol"
+                                // rules={{
+                                //     required: translate('ruleController.emptyText'),
+                                // }}
+                            />
+                        </View>
                         <View style={{ marginVertical: scaleHeight(15) }}>
                             <Controller
                                 control={control}
@@ -251,7 +384,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                     <TextField
                                         // maxLength={maxLenngthPhoneNumber}
                                         isImportant
-                                        editable= {false}
+                                        editable={false}
                                         keyboardType={null}
                                         labelTx={"order.invoiceDate"}
                                         style={{
@@ -259,25 +392,25 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                             marginBottom: scaleHeight(5),
                                             justifyContent: 'center',
                                         }}
-                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' , color : '#000000' }}
+                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: '#000000' }}
                                         value={value}
-                                        valueInput={moment(minDateS === "" ? new Date() : minDateS).format("DD/MM/YYYY")}
+                                        valueInput={minDateS ? moment(minDateS).format("DD/MM/YYYY") : ''}
                                         pressRightIcon={() => {
                                             toggleModalDate(),
-                                            setChoiseCalendar(1)
-                                        }  
+                                                setChoiseCalendar(1)
+                                        }
                                         }
                                         onBlur={onBlur}
                                         // RightIconClear={Images.icon_delete2}/
                                         RightIcon={Images.icon_CalenderBlank}
-                                        error={errors?.invoiceCode?.message}
+                                        error={errors?.invoiceCreateDate?.message}
                                         onClearText={() => onChange('')}
                                         onChangeText={value => onChange(value)}
                                         placeholderTx={"order.placeholderDate"}
                                     />
                                 )}
                                 // defaultValue={''}
-                                name="invoiceDate"
+                                name="invoiceCreateDate"
                                 rules={{
                                     required: translate('ruleController.emptyText'),
                                 }}
@@ -297,25 +430,26 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         justifyContent: 'center',
                                     }}
                                     inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: '#000000' }}
-                                    valueInput={moment(minDateE === "" ? new Date() : minDateE).format("DD/MM/YYYY")}
+                                    valueInput={minDateE ? moment(minDateE).format("DD/MM/YYYY") : ''}
                                     onBlur={onBlur}
+                                    value={value}
                                     // RightIconClear={Images.icon_delete2}/
                                     RightIcon={Images.icon_CalenderBlank}
                                     pressRightIcon={() => {
                                         toggleModalDate(),
-                                        setChoiseCalendar(2)
+                                            setChoiseCalendar(2)
                                     }}
-                                    error={errors?.invoiceCode?.message}
+                                    error={errors?.invoiceEndDate?.message}
                                     onClearText={() => onChange('')}
                                     // onChangeText={onChange}
                                     placeholderTx={"order.placeholderDate"}
                                 />
                             )}
-                            // defaultValue={''}
-                            name="invoiceCode"
-                            rules={{
-                                required: translate('ruleController.emptyText'),
-                            }}
+                            defaultValue={''}
+                            name="invoiceEndDate"
+                            // rules={{
+                            //     required: translate('ruleController.emptyText'),
+                            // }}
                         />
                         <View style={{ marginVertical: scaleHeight(15) }}>
                             <InputSelect
@@ -329,37 +463,45 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 dataDefault={payment.label}
                             />
                         </View>
-                        <InputSelect
-                            required={true}
-                            hintTx={"order.accountingBook"}
-                            titleTx={"order.placeholderAccountingBook"}
-                            arrData={arrPayment}
-                            onPressChoice={(item) => {
-                                setPayment(item);
-                            }}
-                            dataDefault={payment.label}
-                        />
                         <Text style={{ fontSize: fontSize.size12, fontWeight: '600', marginVertical: scaleHeight(15) }}>Thông tin hoá đơn</Text>
                         <View style={{ borderRadius: 8, backgroundColor: colors.palette.neutral100 }}>
                             {
-                                promotions.map((item) => {
+                                data.saleOrderLines?.map((item: any) => {
                                     return (
                                         <TouchableOpacity onPress={() => { }} style={styles.viewItemListProduct}>
-                                            <AutoHeightImage width={48} height={48}
-                                                style={styles.viewImageListProduct}
-                                                source={{ uri: item.images }} />
+                                            <ImageBackground
+                                                style={{ width: scaleWidth(48), height: scaleHeight(48), marginRight: scaleWidth(10) }}
+                                                imageStyle={{
+                                                    borderRadius: 16
+                                                }}
+                                                source={require("../../../../assets/Images/no_images.png")}>
+                                                <FastImage
+                                                    style={{
+                                                        width: scaleWidth(48),
+                                                        height: scaleHeight(48),
+                                                        borderRadius: 16
+                                                    }}
+                                                    source={{
+                                                        uri: `${item.productInfo?.productImage ?? ""}`,
+                                                        cache: FastImage.cacheControl.immutable,
+                                                    }}
+                                                    defaultSource={require("../../../../assets/Images/no_images.png")}
+                                                />
+                                            </ImageBackground>
                                             <View style={{ flex: 1 }}>
                                                 <View style={{ width: (Dimensions.get('screen').width - 64) * 0.45 }}>
-                                                    <Text text={item.name} style={styles.textListProduct} />
+                                                    <Text text={item.productInfo?.name} style={styles.textListProduct} />
+                                                    <Text text={`- ${item.productInfo?.uomName}`} style={styles.textUomName} />
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
-                                                    <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} />
-                                                    <Text text={item.amount.toString()} style={styles.textListProduct} />
+                                                    {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
+                                                    <Text text={formatCurrency(item.amountTotal)} style={styles.textListProduct} />
+
                                                 </View>
                                             </View>
                                             <View>
-                                                <Text text={item.cost} style={styles.textListProduct} />
-                                                <Text text={item.cost} style={styles.priceOriginal} />
+                                                <Text text={item.quantity} style={styles.textListProduct} />
+                                                {/* <Text text={formatCurrency(item.amountUntaxed)} style={styles.priceOriginal} /> */}
                                             </View>
                                         </TouchableOpacity>
                                     )
@@ -370,15 +512,17 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                             <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
-                                value='84.000.000'
+                                value={formatCurrency(data.computeTaxInfo?.taxLines?.[0]?.untaxedAmount)}
                             />
-                            <ProductAttribute
-                                labelTx="tranSacTionHistory.fee"
-                                value='84.000.000'
-                            />
+                            {data.computeTaxInfo?.taxLines?.[0]?.items?.map((item: any) => (
+                                <ProductAttribute
+                                    label={item.taxName}
+                                    value={formatCurrency(item.amount)}
+                                />
+                            ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"
-                                value='84.000.000'
+                                value={formatCurrency(data.totalPrice)}
                             />
                         </View>
                     </ScrollView>
@@ -390,8 +534,8 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                     styles.viewButtonOrder,
                 ]}>
                 <Button
-                    onPress={() => { }}
-                    tx={"order.order"}
+                    onPress={submitAdd}
+                    tx={"order.sendInvoice"}
                     style={styles.buttonOrder}
                     textStyle={styles.textButtonOrder}
                 />
@@ -404,7 +548,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 handleReset={() => setIReset(!isReset)}
                 handleShort={() => {
                     toggleModalDate();
-                    choiseCalendar == 1 ?  setMinDateS(markedDatesS) : setMinDateE(markedDatesS)
+                    choiseCalendar == 1 ? setMinDateS(markedDatesS) : setMinDateE(markedDatesS)
                 }}
                 onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
                     setMarkedDatesS(markedDatesS);

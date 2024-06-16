@@ -80,7 +80,7 @@ export class ApiOrder {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
           "X-TenantId": tenantId,
-          "current-domain" : `https://${domain}`
+          // "current-domain" : `https://${domain}`
         };
         const token = await getAccessToken();
         if (token) {
