@@ -51,7 +51,7 @@ export const ModalPayment = (data: InputSelect) => {
             <Item_Payment
               setData={function (value: any, name: any): void {
                 {
-                  check.current === true ? data.setMethod(value, name) : null;
+                  check.current !== true ? data.setMethod(value, name) : null;
                 }
                 console.log("tuvm", check.current);
               }}

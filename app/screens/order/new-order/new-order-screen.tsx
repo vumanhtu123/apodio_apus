@@ -80,6 +80,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const nameTax = useRef("");
   const price = useRef(0);
   const priceSumVAT = useRef(0);
+  const priceSum = useRef(0);
   const arrTaxAll = useRef([{ percent: "", amount: "" }]);
   const idItemOrder = useRef(0);
   const address = useRef<{}>();
@@ -87,8 +88,15 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
   address.current = route?.params?.dataAddress;
   console.log("adr", route?.params?.dataAddress);
+  console.log("id,", Number(store.orderStore.dataClientSelect.id));
 
   const getListAddress = async () => {
+    if (
+      store.orderStore.dataClientSelect.id == undefined ||
+      Number(store.orderStore.dataClientSelect.id) == 0
+    ) {
+      return;
+    }
     try {
       const response = await orderStore.getListAddress(
         Number(store.orderStore.dataClientSelect.id)
@@ -273,6 +281,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     });
   };
 
+  const selectClient = () => {
+    props.navigation.navigate("selectClient");
+  };
+
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
   };
@@ -414,6 +426,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       return;
     }, 0);
     priceSumVAT.current = Number(all) + Number(price.current);
+    console.log("cat");
   };
 
   const selectTexas = () => {
@@ -440,12 +453,15 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     price.current = all;
     console.log("sum all: ", all);
   };
+
   console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
   console.log("post add tuvm 2", JSON.stringify(arrProduct));
   console.log(
     "post add tuvm 3",
     JSON.stringify(orderStore.dataPriceListSelected)
   );
+  console.log("price scr", Number(price.current));
+  console.log("price scr 2", Number(priceSum.current));
 
   // console.log("data adres", address.current.address);
 
@@ -487,7 +503,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           ]}>
           <HeaderOrder
             openDialog={function (): void {
-              props.navigation.navigate("selectClient");
+              selectClient();
             }}
             data={store.orderStore.dataClientSelect}
           />
@@ -502,7 +518,15 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             }
             data={address.current}
           />
-          <PriceList />
+          <PriceList
+            id={Number(orderStore.dataPriceListSelected.id) ?? null}
+            name={orderStore.dataPriceListSelected.name ?? null}
+            priceListCategory={
+              orderStore.dataPriceListSelected.priceListCategory
+            }
+            currencyId={Number(orderStore.dataPriceListSelected.currencyId)}
+            pricelistId={Number(orderStore.dataPriceListSelected.pricelistId)}
+          />
           <InputSelect
             styleView={{
               backgroundColor: "white",
@@ -768,7 +792,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           }}>
           <Text tx={"order.sum"} style={[styles.textTotal, { flex: 1 }]} />
           <Text style={isDeposit === true ? styles.textTotal : styles.textCost}>
-            0
+            {/* {isNaN(priceSumVAT.current)
+              ? Number(priceSumVAT.current)
+              : price.current} */}
+            {Number(price.current)}
           </Text>
         </View>
         {isDeposit === true ? (
@@ -925,7 +952,7 @@ const SumMoney = (props: DataSumMoney) => {
       </View>
       <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
         <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
-          {props.sumNoVat ?? ""}
+          {(isNaN(props.sumNoVat) ? 0 : props.sumNoVat) ?? 0}
         </Text>
         {props.arrVat != undefined
           ? props.arrVat.map((data: any) => {
