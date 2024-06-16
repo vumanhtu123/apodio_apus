@@ -12,6 +12,13 @@ interface AddressData {
   onPressAddress: () => void;
   data: any;
 }
+interface PriceData {
+  id: number;
+  name: string;
+  priceListCategory: string;
+  currencyId: number;
+  pricelistId: number;
+}
 export const HeaderOrder = (data: InputData) => {
   console.log(data);
   return (
@@ -63,8 +70,9 @@ export const HeaderOrder = (data: InputData) => {
   );
 };
 
-export const PriceList = () => {
+export const PriceList = (data: PriceData) => {
   const navigation = useNavigation();
+  console.log("price", Number(data.id));
   return (
     <TouchableOpacity
       style={{
@@ -89,13 +97,23 @@ export const PriceList = () => {
             fontWeight: "600",
             marginBottom: 4,
           }}></Text>
-        <Text
-          tx="order.no_price_list"
-          style={{
-            fontSize: 10,
-            color: "#747475",
-            fontWeight: "400",
-          }}></Text>
+        {Number(data.id) !== 0 || data.name !== "" ? (
+          <Text
+            text={data.name}
+            style={{
+              fontSize: 10,
+              color: "#747475",
+              fontWeight: "400",
+            }}></Text>
+        ) : (
+          <Text
+            tx="order.no_price_list"
+            style={{
+              fontSize: 10,
+              color: "#747475",
+              fontWeight: "400",
+            }}></Text>
+        )}
       </View>
       <Images.icon_caretRight2 />
     </TouchableOpacity>

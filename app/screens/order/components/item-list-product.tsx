@@ -74,7 +74,7 @@ export default function ItemListProduct(props: AddProduct) {
   const Sum = (): Number => {
     return Number(props.cost) + Number(props.valueVAT ?? 0);
   };
-  console.log("sum", props.valueVAT);
+  console.log("sum", Sum());
   return (
     <View>
       <TouchableOpacity
@@ -118,7 +118,7 @@ export default function ItemListProduct(props: AddProduct) {
           />
           <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
             <Text
-              text={cost + " "}
+              text={cost ?? 0 + " "}
               style={{
                 fontWeight: "400",
                 fontSize: fontSize.size12,
@@ -257,7 +257,7 @@ export default function ItemListProduct(props: AddProduct) {
                 color: "#FF4956",
                 fontStyle: "italic",
               }}>
-              {" " + Sum()}
+              {" " + (Sum().toString() === "NaN" ? "0" : Sum())}
             </Text>
           </Text>
           {/* ) : null} */}
