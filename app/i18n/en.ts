@@ -176,7 +176,7 @@ const en = {
     update_shipping_status: "Cập nhật trạng thái vận chuyển",
     update_status: "Cập nhật trạng thái",
     copy: "Sao chép",
-    return: "Trả/Huỷ",
+    return: "Huỷ đơn",
     printInvoice: "In hoá đơn",
     arrange: "Sắp xếp",
     searchCodeName: "Tìm kiếm theo mã và tên",
@@ -311,7 +311,9 @@ const en = {
     placeholderAccountingBook : 'Chọn sổ kế toán',
     provisional : 'Tạm tính',
     totalPrice : "Tổng tiền (chưa thuế)",
-    totalInvoice : 'Tổng hoá đơn' 
+    totalInvoice : 'Tổng hoá đơn' ,
+    symbol : 'Kí hiệu',
+    invoiceType : 'Loại hoá đơn'
   },
   demoNavigator: {
     componentsTab: "Components",
