@@ -53,10 +53,10 @@ export const OrderStoreModel = types
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
-    orderId : types.optional(types.number, 0),
-    dataClientSelect: types.optional(types.frozen<ClientSlected>(),{id: '', name: '', code: '', phoneNumber: ''}),
-    sortPriceList : types.optional(types.string,''),
-    dataPriceListSelected : types.optional(types.frozen<PriceListSelect>(),{id: '', name: '', priceListCategory: ''})
+    orderId: types.optional(types.number, 0),
+    dataClientSelect: types.optional(types.frozen<ClientSlected>(), { id: '', name: '', code: '', phoneNumber: '' }),
+    sortPriceList: types.optional(types.string, ''),
+    dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), { id: '', name: '', priceListCategory: '' })
 
   })
   .extend(withEnvironment)
@@ -112,7 +112,7 @@ export const OrderStoreModel = types
     },
 
     // chú ý phải clear khi xong
-    setDataClientSelect(value: any){
+    setDataClientSelect(value: any) {
       self.dataClientSelect = value
     },
     setSortPriceList(sort: any) {
@@ -120,9 +120,9 @@ export const OrderStoreModel = types
     },
 
     // chú ý phải clear khi xong
-    setDataPriceListSelect( value: any){
+    setDataPriceListSelect(value: any) {
       console.log('doanlog', value);
-      
+
       self.dataPriceListSelected = value
 
     }
@@ -131,7 +131,8 @@ export const OrderStoreModel = types
     getListOrder: flow(function* (
       page: number,
       size: number,
-      state: string
+      state: string,
+      search: string
     ) {
 
       console.log('page', page)
@@ -142,7 +143,8 @@ export const OrderStoreModel = types
       const result: OrderResult = yield orderApi.getListOrder(
         page,
         size,
-        state
+        state,
+        search
       );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
@@ -442,9 +444,23 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       const result: OrderResult = yield orderApi.getDetailOrder(id);
-      console.log("-----------dsa", result);
+      // console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getPayment: flow(function* (page: number, size: number) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      const result: OrderResult = yield orderApi.getPaymentTerm(page, size);
+      if (result.kind === "ok") {
+        console.log("order payment", result);
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
@@ -461,6 +477,22 @@ export const OrderStoreModel = types
       );
       // console.log('-----------dsa', result.response.errorCodes)
 
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    createInvoice: flow(function* (
+      invoiceAdd: any,
+    ) {
+      console.log('dataaaaaa' , JSON.stringify(invoiceAdd))
+      const orderApi = new OrderApi(self.environment.apiOrder, self.environment.apiAccount);
+      const result: OrderResult = yield orderApi.createInvoice(invoiceAdd
+      );
+      console.log('-----------dsa', result)
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -505,6 +537,26 @@ export const OrderStoreModel = types
         if (result.data !== null) {
           console.log("tuvm getTax success");
           return result.data;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }),
+    stateAllow: flow(function* (
+      id: number
+    ) {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      try {
+        const result: BaseResponse<any, ErrorCode> = yield orderApi.stateAllow(id)
+        console.log("mmm result", JSON.stringify(result));
+        if (result.data !== null) {
+          console.log(" success", result);
+          return result;
         } else {
           return result.errorCodes;
         }

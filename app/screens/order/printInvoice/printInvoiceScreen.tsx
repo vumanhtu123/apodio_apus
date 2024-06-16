@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import {
     FlatList,
+    ImageBackground,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -10,7 +11,7 @@ import { styles } from './styles';
 
 import { Images } from '../../../../assets/index';
 import { Header } from '../../../components/header/header';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Text } from '../../../components';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -26,10 +27,12 @@ export const PrintInvoiceScreen: FC = observer(
         const { orderStore, vendorStore } = useStores();
         const [data, setData] = useState<any>([]);
         const [dataInfoCompany, setDataInfoCompany] = useState<any>([]);
+        const route = useRoute()
+        const invoiceId = route?.params?.invoiceId
 
         const handleGetDetailInvoice = async () => {
             try {
-                const response = await orderStore.getDetailInvoice(328);
+                const response = await orderStore.getDetailInvoice(invoiceId);
                 if (response && response.kind === "ok") {
                     const data = response.response.data;
                     console.log('dataDetailInvoice', data)
@@ -60,8 +63,8 @@ export const PrintInvoiceScreen: FC = observer(
             handleGetDetailInvoice()
             handleGetInfoCompany()
         }, []);
-        useEffect(()=>{
-            console.log('first',dataInfoCompany)
+        useEffect(() => {
+            console.log('first', dataInfoCompany)
         })
         const renderItem = ({ item }: any) => (
             <View style={styles.row}>
@@ -107,7 +110,13 @@ export const PrintInvoiceScreen: FC = observer(
                     <View style={{ marginHorizontal: scaleWidth(16) }}>
                         <View style={{ marginTop: 20, flexDirection: 'row' }}>
                             {/* <Images.icon_QRCode width={80} height={80} /> */}
-                            <FastImage
+                            <ImageBackground
+                                style={{ width: scaleWidth(80), height: scaleHeight(80) }}
+                                imageStyle={{
+                                    borderRadius: 20,
+                                }}
+                                source={require("../../../../assets/Images/no_images.png")}>
+                                <FastImage
                                     style={{
                                         width: scaleWidth(80),
                                         height: scaleHeight(80),
@@ -118,6 +127,7 @@ export const PrintInvoiceScreen: FC = observer(
                                     }}
                                     defaultSource={require("../../../../assets/Images/no_images.png")}
                                 />
+                            </ImageBackground>
                             <View style={styles.infoContainer}>
                                 <Text style={styles.companyName}>{dataInfoCompany.name}</Text>
                                 <Text style={styles.textInfo} >www.apodio.com.vn</Text>

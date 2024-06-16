@@ -1,3 +1,4 @@
+import { size } from 'lodash';
 import { ApiResponse } from "apisauce";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { ApiOrder } from "../base-api/api-config-order";
@@ -15,7 +16,7 @@ export class OrderApi {
     this.apiAccount = apiAccount;
   }
 
-  async getListOrder(page: number, size: number, state: string): Promise<any> {
+  async getListOrder(page: number, size: number, state: string, search: string): Promise<any> {
     Loading.show({
       text: "Loading...",
     });
@@ -24,7 +25,8 @@ export class OrderApi {
       const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.GET_LIST_ORDER, {
         page,
         size,
-        state
+        state,
+        search
         // activated
       }
       )
@@ -47,9 +49,30 @@ export class OrderApi {
     });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
-      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.GET_DETAIL_INVOICE, {
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(ApiEndpoint.GET_DETAIL_INVOICE, {
         id
       }
+      )
+      Loading.hide();
+      console.log('-----------------respone', response)
+      const data = response.data
+      console.log('-----------------data', data)
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" }
+    }
+  }
+  async createInvoice(invoiceAdd: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
+    try {
+      // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.post(ApiEndpoint.GET_DETAIL_INVOICE, invoiceAdd
       )
       Loading.hide();
       console.log('-----------------respone', response)
@@ -249,7 +272,32 @@ export class OrderApi {
       return { kind: "bad-data" }
     }
   }
-
+  async getPaymentTerm(page: number, size: number): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
+        ApiEndpoint.GET_LIST_PAYMENT_TERM,
+        {
+          page,
+          size,
+          type: 'SALE'
+        }
+      );
+      Loading.hide();
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data.message);
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" }
+    }
+  }
   async getTaxList(
     type: any,
     scopeType: any
@@ -285,6 +333,30 @@ export class OrderApi {
       );
       Loading.hide();
       console.log('----------delete', response.status)
+      const result = response.data;
+      if (response.data.errorCodes) {
+        return { kind: "bad-data", result };
+      } else {
+        return { kind: "ok", result };
+      }
+
+    } catch (error) {
+      Loading.hide();
+      return { kind: "bad-data", result: error };
+    }
+  }
+  async stateAllow(id: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+      onShow: () => console.log('Loading shown'),
+      onHide: () => console.log('Loading hidden'),
+    });
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.get(
+        ApiEndpoint.GET_STATE_ALLOW + "?id=" + id
+      );
+      Loading.hide();
+      console.log('----------state', response)
       const result = response.data;
       if (response.data.errorCodes) {
         return { kind: "bad-data", result };

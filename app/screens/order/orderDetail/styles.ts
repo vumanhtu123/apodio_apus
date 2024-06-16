@@ -19,10 +19,10 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size12,
     color: colors.palette.nero,
   },
-  priceOriginal : {
-    textDecorationLine :'line-through',
-    marginTop : scaleHeight(8),
-    color : colors.palette.dolphin,
+  priceOriginal: {
+    textDecorationLine: 'line-through',
+    marginTop: scaleHeight(8),
+    color: colors.palette.dolphin,
     fontSize: fontSize.size12,
   },
   logoHeader: {
@@ -93,8 +93,8 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: scaleWidth(padding.padding_16),
     paddingVertical: scaleHeight(padding.padding_12),
-    flexDirection : 'row',
-    alignItems : 'center' , 
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   viewPay: {
     marginVertical: scaleHeight(margin.margin_15),
@@ -320,12 +320,26 @@ export const styles = StyleSheet.create({
     width: scaleWidth(48), // Stretch the bar across the entire width
     height: 1, // Set the bar height to 1 pixel
     backgroundColor: '#00CC6A',
-    left : scaleWidth(45)
+    left: scaleWidth(45)
   },
   titleHeader: {
     justifyContent: "flex-start",
     paddingLeft: 5,
     flexDirection: "row",
     alignItems: "center",
+  },
+  viewButton: {
+    backgroundColor: colors.navyBlue,
+    borderRadius: 8,
+    height: scaleHeight(48),
+    // marginHorizontal: scaleWidth(16),
+    marginBottom: scaleHeight(12),
+    // marginTop: scaleHeight(15)
+  },
+  textButton: {
+    fontWeight: "600",
+    fontSize: fontSize.size14,
+    lineHeight: scaleHeight(24),
+    color: colors.textWhite,
   },
 });

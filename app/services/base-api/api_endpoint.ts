@@ -36,7 +36,7 @@ export const ApiEndpoint = {
   UPLOAD_IMAGES: "/api/v1/file-upload",
   DELETE_CHECK: "/api/v1/goods/product-template/delete-check",
   USING_PRODUCT_CHECK: "/api/v1/product-template/use-in-another-service",
-  COMPANY_INFO: "/api/v1/companies/info1",
+  COMPANY_INFO: "/api/v1/companies/info",
   GET_LIST_COMPANY: "/api/v1/tenant/list-by-user",
   GET_LIST_ORDER : '/api/v1/retail/sale-order/list',
   GET_LIST_ORDER_PRODUCT: '/api/v1/retail/sale-order/product-templates',
@@ -52,5 +52,7 @@ export const ApiEndpoint = {
   GET_LIST_TAX: "/api/v1/tax/list",
   GET_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
   GET_DEBT_LIMIT: "/api/v1/retail/sale-order/debt-limit",
-  CANCEL_ORDER : '/api/v1/retail/sale-order/cancel'
+  CANCEL_ORDER : '/api/v1/retail/sale-order/cancel',
+  GET_STATE_ALLOW : '/api/v1/retail/sale-order/state-allow',
+  GET_LIST_PAYMENT_TERM : '/api/v1/payment-term/list'
 };

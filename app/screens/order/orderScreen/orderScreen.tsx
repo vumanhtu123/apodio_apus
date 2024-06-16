@@ -10,6 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
   Platform,
+  RefreshControl,
 } from 'react-native';
 import { styles } from './styles';
 
@@ -49,6 +50,16 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const [isReset, setIReset] = useState<boolean>(false)
     const markedDatesSRef = useRef('');
     const markedDatesERef = useRef('');
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [openSearch, setOpenSearch] = useState(false);
+    const handleOpenSearch = () => {
+      setOpenSearch(!openSearch);
+    };
+    const [searchValue, setSearchValue] = useState("");
+    const handleSearchValueChange = (text: string) => {
+      const newValue = text !== null ? text.toString() : "";
+      setSearchValue(newValue);
+    };
     markedDatesSRef.current = markedDatesS ? markedDatesS : sevenDaysBefore.toString();
     markedDatesERef.current = markedDatesE ? markedDatesE : today.toString();
 
@@ -81,12 +92,13 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     useEffect(() => {
       getListOrder()
     }, [selectedStatus])
-    const getListOrder = async () => {
+    const getListOrder = async (searchValue?: any) => {
       try {
         const response = await orderStore.getListOrder(
           0,
           50,
-          selectedStatus
+          selectedStatus,
+          searchValue
         );
         // console.log('firstxxxxxxxxxx' , response)
         if (response && response.kind === "ok") {
@@ -99,7 +111,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         console.error("Error fetching order:", error);
       }
     };
-    
+
     // const { newOderStore } = useStores()
     const handleOrderMerchant = async () => {
       // const res = await newOderStore.getOrderMerchant(
@@ -176,6 +188,18 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       const status = selectStatus[index].status;
       setSelectedStatus(status);
     };
+    const refreshOrder = async () => {
+      // setIsRefreshing(true);
+      setSearchValue('')
+      setOpenSearch(false)
+      setArrData([])
+      await getListOrder();
+      // setIsRefreshing(false);
+    };
+    const handleSubmitSearch = () => {
+      // setPage(0);
+      getListOrder(searchValue);
+    };
     return (
       <View style={styles.ROOT}>
         <Header headerTx={'dashboard.orders'}
@@ -183,8 +207,14 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           style={styles.header}
           titleStyle={styles.textHeader}
           RightIcon={Images.ic_calender_white}
-          RightIcon1={Images.search}
+          RightIcon1={openSearch ? Images.icon_close : Images.search}
+          headerInput={openSearch}
           onRightPress={toggleModalDate}
+          onRightPress1={handleOpenSearch}
+          searchValue={searchValue}
+          handleOnSubmitSearch={handleSubmitSearch}
+          onSearchValueChange={handleSearchValueChange}
+
           rightText1={moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
@@ -242,6 +272,13 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           data={arrData}
           style={styles.styleFlatlist}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={refreshOrder}
+              title="ok"
+            />
+          }
           renderItem={({ item }) => (
             <ItemOrder
               onPress={() => handleDetailOrder(item.id)}
@@ -249,7 +286,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
               time={formatDateTime(item.quoteCreationDate)}
               code={item.code}
               status={getOrderStateText(item.state)}
-              amount={item.amount}
+              amount={item.quantity}
               discount={formatCurrency(item.amountDiscount)}
               payStatus={getInvoiceStateText(item.invoiceStatus)}
               weight={item.weight}
