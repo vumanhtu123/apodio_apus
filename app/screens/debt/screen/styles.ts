@@ -26,7 +26,7 @@ export  const Styles = StyleSheet.create({
         position: 'absolute',
     },
     bodyItem: {
-        backgroundColor:'blue',
+        // backgroundColor:'blue',
         flex:1,
         alignItems:'center',
         justifyContent:'space-around'

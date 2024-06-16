@@ -46,8 +46,9 @@ import { Order, arrPayment, dataPromotion, methodData } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 import { values } from "mobx";
+import { productData } from "../../../models/add-product-props";
 
-export const NewOrder: FC = observer(function NewOrder(props) {
+export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
   const navigation = useNavigation();
   const paddingTop = useSafeAreaInsets().top;
   const heightScroll =
@@ -57,6 +58,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     paddingTop;
   const route = useRoute();
   const { orderStore } = useStores();
+  const newData = route?.params?.newData
+  const screen = route?.params?.screen
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
@@ -80,23 +83,78 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const nameTax = useRef("");
   const price = useRef(0);
   const priceSumVAT = useRef(0);
-  const priceSum = useRef(0);
   const arrTaxAll = useRef([{ percent: "", amount: "" }]);
   const idItemOrder = useRef(0);
   const address = useRef<{}>();
   const store = useStores();
 
   address.current = route?.params?.dataAddress;
-  console.log("adr", route?.params?.dataAddress);
-  console.log("id,", Number(store.orderStore.dataClientSelect.id));
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (orderStore.checkRenderList === true) {
+        if (newData.isOptionPrice === true) {
+          orderStore.setDataPriceListSelect({
+            pricelistId: newData.priceList.id, name: newData.priceList.name, priceListCategory: "",
+            currencyId: newData.currencyId !== null ? newData.currencyId : null, id: newData.priceList.id
+          })
+        }
+        orderStore.setCheckPriceList(newData.isOptionPrice)
+        if (newData.invoiceAddressId !== null) {
+          address.current = newData.deliveryAddress
+        } else {
+          address.current = undefined
+        }
+        const newArr = newData.saleOrderLines.map((items: any) => {
+          return {
+            ...items?.productInfo, amount: items?.quantity, originAmount: items?.orderQty, priceTotal: items?.amountTotal,
+            price: items?.unitPrice, VAT: { value: items?.taxLines?.items[0]?.taxId, label: items?.taxLines?.items[0]?.taxName },
+            taxValue: items?.taxLines?.items[0]?.amount
+          }
+        })
+        priceAll(newArr)
+        handleSumAmountVAT(newArr)
+        console.log(newArr, 'log =====')
+        setArrProduct(newArr)
+        orderStore.setDataClientSelect({
+          id: newData.partner.id, code: newData.partner.code, name: newData.partner.name,
+          phoneNumber: newData.partner.phoneNumber
+        })
+        setPayment({
+          label: newData.scopeTypes === "DOMESTICALLY" ? translate("order.DOMESTICALLY") : translate("order.EXPORTED"),
+        })
+        if (newData.note !== null) {
+          setNote(true)
+          }
+        orderStore.setCheckRenderList(false)
+        switch (newData.paymentMethod) {
+          case "CASH":
+            console.log("aaa 1");
+            return countRef.current = translate("order.CASH");
+          case "BANK_TRANSFER":
+            return countRef.current = translate("order.BANK_TRANSFER");
+          case "BANK":
+            return countRef.current = translate("order.BANK");
+          case "CREDIT":
+            return countRef.current = translate("order.CREDIT");
+          case "DEDUCTION_OF_LIABILITIES":
+            return countRef.current = translate("order.DEDUCTION_OF_LIABILITIES");
+          default:
+            return "";
+        }
+        // setIsDeposit(true)
+
+      } else {
+        setArrProduct(orderStore.dataProductAddOrder.slice());
+        priceAll(orderStore.dataProductAddOrder.slice());
+        getListTax();
+        // getListAddress();
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const getListAddress = async () => {
-    if (
-      store.orderStore.dataClientSelect.id == undefined ||
-      Number(store.orderStore.dataClientSelect.id) == 0
-    ) {
-      return;
-    }
     try {
       const response = await orderStore.getListAddress(
         Number(store.orderStore.dataClientSelect.id)
@@ -210,16 +268,16 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             data.warehouses == undefined
               ? []
               : [
-                  {
-                    id: data.warehouses.id,
-                    name: data.warehouses.name,
-                    quantity: data.warehouses.quantity,
-                  },
-                ],
+                {
+                  id: data.warehouses.id,
+                  name: data.warehouses.name,
+                  quantity: data.warehouses.quantity,
+                },
+              ],
         },
         quantity: data.originAmount,
         uomId: data.uomId,
-        orderQty: data.mount,
+        orderQty: data.amount,
         // orderUomId: number, //chon
         unitPrice: data.price, //don gia cua bang gia
         // amountUntaxed: data.price,
@@ -236,8 +294,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         quantityInventory: data.quantityInventory,
       };
     });
+    const newArr1 = arrProduct.map((item: any)=> {return item.id})
+    const newArr2 = newData.saleOrderLines?.map((item: any)=> {return item.id})
+    const newArr3 = newArr2.filter(item => !newArr1.includes(item));
     console.log("data new", JSON.stringify(newArr));
     const order: any = {
+      id: screen === "copy" ? null : newData.id,
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
       // invoiceAddressId: 0,
@@ -261,11 +323,11 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       // discount: 0,
       // discountComputeType: "",
       note: "",
-      isOptionPrice: false,
+      isOptionPrice: orderStore.checkPriceList,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
       saleOrderLines: newArr,
-      // saleOrderLineDeleteIds: [],
+      saleOrderLineDeleteIds: screen === "copy" ? [] : newArr3,
       isRetail: false,
       scopeType:
         payment.label == translate("order.DOMESTICALLY")
@@ -279,10 +341,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     store.orderStore.postAddOrderSale(order).then((values) => {
       console.log("success data sale order:", JSON.stringify(values));
     });
-  };
-
-  const selectClient = () => {
-    props.navigation.navigate("selectClient");
   };
 
   const toggleModalDate = () => {
@@ -426,7 +484,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       return;
     }, 0);
     priceSumVAT.current = Number(all) + Number(price.current);
-    console.log("cat");
   };
 
   const selectTexas = () => {
@@ -453,29 +510,18 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     price.current = all;
     console.log("sum all: ", all);
   };
-
   console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
   console.log("post add tuvm 2", JSON.stringify(arrProduct));
   console.log(
     "post add tuvm 3",
     JSON.stringify(orderStore.dataPriceListSelected)
   );
-  console.log("price scr", Number(price.current));
-  console.log("price scr 2", Number(priceSum.current));
 
   // console.log("data adres", address.current.address);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      setArrProduct(orderStore.dataProductAddOrder.slice());
-      priceAll(orderStore.dataProductAddOrder.slice());
-      getListTax();
-      getListAddress();
-    });
-    return unsubscribe;
-  }, [navigation]);
 
-  useEffect(() => {}, [arrProduct]);
+
+  useEffect(() => { }, [arrProduct]);
 
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
@@ -483,7 +529,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         LeftIcon={Images.back}
         onLeftPress={() => handleBack()}
         style={{ height: scaleHeight(70) }}
-        headerTx={"order.confirm"}
+        headerTx={screen === "copy" ? "order.confirm" : "order.editOrder"}
         titleStyle={styles.textTitle}
       />
       <KeyboardAvoidingView
@@ -503,7 +549,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           ]}>
           <HeaderOrder
             openDialog={function (): void {
-              selectClient();
+              props.navigation.navigate("selectClient");
             }}
             data={store.orderStore.dataClientSelect}
           />
@@ -518,15 +564,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             }
             data={address.current}
           />
-          <PriceList
-            id={Number(orderStore.dataPriceListSelected.id) ?? null}
-            name={orderStore.dataPriceListSelected.name ?? null}
-            priceListCategory={
-              orderStore.dataPriceListSelected.priceListCategory
-            }
-            currencyId={Number(orderStore.dataPriceListSelected.currencyId)}
-            pricelistId={Number(orderStore.dataPriceListSelected.pricelistId)}
-          />
+          <PriceList />
           <InputSelect
             styleView={{
               backgroundColor: "white",
@@ -792,10 +830,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           }}>
           <Text tx={"order.sum"} style={[styles.textTotal, { flex: 1 }]} />
           <Text style={isDeposit === true ? styles.textTotal : styles.textCost}>
-            {/* {isNaN(priceSumVAT.current)
-              ? Number(priceSumVAT.current)
-              : price.current} */}
-            {Number(price.current)}
+            0
           </Text>
         </View>
         {isDeposit === true ? (
@@ -928,18 +963,18 @@ const SumMoney = (props: DataSumMoney) => {
           style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
         {props.arrVat != null
           ? props.arrVat.map((data: any) => {
-              return data.VAT != undefined ? (
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: "400",
-                    color: "#747475",
-                    marginTop: 8,
-                  }}>
-                  {data?.VAT?.label ?? null}
-                </Text>
-              ) : null;
-            })
+            return data.VAT != undefined ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data?.VAT?.label ?? null}
+              </Text>
+            ) : null;
+          })
           : null}
         <Text
           tx="order.sum_yes_texas"
@@ -952,26 +987,26 @@ const SumMoney = (props: DataSumMoney) => {
       </View>
       <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
         <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
-          {(isNaN(props.sumNoVat) ? 0 : props.sumNoVat) ?? 0}
+          {props.sumNoVat ?? ""}
         </Text>
         {props.arrVat != undefined
           ? props.arrVat.map((data: any) => {
-              if (data.taxValue !== undefined) {
-                sumValue = Number(data.taxValue) + Number(props.sumNoVat);
-                console.log("tutu", data.taxValue, props.sumNoVat);
-              }
-              return data.taxValue != undefined ? (
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: "400",
-                    color: "#747475",
-                    marginTop: 8,
-                  }}>
-                  {data?.taxValue ?? null}
-                </Text>
-              ) : null;
-            })
+            if (data.taxValue !== undefined) {
+              sumValue = Number(data.taxValue) + Number(props.sumNoVat);
+              console.log("tutu", data.taxValue, props.sumNoVat);
+            }
+            return data.taxValue != undefined ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data?.taxValue ?? null}
+              </Text>
+            ) : null;
+          })
           : null}
         <Text
           style={{

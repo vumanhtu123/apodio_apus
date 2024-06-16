@@ -980,7 +980,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       </View>
       {dataProductAddOrder.length !== 0 ? (
         <TouchableOpacity
-          onPress={() => navigation.navigate("newOrder" as never)}
+          onPress={() => navigation.goBack()}
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
