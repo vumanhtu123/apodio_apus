@@ -72,7 +72,7 @@ export const OrderDetails: FC = observer(
         };
         const cancelOrder = async () => {
             const result = await orderStore.cancelOrder(orderId);
-            console.log('//////////' , result)
+            console.log('//////////', result)
             if (result.kind === "ok") {
                 console.log("Xoá danh mục thành công", result.response);
             } else {
@@ -343,28 +343,21 @@ export const OrderDetails: FC = observer(
                     onLeftPress={() => navigation.goBack()}
                     colorIcon={colors.text}
                     headerTx={'order.orderDetail'}
-                    RightIcon={Images.icon_copy}
-                    TitleIcon="order.copy"
-                    RightIcon1={Images.icon_clipboard}
-                    TitleIcon1="order.return"
+                    RightIcon1={Images.icon_copy}
+                    TitleIcon1="order.copy"
+                    RightIcon={Images.icon_editWhite}
+                    TitleIcon="common.edit"
                     RightIcon2={Images.icon_printer}
                     TitleIcon2="order.printInvoice"
                     onRightPress2={() => navigation.navigate('printInvoiceScreen' as never)}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
                     onRightPress1={() => {
-                        Dialog.show({
-                            type: ALERT_TYPE.SUCCESS,
-                            title: translate("txtDialog.txt_title_dialog"),
-                            textBody: translate("txtDialog.delete_order") + `${data?.code}` + ' ' + translate('txtDialog.delete_order1'),
-                            button: translate("common.cancel"),
-                            button2: translate("common.confirm"),
-                            closeOnOverlayTap: false,
-                            onPressButton: () => {
-                                cancelOrder()
-                                navigation.goBack()
-                                Dialog.hide();
-                            }
-                        })
+                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'copy' })
+                        orderStore.setCheckRenderList(true)
+                    }}
+                    onRightPress={() => {
+                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'edit' })
+                        orderStore.setCheckRenderList(true)
                     }}
                     // RightIcon2={activeTab === "product" ? isGridView ? Images.ic_squareFour : Images.ic_grid : null}
                     // onRightPress={handleOpenSearch}

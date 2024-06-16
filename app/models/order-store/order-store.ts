@@ -67,6 +67,7 @@ export const OrderStoreModel = types
     tagId: types.optional(types.array(types.number), []),
     productCategoryId: types.optional(types.number, 0),
     nameCategory: types.optional(types.string, ""),
+    checkRenderList: types.optional(types.boolean, false),
     dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
       id: "",
       name: "",
@@ -125,6 +126,9 @@ export const OrderStoreModel = types
     },
     setProductCategoryId(value: any) {
       self.productCategoryId = value;
+    },
+    setCheckRenderList(value: any) {
+      self.checkRenderList = value;
     },
     setNameCategory(value: any) {
       self.nameCategory = value;

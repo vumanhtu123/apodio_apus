@@ -2,8 +2,10 @@ import { Observer, observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import React, {
+  Dimensions,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -18,7 +20,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   ALERT_TYPE,
   Dialog,
@@ -28,9 +30,18 @@ import { useStores } from "../../../models";
 import { translate } from "../../../i18n";
 import { OrderCityResult } from "../../../models/order-store/order-address-model";
 import { formatPhoneNumber, phoneNumberPattern } from "../../../utils/validate";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Root1 } from "../../../models/order-store/entities/order-address-model";
 
 export const NewDelivery: FC = observer(function NewDelivery() {
   const navigation = useNavigation();
+  const paddingTop = useSafeAreaInsets().top;
+  const heightScroll =
+    Dimensions.get("window").height -
+    scaleHeight(120) -
+    scaleHeight(52) -
+    paddingTop;
+  const route = useRoute()
   const { orderStore } = useStores();
   const [dataCity, setDataCity] = useState<{}[]>([]);
   const [dataDistrict, setDataDistrict] = useState<{}[]>([]);
@@ -47,17 +58,30 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   const [searchDistrict, setSearchDistrict] = useState("");
   const [searchWards, setSearchWards] = useState("");
 
-  const {
-    control,
-    reset,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm();
+  const dataEdit: Root1 = route?.params?.dataEdit
+  const screen = route?.params?.screen
+
+  const { control, reset, handleSubmit, setValue, formState: { errors }, setError } = useForm({
+    defaultValues: { phone: '', address: '' },
+  });
 
   useEffect(() => {
-    getListCity();
-  }, [page, searchCity]);
+    if (dataEdit !== undefined) {
+      console.log(dataEdit)
+      setCity({ label: dataEdit.city.name, id: dataEdit.city.id })
+      setDistrict({ label: dataEdit.district.name, id: dataEdit.district.id })
+      setWards({ label: dataEdit.ward.name, id: dataEdit.ward.id })
+      setValueSwitch(dataEdit.isDefault)
+      getListCity()
+      getListDistrict(dataEdit.city.id)
+      getListWard(dataEdit.district.id)
+      setValue('phone', dataEdit.phoneNumber.toString())
+      setValue('address', dataEdit.address.toString())
+    } else {
+      getListCity()
+    }
+  }, [])
+
   // useEffect(() => {
   //     if (city.id !== 0) {
   //         getListDistrict(city)
@@ -247,6 +271,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       const newDistrict = { id: district.id, name: district.label };
       const newWard = { id: wards.id, name: wards.label };
       const dataCreate = {
+        id: dataEdit !== undefined ? dataEdit.id : null,
         partnerId: Number(orderStore.dataClientSelect.id),
         phoneNumber: data.phone,
         addressType: "DELIVERY_ADDRESS",
@@ -264,7 +289,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
           Dialog.show({
             type: ALERT_TYPE.INFO,
             title: translate("productScreen.Notification"),
-            textBody: translate("order.newAddressDialog"),
+            textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"),
             button2: translate("productScreen.BtnNotificationAccept"),
             closeOnOverlayTap: false,
             onPressButton: () => {
@@ -297,129 +322,134 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       <Header
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
-        headerTx={"order.newDelivery"}
+        headerTx={screen === 'new' ? "order.newDelivery" : 'order.editDelivery'}
         style={{ height: scaleHeight(54) }}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "padding"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
-        style={{
-          marginHorizontal: scaleWidth(16),
-          marginTop: scaleHeight(10),
-        }}>
-        <Controller
-          control={control}
-          render={({ field: { onChange, value, onBlur }, fieldState }) => (
-            <TextField
-              keyboardType="numeric"
-              maxLength={10}
-              labelTx={"order.phone"}
-              style={styles.viewTextField}
-              inputStyle={{
-                marginBottom:
-                  Platform.OS === "ios" ? scaleHeight(padding.padding_8) : 0,
-              }}
-              value={value}
-              onBlur={onBlur}
-              onChangeText={(value) => {
-                onChange(value);
-                if (phoneNumberPattern.test(value) === false) {
-                  setError("phone", {
-                    type: "validate",
-                    message: "Số điện thoại gồm 10 chữ số bắt đầu bằng số 0",
-                  });
-                } else {
-                  setError("phone", null);
-                }
-              }}
-              onClearText={() => onChange("")}
-              RightIconClear={Images.icon_delete2}
-              isImportant={true}
-              error={errors?.phone?.message}
-            />
-          )}
-          defaultValue={""}
-          name="phone"
-          rules={{ required: "Số điện thoại là bắt buộc" }}
-        />
-        <InputSelect
-          titleTx={"order.city"}
-          hintTx={"order.chooseCity"}
-          required={true}
-          arrData={dataCity}
-          dataDefault={city.label}
-          onPressChoice={(item) => handleSelectCity(item)}
-          styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
-          // onLoadMore={()=> setPage(page+1)}
-          isSearch={true}
-          onSearch={(text: any) => setSearchCity(text)}
-        />
-        <InputSelect
-          titleTx={"order.district"}
-          hintTx={"order.chooseDistrict"}
-          required={true}
-          arrData={dataDistrict}
-          dataDefault={district.label}
-          onPressChoice={(item) => handleSelectDistrict(item)}
-          styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
-          onPressNotUse={() => handleSelectDistrict1()}
-          checkUse={city.label !== "" ? false : true}
-          // onLoadMore={()=> setPageDistrict(pageDistrict + 1)}
-          isSearch={true}
-          onSearch={(text: any) => setSearchDistrict(text)}
-        />
-        <InputSelect
-          titleTx={"order.ward"}
-          hintTx={"order.chooseWard"}
-          required={true}
-          arrData={dataWards}
-          dataDefault={wards.label}
-          onPressChoice={(item) => handleSelectWards(item)}
-          styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
-          onPressNotUse={() => handleSelectWards1()}
-          checkUse={city.label !== "" && district.label !== "" ? false : true}
-          // onLoadMore={()=> setPageWards(pageWards + 1)}
-          isSearch={true}
-          onSearch={(text: any) => setSearchWards(text)}
-        />
-        <Controller
-          control={control}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <TextField
-              keyboardType={null}
-              labelTx={"order.address"}
-              style={styles.viewTextField}
-              inputStyle={{
-                marginBottom:
-                  Platform.OS === "ios" ? scaleHeight(padding.padding_8) : 0,
-              }}
-              value={value}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              onClearText={() => onChange("")}
-              RightIconClear={Images.icon_delete2}
-              isImportant={true}
-              error={errors?.address?.message}
-            />
-          )}
-          defaultValue={""}
-          name="address"
-          rules={{ required: "Địa chỉ là bắt buộc" }}
-        />
-        <View
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          bounces={false}
           style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
+            marginHorizontal: scaleWidth(16),
+            marginTop: scaleHeight(10),
+            height: heightScroll - scaleHeight(64),
           }}>
-          <Text style={{ flex: 1 }} tx={"order.addressDefault"} />
-          <Switch
-            value={valueSwitch}
-            onToggle={() => {
-              setValueSwitch(!valueSwitch);
-            }}
+          <Controller
+            control={control}
+            render={({ field: { onChange, value, onBlur }, fieldState }) => (
+              <TextField
+                keyboardType="numeric"
+                maxLength={10}
+                labelTx={"order.phone"}
+                style={styles.viewTextField}
+                inputStyle={{
+                  marginBottom:
+                    Platform.OS === "ios" ? scaleHeight(padding.padding_8) : 0,
+                }}
+                value={value}
+                onBlur={onBlur}
+                onChangeText={(value) => {
+                  onChange(value);
+                  if (phoneNumberPattern.test(value) === false) {
+                    setError("phone", {
+                      type: "validate",
+                      message: "Số điện thoại gồm 10 chữ số bắt đầu bằng số 0",
+                    });
+                  } else {
+                    setError("phone", null);
+                  }
+                }}
+                onClearText={() => onChange("")}
+                RightIconClear={Images.icon_delete2}
+                isImportant={true}
+                error={errors?.phone?.message}
+                defaultValue={dataEdit !== undefined ? dataEdit.phoneNumber : ''}
+              />
+            )}
+            name="phone"
+            rules={{ required: "Số điện thoại là bắt buộc" }}
           />
-        </View>
+          <InputSelect
+            titleTx={"order.city"}
+            hintTx={"order.chooseCity"}
+            required={true}
+            arrData={dataCity}
+            dataDefault={city.label}
+            onPressChoice={(item) => handleSelectCity(item)}
+            styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+            // onLoadMore={()=> setPage(page+1)}
+            isSearch={true}
+            onSearch={(text: any) => setSearchCity(text)}
+          />
+          <InputSelect
+            titleTx={"order.district"}
+            hintTx={"order.chooseDistrict"}
+            required={true}
+            arrData={dataDistrict}
+            dataDefault={district.label}
+            onPressChoice={(item) => handleSelectDistrict(item)}
+            styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+            onPressNotUse={() => handleSelectDistrict1()}
+            checkUse={city.label !== "" ? false : true}
+            // onLoadMore={()=> setPageDistrict(pageDistrict + 1)}
+            isSearch={true}
+            onSearch={(text: any) => setSearchDistrict(text)}
+          />
+          <InputSelect
+            titleTx={"order.ward"}
+            hintTx={"order.chooseWard"}
+            required={true}
+            arrData={dataWards}
+            dataDefault={wards.label}
+            onPressChoice={(item) => handleSelectWards(item)}
+            styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
+            onPressNotUse={() => handleSelectWards1()}
+            checkUse={city.label !== "" && district.label !== "" ? false : true}
+            // onLoadMore={()=> setPageWards(pageWards + 1)}
+            isSearch={true}
+            onSearch={(text: any) => setSearchWards(text)}
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TextField
+                keyboardType={null}
+                labelTx={"order.address"}
+                style={styles.viewTextField}
+                inputStyle={{
+                  marginBottom:
+                    Platform.OS === "ios" ? scaleHeight(padding.padding_8) : 0,
+                }}
+                value={value}
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(value)}
+                onClearText={() => onChange("")}
+                RightIconClear={Images.icon_delete2}
+                isImportant={true}
+                error={errors?.address?.message}
+                defaultValue={dataEdit !== undefined ? dataEdit.address : ''}
+              />
+            )}
+            name="address"
+            rules={{ required: "Địa chỉ là bắt buộc" }}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}>
+            <Text style={{ flex: 1 }} tx={"order.addressDefault"} />
+            <Switch
+              value={valueSwitch}
+              onToggle={() => {
+                setValueSwitch(!valueSwitch);
+              }}
+            />
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
       <View style={styles.viewGroupBtn}>
         <TouchableOpacity

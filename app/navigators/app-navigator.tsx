@@ -55,6 +55,7 @@ export type NavigatorParamList = {
   infoMerchant: undefined;
   orderDetails: undefined;
   newOrder: undefined;
+  newAndEditOrder: undefined;
   promotion: undefined;
   arrangeProduct: undefined;
   selectFilter: undefined;
@@ -122,7 +123,6 @@ export type NavigatorParamList = {
   selectClient: undefined;
   paymentBuy: undefined;
   deliveryAddress: { dataAddress: any };
-  editDelivery: undefined;
   newDelivery: undefined;
   addProductOrder: undefined;
   filterSelectScreen: undefined;
@@ -348,11 +348,6 @@ export const AppStack = () => {
         component={Screens.DeliveryAddress}
       />
       <Stack.Screen
-        name="editDelivery"
-        options={{ gestureEnabled: false }}
-        component={Screens.EditDelivery}
-      />
-      <Stack.Screen
         name="newDelivery"
         options={{ gestureEnabled: false }}
         component={Screens.NewDelivery}
@@ -391,6 +386,11 @@ export const AppStack = () => {
         name="newOrder"
         options={{ gestureEnabled: false }}
         component={Screens.NewOrder}
+      />
+      <Stack.Screen
+        name="newAndEditOrder"
+        options={{ gestureEnabled: false }}
+        component={Screens.NewAndEditOrder}
       />
       <Stack.Screen
         name="orderTracking"
