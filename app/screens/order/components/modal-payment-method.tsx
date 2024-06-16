@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { scaleHeight } from "../../../theme";
@@ -11,9 +11,11 @@ interface InputSelect {
   arrData: {}[];
   method: number;
   setMethod: (item: number, name: string) => void;
+  debt: { isHaveDebtLimit: any; debtAmount: any };
 }
 
 export const ModalPayment = (data: InputSelect) => {
+  const check = useRef(false);
   return (
     <Modal
       onBackdropPress={() => data.closeDialog()}
@@ -44,14 +46,16 @@ export const ModalPayment = (data: InputSelect) => {
             marginHorizontal: 24,
             marginTop: 25,
           }}></Text>
-        {data.arrData.map((payment: any, index) => {
+        {data.arrData?.map((payment: any, index) => {
           return (
             <Item_Payment
               setData={function (value: any, name: any): void {
-                data.setMethod(value, name);
-                console.log("tuvm", value);
+                {
+                  check.current === true ? data.setMethod(value, name) : null;
+                }
+                console.log("tuvm", check.current);
               }}
-              debt={0}
+              debt={data.debt}
               name={payment.label}
               id={data.method}
               index={index}
@@ -68,6 +72,7 @@ export const ModalPayment = (data: InputSelect) => {
           }}>
           <TouchableOpacity
             onPress={() => {
+              check.current = false;
               data.closeDialog();
             }}>
             <View
@@ -88,7 +93,12 @@ export const ModalPayment = (data: InputSelect) => {
                 }}></Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              check.current = true;
+              console.log("clode", check.current);
+              data.closeDialog();
+            }}>
             <View
               style={{
                 backgroundColor: "#0078D4",
@@ -115,11 +125,12 @@ interface InputItem {
   setData: (value: any, name: string) => void;
   name: string;
   id: number;
-  debt: number;
+  debt: { isHaveDebtLimit: any; debtAmount: any };
   index: number;
 }
 
 const Item_Payment = (data: InputItem) => {
+  console.log("tuvm log", data.debt.isHaveDebtLimit);
   return (
     <View
       style={{
@@ -136,7 +147,11 @@ const Item_Payment = (data: InputItem) => {
       />
       <TouchableOpacity
         onPress={() => {
-          data.setData(data.index, data.name);
+          {
+            data.index === 4 && data.debt.isHaveDebtLimit === false
+              ? null
+              : data.setData(data.index, data.name);
+          }
           console.log("0", data.name);
         }}>
         <View
@@ -158,7 +173,12 @@ const Item_Payment = (data: InputItem) => {
                 borderRadius: 50,
                 width: 16,
                 height: 16,
-                backgroundColor: data.id == data.index ? "#0078D4" : "white",
+                backgroundColor:
+                  data.index === 4 && data.debt.isHaveDebtLimit === false
+                    ? "white"
+                    : data.id == data.index
+                    ? "#0078D4"
+                    : "white",
                 alignSelf: "center",
               }}></View>
           </View>
@@ -167,11 +187,16 @@ const Item_Payment = (data: InputItem) => {
             style={{
               fontSize: 14,
               fontWeight: "500",
-              color: "#242424",
+              color:
+                data.index === 4 && data.debt.isHaveDebtLimit === false
+                  ? "#DFE0EB"
+                  : data.index !== 4 && data.debt.isHaveDebtLimit === true
+                  ? "#242424"
+                  : "#242424",
               paddingHorizontal: 8,
             }}></Text>
-          {data.index === 4 ? (
-            <View style={{ flexDirection: "row" }}>
+          {data.index === 4 && data.debt.isHaveDebtLimit === true ? (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 tx="order.available_limit"
                 style={{
@@ -186,137 +211,21 @@ const Item_Payment = (data: InputItem) => {
                   fontWeight: "400",
                   color: "#FF0000",
                 }}>
-                20.000.000)
-              </Text>
-            </View>
-          ) : null}
-        </View>
-      </TouchableOpacity>
-      {/* {data.debt != 0 ? (
-        <TouchableOpacity
-          onPress={() => {
-            data.setData(2);
-            console.log("2");
-          }}>
-          <View style={{ flexDirection: "column" }}>
-            <View
-              style={{
-                height: 1,
-                backgroundColor: "#E7EFFF",
-                marginVertical: 16,
-              }}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginHorizontal: 11,
-              }}>
-              <View
-                style={{
-                  borderRadius: 50,
-                  borderWidth: 1,
-                  borderColor: "#DFE0EB",
-                  alignSelf: "center",
-                  padding: 2,
-                }}>
-                <View
-                  style={{
-                    borderRadius: 50,
-                    width: 16,
-                    height: 16,
-                    backgroundColor: data.id == 2 ? "#0078D4" : "white",
-                    alignSelf: "center",
-                  }}></View>
-              </View>
-              <Text
-                tx="order.debt"
-                style={{
-                  fontSize: 14,
-                  fontWeight: "500",
-                  color: "#242424",
-                  paddingHorizontal: 8,
-                }}>
+                {data.debt.debtAmount ?? 0}
                 <Text
-                  tx="order.available_limit"
                   style={{
                     fontWeight: "400",
                     fontSize: 12,
                     color: "#747475",
                     alignContent: "center",
-                  }}></Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    color: "#FF0000",
                   }}>
-                  20.000.000)
+                  )
                 </Text>
               </Text>
             </View>
-          </View>
-        </TouchableOpacity>
-      ) : (
-        <View style={{ flexDirection: "column" }}>
-          <View
-            style={{
-              height: 1,
-              backgroundColor: "#E7EFFF",
-              marginVertical: 16,
-            }}
-          />
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginHorizontal: 11,
-            }}>
-            <View
-              style={{
-                borderRadius: 50,
-                borderWidth: 1,
-                borderColor: "#DFE0EB",
-                alignSelf: "center",
-                padding: 2,
-              }}>
-              <View
-                style={{
-                  borderRadius: 50,
-                  width: 16,
-                  height: 16,
-                  backgroundColor: "white",
-                  alignSelf: "center",
-                }}></View>
-            </View>
-            <Text
-              tx="order.debt"
-              style={{
-                fontSize: 14,
-                fontWeight: "500",
-                color: "#C8C8C8",
-                paddingHorizontal: 8,
-              }}>
-              <Text
-                tx="order.available_limit"
-                style={{
-                  fontWeight: "400",
-                  fontSize: 12,
-                  color: "#C8C8C8",
-                  alignContent: "center",
-                }}></Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  color: "#C8C8C8",
-                }}>
-                0)
-              </Text>
-            </Text>
-          </View>
+          ) : null}
         </View>
-      )} */}
+      </TouchableOpacity>
     </View>
   );
 };

@@ -45,12 +45,12 @@ export class ApiErp {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         Loading.hide();
-        console.log("RESPONSE :", response);
+        console.log("RESPONSEERP :", response);
         return response;
       },
       async (error) => {
         Loading.hide();
-        console.log("error==", error);
+        console.log("error==1", error);
         if (error.toJSON().message === "Network Error") {
           Dialog.show({
             type: ALERT_TYPE.DANGER,

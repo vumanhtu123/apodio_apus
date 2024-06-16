@@ -35,6 +35,10 @@ import { Screen } from "../../../components/screen/screen";
 import ItemOrder from "../../order/components/item-order";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useStores } from "../../../models";
+import { da } from "date-fns/locale/da";
+import { set } from "date-fns/set";
+import moment from "moment";
+import "moment-timezone";
 
 export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
   function DashBoardScreen(props) {
@@ -46,6 +50,10 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
     const [activeSlide, setactiveSlide] = useState(0);
     const [scrollHeight, setScrollHeight] = useState(0);
     const scrollY = useRef(new Animated.Value(0)).current;
+    const [debt, setDebt] = useState("");
+    const [revenue, setRevenue] = useState("");
+    const [order, setOrder] = useState("");
+    const getAPI = useStores();
 
     // const { accountStore, promotionStore, notifitionStoreModel } = useStores()
     // const { userId } = accountStore
@@ -75,11 +83,47 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
       authenticationStore.onLogin();
     }
 
-    const revenue = 1235780000;
-    const debt = 1235780;
+    // const revenue = 1235780000;
+    // const debt = 1235780;
 
-    const hideRevenue = "*".repeat(revenue.toString().length);
-    const hideDebt = "*".repeat(debt.toString().length);
+    const getDataRevenueThisMonth = () => {
+      // Lấy ngày hiện tại theo giờ Việt Nam
+      const today = moment().tz("Asia/Ho_Chi_Minh");
+
+      // Lấy ngày mồng 1 của tháng hiện tại
+      const firstDayOfMonth = today.clone().startOf("month");
+
+      // Định dạng ngày thành chuỗi "YYYY-MM-DDTHH:mm:ss+07:00"
+      const formattedDateStart = firstDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
+      const formattedDateNow = today.format("YYYY-MM-DDTHH:mm:ssZ");
+
+      console.log("====================================");
+      console.log("date one of the month", formattedDateNow);
+      console.log("====================================");
+      getAPI.dashBoardStore
+        .getDataRevenueThisMonth(
+          "2024-06-12T00:00:00+07:00",
+          "2024-06-12T00:00:00+07:00"
+        )
+        .then((data) => {
+          console.log("====================================");
+          console.log("data revenue this month:", data);
+          console.log("====================================");
+          setDebt(data?.totalDebtAmount);
+          setOrder(data?.totalOrder);
+          setRevenue(data?.totalAmount);
+        });
+    };
+
+    useEffect(() => {
+      getDataRevenueThisMonth();
+    }, [navigation]);
+
+    // const hideRevenue = "*".repeat(revenue.toString().length);
+    // const hideDebt = "*".repeat(debt.toString().length);
+
+    const hideRevenue = "*";
+    const hideDebt = "*";
 
     const arrBanner = [
       {
@@ -361,7 +405,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.revenue"} />
                   {showRevenue === false ? (
-                    <Text style={styles.textRevenue} text={hideRevenue} />
+                    <Text style={styles.textRevenue} text={'hideRevenue'} />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
                       <Text
@@ -381,7 +425,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.orders"} />
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.textRevenue} text="78" />
+                    <Text style={styles.textRevenue}>{order}</Text>
                   </View>
                 </View>
               </View>
@@ -393,7 +437,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.debt"} />
                   {showRevenue === false ? (
-                    <Text style={styles.textRevenue} text={hideDebt} />
+                    <Text style={styles.textRevenue} text={'hideDebt'} />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
                       <Text style={styles.textRevenue} text={debt.toString()} />
@@ -441,7 +485,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text={hideRevenue}
+                      text={'hideRevenue'}
                     />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
@@ -482,7 +526,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text="78"
+                      text={order}
                     />
                   </View>
                 </View>
@@ -506,7 +550,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text={hideDebt}
+                      text={'hideDebt'}
                     />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
@@ -542,7 +586,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
             image={""}
             // name={accountStore.name}
             name="Công ty Thang Long"
-            onPress={() => setIsShow(!isShow)}
+            onPress={() => props.navigation.navigate("inforAccount")}
             showInfo={isShow}
             // kind={KIND_SCREEN.HOME}
             kind={1}
@@ -551,10 +595,10 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
               testDebug();
             }}
           />
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => {}}>
             <Images.icon_search />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnNotification} onPress={() => { }}>
+          <TouchableOpacity style={styles.btnNotification} onPress={() => {}}>
             <Images.icon_notification />
             {/* {notifitionStoreModel.notiUnreadHome > 0 ? ( */}
             <View style={styles.circleNoti}>
@@ -587,7 +631,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
               styles={{ backgroundColor: colors.palette.heatWave }}
               name={"dashboard.orders"}
               Icon={Images.icon_orders}
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.metallicBlue }}
@@ -605,9 +649,9 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
               styles={{ backgroundColor: colors.palette.verdigris }}
               name={"dashboard.promotions"}
               Icon={Images.icon_promotion}
-            // onPress={() => {
-            //   props.navigation.navigate('transferToBank', {});
-            // }}
+              // onPress={() => {
+              //   props.navigation.navigate('transferToBank', {});
+              // }}
             />
           </View>
           <View style={{ flexDirection: "row" }}>
@@ -621,7 +665,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
               styles={{ backgroundColor: colors.palette.torchRed }}
               name={"dashboard.product"}
               Icon={Images.icon_product}
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.malachite }}
@@ -657,7 +701,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 renderItem={({ item }) => (
                   <TouchableOpacity
                     style={{ height: 200, width: "100%", borderRadius: 4 }}
-                  // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
+                    // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
                   >
                     <ImageBackground
                       source={{
@@ -751,8 +795,8 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         item.status === "Đã xử lý"
                           ? colors.palette.solitude
                           : item.status === "Chờ xử lý"
-                            ? colors.palette.floralWhite
-                            : colors.palette.amour,
+                          ? colors.palette.floralWhite
+                          : colors.palette.amour,
                       justifyContent: "center",
                     }}
                     styleTextStatus={{
@@ -760,8 +804,8 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         item.status === "Đã xử lý"
                           ? colors.palette.metallicBlue
                           : item.status === "Chờ xử lý"
-                            ? colors.palette.yellow
-                            : colors.palette.radicalRed,
+                          ? colors.palette.yellow
+                          : colors.palette.radicalRed,
                     }}
                     styleTextPayStatus={{
                       color:
@@ -789,13 +833,13 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
           <View style={styles.viewModal}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderNCC"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderApodio"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
@@ -806,7 +850,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 alignItems: "center",
               }}>
               <Text tx={"dashboard.request"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_handWaving />
               </TouchableOpacity>
             </View>

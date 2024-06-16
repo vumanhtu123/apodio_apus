@@ -55,6 +55,7 @@ export type NavigatorParamList = {
   infoMerchant: undefined;
   orderDetails: undefined;
   newOrder: undefined;
+  newAndEditOrder: undefined;
   promotion: undefined;
   arrangeProduct: undefined;
   selectFilter: undefined;
@@ -121,8 +122,7 @@ export type NavigatorParamList = {
   orderDetailsSupplier: undefined;
   selectClient: undefined;
   paymentBuy: undefined;
-  deliveryAddress: undefined;
-  editDelivery: undefined;
+  deliveryAddress: { dataAddress: any };
   newDelivery: undefined;
   addProductOrder: undefined;
   filterSelectScreen: undefined;
@@ -246,10 +246,22 @@ export const AppStack = () => {
       <Stack.Screen name="debt" component={Screens.DebtScreen} />
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
 
-      <Stack.Screen name="selectClient" component={Screens.SelectClientScreen} />
-      <Stack.Screen name="filterSelectScreen" component={Screens.FilterSelectScreen} />
-      <Stack.Screen name="selectApplicablePriceList" component={Screens.SelectApplicablePriceList} />
-      <Stack.Screen name="filterSelectApplicablePriceList" component={Screens.FilterSelectApplicablePriceList} />
+      <Stack.Screen
+        name="selectClient"
+        component={Screens.SelectClientScreen}
+      />
+      <Stack.Screen
+        name="filterSelectScreen"
+        component={Screens.FilterSelectScreen}
+      />
+      <Stack.Screen
+        name="selectApplicablePriceList"
+        component={Screens.SelectApplicablePriceList}
+      />
+      <Stack.Screen
+        name="filterSelectApplicablePriceList"
+        component={Screens.FilterSelectApplicablePriceList}
+      />
       <Stack.Screen
         name="mainBottom"
         options={{ gestureEnabled: false }}
@@ -336,11 +348,6 @@ export const AppStack = () => {
         component={Screens.DeliveryAddress}
       />
       <Stack.Screen
-        name="editDelivery"
-        options={{ gestureEnabled: false }}
-        component={Screens.EditDelivery}
-      />
-      <Stack.Screen
         name="newDelivery"
         options={{ gestureEnabled: false }}
         component={Screens.NewDelivery}
@@ -379,6 +386,11 @@ export const AppStack = () => {
         name="newOrder"
         options={{ gestureEnabled: false }}
         component={Screens.NewOrder}
+      />
+      <Stack.Screen
+        name="newAndEditOrder"
+        options={{ gestureEnabled: false }}
+        component={Screens.NewAndEditOrder}
       />
       <Stack.Screen
         name="orderTracking"
@@ -445,7 +457,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()

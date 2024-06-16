@@ -45,6 +45,7 @@ export class  Api {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         Loading.hide();
+        console.log("RESPONSEmmmmmmm :", response);
         return response;
       },
       async (error) => {
@@ -92,13 +93,13 @@ export class  Api {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "en",
             "Content-Type": "multipart/form-data",
-            "X-TenantId": tenantId,
+            "X-TenantId": 77,
           };
         } else {
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "vi",
-            "X-TenantId": tenantId,
+            "X-TenantId": 77,
           };
         }
 

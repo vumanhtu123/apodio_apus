@@ -150,29 +150,38 @@ export const OrderDetails: FC = observer(
                     onLeftPress={() => navigation.goBack()}
                     colorIcon={colors.text}
                     headerTx={'order.orderDetail'}
-                    RightIcon={Images.icon_copy}
-                    TitleIcon="order.copy"
-                    // RightIcon1={Images.icon_clipboard}
-                    // TitleIcon1="order.return"
+                    RightIcon1={Images.icon_copy}
+                    TitleIcon1="order.copy"
+                    RightIcon={Images.icon_editWhite}
+                    TitleIcon="common.edit"
                     RightIcon2={Images.icon_printer}
                     TitleIcon2="order.printInvoice"
                     onRightPress2={() => navigation.navigate('printInvoiceScreen' as never, { invoiceId: invoiceId })}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
-                    // onRightPress1={() => {
-                    //     Dialog.show({
-                    //         type: ALERT_TYPE.SUCCESS,
-                    //         title: translate("txtDialog.txt_title_dialog"),
-                    //         textBody: translate("txtDialog.delete_order") + `${data?.code}` + ' ' + translate('txtDialog.delete_order1'),
-                    //         button: translate("common.cancel"),
-                    //         button2: translate("common.confirm"),
-                    //         closeOnOverlayTap: false,
-                    //         onPressButton: () => {
-                    //             cancelOrder()
-                    //             navigation.goBack()
-                    //             Dialog.hide();
-                    //         }
-                    //     })
-                    // }}
+                    onRightPress1={() => {
+                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'copy' })
+                        orderStore.setCheckRenderList(true)
+                    }}
+                    onRightPress={() => {
+                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'edit' })
+                        orderStore.setCheckRenderList(true)
+                    }}
+                    // RightIcon2={activeTab === "product" ? isGridView ? Images.ic_squareFour : Images.ic_grid : null}
+                    // onRightPress={handleOpenSearch}
+                    // onRightPress2={toggleView}
+                    // RightIcon={openSearch ? Images.icon_close : Images.search}
+                    // headerInput={openSearch}
+                    // searchValue={activeTab === "product" ? searchValue : searchCategory}
+                    // onSearchValueChange={
+                    //     activeTab === "product"
+                    //         ? handleSearchValueChange
+                    //         : handleSearchCategoryChange
+                    // }
+                    // handleOnSubmitSearch={
+                    //     activeTab === "product"
+                    //         ? handleSubmitSearch
+                    //         : handleSubmitSearchCategory
+                    // }
                     titleMiddleStyle={styles.titleHeader}
                     widthRightIcon={20}
                     heightRightIcon={20}

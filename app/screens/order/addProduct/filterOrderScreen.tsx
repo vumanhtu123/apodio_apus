@@ -9,7 +9,6 @@ import { Header, Text } from "../../../components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Images } from "../../../../assets";
 import { useStores } from "../../../models";
-  // import { styles } from "./styles";
   
   export const FilterOrderScreen: FC = (item) => {
     const navigation = useNavigation();
@@ -23,17 +22,27 @@ import { useStores } from "../../../models";
       { label: "filterScreen.zToA", sort: "name,desc" },
     ]);
     const { productStore } = useStores();
-    const [dataTag, setData] = useState([]);
+    const [dataTag, setDataTag] = useState([]);
     useEffect(() => {
       initData();
     }, []);
     const initData = async () => {
       const data = await productStore.getListTagProduct();
-      setData(data.result.data.content);
+      const newArr = data.result.data.content.map((items: any)=> {
+        return {...items, isSelect: false}
+      })
+      const newArr2 = newArr.map((items: any)=>{
+        const check = orderStore.tagId.some(item=> item === items.id)
+        if(check ===true){
+          return {...items, isSelect: true}
+        }else{
+          return {...items, isSelect: false}
+        }
+      })
+      setDataTag(newArr2);
     };
     const [selectedNameFilter, setSelectedNameFilter] = useState(orderStore.sort[0]);
     const [selectedTimeFilter, setSelectedTimeFilter] = useState(orderStore.sort[1]);
-    const [selectedTagFilter, setSelectedTagFilter] = useState(0);
     const handleNamePress = (item: any) => {
       if (selectedNameFilter === item) {
         setSelectedNameFilter(null);
@@ -48,7 +57,6 @@ import { useStores } from "../../../models";
         setSelectedTimeFilter(item);
       }
     };
-    const [indexItemTag, setIndexItemTag] = useState<any>();
     const route = useRoute();
     const getFilterData = () => {
       const sortCreatedAt = selectedTimeFilter || "";
@@ -62,41 +70,37 @@ import { useStores } from "../../../models";
       React.useCallback(() => {
         setSelectedNameFilter(orderStore.sort[1]);
         setSelectedTimeFilter(orderStore.sort[0]);
-        setSelectedTagFilter(productStore.tagId);
       }, [])
     );
     
     const handleSort = () => {
       const filterData = getFilterData();
       orderStore.setSort(Object.values(filterData));
-      console.log(orderStore.sort)
-      productStore.setTagId(indexItemTag);
-      console.log(productStore.tagId)
+      const newArr = dataTag.filter((items: any)=> items.isSelect === true)
+      const newArr1 = newArr.map((items: any)=> {return items.id})
+      orderStore.setTagId(newArr1);
       navigation.navigate("addProductOrder" as never);
     }
-    useEffect(() => {
-      console.log("first ", indexItemTag);
-    }, [indexItemTag]);
     const renderItemTag = ({ item }: any) => {
-      const isSelected = selectedTagFilter === item.id;
       const handleTagPress = (idTag: number) => {
-        if (isSelected) {
-          setSelectedTagFilter(null);
-          setIndexItemTag(0);
-        } else {
-          setSelectedTagFilter(item.id);
-          setIndexItemTag(idTag);
-        }
+        const newArr = dataTag.map((items: any)=>{
+          if(items.id === idTag){
+            return {...items, isSelect: !items.isSelect}
+          }else{
+            return items
+          }
+        })
+        setDataTag(newArr)
       };
       return (
         <TouchableOpacity
           onPress={() => handleTagPress(item.id)}
           key={item.id}
           style={{
-            backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
+            backgroundColor: item.isSelect === true ? "#eff8ff" : "#F6F7F9",
             borderRadius: 10,
-            borderWidth: isSelected ? 1 : 0,
-            borderColor: isSelected ? "#0078D4" : "#c8c8c8",
+            borderWidth: item.isSelect === true ? 1 : 0,
+            borderColor: item.isSelect === true ? "#0078D4" : "#c8c8c8",
             flex: 1 / 3,
             marginBottom: 10,
             width: scaleWidth(109),
@@ -106,7 +110,7 @@ import { useStores } from "../../../models";
           }}>
           <Text
             style={{
-              color: isSelected ? "#0078D4" : "#747475",
+              color: item.isSelect === true ? "#0078D4" : "#747475",
               textAlign: "center",
               fontWeight: "400",
               fontSize: fontSize.size10,
@@ -215,7 +219,7 @@ import { useStores } from "../../../models";
                 <View style={{ marginTop: scaleWidth(12) }}>
                   <FlatList
                     data={dataTag}
-                    keyExtractor={(item : any) => item.id.toString()}
+                    keyExtractor={(item : any) => item?.id?.toString()}
                     numColumns={3}
                     columnWrapperStyle={{ gap: 10 }}
                     renderItem={renderItemTag}
