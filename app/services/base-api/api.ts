@@ -45,6 +45,7 @@ export class  Api {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         Loading.hide();
+        console.log("RESPONSEmmmmmmm :", response);
         return response;
       },
       async (error) => {

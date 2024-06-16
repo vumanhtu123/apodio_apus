@@ -123,7 +123,6 @@ export type NavigatorParamList = {
   selectClient: undefined;
   paymentBuy: undefined;
   deliveryAddress: { dataAddress: any };
-  editDelivery: undefined;
   newDelivery: undefined;
   addProductOrder: undefined;
   filterSelectScreen: undefined;
@@ -347,11 +346,6 @@ export const AppStack = () => {
         name="deliveryAddress"
         options={{ gestureEnabled: false }}
         component={Screens.DeliveryAddress}
-      />
-      <Stack.Screen
-        name="editDelivery"
-        options={{ gestureEnabled: false }}
-        component={Screens.EditDelivery}
       />
       <Stack.Screen
         name="newDelivery"

@@ -75,9 +75,16 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     { status: 'DONE', textStatus: 'Hoàn thành' },
     { status: 'CANCEL', textStatus: 'Hủy đơn' },
     ]
+    // useEffect(() => {
+    //   getListOrder()
+    // }, [])
     useEffect(() => {
-      getListOrder()
-    }, [])
+      console.log("---------useEffect---------reload------------------");
+      const unsubscribe = navigation.addListener('focus', () => {
+        getListOrder()
+      });
+      return unsubscribe;
+  }, [navigation])
     useEffect(() => {
       getListOrder()
     }, [selectedStatus])

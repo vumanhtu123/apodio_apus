@@ -72,7 +72,7 @@ export const OrderDetails: FC = observer(
         };
         const cancelOrder = async () => {
             const result = await orderStore.cancelOrder(orderId);
-            console.log('//////////' , result)
+            console.log('//////////', result)
             if (result.kind === "ok") {
                 console.log("Xoá danh mục thành công", result.response);
             } else {
@@ -351,8 +351,14 @@ export const OrderDetails: FC = observer(
                     TitleIcon2="order.printInvoice"
                     onRightPress2={() => navigation.navigate('printInvoiceScreen' as never)}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
-                    onRightPress1={() => navigation.navigate('newAndEditOrder' as never, {newData: data, screen: 'copy'})}
-                    onRightPress={() => navigation.navigate('newAndEditOrder' as never, {newData: data, screen: 'edit'})}
+                    onRightPress1={() => {
+                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'copy' })
+                        orderStore.setCheckRenderList(true)
+                    }}
+                    onRightPress={() => {
+                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'edit' })
+                        orderStore.setCheckRenderList(true)
+                    }}
                     // RightIcon2={activeTab === "product" ? isGridView ? Images.ic_squareFour : Images.ic_grid : null}
                     // onRightPress={handleOpenSearch}
                     // onRightPress2={toggleView}

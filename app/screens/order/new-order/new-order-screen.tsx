@@ -455,7 +455,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       priceAll(orderStore.dataProductAddOrder.slice());
       getListTax();
       getListAddress();
-      orderStore.setCheckPriceList(false);
     });
     return unsubscribe;
   }, [navigation]);
