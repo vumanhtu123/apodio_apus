@@ -130,8 +130,8 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
                             />
                             <TouchableOpacity
                               onPress={() =>
-                                navigation.navigate("editDelivery" as never, {
-                                  dataEdit: item.item,
+                                navigation.navigate("newDelivery" as never, {
+                                  dataEdit: item.item, screen: 'edit'
                                 })
                               }>
                               <Images.icon_edit
@@ -253,7 +253,9 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
               flexDirection: "row",
               marginTop: scaleHeight(margin.margin_15),
             }}
-            onPress={() => navigation.navigate("newDelivery" as never)}>
+            onPress={() => navigation.navigate("newDelivery" as never, {
+              dataEdit: undefined, screen: 'new'
+            })}>
             <Images.icon_add width={14} height={14} />
             <Text tx={"order.addAddress"} style={styles.textAddAddress} />
           </TouchableOpacity>

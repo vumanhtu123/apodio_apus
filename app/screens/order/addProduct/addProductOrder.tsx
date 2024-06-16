@@ -162,7 +162,10 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         undefined,
         undefined
       );
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+      console.log(
+        "mm------------------",
+        JSON.stringify(response.response.data.content)
+      );
       if (response && response.kind === "ok") {
         setTotalPagesProduct(response.response.data.totalPages);
         const aMap = new Map(
@@ -977,7 +980,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       </View>
       {dataProductAddOrder.length !== 0 ? (
         <TouchableOpacity
-          onPress={() => navigation.navigate("newOrder" as never)}
+          onPress={() => navigation.goBack()}
           style={{
             flexDirection: "row",
             justifyContent: "space-between",

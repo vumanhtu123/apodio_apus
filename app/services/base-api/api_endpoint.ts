@@ -62,9 +62,10 @@ export const ApiEndpoint = {
   //   "/api/v1/b2c/price-list/list?trackingState=OPERATION&page=0&size=20",
   GET_LIST_SLECT_CLIENT: "/api/v1/b2c/partners/list",
   GET_DATA_REVENUE_THIS_MONTH: "/api/v1/retail/sale-order/dashboard",
-  CANCEL_ORDER : '/api/v1/retail/sale-order/cancel',
+  CANCEL_ORDER: "/api/v1/retail/sale-order/cancel",
   GET_INFOR_ACCOUNT: "/api/v1/merchant/partners",
 
   POST_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
-  GET_DEBT_LIMIT1: "/api/v1/mobile/account-move/debt",
+  POST_ADD_SALE_ORDER: "/api/v1/retail/sale-order",
+  // GET_DEBT_LIMIT: "/api/v1/mobile/account-move/debt",
 };

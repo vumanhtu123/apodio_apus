@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { FC, useState } from "react";
 import {
     Image,
@@ -36,37 +36,14 @@ export const SelectClientScreen: FC<
     const [myDataSelectClient, setMyDataSelectClient] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
-    const [size, setsize] = useState<any>();
-    const [page, setPage] = useState(0);
+    // const [size, setsize] = useState<any>();
     const getAPi = useStores();
     const [isVisibleCreateClient, setIsVisibleCreateClient] = useState(false);
     const [valueSearch, setValueSearch] = useState("");
     const [isShowSearch, setisShowSearch] = useState(false);
     const [dataItemSelect, setdataItemSelect] = useState();
 
-    // const dataFace = [
-    //     {
-    //         code: "MTH",
-    //         name: "Công ty TNHH MISUKO VIệt Nam",
-    //         phone: "0123214155",
-    //         id: "NCC00001"
-    //     },
-    //     {
-    //         code: "TH",
-    //         name: "Công ty TNHH MISUKO VIệt Nam",
-    //         phone: "0123214155",
-    //         id: "NCC00002"
-    //     }, {
-    //         code: "TH",
-    //         name: "Công ty TNHH MISUKO VIệt Nam",
-    //         phone: "0123214155",
-    //         id: "NCC00003"
-    //     }
-    // ]
-
-    const openTypeFilter = () => {
-        setIsVisible(true);
-    };
+    const size = useRef(20);
 
     // console.log("doannnnn", totalPage);
 
@@ -84,7 +61,7 @@ export const SelectClientScreen: FC<
 
     const getListClient = () => {
         getAPi.orderStore
-            .getListSelectClient(0, size, sort, valueSearch, true)
+            .getListSelectClient(0, size.current, sort, valueSearch, true)
             .then((data) => {
                 console.log("dataaaaaaaaa", data);
 
@@ -100,6 +77,7 @@ export const SelectClientScreen: FC<
                 });
 
                 setMyDataSelectClient(dataSelectClien);
+                // getDebtLimit()
             });
     };
 
@@ -107,18 +85,23 @@ export const SelectClientScreen: FC<
 
         getListClient();
 
-    }, [getAPi.orderStore.sortCreateClient, size]);
+    }, [getAPi.orderStore.sortCreateClient,]);
 
-    // const getDebtLimit = () => {
-    //     if (getAPi.orderStore.dataClientSelect !== null) {
-    //         getAPi.orderStore
-    //             .getDebtLimit(getAPi.orderStore.dataClientSelect.id)
-    //             .then((data: any) => {
-    //                 console.log(data);
-    //                 getAPi.orderStore.setDataDebtLimit(data);
-    //             });
-    //     }
-    // };
+    useEffect(() => {
+        getListClient()
+    }, [size])
+
+
+    const getDebtLimit = () => {
+        if (getAPi.orderStore.dataClientSelect !== null) {
+            getAPi.orderStore
+                .getDebtLimit(getAPi.orderStore.dataClientSelect.id)
+                .then((data: any) => {
+                    console.log(data);
+                    getAPi.orderStore.setDataDebtLimit(data);
+                });
+        }
+    };
 
     console.log("load more", isLoadingMore);
 
@@ -138,11 +121,11 @@ export const SelectClientScreen: FC<
         } finally {
             setRefreshing(false);
         }
-    }
+    };
 
     const handleLoadMore = () => {
         setIsLoadingMore(true);
-        setsize(size + 3);
+        size.current = (size.current + 3);
         // getListClient();
         setTimeout(() => {
             setIsLoadingMore(false);
@@ -229,7 +212,15 @@ export const SelectClientScreen: FC<
                                         </Text>
                                     </View>
                                 </View>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        console.log("====================================");
+                                        console.log("DataItemSelect", item);
+                                        console.log("====================================");
+                                        setdataItemSelect(item);
+                                        setIndexSelect(index);
+                                    }}>
+
                                     {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
                                     <View
                                         style={{
