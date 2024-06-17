@@ -24,7 +24,7 @@ export const DashBoardStoreModel = types
             const result : BaseResponse<RevenueThisMonthResponse, ErrorCode>  = 
             yield revenueThisMonth.getDataRevenueThisMonth(startDate, endDate)
             
-            console.log("DashBoardStoreModel-------------", JSON.stringify(result.data))
+            console.log("DashBoardDataRevenueThisMonth-------------", JSON.stringify(result.data))
 
             return result.data
         } catch (error) {
