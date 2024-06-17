@@ -205,6 +205,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                   isSelect: true,
                   amount: aMap.get(item.id).amount,
                   price: aMap.get(item.id).price,
+                  unitPrice: aMap.get(item.id).unitPrice,
                   conversionRate: aMap.get(item.id).conversionRate,
                   saleUom: aMap.get(item.id).saleUom,
                   originAmount: aMap.get(item.id).originAmount,
@@ -246,6 +247,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
                 price: aMap.get(item.id).price,
+                unitPrice: aMap.get(item.id).unitPrice,
                 conversionRate: aMap.get(item.id).conversionRate,
                 saleUom: aMap.get(item.id).saleUom,
                 originAmount: aMap.get(item.id).originAmount,
@@ -383,6 +385,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                   isSelect: true,
                   amount: aMap.get(item.id).amount,
                   price: aMap.get(item.id).price,
+                  unitPrice: aMap.get(item.id).unitPrice,
                   conversionRate: aMap.get(item.id).conversionRate,
                   saleUom: aMap.get(item.id).saleUom,
                   originAmount: aMap.get(item.id).originAmount,
@@ -429,6 +432,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
                 price: aMap.get(item.id).price,
+                unitPrice: aMap.get(item.id).unitPrice,
                 conversionRate: aMap.get(item.id).conversionRate,
                 saleUom: aMap.get(item.id).saleUom,
                 originAmount: aMap.get(item.id).originAmount,
@@ -489,7 +493,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
           ...data,
           amount: data.minQuantity,
           isSelect: true,
-          price: newPrice,
+          unitPrice: newPrice,
+          price: newPrice * data.minQuantity,
         };
         const newArr = orderStore.dataProductAddOrder.concat(newArr1);
         orderStore.setDataProductAddOrder(newArr);
@@ -512,7 +517,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
           ...data,
           amount: newAmount,
           isSelect: true,
-          price: newPrice,
+          unitPrice: newPrice,
+          price: newPrice * newAmount,
         };
         const newArr = orderStore.dataProductAddOrder.concat(newArr1);
         orderStore.setDataProductAddOrder(newArr);
