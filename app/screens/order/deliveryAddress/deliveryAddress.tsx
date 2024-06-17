@@ -36,21 +36,24 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
 
   const handlePress = (data: any) => {
     setAddressChoice(data.id);
-    navigation.navigate("newOrder" as never, { dataAddress: data });
+    orderStore.setDataAddress(data)
+    navigation.goBack()
   };
 
+
   useEffect(() => {
-    if (orderStore.reloadAddressScreen === true) {
+    const unsubscribe = navigation.addListener("focus", () => {
       getListAddress();
-    }
-  }, [orderStore.reloadAddressScreen]);
+      console.log(route?.params?.dataAddress, 'log====')
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const getListAddress = async () => {
     try {
       const response = await orderStore.getListAddress(
         Number(orderStore.dataClientSelect.id)
       );
-      orderStore.setReloadAddressScreen(false);
       // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         console.log(
@@ -58,14 +61,15 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
           JSON.stringify(response.response.data)
         );
         const newArr = response.response.data;
-        if (dataAddress === undefined) {
+        if (orderStore.dataAddress.id === undefined) {
           newArr.map((items) => {
             if (items.isDefault === true) {
               setAddressChoice(items.id);
+              orderStore.setDataAddress(items)
             }
           });
         } else {
-          setAddressChoice(dataAddress.id);
+          setAddressChoice(orderStore.dataAddress.id);
         }
         setArrAddress(newArr);
       } else {
@@ -75,9 +79,9 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
       console.error("Error fetching product:", error);
     }
   };
-  useEffect(() => {
-    getListAddress();
-  }, []);
+  // useEffect(() => {
+  //   getListAddress();
+  // }, []);
   // useEffect(() => {
   //     console.log(dataAddress, '1231245234123')
   //     if (dataAddress === undefined) {

@@ -75,8 +75,8 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       getListCity()
       getListDistrict(dataEdit.city.id)
       getListWard(dataEdit.district.id)
-      setValue('phone', dataEdit.phoneNumber.toString())
-      setValue('address', dataEdit.address.toString())
+      setValue('phone', dataEdit.phoneNumber?.toString())
+      setValue('address', dataEdit.address?.toString())
     } else {
       getListCity()
     }
@@ -294,7 +294,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
             closeOnOverlayTap: false,
             onPressButton: () => {
               navigation.goBack();
-              orderStore.setReloadAddressScreen(true);
               Dialog.hide();
             },
           });

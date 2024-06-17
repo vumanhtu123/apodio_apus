@@ -46,6 +46,7 @@ import { Order, arrPayment, dataPromotion, methodData } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 import { values } from "mobx";
+import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 
 export const NewOrder: FC = observer(function NewOrder(props) {
   const navigation = useNavigation();
@@ -75,6 +76,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [buttonSelect, setButtonSelect] = useState<boolean>(false);
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
+  const [address, setAddress] = useState(orderStore.dataAddress)
   const countRef = useRef("");
   const [arrDataPostTax, setArrDataPostTax] = useState<{}[]>([]);
   const nameTax = useRef("");
@@ -83,12 +85,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const priceSum = useRef(0);
   const arrTaxAll = useRef([{ percent: "", amount: "" }]);
   const idItemOrder = useRef(0);
-  const address = useRef<{}>();
   const store = useStores();
-
-  address.current = route?.params?.dataAddress;
-  console.log("adr", route?.params?.dataAddress);
-  console.log("id,", Number(store.orderStore.dataClientSelect.id));
 
   const getListAddress = async () => {
     if (
@@ -101,7 +98,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       const response = await orderStore.getListAddress(
         Number(store.orderStore.dataClientSelect.id)
       );
-      orderStore.setReloadAddressScreen(false);
+      orderStore.setCheckIdPartner(false)
       // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         console.log(
@@ -111,9 +108,11 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         const newArr = response.response.data;
         newArr.map((data: any) => {
           if (data.isDefault === true) {
-            address.current = data;
+            orderStore.setDataAddress(data)
+            setAddress(data)
+            // address.current = data;
           }
-          console.log("tuvm address", address.current);
+          // console.log("tuvm address", address.current);
         });
       } else {
         console.error("Failed to fetch categories:", response);
@@ -210,12 +209,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             data.warehouses == undefined
               ? []
               : [
-                  {
-                    id: data.warehouses.id,
-                    name: data.warehouses.name,
-                    quantity: data.warehouses.quantity,
-                  },
-                ],
+                {
+                  id: data.warehouses.id,
+                  name: data.warehouses.name,
+                  quantity: data.warehouses.quantity,
+                },
+              ],
         },
         quantity: data.originAmount,
         uomId: data.uomId,
@@ -241,7 +240,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
       // invoiceAddressId: 0,
-      deliveryAddressId: address.current?.id,
+      deliveryAddressId: address.id,
       // quotationDate: "",
       // orderDate: "",
       // quoteCreationDate: "",
@@ -285,6 +284,18 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     props.navigation.navigate("selectClient");
   };
 
+  const onPressAddress =()=>{
+    if(orderStore.dataClientSelect.id === ""){
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: '',
+        textBody: translate('txtToats.noClient'),
+      })
+    }else{
+      navigation.navigate("deliveryAddress" as never)
+    }
+  }
+
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
   };
@@ -313,6 +324,18 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
   const handleBack = () => {
     navigation.goBack();
+    orderStore.setDataAddress({
+      id: 0, partnerId: 0,
+      phoneNumber: '',
+      addressType: '',
+      country: { id: 0, name: '' },
+      region: { id: 0, name: '' },
+      city: { id: 0, name: '' },
+      district: { id: 0, name: '' },
+      ward: { id: 0, name: '' },
+      address: '',
+      isDefault: false,
+    })
     orderStore.setDataProductAddOrder([]);
     orderStore.setViewProductType("VIEW_PRODUCT");
     orderStore.setDataClientSelect({
@@ -470,12 +493,15 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       setArrProduct(orderStore.dataProductAddOrder.slice());
       priceAll(orderStore.dataProductAddOrder.slice());
       getListTax();
-      getListAddress();
+      if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
+        getListAddress();
+      }
+      setAddress(orderStore.dataAddress)
     });
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {}, [arrProduct]);
+  useEffect(() => { }, [arrProduct]);
 
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
@@ -508,15 +534,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             data={store.orderStore.dataClientSelect}
           />
           <AddressOrder
-            onPressAddress={() =>
-              navigation.navigate([
-                "deliveryAddress",
-                {
-                  dataAddress: dataAddress,
-                },
-              ] as never)
-            }
-            data={address.current}
+            onPressAddress={() => onPressAddress()}
+            data={address}
           />
           <PriceList
             id={Number(orderStore.dataPriceListSelected.id) ?? null}
@@ -928,18 +947,18 @@ const SumMoney = (props: DataSumMoney) => {
           style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
         {props.arrVat != null
           ? props.arrVat.map((data: any) => {
-              return data.VAT != undefined ? (
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: "400",
-                    color: "#747475",
-                    marginTop: 8,
-                  }}>
-                  {data?.VAT?.label ?? null}
-                </Text>
-              ) : null;
-            })
+            return data.VAT != undefined ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data?.VAT?.label ?? null}
+              </Text>
+            ) : null;
+          })
           : null}
         <Text
           tx="order.sum_yes_texas"
@@ -956,22 +975,22 @@ const SumMoney = (props: DataSumMoney) => {
         </Text>
         {props.arrVat != undefined
           ? props.arrVat.map((data: any) => {
-              if (data.taxValue !== undefined) {
-                sumValue = Number(data.taxValue) + Number(props.sumNoVat);
-                console.log("tutu", data.taxValue, props.sumNoVat);
-              }
-              return data.taxValue != undefined ? (
-                <Text
-                  style={{
-                    fontSize: 10,
-                    fontWeight: "400",
-                    color: "#747475",
-                    marginTop: 8,
-                  }}>
-                  {data?.taxValue ?? null}
-                </Text>
-              ) : null;
-            })
+            if (data.taxValue !== undefined) {
+              sumValue = Number(data.taxValue) + Number(props.sumNoVat);
+              console.log("tutu", data.taxValue, props.sumNoVat);
+            }
+            return data.taxValue != undefined ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data?.taxValue ?? null}
+              </Text>
+            ) : null;
+          })
           : null}
         <Text
           style={{

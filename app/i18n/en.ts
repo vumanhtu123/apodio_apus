@@ -29,6 +29,7 @@ const en = {
     cannot_create_duplicate: "Không thể tạo giá trị trùng",
     product_is_using:
       "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
+      noClient: 'Vui lòng chọn khách hàng',
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -54,7 +55,6 @@ const en = {
     createClientFail: "Thêm khách hàng thất bại công", 
     ok: "Ok",
     notification: "Thông báo",
-
   },
   ruleController: {
     emptyText: 'Vui lòng nhập dữ liệu'

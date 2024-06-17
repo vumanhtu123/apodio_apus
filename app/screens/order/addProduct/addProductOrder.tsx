@@ -654,36 +654,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     ) {
       handleGetVariantPrice();
     }
-    console.log("moi vao man");
-    handleGetCategoryFilter();
-  }, []);
-  useEffect(() => {
-    if (
-      orderStore.checkPriceList === false &&
-      orderStore.viewProductType === "VIEW_PRODUCT"
-    ) {
-      handleGetProduct();
-    }
-    if (
-      orderStore.checkPriceList === false &&
-      orderStore.viewProductType === "VIEW_VARIANT"
-    ) {
-      handleGetVariant();
-    }
-    if (
-      orderStore.checkPriceList === true &&
-      orderStore.viewProductType === "VIEW_PRODUCT"
-    ) {
-      handleGetProductPrice();
-    }
-    if (
-      orderStore.checkPriceList === true &&
-      orderStore.viewProductType === "VIEW_VARIANT"
-    ) {
-      handleGetVariantPrice();
-    }
     console.log("chon category");
-  }, [viewProduct, orderStore.productCategoryId]);
+  }, [viewProduct, orderStore.productCategoryId, page]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -711,6 +683,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       ) {
         handleGetVariantPrice();
       }
+      handleGetCategoryFilter()
     });
     console.log("sap xep");
     return unsubscribe;
@@ -734,45 +707,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       setPage((prevPage) => prevPage + 1);
     }
   };
-  useEffect(() => {
-    const fetchMoreProducts = async () => {
-      try {
-        if (
-          orderStore.checkPriceList === false &&
-          orderStore.viewProductType === "VIEW_PRODUCT"
-        ) {
-          handleGetProduct(searchValue);
-        }
-        if (
-          orderStore.checkPriceList === false &&
-          orderStore.viewProductType === "VIEW_VARIANT"
-        ) {
-          handleGetVariant(searchValue);
-        }
-        if (
-          orderStore.checkPriceList === true &&
-          orderStore.viewProductType === "VIEW_PRODUCT"
-        ) {
-          handleGetProductPrice(searchValue);
-        }
-        if (
-          orderStore.checkPriceList === true &&
-          orderStore.viewProductType === "VIEW_VARIANT"
-        ) {
-          handleGetVariantPrice(searchValue);
-        }
-      } catch (error) {
-        console.error("Error fetching more products:", error);
-      } finally {
-        orderStore.setIsLoadMore(false);
-      }
-    };
-    console.log("load more");
-
-    if (orderStore.isLoadMore) {
-      fetchMoreProducts();
-    }
-  }, [page]);
   // useEffect(() => {
   //     if (index == 0) {
   //         refreshProduct()

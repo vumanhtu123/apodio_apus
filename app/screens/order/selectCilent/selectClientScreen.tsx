@@ -30,6 +30,7 @@ import { useNavigation } from "@react-navigation/native";
 export const SelectClientScreen: FC<
     StackScreenProps<NavigatorParamList, "selectClient">
 > = observer(function SelectClientScreen(props) {
+    const navigation = useNavigation()
     const [indexSelect, setIndexSelect] = useState<any>();
     const [onClick, setOnClick] = useState("successfully");
     const [isVisible, setIsVisible] = useState(false);
@@ -55,10 +56,15 @@ export const SelectClientScreen: FC<
     console.log("====================================");
 
     const senDataClientSelected = () => {
+        if(Number(dataItemSelect?.id) === Number(getAPi.orderStore.dataClientSelect.id)){
+            getAPi.orderStore.setCheckIdPartner(false)
+        }else{
+            getAPi.orderStore.setCheckIdPartner(true)
+            }
         getAPi.orderStore.setDataClientSelect(dataItemSelect);
         props.navigation.goBack();
     };
-
+    
     const getListClient = () => {
         getAPi.orderStore
             .getListSelectClient(0, size.current, sort, valueSearch, true)
