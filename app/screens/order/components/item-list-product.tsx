@@ -40,6 +40,8 @@ interface AddProduct {
   valueVAT?: string;
   sumTexas: string;
   addTaxes?: boolean;
+  priceList?: boolean;
+  inputText: (textInput: any) => void;
 }
 
 export default function ItemListProduct(props: AddProduct) {
@@ -59,6 +61,8 @@ export default function ItemListProduct(props: AddProduct) {
     onPressAddTexas,
     onPressSelectTexas,
     addTaxes,
+    priceList,
+    inputText,
   } = props;
 
   const {
@@ -71,9 +75,14 @@ export default function ItemListProduct(props: AddProduct) {
     mode: "all",
   });
   console.log("taxes VAT", props.cost);
-  const Sum = (): Number => {
-    return Number(props.cost) + Number(props.valueVAT ?? 0);
+  const Price = () => {
+    return Number(props.cost) * Number(props.qty);
   };
+
+  const Sum = (): Number => {
+    return Price() + Number(props.valueVAT ?? 0);
+  };
+
   console.log("sum", Sum());
   return (
     <View>
@@ -118,7 +127,7 @@ export default function ItemListProduct(props: AddProduct) {
           />
           <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
             <Text
-              text={cost ?? 0 + " "}
+              text={Price().toString() ?? 0 + " "}
               style={{
                 fontWeight: "400",
                 fontSize: fontSize.size12,
@@ -127,9 +136,9 @@ export default function ItemListProduct(props: AddProduct) {
                 fontStyle: "italic",
               }}
             />
-            <Images.icon_edit />
+            {priceList ? <Images.icon_edit /> : null}
             <Text
-              text={unit}
+              text={" " + unit}
               style={{
                 fontStyle: "italic",
                 fontWeight: "400",
@@ -186,60 +195,64 @@ export default function ItemListProduct(props: AddProduct) {
               </Text>
             </View>
           </TouchableOpacity>
-          {addTaxes == false ? (
-            <TouchableOpacity onPress={(item) => onPressAddTexas(item)}>
-              <View style={{ flexDirection: "row" }}>
-                <Images.icon_plusGreen />
-                <Text
+          {priceList == true ? (
+            addTaxes == false ? (
+              <TouchableOpacity onPress={(item) => onPressAddTexas(item)}>
+                <View style={{ flexDirection: "row" }}>
+                  <Images.icon_plusGreen />
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontWeight: "600",
+                      color: "#00CC6A",
+                      marginHorizontal: 2,
+                      fontStyle: "italic",
+                    }}>
+                    {translate("order.add_texas")}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={(item) => onPressAddTexas(item)}>
+                <View
                   style={{
-                    fontSize: 10,
-                    fontWeight: "600",
-                    color: "#00CC6A",
-                    marginHorizontal: 2,
-                    fontStyle: "italic",
+                    flexDirection: "row",
+                    alignItems: "center",
                   }}>
-                  {translate("order.add_texas")}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity onPress={(item) => onPressAddTexas(item)}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}>
-                <Images.minus_ic />
-                <Controller
-                  control={control}
-                  defaultValue={""}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <View style={{ flex: 1, alignContent: "center" }}>
-                      <TextInput
-                        style={{
-                          fontWeight: "400",
-                          height: scaleHeight(16),
-                          alignContent: "center",
-                          borderColor: "#F6F7FB",
-                          padding: 0,
-                          paddingBottom: 2,
-                          paddingLeft: 4,
-                          fontSize: 10,
-                          color: "black",
-                          borderBottomWidth: 1,
-                          textAlignVertical: "bottom",
-                        }}
-                        placeholder={translate("order.input_texas")}
-                        placeholderTextColor={"#747475"}
-                        // onChangeText={newText => setText(newText)}
-                      />
-                    </View>
-                  )}
-                  name="input_texas"
-                />
-              </View>
-            </TouchableOpacity>
-          )}
+                  <Images.minus_ic />
+                  <Controller
+                    control={control}
+                    defaultValue={""}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                      <View style={{ flex: 1, alignContent: "center" }}>
+                        <TextInput
+                          style={{
+                            fontWeight: "400",
+                            height: scaleHeight(16),
+                            alignContent: "center",
+                            borderColor: "#F6F7FB",
+                            padding: 0,
+                            paddingBottom: 2,
+                            paddingLeft: 4,
+                            fontSize: 10,
+                            color: "black",
+                            borderBottomWidth: 1,
+                            textAlignVertical: "bottom",
+                          }}
+                          placeholder={translate("order.input_texas")}
+                          placeholderTextColor={"#747475"}
+                          onChangeText={(newText) => {
+                            inputText(newText);
+                          }}
+                        />
+                      </View>
+                    )}
+                    name="input_texas"
+                  />
+                </View>
+              </TouchableOpacity>
+            )
+          ) : null}
           {/* {sumTexas != null ? ( */}
           <Text
             style={{

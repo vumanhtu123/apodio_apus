@@ -57,7 +57,8 @@ export const SelectApplicablePriceList: FC<
       getAPi.orderStore.setCheckPriceList(true);
     }
     if (
-      dataPriceListSelected.id !== getAPi.orderStore.dataPriceListSelected.id
+      Number(dataPriceListSelected.id) !==
+      Number(getAPi.orderStore.dataPriceListSelected.id)
     ) {
       getAPi.orderStore.setDataProductAddOrder([]);
     }

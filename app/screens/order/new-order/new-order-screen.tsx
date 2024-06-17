@@ -46,6 +46,11 @@ import { Order, arrPayment, dataPromotion, methodData } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 import { values } from "mobx";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+} from "../../../components/dialog-notification";
 
 export const NewOrder: FC = observer(function NewOrder(props) {
   const navigation = useNavigation();
@@ -76,7 +81,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
   const countRef = useRef("");
-  const [arrDataPostTax, setArrDataPostTax] = useState<{}[]>([]);
   const nameTax = useRef("");
   const price = useRef(0);
   const priceSumVAT = useRef(0);
@@ -126,7 +130,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const handleNamMethod = (): string => {
     switch (countRef.current) {
       case translate("order.CASH"):
-        console.log("aaa 1");
         return "CASH";
       case translate("order.BANK_TRANSFER"):
         return "BANK_TRANSFER";
@@ -217,9 +220,9 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   },
                 ],
         },
-        quantity: data.originAmount,
+        quantity: data.amount,
         uomId: data.uomId,
-        orderQty: data.mount,
+        orderQty: data.amount,
         // orderUomId: number, //chon
         unitPrice: data.price, //don gia cua bang gia
         // amountUntaxed: data.price,
@@ -228,7 +231,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           data.VAT == undefined
             ? null
             : [{ id: data.VAT.value, name: data.VAT.label }],
-        // discount: number,
+        discount: data.taxesInput ?? 0, // nhập chiết khấu
         // discountComputeType: string,
         type: "PRODUCT",
         // note: string,
@@ -258,10 +261,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       // commitmentDate: "",
       // deliveryStatus: "",
       // campaignId: 0,
-      // discount: 0,
-      // discountComputeType: "",
+      // discount: 0, //chiet khau
+      discountComputeType: "FIXED",
       note: "",
-      isOptionPrice: false,
+      isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
       saleOrderLines: newArr,
@@ -278,6 +281,33 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     console.log("done new order: ", JSON.stringify(order));
     store.orderStore.postAddOrderSale(order).then((values) => {
       console.log("success data sale order:", JSON.stringify(values));
+      if (values.id !== null) {
+        console.log("success data sale order:", JSON.stringify(values));
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("productScreen.Notification"),
+          textBody: "Thành Công " + values.id,
+          button2: translate("productScreen.BtnNotificationAccept"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            Dialog.hide();
+          },
+        });
+      } else {
+        const v = values?.map((data: any) => {
+          return data.message;
+        });
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("productScreen.Notification"),
+          textBody: v[0],
+          button2: translate("productScreen.BtnNotificationAccept"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            Dialog.hide();
+          },
+        });
+      }
     });
   };
 
@@ -299,6 +329,17 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     });
     setArrProduct(newArr);
     postTaxLines(newArr);
+  };
+
+  const handleInputTaxes = (id: any, text: any) => {
+    console.log("input taxes", text);
+    let newArr = arrProduct!.map((item: any) => {
+      if (item.id === id) {
+        return { ...item, taxesInput: text };
+      }
+      return item;
+    });
+    setArrProduct(newArr);
   };
 
   const handleAddTaxes = (id: any) => {
@@ -421,12 +462,13 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const handleSumAmountVAT = (value: any) => {
     const all = value.reduce((sum: any, item: any) => {
       if (item.taxValue !== undefined) {
+        console.log("cats", sum, item.taxValue);
         return sum + item.taxValue;
       }
       return;
     }, 0);
     priceSumVAT.current = Number(all) + Number(price.current);
-    console.log("cat");
+    console.log("cat", all);
   };
 
   const selectTexas = () => {
@@ -458,10 +500,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   console.log("post add tuvm 2", JSON.stringify(arrProduct));
   console.log(
     "post add tuvm 3",
-    JSON.stringify(orderStore.dataPriceListSelected)
+    JSON.stringify(orderStore.dataPriceListSelected.id)
   );
   console.log("price scr", Number(price.current));
-  console.log("price scr 2", Number(priceSum.current));
+  console.log("price scr 2", orderStore.dataPriceListSelected.id);
 
   // console.log("data adres", address.current.address);
 
@@ -567,7 +609,25 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   <View>
                     <ItemListProduct
                       onPressAddTexas={() => handleAddTaxes(item.id)}
-                      onPressSelectTexas={() => handleSelectTaxes(item.id)}
+                      onPressSelectTexas={() => {
+                        console.log("check validate", item.price);
+                        item.price === undefined || item.price === 0
+                          ? Dialog.show({
+                              type: ALERT_TYPE.INFO,
+                              title: translate("productScreen.Notification"),
+                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                              button2: translate(
+                                "productScreen.BtnNotificationAccept"
+                              ),
+                              closeOnOverlayTap: false,
+                              onPressButton: () => {
+                                navigation.goBack();
+                                orderStore.setReloadAddressScreen(true);
+                                Dialog.hide();
+                              },
+                            })
+                          : handleSelectTaxes(item.id);
+                      }}
                       sumTexas={item.sumTexas}
                       VAT={item.VAT?.label ?? undefined}
                       valueVAT={item.taxValue}
@@ -580,6 +640,12 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                       onPressMinus={() => handleDecrease(item.id)}
                       onPress={() => deleteItemProduct(item.id)}
                       addTaxes={item.addTaxes ?? false}
+                      priceList={
+                        orderStore.dataPriceListSelected.id !== ""
+                          ? false
+                          : true
+                      }
+                      inputText={(text: any) => handleInputTaxes(item.id, text)}
                     />
                     {index !== arrProduct.length - 1 ? (
                       <View
