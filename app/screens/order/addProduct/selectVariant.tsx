@@ -143,7 +143,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 quantity: items.amount * items.conversionRate,
               };
               const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, price: newPrice };
+              return { ...items, unitPrice: newPrice, price: items.amount * newPrice };
             })
           );
           const newArr1 = newArr2.map((item) => {
@@ -153,6 +153,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
                 price: aMap.get(item.id).price,
+                unitPrice: aMap.get(item.id).unitPrice,
                 conversionRate: aMap.get(item.id).conversionRate,
                 saleUom: aMap.get(item.id).saleUom,
                 originAmount: aMap.get(item.id).originAmount,
@@ -201,7 +202,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 quantity: items.amount * items.conversionRate,
               };
               const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, price: newPrice };
+              return { ...items, unitPrice: newPrice, price: newPrice * items.amount };
             })
           );
           const newArr1 = newArr2.map((item: any) => {
@@ -211,6 +212,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
                 price: aMap.get(item.id).price,
+                unitPrice: aMap.get(item.id).unitPrice,
                 conversionRate: aMap.get(item.id).conversionRate,
                 saleUom: aMap.get(item.id).saleUom,
                 originAmount: aMap.get(item.id).originAmount,
@@ -323,6 +325,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
                 price: aMap.get(item.id).price,
+                unitPrice: aMap.get(item.id).unitPrice,
                 conversionRate: aMap.get(item.id).conversionRate,
                 saleUom: aMap.get(item.id).saleUom,
                 originAmount: aMap.get(item.id).originAmount,
@@ -401,7 +404,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         if (data.saleUom.id === data.uomId) {
           return {
             ...items,
-            price: data.price,
+            unitPrice: data.unitPrice,
+            price: data.unitPrice * (data.amount + 1),
             amount: data.amount + 1,
             isSelect: true,
             originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -409,7 +413,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         } else {
           return {
             ...items,
-            price: data.price,
+            unitPrice: data.unitPrice,
+            price: data.unitPrice * (data.amount+1),
             amount: data.amount + 1,
             isSelect: true,
             originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -430,7 +435,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           if (data.amount - 1 === 0) {
             return {
               ...items,
-              price: data.price,
+              unitPrice: data.unitPrice,
+              price: data.unitPrice * (data.amount-1),
               amount: data.amount - 1,
               isSelect: false,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -438,7 +444,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           } else {
             return {
               ...items,
-              price: data.price,
+              unitPrice: data.unitPrice,
+              price: data.unitPrice * (data.amount- 1),
               amount: data.amount - 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -448,7 +455,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           if (data.amount - 1 === 0) {
             return {
               ...items,
-              price: data.price,
+              unitPrice: data.unitPrice,
+              price: data.unitPrice * (data.amount -1),
               amount: data.amount - 1,
               isSelect: false,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -456,7 +464,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           } else {
             return {
               ...items,
-              price: data.price,
+              unitPrice: data.unitPrice,
+              price: data.unitPrice *  (data.amount -1),
               amount: data.amount - 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -488,7 +497,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             ...data,
             saleUom: { id: uomData.uomId, name: uomData.uomName },
             conversionRate: uomData.conversionRate,
-            price: newPrice,
+            unitPrice: newPrice,
+            price: newPrice * newAmount,
             amount: newAmount,
             originAmount: Math.ceil(newAmount * uomData.conversionRate),
           };
@@ -515,7 +525,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             console.log(newPrice);
             return {
               ...items,
-              price: newPrice,
+              unitPrice: newPrice,
+              price: newPrice * (data.amount +1),
               amount: data.amount + 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -531,7 +542,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             const newPrice = await getPriceVariant(dataGetPrice);
             return {
               ...items,
-              price: newPrice,
+              unitPrice: newPrice,
+              price: newPrice * (data.amount +1),
               amount: data.amount + 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -562,7 +574,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (data.amount - 1 === items.minQuantity) {
               return {
                 ...items,
-                price: newPrice,
+                unitPrice: newPrice,
+                price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: false,
                 originAmount: Math.ceil(
@@ -572,7 +585,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             } else {
               return {
                 ...items,
-                price: data.price,
+                unitPrice: newPrice,
+                price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: true,
                 originAmount: Math.ceil(
@@ -595,7 +609,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               const newPrice = await getPriceVariant(dataGetPrice);
               return {
                 ...items,
-                price: newPrice,
+                unitPrice: newPrice,
+                price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: false,
                 originAmount: Math.ceil(
@@ -613,7 +628,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               const newPrice = await getPriceVariant(dataGetPrice);
               return {
                 ...items,
-                price: newPrice,
+                unitPrice: newPrice,
+                price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: true,
                 originAmount: Math.ceil(
@@ -636,7 +652,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       if (items.id === data.id) {
         return {
           ...items,
-          price: Number(text),
+          unitPrice: Number(text),
+          price: Number(text) * Number(data.amount),
           amount: data.amount,
           isSelect: true,
           originAmount: data.originAmount,
