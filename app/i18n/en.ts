@@ -553,11 +553,21 @@ const en = {
   },
   debtScreen: {
     receivables: "Phải thu",
-    mustPay: "phải trả",
+    mustPay: "Phải trả",
     toPaydebt: "Công nợ phải trả",
     totalNumberOfSuppliersIncurringDebt:
       "Tổng số nhà cung cấp đang phát sinh công nợ",
     totalDebtMustPay: "Tổng số công nợ phải trả",
+    nameProviders: "Tên NCC",
+    totalLiabilities: "Tổng nợ",
+    paid: "Đã trả",
+    notThing: "Bạn không có phát sinh công nợ với NCC nào",
+    sort: "Sắp xếp",
+    theMoneyHaveToPay:"Số tiền phải trả",
+    totalDebt: "Tổng nợ",
+    up: "Tăng dần",
+    dow: "Giảm dần",
+    
   },
   productScreen: {
     create_product: "Tạo sản phẩm",

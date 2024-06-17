@@ -124,7 +124,7 @@ const ModalCreateSuppliers = (props: any) => {
     })
     const [city, setCity] = useState({ label: '' })
 
-            
+
     // const handleSort = () => {
     //     const selectedTypes = data.map((group, groupIndex) => group.options[selectedIndex[groupIndex]].type);
     //     setType(selectedTypes);
@@ -313,7 +313,7 @@ const ModalCreateSuppliers = (props: any) => {
                                 onPressChoice={(item: any) => {
                                     setCity(item)
                                 }}
-                            styleView={{marginBottom: scaleHeight(15)}}
+                                styleView={{ marginBottom: scaleHeight(15) }}
                             />
                             <Controller
                                 control={control}
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        
+
     },
     modalView: {
         flex: 1,

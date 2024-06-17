@@ -1,10 +1,10 @@
 
 import { observer } from "mobx-react-lite";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { TabScreenProps } from "../../../navigators/bottom-navigation";
 import { NavigatorParamList } from "../../../navigators";
 import React from "react";
-import { Alert, FlatList, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, RefreshControl, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
@@ -13,35 +13,74 @@ import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Styles } from "./styles";
 import { ItemListMustPay } from "../component/itemListMustPay";
+import { ModalFilter } from "../component/ModalFilter";
+import en from "../../../i18n/en";
 
 export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> = observer(
     function mustPayScreen(props) {
-        const faceData = [
+        const [valueItemSelect, setValueItemSelect] = useState("")
+        const [refreshing, setRefreshing] = useState(false);
+        const [isLoadingMore, setIsLoadingMore] = useState(false);
+        const [isVisible, setIsVisible] = useState(false)
+        const fakeData: any = [
+
             {
-                id: 1,
-                name: "NCC",
+                id: "1",
+                name: "Công ty TNHH một thành viên APODIO",
                 totalLiabilities: "2.000.000",
                 paid: "1.000.000",
                 musPay: "1.000.000"
             },
             {
-                id: 2,
-                name: "NCC",
+                id: "2",
+                name: "Công ty TNHH một thành viên APODIO",
                 totalLiabilities: "2.000.000",
                 paid: "1.000.000",
                 musPay: "1.000.000"
             },
             {
-                id: 3,
-                name: "NCC",
+                id: "3",
+                name: "Công ty TNHH một thành viên APODIO",
+                totalLiabilities: "2.000.000",
+                paid: "1.000.000",
+                musPay: "1.000.000"
+            },
+            {
+                id: "4",
+                name: "Công ty TNHH một thành viên APODIO",
+                totalLiabilities: "2.000.000",
+                paid: "1.000.000",
+                musPay: "1.000.000"
+            },
+            {
+                id: "5",
+                name: "Công ty TNHH một thành viên APODIO",
                 totalLiabilities: "2.000.000",
                 paid: "1.000.000",
                 musPay: "1.000.000"
             }
         ]
 
+        const handleRefresh = () => {
+            setRefreshing(true)
+
+            setTimeout(() => {
+                setRefreshing(false)
+            }, 3000);
+        }
+
+        const handleLoadMore = () => {
+            setIsLoadingMore(true)
+
+            setTimeout(() => {
+                setIsLoadingMore(false)
+            }, 3000);
+        }
+
+        console.log('data fake', fakeData);
+
         return (
-            <View style={{ flex: 1, backgroundColor: 'red' }}>
+            <View style={{ flex: 1, }}>
                 <Header
                     style={{ height: scaleHeight(52) }}
                     LeftIcon={Images.back}
@@ -53,7 +92,8 @@ export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> 
                     RightIcon1={Images.ic_slider}
                     btnRightStyle={{}}
                     headerInput={true}
-                    searchText="Tên nhà cung cấp"
+                    searchText={en.NCCScreen.nameSuppliers}
+                    onRightPress1={() => setIsVisible(true)}
                 />
                 <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
                     colors={[colors.palette.navyBlue, colors.palette.malibu]}
@@ -77,11 +117,48 @@ export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> 
                         </TouchableOpacity>
                     </View>
                 </View>
-                <FlatList
-                    data={faceData}
-                    renderItem={({ item }) => <ItemListMustPay item={item} />}
+
+                {
+                    fakeData && fakeData.length > 0 ?
+                        <FlatList
+                            data={fakeData}
+                            renderItem={({ item }) =>
+                                <ItemListMustPay
+                                    item={item}
+                                    onClick={() => {
+                                        // console.log(item.id)
+                                        setValueItemSelect(item.id)
+                                    }}
+                                    idSelect={valueItemSelect}
+                                />}
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+                            }
+                            keyExtractor={(item, index) => index.toString()}
+                            onEndReached={() => handleLoadMore()}
+                            onEndReachedThreshold={0.2}
+                            ListFooterComponent={() =>
+                                <View>
+                                    {isLoadingMore == true ? <ActivityIndicator /> : null}
+                                </View>
+                            }
+
+                            style={{ marginTop: scaleHeight(60) }}
+                        />
+
+                        :
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+                            <Images.img_not_init />
+                            <Text tx="debtScreen.notThing" style={{ color: '#848688' }} />
+                        </View>
+                }
+
+                <ModalFilter
+                    isVisible={isVisible}
+                    setIsVisible={() => setIsVisible(!isVisible)}
                 />
-            </View>
+            </View >
         )
     }
 )
