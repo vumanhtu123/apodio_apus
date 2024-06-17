@@ -44,7 +44,7 @@ export const SelectClientScreen: FC<
     const [dataItemSelect, setdataItemSelect] = useState();
 
     const size = useRef(20);
-
+    // const isLoadingMore = useRef<boolean>(false)
     // console.log("doannnnn", totalPage);
 
     const sort = getAPi.orderStore.sortCreateClient;
@@ -124,7 +124,11 @@ export const SelectClientScreen: FC<
     };
 
     const handleLoadMore = () => {
+
         setIsLoadingMore(true);
+        console.log('====================================');
+        console.log("value loading", isLoadingMore);
+        console.log('====================================');
         size.current = (size.current + 3);
         // getListClient();
         setTimeout(() => {
@@ -245,7 +249,10 @@ export const SelectClientScreen: FC<
                     onEndReached={() => handleLoadMore()}
                     onEndReachedThreshold={0.1}
                     ListFooterComponent={() => {
-                        return <View>{isLoadingMore ? <ActivityIndicator /> : null}</View>;
+                        return <View>
+
+                            {isLoadingMore == true ? <ActivityIndicator /> : null}
+                        </View>;
                     }}
                 />
 
