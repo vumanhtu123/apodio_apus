@@ -119,8 +119,8 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
       getDataRevenueThisMonth();
     }, [navigation]);
 
-    const hideRevenue = "*".repeat(revenue.toString().length);
-    const hideDebt = "*".repeat(debt.toString().length);
+    const hideRevenue = "*".repeat(revenue?.toString().length);
+    const hideDebt = "*".repeat(debt?.toString().length);
 
     // const hideRevenue = "*";
     // const hideDebt = "*";
@@ -410,7 +410,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                     <View style={{ flexDirection: "row" }}>
                       <Text
                         style={styles.textRevenue}
-                        text={revenue.toString()}
+                        text={revenue?.toString()}
                       />
                       <Text style={styles.textUnit} text="đ" />
                     </View>
@@ -425,7 +425,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.orders"} />
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.textRevenue}>{order}</Text>
+                    <Text style={styles.textRevenue}>{order?.toString()}</Text>
                   </View>
                 </View>
               </View>

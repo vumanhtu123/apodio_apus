@@ -41,7 +41,9 @@ export const SelectClientScreen: FC<
   const [isVisibleCreateClient, setIsVisibleCreateClient] = useState(false);
   const [valueSearch, setValueSearch] = useState("");
   const [isShowSearch, setisShowSearch] = useState(false);
-  const [dataItemSelect, setdataItemSelect] = useState();
+  const [dataItemSelect, setdataItemSelect] = useState(
+    getAPi.orderStore.dataClientSelect
+  );
 
   const size = useRef(20);
   // const isLoadingMore = useRef<boolean>(false)
@@ -175,7 +177,8 @@ export const SelectClientScreen: FC<
                   width: scaleWidth(375),
                   height: scaleHeight(56),
                   paddingHorizontal: 16,
-                  backgroundColor: indexSelect === index ? "#DBEFFF" : "white",
+                  backgroundColor:
+                    dataItemSelect?.id == item.id ? "#DBEFFF" : "white",
                   marginBottom: 1.5,
                   justifyContent: "space-between",
                 }}
@@ -228,7 +231,7 @@ export const SelectClientScreen: FC<
                       width: scaleHeight(16),
                       height: scaleHeight(16),
                       backgroundColor:
-                        indexSelect === index
+                        dataItemSelect.id === item.id
                           ? colors.palette.navyBlue
                           : colors.palette.white,
                     }}></View>
@@ -242,13 +245,12 @@ export const SelectClientScreen: FC<
           }
           onEndReached={() => handleLoadMore()}
           onEndReachedThreshold={0.1}
-          ListFooterComponent={() => {
-            return (
-              <View>
-                {isLoadingMore == true ? <ActivityIndicator /> : null}
-              </View>
-            );
-          }}
+
+          // ListFooterComponent={() => {
+          //     return <View>
+          //         {isLoadingMore && <ActivityIndicator />}
+          //     </View>;
+          // }}
         />
 
         <TouchableOpacity

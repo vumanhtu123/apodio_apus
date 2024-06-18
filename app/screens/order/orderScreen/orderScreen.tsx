@@ -109,7 +109,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         );
         // console.log('firstxxxxxxxxxx' , response)
         if (response && response.kind === "ok") {
-          console.log('orderLisst', JSON.stringify(response.response.data.content))
+          // console.log('orderLisst', JSON.stringify(response.response.data.content))
           setArrData(response.response.data.content)
         } else {
           console.error("Failed to fetch order:", response);
