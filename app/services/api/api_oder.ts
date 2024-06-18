@@ -59,7 +59,7 @@ export class OrderApi {
       Loading.hide();
       console.log("-----------------respone", response);
       const data = response.data;
-      console.log("-----------------data", data);
+      console.log("-data", data);
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
@@ -381,7 +381,7 @@ export class OrderApi {
     });
     try {
       const response: ApiResponse<BaseResponse<TaxLineModel, ErrorCode>> =
-        await this.apiAccount.apisauce.post(
+        await this.api.apisauce.post(
           ApiEndpoint.POST_LIST_TAX_LINES,
           formTax
         );

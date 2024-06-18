@@ -29,6 +29,7 @@ const en = {
     cannot_create_duplicate: "Không thể tạo giá trị trùng",
     product_is_using:
       "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
+    create_success : 'Tạo hoá đơn thành công'
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",

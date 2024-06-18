@@ -26,7 +26,7 @@ import { Controller, useForm } from "react-hook-form";
 import FastImage from "react-native-fast-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomCalendar from "../../../components/calendar";
-import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import { formatCurrency } from "../../../utils/validate";
@@ -52,6 +52,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const [choiseCalendar, setChoiseCalendar] = useState(0)
     const [isDeposit, setIsDeposit] = useState(false);
     const [isSortByDate, setIsSortByDate] = useState(false);
+    const [isSortByDateEnd, setIsSortByDateEnd] = useState(false);
     const [isReset, setIReset] = useState<boolean>(false);
     const [markedDatesS, setMarkedDatesS] = useState("");
     const [markedDatesE, setMarkedDatesE] = useState("");
@@ -65,6 +66,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const [invoiceCode, setInvoiceCode] = useState('')
     const toggleModalDate = () => {
         setIsSortByDate(!isSortByDate);
+    };
+    const toggleModalDateEnd = () => {
+        setIsSortByDateEnd(!isSortByDateEnd);
     };
     useEffect(() => {
         console.log('first', moment(
@@ -238,7 +242,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
             invoiceFormNumber: invoiceType,
             symbol: "string",
             invoiceDate: minDateS,
-            paymentMethod: data.paymentMethod,
+            paymentMethod: data.paymentMethod == 'BANK_TRANSFER' ? 'BANK' : data.paymentMethod,
             bankAccountPartner: { id: data?.bankAccountPartner?.id },
             bankAccount: { id: data?.bankAccount?.id },
             pickingCode: "",
@@ -249,14 +253,18 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         try {
             const submit = await orderStore.createInvoice(dataSubmit);
             if (submit.kind === "ok") {
-                // console.log("Invoice created:", submit.data);
-                navigation.navigate("orderDetails", { idInvoices: submit.response.data.id } )
+                Toast.show({
+                    type: ALERT_TYPE.SUCCESS,
+                    title: '',
+                    textBody: translate('txtToats.create_success'),
+                })
+                navigation.navigate("orderDetails", { idInvoices: submit.response.data.id })
                 // Perform any success actions here (e.g., navigation)
             } else {
                 Dialog.show({
                     type: ALERT_TYPE.DANGER,
                     title: translate("txtDialog.txt_title_dialog"),
-                    textBody: submit.response.message,
+                    textBody: submit.response.errorCodes[0].message,
                     button: translate("common.ok"),
                     closeOnOverlayTap: false
                 })
@@ -327,9 +335,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 )}
                                 // defaultValue={''}
                                 name="invoiceCode"
-                                // rules={{
-                                //     required: translate('ruleController.emptyText'),
-                                // }}
+                            // rules={{
+                            //     required: translate('ruleController.emptyText'),
+                            // }}
                             />
                         </View>
                         <Text tx="ClientScreen.client" style={{ fontSize: fontSize.size12, color: '#747475' }} />
@@ -372,9 +380,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 )}
                                 // defaultValue={''}
                                 name="symbol"
-                                // rules={{
-                                //     required: translate('ruleController.emptyText'),
-                                // }}
+                            // rules={{
+                            //     required: translate('ruleController.emptyText'),
+                            // }}
                             />
                         </View>
                         <View style={{ marginVertical: scaleHeight(15) }}>
@@ -425,7 +433,6 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                     keyboardType={null}
                                     labelTx={"order.invoiceDateExpiration"}
                                     style={{
-                                        // marginBottom: scaleHeight(10),
                                         marginBottom: scaleHeight(5),
                                         justifyContent: 'center',
                                     }}
@@ -436,20 +443,19 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                     // RightIconClear={Images.icon_delete2}/
                                     RightIcon={Images.icon_CalenderBlank}
                                     pressRightIcon={() => {
-                                        toggleModalDate(),
+                                        toggleModalDateEnd(),
                                             setChoiseCalendar(2)
                                     }}
                                     error={errors?.invoiceEndDate?.message}
                                     onClearText={() => onChange('')}
-                                    // onChangeText={onChange}
                                     placeholderTx={"order.placeholderDate"}
                                 />
                             )}
                             defaultValue={''}
                             name="invoiceEndDate"
-                            // rules={{
-                            //     required: translate('ruleController.emptyText'),
-                            // }}
+                        // rules={{
+                        //     required: translate('ruleController.emptyText'),
+                        // }}
                         />
                         <View style={{ marginVertical: scaleHeight(15) }}>
                             <InputSelect
@@ -543,12 +549,14 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
 
             <CustomCalendar
                 isReset={isReset}
-                minDate={minDateS}
+                // minDate={minDateS}
                 maxDate={minDateE}
                 handleReset={() => setIReset(!isReset)}
                 handleShort={() => {
                     toggleModalDate();
-                    choiseCalendar == 1 ? setMinDateS(markedDatesS) : setMinDateE(markedDatesS)
+                    // choiseCalendar == 1 ? setMinDateS(markedDatesS) : setMinDateE(markedDatesS)
+                    setMinDateS(markedDatesS)
+
                 }}
                 onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
                     setMarkedDatesS(markedDatesS);
@@ -560,6 +568,27 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 isSortByDate={isSortByDate}
                 isOneDate={true}
                 toggleModalDate={toggleModalDate}
+            />
+            <CustomCalendar
+                isReset={isReset}
+                minDate={minDateS}
+                // maxDate={minDateE}
+                handleReset={() => {setIReset(!isReset)}}
+                handleShort={() => {
+                    toggleModalDateEnd();
+                    // choiseCalendar == 1 ? setMinDateS(markedDatesS) : 
+                    setMinDateE(markedDatesS)
+                }}
+                onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
+                    setMarkedDatesS(markedDatesS);
+                }}
+                onMarkedDatesChangeE={(markedDatesE: React.SetStateAction<string>) => {
+                    setMarkedDatesE(markedDatesE);
+                }}
+                isShowTabs={false}
+                isSortByDate={isSortByDateEnd}
+                isOneDate={true}
+                toggleModalDate={toggleModalDateEnd}
             />
         </View>
     );
