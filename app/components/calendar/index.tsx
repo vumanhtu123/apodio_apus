@@ -250,7 +250,6 @@ const CustomCalendar = (props: any) => {
               <Calendar
                 minDate={props.minDate ? props.minDate : ''}
                 maxDate={props.maxDate ? props.maxDate : ''}
-                //maxDate="2024-6-20"
                 monthFormat={"MMMM yyyy"}
                 markedDates={
                   (console.log("calender", markedDates), markedDates)

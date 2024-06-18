@@ -18,8 +18,6 @@ export class ApiOrder {
    */
   config: ApiConfig;
   private apiRefreshToken: ApiRefreshToken;
-  private isRefreshing: boolean = false;
-  private failedQueue: any[] = [];
   /**
    * Creates the api.
    * @param config The configuration to use.
@@ -42,11 +40,10 @@ export class ApiOrder {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         Loading.hide();
-        console.log("RESPONSEmmmmmmm :", response);
+        console.log("RESPONSEmmmmmmm---setup :", response);
         return response;
       },
       async (error) => {
-        const originalRequest = error.config;
         Loading.hide();
         console.log("error==1111111", error.config);
         if (error.toJSON().message === "Network Error") {
@@ -57,32 +54,16 @@ export class ApiOrder {
             textBody: 'Network Error!',
             closeOnOverlayTap: false})
         }
-        if (error.response.status === 401 && !originalRequest._retry) {
-          if (this.isRefreshing) {
-            // If token is already being refreshed, queue the request
-            return new Promise((resolve, reject) => {
-              this.failedQueue.push({ resolve, reject });
-            }).then(token => {
-              originalRequest.headers['Authorization'] = 'Bearer ' + token;
-              return this.apisauce.axiosInstance.request(originalRequest);
-            }).catch(err => {
-              return Promise.reject(err);
-            });
-          }
-
-          originalRequest._retry = true;
-          this.isRefreshing = true;
+        if (error.response.status === 401) {  
+          const originalRequest = error.config;
            // Refresh token logic
           return new Promise((resolve, reject) => {
             this.apiRefreshToken.fetchData().then(response => {
               const newToken = response.accessToken;
               this.apisauce.axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + newToken;
               originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
-              this.isRefreshing = false;
-              this.processQueue(null, newToken);
-              resolve(this.apisauce.axiosInstance.request(originalRequest));
+              return resolve(this.apisauce.axiosInstance.request(originalRequest));
             }).catch(err => {
-              this.processQueue(err, null);
               reject(err);
               if (err.response && err.response.status === 401) {
                 Dialog.show({
@@ -90,15 +71,7 @@ export class ApiOrder {
                   title: 'Error',
                   button: 'OK',
                   textBody: 'Your session was expired',
-                  closeOnOverlayTap: false,
-                  onPressButton: () => {
-                    resetRoot({
-                      index: 1,
-                      routes: [{ name: 'authStack' }],
-                    });
-                    Dialog.hide();
-                    Loading.hide();
-                  }
+                  closeOnOverlayTap: false
                 });
               }
             });
@@ -147,16 +120,5 @@ export class ApiOrder {
       }
       
     });
-  }
-  private processQueue(error: any, token: string | null = null) {
-    // Process all requests in the queue
-    this.failedQueue.forEach(prom => {
-      if (error) {
-        prom.reject(error);
-      } else {
-        prom.resolve(token);
-      }
-    });
-    this.failedQueue = [];
   }
 }
