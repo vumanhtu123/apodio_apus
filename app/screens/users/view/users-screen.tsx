@@ -122,6 +122,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     const [showLanguage, setShowLanguage] = useState(false);
     const [diaLogLogout, setDiaLogout] = useState(false);
     const auth = useAuth();
+    const { authenticationStore } = useStores();
 
     // const [showImagePicker, setShowImagePicker] = useState(false)
     // const [isShowChoose, setIsShowChoose] = useState(false)
@@ -460,10 +461,8 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             paddingBottom: 15,
           }}
           isVisible={diaLogLogout}>
-
           <View style={styles.viewModal}>
             <Text
-
               tx="inforMerchant.titleLogOut"
               style={{
                 width: "100%",
@@ -481,6 +480,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               style={{ marginVertical: 15, alignItems: 'center' }}
               onPress={() => {
                 console.log("log out app");
+                authenticationStore.logout();
                 navigation.navigate("SplashScreen" as never);
               }}>
               <Text

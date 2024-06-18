@@ -4,13 +4,14 @@ import { Images } from "../../../../assets";
 import { Text } from "../../../components";
 import { useNavigation } from "@react-navigation/native";
 import { OnProgressEvent } from "react-native-fast-image";
+import { Root1 } from "../../../models/order-store/entities/order-address-model";
 interface InputData {
   openDialog: () => void;
   data: any;
 }
 interface AddressData {
   onPressAddress: () => void;
-  data: any;
+  data: Root1;
 }
 interface PriceData {
   id: number;
@@ -124,7 +125,7 @@ export const AddressOrder = (data: AddressData) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("deliveryAddress" as never)}>
+      onPress={() => data.onPressAddress()}>
       <View
         style={{
           flexDirection: "row",
@@ -148,7 +149,7 @@ export const AddressOrder = (data: AddressData) => {
               fontWeight: "600",
               marginBottom: 4,
             }}></Text>
-          {data.data !== undefined ? (
+          {data.data.id !== 0 ? (
             <View>
               {/* <Text
                 style={{
@@ -168,7 +169,7 @@ export const AddressOrder = (data: AddressData) => {
               ) : null}
 
               <Text
-                text={`${data.data.address}${", "}${data.data.ward.name}`}
+                text={`${data.data?.address}${", "}${data.data?.ward?.name}${", "}${data.data?.district?.name}${", "}${data.data?.city?.name}`}
                 style={{
                   fontSize: 12,
                   color: "#242424",
