@@ -29,7 +29,10 @@ const en = {
     cannot_create_duplicate: "Không thể tạo giá trị trùng",
     product_is_using:
       "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
-    create_success : 'Tạo hoá đơn thành công'
+    create_success : 'Tạo hoá đơn thành công',
+    noClient: 'Vui lòng chọn khách hàng',
+    change_city: "Vui lòng chọn Tỉnh/Thành phố",
+    change_district: "Vui lòng chọn Quận/Huyện",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -49,16 +52,15 @@ const en = {
       "Hành động này sẽ khiến các phân loại sản phẩm cũ bị xóa đi hoặc thay đổi. Bạn có chắc chắn muốn thực hiện?",
     confirm_edit_attribute:
       "Bạn có chắc chắn muốn thoát. Hành động này sẽ xóa dữ liệu bạn đã chọn?",
-    delete_order: 'Bạn có chắc chắn muốn hủy đơn hàng bán ',
-    delete_order1 : 'này không?',
-    createClientSuccessful: "Thêm khách hàng thành công" ,
-    createClientFail: "Thêm khách hàng thất bại công", 
+    delete_order: "Bạn có chắc chắn muốn hủy đơn hàng bán ",
+    delete_order1: "này không?",
+    createClientSuccessful: "Thêm khách hàng thành công",
+    createClientFail: "Thêm khách hàng thất bại công",
     ok: "Ok",
     notification: "Thông báo",
-
   },
   ruleController: {
-    emptyText: 'Vui lòng nhập dữ liệu'
+    emptyText: "Vui lòng nhập dữ liệu",
   },
   welcomeScreen: {
     postscript:
@@ -129,9 +131,8 @@ const en = {
     continue: "Tiếp tục",
   },
   dialog: {
-    title: 'Mã xác thực',
-    content: 'Vui lòng nhập OTP được gửi tới số điện thoại của bạn',
-
+    title: "Mã xác thực",
+    content: "Vui lòng nhập OTP được gửi tới số điện thoại của bạn",
   },
   changePass: {
     changePass: "Change Pass",
@@ -209,7 +210,7 @@ const en = {
     price_list: "Bảng giá áp dụng",
     no_price_list: "Không áp dụng bảng giá",
     address_order: "Địa chỉ giao hàng",
-    no_address_order: "Chưa có địa chỉ giao hàng",
+    no_address_order: "Chọn địa chỉ giao hàng",
     info_more: "Thông tin thêm",
     selectTaxes: "Chọn loại thuế",
     taxes: "Loại thuế",
@@ -237,6 +238,7 @@ const en = {
     method_pay: "Phương thức thanh toán",
     later_order: "Sau khi nhận hàng",
     input_texas: "Nhập chiết khấu",
+    input_price: "Nhập giá",
     sum_no_texas: "Tổng tiền (chưa thuế):",
     sum_yes_texas: "Tổng tiền (gồm thuế)",
     DOMESTICALLY: "Trong nước",
@@ -250,10 +252,11 @@ const en = {
     sellerConfirm: "Thông tin thanh toán",
     deliveryAddress: "Địa chỉ giao hàng",
     receiptAddress: "Đại chỉ nhận hàng",
-    invoiceAddress: 'Địa chỉ hóa đơn',
-    otherAddress: 'Địa chỉ khác',
-    personalAddress: 'Địa chỉ cá nhân',
-    contact: 'Địa chỉ liên hệ',
+    invoiceAddress: "Địa chỉ hóa đơn",
+    otherAddress: "Địa chỉ khác",
+    personalAddress: "Địa chỉ cá nhân",
+    contact: "Địa chỉ liên hệ",
+    discount: "Chiết khấu: ",
     changeDeliveryAddress: "Chọn địa chỉ giao hàng",
     staff: "Staff: ",
     paymentMethods: "Loại chứng từ",
@@ -301,20 +304,20 @@ const en = {
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",
-    waitingPickup: 'Chờ lấy hàng',
-    invoiceCode : 'Mã hoá đơn' , 
-    invoiceDate : 'Ngày tạo hoá đơn',
-    placeholderDate : 'dd/mm/yyyy',
-    invoiceDateExpiration : 'Ngày đến hạn',
-    termsOfPayment : 'Hoặc điều khoản thanh toán',
-    placeholderTermsOfPayment : 'Chọn điều khoản thanh toán',
-    accountingBook : 'Sổ kế toán' ,
-    placeholderAccountingBook : 'Chọn sổ kế toán',
-    provisional : 'Tạm tính',
-    totalPrice : "Tổng tiền (chưa thuế)",
-    totalInvoice : 'Tổng hoá đơn' ,
-    symbol : 'Kí hiệu',
-    invoiceType : 'Loại hoá đơn'
+    waitingPickup: "Chờ lấy hàng",
+    invoiceCode: "Mã hoá đơn",
+    invoiceDate: "Ngày tạo hoá đơn",
+    placeholderDate: "dd/mm/yyyy",
+    invoiceDateExpiration: "Ngày đến hạn",
+    termsOfPayment: "Hoặc điều khoản thanh toán",
+    placeholderTermsOfPayment: "Chọn điều khoản thanh toán",
+    accountingBook: "Sổ kế toán",
+    placeholderAccountingBook: "Chọn sổ kế toán",
+    provisional: "Tạm tính",
+    totalPrice: "Tổng tiền (chưa thuế)",
+    totalInvoice: "Tổng hoá đơn",
+    symbol: "Kí hiệu",
+    invoiceType: "Loại hoá đơn",
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -433,17 +436,17 @@ const en = {
   },
   inforMerchant: {
     codeCompany: "Mã công ty",
-    city:"Tỉnh/Thành phố",
+    city: "Tỉnh/Thành phố",
     district: "Quận/Huyện",
     ward: "Phường/Xã",
-    address:"Địa chỉ",
+    address: "Địa chỉ",
     gender: "Giới tính",
-    email:  "Email",
-    phoneNumber:  "Số điện thoại",
+    email: "Email",
+    phoneNumber: "Số điện thoại",
     bank: "Tên ngân hàng",
-    accountNumber : "Số tài khoản",
-    accountHolder:  "Tên tài khoản ngân hàng",
-    bankBranch : "Chi nhánh",
+    accountNumber: "Số tài khoản",
+    accountHolder: "Tên tài khoản ngân hàng",
+    bankBranch: "Chi nhánh",
     setTingShop: "Cài đặt cửa hàng",
     setLanguage: "Chọn ngôn ngữ",
     setQR: "Mã QR của tôi",
@@ -554,11 +557,21 @@ const en = {
   },
   debtScreen: {
     receivables: "Phải thu",
-    mustPay: "phải trả",
+    mustPay: "Phải trả",
     toPaydebt: "Công nợ phải trả",
     totalNumberOfSuppliersIncurringDebt:
       "Tổng số nhà cung cấp đang phát sinh công nợ",
     totalDebtMustPay: "Tổng số công nợ phải trả",
+    nameProviders: "Tên NCC",
+    totalLiabilities: "Tổng nợ",
+    paid: "Đã trả",
+    notThing: "Bạn không có phát sinh công nợ với NCC nào",
+    sort: "Sắp xếp",
+    theMoneyHaveToPay:"Số tiền phải trả",
+    totalDebt: "Tổng nợ",
+    up: "Tăng dần",
+    dow: "Giảm dần",
+    
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -683,18 +696,18 @@ const en = {
     placeholderSearch: "Tìm nhà cung cấp theo mã và tên",
   },
   addAttribute: {
-    title: 'Nhóm thuộc tính',
-    hint: 'Chọn nhóm thuộc tính',
-    header: 'Chọn thuộc tính',
-    addAttribute: 'Tạo nhóm thuộc tính mới',
-    selectedValue: 'Chọn giá trị'
+    title: "Nhóm thuộc tính",
+    hint: "Chọn nhóm thuộc tính",
+    header: "Chọn thuộc tính",
+    addAttribute: "Tạo nhóm thuộc tính mới",
+    selectedValue: "Chọn giá trị",
   },
   editAttribute: {
-    headerText: 'Sửa thuộc tính'
+    headerText: "Sửa thuộc tính",
   },
   vendorScreen: {
-    vendor: 'nhà cung cấp',
-    header: 'Chọn nhà cung cấp'
+    vendor: "nhà cung cấp",
+    header: "Chọn nhà cung cấp",
   },
   productDetail: {
     productClassification: "product classification",
@@ -856,34 +869,33 @@ const en = {
     downloadNow: "Tải ngay",
     reset: "Thiết lập lại",
     apply: "Áp dụng",
-
   },
   printInvoiceScreen: {
-    printInvoice: 'In hoá đơn',
-    name: 'Tên khách hàng:',
-    address: 'Địa chỉ:',
-    phone: 'Số điện thoại:',
-    product : 'Sản phẩm',
-    unitPrice : 'Đơn giá',
-    quality : 'Số lượng',
-    amountPrice : 'Thành tiền',
-    amountUntaxed : 'Cộng tiền hàng',
-    totalPrice : 'Tổng tiền thanh toán',
-    invoice : 'Hoá đơn'
+    printInvoice: "In hoá đơn",
+    name: "Tên khách hàng:",
+    address: "Địa chỉ:",
+    phone: "Số điện thoại:",
+    product: "Sản phẩm",
+    unitPrice: "Đơn giá",
+    quality: "Số lượng",
+    amountPrice: "Thành tiền",
+    amountUntaxed: "Cộng tiền hàng",
+    totalPrice: "Tổng tiền thanh toán",
+    invoice: "Hoá đơn",
   },
-  orderDetailScreen : {
-    sent : 'Chờ xác nhận' ,
-    sale : 'Đang thực hiện' , 
-    done : 'Đã hoàn thành',
-    cancel : 'Đã huỷ',
-    no : 'Chưa thanh toán' ,
-    toInvoice : 'Chờ thanh toán',
-    partialInvoice : 'Thanh toán một phần',
-    invoiced : 'Thanh toán đầy đủ'
+  orderDetailScreen: {
+    sent: "Chờ xác nhận",
+    sale: "Đang thực hiện",
+    done: "Đã hoàn thành",
+    cancel: "Đã huỷ",
+    no: "Chưa thanh toán",
+    toInvoice: "Chờ thanh toán",
+    partialInvoice: "Thanh toán một phần",
+    invoiced: "Thanh toán đầy đủ",
   },
   selectClient: {
     selectClient: "Chọn khách hàng",
-    selectCustomerForSalesOrder : "Chọn khách hàng cho đơn bán",
+    selectCustomerForSalesOrder: "Chọn khách hàng cho đơn bán",
     selected: "Lựa chọn",
     add: "Thêm mới",
     nameClient: "Tên khách hàng",
@@ -892,8 +904,8 @@ const en = {
     filter: "Bộ lọc",
     followName: "Theo tên",
     timeCreate: "Thời gian tạo",
-    tag : "Tag",
-    new : "Mới nhất",
+    tag: "Tag",
+    new: "Mới nhất",
     old: "Cũ nhất",
     aToz: "Từ A -> Z",
     zToa: "Từ Z -> A",
@@ -902,13 +914,11 @@ const en = {
     brick40x40: "Gạch 40*40",
     brick60x60: "Gạch 60*60",
     brick80x80: "Gạch 80*80",
-
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",
-    noApplyPriceList: "Không áp dụng bảng giá"
-
-  }
+    noApplyPriceList: "Không áp dụng bảng giá",
+  },
 
   // @demo remove-block-end
 };

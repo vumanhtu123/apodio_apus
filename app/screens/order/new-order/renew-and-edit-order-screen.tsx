@@ -100,12 +100,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
           })
         }
         orderStore.setCheckPriceList(newData.isOptionPrice)
-        if (newData.invoiceAddressId !== null) {
+        if (newData.deliveryAddressId !== null) {
           address.current = newData.deliveryAddress
         } else {
           address.current = undefined
         }
-        const newArr = newData.saleOrderLines.map((items: any) => {
+        const newArr = newData.saleOrderLines?.map((items: any) => {
           return {
             ...items?.productInfo, amount: items?.quantity, originAmount: items?.orderQty, priceTotal: items?.amountTotal,
             price: items?.unitPrice, VAT: { value: items?.taxLines?.items[0]?.taxId, label: items?.taxLines?.items[0]?.taxName },
@@ -159,7 +159,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
       const response = await orderStore.getListAddress(
         Number(store.orderStore.dataClientSelect.id)
       );
-      orderStore.setReloadAddressScreen(false);
       // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         console.log(
@@ -295,7 +294,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
       };
     });
     const newArr1 = arrProduct.map((item: any)=> {return item.id})
-    const newArr2 = newData.saleOrderLines?.map((item: any)=> {return item.id})
+    const newArr2 = newData.saleOrderLines?.map((item: any)=> {return item.productId})
     const newArr3 = newArr2.filter(item => !newArr1.includes(item));
     console.log("data new", JSON.stringify(newArr));
     const order: any = {
@@ -303,7 +302,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
       // invoiceAddressId: 0,
-      deliveryAddressId: address.current?.id,
+      deliveryAddressId: address.current?.partnerId,
       // quotationDate: "",
       // orderDate: "",
       // quoteCreationDate: "",
@@ -338,6 +337,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
       amountPrePayment: "", // so tien gui len
     };
     console.log("done new order: ", JSON.stringify(order));
+    console.log("done new order: ", JSON.stringify(address.current));
     store.orderStore.postAddOrderSale(order).then((values) => {
       console.log("success data sale order:", JSON.stringify(values));
     });
@@ -477,7 +477,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
   };
 
   const handleSumAmountVAT = (value: any) => {
-    const all = value.reduce((sum: any, item: any) => {
+    const all = value?.reduce((sum: any, item: any) => {
       if (item.taxValue !== undefined) {
         return sum + item.taxValue;
       }
@@ -504,7 +504,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
   };
 
   const priceAll = (data: any) => {
-    const all = data.reduce((sum: any, item: any) => {
+    const all = data?.reduce((sum: any, item: any) => {
       return sum + Number(item.price);
     }, 0);
     price.current = all;
@@ -564,7 +564,13 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
             }
             data={address.current}
           />
-          <PriceList />
+          <PriceList id={Number(orderStore.dataPriceListSelected.id) ?? null}
+            name={orderStore.dataPriceListSelected.name ?? null}
+            priceListCategory={
+              orderStore.dataPriceListSelected.priceListCategory
+            }
+            currencyId={Number(orderStore.dataPriceListSelected.currencyId)}
+            pricelistId={Number(orderStore.dataPriceListSelected.pricelistId)}/>
           <InputSelect
             styleView={{
               backgroundColor: "white",

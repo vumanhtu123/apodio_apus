@@ -130,8 +130,8 @@ export const ListCompany: FC<
 
           <TouchableOpacity
             style={{
-              width: 58,
-              height: 24,
+              width: 68,
+              height: 30,
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 4,

@@ -103,7 +103,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         );
         // console.log('firstxxxxxxxxxx', response)
         if (response && response.kind === "ok") {
-          console.log('orderLisst', JSON.stringify(response.response.data.content))
+          // console.log('orderLisst', JSON.stringify(response.response.data.content))
           setArrData(response.response.data.content)
         } else {
           console.error("Failed to fetch order:", response);
@@ -273,7 +273,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
               // weight={item.weight}
               totalAmount={formatCurrency(item.amountTotal)}
               totalTax={formatCurrency(item.amountTax)}
-              money={formatCurrency(calculateTotalPrice(item))}
+              // money={formatCurrency(calculateTotalPrice(item))}
+              money={formatCurrency(item.amountTotalUnDiscount)}
               styleViewStatus={{
                 backgroundColor: item.state === 'SALE' ? colors.palette.solitude
                   : item.state === 'SENT' ? colors.palette.floralWhite :

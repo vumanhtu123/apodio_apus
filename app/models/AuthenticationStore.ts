@@ -153,6 +153,8 @@ export const AuthenticationStoreModel = types
           yield authApi.refreshToken(refreshToken);
         if (result.data != undefined) {
           store.setAccessToken(result.data.accessToken);
+          console.log("tuvm", result);
+          // store.setAccessToken(result.data.accessToken);
           // store.setRefreshToken(result.data.refreshToken);
           store.setUserID(result.data.userId);
           store.setJTI(result.data.jti);

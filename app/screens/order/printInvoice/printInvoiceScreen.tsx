@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import {
     FlatList,
     ImageBackground,
+    NativeModules,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -20,6 +21,9 @@ import { useStores } from '../../../models';
 import { formatCurrency } from '../../../utils/validate';
 import ProductAttribute from '../../product/component/productAttribute';
 import FastImage from 'react-native-fast-image';
+import RNFS from 'react-native-fs';
+
+
 
 export const PrintInvoiceScreen: FC = observer(
     function PrintInvoiceScreen(props) {
@@ -29,6 +33,7 @@ export const PrintInvoiceScreen: FC = observer(
         const [dataInfoCompany, setDataInfoCompany] = useState<any>([]);
         const route = useRoute()
         const invoiceId = route?.params?.invoiceId
+        const {PrintManager} = NativeModules;
 
         const handleGetDetailInvoice = async () => {
             try {
@@ -59,6 +64,29 @@ export const PrintInvoiceScreen: FC = observer(
             }
 
         };
+        const downloadAndPrintImage = async (imageUrl: any) => {
+            try {
+              // Đường dẫn tạm thời trên thiết bị
+              const localFilePath = `${RNFS.DocumentDirectoryPath}/tempimage.jpg`;
+          
+              // Tải file ảnh từ URL về thiết bị
+              const downloadResult = await RNFS.downloadFile({
+                fromUrl: imageUrl,
+                toFile: localFilePath,
+              }).promise;
+          
+              if (downloadResult.statusCode === 200) {
+                console.log('Image downloaded to:', localFilePath);
+                // Gọi hàm in với đường dẫn file cục bộ
+                PrintManager.print(localFilePath);
+              } else {
+                console.error('Image download failed:', downloadResult);
+              }
+            } catch (error) {
+              console.error('Error downloading image:', error);
+            }
+          };
+
         useEffect(() => {
             handleGetDetailInvoice()
             handleGetInfoCompany()
@@ -199,7 +227,11 @@ export const PrintInvoiceScreen: FC = observer(
                     tx={"printInvoiceScreen.printInvoice"}
                     style={styles.viewButton}
                     textStyle={styles.textButton}
-                // onPress={}
+                    onPress={() =>
+                        downloadAndPrintImage(
+                          'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
+                        )
+                      }
                 />
             </View>
         );

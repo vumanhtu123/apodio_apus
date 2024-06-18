@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native"
-import { fontSize, padding, scaleWidth } from "../../../theme"
+import { Dimensions, StyleSheet } from "react-native"
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme"
 
 export  const Styles = StyleSheet.create({
     bodyCard :{
@@ -43,5 +43,64 @@ export  const Styles = StyleSheet.create({
     weightText: {
         fontWeight: "600",
         fontSize: fontSize.size16
+    },
+    sizeTitle: {
+        fontSize: fontSize.size12,
+        fontWeight: "400",
+        color:"#FFFFFF"
+        
+    },
+    sizeTitleUnSelect: {
+        fontSize: fontSize.size12,
+        fontWeight: "400",
+        color:"#747475"
+    },
+    sizeContent: {
+        fontSize: fontSize.size12,
+        fontWeight: "600",
+        color:"#FFFFFF"
+    },
+    sizeContentUnSelect: {
+        fontSize: fontSize.size12,
+        fontWeight: "600",
+        color:"#242424"
+    },
+    numberInItemUnSelect: {
+        fontSize: fontSize.size12,
+        fontWeight: "600",
+        color: colors.palette.navyBlue
+    },
+    modalView: {
+        width: '100%',
+        backgroundColor: '#FFF',
+        paddingHorizontal: scaleWidth(15),
+        paddingVertical: scaleWidth(10),
+        borderRadius:margin.margin_8
+
+    },
+    horizontalLine: {
+        width:'100%',
+        height: 1,
+        backgroundColor: '#E7EFFF',
+        marginTop: scaleHeight(18),
+        marginBottom: 18,
+    },
+    modalText: {
+        textAlign: 'center',
+        width: scaleWidth(68),
+        height: scaleHeight(5),
+        backgroundColor: '#C7C7C7',
+        borderRadius: 8,
+        alignSelf: 'center',
+    },
+    styBtnUp: {
+        flex: 1, alignItems: 'center', borderRadius: 8 
+    },
+    styleBtnSwipe:{ 
+        flexDirection: 'row', 
+        flex: 1, 
+        backgroundColor: '#EDEDEE', 
+        borderRadius: 8, 
+        padding: scaleHeight(2) 
     }
 })
