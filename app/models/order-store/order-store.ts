@@ -622,15 +622,14 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<any, ErrorCode> = yield orderApi.cancelOrder(
+        const result: BaseResponse<OrderResult, ErrorCode> = yield orderApi.cancelOrder(
           id
         );
         console.log("tuvm getTax result", JSON.stringify(result));
-        if (result.data !== null) {
-          console.log("tuvm getTax success");
-          return result.data;
+        if (result.kind === 'ok') {
+          return result;
         } else {
-          return result.errorCodes;
+          return result;
         }
       } catch (err) {
         console.log(err);

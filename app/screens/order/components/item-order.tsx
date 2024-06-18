@@ -9,6 +9,7 @@ import {
 } from "../../../theme";
 import { Text } from "../../../components/text/text";
 import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
+import { formatCurrency } from "../../../utils/validate";
 
 interface ItemOrder {
   onPress?: () => void;
@@ -111,7 +112,7 @@ export default function ItemOrder(props: ItemOrder) {
           <View style={{ flex: 1 }}>
             <Text style={TEXTCONTENT} text={item.taxName} />
           </View>
-          <Text style={TEXTMONEY} text={item.amount} />
+          <Text style={TEXTMONEY} text={formatCurrency(item.amount)} />
         </View>
       ))}
       <View style={{ flexDirection: "row" }}>
@@ -120,12 +121,14 @@ export default function ItemOrder(props: ItemOrder) {
         </View>
         <Text style={TEXTTOTALAMOUNT} text={totalAmount} />
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <View style={{ flex: 1 }}>
-          <Text style={TEXTCONTENT} tx={"dashboard.estimated"} />
+      {weight ? (
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={TEXTCONTENT} tx={"dashboard.estimated"} />
+          </View>
+          <Text style={TEXTMONEY} text={weight} />
         </View>
-        <Text style={TEXTMONEY} text={weight} />
-      </View>
+      ) : null}
       {payStatus ? (
         <View style={{ flex: 1 }}>
           <Text
