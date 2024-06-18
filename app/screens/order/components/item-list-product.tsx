@@ -30,6 +30,7 @@ interface AddProduct {
   onPressMinus: ({}) => void;
   onPressSelectTexas: ({}) => void;
   onPressAddTexas: ({}) => void;
+  handleUpdatePrice: ({}) => void;
   arrData?: {}[];
   images?: string;
   name?: string;
@@ -40,8 +41,11 @@ interface AddProduct {
   valueVAT?: string;
   sumTexas: string;
   addTaxes?: boolean;
+  selectUpdate?: boolean;
   priceList?: boolean;
-  inputText: (textInput: any) => void;
+  textDiscount?: number;
+  inputDiscount: (textInput: any) => void;
+  inputPrice: (textInput: any) => void;
 }
 
 export default function ItemListProduct(props: AddProduct) {
@@ -62,7 +66,11 @@ export default function ItemListProduct(props: AddProduct) {
     onPressSelectTexas,
     addTaxes,
     priceList,
-    inputText,
+    inputDiscount,
+    textDiscount,
+    handleUpdatePrice,
+    selectUpdate,
+    inputPrice,
   } = props;
 
   const {
@@ -76,11 +84,13 @@ export default function ItemListProduct(props: AddProduct) {
   });
   console.log("taxes VAT", props.cost);
   const Price = () => {
-    return Number(props.cost) * Number(props.qty);
+    return Number(props.cost ?? 0) * Number(props.qty);
   };
 
   const Sum = (): Number => {
-    return Price() + Number(props.valueVAT ?? 0);
+    return (
+      Price() + Number(props.valueVAT ?? 0) - Number(props.textDiscount ?? 0)
+    );
   };
 
   console.log("sum", Sum());
@@ -126,17 +136,58 @@ export default function ItemListProduct(props: AddProduct) {
             }}
           />
           <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
-            <Text
-              text={Price().toString() ?? 0 + " "}
-              style={{
-                fontWeight: "400",
-                fontSize: fontSize.size12,
-                lineHeight: scaleHeight(14.52),
-                color: colors.palette.torchRed,
-                fontStyle: "italic",
-              }}
-            />
-            {priceList ? <Images.icon_edit /> : null}
+            {selectUpdate ? (
+              <Controller
+                control={control}
+                defaultValue={""}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <View style={{ flex: 1, alignContent: "center" }}>
+                    <TextInput
+                      style={{
+                        fontWeight: "400",
+                        height: scaleHeight(16),
+                        alignContent: "center",
+                        borderColor: "#F6F7FB",
+                        padding: 0,
+                        paddingBottom: 2,
+                        paddingLeft: 4,
+                        fontSize: 10,
+                        color: "black",
+                        borderBottomWidth: 1,
+                        textAlignVertical: "bottom",
+                      }}
+                      placeholder={translate("order.input_price")}
+                      placeholderTextColor={"#747475"}
+                      onChangeText={(newText) => {
+                        inputPrice(newText);
+                      }}
+                    />
+                  </View>
+                )}
+                name="input_price"
+              />
+            ) : (
+              <Text
+                text={Price().toString() + " "}
+                style={{
+                  fontWeight: "400",
+                  fontSize: fontSize.size12,
+                  lineHeight: scaleHeight(14.52),
+                  color: colors.palette.torchRed,
+                  fontStyle: "italic",
+                }}
+              />
+            )}
+            {priceList ? (
+              !selectUpdate ? (
+                <TouchableOpacity
+                  onPress={(item) => {
+                    handleUpdatePrice(item);
+                  }}>
+                  <Images.icon_edit />
+                </TouchableOpacity>
+              ) : null
+            ) : null}
             <Text
               text={" " + unit}
               style={{
@@ -242,7 +293,7 @@ export default function ItemListProduct(props: AddProduct) {
                           placeholder={translate("order.input_texas")}
                           placeholderTextColor={"#747475"}
                           onChangeText={(newText) => {
-                            inputText(newText);
+                            inputDiscount(newText);
                           }}
                         />
                       </View>

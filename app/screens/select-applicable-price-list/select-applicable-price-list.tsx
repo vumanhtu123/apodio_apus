@@ -165,11 +165,12 @@ export const SelectApplicablePriceList: FC<
           // setPriceListNoApply()
           // setNoApply()
           console.log("dataNoApply", dataPriceListSelected);
-
           setDataPriceListSelected({
             id: "",
             name: "Không áp dụng",
             priceListCategory: "",
+            currencyId: "",
+            pricelistId: "",
           });
         }}>
         <Text

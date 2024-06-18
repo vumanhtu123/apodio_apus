@@ -85,7 +85,14 @@ export const OrderStoreModel = types
     dataDebtLimit: types.optional(types.frozen<any>(), {
       isHaveDebtLimit: false,
       debtAmount: 0,
-      amountOwed: "",
+      amountOwed: 0,
+    }),
+    dataDebtPayment: types.optional(types.frozen<any>(), {
+      sumAll: 0,
+      methodPayment: 0,
+      debt: 0,
+      inputPrice: 0,
+      apply: false,
     }),
   })
   .extend(withEnvironment)
@@ -144,6 +151,9 @@ export const OrderStoreModel = types
     },
     setIsLoadMore(isLoadMore: boolean) {
       self.isLoadMore = isLoadMore;
+    },
+    setMethodPayment(value: any) {
+      self.dataDebtPayment = value;
     },
     setOrderId(id: number) {
       self.orderId = id;
