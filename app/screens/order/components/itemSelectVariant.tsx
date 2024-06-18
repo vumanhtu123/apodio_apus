@@ -109,7 +109,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             </View>}
                     </View>
                 </View>
-                <Modal style={styles.viewModal} isVisible={isModal}>
+                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={()=> setIsModal(false)}>
                     <FlatList
                         data={item?.uomGroup?.uomGroupLineItems}
                         keyExtractor={items => items.uomId.toString()}
@@ -225,7 +225,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             />}
                         </View> : <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(17.52), marginTop: scaleHeight(3) }}></View>}
                 </View>
-                <Modal style={styles.viewModal} isVisible={isModal}>
+                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={()=> setIsModal(false)} >
                     <FlatList
                         data={item?.uomGroup?.uomGroupLineItems}
                         keyExtractor={items => items.uomId.toString()}
@@ -252,7 +252,6 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
 
     }
 }
-//truyên thêm item.quantityInventory < item.minQuantity để check giưã số lượng tồn và sl nhỏ nhất để làm mờ và disable phàn cộng trừ sl
 
 const styles = StyleSheet.create({
     ROOT: {

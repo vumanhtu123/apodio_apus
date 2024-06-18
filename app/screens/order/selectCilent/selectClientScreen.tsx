@@ -41,9 +41,7 @@ export const SelectClientScreen: FC<
   const [isVisibleCreateClient, setIsVisibleCreateClient] = useState(false);
   const [valueSearch, setValueSearch] = useState("");
   const [isShowSearch, setisShowSearch] = useState(false);
-  const [dataItemSelect, setdataItemSelect] = useState(
-    getAPi.orderStore.dataClientSelect
-  );
+  const [dataItemSelect, setdataItemSelect] = useState(getAPi.orderStore.dataClientSelect)
 
   const size = useRef(20);
   // const isLoadingMore = useRef<boolean>(false)
@@ -55,11 +53,6 @@ export const SelectClientScreen: FC<
   console.log("====================================");
   console.log("valueSearch", valueSearch);
   console.log("====================================");
-
-  const senDataClientSelected = () => {
-    getAPi.orderStore.setDataClientSelect(dataItemSelect);
-    props.navigation.goBack();
-  };
 
   const getListClient = () => {
     getAPi.orderStore
@@ -103,10 +96,6 @@ export const SelectClientScreen: FC<
 
   console.log("load more", isLoadingMore);
 
-  // const handleRefresh = React.useCallback(async () => {
-
-  // }, []);
-
   const handleRefresh = () => {
     setRefreshing(true);
     try {
@@ -121,12 +110,35 @@ export const SelectClientScreen: FC<
     }
   };
 
+  const senDataClientSelected = () => {
+    if (Number(dataItemSelect?.id) === Number(getAPi.orderStore.dataClientSelect.id)) {
+      getAPi.orderStore.setCheckIdPartner(false)
+    } else {
+      getAPi.orderStore.setCheckIdPartner(true)
+    }
+    getAPi.orderStore.setDataClientSelect(dataItemSelect);
+    props.navigation.goBack();
+  };
+
+  useEffect(() => {
+
+    getListClient();
+
+  }, [getAPi.orderStore.sortCreateClient,]);
+
+  useEffect(() => {
+    getListClient()
+  }, [size])
+
+  console.log("load more", isLoadingMore);
+
   const handleLoadMore = () => {
+
     setIsLoadingMore(true);
-    console.log("====================================");
+    console.log('====================================');
     console.log("value loading", isLoadingMore);
-    console.log("====================================");
-    size.current = size.current + 3;
+    console.log('====================================');
+    size.current = (size.current + 3);
     // getListClient();
     setTimeout(() => {
       setIsLoadingMore(false);
@@ -246,11 +258,11 @@ export const SelectClientScreen: FC<
           onEndReached={() => handleLoadMore()}
           onEndReachedThreshold={0.1}
 
-          // ListFooterComponent={() => {
-          //     return <View>
-          //         {isLoadingMore && <ActivityIndicator />}
-          //     </View>;
-          // }}
+        // ListFooterComponent={() => {
+        //     return <View>
+        //         {isLoadingMore && <ActivityIndicator />}
+        //     </View>;
+        // }}
         />
 
         <TouchableOpacity

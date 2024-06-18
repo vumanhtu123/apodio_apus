@@ -18,6 +18,7 @@ import {
   OrderDistrictResult,
   OrderListAddressResult,
   OrderWardResult,
+  Root1,
 } from "./entities/order-address-model";
 import { number } from "mobx-state-tree/dist/internal";
 import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
@@ -57,13 +58,27 @@ export const OrderStoreModel = types
     checkPriceList: types.optional(types.boolean, false),
     sortCreateClient: types.optional(types.string, ""),
     search: types.optional(types.string, ""),
-    reloadAddressScreen: types.optional(types.boolean, false),
+    checkIdPartner: types.optional(types.boolean, false),
     sort: types.optional(types.array(types.string), []),
     isLoadMore: types.optional(types.boolean, false),
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
     orderId: types.optional(types.number, 0),
+    tagId: types.optional(types.array(types.number), []),
+    productCategoryId: types.optional(types.number, 0),
+    nameCategory: types.optional(types.string, ""),
+    checkRenderList: types.optional(types.boolean, false),
+    dataAddress: types.optional(types.frozen<Root1>(), {id: 0, partnerId: 0,
+      phoneNumber: '',
+      addressType: '',
+      country: {id: 0, name: ''},
+      region: {id: 0, name: ''},
+      city: {id: 0, name: ''},
+      district: {id: 0, name: ''},
+      ward: {id: 0, name: ''},
+      address: '',
+      isDefault: false,}),
     dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
       id: "",
       name: "",
@@ -71,10 +86,6 @@ export const OrderStoreModel = types
       phoneNumber: "",
     }),
     sortPriceList: types.optional(types.string, ""),
-    tagId: types.optional(types.array(types.number), []),
-    productCategoryId: types.optional(types.number, 0),
-    nameCategory: types.optional(types.string, ""),
-    checkRenderList: types.optional(types.boolean, false),
     dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {
       id: "",
       name: "",
@@ -146,8 +157,11 @@ export const OrderStoreModel = types
     setDataProductAddOrder(value: any) {
       self.dataProductAddOrder = value;
     },
-    setReloadAddressScreen(value: boolean) {
-      self.reloadAddressScreen = value;
+    setCheckIdPartner(value: boolean) {
+      self.checkIdPartner = value;
+    },
+    setDataAddress(value: any) {
+      self.dataAddress = value;
     },
     setIsLoadMore(isLoadMore: boolean) {
       self.isLoadMore = isLoadMore;

@@ -159,7 +159,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props) {
       const response = await orderStore.getListAddress(
         Number(store.orderStore.dataClientSelect.id)
       );
-      orderStore.setReloadAddressScreen(false);
       // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         console.log(
