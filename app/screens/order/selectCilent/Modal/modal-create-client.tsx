@@ -13,6 +13,7 @@ import { boolean } from "mobx-state-tree/dist/internal";
 import { RectButton } from "react-native-gesture-handler";
 import { Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
+
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
@@ -27,10 +28,15 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
     const [nameClient, setNameClient] = useState<any>()
 
 
-    const { control, formState: { errors } } = useForm({ mode: "all" })
-
+    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "all" })
 
     const getAPIcreateClient = useStores();
+
+    const omSubmit = (data: FormData) => {
+        console.log('====================================');
+        console.log('data test', data);
+        console.log('====================================');
+    }
     const checkStatusCompany = (): boolean => {
         if (selectCustomerType.label == "Cá nhân") {
             return true
@@ -39,9 +45,9 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
         }
     }
 
-    console.log('====================================');
-    console.log("checkk ", checkStatusCompany());
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log("checkk ", checkStatusCompany());
+    // console.log('====================================');
     const addClient = async () => {
         const result = await getAPIcreateClient.orderStore.postClient({
             "name": nameClient,
@@ -54,16 +60,16 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
             "partnerTagIds": [],
             "b2cActivated": true,
         })
-        console.log('====================================');
-        console.log('test', result);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('test', result);
+        // console.log('====================================');
         if (result.kind === "ok") {
             setIsVisible(!isVisible)
             Dialog.show({
                 title: translate("txtDialog.txt_title_dialog"),
                 button: '',
                 button2: translate("common.ok"),
-                textBody: result.result.message,
+                textBody: "Tạo khách hàng thành công",
                 closeOnOverlayTap: false,
                 onPressButton: () => {
                     Dialog.hide();
@@ -155,7 +161,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={() => onChange("")}
+                                onClearText={() => onChange(" ")}
                                 onChangeText={(txt) => {
                                     onChange(txt)
                                     setPhoneNumber(txt)
@@ -168,7 +174,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                             />
                         )}
                         rules={{
-                            required: "Please input data"
+                            required: "Vui lòng nhập số điện thoại"
                         }}
                     />
                     {
@@ -205,7 +211,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                             />
                         )}
                         rules={{
-                            required: "Please input data"
+                            required: "Vui lòng  nhập họ tên"
                         }}
                     />
 
@@ -216,7 +222,10 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                             <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
-                            onPress={() => addClient()}
+                            onPress={() => {
+                                // handleSubmit(omSubmit)
+                                addClient()
+                            }}
                         >
                             <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectClient.add"></Text>
                         </TouchableOpacity>

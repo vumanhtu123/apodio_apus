@@ -175,7 +175,6 @@ export const OrderStoreModel = types
     // chú ý phải clear khi xong
     setDataPriceListSelect(value: any) {
       console.log('doanlog', value);
-
       self.dataPriceListSelected = value
 
     }

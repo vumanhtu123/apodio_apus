@@ -9,7 +9,6 @@ import { resetRoot } from "../../navigators";
 import { getAccessToken, getTenantId } from "../../utils/storage";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
-const API_PAGE_SIZE = 50;
 
 export class GetWayAPI {
   apisauce!: ApisauceInstance;
@@ -94,25 +93,5 @@ export class GetWayAPI {
         Loading.hide();
       }
     });
-    // this.apisauce.addResponseTransform(async (response) => {
-    //   try {
-    //     if (response) {
-    //       console.log("responseUpload", response);
-    //       // if (response.data.errorCodes){
-    //       //   if (response.data.errorCodes[0].code === 4567) {
-    //       //     showDialog(
-    //       //       'Error',
-    //       //       'danger',
-    //       //       `${response.data.errorCodes[0].message}`,
-    //       //       '',
-    //       //       'OK',
-    //       //       () => hideDialog())
-    //       //   }
-    //       // }
-    //     }
-    //   } catch (error) {
-    //     console.log("ERROR", error);
-    //   }
-    // });
   }
 }
