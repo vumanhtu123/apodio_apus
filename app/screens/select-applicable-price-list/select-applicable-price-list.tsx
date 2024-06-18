@@ -56,12 +56,13 @@ export const SelectApplicablePriceList: FC<
       getAPi.orderStore.setCheckPriceList(true);
     }
     if (
-      Number(dataPriceListSelected.id) !== Number(getAPi.orderStore.dataPriceListSelected.id)
+      Number(dataPriceListSelected.id) !==
+      Number(getAPi.orderStore.dataPriceListSelected.id)
     ) {
       getAPi.orderStore.setDataProductAddOrder([]);
-      }
-      console.log('datapriceList', dataPriceListSelected)
-      console.log('datapriceList', getAPi.orderStore.dataPriceListSelected)
+    }
+    console.log("datapriceList", dataPriceListSelected);
+    console.log("datapriceList", getAPi.orderStore.dataPriceListSelected);
     // console.log('====================================');
     // console.log("dataSelect", dataPriceListSelected);
     // console.log('====================================');
@@ -164,11 +165,12 @@ export const SelectApplicablePriceList: FC<
           // setPriceListNoApply()
           // setNoApply()
           console.log("dataNoApply", dataPriceListSelected);
-
           setDataPriceListSelected({
             id: "",
             name: "Không áp dụng",
             priceListCategory: "",
+            currencyId: "",
+            pricelistId: "",
           });
         }}>
         <Text

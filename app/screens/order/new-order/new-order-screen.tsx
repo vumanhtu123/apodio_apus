@@ -46,8 +46,13 @@ import { Order, arrPayment, dataPromotion, methodData } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 import { values } from "mobx";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+} from "../../../components/dialog-notification";
 
-export const NewOrder: FC = observer(function NewOrder(props) {
+export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
   const paddingTop = useSafeAreaInsets().top;
   const heightScroll =
@@ -57,6 +62,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     paddingTop;
   const route = useRoute();
   const { orderStore } = useStores();
+  console.log("props", orderStore.dataDebtPayment.sumAll);
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
@@ -71,20 +77,20 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const [imagesNote, setImagesNote] = useState<any>([]);
   const [markedDatesS, setMarkedDatesS] = useState("");
   const [markedDatesE, setMarkedDatesE] = useState("");
-  const [deposit, setDeposit] = useState<number>(0);
   const [buttonSelect, setButtonSelect] = useState<boolean>(false);
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
   const countRef = useRef("");
-  const [arrDataPostTax, setArrDataPostTax] = useState<{}[]>([]);
   const nameTax = useRef("");
-  const price = useRef(0);
+  // const price = useRef(0);
+  const [price, setPrice] = useState(0);
   const priceSumVAT = useRef(0);
-  const priceSum = useRef(0);
+  const priceSumAll = useRef(0);
   const arrTaxAll = useRef([{ percent: "", amount: "" }]);
   const idItemOrder = useRef(0);
   const address = useRef<{}>();
   const store = useStores();
+  const discount = useRef(0);
 
   address.current = route?.params?.dataAddress;
   console.log("adr", route?.params?.dataAddress);
@@ -126,7 +132,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const handleNamMethod = (): string => {
     switch (countRef.current) {
       case translate("order.CASH"):
-        console.log("aaa 1");
         return "CASH";
       case translate("order.BANK_TRANSFER"):
         return "BANK_TRANSFER";
@@ -143,10 +148,40 @@ export const NewOrder: FC = observer(function NewOrder(props) {
 
   const addProduct = () => {
     if (handleNamMethod() == "") {
-      return navigation.navigate("paymentBuy", {
-        params: { type: true },
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn phương thức thanh toán",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          Dialog.hide();
+        },
       });
     }
+    if (
+      handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
+      Number(price) >= Number(store.orderStore.dataDebtLimit.debtAmount)
+    ) {
+      orderStore.setMethodPayment({
+        sumAll: 0,
+        methodPayment: 0,
+        debt: 0,
+        inputPrice: 0,
+        apply: false,
+      });
+      return navigation.navigate("paymentBuy", {
+        params: {
+          type: false,
+          price: price,
+          debtAmount:
+            handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+              ? store.orderStore.dataDebtLimit.debtAmount
+              : null,
+        },
+      });
+    }
+
     const newArr = arrProduct.map((data: any) => {
       return {
         productId: data.id,
@@ -217,18 +252,18 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   },
                 ],
         },
-        quantity: data.originAmount,
+        quantity: data.amount,
         uomId: data.uomId,
-        orderQty: data.mount,
+        orderQty: data.amount,
         // orderUomId: number, //chon
-        unitPrice: data.price, //don gia cua bang gia
+        unitPrice: data.unitPrice, //don gia cua bang gia
         // amountUntaxed: data.price,
         amountTotal: data.amountTotal ?? data.price,
         taxes:
           data.VAT == undefined
             ? null
             : [{ id: data.VAT.value, name: data.VAT.label }],
-        // discount: number,
+        discount: data.taxesInput ?? 0, // nhập chiết khấu
         // discountComputeType: string,
         type: "PRODUCT",
         // note: string,
@@ -258,10 +293,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       // commitmentDate: "",
       // deliveryStatus: "",
       // campaignId: 0,
-      // discount: 0,
-      // discountComputeType: "",
+      // discount: 0, //chiet khau
+      discountComputeType: "FIXED",
       note: "",
-      isOptionPrice: false,
+      isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
       saleOrderLines: newArr,
@@ -272,12 +307,42 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      isPrepayment: false, // boolean thanh toan truoc
-      amountPrePayment: "", // so tien gui len
+      isPrepayment: orderStore.dataDebtPayment.apply == true ? true : false, // boolean thanh toan truoc
+      amountPrePayment:
+        orderStore.dataDebtPayment.apply == true
+          ? Number(orderStore.dataDebtPayment.inputPrice)
+          : "", // so tien gui len
     };
     console.log("done new order: ", JSON.stringify(order));
     store.orderStore.postAddOrderSale(order).then((values) => {
       console.log("success data sale order:", JSON.stringify(values));
+      if (values.id !== null) {
+        console.log("success data sale order:", JSON.stringify(values));
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("productScreen.Notification"),
+          textBody: "Thành Công " + values.id,
+          button2: translate("productScreen.BtnNotificationAccept"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            Dialog.hide();
+          },
+        });
+      } else {
+        const v = values?.map((data: any) => {
+          return data.message;
+        });
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("productScreen.Notification"),
+          textBody: v[0],
+          button2: translate("productScreen.BtnNotificationAccept"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            Dialog.hide();
+          },
+        });
+      }
     });
   };
 
@@ -293,18 +358,83 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     idItemOrder.current = id;
     let newArr = arrProduct!.map((item: any) => {
       if (item.id === id) {
-        return { ...item, amount: item.amount + 1 };
+        return {
+          ...item,
+          amount: item.amount + 1,
+          price: Number(item.unitPrice) * Number(item.amount + 1),
+        };
       }
       return item;
     });
     setArrProduct(newArr);
     postTaxLines(newArr);
+    priceAll(newArr);
+    if (isDeposit === true) {
+      handleDebt();
+    }
+  };
+
+  const handleInputTaxes = (id: any, text: any) => {
+    if (Number(text) <= 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Số tiền phải lớn hơn 0",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          Dialog.hide();
+        },
+      });
+    }
+    console.log("input taxes", text);
+    let newArr = arrProduct!.map((item: any) => {
+      if (item.id === id) {
+        return { ...item, taxesInput: text };
+      }
+      return item;
+    });
+    setArrProduct(newArr);
+    discountAll(newArr);
+    if (isDeposit === true) {
+      handleDebt();
+    }
   };
 
   const handleAddTaxes = (id: any) => {
     let newArr = arrProduct.map((item: any) => {
       if (item.id === id) {
-        return { ...item, addTaxes: (item.addTaxes = !item.addTaxes) };
+        return {
+          ...item,
+          addTaxes: (item.addTaxes = !item.addTaxes),
+          taxesInput: 0,
+        };
+      }
+      return item;
+    });
+    setArrProduct(newArr);
+  };
+
+  const selectInputPrice = (id: any) => {
+    let newArr = arrProduct.map((item: any) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          addPrice: (item.addPrice = !item.addPrice),
+        };
+      }
+      return item;
+    });
+    setArrProduct(newArr);
+  };
+
+  const handleInputPrice = (id: any, text: any) => {
+    let newArr = arrProduct.map((item: any) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          unitPrice: text,
+        };
       }
       return item;
     });
@@ -344,6 +474,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           return {
             ...item,
             amount: item.amount - 1,
+            price: Number(item.unitPrice) * Number(item.amount - 1),
           };
         }
         return item;
@@ -351,7 +482,11 @@ export const NewOrder: FC = observer(function NewOrder(props) {
       .filter((item) => item.amount > 0);
     setArrProduct(newArr);
     postTaxLines(newArr);
-    console.log("-tuvm", arrProduct);
+    priceAll(newArr);
+    if (isDeposit === true) {
+      handleDebt();
+    }
+    console.log("-tuvm", newArr);
   };
 
   const deleteItemProduct = (id: any) => {
@@ -379,8 +514,8 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     const newItem = data.filter((item: any) => item.id === idItemOrder.current);
     const valueApi = {
       quantity: newItem[0].amount,
-      unitPrice: newItem[0].price,
-      discount: 0,
+      unitPrice: newItem[0].unitPrice,
+      discount: newItem[0].taxesInput,
       taxes: [
         {
           id: newItem[0].VAT ? newItem[0].VAT.value : 0,
@@ -421,12 +556,13 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   const handleSumAmountVAT = (value: any) => {
     const all = value.reduce((sum: any, item: any) => {
       if (item.taxValue !== undefined) {
+        console.log("cats", sum, item.taxValue);
         return sum + item.taxValue;
       }
       return;
     }, 0);
-    priceSumVAT.current = Number(all) + Number(price.current);
-    console.log("cat");
+    priceSumVAT.current = Number(all) + Number(price);
+    console.log("cat", all);
   };
 
   const selectTexas = () => {
@@ -440,6 +576,22 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     });
     setArrProduct(newArr);
     postTaxLines(newArr);
+    if (isDeposit === true) {
+      handleDebt();
+    }
+  };
+
+  const handleDebt = () => {
+    arrProduct.map((data: any) => {
+      if (data.taxValue !== undefined) {
+        console.log("tutu", data.taxValue);
+        return (priceSumAll.current =
+          Number(data.taxValue) + Number(price) - Number(discount ?? 0));
+      } else {
+        console.log("tutuiii", data.taxValue);
+        return Number(price) - Number(discount ?? 0);
+      }
+    });
   };
 
   const selectProduct = () => {
@@ -447,35 +599,50 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   };
 
   const priceAll = (data: any) => {
+    console.log("data first", data);
     const all = data.reduce((sum: any, item: any) => {
-      return sum + Number(item.price);
+      return sum + Number(item.price ?? 0);
     }, 0);
-    price.current = all;
+    setPrice(all);
     console.log("sum all: ", all);
+  };
+
+  const discountAll = (data: any) => {
+    console.log("test discount", data);
+    const all = data.reduce((sum: any, item: any) => {
+      if (item.taxesInput !== undefined) {
+        return sum + Number(item.taxesInput);
+      }
+      return sum;
+    }, 0);
+    discount.current = all;
+    console.log("discount all: ", discount.current);
   };
 
   console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
   console.log("post add tuvm 2", JSON.stringify(arrProduct));
   console.log(
     "post add tuvm 3",
-    JSON.stringify(orderStore.dataPriceListSelected)
+    JSON.stringify(store.orderStore.dataDebtLimit)
   );
-  console.log("price scr", Number(price.current));
-  console.log("price scr 2", Number(priceSum.current));
+  console.log("price scr", Number(price));
+  console.log("price scr 2", orderStore.dataDebtPayment);
 
   // console.log("data adres", address.current.address);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       setArrProduct(orderStore.dataProductAddOrder.slice());
-      priceAll(orderStore.dataProductAddOrder.slice());
       getListTax();
       getListAddress();
+      setIsDeposit(orderStore.dataDebtPayment.apply);
     });
     return unsubscribe;
   }, [navigation]);
 
-  useEffect(() => {}, [arrProduct]);
+  useEffect(() => {
+    priceAll(arrProduct);
+  }, [arrProduct]);
 
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
@@ -567,19 +734,53 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   <View>
                     <ItemListProduct
                       onPressAddTexas={() => handleAddTaxes(item.id)}
-                      onPressSelectTexas={() => handleSelectTaxes(item.id)}
+                      onPressSelectTexas={() => {
+                        console.log("check validate", item.price);
+                        item.price === undefined || item.price === 0
+                          ? Dialog.show({
+                              type: ALERT_TYPE.INFO,
+                              title: translate("productScreen.Notification"),
+                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                              button2: translate(
+                                "productScreen.BtnNotificationAccept"
+                              ),
+                              closeOnOverlayTap: false,
+                              onPressButton: () => {
+                                navigation.goBack();
+                                orderStore.setReloadAddressScreen(true);
+                                Dialog.hide();
+                              },
+                            })
+                          : handleSelectTaxes(item.id);
+                      }}
                       sumTexas={item.sumTexas}
                       VAT={item.VAT?.label ?? undefined}
                       valueVAT={item.taxValue}
                       name={item.name}
                       unit={item.uomName}
                       images={item.images}
-                      cost={item.price}
+                      cost={item.unitPrice}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
                       onPress={() => deleteItemProduct(item.id)}
                       addTaxes={item.addTaxes ?? false}
+                      priceList={
+                        orderStore.dataPriceListSelected.id !== ""
+                          ? false
+                          : true
+                      }
+                      inputDiscount={(text: any) =>
+                        handleInputTaxes(item.id, text)
+                      }
+                      textDiscount={item.taxesInput}
+                      handleUpdatePrice={function ({}: {}): void {
+                        selectInputPrice(item.id);
+                      }}
+                      selectUpdate={item.addPrice}
+                      inputPrice={function (textInput: any): void {
+                        handleInputPrice(item.id, textInput);
+                      }}
                     />
                     {index !== arrProduct.length - 1 ? (
                       <View
@@ -596,9 +797,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={price.current}
+              sumNoVat={price}
               sumVat={priceSumVAT.current}
               arrVat={arrProduct}
+              discount={discount.current}
             />
           ) : (
             <View style={{ marginTop: 15 }}></View>
@@ -615,6 +817,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                 paddingHorizontal: 16,
                 paddingVertical: 15,
                 justifyContent: "space-between",
+                alignItems: "center",
               }}>
               <Text
                 tx="order.method_pay"
@@ -623,16 +826,48 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   fontWeight: "400",
                   color: "#242424",
                 }}></Text>
-              <View style={{ flexDirection: "row" }}>
-                <Text
-                  text={countRef.current.toString()}
-                  style={{
-                    fontSize: 10,
-                    fontWeight: "400",
-                    color: "#242424",
-                    marginRight: 6,
-                  }}></Text>
-                <Images.icon_caretRight2 />
+              <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text
+                    text={countRef.current.toString()}
+                    style={{
+                      fontSize: 10,
+                      fontWeight: "400",
+                      color: "#242424",
+                      marginRight: 6,
+                    }}></Text>
+                  <Images.icon_caretRight2 />
+                </View>
+                {countRef.current.toString() ===
+                translate("order.DEDUCTION_OF_LIABILITIES") ? (
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text
+                      tx="order.available_limit"
+                      style={{
+                        fontWeight: "400",
+                        fontSize: 10,
+                        color: "#747475",
+                        alignContent: "center",
+                      }}></Text>
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        fontWeight: "400",
+                        color: "#FF0000",
+                      }}>
+                      {store.orderStore.dataDebtLimit.debtAmount ?? 0}
+                      <Text
+                        style={{
+                          fontWeight: "400",
+                          fontSize: 10,
+                          color: "#747475",
+                          alignContent: "center",
+                        }}>
+                        )
+                      </Text>
+                    </Text>
+                  </View>
+                ) : null}
               </View>
             </View>
           </TouchableOpacity>
@@ -710,9 +945,40 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   <Button
                     tx={"order.deposit"}
                     onPress={() => {
-                      setIsDeposit(true);
+                      if (handleNamMethod() == "") {
+                        return Dialog.show({
+                          type: ALERT_TYPE.INFO,
+                          title: translate("productScreen.Notification"),
+                          textBody: "Bạn cần chọn phương thức thanh toán",
+                          button2: translate(
+                            "productScreen.BtnNotificationAccept"
+                          ),
+                          closeOnOverlayTap: false,
+                          onPressButton: () => {
+                            Dialog.hide();
+                          },
+                        });
+                      }
+                      orderStore.setMethodPayment({
+                        sumAll: 0,
+                        methodPayment: 0,
+                        debt: 0,
+                        inputPrice: 0,
+                        apply: false,
+                      });
+                      handleDebt();
                       navigation.navigate("paymentBuy", {
-                        params: { type: true },
+                        params: {
+                          type:
+                            handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                              ? false
+                              : true,
+                          price: price,
+                          debtAmount:
+                            handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                              ? store.orderStore.dataDebtLimit.debtAmount
+                              : null,
+                        },
                       });
                     }}
                     style={styles.buttonFeature}
@@ -795,10 +1061,10 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             {/* {isNaN(priceSumVAT.current)
               ? Number(priceSumVAT.current)
               : price.current} */}
-            {Number(price.current)}
+            {Number(price)}
           </Text>
         </View>
-        {isDeposit === true ? (
+        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
           <View
             style={{
               flexDirection: "row",
@@ -813,11 +1079,37 @@ export const NewOrder: FC = observer(function NewOrder(props) {
                   color: "#747475",
                   fontSize: 12,
                   fontWeight: "400",
-                }}></Text>
+                }}>
+                {Number(orderStore.dataDebtPayment.sumAll)}
+              </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textTotal}>{deposit}</Text>
-              <TouchableOpacity>
+              <Text style={styles.textTotal}>
+                {Number(orderStore.dataDebtPayment.inputPrice)}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  orderStore.setMethodPayment({
+                    sumAll: 0,
+                    methodPayment: 0,
+                    debt: 0,
+                    inputPrice: 0,
+                    apply: false,
+                  });
+                  return navigation.navigate("paymentBuy", {
+                    params: {
+                      type:
+                        handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                          ? false
+                          : true,
+                      price: price,
+                      debtAmount:
+                        handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                          ? store.orderStore.dataDebtLimit.debtAmount
+                          : null,
+                    },
+                  });
+                }}>
                 <Images.icon_edit
                   style={{ marginLeft: scaleWidth(margin.margin_6) }}
                 />
@@ -825,7 +1117,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             </View>
           </View>
         ) : null}
-        {isDeposit === true ? (
+        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
           <View
             style={{
               flexDirection: "row",
@@ -837,7 +1129,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              84000000000
+              {Number(price) - Number(orderStore.dataDebtPayment.inputPrice)}
             </Text>
           </View>
         ) : null}
@@ -883,7 +1175,7 @@ export const NewOrder: FC = observer(function NewOrder(props) {
         }}
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
-          debtAmount: store.orderStore.dataDebtLimit.debtLimit,
+          debtAmount: store.orderStore.dataDebtLimit.debtAmount,
         }}
       />
       <ModalTaxes
@@ -907,9 +1199,16 @@ interface DataSumMoney {
   arrVat: any;
   sumNoVat: number;
   sumVat: number;
+  discount: number;
 }
 
 const SumMoney = (props: DataSumMoney) => {
+  const Sum = () => {
+    return Number(props.sumVat) - Number(props.discount ?? 0);
+  };
+  const SumNoVAT = () => {
+    return Number(props.sumNoVat) - Number(props.discount ?? 0);
+  };
   var sumValue;
   return (
     <View
@@ -941,6 +1240,16 @@ const SumMoney = (props: DataSumMoney) => {
               ) : null;
             })
           : null}
+        {props.discount !== null ? (
+          <Text
+            tx="order.discount"
+            style={{
+              fontSize: 10,
+              fontWeight: "400",
+              color: "#747475",
+              marginTop: 8,
+            }}></Text>
+        ) : null}
         <Text
           tx="order.sum_yes_texas"
           style={{
@@ -957,7 +1266,10 @@ const SumMoney = (props: DataSumMoney) => {
         {props.arrVat != undefined
           ? props.arrVat.map((data: any) => {
               if (data.taxValue !== undefined) {
-                sumValue = Number(data.taxValue) + Number(props.sumNoVat);
+                sumValue =
+                  Number(data.taxValue) +
+                  Number(props.sumNoVat) -
+                  Number(props.discount ?? 0);
                 console.log("tutu", data.taxValue, props.sumNoVat);
               }
               return data.taxValue != undefined ? (
@@ -975,12 +1287,21 @@ const SumMoney = (props: DataSumMoney) => {
           : null}
         <Text
           style={{
+            fontSize: 10,
+            fontWeight: "400",
+            color: "#747475",
+            marginTop: 8,
+          }}>
+          {props.discount ?? 0}
+        </Text>
+        <Text
+          style={{
             fontSize: 12,
             fontWeight: "600",
             color: "#FF4956",
             marginTop: 8,
           }}>
-          {(isNaN(props.sumVat) ? sumValue : props.sumVat) ?? 0}
+          {(isNaN(Sum()) ? sumValue : SumNoVAT()) ?? 0}
         </Text>
       </View>
     </View>

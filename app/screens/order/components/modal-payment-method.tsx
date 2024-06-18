@@ -15,6 +15,7 @@ interface InputSelect {
 }
 
 export const ModalPayment = (data: InputSelect) => {
+  console.log("check limit", data.debt.debtAmount);
   const check = useRef(false);
   return (
     <Modal
@@ -130,7 +131,7 @@ interface InputItem {
 }
 
 const Item_Payment = (data: InputItem) => {
-  console.log("tuvm log", data.debt.isHaveDebtLimit);
+  console.log("tuvm log", data.debt.debtAmount);
   return (
     <View
       style={{

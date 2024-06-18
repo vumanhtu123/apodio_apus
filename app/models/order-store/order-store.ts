@@ -64,10 +64,6 @@ export const OrderStoreModel = types
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     viewGrid: types.optional(types.boolean, true),
     orderId: types.optional(types.number, 0),
-    tagId: types.optional(types.array(types.number), []),
-    productCategoryId: types.optional(types.number, 0),
-    nameCategory: types.optional(types.string, ""),
-    checkRenderList: types.optional(types.boolean, false),
     dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
       id: "",
       name: "",
@@ -75,6 +71,10 @@ export const OrderStoreModel = types
       phoneNumber: "",
     }),
     sortPriceList: types.optional(types.string, ""),
+    tagId: types.optional(types.array(types.number), []),
+    productCategoryId: types.optional(types.number, 0),
+    nameCategory: types.optional(types.string, ""),
+    checkRenderList: types.optional(types.boolean, false),
     dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {
       id: "",
       name: "",
@@ -85,7 +85,14 @@ export const OrderStoreModel = types
     dataDebtLimit: types.optional(types.frozen<any>(), {
       isHaveDebtLimit: false,
       debtAmount: 0,
-      amountOwed: "",
+      amountOwed: 0,
+    }),
+    dataDebtPayment: types.optional(types.frozen<any>(), {
+      sumAll: 0,
+      methodPayment: 0,
+      debt: 0,
+      inputPrice: 0,
+      apply: false,
     }),
   })
   .extend(withEnvironment)
@@ -145,6 +152,9 @@ export const OrderStoreModel = types
     setIsLoadMore(isLoadMore: boolean) {
       self.isLoadMore = isLoadMore;
     },
+    setMethodPayment(value: any) {
+      self.dataDebtPayment = value;
+    },
     setOrderId(id: number) {
       self.orderId = id;
     },
@@ -160,10 +170,9 @@ export const OrderStoreModel = types
 
     // chú ý phải clear khi xong
     setDataPriceListSelect(value: any) {
-      console.log('doanlog', value);
-      self.dataPriceListSelected = value
-
-    }
+      console.log("doanlog", value);
+      self.dataPriceListSelected = value;
+    },
   }))
   .actions((self) => ({
     getListOrder: flow(function* (
@@ -172,8 +181,7 @@ export const OrderStoreModel = types
       state: string,
       search: string
     ) {
-
-      console.log('page', page)
+      console.log("page", page);
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
@@ -204,7 +212,13 @@ export const OrderStoreModel = types
       try {
         const clientAPI = new SelectClientAPI(self.environment.apiErp);
         const result: BaseResponse<OderListResponse, ErrorCode> =
-          yield clientAPI.getListSelectClient(page, size, sort, search, b2cActivated);
+          yield clientAPI.getListSelectClient(
+            page,
+            size,
+            sort,
+            search,
+            b2cActivated
+          );
         console.log(
           "SlectClientResult-------------",
           JSON.stringify(result.data)
@@ -531,11 +545,12 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    getDetailInvoice: flow(function* (
-      id: number,
-    ) {
-      console.log('page', id)
-      const orderApi = new OrderApi(self.environment.apiOrder, self.environment.apiAccount);
+    getDetailInvoice: flow(function* (id: number) {
+      console.log("page", id);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
       const result: OrderResult = yield orderApi.getDetailInvoice(id);
       // console.log('-----------dsa', result.response.errorCodes)
 
@@ -547,14 +562,14 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    createInvoice: flow(function* (
-      invoiceAdd: any,
-    ) {
-      console.log('dataaaaaa', JSON.stringify(invoiceAdd))
-      const orderApi = new OrderApi(self.environment.apiOrder, self.environment.apiAccount);
-      const result: OrderResult = yield orderApi.createInvoice(invoiceAdd
+    createInvoice: flow(function* (invoiceAdd: any) {
+      console.log("dataaaaaa", JSON.stringify(invoiceAdd));
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
       );
-      console.log('-----------dsa', result)
+      const result: OrderResult = yield orderApi.createInvoice(invoiceAdd);
+      console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -607,15 +622,15 @@ export const OrderStoreModel = types
         console.log(err);
       }
     }),
-    stateAllow: flow(function* (
-      id: number
-    ) {
+    stateAllow: flow(function* (id: number) {
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<any, ErrorCode> = yield orderApi.stateAllow(id)
+        const result: BaseResponse<any, ErrorCode> = yield orderApi.stateAllow(
+          id
+        );
         console.log("mmm result", JSON.stringify(result));
         if (result.data !== null) {
           console.log(" success", result);
@@ -623,8 +638,7 @@ export const OrderStoreModel = types
         } else {
           return result.errorCodes;
         }
-      }
-      catch (err) {
+      } catch (err) {
         console.log(err);
       }
     }),
@@ -674,9 +688,10 @@ export const OrderStoreModel = types
       try {
         const result: BaseResponse<any, ErrorCode> =
           yield orderApi.postNewOrder(form);
-        if (result.data !== null) {
+        if (result.data !== undefined) {
           return result.data;
         } else {
+          console.log("ok");
           return result.errorCodes;
         }
       } catch (err) {
