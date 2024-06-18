@@ -149,7 +149,7 @@ export const AuthenticationStoreModel = types
         const result: BaseResponse<any, ErrorCode> =
           yield authApi.refreshToken(refreshToken);
         if (result.data != undefined) {
-          // console.log("tuvm", result);
+          console.log("tuvm", result);
           // store.setAccessToken(result.data.accessToken);
           // store.setRefreshToken(result.data.refreshToken);
           store.setUserID(result.data.userId);

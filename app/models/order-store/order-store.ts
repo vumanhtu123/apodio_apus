@@ -160,15 +160,10 @@ export const OrderStoreModel = types
     setSortPriceList(sort: any) {
       self.sortPriceList = sort;
     },
-    setDataPriceListSelect(value: any) {
-      console.log("doanlog", value);
-      self.dataPriceListSelected = value;
-    },
 
     // chú ý phải clear khi xong
     setDataPriceListSelect(value: any) {
       console.log('doanlog', value);
-
       self.dataPriceListSelected = value
 
     }
