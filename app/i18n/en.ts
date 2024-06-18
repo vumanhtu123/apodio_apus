@@ -29,7 +29,9 @@ const en = {
     cannot_create_duplicate: "Không thể tạo giá trị trùng",
     product_is_using:
       "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
-      noClient: 'Vui lòng chọn khách hàng',
+    noClient: 'Vui lòng chọn khách hàng',
+    change_city: "Vui lòng chọn Tỉnh/Thành phố",
+    change_district: "Vui lòng chọn Quận/Huyện",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -208,7 +210,7 @@ const en = {
     price_list: "Bảng giá áp dụng",
     no_price_list: "Không áp dụng bảng giá",
     address_order: "Địa chỉ giao hàng",
-    no_address_order: "Chưa có địa chỉ giao hàng",
+    no_address_order: "Chọn địa chỉ giao hàng",
     info_more: "Thông tin thêm",
     selectTaxes: "Chọn loại thuế",
     taxes: "Loại thuế",

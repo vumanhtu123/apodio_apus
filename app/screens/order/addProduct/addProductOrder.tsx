@@ -89,7 +89,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     ) {
       handleGetVariantPrice(searchValue);
     }
-    console.log("tim kiem");
   };
   const handleGetProduct = async (searchValue?: any) => {
     try {
@@ -454,7 +453,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   const getPriceVariant = async (value: any) => {
     try {
       const response = await orderStore.getPriceOrderVariant(value);
-      console.log("productId", productStore.productId);
       if (response && response.kind === "ok") {
         const data = response.response.data;
         return data.price;
@@ -466,7 +464,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     }
   };
   const handleAddProduct = async (data: any) => {
-    console.log(data);
     const arrProduct = dataProduct.map((items: any) => {
       if (items.id === data.id) {
         return {
@@ -528,7 +525,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       const newArr = orderStore.dataProductAddOrder.concat(newArr1);
       orderStore.setDataProductAddOrder(newArr);
     }
-    console.log(orderStore.dataProductAddOrder);
   };
 
   const handleMinus = (data: any) => {
@@ -562,7 +558,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       });
       const newArr3 = newArr2.filter((items) => items !== undefined);
       orderStore.setDataProductAddOrder(newArr3);
-      console.log(orderStore.dataProductAddOrder);
     } else {
       const arrProduct = dataProduct.slice();
       const arrProduct1 = arrProduct.map((items: any) => {
@@ -593,7 +588,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       });
       const newArr3 = newArr2.filter((items) => items !== undefined);
       orderStore.setDataProductAddOrder(newArr3);
-      console.log(orderStore.dataProductAddOrder);
     }
   };
   const handlePlus = (data: any) => {
@@ -615,7 +609,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       }
     });
     orderStore.setDataProductAddOrder(newArr2);
-    console.log(orderStore.dataProductAddOrder);
   };
   const handlePressViewProduct = (type: any) => {
     viewProductType(type);
@@ -654,7 +647,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     ) {
       handleGetVariantPrice();
     }
-    console.log("chon category");
   }, [viewProduct, orderStore.productCategoryId, page]);
 
   useEffect(() => {
@@ -685,19 +677,10 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       }
       handleGetCategoryFilter()
     });
-    console.log("sap xep");
     return unsubscribe;
   }, [navigation, orderStore.sort]);
 
   const handleEndReached = () => {
-    console.log(
-      "--------totalPagesProduct---------------",
-      totalPagesProduct,
-      "----",
-      isRefreshing,
-      "-----",
-      page
-    );
     if (
       !isRefreshing &&
       page <= totalPagesProduct - 1 &&
@@ -707,11 +690,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       setPage((prevPage) => prevPage + 1);
     }
   };
-  // useEffect(() => {
-  //     if (index == 0) {
-  //         refreshProduct()
-  //     }
-  // }, [index])
   const refreshProduct = async () => {
     // setIsRefreshing(true);
     // setSelectedCategory(undefined);
@@ -746,7 +724,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     ) {
       await handleGetVariantPrice(searchValue);
     }
-    console.log("refreshProduct");
     // setIsRefreshing(false);
   };
   const renderFooter = () => {

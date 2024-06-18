@@ -32,7 +32,6 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
   const [arrAddress, setArrAddress] = useState<Root1[]>([]);
   const route = useRoute();
   const { orderStore } = useStores();
-  const dataAddress = route?.params?.dataAddress;
 
   const handlePress = (data: any) => {
     setAddressChoice(data.id);
@@ -44,7 +43,6 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       getListAddress();
-      console.log(route?.params?.dataAddress, 'log====')
     });
     return unsubscribe;
   }, [navigation]);
@@ -79,22 +77,6 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
       console.error("Error fetching product:", error);
     }
   };
-  // useEffect(() => {
-  //   getListAddress();
-  // }, []);
-  // useEffect(() => {
-  //     console.log(dataAddress, '1231245234123')
-  //     if (dataAddress === undefined) {
-  //         arrAddress.map(items => {
-  //             if (items.isDefault === true) {
-  //                 setAddressChoice(items.id)
-  //             }
-  //         })
-  //     } else {
-  //         setAddressChoice(dataAddress.id)
-  //     }
-  //     console.log(arrAddress, 'data address')
-  // }, [])
 
   return (
     <View style={styles.ROOT}>

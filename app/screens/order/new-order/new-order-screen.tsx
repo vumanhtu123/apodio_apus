@@ -106,14 +106,36 @@ export const NewOrder: FC = observer(function NewOrder(props) {
           JSON.stringify(response.response.data)
         );
         const newArr = response.response.data;
-        newArr.map((data: any) => {
-          if (data.isDefault === true) {
-            orderStore.setDataAddress(data)
-            setAddress(data)
-            // address.current = data;
-          }
-          // console.log("tuvm address", address.current);
-        });
+        const newData = newArr.filter((item: any)=> item.isDefault===true)
+        if(newData.length!== 0){
+          orderStore.setDataAddress(newData[0])
+          setAddress(newData[0])
+        }else{
+            setAddress({
+              id: 0, partnerId: 0,
+              phoneNumber: '',
+              addressType: '',
+              country: { id: 0, name: '' },
+              region: { id: 0, name: '' },
+              city: { id: 0, name: '' },
+              district: { id: 0, name: '' },
+              ward: { id: 0, name: '' },
+              address: '',
+              isDefault: false,
+            })
+            orderStore.setDataAddress({
+              id: 0, partnerId: 0,
+              phoneNumber: '',
+              addressType: '',
+              country: { id: 0, name: '' },
+              region: { id: 0, name: '' },
+              city: { id: 0, name: '' },
+              district: { id: 0, name: '' },
+              ward: { id: 0, name: '' },
+              address: '',
+              isDefault: false,
+            })
+        }
       } else {
         console.error("Failed to fetch categories:", response);
       }
@@ -284,14 +306,14 @@ export const NewOrder: FC = observer(function NewOrder(props) {
     props.navigation.navigate("selectClient");
   };
 
-  const onPressAddress =()=>{
-    if(orderStore.dataClientSelect.id === ""){
+  const onPressAddress = () => {
+    if (orderStore.dataClientSelect.id === "") {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: '',
         textBody: translate('txtToats.noClient'),
       })
-    }else{
+    } else {
       navigation.navigate("deliveryAddress" as never)
     }
   }
@@ -485,8 +507,6 @@ export const NewOrder: FC = observer(function NewOrder(props) {
   );
   console.log("price scr", Number(price.current));
   console.log("price scr 2", Number(priceSum.current));
-
-  // console.log("data adres", address.current.address);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {

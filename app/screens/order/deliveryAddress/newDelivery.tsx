@@ -82,17 +82,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
     }
   }, [])
 
-  // useEffect(() => {
-  //     if (city.id !== 0) {
-  //         getListDistrict(city)
-  //     }
-  // }, [pageDistrict, searchDistrict])
-  // useEffect(() => {
-  //     if (district.id !== 0) {
-  //         getListWard(district)
-  //     }
-  // }, [pageWards, searchWards])
-
   const getListCity = async () => {
     try {
       const response = await orderStore.getListCity(
@@ -142,7 +131,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
         searchDistrict,
         value
       );
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         if (page === 0) {
           console.log(
@@ -235,7 +223,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   const handleSelectDistrict1 = () => {
     Toast.show({
       type: ALERT_TYPE.DANGER,
-      textBody: "Vui lòng chọn Tỉnh/Thành phố",
+      textBody: translate('txtToats.change_city'),
     });
   };
 
@@ -243,12 +231,12 @@ export const NewDelivery: FC = observer(function NewDelivery() {
     if (city.label === "") {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        textBody: "Vui lòng chọn Tỉnh/Thành phố",
+        textBody: translate('txtToats.change_city'),
       });
     } else {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        textBody: "Vui lòng chọn Quận/Huyện",
+        textBody: translate('txtToats.change_district'),
       });
     }
   };
@@ -263,7 +251,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
     ) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        textBody: "Vui lòng nhập đủ thông tin",
+        textBody: translate('txtToats.required_information'),
       });
     } else {
       const newCountry = { id: 366, name: "Việt Nam" };
@@ -325,9 +313,11 @@ export const NewDelivery: FC = observer(function NewDelivery() {
         style={{ height: scaleHeight(54) }}
       />
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "padding"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}>
+        // style={{flex: 1}}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : scaleHeight(118)}>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
           bounces={false}
           style={{
