@@ -50,7 +50,6 @@ export const SelectApplicablePriceList: FC<
   // console.log('====================================');
 
   const senDataPriceListSelect = () => {
-    getAPi.orderStore.setDataPriceListSelect(dataPriceListSelected);
     if (dataPriceListSelected.id === "") {
       getAPi.orderStore.setCheckPriceList(false);
     } else {
@@ -62,9 +61,12 @@ export const SelectApplicablePriceList: FC<
     ) {
       getAPi.orderStore.setDataProductAddOrder([]);
     }
+    console.log("datapriceList", dataPriceListSelected);
+    console.log("datapriceList", getAPi.orderStore.dataPriceListSelected);
     // console.log('====================================');
     // console.log("dataSelect", dataPriceListSelected);
     // console.log('====================================');
+    getAPi.orderStore.setDataPriceListSelect(dataPriceListSelected);
   };
   // const setPriceListNoApply = () => {
   //     getAPi.orderStore.setDataPriceListSelect({ id: '', name: "No Apply", priceListCategory: '' })
@@ -166,7 +168,7 @@ export const SelectApplicablePriceList: FC<
 
           setDataPriceListSelected({
             id: "",
-            name: "khong ap dung",
+            name: "Không áp dụng",
             priceListCategory: "",
           });
         }}>

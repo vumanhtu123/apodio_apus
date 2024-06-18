@@ -71,22 +71,10 @@ export const OrderStoreModel = types
       phoneNumber: "",
     }),
     sortPriceList: types.optional(types.string, ""),
-    dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {
-      id: "",
-      name: "",
-      priceListCategory: "",
-    }),
     tagId: types.optional(types.array(types.number), []),
     productCategoryId: types.optional(types.number, 0),
     nameCategory: types.optional(types.string, ""),
     checkRenderList: types.optional(types.boolean, false),
-    dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
-      id: "",
-      name: "",
-      code: "",
-      phoneNumber: "",
-    }),
-    sortPriceList: types.optional(types.string, ""),
     dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {
       id: "",
       name: "",
@@ -168,10 +156,6 @@ export const OrderStoreModel = types
     },
     setSortPriceList(sort: any) {
       self.sortPriceList = sort;
-    },
-    setDataPriceListSelect(value: any) {
-      console.log("doanlog", value);
-      self.dataPriceListSelected = value;
     },
 
     // chú ý phải clear khi xong
