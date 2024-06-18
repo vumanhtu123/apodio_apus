@@ -108,7 +108,7 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                 <View style={[Styles.stylesBtnBottom, { position: 'absolute', bottom: 0 }]}>
                     <TouchableOpacity
                         style={[onClick === 'save' ? Styles.btnSuccessfully : Styles.btnSave, { marginRight: 13 }]}
-
+                        onPress={() => props.navigation.goBack()}
                     >
                         <Text
                             style={{ color: onClick === 'save' ? colors.palette.white : colors.palette.navyBlue }}
