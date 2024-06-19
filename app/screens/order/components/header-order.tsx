@@ -5,6 +5,7 @@ import { Text } from "../../../components";
 import { useNavigation } from "@react-navigation/native";
 import { OnProgressEvent } from "react-native-fast-image";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
+import { useStores } from "../../../models";
 interface InputData {
   openDialog: () => void;
   data: any;
@@ -200,18 +201,20 @@ interface DataSumMoney {
 }
 
 export const SumMoney = (props: DataSumMoney) => {
+  const { orderStore } = useStores()
+
   const total = props.arrVat.reduce((accumulator, currentObject) => {
-    return accumulator + ((Number(currentObject.unitPrice?? 0) * Number(currentObject.amount?? 0)) - ((Number(currentObject.taxesInput?? 0) / 100) * (Number(currentObject.unitPrice?? 0) * Number(currentObject.amount?? 0))) + Number(currentObject.taxValue?? 0));
+    return accumulator + ((Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0)) - ((Number(currentObject.taxesInput ?? 0) / 100) * (Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0))) + Number(currentObject.taxValue ?? 0));
   }, 0);
   const discount = props.arrVat.reduce((accumulator, currentObject) => {
-    return accumulator + ((Number(currentObject.taxesInput?? 0) / 100) * (Number(currentObject.unitPrice?? 0) * Number(currentObject.amount?? 0)));
+    return accumulator + ((Number(currentObject.taxesInput ?? 0) / 100) * (Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0)));
   }, 0);
 
   const Sum = () => {
-    return Number(props.sumVat?? 0) - Number(props.discount ?? 0);
+    return Number(props.sumVat ?? 0) - Number(props.discount ?? 0);
   };
   const SumNoVAT = () => {
-    return Number(props.sumNoVat?? 0) - Number(props.discount ?? 0);
+    return Number(props.sumNoVat ?? 0) - Number(props.discount ?? 0);
   };
   var sumValue;
   return (
@@ -244,16 +247,17 @@ export const SumMoney = (props: DataSumMoney) => {
             ) : null;
           })
           : null}
-        {props.discount !== null ? (
-          <Text
-            tx="order.discount"
-            style={{
-              fontSize: 10,
-              fontWeight: "400",
-              color: "#747475",
-              marginTop: 8,
-            }}></Text>
-        ) : null}
+        {orderStore.checkPriceList === false ?
+          (props.discount !== null ? (
+            <Text
+              tx="order.discount"
+              style={{
+                fontSize: 10,
+                fontWeight: "400",
+                color: "#747475",
+                marginTop: 8,
+              }}></Text>
+          ) : null) : null}
         <Text
           tx="order.sum_yes_texas"
           style={{
@@ -289,15 +293,16 @@ export const SumMoney = (props: DataSumMoney) => {
             ) : null;
           })
           : null}
-        <Text
-          style={{
-            fontSize: 10,
-            fontWeight: "400",
-            color: "#747475",
-            marginTop: 8,
-          }}>
-          {discount ?? 0}
-        </Text>
+        {orderStore.checkPriceList === false ?
+          (<Text
+            style={{
+              fontSize: 10,
+              fontWeight: "400",
+              color: "#747475",
+              marginTop: 8,
+            }}>
+            {discount ?? 0}
+          </Text>) : null}
         <Text
           style={{
             fontSize: 12,

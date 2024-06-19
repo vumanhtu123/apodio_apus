@@ -54,29 +54,29 @@ export class ApiOrder {
             textBody: 'Network Error!',
             closeOnOverlayTap: false})
         }
-        if (error.response.status === 401) {  
-          const originalRequest = error.config;
-           // Refresh token logic
-          return new Promise((resolve, reject) => {
-            this.apiRefreshToken.fetchData().then(response => {
-              const newToken = response.accessToken;
-              this.apisauce.axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + newToken;
-              originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
-              return resolve(this.apisauce.axiosInstance.request(originalRequest));
-            }).catch(err => {
-              reject(err);
-              if (err.response && err.response.status === 401) {
-                Dialog.show({
-                  type: ALERT_TYPE.DANGER,
-                  title: 'Error',
-                  button: 'OK',
-                  textBody: 'Your session was expired',
-                  closeOnOverlayTap: false
-                });
-              }
-            });
-          }); 
-        }
+        // if (error.response.status === 401) {  
+        //   const originalRequest = error.config;
+        //    // Refresh token logic
+        //   return new Promise((resolve, reject) => {
+        //     this.apiRefreshToken.fetchData().then(response => {
+        //       const newToken = response.accessToken;
+        //       this.apisauce.axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + newToken;
+        //       originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
+        //       return resolve(this.apisauce.axiosInstance.request(originalRequest));
+        //     }).catch(err => {
+        //       reject(err);
+        //       if (err.response && err.response.status === 401) {
+        //         Dialog.show({
+        //           type: ALERT_TYPE.DANGER,
+        //           title: 'Error',
+        //           button: 'OK',
+        //           textBody: 'Your session was expired',
+        //           closeOnOverlayTap: false
+        //         });
+        //       }
+        //     });
+        //   }); 
+        // }
         if (error.response.status === 500 || error.response.status === 404) {
           console.log("first-----------", error);
           Dialog.show({
