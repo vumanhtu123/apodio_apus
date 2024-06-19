@@ -13,7 +13,7 @@ import { boolean } from "mobx-state-tree/dist/internal";
 import { RectButton } from "react-native-gesture-handler";
 import { Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
-
+import en from "../../../../i18n/en";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
@@ -24,15 +24,13 @@ interface ModalClientFromPhoneProps {
 const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
     const [selectCustomerType, setSelectCustomerType] = useState({ label: "" })
-    // const [phoneNumber, setPhoneNumber] = useState<any>()
-    // const [nameClient, setNameClient] = useState<any>()
+    const [checkError, setCheckError] = useState(false)
 
 
-    const { control, handleSubmit, setError, setValue, formState: { errors }, reset } = useForm({
+    const { control, handleSubmit, setError, formState: { errors }, reset, clearErrors } = useForm({
         defaultValues: {
             phoneNumber: '',
-            NameClient: '',
-            noteText: ''
+            NameClient: ''
         }
     })
 
@@ -45,20 +43,16 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
             return false
         }
     }
-    const clearForm = () => {
-        reset({
-            phoneNumber: '',
-            NameClient: ''
-        });
-    };
 
     const omSubmit = async (data: any) => {
 
         const nameClient = data.NameClient
         const phoneNumber = data.phoneNumber
 
+        selectCustomerType.label == "" && setCheckError(!checkError)
+
         console.log('====================================');
-        console.log('data test', nameClient, phoneNumber);
+        console.log('data test', nameClient, phoneNumber, selectCustomerType);
         console.log('====================================');
 
         const result = await getAPIcreateClient.orderStore.postClient({
@@ -136,7 +130,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 <View style={styles.modalView}>
                     <Text style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Tạo mới khách hàng</Text>
+                        <Text style={styles.headerTitle}></Text>
 
 
                     </View>
@@ -155,6 +149,11 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         styleView={{ marginBottom: scaleHeight(15) }}
 
                     />
+                    {
+                        selectCustomerType.label == "" && <Text style={{ fontSize: fontSize.size12, color: '#C95B36' }} tx="ClientScreen.pleaseSelectTypeClient" />
+                    }
+
+
 
                     <Controller
                         control={control}
@@ -175,37 +174,34 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={() => {
-                                    // clearForm()
-                                    // onChange("")
-                                    setValue('phoneNumber', "")
-                                    // ("phoneNumber", null)
-                                    console.log('====================================');
-                                    console.log("value", value);
-                                    console.log('====================================');
-
-                                }}
+                                onClearText={() => onChange("")}
                                 onChangeText={(value) => {
-                                    if (value.length !== 10) {
-                                        setError("phoneNumber", { type: 'custom', message: "Vui lòng nhập đủ 10 số " })
-                                    } else {
-                                        console.log("value name", value);
 
-                                        onChange(value)
-                                        setError("phoneNumber", null)
-                                    }
-                                    // setPhoneNumber(txt)
+                                    onChange(value)
+
+
                                 }}
                                 isImportant
                                 placeholder="VD 01231254"
                                 RightIconClear={Images.icon_delete2}
                                 error={errors?.phoneNumber?.message}
+
                             />
                         )}
                         rules={{
-                            required: "Vui lòng nhập số điện thoại"
+                            maxLength: {
+                                value: 10,
+                                message: en.ClientScreen.phoneNumber10
+                            },
+                            minLength: {
+                                value: 10,
+                                message: en.ClientScreen.phoneNumber10
+
+                            },
+                            required: en.ClientScreen.pleaseInputPhoneNumber
                         }}
                     />
+
 
                     <Controller
                         control={control}
@@ -225,7 +221,11 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={clearForm}
+                                onClearText={() => {
+                                    reset({
+                                        NameClient: ""
+                                    })
+                                }}
                                 onChangeText={(txt) => {
 
                                     onChange(txt)
@@ -239,7 +239,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                             />
                         )}
                         rules={{
-                            required: "Vui lòng  nhập họ tên"
+                            required: en.ClientScreen.pleaseInputName
                         }}
                     />
 

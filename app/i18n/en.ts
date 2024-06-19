@@ -509,6 +509,11 @@ const en = {
     groupClient: "Khách hàng",
     btnAddClient: "Nhóm khách hàng",
     detailClient: "Chi tiết khách hàng",
+    createNew: "Tạo mới khách hàng",
+    pleaseSelectTypeClient: "Vui lòng chon kiểu khách hàng",
+    phoneNumber10: "Vui lòng nhập đủ 10 số",
+    pleaseInputPhoneNumber: "Vui lòng nhập số điện thoại",
+    pleaseInputName:"Vui lòng nhập họ tên",
   },
   NCCScreen: {
     idSupliers: "Mã nhà cung cấp",
