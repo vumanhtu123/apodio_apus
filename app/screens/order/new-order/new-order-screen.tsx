@@ -38,6 +38,7 @@ import {
   AddressOrder,
   HeaderOrder,
   PriceList,
+  SumMoney,
 } from "../components/header-order";
 import { ModalPayment } from "../components/modal-payment-method";
 import { ModalTaxes } from "../components/modal-taxes-apply";
@@ -81,7 +82,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
   const [address, setAddress] = useState(orderStore.dataAddress)
-  const countRef = useRef("");
+  const countRef = useRef(translate("order.CASH"));
   const nameTax = useRef("");
   // const price = useRef(0);
   const [price, setPrice] = useState(0);
@@ -302,7 +303,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // orderDate: "",
       // quoteCreationDate: "",
       // expireHoldDate: "",
-      pricelistId: orderStore.dataPriceListSelected.pricelistId ?? null,
+      pricelistId: orderStore.dataPriceListSelected.id ?? null,
       currencyId: orderStore.dataPriceListSelected.currencyId ?? null,
       // paymentTermId: 0,
       // promotionIds: [],
@@ -394,7 +395,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         return {
           ...item,
           amount: item.amount + 1,
-          price: Number(item.unitPrice) * Number(item.amount + 1),
+          price: Number(item.unitPrice ?? 0) * Number(item.amount + 1),
         };
       }
       return item;
@@ -412,7 +413,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Số tiền phải lớn hơn 0",
+        textBody: "Chiết khấu phải lớn hơn 0",
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -423,12 +424,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     console.log("input taxes", text);
     let newArr = arrProduct!.map((item: any) => {
       if (item.id === id) {
-        return { ...item, taxesInput: text };
+        return { ...item, taxesInput: Number(text) };
       }
       return item;
     });
     setArrProduct(newArr);
-    discountAll(newArr);
+    // discountAll(newArr);
+    postTaxLines(newArr)
     if (isDeposit === true) {
       handleDebt();
     }
@@ -466,12 +468,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       if (item.id === id) {
         return {
           ...item,
-          unitPrice: text,
+          unitPrice: Number(text),
+          price: Number(text) * Number(item.amount)
         };
       }
       return item;
     });
+    console.log(newArr, 'log=====')
     setArrProduct(newArr);
+    postTaxLines(newArr)
   };
 
   const handleBack = () => {
@@ -488,6 +493,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       address: '',
       isDefault: false,
     })
+    orderStore.setDataDebtLimit({
+      isHaveDebtLimit: false,
+      debtAmount: 0,
+      amountOwed: 0,
+    })
+    orderStore.setMethodPayment({
+      sumAll: 0,
+      methodPayment: 0,
+      debt: 0,
+      inputPrice: 0,
+      apply: false,
+    });
     orderStore.setDataProductAddOrder([]);
     orderStore.setViewProductType("VIEW_PRODUCT");
     orderStore.setDataClientSelect({
@@ -519,7 +536,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           return {
             ...item,
             amount: item.amount - 1,
-            price: Number(item.unitPrice) * Number(item.amount - 1),
+            price: Number(item.unitPrice ?? 0) * Number(item.amount - 1),
           };
         }
         return item;
@@ -587,7 +604,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ...value,
           taxValue: arrTaxLine[0].items[0].amount,
           amountTotal: Number(
-            arrTaxLine[0].items[0].amount + Number(value.price)
+            arrTaxLine[0].items[0].amount 
+            // + Number(value.price)
           ),
         };
       }
@@ -628,13 +646,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
 
   const handleDebt = () => {
     arrProduct.map((data: any) => {
+      const price = Number(data.amount) * Number(data.unitPrice)
+      const discountPrice = price - (Number(discount)/100)* price
       if (data.taxValue !== undefined) {
         console.log("tutu", data.taxValue);
         return (priceSumAll.current =
-          Number(data.taxValue) + Number(price) - Number(discount ?? 0));
+          Number(data.taxValue) + discountPrice)
       } else {
         console.log("tutuiii", data.taxValue);
-        return Number(price) - Number(discount ?? 0);
+        return discountPrice;
       }
     });
   };
@@ -646,7 +666,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const priceAll = (data: any) => {
     console.log("data first", data);
     const all = data.reduce((sum: any, item: any) => {
-      return sum + Number(item.price ?? 0);
+      return sum + ((Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) - ((Number(item.taxesInput ?? 0) / 100) * (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0))) + Number(item.taxValue ?? 0));
     }, 0);
     setPrice(all);
     console.log("sum all: ", all);
@@ -656,7 +676,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     console.log("test discount", data);
     const all = data.reduce((sum: any, item: any) => {
       if (item.taxesInput !== undefined) {
-        return sum + Number(item.taxesInput);
+        return sum + Number(item.taxesInput?? 0);
       }
       return sum;
     }, 0);
@@ -664,14 +684,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     console.log("discount all: ", discount.current);
   };
 
-  console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
-  console.log("post add tuvm 2", JSON.stringify(arrProduct));
-  console.log(
-    "post add tuvm 3",
-    JSON.stringify(store.orderStore.dataDebtLimit)
-  );
-  console.log("price scr", Number(price));
-  console.log("price scr 2", orderStore.dataDebtPayment);
+  // console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
+  // console.log("post add tuvm 2", JSON.stringify(arrProduct));
+  // console.log(
+  //   "post add tuvm 3",
+  //   JSON.stringify(store.orderStore.dataDebtLimit)
+  // );
+  // console.log("price scr", Number(price));
+  // console.log("price scr 2", orderStore.dataDebtPayment);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -778,19 +798,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         console.log("check validate", item.price);
                         item.price === undefined || item.price === 0
                           ? Dialog.show({
-                            type: ALERT_TYPE.INFO,
-                            title: translate("productScreen.Notification"),
-                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
-                            button2: translate(
-                              "productScreen.BtnNotificationAccept"
-                            ),
-                            closeOnOverlayTap: false,
-                            onPressButton: () => {
-                              navigation.goBack();
-                              orderStore.setReloadAddressScreen(true);
-                              Dialog.hide();
-                            },
-                          })
+                              type: ALERT_TYPE.INFO,
+                              title: translate("productScreen.Notification"),
+                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                              button2: translate(
+                                "productScreen.BtnNotificationAccept"
+                              ),
+                              closeOnOverlayTap: false,
+                              onPressButton: () => {
+                                navigation.goBack();
+                                Dialog.hide();
+                              },
+                            })
                           : handleSelectTaxes(item.id);
                       }}
                       sumTexas={item.sumTexas}
@@ -1169,7 +1188,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              {Number(price) - Number(orderStore.dataDebtPayment.inputPrice)}
+              {Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)}
             </Text>
           </View>
         ) : null}
@@ -1235,115 +1254,3 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     </View>
   );
 });
-interface DataSumMoney {
-  arrVat: any;
-  sumNoVat: number;
-  sumVat: number;
-  discount: number;
-}
-
-const SumMoney = (props: DataSumMoney) => {
-  const Sum = () => {
-    return Number(props.sumVat) - Number(props.discount ?? 0);
-  };
-  const SumNoVAT = () => {
-    return Number(props.sumNoVat) - Number(props.discount ?? 0);
-  };
-  var sumValue;
-  return (
-    <View
-      style={{
-        paddingHorizontal: 16,
-        paddingVertical: 12,
-        flexDirection: "row",
-        borderRadius: 8,
-        backgroundColor: "white",
-        justifyContent: "space-between",
-        marginVertical: 15,
-      }}>
-      <View style={{ flexDirection: "column" }}>
-        <Text
-          tx="order.sum_no_texas"
-          style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
-        {props.arrVat != null
-          ? props.arrVat.map((data: any) => {
-            return data.VAT != undefined ? (
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  color: "#747475",
-                  marginTop: 8,
-                }}>
-                {data?.VAT?.label ?? null}
-              </Text>
-            ) : null;
-          })
-          : null}
-        {props.discount !== null ? (
-          <Text
-            tx="order.discount"
-            style={{
-              fontSize: 10,
-              fontWeight: "400",
-              color: "#747475",
-              marginTop: 8,
-            }}></Text>
-        ) : null}
-        <Text
-          tx="order.sum_yes_texas"
-          style={{
-            fontSize: 10,
-            fontWeight: "400",
-            color: "#747475",
-            marginTop: 8,
-          }}></Text>
-      </View>
-      <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
-          {(isNaN(props.sumNoVat) ? 0 : props.sumNoVat) ?? 0}
-        </Text>
-        {props.arrVat != undefined
-          ? props.arrVat.map((data: any) => {
-            if (data.taxValue !== undefined) {
-              sumValue =
-                Number(data.taxValue) +
-                Number(props.sumNoVat) -
-                Number(props.discount ?? 0);
-              console.log("tutu", data.taxValue, props.sumNoVat);
-            }
-            return data.taxValue != undefined ? (
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  color: "#747475",
-                  marginTop: 8,
-                }}>
-                {data?.taxValue ?? null}
-              </Text>
-            ) : null;
-          })
-          : null}
-        <Text
-          style={{
-            fontSize: 10,
-            fontWeight: "400",
-            color: "#747475",
-            marginTop: 8,
-          }}>
-          {props.discount ?? 0}
-        </Text>
-        <Text
-          style={{
-            fontSize: 12,
-            fontWeight: "600",
-            color: "#FF4956",
-            marginTop: 8,
-          }}>
-          {(isNaN(Sum()) ? sumValue : SumNoVAT()) ?? 0}
-        </Text>
-      </View>
-    </View>
-  );
-};

@@ -143,7 +143,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 quantity: items.amount * items.conversionRate,
               };
               const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, unitPrice: newPrice, price: items.amount * newPrice };
+              return { ...items, unitPrice: newPrice};
             })
           );
           const newArr1 = newArr2.map((item) => {
@@ -202,7 +202,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 quantity: items.amount * items.conversionRate,
               };
               const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, unitPrice: newPrice, price: newPrice * items.amount };
+              return { ...items, unitPrice: newPrice};
             })
           );
           const newArr1 = newArr2.map((item: any) => {
@@ -405,7 +405,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           return {
             ...items,
             unitPrice: data.unitPrice,
-            price: data.unitPrice * (data.amount + 1),
+            // price: data.unitPrice * (data.amount + 1),
             amount: data.amount + 1,
             isSelect: true,
             originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -414,7 +414,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           return {
             ...items,
             unitPrice: data.unitPrice,
-            price: data.unitPrice * (data.amount+1),
+            // price: data.unitPrice * (data.amount+1),
             amount: data.amount + 1,
             isSelect: true,
             originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -436,7 +436,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             return {
               ...items,
               unitPrice: data.unitPrice,
-              price: data.unitPrice * (data.amount-1),
+              // price: data.unitPrice * (data.amount-1),
               amount: data.amount - 1,
               isSelect: false,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -445,7 +445,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             return {
               ...items,
               unitPrice: data.unitPrice,
-              price: data.unitPrice * (data.amount- 1),
+              // price: data.unitPrice * (data.amount- 1),
               amount: data.amount - 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -456,7 +456,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             return {
               ...items,
               unitPrice: data.unitPrice,
-              price: data.unitPrice * (data.amount -1),
+              // price: data.unitPrice * (data.amount -1),
               amount: data.amount - 1,
               isSelect: false,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -465,7 +465,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             return {
               ...items,
               unitPrice: data.unitPrice,
-              price: data.unitPrice *  (data.amount -1),
+              // price: data.unitPrice *  (data.amount -1),
               amount: data.amount - 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
@@ -498,7 +498,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             saleUom: { id: uomData.uomId, name: uomData.uomName },
             conversionRate: uomData.conversionRate,
             unitPrice: newPrice,
-            price: newPrice * newAmount,
+            // price: newPrice * newAmount,
             amount: newAmount,
             originAmount: Math.ceil(newAmount * uomData.conversionRate),
           };
@@ -526,7 +526,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             return {
               ...items,
               unitPrice: newPrice,
-              price: newPrice * (data.amount +1),
+              // price: newPrice * (data.amount +1),
               amount: data.amount + 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -543,7 +543,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             return {
               ...items,
               unitPrice: newPrice,
-              price: newPrice * (data.amount +1),
+              // price: newPrice * (data.amount +1),
               amount: data.amount + 1,
               isSelect: true,
               originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
@@ -575,7 +575,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               return {
                 ...items,
                 unitPrice: newPrice,
-                price: newPrice * (data.amount -1),
+                // price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: false,
                 originAmount: Math.ceil(
@@ -586,7 +586,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               return {
                 ...items,
                 unitPrice: newPrice,
-                price: newPrice * (data.amount -1),
+                // price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: true,
                 originAmount: Math.ceil(
@@ -610,7 +610,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               return {
                 ...items,
                 unitPrice: newPrice,
-                price: newPrice * (data.amount -1),
+                // price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: false,
                 originAmount: Math.ceil(
@@ -629,7 +629,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               return {
                 ...items,
                 unitPrice: newPrice,
-                price: newPrice * (data.amount -1),
+                // price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: true,
                 originAmount: Math.ceil(
@@ -653,7 +653,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         return {
           ...items,
           unitPrice: Number(text),
-          price: Number(text) * Number(data.amount),
+          // price: Number(text) * Number(data.amount),
           amount: data.amount,
           isSelect: true,
           originAmount: data.originAmount,

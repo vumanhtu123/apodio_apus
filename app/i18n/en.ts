@@ -283,7 +283,7 @@ const en = {
     chooseCity: "Chọn tỉnh/thành phố",
     chooseWard: "Chọn phường/xã",
     order: "Đặt hàng",
-    moreInformation: "More information",
+    moreInformation: "Thông tin thêm",
     promotionHint: "Enter promo code or gift code here.",
     note: "Ghi chú",
     placeNote: "Ghi chú đơn hàng",

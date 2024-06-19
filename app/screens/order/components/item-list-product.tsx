@@ -89,7 +89,7 @@ export default function ItemListProduct(props: AddProduct) {
 
   const Sum = (): Number => {
     return (
-      Price() + Number(props.valueVAT ?? 0) - Number(props.textDiscount ?? 0)
+      Price() * (1- (Number(props.textDiscount ?? 0))/100) + Number(props.valueVAT ?? 0)
     );
   };
 
@@ -156,11 +156,15 @@ export default function ItemListProduct(props: AddProduct) {
                         borderBottomWidth: 1,
                         textAlignVertical: "bottom",
                       }}
+                      keyboardType="numeric"
                       placeholder={translate("order.input_price")}
                       placeholderTextColor={"#747475"}
                       onChangeText={(newText) => {
-                        inputPrice(newText);
+                        // inputPrice(newText);
+                        onChange(newText)
                       }}
+                      value={value}
+                      onSubmitEditing={()=> inputPrice(value)}
                     />
                   </View>
                 )}
@@ -168,7 +172,7 @@ export default function ItemListProduct(props: AddProduct) {
               />
             ) : (
               <Text
-                text={Price().toString() + " "}
+                text={cost}
                 style={{
                   fontWeight: "400",
                   fontSize: fontSize.size12,
@@ -290,11 +294,16 @@ export default function ItemListProduct(props: AddProduct) {
                             borderBottomWidth: 1,
                             textAlignVertical: "bottom",
                           }}
+                          keyboardType="numeric"
+                          maxLength={3}
                           placeholder={translate("order.input_texas")}
                           placeholderTextColor={"#747475"}
                           onChangeText={(newText) => {
-                            inputDiscount(newText);
+                            // inputDiscount(newText);
+                            onChange(newText)
                           }}
+                          value={value}
+                          onSubmitEditing={()=> inputDiscount(value)}
                         />
                       </View>
                     )}
