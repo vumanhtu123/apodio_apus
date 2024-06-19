@@ -112,35 +112,35 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           JSON.stringify(response.response.data)
         );
         const newArr = response.response.data;
-        const newData = newArr.filter((item: any)=> item.isDefault===true)
-        if(newData.length!== 0){
+        const newData = newArr.filter((item: any) => item.isDefault === true)
+        if (newData.length !== 0) {
           orderStore.setDataAddress(newData[0])
           setAddress(newData[0])
-        }else{
-            setAddress({
-              id: 0, partnerId: 0,
-              phoneNumber: '',
-              addressType: '',
-              country: { id: 0, name: '' },
-              region: { id: 0, name: '' },
-              city: { id: 0, name: '' },
-              district: { id: 0, name: '' },
-              ward: { id: 0, name: '' },
-              address: '',
-              isDefault: false,
-            })
-            orderStore.setDataAddress({
-              id: 0, partnerId: 0,
-              phoneNumber: '',
-              addressType: '',
-              country: { id: 0, name: '' },
-              region: { id: 0, name: '' },
-              city: { id: 0, name: '' },
-              district: { id: 0, name: '' },
-              ward: { id: 0, name: '' },
-              address: '',
-              isDefault: false,
-            })
+        } else {
+          setAddress({
+            id: 0, partnerId: 0,
+            phoneNumber: '',
+            addressType: '',
+            country: { id: 0, name: '' },
+            region: { id: 0, name: '' },
+            city: { id: 0, name: '' },
+            district: { id: 0, name: '' },
+            ward: { id: 0, name: '' },
+            address: '',
+            isDefault: false,
+          })
+          orderStore.setDataAddress({
+            id: 0, partnerId: 0,
+            phoneNumber: '',
+            addressType: '',
+            country: { id: 0, name: '' },
+            region: { id: 0, name: '' },
+            city: { id: 0, name: '' },
+            district: { id: 0, name: '' },
+            ward: { id: 0, name: '' },
+            address: '',
+            isDefault: false,
+          })
         }
       } else {
         console.error("Failed to fetch categories:", response);
@@ -176,6 +176,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
+          navigation.navigate('orders' as never)
           Dialog.hide();
         },
       });
@@ -832,7 +833,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         handleInputTaxes(item.id, text)
                       }
                       textDiscount={item.taxesInput}
-                      handleUpdatePrice={function ({}: {}): void {
+                      handleUpdatePrice={function ({ }: {}): void {
                         selectInputPrice(item.id);
                       }}
                       selectUpdate={item.addPrice}
@@ -897,7 +898,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   <Images.icon_caretRight2 />
                 </View>
                 {countRef.current.toString() ===
-                translate("order.DEDUCTION_OF_LIABILITIES") ? (
+                  translate("order.DEDUCTION_OF_LIABILITIES") ? (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text
                       tx="order.available_limit"

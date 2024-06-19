@@ -40,7 +40,7 @@ export const PrintInvoiceScreen: FC = observer(
                 const response = await orderStore.getDetailInvoice(invoiceId);
                 if (response && response.kind === "ok") {
                     const data = response.response.data;
-                    console.log('dataDetailInvoice', data)
+                    console.log('dataDetailInvoice', JSON.stringify(data))
                     setData(data);
                 } else {
                     console.error("Failed to fetch detail:", response);
@@ -91,9 +91,6 @@ export const PrintInvoiceScreen: FC = observer(
             handleGetDetailInvoice()
             handleGetInfoCompany()
         }, []);
-        useEffect(() => {
-            console.log('first', dataInfoCompany)
-        })
         const renderItem = ({ item }: any) => (
             <View style={styles.row}>
                 <View style={{ flexDirection: 'row', marginVertical: scaleHeight(15) }}>
@@ -118,12 +115,6 @@ export const PrintInvoiceScreen: FC = observer(
                 </View>
             </View>
         );
-        const dataPrice = [
-            { label: 'Cộng tiền hàng', value: 90000000 },
-            { label: 'Tiền thuế (VAT 8%)', value: 7200000 },
-            { label: 'Tiền thuế (VAT 10%)', value: 9000000 },
-            { label: 'Tổng tiền thanh toán', value: 73800000, highlight: true },
-        ];
         return (
             <View style={styles.ROOT}>
                 <Header
@@ -179,8 +170,11 @@ export const PrintInvoiceScreen: FC = observer(
                             <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12) }}>
                                 <Text tx='printInvoiceScreen.address' style={styles.companyName} />
                                 <Text style={styles.textInfo}>
+                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + " " : ""}
+                                    {data.deliveryAddress?.ward?.name ? data.deliveryAddress.ward.name + ", " : ""}
+                                    {data.deliveryAddress?.district?.name ? data.deliveryAddress.district.name + ", " : ""}
+                                    {data.deliveryAddress?.city?.name ? data.deliveryAddress.city.name : ""}
                                     {/* { ` ${data.deliveryAddress?.address}, ${data.deliveryAddress?.wardName}, ${data.deliveryAddress?.districtName}, ${data.deliveryAddress?.cityName}`} */}
-                                    {data.deliveryAddress?.address ? ` ${data.deliveryAddress?.address}, ${data.deliveryAddress?.wardName}, ${data.deliveryAddress?.districtName}, ${data.deliveryAddress?.cityName}` : null}
                                 </Text>
                             </View>
                             <View style={{ flexDirection: 'row' }}>
