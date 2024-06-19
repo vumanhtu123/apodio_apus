@@ -13,7 +13,7 @@ import { boolean } from "mobx-state-tree/dist/internal";
 import { RectButton } from "react-native-gesture-handler";
 import { Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
-
+import en from "../../../../i18n/en";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
@@ -21,22 +21,21 @@ interface ModalClientFromPhoneProps {
 }
 
 
-const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisible, handleRefresh }) => {
+const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
     const [selectCustomerType, setSelectCustomerType] = useState({ label: "" })
-    const [phoneNumber, setPhoneNumber] = useState<any>()
-    const [nameClient, setNameClient] = useState<any>()
+    const [checkError, setCheckError] = useState(false)
 
 
-    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "all" })
+    const { control, handleSubmit, setError, formState: { errors }, reset, clearErrors } = useForm({
+        defaultValues: {
+            phoneNumber: '',
+            NameClient: ''
+        }
+    })
 
     const getAPIcreateClient = useStores();
 
-    const omSubmit = (data: FormData) => {
-        console.log('====================================');
-        console.log('data test', data);
-        console.log('====================================');
-    }
     const checkStatusCompany = (): boolean => {
         if (selectCustomerType.label == "Cá nhân") {
             return true
@@ -45,10 +44,17 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
         }
     }
 
-    // console.log('====================================');
-    // console.log("checkk ", checkStatusCompany());
-    // console.log('====================================');
-    const addClient = async () => {
+    const omSubmit = async (data: any) => {
+
+        const nameClient = data.NameClient
+        const phoneNumber = data.phoneNumber
+
+        selectCustomerType.label == "" && setCheckError(!checkError)
+
+        console.log('====================================');
+        console.log('data test', nameClient, phoneNumber, selectCustomerType);
+        console.log('====================================');
+
         const result = await getAPIcreateClient.orderStore.postClient({
             "name": nameClient,
             "phoneNumber": phoneNumber,
@@ -64,7 +70,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
         // console.log('test', result);
         // console.log('====================================');
         if (result.kind === "ok") {
-            setIsVisible(!isVisible)
+            props.setIsVisible(!props.isVisible)
             Dialog.show({
                 title: translate("txtDialog.txt_title_dialog"),
                 button: '',
@@ -73,7 +79,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                 closeOnOverlayTap: false,
                 onPressButton: () => {
                     Dialog.hide();
-                    handleRefresh()
+                    props.handleRefresh()
                 }
             })
         } else {
@@ -84,9 +90,13 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                 closeOnOverlayTap: false
             })
         }
-
-
     }
+
+
+    // console.log('====================================');
+    // console.log("checkk ", checkStatusCompany());
+    // console.log('====================================');
+
 
 
     const dataFindClient = [
@@ -95,7 +105,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
 
     ]
 
-    console.log('doandev', phoneNumber, nameClient, selectCustomerType);
+    // console.log('doandev', phoneNumber, nameClient, selectCustomerType);
 
     const arrGroupCustomerType = dataFindClient.map((item) => {
         return { label: item.title, id: item.id }
@@ -107,7 +117,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
             animationOut="slideOutDown"
             animationInTiming={500}
             animationOutTiming={750}
-            isVisible={isVisible}
+            isVisible={props.isVisible}
             style={{ margin: 0 }}
             avoidKeyboard={true}
         >
@@ -120,7 +130,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                 <View style={styles.modalView}>
                     <Text style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Tạo mới khách hàng</Text>
+                        <Text style={styles.headerTitle}></Text>
 
 
                     </View>
@@ -139,12 +149,15 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                         styleView={{ marginBottom: scaleHeight(15) }}
 
                     />
+                    {
+                        selectCustomerType.label == "" && <Text style={{ fontSize: fontSize.size12, color: '#C95B36' }} tx="ClientScreen.pleaseSelectTypeClient" />
+                    }
+
 
 
                     <Controller
                         control={control}
                         name="phoneNumber"
-
                         render={({ field: { onBlur, onChange, value } }) => (
 
                             <TextField
@@ -161,10 +174,12 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={() => onChange(" ")}
-                                onChangeText={(txt) => {
-                                    onChange(txt)
-                                    setPhoneNumber(txt)
+                                onClearText={() => onChange("")}
+                                onChangeText={(value) => {
+
+                                    onChange(value)
+
+
                                 }}
                                 isImportant
                                 placeholder="VD 01231254"
@@ -174,19 +189,26 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                             />
                         )}
                         rules={{
-                            required: "Vui lòng nhập số điện thoại"
+                            maxLength: {
+                                value: 10,
+                                message: en.ClientScreen.phoneNumber10
+                            },
+                            minLength: {
+                                value: 10,
+                                message: en.ClientScreen.phoneNumber10
+
+                            },
+                            required: en.ClientScreen.pleaseInputPhoneNumber
                         }}
                     />
-                    {
-                        phoneNumber?.length < 10 || phoneNumber?.length > 10 ?
-                            <Text style={{ fontSize: 12, color: 'red' }}>Vui lòng nhập đủ 10 số</Text> : null
-                    }
+
+
                     <Controller
                         control={control}
                         name="NameClient"
                         render={({ field: { onBlur, onChange, value } }) => (
                             <TextField
-                                keyboardType=""
+                                keyboardType="ascii-capable"
                                 labelTx={"selectClient.nameClient"}
                                 style={{
                                     // marginBottom: scaleHeight(10),
@@ -199,10 +221,16 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={() => onChange("")}
+                                onClearText={() => {
+                                    reset({
+                                        NameClient: ""
+                                    })
+                                }}
                                 onChangeText={(txt) => {
+
                                     onChange(txt)
-                                    setNameClient(txt)
+                                    // setNameClient(txt)
+
                                 }}
                                 isImportant
                                 placeholder="VD Nguyễn Phương Linh"
@@ -211,21 +239,21 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                             />
                         )}
                         rules={{
-                            required: "Vui lòng  nhập họ tên"
+                            required: en.ClientScreen.pleaseInputName
                         }}
                     />
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}
-                            onPress={() => setIsVisible(!isVisible)}
+                            onPress={() => props.setIsVisible(!props.isVisible)}
                         >
                             <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
-                            onPress={() => {
-                                // handleSubmit(omSubmit)
-                                addClient()
-                            }}
+                            onPress={
+                                handleSubmit(omSubmit)
+                                // addClient()
+                            }
                         >
                             <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectClient.add"></Text>
                         </TouchableOpacity>
