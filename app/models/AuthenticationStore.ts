@@ -84,8 +84,8 @@ export const AuthenticationStoreModel = types
           console.log("tuvm", result);
           store.setAccessToken(result.data.accessToken);
           store.setUserID(result.data.userId);
-          setAccessToken(store.accessToken);
-          setRefreshToken(store.refreshToken)
+          setAccessToken(result.data.accessToken);
+          setRefreshToken(result.data.refreshToken)
           setTenantId(result.data.tenantId);
           return result.data;
         } else {
