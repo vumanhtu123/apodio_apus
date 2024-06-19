@@ -188,7 +188,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           handleOnSubmitSearch={handleSubmitSearch}
           onSearchValueChange={handleSearchValueChange}
 
-          rightText1={moment(markedDatesS === "" ? oneMonthBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
+          rightText1={moment(markedDatesS === "" ? oneMonthBefore : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  >
