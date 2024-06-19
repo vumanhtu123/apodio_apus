@@ -82,10 +82,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
   const [address, setAddress] = useState(orderStore.dataAddress)
+  const [editTaxes, setEditTaxes] = useState(false)
   const countRef = useRef(translate("order.CASH"));
   const nameTax = useRef("");
   // const price = useRef(0);
   const [price, setPrice] = useState(0);
+  const [priceNoVat, setPriceNoVat] = useState(0);
   const priceSumVAT = useRef(0);
   const priceSumAll = useRef(0);
   const arrTaxAll = useRef([{ percent: "", amount: "" }]);
@@ -424,13 +426,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     console.log("input taxes", text);
     let newArr = arrProduct!.map((item: any) => {
       if (item.id === id) {
-        return { ...item, taxesInput: Number(text) };
+        return { ...item, taxesInput: Number(text), addInputTaxes: false, };
       }
       return item;
     });
     setArrProduct(newArr);
     // discountAll(newArr);
     postTaxLines(newArr)
+    // setEditTaxes(false)
     if (isDeposit === true) {
       handleDebt();
     }
@@ -447,6 +450,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       }
       return item;
     });
+    // setEditTaxes(false)
     setArrProduct(newArr);
   };
 
@@ -456,6 +460,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         return {
           ...item,
           addPrice: (item.addPrice = !item.addPrice),
+        };
+      }
+      return item;
+    });
+    setArrProduct(newArr);
+  };
+  const selectInputTaxes = (id: any) => {
+    let newArr = arrProduct.map((item: any) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          addInputTaxes: true,
         };
       }
       return item;
@@ -571,6 +587,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       })
     );
   };
+  useEffect(()=>{ getListTax()}, [payment])
 
   const postTaxLines = async (data: any) => {
     const newItem = data.filter((item: any) => item.id === idItemOrder.current);
@@ -668,7 +685,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     const all = data.reduce((sum: any, item: any) => {
       return sum + ((Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) - ((Number(item.taxesInput ?? 0) / 100) * (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0))) + Number(item.taxValue ?? 0));
     }, 0);
+    const allNoVat = data.reduce((sum: any, item: any) => {
+      return sum + (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0));
+    }, 0);
     setPrice(all);
+    setPriceNoVat(allNoVat)
     console.log("sum all: ", all);
   };
 
@@ -766,8 +787,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             titleTx={"order.paymentMethods"}
             arrData={arrPayment}
             onPressChoice={(item: any) => {
-              setPayment(item);
-              getListTax();
+              setPayment(item)
+              // getListTax();
             }}
             dataDefault={payment.label}
           />
@@ -796,7 +817,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       onPressAddTexas={() => handleAddTaxes(item.id)}
                       onPressSelectTexas={() => {
                         console.log("check validate", item.price);
-                        item.price === undefined || item.price === 0
+                        item.unitPrice === undefined || item.unitPrice === 0
                           ? Dialog.show({
                               type: ALERT_TYPE.INFO,
                               title: translate("productScreen.Notification"),
@@ -806,12 +827,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                               ),
                               closeOnOverlayTap: false,
                               onPressButton: () => {
-                                navigation.goBack();
+                                // navigation.goBack();
                                 Dialog.hide();
                               },
                             })
                           : handleSelectTaxes(item.id);
                       }}
+                      taxesInput={item.taxesInput}
+                      editTaxes={item.addInputTaxes}
                       sumTexas={item.sumTexas}
                       VAT={item.VAT?.label ?? undefined}
                       valueVAT={item.taxValue}
@@ -829,6 +852,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           ? false
                           : true
                       }
+                      editDiscount={()=> {
+                        selectInputTaxes(item.id);
+                      }}
                       inputDiscount={(text: any) =>
                         handleInputTaxes(item.id, text)
                       }
@@ -856,7 +882,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={price}
+              sumNoVat={priceNoVat}
               sumVat={priceSumVAT.current}
               arrVat={arrProduct}
               discount={discount.current}
