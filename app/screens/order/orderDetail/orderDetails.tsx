@@ -397,27 +397,27 @@ export const OrderDetails: FC = observer(
                                         colors.palette.malachite
                         }]} />
                     </View>
-                    {/* {dataPayment?.paymentResponses?.lengh > 0 ? ( */}
-                    <View style={styles.viewCash}>
-                        {dataPayment.paymentResponses?.map((item: any) => (
-                            <View style={{
-                                flexDirection: 'row', alignItems: 'center',
-                                marginBottom: scaleHeight(margin.margin_15)
-                            }}>
-                                <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                    <Text text={item.timePayment} style={styles.textContent} />
+                    {dataPayment?.paymentResponses?.lengh > 0 ? (
+                        <View style={styles.viewCash}>
+                            {dataPayment.paymentResponses?.map((item: any) => (
+                                <View style={{
+                                    flexDirection: 'row', alignItems: 'center',
+                                    marginBottom: scaleHeight(margin.margin_15)
+                                }}>
+                                    <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                        <Text text={item.timePayment} style={styles.textContent} />
+                                    </View>
+                                    <View style={styles.viewLineCash}>
+                                        <Images.icon_ellipse />
+                                    </View>
+                                    <View style={styles.viewTextCash}>
+                                        <Text text={item.paymentPopUpResponse?.paymentMethod} style={[styles.textContent, { flex: 1 }]} />
+                                        <Text text={formatCurrency(item.amount)} />
+                                    </View>
                                 </View>
-                                <View style={styles.viewLineCash}>
-                                    <Images.icon_ellipse />
-                                </View>
-                                <View style={styles.viewTextCash}>
-                                    <Text text={item.paymentPopUpResponse?.paymentMethod} style={[styles.textContent, { flex: 1 }]} />
-                                    <Text text={formatCurrency(item.amount)} />
-                                </View>
-                            </View>
-                        ))}
-                    </View>
-                    {/* ) : null} */}
+                            ))}
+                        </View>
+                    ) : null}
                     <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)} style={{
                         paddingHorizontal: scaleWidth(padding.padding_16),
                         backgroundColor: colors.palette.neutral100,
