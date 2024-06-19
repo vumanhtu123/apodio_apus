@@ -95,7 +95,6 @@ export class ApiRefreshToken {
         Loading.hide();
       }
     });
-
     // Add response transform
     this.apisauce.addResponseTransform(async (response) => {
       try {

@@ -33,7 +33,7 @@ interface AddProduct {
   onPressSelectTexas: ({ }) => void;
   onPressAddTexas: ({ }) => void;
   handleUpdatePrice: ({ }) => void;
-  editDiscount?: ({}) => void;
+  editDiscount?: ({ }) => void;
   arrData?: {}[];
   images?: string;
   name?: string;

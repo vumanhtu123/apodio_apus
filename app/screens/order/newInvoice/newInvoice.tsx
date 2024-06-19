@@ -29,7 +29,7 @@ import CustomCalendar from "../../../components/calendar";
 import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
-import { formatCurrency } from "../../../utils/validate";
+import { calculateTotalPrice, calculateTotalUnitPrice, formatCurrency } from "../../../utils/validate";
 import ProductAttribute from "../../product/component/productAttribute";
 
 export const NewInvoice: FC = observer(function NewInvoice(props) {
@@ -285,6 +285,14 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         { id: 2, value: 'VAT_BILL', label: 'Hóa đơn giá trị gia tăng' },
         { id: 3, value: 'SALE_BILL', label: 'Hóa đơn bán hàng (HĐ điện tử)' },
     ];
+    const calculateTotalUnTaxPrice = () => {
+        let totalPrice = 0;
+        data.saleOrderLines?.forEach((item: any) => {
+          const itemTotal = calculateTotalUnitPrice(item.amountUntaxed, item.quantity);
+          totalPrice += itemTotal;
+        });
+        return totalPrice;
+      }
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
@@ -501,7 +509,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
-                                                    <Text text={formatCurrency(item.amountTotal)} style={styles.textListProduct} />
+                                                    <Text text={formatCurrency(calculateTotalUnitPrice(item.amountUntaxed, item.quantity))} style={styles.textListProduct} />
 
                                                 </View>
                                             </View>
@@ -518,13 +526,15 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                             <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
-                                value={formatCurrency(data.computeTaxInfo?.taxLines?.[0]?.untaxedAmount)}
+                                value={formatCurrency(calculateTotalUnTaxPrice())}
                             />
-                            {data.computeTaxInfo?.taxLines?.[0]?.items?.map((item: any) => (
-                                <ProductAttribute
-                                    label={item.taxName}
-                                    value={formatCurrency(item.amount)}
-                                />
+                            {data.computeTaxInfo?.taxLines.map((tax: any) => (
+                                tax.items?.map((item: any) => (
+                                    <ProductAttribute
+                                        label={item.taxName}
+                                        value={formatCurrency(item.amount)}
+                                    />
+                                ))
                             ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"
@@ -573,7 +583,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 isReset={isReset}
                 minDate={minDateS}
                 // maxDate={minDateE}
-                handleReset={() => {setIReset(!isReset)}}
+                handleReset={() => { setIReset(!isReset) }}
                 handleShort={() => {
                     toggleModalDateEnd();
                     // choiseCalendar == 1 ? setMinDateS(markedDatesS) : 
