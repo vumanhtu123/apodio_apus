@@ -46,9 +46,12 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const [isSortByDate, setIsSortByDate] = useState<boolean>(false)
     const today = new Date()
     // const sevenDaysBefore = new Date(today)
-    const oneMonthBefore = new Date(today.getFullYear(), today.getMonth(), 1);
-    const [markedDatesS, setMarkedDatesS] = useState<any>(oneMonthBefore)
-    const [markedDatesE, setMarkedDatesE] = useState<any>(today)
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const firstDayOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    const lastDayOfMonth = new Date(firstDayOfNextMonth - 1);
+
+    const [markedDatesS, setMarkedDatesS] = useState<any>(firstDayOfMonth)
+    const [markedDatesE, setMarkedDatesE] = useState<any>(lastDayOfMonth)
     // oneMonthBefore.setMonth(oneMonthBefore.getMonth() - 1);
     const [isReset, setIReset] = useState<boolean>(false)
     const markedDatesSRef = useRef('');
@@ -63,7 +66,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       const newValue = text !== null ? text.toString() : "";
       setSearchValue(newValue);
     };
-    markedDatesSRef.current = markedDatesS ? markedDatesS : oneMonthBefore.toString();
+    markedDatesSRef.current = markedDatesS ? markedDatesS : firstDayOfMonth.toString();
     markedDatesERef.current = markedDatesE ? markedDatesE : today.toString();
     // useEffect(() => {
     //   setMarkedDatesS(oneMonthBefore);
@@ -161,8 +164,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     };
     const refreshOrder = async () => {
       // setIsRefreshing(true);
-      setMarkedDatesS(oneMonthBefore);
-      setMarkedDatesE(today);
+      setMarkedDatesS(firstDayOfMonth);
+      setMarkedDatesE(lastDayOfMonth);
       setSearchValue('')
       setOpenSearch(false)
       setArrData([])
@@ -188,7 +191,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           handleOnSubmitSearch={handleSubmitSearch}
           onSearchValueChange={handleSearchValueChange}
 
-          rightText1={moment(markedDatesS === "" ? oneMonthBefore : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
+          rightText1={moment(markedDatesS === "" ? firstDayOfMonth : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  >
