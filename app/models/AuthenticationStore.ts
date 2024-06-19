@@ -2,7 +2,7 @@ import { Instance, SnapshotOut, flow, types } from "mobx-state-tree";
 import { withEnvironment } from "./extensions/with-environment";
 import { AuthApi } from "../services/api/api-config-auth";
 import { LoginResponse } from "./login-model";
-import { getAccessToken, setAccessToken, setRefreshToken, setTenantId } from "../utils/storage";
+import { getAccessToken, setAccessToken, setFirstOpenApp, setRefreshToken, setTenantId } from "../utils/storage";
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
@@ -83,13 +83,10 @@ export const AuthenticationStoreModel = types
         if (result.data != undefined) {
           console.log("tuvm", result);
           store.setAccessToken(result.data.accessToken);
-          store.setRefreshToken(result.data.refreshToken);
           store.setUserID(result.data.userId);
-          store.setJTI(result.data.jti);
-          setAccessToken(store.accessToken);
-          setRefreshToken(store.refreshToken)
-          // setTenantId(store.tenantId);
-          store.setTenantId(result.data.tenantId);
+          setAccessToken(result.data.accessToken);
+          setRefreshToken(result.data.refreshToken)
+          setTenantId(result.data.tenantId);
           return result.data;
         } else {
           const errorM = result.errorCodes.find((error) => error.code)?.message;
@@ -111,7 +108,12 @@ export const AuthenticationStoreModel = types
       );
       console.log("jti : ", store.jti);
       const result: any = yield authApi.logout(store.jti);
-      store.accessToken = undefined;
+      store.setAccessToken('')
+      setAccessToken('')
+      setRefreshToken('')
+      setTenantId('')
+      store.setUserID();
+      store.setJTI('')
       console.log("tuvm logout", result);
       if (result.kind === "ok") {
         console.log("token set", store.accessToken);
@@ -149,7 +151,8 @@ export const AuthenticationStoreModel = types
         const result: BaseResponse<any, ErrorCode> =
           yield authApi.refreshToken(refreshToken);
         if (result.data != undefined) {
-          // console.log("tuvm", result);
+          store.setAccessToken(result.data.accessToken);
+          console.log("tuvm", result);
           // store.setAccessToken(result.data.accessToken);
           // store.setRefreshToken(result.data.refreshToken);
           store.setUserID(result.data.userId);
@@ -157,7 +160,7 @@ export const AuthenticationStoreModel = types
           setAccessToken(result.data.accessToken);
           setRefreshToken(result.data.refreshToken)
           // setTenantId(store.tenantId);
-          store.setTenantId(result.data.tenantId);
+          setTenantId(result.data.tenantId);
           return result.data;
         } else {
           const errorM = result.errorCodes.find((error) => error.code)?.message;

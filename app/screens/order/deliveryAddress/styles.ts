@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import {
   colors,
   fontSize,
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   viewTextField: {
     marginBottom: scaleHeight(10),
     marginTop: scaleHeight(margin.margin_10),
-    paddingBottom: scaleHeight(padding.padding_8),
+    paddingBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0,
   },
   buttonCancelModal: {
     paddingVertical: scaleHeight(padding.padding_12),

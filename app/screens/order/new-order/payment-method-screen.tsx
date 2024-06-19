@@ -7,16 +7,55 @@ import { colors, fontSize, scaleHeight } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { ModalPayment } from "../components/modal-payment-method";
+import { useStores } from "../../../models";
+import { methodData } from "./data";
+import { translate } from "../../../i18n";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
 ) {
   const type = props.route.params.params.type;
+  const price = props.route.params.params.price;
+  const debtAmount = props.route.params.params.debtAmount;
+  const [method, setMethod] = useState<number>(0);
+  const countRef = useRef(translate("order.CASH"));
+
+  const { orderStore } = useStores();
+  console.log("debt tuvm", debtAmount);
+
+  const Sum = () => {
+    if (Number(price) == 0) {
+      return Number(price);
+    }
+    if (debtAmount == null) {
+      return 0;
+    }
+    return Number(price) - Number(debtAmount);
+  };
+
+  const Remain = () => {
+    if (Number(price) == 0) {
+      return Number(price);
+    }
+    return Number(price) - Number(text);
+  };
+  const Apply = () => {
+    orderStore.setMethodPayment({
+      sumAll: price ?? 0,
+      methodPayment: "Tien Mat",
+      debt: Remain(),
+      inputPrice: Number(text) ?? 0,
+      apply: true,
+    });
+    navigation.goBack();
+  };
   console.log("tuvm", type);
+  const [check, setCheck] = useState(false)
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
+  const [text, setText] = useState("");
   const {
     control,
-    formState: { errors },
+    formState: { errors }, setError, setValue
   } = useForm();
   const navigation = useNavigation();
   return (
@@ -42,7 +81,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {type != true ? (
+          {check !== true ? (
             <View
               style={{
                 backgroundColor: "#FEF7E5",
@@ -69,7 +108,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               textAlign: "center",
               marginVertical: 20,
             }}>
-            53.700.000
+            {price}
           </Text>
           <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
             <Text
@@ -80,31 +119,61 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.text_money_limit"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              30.000.000
+              {Sum()}
             </Text>
           </View>
           <Controller
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                keyboardType={null}
+                keyboardType='numeric'
                 labelTx={"order.customer_paid"}
-                style={{ marginHorizontal: 16, marginVertical: 8 }}
+                style={{
+                  marginHorizontal: 16,
+                  marginVertical: 8,
+                  backgroundColor: "white",
+                  borderRadius: 8,
+                }}
                 value={value}
                 onBlur={onBlur}
+                showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
-                error={""}
+                error={errors?.price?.message}
+                styleError={{ marginLeft: scaleHeight(16) }}
                 onClearText={() => {
                   onChange("");
+                  setText("");
                 }}
                 onChangeText={(value) => {
-                  onChange(value);
+                  if (Number(value) >= Number(price)) {
+                    setValue('price', price.toString())
+                  } else{
+                    onChange(value)
+                  }
+                }}
+                // defaultValue={text===""? "": text}
+                onSubmitEditing={() => {
+                  if (Number(value) >= Number(price)) {
+                    setValue('price', price.toString())
+                    onChange(price)
+                    setText(price)
+                    Remain()
+                  }
+                  if (Number(value) < Number(Sum())) {
+                    setError("price", {
+                      type: "validate",
+                      message: 'Khách cần trả lớn hơn số tiền tối thiểu',
+                    });
+                  }
+                  if (Number(price) > Number(value) && Number(value) >= Number(Sum())) {
+                    setText(value)
+                    Remain()
+                  }
                 }}
               />
             )}
-            defaultValue={""}
             name="price"
-            rules={{ required: "Username is required" }}
+            rules={{ required: "Số tiền là bắt buộc" }}
           />
           <View
             style={{
@@ -125,13 +194,16 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text
-                  tx="order.money_face"
+                  // text={}
+                  // tx="order.money_face"
                   style={{
                     fontSize: 12,
                     fontWeight: "400",
                     color: "#242424",
                     marginRight: 6,
-                  }}></Text>
+                  }}>
+                  {countRef.current}
+                </Text>
                 <Images.icon_caretRight2 />
               </View>
             </TouchableOpacity>
@@ -150,7 +222,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.amount_paid"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              30.000.000
+              {Remain()}
             </Text>
           </View>
         </View>
@@ -158,7 +230,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       <View>
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
+            Apply();
           }}>
           <View
             style={{
@@ -186,14 +258,22 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         closeDialog={function (): void {
           setButtonPayment(false);
         }}
-        arrData={[]}
-        method={0}
+        arrData={methodData}
+        method={method}
         setMethod={function (item: number, name: string): void {
-          throw new Error("Function not implemented.");
+          setMethod(item);
+          countRef.current = name;
+          setCheck(true)
+          if (name === translate("order.DEDUCTION_OF_LIABILITIES")) {
+            setText(orderStore.dataDebtLimit.debtAmount.toString())
+          } else {
+            setText('')
+          }
+          console.log("tuvm method", countRef);
         }}
         debt={{
-          isHaveDebtLimit: undefined,
-          debtAmount: undefined,
+          isHaveDebtLimit: orderStore.dataDebtLimit.isHaveDebtLimit,
+          debtAmount: orderStore.dataDebtLimit.debtAmount,
         }}
       />
     </View>

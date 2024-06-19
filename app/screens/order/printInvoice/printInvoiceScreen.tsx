@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import {
     FlatList,
     ImageBackground,
+    NativeModules,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -20,6 +21,9 @@ import { useStores } from '../../../models';
 import { formatCurrency } from '../../../utils/validate';
 import ProductAttribute from '../../product/component/productAttribute';
 import FastImage from 'react-native-fast-image';
+import RNFS from 'react-native-fs';
+
+
 
 export const PrintInvoiceScreen: FC = observer(
     function PrintInvoiceScreen(props) {
@@ -29,13 +33,14 @@ export const PrintInvoiceScreen: FC = observer(
         const [dataInfoCompany, setDataInfoCompany] = useState<any>([]);
         const route = useRoute()
         const invoiceId = route?.params?.invoiceId
+        const {PrintManager} = NativeModules;
 
         const handleGetDetailInvoice = async () => {
             try {
                 const response = await orderStore.getDetailInvoice(invoiceId);
                 if (response && response.kind === "ok") {
                     const data = response.response.data;
-                    console.log('dataDetailInvoice', data)
+                    console.log('dataDetailInvoice', JSON.stringify(data))
                     setData(data);
                 } else {
                     console.error("Failed to fetch detail:", response);
@@ -59,13 +64,33 @@ export const PrintInvoiceScreen: FC = observer(
             }
 
         };
+        const downloadAndPrintImage = async (imageUrl: any) => {
+            try {
+              // Đường dẫn tạm thời trên thiết bị
+              const localFilePath = `${RNFS.DocumentDirectoryPath}/tempimage.jpg`;
+          
+              // Tải file ảnh từ URL về thiết bị
+              const downloadResult = await RNFS.downloadFile({
+                fromUrl: imageUrl,
+                toFile: localFilePath,
+              }).promise;
+          
+              if (downloadResult.statusCode === 200) {
+                console.log('Image downloaded to:', localFilePath);
+                // Gọi hàm in với đường dẫn file cục bộ
+                PrintManager.print(localFilePath);
+              } else {
+                console.error('Image download failed:', downloadResult);
+              }
+            } catch (error) {
+              console.error('Error downloading image:', error);
+            }
+          };
+
         useEffect(() => {
             handleGetDetailInvoice()
             handleGetInfoCompany()
         }, []);
-        useEffect(() => {
-            console.log('first', dataInfoCompany)
-        })
         const renderItem = ({ item }: any) => (
             <View style={styles.row}>
                 <View style={{ flexDirection: 'row', marginVertical: scaleHeight(15) }}>
@@ -90,12 +115,6 @@ export const PrintInvoiceScreen: FC = observer(
                 </View>
             </View>
         );
-        const dataPrice = [
-            { label: 'Cộng tiền hàng', value: 90000000 },
-            { label: 'Tiền thuế (VAT 8%)', value: 7200000 },
-            { label: 'Tiền thuế (VAT 10%)', value: 9000000 },
-            { label: 'Tổng tiền thanh toán', value: 73800000, highlight: true },
-        ];
         return (
             <View style={styles.ROOT}>
                 <Header
@@ -151,8 +170,11 @@ export const PrintInvoiceScreen: FC = observer(
                             <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12) }}>
                                 <Text tx='printInvoiceScreen.address' style={styles.companyName} />
                                 <Text style={styles.textInfo}>
+                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + " " : ""}
+                                    {data.deliveryAddress?.ward?.name ? data.deliveryAddress.ward.name + ", " : ""}
+                                    {data.deliveryAddress?.district?.name ? data.deliveryAddress.district.name + ", " : ""}
+                                    {data.deliveryAddress?.city?.name ? data.deliveryAddress.city.name : ""}
                                     {/* { ` ${data.deliveryAddress?.address}, ${data.deliveryAddress?.wardName}, ${data.deliveryAddress?.districtName}, ${data.deliveryAddress?.cityName}`} */}
-                                    {data.deliveryAddress?.address ? ` ${data.deliveryAddress?.address}, ${data.deliveryAddress?.wardName}, ${data.deliveryAddress?.districtName}, ${data.deliveryAddress?.cityName}` : null}
                                 </Text>
                             </View>
                             <View style={{ flexDirection: 'row' }}>
@@ -205,7 +227,11 @@ export const PrintInvoiceScreen: FC = observer(
                     tx={"printInvoiceScreen.printInvoice"}
                     style={styles.viewButton}
                     textStyle={styles.textButton}
-                // onPress={}
+                    onPress={() =>
+                        downloadAndPrintImage(
+                          'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
+                        )
+                      }
                 />
             </View>
         );

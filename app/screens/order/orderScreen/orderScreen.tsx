@@ -40,13 +40,16 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const { orderStore } = useStores();
     const [data, setData] = useState([])
     const [arrData, setArrData] = useState<any>([])
-    const [isShow, setIsShow] = useState(false);
     const [markedDatesS, setMarkedDatesS] = useState("")
+    const [timeStart, setTimeStart] = useState("")
+    const [timeEnd, setTimeEnd] = useState("")
     const [markedDatesE, setMarkedDatesE] = useState("")
     // const [selectedStatus, setSelectedStatus] = useState(0)
     const [isSortByDate, setIsSortByDate] = useState<boolean>(false)
     const today = new Date()
-    const sevenDaysBefore = new Date(today)
+    // const sevenDaysBefore = new Date(today)
+    const oneMonthBefore = new Date();
+    oneMonthBefore.setMonth(oneMonthBefore.getMonth() - 1);
     const [isReset, setIReset] = useState<boolean>(false)
     const markedDatesSRef = useRef('');
     const markedDatesERef = useRef('');
@@ -60,24 +63,14 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       const newValue = text !== null ? text.toString() : "";
       setSearchValue(newValue);
     };
-    markedDatesSRef.current = markedDatesS ? markedDatesS : sevenDaysBefore.toString();
+    markedDatesSRef.current = markedDatesS ? markedDatesS : oneMonthBefore.toString();
     markedDatesERef.current = markedDatesE ? markedDatesE : today.toString();
-
-    // const [activeSlide, setactiveSlide] = useState(0)
-    // const { accountStore, promotionStore, notifitionStoreModel } = useStores()
-    // const { userId } = accountStore
-    // const [arrPromotions, setarrPromotions] = useState(null)
-    // const [arrBanner, setarrBanner] = useState(null)
-    // const [showImagePicker, setShowImagePicker] = useState(false)
-    // const [countNoti, setCountNoti] = useState(0)
-    // const [imageAVT, setImageAVT] = useState(undefined)
+    useEffect(() => {
+      setMarkedDatesS(markedDatesSRef.current);
+      setMarkedDatesE(markedDatesERef.current);
+    }, []);
     const navigation = useNavigation()
     const paddingTop = useSafeAreaInsets().top;
-    // let bankAccount
-    // let amount
-    // useEffect(() => {
-    //   store.onLoad()
-    // }, [])
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedIndexStatus, setSelectedIndexStatus] = useState(0);
     const selectStatus = [{ status: '', textStatus: 'Tất cả' },
@@ -89,13 +82,14 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     // useEffect(() => {
     //   getListOrder()
     // }, [])
+  
     useEffect(() => {
       console.log("---------useEffect---------reload------------------");
       const unsubscribe = navigation.addListener('focus', () => {
         getListOrder()
       });
       return unsubscribe;
-  }, [navigation])
+    }, [navigation])
     useEffect(() => {
       getListOrder()
     }, [selectedStatus])
@@ -107,9 +101,9 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           selectedStatus,
           searchValue
         );
-        // console.log('firstxxxxxxxxxx' , response)
+        // console.log('firstxxxxxxxxxx', response)
         if (response && response.kind === "ok") {
-          console.log('orderLisst', JSON.stringify(response.response.data.content))
+          // console.log('orderLisst', JSON.stringify(response.response.data.content))
           setArrData(response.response.data.content)
         } else {
           console.error("Failed to fetch order:", response);
@@ -127,35 +121,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       // )
       // setData(res.response.data.content)
     }
-    // const store = useLocalObservable(() => ({
-    //   selectedStatus: 0,
-    //   arrData: arrData,
-    //   selectStatus: [{ status: 'Tất cả', textStatus: 'Tất cả' },
-    //   { status: 'Đã gửi YC', textStatus: 'Chờ xác nhận' },
-    //   { status: 'Đang xử lý', textStatus: 'Đang xử lý' },
-    //   { status: 'Đang vận chuyển', textStatus: 'Đang vận chuyển' },
-    //   { status: 'Đã giao', textStatus: 'Hoàn thành' },
-    //   { status: 'Hủy đơn', textStatus: 'Hủy đơn' },
-    //   ],
 
-    //   onLoad() {
-    //     store.arrData = arrData
-    //     // console.log('first', arrData)
-    //   },
-    //   onSelectStatus(index: any) {
-    //     store.selectedStatus = index;
-    //     var t = store.selectStatus[store.selectedStatus].status
-    //     console.log(t)
-    //     if (store.selectedStatus === 0) {
-    //       store.arrData = arrPromotions
-    //       console.log(8)
-    //     } else {
-    //       store.arrData = arrPromotions.filter((item) => {
-    //         return item.status === t
-    //       })
-    //     }
-    //   },
-    // }))
+
     const toggleModalDate = () => {
       setIsSortByDate(!isSortByDate)
     }
@@ -207,6 +174,13 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       // setPage(0);
       getListOrder(searchValue);
     };
+    const calculateTotalPrice = (itemPrice: any) => {
+      let totalPrice = 0;
+      itemPrice.computeTaxInfo?.taxLines?.forEach((item: any) => {
+        totalPrice += item.untaxedAmount || 0;
+      });
+      return totalPrice;
+    };
     return (
       <View style={styles.ROOT}>
         <Header headerTx={'dashboard.orders'}
@@ -222,7 +196,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           handleOnSubmitSearch={handleSubmitSearch}
           onSearchValueChange={handleSearchValueChange}
 
-          rightText1={moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
+          rightText1={moment(markedDatesS === "" ? oneMonthBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  >
@@ -296,10 +270,11 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
               amount={item.quantity}
               discount={formatCurrency(item.amountDiscount)}
               payStatus={getInvoiceStateText(item.invoiceStatus)}
-              weight={item.weight}
+              // weight={item.weight}
               totalAmount={formatCurrency(item.amountTotal)}
               totalTax={formatCurrency(item.amountTax)}
-              money={formatCurrency(item.totalPrice)}
+              // money={formatCurrency(calculateTotalPrice(item))}
+              money={formatCurrency(item.amountTotalUnDiscount)}
               styleViewStatus={{
                 backgroundColor: item.state === 'SALE' ? colors.palette.solitude
                   : item.state === 'SENT' ? colors.palette.floralWhite :
@@ -327,17 +302,20 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           isReset={isReset}
           handleReset={() => setIReset(!isReset)}
           handleShort={() => {
-            handleOrderMerchant()
+            // handleOrderMerchant()
+            setMarkedDatesE(timeEnd)
+            setMarkedDatesS(timeStart)
             toggleModalDate()
           }}
           onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
             console.log('markedDatesS------', markedDatesS)
-            setMarkedDatesS(markedDatesS)
+            setTimeStart(markedDatesS)
           }}
           onMarkedDatesChangeE={(markedDatesE: React.SetStateAction<string>) => {
             console.log('markedDatesE------', markedDatesE)
-            setMarkedDatesE(markedDatesE)
+            setTimeEnd(markedDatesE)
           }}
+
           isShowTabs={true}
           isSortByDate={isSortByDate}
           isOneDate={false}

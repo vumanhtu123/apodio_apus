@@ -72,7 +72,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3) }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
                             <Text style={styles.text400Nero12} tx={'order.price2'} />
-                            <Text style={[styles.text400Nero12, { color: colors.palette.radicalRed, fontStyle: 'italic' }]} text={formatNumber(item.price)} />
+                            <Text style={[styles.text400Nero12, { color: colors.palette.radicalRed, fontStyle: 'italic' }]} text={formatNumber(item.unitPrice)} />
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', width: '60%' }}>
                             <Text style={styles.text400Nero12} tx={'order.miniumQuanlity'} />
@@ -109,7 +109,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             </View>}
                     </View>
                 </View>
-                <Modal style={styles.viewModal} isVisible={isModal}>
+                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={()=> setIsModal(false)}>
                     <FlatList
                         data={item?.uomGroup?.uomGroupLineItems}
                         keyExtractor={items => items.uomId.toString()}
@@ -194,11 +194,11 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     </View>
                     {item.isSelect === true ?
                         <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(14.52), marginTop: scaleHeight(3) }}>
-                            {item.price !== undefined && check === false ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
+                            {item.unitPrice !== undefined && check === false ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
                                 <Text style={styles.text400Nero10} tx={'order.price2'} />
-                                <Text style={styles.textPriceInput} text={formatNumber(item.price)} />
+                                <Text style={styles.textPriceInput} text={formatNumber(item.unitPrice)} />
                                 <TouchableOpacity onPress={() => {
-                                    setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.price)).toString())
+                                    setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
                                     setCheck(true)
                                 }}>
                                     <Images.icon_edit />
@@ -225,7 +225,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             />}
                         </View> : <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(17.52), marginTop: scaleHeight(3) }}></View>}
                 </View>
-                <Modal style={styles.viewModal} isVisible={isModal}>
+                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={()=> setIsModal(false)} >
                     <FlatList
                         data={item?.uomGroup?.uomGroupLineItems}
                         keyExtractor={items => items.uomId.toString()}
@@ -252,7 +252,6 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
 
     }
 }
-//truyên thêm item.quantityInventory < item.minQuantity để check giưã số lượng tồn và sl nhỏ nhất để làm mờ và disable phàn cộng trừ sl
 
 const styles = StyleSheet.create({
     ROOT: {
