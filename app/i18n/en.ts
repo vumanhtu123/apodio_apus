@@ -509,6 +509,7 @@ const en = {
     groupClient: "Khách hàng",
     btnAddClient: "Nhóm khách hàng",
     detailClient: "Chi tiết khách hàng",
+    txtChoiceClient: "Vui lòng chọn khách hàng"
   },
   NCCScreen: {
     idSupliers: "Mã nhà cung cấp",
