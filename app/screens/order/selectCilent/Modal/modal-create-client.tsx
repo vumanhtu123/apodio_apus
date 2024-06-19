@@ -21,22 +21,23 @@ interface ModalClientFromPhoneProps {
 }
 
 
-const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisible, handleRefresh }) => {
+const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
     const [selectCustomerType, setSelectCustomerType] = useState({ label: "" })
-    const [phoneNumber, setPhoneNumber] = useState<any>()
-    const [nameClient, setNameClient] = useState<any>()
+    // const [phoneNumber, setPhoneNumber] = useState<any>()
+    // const [nameClient, setNameClient] = useState<any>()
 
 
-    const { control, handleSubmit, formState: { errors } } = useForm({ mode: "all" })
+    const { control, handleSubmit, setError, setValue, formState: { errors }, reset } = useForm({
+        defaultValues: {
+            phoneNumber: '',
+            NameClient: '',
+            noteText: ''
+        }
+    })
 
     const getAPIcreateClient = useStores();
 
-    const omSubmit = (data: FormData) => {
-        console.log('====================================');
-        console.log('data test', data);
-        console.log('====================================');
-    }
     const checkStatusCompany = (): boolean => {
         if (selectCustomerType.label == "Cá nhân") {
             return true
@@ -44,11 +45,22 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
             return false
         }
     }
+    const clearForm = () => {
+        reset({
+            phoneNumber: '',
+            NameClient: ''
+        });
+    };
 
-    // console.log('====================================');
-    // console.log("checkk ", checkStatusCompany());
-    // console.log('====================================');
-    const addClient = async () => {
+    const omSubmit = async (data: any) => {
+
+        const nameClient = data.NameClient
+        const phoneNumber = data.phoneNumber
+
+        console.log('====================================');
+        console.log('data test', nameClient, phoneNumber);
+        console.log('====================================');
+
         const result = await getAPIcreateClient.orderStore.postClient({
             "name": nameClient,
             "phoneNumber": phoneNumber,
@@ -64,7 +76,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
         // console.log('test', result);
         // console.log('====================================');
         if (result.kind === "ok") {
-            setIsVisible(!isVisible)
+            props.setIsVisible(!props.isVisible)
             Dialog.show({
                 title: translate("txtDialog.txt_title_dialog"),
                 button: '',
@@ -73,7 +85,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                 closeOnOverlayTap: false,
                 onPressButton: () => {
                     Dialog.hide();
-                    handleRefresh()
+                    props.handleRefresh()
                 }
             })
         } else {
@@ -84,9 +96,13 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                 closeOnOverlayTap: false
             })
         }
-
-
     }
+
+
+    // console.log('====================================');
+    // console.log("checkk ", checkStatusCompany());
+    // console.log('====================================');
+
 
 
     const dataFindClient = [
@@ -95,7 +111,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
 
     ]
 
-    console.log('doandev', phoneNumber, nameClient, selectCustomerType);
+    // console.log('doandev', phoneNumber, nameClient, selectCustomerType);
 
     const arrGroupCustomerType = dataFindClient.map((item) => {
         return { label: item.title, id: item.id }
@@ -107,7 +123,7 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
             animationOut="slideOutDown"
             animationInTiming={500}
             animationOutTiming={750}
-            isVisible={isVisible}
+            isVisible={props.isVisible}
             style={{ margin: 0 }}
             avoidKeyboard={true}
         >
@@ -140,11 +156,9 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
 
                     />
 
-
                     <Controller
                         control={control}
                         name="phoneNumber"
-
                         render={({ field: { onBlur, onChange, value } }) => (
 
                             <TextField
@@ -161,32 +175,44 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={() => onChange(" ")}
-                                onChangeText={(txt) => {
-                                    onChange(txt)
-                                    setPhoneNumber(txt)
+                                onClearText={() => {
+                                    // clearForm()
+                                    // onChange("")
+                                    setValue('phoneNumber', "")
+                                    // ("phoneNumber", null)
+                                    console.log('====================================');
+                                    console.log("value", value);
+                                    console.log('====================================');
+
+                                }}
+                                onChangeText={(value) => {
+                                    if (value.length !== 10) {
+                                        setError("phoneNumber", { type: 'custom', message: "Vui lòng nhập đủ 10 số " })
+                                    } else {
+                                        console.log("value name", value);
+
+                                        onChange(value)
+                                        setError("phoneNumber", null)
+                                    }
+                                    // setPhoneNumber(txt)
                                 }}
                                 isImportant
                                 placeholder="VD 01231254"
                                 RightIconClear={Images.icon_delete2}
                                 error={errors?.phoneNumber?.message}
-
                             />
                         )}
                         rules={{
                             required: "Vui lòng nhập số điện thoại"
                         }}
                     />
-                    {
-                        phoneNumber?.length < 10 || phoneNumber?.length > 10 ?
-                            <Text style={{ fontSize: 12, color: 'red' }}>Vui lòng nhập đủ 10 số</Text> : null
-                    }
+
                     <Controller
                         control={control}
                         name="NameClient"
                         render={({ field: { onBlur, onChange, value } }) => (
                             <TextField
-                                keyboardType=""
+                                keyboardType="ascii-capable"
                                 labelTx={"selectClient.nameClient"}
                                 style={{
                                     // marginBottom: scaleHeight(10),
@@ -199,10 +225,12 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={() => onChange("")}
+                                onClearText={clearForm}
                                 onChangeText={(txt) => {
+
                                     onChange(txt)
-                                    setNameClient(txt)
+                                    // setNameClient(txt)
+
                                 }}
                                 isImportant
                                 placeholder="VD Nguyễn Phương Linh"
@@ -217,15 +245,15 @@ const ModalCreateClient: FC<ModalClientFromPhoneProps> = ({ isVisible, setIsVisi
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}
-                            onPress={() => setIsVisible(!isVisible)}
+                            onPress={() => props.setIsVisible(!props.isVisible)}
                         >
                             <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
-                            onPress={() => {
-                                // handleSubmit(omSubmit)
-                                addClient()
-                            }}
+                            onPress={
+                                handleSubmit(omSubmit)
+                                // addClient()
+                            }
                         >
                             <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectClient.add"></Text>
                         </TouchableOpacity>
