@@ -106,14 +106,14 @@ export const DEFAULT_API_CONFIG_GET_WAY: ApiConfig = {
 
 export const DEFAULT_API_CONFIG_UAA: ApiConfig = {
   url: getDomainUAA(),
-  timeout: 10000,
+  timeout: 100000,
 };
 export const DEFAULT_API_CONFIG_ORDER: ApiConfig = {
   url: getDomainOrder(),
-  timeout: 10000,
+  timeout: 100000,
 };
 
 export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
   url: getDomainAccounting(),
-  timeout: 10000,
+  timeout: 100000,
 };
