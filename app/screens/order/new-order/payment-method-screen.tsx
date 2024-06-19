@@ -56,6 +56,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       inputPrice: Number(text) ?? 0,
       apply: true,
     });
+    // navigation.navigate('newOrder', { goBackPayment: true })
     navigation.goBack();
   };
   console.log("tuvm", type);

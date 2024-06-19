@@ -135,7 +135,7 @@ export default function ItemListProduct(props: AddProduct) {
                     borderRadius: 12
                   }}
                   source={{
-                    uri: images != null ? images : '',
+                    uri: images != null ? images.length > 0 ? images[0] : '' : '',
                     cache: FastImage.cacheControl.immutable,
                   }}
                   defaultSource={require("../../../../assets/Images/no_images.png")}
