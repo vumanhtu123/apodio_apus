@@ -325,6 +325,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // totalPrice: 0,
       saleOrderLines: newArr,
       // saleOrderLineDeleteIds: [],
+      // isClearingDebts: ,     //co dung doi tru cong no hay ko
       isRetail: false,
       scopeType:
         payment.label == translate("order.DOMESTICALLY")
@@ -1062,7 +1063,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                               ? store.orderStore.dataDebtLimit.debtAmount
-                              : null,
+                              : 0,
                         },
                       });
                     }}
@@ -1247,6 +1248,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       />
       <ModalPayment
         isVisible={buttonPayment}
+        isPayment={true}
         closeDialog={function (): void {
           setButtonPayment(false);
         }}

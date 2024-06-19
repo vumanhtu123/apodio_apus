@@ -529,6 +529,37 @@ export const OrderStoreModel = types
         return result;
       }
     }),
+    getListAccountLedger: flow(function* () {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      const result = yield orderApi.getListAccountLedger();
+      // console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getDebtAccountLedger: flow(function* (accountLedgerId: number, start: string, end: string, customerId: number) {
+      console.log("page", accountLedgerId);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      const result = yield orderApi.getDebtAccountLedger(accountLedgerId, start, end, customerId);
+      // console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
     getDetailOrder: flow(function* (id: number) {
       console.log("page", id);
       const orderApi = new OrderApi(

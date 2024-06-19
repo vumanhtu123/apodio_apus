@@ -4,7 +4,7 @@ import Modal from 'react-native-modal/dist/modal';
 import { Text } from '../../../components';
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from '../../../theme';
 
-const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory, isSearchBarVisible, setIndex }: any) => (
+const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory, isSearchBarVisible, setIndex, setPage }: any) => (
     <Modal
         isVisible={showCategory}
         onBackdropPress={() => setShowCategory(false)}
@@ -48,6 +48,7 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                                 setNameDirectory(item.name);
                                 setShowCategory(false);
                                 setIndex(index);
+                                setPage(0)
                             }}
                             style={{
                                 paddingVertical: scaleHeight(padding.padding_12),

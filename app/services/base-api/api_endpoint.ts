@@ -70,4 +70,6 @@ export const ApiEndpoint = {
   POST_LIST_TAX_LINES: "/api/v1/tax/compute-tax-lines",
   POST_ADD_SALE_ORDER: "/api/v1/retail/sale-order",
   // GET_DEBT_LIMIT: "/api/v1/mobile/account-move/debt",
+  GET_LIST_ACCOUNT_LEDGER: "/api/v1/account-ledger/list",
+  GET_DEBT_ACCOUNT_LEDGER: "/api/v2/debt/total",
 };
