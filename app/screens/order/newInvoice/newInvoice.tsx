@@ -29,7 +29,7 @@ import CustomCalendar from "../../../components/calendar";
 import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
-import { formatCurrency } from "../../../utils/validate";
+import { calculateTotalPrice, calculateTotalUnitPrice, formatCurrency } from "../../../utils/validate";
 import ProductAttribute from "../../product/component/productAttribute";
 
 export const NewInvoice: FC = observer(function NewInvoice(props) {
@@ -501,7 +501,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
-                                                    <Text text={formatCurrency(item.amountTotal)} style={styles.textListProduct} />
+                                                    <Text text={formatCurrency(calculateTotalUnitPrice(item.amountUntaxed, item.quantity))} style={styles.textListProduct} />
 
                                                 </View>
                                             </View>
@@ -518,7 +518,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                             <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
-                                value={formatCurrency(data.computeTaxInfo?.taxLines?.[0]?.untaxedAmount)}
+                                value={formatCurrency(calculateTotalPrice(data.saleOrderLines))}
                             />
                             {data.computeTaxInfo?.taxLines?.[0]?.items?.map((item: any) => (
                                 <ProductAttribute

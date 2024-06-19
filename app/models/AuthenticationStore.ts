@@ -2,7 +2,7 @@ import { Instance, SnapshotOut, flow, types } from "mobx-state-tree";
 import { withEnvironment } from "./extensions/with-environment";
 import { AuthApi } from "../services/api/api-config-auth";
 import { LoginResponse } from "./login-model";
-import { getAccessToken, setAccessToken, setFirstOpenApp, setRefreshToken, setTenantId } from "../utils/storage";
+import { clear, getAccessToken, setAccessToken, setFirstOpenApp, setRefreshToken, setTenantId } from "../utils/storage";
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
@@ -109,9 +109,7 @@ export const AuthenticationStoreModel = types
       console.log("jti : ", store.jti);
       const result: any = yield authApi.logout(store.jti);
       store.setAccessToken('')
-      setAccessToken('')
-      setRefreshToken('')
-      setTenantId('')
+      clear()
       store.setUserID();
       store.setJTI('')
       console.log("tuvm logout", result);
@@ -140,7 +138,7 @@ export const AuthenticationStoreModel = types
         return result;
       }
     }),
-    getRefreshToken: flow(function* (refreshToken : string) {
+    getRefreshToken: flow(function* (refreshToken: string) {
       // store.setUserName(username);
       // store.setPassWord(password);
       const authApi = new AuthApi(
@@ -152,7 +150,6 @@ export const AuthenticationStoreModel = types
           yield authApi.refreshToken(refreshToken);
         if (result.data != undefined) {
           store.setAccessToken(result.data.accessToken);
-          console.log("tuvm", result);
           // store.setAccessToken(result.data.accessToken);
           // store.setRefreshToken(result.data.refreshToken);
           store.setUserID(result.data.userId);
@@ -177,8 +174,8 @@ export const AuthenticationStoreModel = types
   }));
 
 export interface AuthenticationStore
-  extends Instance<typeof AuthenticationStoreModel> {}
+  extends Instance<typeof AuthenticationStoreModel> { }
 export interface AuthenticationStoreSnapshot
-  extends SnapshotOut<typeof AuthenticationStoreModel> {}
+  extends SnapshotOut<typeof AuthenticationStoreModel> { }
 
 // @demo remove-file

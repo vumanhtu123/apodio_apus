@@ -11,7 +11,7 @@ import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import { formatDateTime } from "../../../utils/formatDate";
-import { formatCurrency } from "../../../utils/validate";
+import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, formatCurrency } from "../../../utils/validate";
 import ItemOrder from "../components/item-order";
 import { styles } from "./styles";
 export const OrderDetails: FC = observer(
@@ -76,12 +76,6 @@ export const OrderDetails: FC = observer(
                 console.error("Error fetching :", error);
             }
         };
-        const calculateTotalUnitPrice = (unitPrice: number, quantity: number) => {
-            return unitPrice * quantity;
-        }
-        const calculateTotalDiscountPrice = (unitPrice: number, discountPercentage: number) => {
-            return unitPrice * (discountPercentage / 100)
-        }
         const cancelOrder = async () => {
             const result = await orderStore.cancelOrder(orderId);
             console.log('//////////', result)
@@ -167,23 +161,6 @@ export const OrderDetails: FC = observer(
                 return '';
             }
         }
-        const calculateTotalPrice = () => {
-            let totalPrice = 0;
-            data.saleOrderLines?.forEach((item: any) => {
-                const itemTotal = calculateTotalUnitPrice(item.unitPrice, item.quantity);
-                totalPrice += itemTotal; // Assuming amountTotal is already the total price per line
-            });
-            return totalPrice;
-        };
-        const calculateTotalDiscount = () => {
-            let totalPrice = 0;
-            data.saleOrderLines?.forEach((item: any) => {
-                const itemTotal = calculateTotalUnitPrice(item.unitPrice, item.quantity);
-                const discountTotal = calculateTotalDiscountPrice(itemTotal, item.discount)
-                totalPrice += discountTotal; // Assuming amountTotal is already the total price per line
-            });
-            return totalPrice;
-        };
         return (
             <View style={{ flex: 1 }}>
                 <Header
@@ -375,9 +352,9 @@ export const OrderDetails: FC = observer(
                         }
                     </View>
                     <ItemOrder
-                        money={formatCurrency(calculateTotalPrice())}
+                        money={formatCurrency(calculateTotalPrice(data.saleOrderLines))}
                         // totalTax={formatCurrency(data.computeTaxInfo?.taxLines?.[0]?.amount)}
-                        discount={formatCurrency(calculateTotalDiscount())}
+                        discount={formatCurrency(calculateTotalDiscount(data.saleOrderLines))}
                         totalAmount={formatCurrency(data?.totalPrice)}
                         // weight={data?.weight}
                         // payStatus={data?.payStatus}

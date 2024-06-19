@@ -24,7 +24,7 @@ export const patternPassword =
 export const patternvalidateBiCard = /^[a-zA-Z0-9]{0,17}$/;
 export const patternvalidateID = /^[a-zA-Z0-9]{0,17}$/;
 export const patternvalidatePassPost = /^[a-zA-Z0-9]{0,17}$/;
-export const parternValidateSku =  /^[A-Z0-9_]*$/;
+export const parternValidateSku = /^[A-Z0-9_]*$/;
 export const validatePhoneStartsWith = (value: string) => {
   if (value.length == 8 && (value.startsWith("75") || value.startsWith("76"))) {
     return true;
@@ -187,8 +187,30 @@ export const mapDataDistribute = (arr: [[]]) => {
 //   }
 //   return Validate(data, rules, { fullMessages: false }) || {}
 // }
-
-export const convertAttributePrice = (data: any ) => {
+export const calculateTotalUnitPrice = (unitPrice: number, quantity: number) => {
+  return unitPrice * quantity;
+}
+export const calculateTotalDiscountPrice = (unitPrice: number, discountPercentage: number) => {
+  return unitPrice * (discountPercentage / 100)
+}
+export const calculateTotalPrice = (items: any) => {
+  let totalPrice = 0;
+  items?.forEach((item: any) => {
+    const itemTotal = calculateTotalUnitPrice(item.unitPrice, item.quantity);
+    totalPrice += itemTotal;
+  });
+  return totalPrice;
+}
+export const calculateTotalDiscount = (items :any) => {
+  let totalPrice = 0;
+  items?.forEach((item : any) => {
+    const itemTotal = calculateTotalUnitPrice(item.unitPrice, item.quantity);
+    const discountTotal = calculateTotalDiscountPrice(itemTotal, item.discount);
+    totalPrice += discountTotal;
+  });
+  return totalPrice;
+}
+export const convertAttributePrice = (data: any) => {
   // const wholesalePriceProduct = data[indexVariant].wholesalePrice;
   const prices = data.map((item: { price: { toString: () => any; }; }) => Number(formatNumberByString(item.price.toString())));
   const minPrice = Math.min(...prices);
