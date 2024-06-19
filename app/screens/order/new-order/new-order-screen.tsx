@@ -840,7 +840,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       valueVAT={item.taxValue}
                       name={item.name}
                       unit={item.uomName}
-                      images={item.images}
+                      images={item.productImage}
                       cost={item.unitPrice}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}

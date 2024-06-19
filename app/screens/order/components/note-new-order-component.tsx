@@ -278,12 +278,13 @@ export const ShowNote = (props: InputNote) => {
                     onChange(value)
                     props.setNoteData(value, imagesNote)
                   }}
-                  onClearText={() => onChange("")}
-                  RightIconClear={Images.icon_delete2}
+                  // onClearText={() => onChange("")}
+                  showRightIcon={false}
+                  // RightIconClear={Images.icon_delete2}
                   multiline={true}
                   placeholderTx={"order.placeNote"}
                   placeholderTextColor={colors.palette.nero}
-                // isImportant={true}
+                  //isImportant={true}
                 // error={errors?.phone?.message}
                 />
               )}

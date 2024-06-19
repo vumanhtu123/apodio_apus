@@ -10,6 +10,7 @@ import {
 import { Text } from "../../../components/text/text";
 import {
   FlatList,
+  ImageBackground,
   TextInput,
   TextStyle,
   TouchableOpacity,
@@ -23,6 +24,7 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
 import { number } from "mobx-state-tree/dist/internal";
+import FastImage from "react-native-fast-image";
 
 interface AddProduct {
   onPress: ({ }) => void;
@@ -110,7 +112,7 @@ export default function ItemListProduct(props: AddProduct) {
           top: scaleHeight(8),
           zIndex: 1,
         }}>
-        <Images.icon_delete2 height={scaleHeight(18)} width={scaleHeight(18)} />
+        <Images.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
       </TouchableOpacity>
       <View
         style={{
@@ -119,17 +121,26 @@ export default function ItemListProduct(props: AddProduct) {
           marginVertical: scaleHeight(margin.margin_12),
           marginLeft: scaleWidth(margin.margin_8),
         }}>
-        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>
-          <AutoHeightImage
-            source={{
-              uri:
-                images ??
-                "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
-            }}
-            height={scaleHeight(48)}
-            width={scaleHeight(48)}
-            style={{ borderRadius: 16 }}
-          />
+        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>       
+              <ImageBackground
+                style={{ width: scaleWidth(48), height: scaleHeight(48) }}
+                imageStyle={{
+                  borderRadius: 12,
+                }}
+                source={require("../../../../assets/Images/no_images.png")}>
+                <FastImage 
+                  style={{
+                    width: scaleWidth(48),
+                    height: scaleHeight(48),
+                    borderRadius: 12
+                  }}
+                  source={{
+                    uri: images != null ? images : '',
+                    cache: FastImage.cacheControl.immutable,
+                  }}
+                  defaultSource={require("../../../../assets/Images/no_images.png")}
+                />
+              </ImageBackground>
         </View>
         <View style={{ flex: 1 }}>
           <Text
