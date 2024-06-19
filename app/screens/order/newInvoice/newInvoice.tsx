@@ -573,7 +573,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 isReset={isReset}
                 minDate={minDateS}
                 // maxDate={minDateE}
-                handleReset={() => {setIReset(!isReset)}}
+                handleReset={() => { setIReset(!isReset) }}
                 handleShort={() => {
                     toggleModalDateEnd();
                     // choiseCalendar == 1 ? setMinDateS(markedDatesS) : 
