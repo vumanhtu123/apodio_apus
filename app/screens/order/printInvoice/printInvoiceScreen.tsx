@@ -18,7 +18,7 @@ import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStores } from '../../../models';
-import { formatCurrency } from '../../../utils/validate';
+import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, formatCurrency } from '../../../utils/validate';
 import ProductAttribute from '../../product/component/productAttribute';
 import FastImage from 'react-native-fast-image';
 import RNFS from 'react-native-fs';
@@ -33,7 +33,7 @@ export const PrintInvoiceScreen: FC = observer(
         const [dataInfoCompany, setDataInfoCompany] = useState<any>([]);
         const route = useRoute()
         const invoiceId = route?.params?.invoiceId
-        const {PrintManager} = NativeModules;
+        const { PrintManager } = NativeModules;
 
         const handleGetDetailInvoice = async () => {
             try {
@@ -66,26 +66,26 @@ export const PrintInvoiceScreen: FC = observer(
         };
         const downloadAndPrintImage = async (imageUrl: any) => {
             try {
-              // Đường dẫn tạm thời trên thiết bị
-              const localFilePath = `${RNFS.DocumentDirectoryPath}/tempimage.jpg`;
-          
-              // Tải file ảnh từ URL về thiết bị
-              const downloadResult = await RNFS.downloadFile({
-                fromUrl: imageUrl,
-                toFile: localFilePath,
-              }).promise;
-          
-              if (downloadResult.statusCode === 200) {
-                console.log('Image downloaded to:', localFilePath);
-                // Gọi hàm in với đường dẫn file cục bộ
-                PrintManager.print(localFilePath);
-              } else {
-                console.error('Image download failed:', downloadResult);
-              }
+                // Đường dẫn tạm thời trên thiết bị
+                const localFilePath = `${RNFS.DocumentDirectoryPath}/tempimage.jpg`;
+
+                // Tải file ảnh từ URL về thiết bị
+                const downloadResult = await RNFS.downloadFile({
+                    fromUrl: imageUrl,
+                    toFile: localFilePath,
+                }).promise;
+
+                if (downloadResult.statusCode === 200) {
+                    console.log('Image downloaded to:', localFilePath);
+                    // Gọi hàm in với đường dẫn file cục bộ
+                    PrintManager.print(localFilePath);
+                } else {
+                    console.error('Image download failed:', downloadResult);
+                }
             } catch (error) {
-              console.error('Error downloading image:', error);
+                console.error('Error downloading image:', error);
             }
-          };
+        };
 
         useEffect(() => {
             handleGetDetailInvoice()
@@ -101,7 +101,7 @@ export const PrintInvoiceScreen: FC = observer(
                     <Text style={styles.cellAmount}>
                         {item.quantity} <Text style={{ fontSize: fontSize.size12 }}>
                             {item.uom.name}</Text></Text>
-                    <Text style={styles.cellMoney}>{formatCurrency(item.amountTotal)}</Text>
+                    <Text style={styles.cellMoney}>{formatCurrency(calculateTotalUnitPrice(item.unitPrice, item.quantity))}</Text>
                 </View>
             </View>
         );
@@ -140,6 +140,7 @@ export const PrintInvoiceScreen: FC = observer(
                                         width: scaleWidth(80),
                                         height: scaleHeight(80),
                                     }}
+                                    // resizeMode='cover'
                                     source={{
                                         uri: dataInfoCompany.logo,
                                         cache: FastImage.cacheControl.immutable,
@@ -149,9 +150,14 @@ export const PrintInvoiceScreen: FC = observer(
                             </ImageBackground>
                             <View style={styles.infoContainer}>
                                 <Text style={styles.companyName}>{dataInfoCompany.name}</Text>
-                                <Text style={styles.textInfo} >www.apodio.com.vn</Text>
+                                {/* <Text style={styles.textInfo} >www.apodio.com.vn</Text> */}
                                 <Text style={styles.textInfo}>{dataInfoCompany.phone}</Text>
-                                <Text style={styles.textInfo}>{dataInfoCompany.address}</Text>
+                                <Text style={styles.textInfo}>
+                                    {dataInfoCompany?.address ? dataInfoCompany?.address + " " : ""}
+                                    {dataInfoCompany?.ward ? dataInfoCompany.ward + ", " : ""}
+                                    {dataInfoCompany.district ? dataInfoCompany.district + ", " : ""}
+                                    {dataInfoCompany.city ? dataInfoCompany.city : ""}
+                                </Text>
                             </View>
                         </View>
                         <View style={styles.viewLine} />
@@ -203,14 +209,20 @@ export const PrintInvoiceScreen: FC = observer(
                             ))} */}
                             <ProductAttribute
                                 labelTx="printInvoiceScreen.amountUntaxed"
-                                value={formatCurrency(data.amountUntaxed)}
+                                value={formatCurrency(calculateTotalPrice(data.invoiceLines))}
                             />
-                            {data.computeTaxInfo?.taxLines?.[0]?.items?.map((item, index) => (
-                                <ProductAttribute
-                                    key={index}
-                                    label={item.taxName}
-                                    value={formatCurrency(item.amount)}
-                                />
+                            <ProductAttribute
+                                labelTx="dashboard.promotions"
+                                value={formatCurrency(calculateTotalDiscount(data.invoiceLines))}
+                            />
+                            {data.computeTaxInfo?.taxLines.map((tax: any) => (
+                                tax.items?.map((item: any, index: any) => (
+                                    <ProductAttribute
+                                        key={index}
+                                        label={item.taxName}
+                                        value={formatCurrency(item.amount)}
+                                    />
+                                ))
                             ))}
                             {/* <ProductAttribute
                                 labelTx="printInvoiceScreen.amountUntaxed"
@@ -229,9 +241,9 @@ export const PrintInvoiceScreen: FC = observer(
                     textStyle={styles.textButton}
                     onPress={() =>
                         downloadAndPrintImage(
-                          'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
+                            'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
                         )
-                      }
+                    }
                 />
             </View>
         );

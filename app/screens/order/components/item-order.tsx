@@ -107,13 +107,15 @@ export default function ItemOrder(props: ItemOrder) {
           <Text style={TEXTMONEY} text={totalTax} />
         </View>
       ) : null}
-      {dataTax?.map((item: any) => (
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flex: 1 }}>
-            <Text style={TEXTCONTENT} text={item.taxName} />
+      {dataTax?.map((taxLine: any) => (
+        taxLine.items.map((item: any) => (
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 1 }}>
+              <Text style={TEXTCONTENT} text={item.taxName} />
+            </View>
+            <Text style={TEXTMONEY} text={formatCurrency(item.amount)} />
           </View>
-          <Text style={TEXTMONEY} text={formatCurrency(item.amount)} />
-        </View>
+        ))
       ))}
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>

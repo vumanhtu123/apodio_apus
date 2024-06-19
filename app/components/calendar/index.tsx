@@ -8,7 +8,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Calendar } from "react-native-calendars";
+import { Calendar, LocaleConfig } from "react-native-calendars";
 import CustomTabs from "./custom-tab";
 import moment from "moment";
 import {
@@ -20,9 +20,59 @@ import {
 import { Text } from "../text/text";
 import { colors, padding, scaleHeight } from "../../theme";
 import { el } from "date-fns/locale";
+LocaleConfig.locales['vi'] = {
+  monthNames: [
+    'Tháng 1',
+    'Tháng 2',
+    'Tháng 3',
+    'Tháng 4',
+    'Tháng 5',
+    'Tháng 6',
+    'Tháng 7',
+    'Tháng 8',
+    'Tháng 9',
+    'Tháng 10',
+    'Tháng 11',
+    'Tháng 12'
+  ],
+  monthNamesShort: [
+    'Thg 1',
+    'Thg 2',
+    'Thg 3',
+    'Thg 4',
+    'Thg 5',
+    'Thg 6',
+    'Thg 7',
+    'Thg 8',
+    'Thg 9',
+    'Thg 10',
+    'Thg 11',
+    'Thg 12'
+  ],
+  dayNames: [
+    'Chủ Nhật',
+    'Thứ Hai',
+    'Thứ Ba',
+    'Thứ Tư',
+    'Thứ Năm',
+    'Thứ Sáu',
+    'Thứ Bảy'
+  ],
+  dayNamesShort: [
+    'CN',
+    'T2',
+    'T3',
+    'T4',
+    'T5',
+    'T6',
+    'T7'
+  ],
+  today: "Hôm nay"
+};
 
+LocaleConfig.defaultLocale = 'vi';
 const CustomCalendar = (props: any) => {
-  const titles = ["Today", "Last 7 days", "This month"];
+  const titles = ["calendar.today", "calendar.last7days", "calendar.thisMonth"];
 
   const [markedDates, setMarkedDates] = useState({});
   const [isStartDatePicked, setIsStartDatePicked] = useState(false);
@@ -302,8 +352,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     // borderRadius: 8,
-    borderTopLeftRadius : 8,
-    borderTopRightRadius : 8
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8
   },
   content: {
     flex: 1,

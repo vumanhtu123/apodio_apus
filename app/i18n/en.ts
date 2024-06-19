@@ -927,6 +927,14 @@ const en = {
     selectPriceListApply: "Chọn bảng giá áp dụng",
     noApplyPriceList: "Không áp dụng bảng giá",
   },
+  calendar : {
+    
+    today : 'Hôm nay',
+    last7days : '7 ngày trước',
+    thisMonth : 'Tháng này',
+    reset : 'Đặt lại',
+    done : 'Xác nhận'
+  }
 
   // @demo remove-block-end
 };

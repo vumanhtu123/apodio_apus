@@ -40,16 +40,19 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const { orderStore } = useStores();
     const [data, setData] = useState([])
     const [arrData, setArrData] = useState<any>([])
-    const [markedDatesS, setMarkedDatesS] = useState("")
     const [timeStart, setTimeStart] = useState("")
     const [timeEnd, setTimeEnd] = useState("")
-    const [markedDatesE, setMarkedDatesE] = useState("")
     // const [selectedStatus, setSelectedStatus] = useState(0)
     const [isSortByDate, setIsSortByDate] = useState<boolean>(false)
     const today = new Date()
     // const sevenDaysBefore = new Date(today)
-    const oneMonthBefore = new Date();
-    oneMonthBefore.setMonth(oneMonthBefore.getMonth() - 1);
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const firstDayOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    const lastDayOfMonth = new Date(firstDayOfNextMonth - 1);
+
+    const [markedDatesS, setMarkedDatesS] = useState<any>(firstDayOfMonth)
+    const [markedDatesE, setMarkedDatesE] = useState<any>(lastDayOfMonth)
+    // oneMonthBefore.setMonth(oneMonthBefore.getMonth() - 1);
     const [isReset, setIReset] = useState<boolean>(false)
     const markedDatesSRef = useRef('');
     const markedDatesERef = useRef('');
@@ -63,12 +66,12 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       const newValue = text !== null ? text.toString() : "";
       setSearchValue(newValue);
     };
-    markedDatesSRef.current = markedDatesS ? markedDatesS : oneMonthBefore.toString();
+    markedDatesSRef.current = markedDatesS ? markedDatesS : firstDayOfMonth.toString();
     markedDatesERef.current = markedDatesE ? markedDatesE : today.toString();
-    useEffect(() => {
-      setMarkedDatesS(markedDatesSRef.current);
-      setMarkedDatesE(markedDatesERef.current);
-    }, []);
+    // useEffect(() => {
+    //   setMarkedDatesS(oneMonthBefore);
+    //   setMarkedDatesE(today);
+    // }, []);
     const navigation = useNavigation()
     const paddingTop = useSafeAreaInsets().top;
     const [selectedStatus, setSelectedStatus] = useState('');
@@ -82,7 +85,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     // useEffect(() => {
     //   getListOrder()
     // }, [])
-  
+
     useEffect(() => {
       console.log("---------useEffect---------reload------------------");
       const unsubscribe = navigation.addListener('focus', () => {
@@ -92,14 +95,22 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     }, [navigation])
     useEffect(() => {
       getListOrder()
-    }, [selectedStatus])
-    const getListOrder = async (searchValue?: any) => {
+    }, [selectedStatus, markedDatesS, markedDatesE])
+    const getListOrder = async (searchValue?: any,) => {
       try {
+        const formattedMarkedDatesS = markedDatesS
+          ? moment(markedDatesS).set({ hour: 17, minute: 0, second: 0, millisecond: 0 }).toISOString()
+          : null;
+        const formattedMarkedDatesE = markedDatesE
+          ? moment(markedDatesE).set({ hour: 17, minute: 0, second: 0, millisecond: 0 }).toISOString()
+          : null;
         const response = await orderStore.getListOrder(
           0,
           50,
           selectedStatus,
-          searchValue
+          searchValue,
+          formattedMarkedDatesS,
+          formattedMarkedDatesE
         );
         // console.log('firstxxxxxxxxxx', response)
         if (response && response.kind === "ok") {
@@ -112,17 +123,6 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         console.error("Error fetching order:", error);
       }
     };
-
-    // const { newOderStore } = useStores()
-    const handleOrderMerchant = async () => {
-      // const res = await newOderStore.getOrderMerchant(
-      //   moment(markedDatesS ? markedDatesS : sevenDaysBefore).format("YYYY-MM-DD"),
-      //   moment(markedDatesE ? markedDatesE : today).format("YYYY-MM-DD"),
-      // )
-      // setData(res.response.data.content)
-    }
-
-
     const toggleModalDate = () => {
       setIsSortByDate(!isSortByDate)
     }
@@ -164,6 +164,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     };
     const refreshOrder = async () => {
       // setIsRefreshing(true);
+      setMarkedDatesS(firstDayOfMonth);
+      setMarkedDatesE(lastDayOfMonth);
       setSearchValue('')
       setOpenSearch(false)
       setArrData([])
@@ -173,13 +175,6 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const handleSubmitSearch = () => {
       // setPage(0);
       getListOrder(searchValue);
-    };
-    const calculateTotalPrice = (itemPrice: any) => {
-      let totalPrice = 0;
-      itemPrice.computeTaxInfo?.taxLines?.forEach((item: any) => {
-        totalPrice += item.untaxedAmount || 0;
-      });
-      return totalPrice;
     };
     return (
       <View style={styles.ROOT}>
@@ -196,7 +191,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           handleOnSubmitSearch={handleSubmitSearch}
           onSearchValueChange={handleSearchValueChange}
 
-          rightText1={moment(markedDatesS === "" ? oneMonthBefore : markedDatesS).format("DD/MM/YYYY") + "- " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
+          rightText1={moment(markedDatesS === "" ? firstDayOfMonth : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}  >
