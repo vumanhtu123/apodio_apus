@@ -29,7 +29,7 @@ export class ApiOrder {
   }
   async setup() {
     // construct the apisauce instance
-    console.log("apisauceOrder", this.config.url);
+    // console.log("apisauceOrder", this.config.url);
     this.apisauce = create({
       baseURL: this.config.url,
       timeout: this.config.timeout,
@@ -40,7 +40,7 @@ export class ApiOrder {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         Loading.hide();
-        console.log("RESPONSEmmmmmmm---setup :", response);
+        // console.log("RESPONSEmmmmmmm---setup :", response);
         return response;
       },
       async (error) => {
@@ -54,29 +54,16 @@ export class ApiOrder {
             textBody: 'Network Error!',
             closeOnOverlayTap: false})
         }
-        // if (error.response.status === 401) {  
-        //   const originalRequest = error.config;
-        //    // Refresh token logic
-        //   return new Promise((resolve, reject) => {
-        //     this.apiRefreshToken.fetchData().then(response => {
-        //       const newToken = response.accessToken;
-        //       this.apisauce.axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + newToken;
-        //       originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
-        //       return resolve(this.apisauce.axiosInstance.request(originalRequest));
-        //     }).catch(err => {
-        //       reject(err);
-        //       if (err.response && err.response.status === 401) {
-        //         Dialog.show({
-        //           type: ALERT_TYPE.DANGER,
-        //           title: 'Error',
-        //           button: 'OK',
-        //           textBody: 'Your session was expired',
-        //           closeOnOverlayTap: false
-        //         });
-        //       }
-        //     });
-        //   }); 
-        // }
+        if (error.response.status === 401) {  
+          const originalRequest = error.config;
+          console.log("error==1111111------originalRequest----", error.config);
+          await this.apiRefreshToken.fetchData();
+          const token = await getAccessToken();
+          if (token) {
+            originalRequest.headers!.Authorization = "Bearer " + token;
+            this.apisauce.axiosInstance.request(originalRequest)
+          }
+        }
         if (error.response.status === 500 || error.response.status === 404) {
           console.log("first-----------", error);
           Dialog.show({
@@ -86,7 +73,6 @@ export class ApiOrder {
             textBody: 'System Busy!',
             closeOnOverlayTap: false})  
         }
-        return Promise.reject(error);
       }
       
     );
