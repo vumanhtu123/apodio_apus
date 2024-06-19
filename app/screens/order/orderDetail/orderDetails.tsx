@@ -358,7 +358,7 @@ export const OrderDetails: FC = observer(
                         totalAmount={formatCurrency(data?.totalPrice)}
                         // weight={data?.weight}
                         // payStatus={data?.payStatus}
-                        dataTax={data.computeTaxInfo?.taxLines?.[0]?.items}
+                        dataTax={data.computeTaxInfo?.taxLines}
                         styleViewItemOrder={{
                             marginTop: scaleHeight(15),
                             borderBottomLeftRadius: 0,

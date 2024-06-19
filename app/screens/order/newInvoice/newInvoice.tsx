@@ -285,6 +285,14 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         { id: 2, value: 'VAT_BILL', label: 'Hóa đơn giá trị gia tăng' },
         { id: 3, value: 'SALE_BILL', label: 'Hóa đơn bán hàng (HĐ điện tử)' },
     ];
+    const calculateTotalUnTaxPrice = () => {
+        let totalPrice = 0;
+        data.saleOrderLines?.forEach((item: any) => {
+          const itemTotal = calculateTotalUnitPrice(item.amountUntaxed, item.quantity);
+          totalPrice += itemTotal;
+        });
+        return totalPrice;
+      }
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
@@ -518,13 +526,15 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                             <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
-                                value={formatCurrency(calculateTotalPrice(data.saleOrderLines))}
+                                value={formatCurrency(calculateTotalUnTaxPrice())}
                             />
-                            {data.computeTaxInfo?.taxLines?.[0]?.items?.map((item: any) => (
-                                <ProductAttribute
-                                    label={item.taxName}
-                                    value={formatCurrency(item.amount)}
-                                />
+                            {data.computeTaxInfo?.taxLines.map((tax: any) => (
+                                tax.items?.map((item: any) => (
+                                    <ProductAttribute
+                                        label={item.taxName}
+                                        value={formatCurrency(item.amount)}
+                                    />
+                                ))
                             ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"

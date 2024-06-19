@@ -193,7 +193,9 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       state: string,
-      search: string
+      search: string,
+      fromCreateDate,
+      toCreateDate
     ) {
       console.log("page", page);
       const orderApi = new OrderApi(
@@ -204,7 +206,9 @@ export const OrderStoreModel = types
         page,
         size,
         state,
-        search
+        search,
+        fromCreateDate,
+        toCreateDate
       );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {

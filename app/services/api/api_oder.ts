@@ -23,7 +23,9 @@ export class OrderApi {
     page: number,
     size: number,
     state: string,
-    search: string
+    search: string,
+    fromCreateDate : any,
+    toCreateDate : any
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -37,6 +39,8 @@ export class OrderApi {
           size,
           state,
           search,
+          fromCreateDate,
+          toCreateDate
           // activated
         }
       );
