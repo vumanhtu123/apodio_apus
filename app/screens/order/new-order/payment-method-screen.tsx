@@ -8,8 +8,9 @@ import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { ModalPayment } from "../components/modal-payment-method";
 import { useStores } from "../../../models";
-import { methodData } from "./data";
+import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
+import moment from "moment";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
@@ -19,33 +20,91 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const debtAmount = props.route.params.params.debtAmount;
   const [method, setMethod] = useState<number>(0);
   const countRef = useRef(translate("order.CASH"));
+  const [credit, setCredit] = useState(0)
+  const [isCredit, setIsCredit] = useState(false)
 
   const { orderStore } = useStores();
   console.log("debt tuvm", debtAmount);
 
+  const getDebtAccountLedger = async () => {
+    try {
+      const response = await orderStore.getListAccountLedger()
+      if (response && response.kind === "ok") {
+        const accountLedgerId = response.response.data.content[0].id
+        const date = new Date()
+        const year = date.getUTCFullYear();
+        const firstDayOfNextYear = new Date(year + 1, 0, 1);
+        const lastDayOfCurrentYear = new Date(firstDayOfNextYear - 1);
+        const start = moment(date).format('YYYY-MM-DD')
+        const end = moment(lastDayOfCurrentYear).format('YYYY-MM-DD')
+        console.log(start)
+        console.log(end)
+        try {
+          const response1 = await orderStore.getDebtAccountLedger(accountLedgerId, start, end, Number(orderStore.dataClientSelect.id))
+          if (response1 && response1.kind === "ok") {
+            console.log(response1.response.data.endingBalance.credit, 'log data')
+            if (response1.response.data.endingBalance.credit === 0) {
+              setCredit(0)
+              setIsCredit(false)
+            } else {
+              if (type === false) {
+                if (Number(response1.response.data.endingBalance.credit) >= (Number(price) - Number(debtAmount))) {
+                  setCredit(response1.response.data.endingBalance.credit)
+                  setIsCredit(true)
+                } else {
+                  setCredit(response1.response.data.endingBalance.credit)
+                  setIsCredit(false)
+                }
+              } else {
+                setCredit(response1.response.data.endingBalance.credit)
+                setIsCredit(true)
+              }
+            }
+          } else {
+            console.error("Failed to fetch list account ledger:", response1);
+          }
+        } catch (error) {
+          console.error("Error fetching list account ledger:", error);
+        }
+      } else {
+        console.error("Failed to fetch list account ledger:", response);
+      }
+    } catch (error) {
+      console.error("Error fetching list account ledger:", error);
+    }
+  };
+
+  useEffect(() => {
+    getDebtAccountLedger()
+  }, [])
+
   const Sum = () => {
-    if (Number(price) == 0) {
-      return Number(price);
+    console.log(type, 'log=======')
+    if (type === true) {
+      return Number(price)
+    } else {
+      if ((Number(price) - Number(debtAmount)) >= Number(0)) {
+        return Number(price) - Number(debtAmount)
+      } else {
+        return 0
+      }
+
     }
-    if (debtAmount == null) {
-      return 0;
-    }
-    return Number(price) - Number(debtAmount);
   };
 
   const Remain = () => {
-    if(type===true){
-
-      if (Number(price) == 0) {
-        return Number(price);
+    if (type === true) {
+      if ((Number(price) - Number(text)) >= Number(0)) {
+        return Number(price) - Number(text)
+      } else {
+        return 0
       }
-      return Number(price) - Number(text);
-      }else{
-      if (Number(price) == 0) {
-        return Number(price) - Number(debtAmount);
+    } else {
+      if ((Number(price)- Number(debtAmount) - Number(text)) >= Number(0)) {
+        return Number(price) - Number(debtAmount) - Number(text)
+      } else {
+        return 0
       }
-      return Number(price) - Number(debtAmount) - Number(text);
-
     }
   };
   const Apply = () => {
@@ -118,7 +177,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               textAlign: "center",
               marginVertical: 20,
             }}>
-            {type===true ?  price: Number(price)- Number(debtAmount)}
+            {Sum()}
           </Text>
           <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
             <Text
@@ -144,7 +203,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   backgroundColor: "white",
                   borderRadius: 8,
                 }}
-                value={value}
+                value={text}
                 onBlur={onBlur}
                 showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
@@ -157,7 +216,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 onChangeText={(value) => {
                   if (Number(value) >= Number(price)) {
                     setValue('price', price.toString())
-                  } else{
+                  } else {
                     onChange(value)
                   }
                 }}
@@ -265,25 +324,31 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       </View>
       <ModalPayment
         isVisible={buttonPayment}
+        isPayment={false}
         closeDialog={function (): void {
           setButtonPayment(false);
         }}
-        arrData={methodData}
+        arrData={advanceMethodData}
         method={method}
         setMethod={function (item: number, name: string): void {
           setMethod(item);
           countRef.current = name;
           setCheck(true)
-          if (name === translate("order.DEDUCTION_OF_LIABILITIES")) {
-            setText(orderStore.dataDebtLimit.debtAmount.toString())
+          if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
+            if(Number(Sum())<= credit){
+              setText(Sum().toString())
+            }else{
+              setText(credit.toString())
+
+            }
           } else {
             setText('')
           }
           console.log("tuvm method", countRef);
         }}
         debt={{
-          isHaveDebtLimit: orderStore.dataDebtLimit.isHaveDebtLimit,
-          debtAmount: orderStore.dataDebtLimit.debtAmount,
+          isHaveDebtLimit: isCredit,
+          debtAmount: credit,
         }}
       />
     </View>

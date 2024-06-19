@@ -122,7 +122,7 @@ export default function ItemListProduct(props: AddProduct) {
           marginLeft: scaleWidth(margin.margin_8),
         }}>
         <View style={{ marginRight: scaleWidth(margin.margin_10) }}>       
-              <ImageBackground
+              {/* <ImageBackground
                 style={{ width: scaleWidth(48), height: scaleHeight(48) }}
                 imageStyle={{
                   borderRadius: 12,
@@ -140,7 +140,17 @@ export default function ItemListProduct(props: AddProduct) {
                   }}
                   defaultSource={require("../../../../assets/Images/no_images.png")}
                 />
-              </ImageBackground>
+              </ImageBackground> */}
+              <AutoHeightImage
+            source={{
+              uri:
+                images ??
+                "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
+            }}
+            height={scaleHeight(48)}
+            width={scaleHeight(48)}
+            style={{ borderRadius: 16 }}
+          />
         </View>
         <View style={{ flex: 1 }}>
           <Text
