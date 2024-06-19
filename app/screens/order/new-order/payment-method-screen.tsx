@@ -9,6 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import { ModalPayment } from "../components/modal-payment-method";
 import { useStores } from "../../../models";
 import { methodData } from "./data";
+import { translate } from "../../../i18n";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
@@ -17,7 +18,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const price = props.route.params.params.price;
   const debtAmount = props.route.params.params.debtAmount;
   const [method, setMethod] = useState<number>(0);
-  const countRef = useRef("");
+  const countRef = useRef(translate("order.CASH"));
 
   const { orderStore } = useStores();
   console.log("debt tuvm", debtAmount);
@@ -49,11 +50,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     navigation.goBack();
   };
   console.log("tuvm", type);
+  const [check, setCheck] = useState(false)
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [text, setText] = useState("");
   const {
     control,
-    formState: { errors },
+    formState: { errors }, setError, setValue
   } = useForm();
   const navigation = useNavigation();
   return (
@@ -79,7 +81,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {type != true ? (
+          {check !== true ? (
             <View
               style={{
                 backgroundColor: "#FEF7E5",
@@ -124,7 +126,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
-                keyboardType={null}
+                keyboardType='numeric'
                 labelTx={"order.customer_paid"}
                 style={{
                   marginHorizontal: 16,
@@ -134,22 +136,44 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 }}
                 value={value}
                 onBlur={onBlur}
+                showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
-                error={""}
+                error={errors?.price?.message}
+                styleError={{ marginLeft: scaleHeight(16) }}
                 onClearText={() => {
                   onChange("");
                   setText("");
                 }}
                 onChangeText={(value) => {
-                  setText(value);
-                  Remain();
-                  onChange(value);
+                  if (Number(value) >= Number(price)) {
+                    setValue('price', price.toString())
+                  } else{
+                    onChange(value)
+                  }
+                }}
+                // defaultValue={text===""? "": text}
+                onSubmitEditing={() => {
+                  if (Number(value) >= Number(price)) {
+                    setValue('price', price.toString())
+                    onChange(price)
+                    setText(price)
+                    Remain()
+                  }
+                  if (Number(value) < Number(Sum())) {
+                    setError("price", {
+                      type: "validate",
+                      message: 'Khách cần trả lớn hơn số tiền tối thiểu',
+                    });
+                  }
+                  if (Number(price) > Number(value) && Number(value) >= Number(Sum())) {
+                    setText(value)
+                    Remain()
+                  }
                 }}
               />
             )}
-            defaultValue={""}
             name="price"
-            rules={{ required: "Username is required" }}
+            rules={{ required: "Số tiền là bắt buộc" }}
           />
           <View
             style={{
@@ -239,6 +263,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         setMethod={function (item: number, name: string): void {
           setMethod(item);
           countRef.current = name;
+          setCheck(true)
+          if (name === translate("order.DEDUCTION_OF_LIABILITIES")) {
+            setText(orderStore.dataDebtLimit.debtAmount.toString())
+          } else {
+            setText('')
+          }
           console.log("tuvm method", countRef);
         }}
         debt={{

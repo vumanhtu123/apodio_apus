@@ -85,9 +85,8 @@ export const AuthenticationStoreModel = types
           store.setAccessToken(result.data.accessToken);
           store.setUserID(result.data.userId);
           setAccessToken(store.accessToken);
-          setRefreshToken(result.data.refreshToken)
-          // setTenantId(store.tenantId);
-          store.setTenantId(result.data.tenantId);
+          setRefreshToken(store.refreshToken)
+          setTenantId(result.data.tenantId);
           return result.data;
         } else {
           const errorM = result.errorCodes.find((error) => error.code)?.message;

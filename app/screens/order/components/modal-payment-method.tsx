@@ -15,8 +15,6 @@ interface InputSelect {
 }
 
 export const ModalPayment = (data: InputSelect) => {
-  console.log("check limit", data.debt.debtAmount);
-  const check = useRef(false);
   return (
     <Modal
       onBackdropPress={() => data.closeDialog()}
@@ -51,10 +49,7 @@ export const ModalPayment = (data: InputSelect) => {
           return (
             <Item_Payment
               setData={function (value: any, name: any): void {
-                {
-                  check.current !== true ? data.setMethod(value, name) : null;
-                }
-                console.log("tuvm", check.current);
+               data.setMethod(value, name)
               }}
               debt={data.debt}
               name={payment.label}
@@ -73,7 +68,6 @@ export const ModalPayment = (data: InputSelect) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              check.current = false;
               data.closeDialog();
             }}>
             <View
@@ -96,8 +90,6 @@ export const ModalPayment = (data: InputSelect) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              check.current = true;
-              console.log("clode", check.current);
               data.closeDialog();
             }}>
             <View

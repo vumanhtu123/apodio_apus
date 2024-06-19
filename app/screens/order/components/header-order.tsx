@@ -191,3 +191,124 @@ export const AddressOrder = (data: AddressData) => {
     </TouchableOpacity>
   );
 };
+
+interface DataSumMoney {
+  arrVat: any;
+  sumNoVat: number;
+  sumVat: number;
+  discount: number;
+}
+
+export const SumMoney = (props: DataSumMoney) => {
+  const total = props.arrVat.reduce((accumulator, currentObject) => {
+    return accumulator + ((Number(currentObject.unitPrice?? 0) * Number(currentObject.amount?? 0)) - ((Number(currentObject.taxesInput?? 0) / 100) * (Number(currentObject.unitPrice?? 0) * Number(currentObject.amount?? 0))) + Number(currentObject.taxValue?? 0));
+  }, 0);
+  const discount = props.arrVat.reduce((accumulator, currentObject) => {
+    return accumulator + ((Number(currentObject.taxesInput?? 0) / 100) * (Number(currentObject.unitPrice?? 0) * Number(currentObject.amount?? 0)));
+  }, 0);
+
+  const Sum = () => {
+    return Number(props.sumVat?? 0) - Number(props.discount ?? 0);
+  };
+  const SumNoVAT = () => {
+    return Number(props.sumNoVat?? 0) - Number(props.discount ?? 0);
+  };
+  var sumValue;
+  return (
+    <View
+      style={{
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        flexDirection: "row",
+        borderRadius: 8,
+        backgroundColor: "white",
+        justifyContent: "space-between",
+        marginVertical: 15,
+      }}>
+      <View style={{ flexDirection: "column" }}>
+        <Text
+          tx="order.sum_no_texas"
+          style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
+        {props.arrVat != null
+          ? props.arrVat.map((data: any) => {
+            return data.VAT != undefined ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data?.VAT?.label ?? null}
+              </Text>
+            ) : null;
+          })
+          : null}
+        {props.discount !== null ? (
+          <Text
+            tx="order.discount"
+            style={{
+              fontSize: 10,
+              fontWeight: "400",
+              color: "#747475",
+              marginTop: 8,
+            }}></Text>
+        ) : null}
+        <Text
+          tx="order.sum_yes_texas"
+          style={{
+            fontSize: 10,
+            fontWeight: "400",
+            color: "#747475",
+            marginTop: 8,
+          }}></Text>
+      </View>
+      <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
+        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
+          {(isNaN(props.sumNoVat) ? 0 : props.sumNoVat) ?? 0}
+        </Text>
+        {props.arrVat != undefined
+          ? props.arrVat.map((data: any) => {
+            if (data.taxValue !== undefined) {
+              sumValue =
+                Number(data.taxValue) +
+                Number(props.sumNoVat) -
+                Number(props.discount ?? 0);
+              console.log("tutu", data.taxValue, props.sumNoVat);
+            }
+            return data.taxValue != undefined ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: "#747475",
+                  marginTop: 8,
+                }}>
+                {data?.taxValue ?? null}
+              </Text>
+            ) : null;
+          })
+          : null}
+        <Text
+          style={{
+            fontSize: 10,
+            fontWeight: "400",
+            color: "#747475",
+            marginTop: 8,
+          }}>
+          {discount ?? 0}
+        </Text>
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: "600",
+            color: "#FF4956",
+            marginTop: 8,
+          }}>
+          {/* {(isNaN(Sum()) ? sumValue : SumNoVAT()) ?? 0} */}
+          {total}
+        </Text>
+      </View>
+    </View>
+  );
+};
