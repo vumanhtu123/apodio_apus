@@ -15,8 +15,11 @@ interface InputSelect {
 
 export const ModalTaxes = (data: InputSelect) => {
   const [name, setName] = useState({ label: "", value: "" });
-  useEffect(() => {}, [name]);
-  console.log("tuvm apply", name);
+
+  useEffect(() => {
+    setName({ label: "", value: "" });
+  }, [data.isVisible]);
+
   return (
     <Modal
       onBackdropPress={() => data.closeDialog()}
