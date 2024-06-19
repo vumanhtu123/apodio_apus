@@ -688,6 +688,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     ) {
       orderStore.setIsLoadMore(true);
       setPage((prevPage) => prevPage + 1);
+      console.log('load them')
     }
   };
   const refreshProduct = async () => {
@@ -858,6 +859,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
             setNameDirectory={orderStore.setNameCategory}
             isSearchBarVisible={openSearch}
             setIndex={setIndex}
+            setPage={setPage}
           />
           <View style={styles.containerProduct}>
             <FlatList
