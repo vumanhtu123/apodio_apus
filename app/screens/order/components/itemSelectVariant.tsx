@@ -181,7 +181,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         </View>
                         <TouchableOpacity disabled={item.uomGroup === null ? true : false}
                             onPress={() => setIsModal(true)}
-                            style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center', width: '12%', }}>
+                            style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center', width: '15%', }}>
                             <Text numberOfLines={1} style={styles.text400Nero10} text={item.saleUom?.name} />
                             <Images.icon_caretRightDown />
                         </TouchableOpacity>

@@ -17,15 +17,13 @@ import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../components";
 import { Images } from "../../../../assets";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { number } from "mobx-state-tree/dist/internal";
 import { Styles } from "./styles";
 import SelectFilterModal from "./Modal/modal-select-filter";
 import { useStores } from "../../../models";
 import ModalCreateClient from "./Modal/modal-create-client";
-import Loading from "../../../components/loading/loading";
-import { showLoading } from "../../../utils/toast";
 import { useNavigation } from "@react-navigation/native";
+import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
+import { translate } from "../../../i18n";
 
 export const SelectClientScreen: FC<
   StackScreenProps<NavigatorParamList, "selectClient">
@@ -48,11 +46,6 @@ export const SelectClientScreen: FC<
   // console.log("doannnnn", totalPage);
 
   const sort = getAPi.orderStore.sortCreateClient;
-  console.log("doann log sort", sort);
-
-  console.log("====================================");
-  console.log("valueSearch", valueSearch);
-  console.log("====================================");
 
   const getListClient = () => {
     getAPi.orderStore
@@ -70,7 +63,6 @@ export const SelectClientScreen: FC<
             phoneNumber: item.phoneNumber,
           };
         });
-
         setMyDataSelectClient(dataSelectClien);
       });
   };
@@ -195,9 +187,6 @@ export const SelectClientScreen: FC<
                   justifyContent: "space-between",
                 }}
                 onPress={() => {
-                  console.log("====================================");
-                  console.log("DataItemSelect", item);
-                  console.log("====================================");
                   setdataItemSelect(item);
                   setIndexSelect(index);
                 }}>
@@ -228,9 +217,6 @@ export const SelectClientScreen: FC<
                 </View>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log("====================================");
-                    console.log("DataItemSelect", item);
-                    console.log("====================================");
                     setdataItemSelect(item);
                     setIndexSelect(index);
                   }}>
@@ -314,9 +300,18 @@ export const SelectClientScreen: FC<
             onClick === "successfully" ? Styles.btnSuccessfully : Styles.btnSave
           }
           onPress={() => {
-            senDataClientSelected();
-            setOnClick("successfully");
-            getDebtLimit();
+            if(indexSelect){
+              senDataClientSelected();
+              setOnClick("successfully");
+              getDebtLimit();
+            }else {
+              Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: '',
+                textBody: translate('ClientScreen.txtChoiceClient'),
+      
+              })
+            }
           }}>
           <Text
             style={{

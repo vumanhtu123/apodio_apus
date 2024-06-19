@@ -129,7 +129,7 @@ export interface TextFieldProps extends TextInputProps {
   showRightIcon?: boolean;
   styleTextError? :  StyleProp<TextStyle>
   isMultiline?: boolean; 
-  valueInput? : any;
+  value? : any;
 }
 
 /**
@@ -166,7 +166,6 @@ export function TextField(props: TextFieldProps) {
     styleError,
     styleTextError,
     isMultiline,
-    valueInput,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
@@ -269,7 +268,7 @@ export function TextField(props: TextFieldProps) {
               placeholder={actualPlaceholder}
               // underlineColorAndroid={colors.palette.neutral900}
               placeholderTextColor={colors.palette.dolphin}
-              value={valueInput}
+              value={value}
               style={[
                 inputStyles,
                 { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
