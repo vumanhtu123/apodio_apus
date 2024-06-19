@@ -10,6 +10,7 @@ import {
 import { Text } from "../../../components/text/text";
 import {
   FlatList,
+  ImageBackground,
   TextInput,
   TextStyle,
   TouchableOpacity,
@@ -23,14 +24,16 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
 import { number } from "mobx-state-tree/dist/internal";
+import FastImage from "react-native-fast-image";
 
 interface AddProduct {
-  onPress: ({}) => void;
-  onPressPlus: ({}) => void;
-  onPressMinus: ({}) => void;
-  onPressSelectTexas: ({}) => void;
-  onPressAddTexas: ({}) => void;
-  handleUpdatePrice: ({}) => void;
+  onPress: ({ }) => void;
+  onPressPlus: ({ }) => void;
+  onPressMinus: ({ }) => void;
+  onPressSelectTexas: ({ }) => void;
+  onPressAddTexas: ({ }) => void;
+  handleUpdatePrice: ({ }) => void;
+  editDiscount?: ({}) => void;
   arrData?: {}[];
   images?: string;
   name?: string;
@@ -38,9 +41,11 @@ interface AddProduct {
   cost?: string;
   qty?: string;
   VAT?: string;
+  taxesInput?: string;
   valueVAT?: string;
   sumTexas: string;
   addTaxes?: boolean;
+  editTaxes?: boolean;
   selectUpdate?: boolean;
   priceList?: boolean;
   textDiscount?: number;
@@ -64,8 +69,11 @@ export default function ItemListProduct(props: AddProduct) {
     sumTexas,
     onPressAddTexas,
     onPressSelectTexas,
+    editDiscount,
     addTaxes,
+    editTaxes,
     priceList,
+    taxesInput,
     inputDiscount,
     textDiscount,
     handleUpdatePrice,
@@ -89,7 +97,7 @@ export default function ItemListProduct(props: AddProduct) {
 
   const Sum = (): Number => {
     return (
-      Price() * (1- (Number(props.textDiscount ?? 0))/100) + Number(props.valueVAT ?? 0)
+      Price() * (1 - (Number(props.textDiscount ?? 0)) / 100) + Number(props.valueVAT ?? 0)
     );
   };
 
@@ -104,7 +112,7 @@ export default function ItemListProduct(props: AddProduct) {
           top: scaleHeight(8),
           zIndex: 1,
         }}>
-        <Images.icon_delete2 height={scaleHeight(18)} width={scaleHeight(18)} />
+        <Images.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
       </TouchableOpacity>
       <View
         style={{
@@ -113,17 +121,26 @@ export default function ItemListProduct(props: AddProduct) {
           marginVertical: scaleHeight(margin.margin_12),
           marginLeft: scaleWidth(margin.margin_8),
         }}>
-        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>
-          <AutoHeightImage
-            source={{
-              uri:
-                images ??
-                "https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630",
-            }}
-            height={scaleHeight(48)}
-            width={scaleHeight(48)}
-            style={{ borderRadius: 16 }}
-          />
+        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>       
+              <ImageBackground
+                style={{ width: scaleWidth(48), height: scaleHeight(48) }}
+                imageStyle={{
+                  borderRadius: 12,
+                }}
+                source={require("../../../../assets/Images/no_images.png")}>
+                <FastImage 
+                  style={{
+                    width: scaleWidth(48),
+                    height: scaleHeight(48),
+                    borderRadius: 12
+                  }}
+                  source={{
+                    uri: images != null ? images : '',
+                    cache: FastImage.cacheControl.immutable,
+                  }}
+                  defaultSource={require("../../../../assets/Images/no_images.png")}
+                />
+              </ImageBackground>
         </View>
         <View style={{ flex: 1 }}>
           <Text
@@ -164,7 +181,7 @@ export default function ItemListProduct(props: AddProduct) {
                         onChange(newText)
                       }}
                       value={value}
-                      onSubmitEditing={()=> inputPrice(value)}
+                      onSubmitEditing={() => inputPrice(value)}
                     />
                   </View>
                 )}
@@ -209,25 +226,27 @@ export default function ItemListProduct(props: AddProduct) {
               <View style={{ flexDirection: "row" }}>
                 <Images.ic_tag />
                 <Text
+                  numberOfLines={1}
                   style={{
                     fontSize: 10,
                     fontWeight: "400",
                     color: "#242424",
                     marginHorizontal: 4,
+                    maxWidth: scaleWidth(100)
                   }}>
                   {/* {translate("order.taxes_vat")} */}
                   {VAT + " "}
                 </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "400",
+                    fontStyle: "italic",
+                    color: "#F4AD22",
+                  }}>
+                  {valueVAT}
+                </Text>
               </View>
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  fontStyle: "italic",
-                  color: "#F4AD22",
-                }}>
-                {valueVAT}
-              </Text>
             </View>
           ) : null}
           <TouchableOpacity onPress={(item) => onPressSelectTexas(item)}>
@@ -267,7 +286,7 @@ export default function ItemListProduct(props: AddProduct) {
                   </Text>
                 </View>
               </TouchableOpacity>
-            ) : (
+            ) : editTaxes == true ? (
               <TouchableOpacity onPress={(item) => onPressAddTexas(item)}>
                 <View
                   style={{
@@ -303,7 +322,7 @@ export default function ItemListProduct(props: AddProduct) {
                             onChange(newText)
                           }}
                           value={value}
-                          onSubmitEditing={()=> inputDiscount(value)}
+                          onSubmitEditing={() => inputDiscount(value)}
                         />
                       </View>
                     )}
@@ -311,7 +330,19 @@ export default function ItemListProduct(props: AddProduct) {
                   />
                 </View>
               </TouchableOpacity>
-            )
+            ) :
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  marginHorizontal: 2,
+                }}>
+                  {taxesInput + ' %'}
+                </Text>
+                <TouchableOpacity onPress={() => editDiscount()}>
+                  <Images.icon_edit />
+                </TouchableOpacity>
+              </View>
           ) : null}
           {/* {sumTexas != null ? ( */}
           <Text
@@ -356,7 +387,7 @@ export default function ItemListProduct(props: AddProduct) {
           </TouchableOpacity>
           <Text
             style={{
-              marginHorizontal: 23,
+              marginHorizontal: 15,
               textAlign: "center",
               alignItems: "center",
               fontSize: 12,

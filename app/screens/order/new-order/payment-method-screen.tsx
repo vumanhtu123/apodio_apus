@@ -34,10 +34,19 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   };
 
   const Remain = () => {
-    if (Number(price) == 0) {
-      return Number(price);
+    if(type===true){
+
+      if (Number(price) == 0) {
+        return Number(price);
+      }
+      return Number(price) - Number(text);
+      }else{
+      if (Number(price) == 0) {
+        return Number(price) - Number(debtAmount);
+      }
+      return Number(price) - Number(debtAmount) - Number(text);
+
     }
-    return Number(price) - Number(text);
   };
   const Apply = () => {
     orderStore.setMethodPayment({
@@ -108,7 +117,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               textAlign: "center",
               marginVertical: 20,
             }}>
-            {price}
+            {type===true ?  price: Number(price)- Number(debtAmount)}
           </Text>
           <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
             <Text
