@@ -354,7 +354,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 RightIconClear={Images.icon_delete2}
                 isImportant={true}
                 error={errors?.phone?.message}
-                defaultValue={dataEdit !== undefined ? dataEdit.phoneNumber : ''}
+                // defaultValue={dataEdit !== undefined ? dataEdit.phoneNumber : ''}
               />
             )}
             name="phone"
@@ -418,7 +418,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 RightIconClear={Images.icon_delete2}
                 isImportant={true}
                 error={errors?.address?.message}
-                defaultValue={dataEdit !== undefined ? dataEdit.address : ''}
+                // defaultValue={dataEdit !== undefined ? dataEdit.address : ''}
               />
             )}
             name="address"

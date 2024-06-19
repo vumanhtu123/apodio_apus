@@ -210,6 +210,10 @@ export const SumMoney = (props: DataSumMoney) => {
     return accumulator + ((Number(currentObject.taxesInput ?? 0) / 100) * (Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0)));
   }, 0);
 
+
+
+  orderStore.setDataProductAddOrder(props.arrVat.slice());
+  console.log('props.arrVat------', props.arrVat)
   const Sum = () => {
     return Number(props.sumVat ?? 0) - Number(props.discount ?? 0);
   };

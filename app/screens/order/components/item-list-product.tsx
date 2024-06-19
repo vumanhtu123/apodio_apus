@@ -121,8 +121,8 @@ export default function ItemListProduct(props: AddProduct) {
           marginVertical: scaleHeight(margin.margin_12),
           marginLeft: scaleWidth(margin.margin_8),
         }}>
-        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>
-          {/* <ImageBackground
+        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>       
+              {/* <ImageBackground
                 style={{ width: scaleWidth(48), height: scaleHeight(48) }}
                 imageStyle={{
                   borderRadius: 12,
@@ -135,13 +135,13 @@ export default function ItemListProduct(props: AddProduct) {
                     borderRadius: 12
                   }}
                   source={{
-                    uri: images != null ? images : '',
+                    uri: images != null ? images.length > 0 ? images[0] : '' : '',
                     cache: FastImage.cacheControl.immutable,
                   }}
                   defaultSource={require("../../../../assets/Images/no_images.png")}
                 />
               </ImageBackground> */}
-          <AutoHeightImage
+              <AutoHeightImage
             source={{
               uri:
                 images ??
@@ -151,7 +151,6 @@ export default function ItemListProduct(props: AddProduct) {
             width={scaleHeight(48)}
             style={{ borderRadius: 16 }}
           />
-
         </View>
         <View style={{ flex: 1 }}>
           <Text

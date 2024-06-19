@@ -281,6 +281,59 @@ export class OrderApi {
       return { kind: "bad-data" };
     }
   }
+  async getListAccountLedger(): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
+        ApiEndpoint.GET_LIST_ACCOUNT_LEDGER + "?isDefault=true"
+      );
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
+      Loading.hide();
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+  async getDebtAccountLedger(
+    accountLedgerId: any,
+    start: string,
+    end: string,
+    customerId: any,
+  ): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
+        ApiEndpoint.GET_DEBT_ACCOUNT_LEDGER + "?type=EXTERNAL" ,
+        {
+          accountLedgerId: accountLedgerId,
+          start: start,
+          end: end,
+          customerId: customerId,
+        }
+      );
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
+      Loading.hide();
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
 
   async getDetailOrder(id: number): Promise<any> {
     Loading.show({

@@ -300,7 +300,8 @@ export const SelectClientScreen: FC<
             onClick === "successfully" ? Styles.btnSuccessfully : Styles.btnSave
           }
           onPress={() => {
-            if(indexSelect){
+            console.log('----indexSelect-------', indexSelect)
+            if(indexSelect >= 0){
               senDataClientSelected();
               setOnClick("successfully");
               getDebtLimit();

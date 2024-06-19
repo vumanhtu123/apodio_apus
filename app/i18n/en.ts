@@ -216,6 +216,7 @@ const en = {
     taxes: "Loại thuế",
     taxes_apply: "Thuế áp dụng",
     payment_method: "Phương thức thanh toán",
+    advance_payment_method: "Phương thức thanh toán trước",
     apply: "Áp dụng",
     cancel: "Hủy",
     available_limit: "(Hạn mức khả dụng: ",
@@ -248,6 +249,7 @@ const en = {
     BANK: "Ngân hàng",
     CREDIT: "Tín dụng",
     DEDUCTION_OF_LIABILITIES: "Công nợ",
+    EXCEPT_FOR_LIABILITIES: "Đối trừ công nợ",
     cancellationReason: "Cancellation reason",
     sellerConfirm: "Thông tin thanh toán",
     deliveryAddress: "Địa chỉ giao hàng",
@@ -509,6 +511,11 @@ const en = {
     groupClient: "Khách hàng",
     btnAddClient: "Nhóm khách hàng",
     detailClient: "Chi tiết khách hàng",
+    createNew: "Tạo mới khách hàng",
+    pleaseSelectTypeClient: "Vui lòng chon kiểu khách hàng",
+    phoneNumber10: "Vui lòng nhập đủ 10 số",
+    pleaseInputPhoneNumber: "Vui lòng nhập số điện thoại",
+    pleaseInputName:"Vui lòng nhập họ tên",
     txtChoiceClient: "Vui lòng chọn khách hàng"
   },
   NCCScreen: {
