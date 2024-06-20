@@ -69,6 +69,7 @@ export const OrderStoreModel = types
     productCategoryId: types.optional(types.number, 0),
     nameCategory: types.optional(types.string, ""),
     checkRenderList: types.optional(types.boolean, false),
+    clearingDebt: types.optional(types.boolean, false),
     dataAddress: types.optional(types.frozen<Root1>(), {id: 0, partnerId: 0,
       phoneNumber: '',
       addressType: '',
@@ -159,6 +160,9 @@ export const OrderStoreModel = types
     },
     setCheckIdPartner(value: boolean) {
       self.checkIdPartner = value;
+    },
+    setClearingDebt(value: boolean) {
+      self.clearingDebt = value;
     },
     setDataAddress(value: any) {
       self.dataAddress = value;
