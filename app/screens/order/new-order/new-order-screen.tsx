@@ -696,6 +696,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
   };
 
+  console.log('---------arrProduct--------', JSON.stringify(arrProduct))
   const selectProduct = () => {
     orderStore.setDataProductAddOrder(arrProduct.slice());
   };
@@ -813,6 +814,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             arrData={arrPayment}
             onPressChoice={(item: any) => {
               setPayment(item)
+              orderStore.clearTaxValueAndTaxesInput();
+              setArrProduct(orderStore.dataProductAddOrder.slice());
               // getListTax();
             }}
             dataDefault={payment.label}

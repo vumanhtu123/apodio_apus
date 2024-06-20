@@ -1,6 +1,6 @@
 import { PriceList } from "./../../screens/order/components/header-order";
 import { ClientSlected } from "./../order-list-select-clien-model";
-import { flow, types } from "mobx-state-tree";
+import { flow, types, applySnapshot } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { ProductApi } from "../../services/api/api-product";
 import { InputSelectModel, OrderResult } from "./entities/order-store-model";
@@ -20,7 +20,6 @@ import {
   OrderWardResult,
   Root1,
 } from "./entities/order-address-model";
-import { number } from "mobx-state-tree/dist/internal";
 import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
 import {
   PriceListResponse,
@@ -54,7 +53,8 @@ export const OrderStoreModel = types
       id: "",
       label: "",
     }),
-    dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
+    dataProductAddOrder: types.optional(types.array(types.frozen()), []),
+    //dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
     checkPriceList: types.optional(types.boolean, false),
     sortCreateClient: types.optional(types.string, ""),
     search: types.optional(types.string, ""),
@@ -191,6 +191,15 @@ export const OrderStoreModel = types
     setDataPriceListSelect(value: any) {
       console.log("doanlog", value);
       self.dataPriceListSelected = value;
+    },
+    clearTaxValueAndTaxesInput(){
+      const updatedItems = self.dataProductAddOrder.map(item => {
+        return { ...item, taxValue: undefined, taxesInput: undefined, addInputTaxes:undefined, addTaxes:undefined, undefined, amountTotal: undefined, VAT: undefined};
+      });
+      console.log('----updatedItems---', JSON.stringify(updatedItems))
+      applySnapshot(self.dataProductAddOrder, updatedItems);
+      //this.setDataProductAddOrder(updatedItems);
+      console.log('----updatedItems222222---', JSON.stringify(self.dataProductAddOrder))
     },
     reset() {
       self.isModalTracking = false;
