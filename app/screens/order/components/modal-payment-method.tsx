@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { scaleHeight } from "../../../theme";
+import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 
@@ -12,7 +12,7 @@ interface InputSelect {
   method: number;
   setMethod: (item: number, name: string) => void;
   debt: { isHaveDebtLimit: any; debtAmount: any };
-  isPayment?: boolean; 
+  isPayment?: boolean;
 }
 
 export const ModalPayment = (data: InputSelect) => {
@@ -27,13 +27,13 @@ export const ModalPayment = (data: InputSelect) => {
         margin: 0,
         justifyContent: "flex-end",
       }}>
-      <View style={{ backgroundColor: "white" }}>
+      <View style={{ backgroundColor: "white", borderTopLeftRadius: scaleWidth(20), borderTopRightRadius: scaleWidth(20) }}>
         <View
           style={{
             height: 5,
             backgroundColor: "#C7C7C7",
             marginTop: scaleHeight(8),
-            marginHorizontal: 137,
+            marginHorizontal: scaleWidth(137),
             borderRadius: 100,
           }}
         />
@@ -42,15 +42,15 @@ export const ModalPayment = (data: InputSelect) => {
           style={{
             color: "#242424",
             fontWeight: "700",
-            fontSize: 14,
-            marginHorizontal: 24,
-            marginTop: 25,
+            fontSize: fontSize.size14,
+            marginHorizontal: scaleWidth(24),
+            marginTop: scaleHeight(25),
           }}></Text>
         {data.arrData?.map((payment: any, index) => {
           return (
             <Item_Payment
               setData={function (value: any, name: any): void {
-               data.setMethod(value, name)
+                data.setMethod(value, name)
               }}
               debt={data.debt}
               name={payment.label}
@@ -63,52 +63,63 @@ export const ModalPayment = (data: InputSelect) => {
         <View
           style={{
             flexDirection: "row",
-            marginHorizontal: 15,
+            marginHorizontal: scaleWidth(15),
             justifyContent: "space-between",
-            marginBottom: 15,
-            marginTop: 5,
+            marginBottom: scaleHeight(15),
+            marginTop: scaleHeight(5),
           }}>
           <TouchableOpacity
             onPress={() => {
               data.closeDialog();
+            }}
+            style={{
+              backgroundColor: "white",
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: "#c8c8c8",
+              alignItems: 'center',
+              paddingHorizontal: scaleWidth(55),
+              paddingVertical: scaleWidth(12),
+              // marginRight : scaleWidth(12)
+              // width: scaleWidth(150)
             }}>
-            <View
+            <Text
+              tx="order.cancel"
               style={{
-                backgroundColor: "white",
-                borderRadius: 8,
-                borderWidth: 1,
-                borderColor: "#747475",
-              }}>
-              <Text
-                tx="order.cancel"
-                style={{
-                  color: "#747475",
-                  fontSize: 14,
-                  fontWeight: "600",
-                  marginHorizontal: 60,
-                  marginVertical: 12,
-                }}></Text>
-            </View>
+                color: "#747475",
+                fontSize: fontSize.size14,
+                fontWeight: "600",
+                textAlign: 'center',
+                width: scaleWidth(55)
+                // marginHorizontal: scaleWidth(60),
+                // marginVertical: scaleHeight(12),
+              }}></Text>
           </TouchableOpacity>
+          <View style={{width:scaleWidth(12)}}></View>
           <TouchableOpacity
             onPress={() => {
               data.closeDialog();
-            }}>
-            <View
-              style={{
-                backgroundColor: "#0078D4",
-                borderRadius: 8,
-              }}>
+            }}
+            style={{
+              backgroundColor: "#0078D4",
+              borderRadius: 8,
+              alignItems: 'center',
+              paddingHorizontal: scaleWidth(55),
+              paddingVertical: scaleWidth(12),
+              // width: scaleWidth(150)
+            }}
+          >
               <Text
                 tx="order.apply"
                 style={{
                   color: "white",
                   fontSize: 14,
                   fontWeight: "600",
-                  marginHorizontal: 50,
-                  marginVertical: 12,
+                  textAlign : 'center',
+                  width : scaleWidth(55)
+                  // marginHorizontal: scaleWidth(50),
+                  // marginVertical: scaleHeight(12),
                 }}></Text>
-            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -144,7 +155,7 @@ const Item_Payment = (data: InputItem) => {
       <TouchableOpacity
         onPress={() => {
           {
-            data.index === data.length-1 && data.debt.isHaveDebtLimit === false
+            data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
               ? null
               : data.setData(data.index, data.name);
           }
@@ -170,11 +181,11 @@ const Item_Payment = (data: InputItem) => {
                 width: 16,
                 height: 16,
                 backgroundColor:
-                  data.index === data.length-1 && data.debt.isHaveDebtLimit === false
+                  data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
                     ? "white"
                     : data.id == data.index
-                    ? "#0078D4"
-                    : "white",
+                      ? "#0078D4"
+                      : "white",
                 alignSelf: "center",
               }}></View>
           </View>
@@ -184,14 +195,14 @@ const Item_Payment = (data: InputItem) => {
               fontSize: 14,
               fontWeight: "500",
               color:
-                data.index === data.length-1 && data.debt.isHaveDebtLimit === false
+                data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
                   ? "#DFE0EB"
-                  : data.index !== data.length-1 && data.debt.isHaveDebtLimit === true
-                  ? "#242424"
-                  : "#242424",
+                  : data.index !== data.length - 1 && data.debt.isHaveDebtLimit === true
+                    ? "#242424"
+                    : "#242424",
               paddingHorizontal: 8,
             }}></Text>
-          {data.index === data.length-1 && data.debt.isHaveDebtLimit === true ? (
+          {data.index === data.length - 1 && data.debt.isHaveDebtLimit === true ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 tx="order.available_limit"

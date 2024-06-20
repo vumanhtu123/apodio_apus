@@ -318,6 +318,7 @@ const CustomCalendar = (props: any) => {
                 onReset(selectedIndex);
               }}>
               <Text
+                tx="calendar.reset"
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{
                   alignSelf: "center",
@@ -325,11 +326,11 @@ const CustomCalendar = (props: any) => {
                   color: colors.palette.nero,
                   fontWeight: "700",
                 }}>
-                Reset
               </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={props.handleShort}>
               <Text
+                tx="calendar.done"
                 // eslint-disable-next-line react-native/no-inline-styles
                 style={{
                   alignSelf: "center",
@@ -337,7 +338,6 @@ const CustomCalendar = (props: any) => {
                   color: "#FFFFFF",
                   fontWeight: "700",
                 }}>
-                Done
               </Text>
             </TouchableOpacity>
           </View>

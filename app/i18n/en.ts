@@ -928,7 +928,6 @@ const en = {
     noApplyPriceList: "Không áp dụng bảng giá",
   },
   calendar : {
-    
     today : 'Hôm nay',
     last7days : '7 ngày trước',
     thisMonth : 'Tháng này',
