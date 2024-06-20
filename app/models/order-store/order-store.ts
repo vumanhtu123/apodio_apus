@@ -69,6 +69,7 @@ export const OrderStoreModel = types
     productCategoryId: types.optional(types.number, 0),
     nameCategory: types.optional(types.string, ""),
     checkRenderList: types.optional(types.boolean, false),
+    isLoadMoreSelectClient: types.optional(types.boolean, false),
     clearingDebt: types.optional(types.boolean, false),
     dataAddress: types.optional(types.frozen<Root1>(), {id: 0, partnerId: 0,
       phoneNumber: '',
@@ -192,6 +193,11 @@ export const OrderStoreModel = types
       console.log("doanlog", value);
       self.dataPriceListSelected = value;
     },
+
+    setIsLoadMoreSelectClient(value : any){
+      console.log("doanlog value isLoadMore Select Client", value);
+      self.isLoadMoreSelectClient = value 
+    },
     clearTaxValueAndTaxesInput(){
       const updatedItems = self.dataProductAddOrder.map(item => {
         return { ...item, taxValue: undefined, taxesInput: undefined, addInputTaxes:undefined, addTaxes:undefined, undefined, amountTotal: undefined, VAT: undefined};
@@ -300,7 +306,8 @@ export const OrderStoreModel = types
       size: number,
       sort: string,
       search: string,
-      b2cActivated: boolean
+      b2cActivated: boolean,
+      isLoadMore: boolean,
     ) {
       try {
         const clientAPI = new SelectClientAPI(self.environment.apiErp);
@@ -310,7 +317,8 @@ export const OrderStoreModel = types
             size,
             sort,
             search,
-            b2cActivated
+            b2cActivated,
+            isLoadMore
           );
         console.log(
           "SlectClientResult-------------",
