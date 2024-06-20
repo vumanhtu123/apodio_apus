@@ -716,7 +716,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   // console.log("price scr", Number(price));
   // console.log("price scr 2", orderStore.dataDebtPayment);
 
-  console.log('arrProduct------2----', JSON.stringify(orderStore.dataProductAddOrder));
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
@@ -727,6 +726,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         }
         setAddress(orderStore.dataAddress)
         getListAddress();
+        console.log('orderStore.dataDebtPayment.apply------1----', orderStore.dataDebtPayment.apply);
         setIsDeposit(orderStore.dataDebtPayment.apply);
       
     });
