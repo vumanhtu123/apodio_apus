@@ -24,8 +24,8 @@ interface ModalClientFromPhoneProps {
 const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
     const [selectCustomerType, setSelectCustomerType] = useState({ label: "" })
-    const [checkError, setCheckError] = useState(false)
-
+    // const [checkError, setCheckError] = useState(false)
+    const [checkHind, setCheckHind] = useState(false)
 
     const { control, handleSubmit, setError, formState: { errors }, reset, clearErrors } = useForm({
         defaultValues: {
@@ -44,13 +44,15 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
         }
     }
 
-    const omSubmit = async (data: any) => {
+    const onSubmit = async (data: any) => {
 
         const nameClient = data.NameClient
         const phoneNumber = data.phoneNumber
+        setCheckHind(true)
 
-        selectCustomerType.label == "" && setCheckError(!checkError)
-
+        console.log('====================================');
+        console.log("value hind", checkHind);
+        console.log('====================================');
         console.log('====================================');
         console.log('data test', nameClient, phoneNumber, selectCustomerType);
         console.log('====================================');
@@ -70,6 +72,12 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
         // console.log('test', result);
         // console.log('====================================');
         if (result.kind === "ok") {
+            setCheckHind(false)
+            setSelectCustomerType({ label: "" })
+            reset({
+                phoneNumber: '',
+                NameClient: ''
+            })
             props.setIsVisible(!props.isVisible)
             Dialog.show({
                 title: translate("txtDialog.txt_title_dialog"),
@@ -82,6 +90,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                     props.handleRefresh()
                 }
             })
+
         } else {
             Dialog.show({
                 title: translate("productScreen.Notification"),
@@ -91,6 +100,14 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
             })
         }
     }
+    // Hàm được gọi khi người dùng nhấn nút
+    const onPressHandler = () => {
+        // Thực hiện các thao tác trước khi submit form (nếu cần)
+        setCheckHind(true)
+        console.log('Button pressed');
+        // Sau đó gọi handleSubmit để xử lý submit form
+        handleSubmit(onSubmit)();
+    };
 
 
     // console.log('====================================');
@@ -98,6 +115,15 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     // console.log('====================================');
 
 
+    const resetForm = () => {
+        reset({
+            phoneNumber: '',
+            NameClient: ''
+        })
+        setSelectCustomerType({ label: "" })
+        setCheckHind(false)
+        props.setIsVisible(!props.isVisible)
+    }
 
     const dataFindClient = [
         { id: 1, title: 'Cá nhân' },
@@ -106,6 +132,23 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     ]
 
     // console.log('doandev', phoneNumber, nameClient, selectCustomerType);
+    interface CheckErrorClientProps {
+        checkValue: boolean;
+    }
+
+    const CheckErrorClient: React.FC<CheckErrorClientProps> = ({ checkValue }) => {
+        if (checkValue) {
+            return (
+                <>
+                    {selectCustomerType.label === "" && (
+                        <Text style={{ fontSize: 12, color: '#C95B36' }} tx="ClientScreen.pleaseSelectTypeClient" />
+                    )}
+                </>
+            );
+        } else {
+            return null; // hoặc có thể trả về một phần tử khác nếu cần thiết
+        }
+    };
 
     const arrGroupCustomerType = dataFindClient.map((item) => {
         return { label: item.title, id: item.id }
@@ -148,12 +191,10 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         }}
                         styleView={{ marginBottom: scaleHeight(15) }}
 
+
                     />
-                    {
-                        selectCustomerType.label == "" && <Text style={{ fontSize: fontSize.size12, color: '#C95B36' }} tx="ClientScreen.pleaseSelectTypeClient" />
-                    }
 
-
+                    <CheckErrorClient checkValue={checkHind} />
 
                     <Controller
                         control={control}
@@ -178,7 +219,6 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 onChangeText={(value) => {
 
                                     onChange(value)
-
 
                                 }}
                                 isImportant
@@ -245,14 +285,13 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}
-                            onPress={() => props.setIsVisible(!props.isVisible)}
+                            onPress={() => resetForm()}
                         >
                             <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
                             onPress={
-                                handleSubmit(omSubmit)
-                                // addClient()
+                                onPressHandler
                             }
                         >
                             <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectClient.add"></Text>

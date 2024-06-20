@@ -32,10 +32,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       if (response && response.kind === "ok") {
         const accountLedgerId = response.response.data.content[0].id
         const date = new Date()
+        const month = date.getUTCMonth()
         const year = date.getUTCFullYear();
-        const firstDayOfNextYear = new Date(year + 1, 0, 1);
+        const firstDayOfNextYear = new Date(year + 2, 0, 1);
         const lastDayOfCurrentYear = new Date(firstDayOfNextYear - 1);
-        const start = moment(date).format('YYYY-MM-DD')
+        const firstDayOfMonth = new Date(year, month, 1);
+        const start = moment(firstDayOfMonth).format('YYYY-MM-DD')
         const end = moment(lastDayOfCurrentYear).format('YYYY-MM-DD')
         console.log(start)
         console.log(end)
@@ -115,6 +117,11 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       inputPrice: Number(text) ?? 0,
       apply: true,
     });
+    if(countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")){
+      orderStore.setClearingDebt(true)
+    }else{
+      orderStore.setClearingDebt(false)
+    }
     // navigation.navigate('newOrder', { goBackPayment: true })
     navigation.goBack();
   };
@@ -203,28 +210,28 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   backgroundColor: "white",
                   borderRadius: 8,
                 }}
-                value={text}
+                value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
                 error={errors?.price?.message}
                 styleError={{ marginLeft: scaleHeight(16) }}
-                onClearText={() => {
-                  onChange("");
-                  setText("");
-                }}
+                // onClearText={() => {
+                //   onChange("");
+                //   setText("");
+                // }}
                 onChangeText={(value) => {
-                  if (Number(value) >= Number(price)) {
-                    setValue('price', price.toString())
-                  } else {
+                  // if (Number(value) >= Number(price)) {
+                  //   setValue('price', price.toString())
+                  // } else {
                     onChange(value)
-                  }
+                  // }
                 }}
                 // defaultValue={text===""? "": text}
                 onSubmitEditing={() => {
-                  if (Number(value) >= Number(price)) {
-                    setValue('price', price.toString())
-                    onChange(price)
+                  if (Number(value) >= Number(Sum())) {
+                    // setValue('price', price.toString())
+                    // onChange(price)
                     setText(price)
                     Remain()
                   }
@@ -234,10 +241,10 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       message: 'Khách cần trả lớn hơn số tiền tối thiểu',
                     });
                   }
-                  if (Number(price) > Number(value) && Number(value) >= Number(Sum())) {
-                    setText(value)
-                    Remain()
-                  }
+                  // if (Number(price) > Number(value) && Number(value) >= Number(Sum())) {
+                  //   setText(value)
+                  //   Remain()
+                  // }
                 }}
               />
             )}
@@ -337,12 +344,14 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
             if(Number(Sum())<= credit){
               setText(Sum().toString())
+              setValue('price',Sum().toString())
             }else{
               setText(credit.toString())
-
+              setValue('price',credit.toString())
             }
           } else {
             setText('')
+            setValue('price', '')
           }
           console.log("tuvm method", countRef);
         }}
