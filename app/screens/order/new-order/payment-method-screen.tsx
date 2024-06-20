@@ -93,6 +93,19 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
 
     }
   };
+  const Sum1 = () => {
+    console.log(type, 'log=======')
+    if (type === true) {
+      return 0
+    } else {
+      if ((Number(price) - Number(debtAmount)) >= Number(0)) {
+        return Number(price) - Number(debtAmount)
+      } else {
+        return 0
+      }
+
+    }
+  };
 
   const Remain = () => {
     if (type === true) {
@@ -195,7 +208,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.text_money_limit"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              {Sum()}
+              {Sum1()}
             </Text>
           </View>
           <Controller
