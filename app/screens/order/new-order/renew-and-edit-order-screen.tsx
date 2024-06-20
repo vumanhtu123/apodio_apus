@@ -273,12 +273,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
               ? []
               : [
                 {
-                  id: data.uomGroup.uomGroupLineItems.id,
-                  uomId: data.uomGroup.uomGroupLineItems.uomId,
-                  uomName: data.uomGroup.uomGroupLineItems.uomName,
-                  conversionRate: data.uomGroup.uomGroupLineItems.conversionRate,
-                  accuracy: data.uomGroup.uomGroupLineItems.accuracy,
-                  uomLineType: data.uomGroup.uomGroupLineItems.uomLineType,
+                  id: data.warehouses.id,
+                  name: data.warehouses.name,
+                  quantity: data.warehouses.quantity,
                 },
               ],
         },
@@ -635,6 +632,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
       environmentalResourceTax: 0,
       vat: 0,
     };
+    console.log("tuvm tax 1234", JSON.stringify(arrTaxAll.current));
+    await store.orderStore.postTaxLine([valueApi]).then((value: any) => {
+      console.log("tuvm tax post", JSON.stringify(value));
+      handleTaxes(value, data);
+    });
+  };
 
   const handleTaxes = (arrTaxLine: any, data: any) => {
     const newArr = data.map((value: any) => {
@@ -699,23 +702,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     });
   };
 
-    const handleDecrease = (id: any) => {
-      idItemOrder.current = id;
-      let newArr = arrProduct!
-        .map((item: any) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              amount: item.amount - 1,
-            };
-          }
-          return item;
-        })
-        .filter((item) => item.amount > 0);
-      setArrProduct(newArr);
-      postTaxLines(newArr);
-      console.log("-tuvm", arrProduct);
-    };
+  const selectProduct = () => {
+    orderStore.setDataProductAddOrder(arrProduct.slice());
+  };
 
   const priceAll = (data: any) => {
     console.log("data first", data);
@@ -1001,7 +990,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
                   </View>
                 );
               }}
-              data={store.orderStore.dataClientSelect}
             />
           </View>
           {arrProduct.length > 0 ? (
@@ -1011,15 +999,17 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
               arrVat={arrProduct}
               discount={discount.current}
             />
-            <PriceList id={Number(orderStore.dataPriceListSelected.id) ?? null}
-              name={orderStore.dataPriceListSelected.name ?? null}
-              priceListCategory={
-                orderStore.dataPriceListSelected.priceListCategory
-              }
-              currencyId={Number(orderStore.dataPriceListSelected.currencyId)}
-              pricelistId={Number(orderStore.dataPriceListSelected.pricelistId)} />
-            <InputSelect
-              styleView={{
+          ) : (
+            <View style={{ marginTop: 15 }}></View>
+          )}
+          <TouchableOpacity
+            onPress={() => {
+              setButtonPayment(true);
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                borderRadius: 8,
                 backgroundColor: "white",
                 paddingHorizontal: 16,
                 paddingVertical: 15,
@@ -1076,57 +1066,62 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
                   </View>
                 ) : null}
               </View>
-            </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
 
-            <ShowNote
-              note={note}
-              setNoteData={function (note: String, arr: []): void {
-                console.log("note---------", note);
-                console.log("arr---------", arr);
-              }}
-            />
-            {desiredDate === true ? (
-              <View
+          <ShowNote
+            note={note}
+            setNoteData={function (note: String, arr: []): void {
+              console.log("note---------", note);
+              console.log("arr---------", arr);
+            }}
+          />
+          {desiredDate === true ? (
+            <View
+              style={{
+                flexDirection: "row",
+                marginVertical: 15,
+                alignItems: "center",
+              }}>
+              <TouchableOpacity onPress={() => setDesiredDate(false)}>
+                <Images.icon_deleteDolphin />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setIsSortByDate(true)}
                 style={{
                   flexDirection: "row",
-                  marginVertical: 15,
                   alignItems: "center",
+                  marginLeft: scaleWidth(margin.margin_8),
                 }}>
-                <TouchableOpacity onPress={() => setDesiredDate(false)}>
-                  <Images.icon_deleteDolphin />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => setIsSortByDate(true)}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginLeft: scaleWidth(margin.margin_8),
-                  }}>
-                  <Images.icon_calendar />
-                  <Text
-                    style={[
-                      styles.textDate,
-                      { marginHorizontal: scaleWidth(margin.margin_4) },
-                    ]}>
-                    {translate("order.desiredDate") +
-                      ": " +
-                      moment(
-                        markedDatesS === "" ? new Date() : markedDatesS
-                      ).format("MMMM DD, YYYY")}
-                  </Text>
-                  <Images.icon_caretDownBlue />
-                </TouchableOpacity>
-              </View>
-            ) : null}
-            <Text
-              tx={"order.moreInformation"}
-              style={[
-                styles.textTotal,
-                {
-                  color: colors.palette.neutral900,
-                  marginVertical: 15,
-                },
-              ]}
+                <Images.icon_calendar />
+                <Text
+                  style={[
+                    styles.textDate,
+                    { marginHorizontal: scaleWidth(margin.margin_4) },
+                  ]}>
+                  {translate("order.desiredDate") +
+                    ": " +
+                    moment(
+                      markedDatesS === "" ? new Date() : markedDatesS
+                    ).format("MMMM DD, YYYY")}
+                </Text>
+                <Images.icon_caretDownBlue />
+              </TouchableOpacity>
+            </View>
+          ) : null}
+          <Text
+            tx={"order.moreInformation"}
+            style={[
+              styles.textTotal,
+              {
+                color: colors.palette.neutral900,
+                marginVertical: 15,
+              },
+            ]}
+          />
+          <View style={styles.viewMoreInformation}>
+            <Images.icon_gear
+              style={{ marginRight: scaleWidth(margin.margin_4) }}
             />
             {note === false || isDeposit === false || desiredDate === false ? (
               <ScrollView
@@ -1240,8 +1235,18 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
               <Images.icon_caretRight2 height={16} width={16} />
             </TouchableOpacity>
           </View> */}
-          </ScrollView>
-        </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      <View
+        style={[
+          styles.viewButtonOrder,
+          {
+            top:
+              isDeposit === true
+                ? Dimensions.get("window").height - scaleHeight(184)
+                : Dimensions.get("window").height - scaleHeight(120),
+          },
+        ]}>
         <View
           style={{
             flexDirection: "row",
@@ -1313,7 +1318,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           <View
             style={{
               flexDirection: "row",
-              paddingTop: scaleHeight(padding.padding_20),
               paddingBottom: scaleHeight(padding.padding_12),
             }}>
             <Text
@@ -1325,107 +1329,14 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
               {Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)}
             </Text>
           </View>
-          {isDeposit === true ? (
-            <View
-              style={{
-                flexDirection: "row",
-                paddingBottom: scaleHeight(padding.padding_12),
-                justifyContent: "space-between",
-              }}>
-              <View style={{ flexDirection: "row" }}>
-                <Text tx={"order.prepayment"} style={[styles.textTotal]} />
-                <Text
-                  tx="order.contrast"
-                  style={{
-                    color: "#747475",
-                    fontSize: 12,
-                    fontWeight: "400",
-                  }}></Text>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.textTotal}>{deposit}</Text>
-                <TouchableOpacity>
-                  <Images.icon_edit
-                    style={{ marginLeft: scaleWidth(margin.margin_6) }}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          ) : null}
-          {isDeposit === true ? (
-            <View
-              style={{
-                flexDirection: "row",
-                paddingBottom: scaleHeight(padding.padding_12),
-              }}>
-              <Text
-                tx={"order.stillInDebt"}
-                style={[styles.textTotal, { flex: 1 }]}
-              />
-              <Text
-                style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-                84000000000
-              </Text>
-            </View>
-          ) : null}
-          <Button
-            onPress={() => {
-              addProduct();
-            }}
-            tx={"order.order"}
-            style={styles.buttonOrder}
-            textStyle={styles.textButtonOrder}
-          />
-        </View>
-        <CustomCalendar
-          isReset={isReset}
-          handleReset={() => setIReset(!isReset)}
-          handleShort={() => {
-            // handleOrderMerchant()
-            toggleModalDate();
+        ) : null}
+        <Button
+          onPress={() => {
+            addProduct();
           }}
-          onMarkedDatesChangeS={(markedDatesS: any) => {
-            setMarkedDatesS(markedDatesS);
-          }}
-          onMarkedDatesChangeE={(markedDatesE: any) => {
-            setMarkedDatesE(markedDatesE);
-          }}
-          isShowTabs={false}
-          isSortByDate={isSortByDate}
-          isOneDate={true}
-          toggleModalDate={toggleModalDate}
-        />
-        <ModalPayment
-          isVisible={buttonPayment}
-          closeDialog={function (): void {
-            setButtonPayment(false);
-          }}
-          arrData={methodData}
-          method={method}
-          setMethod={function (item: number, name: string): void {
-            setMethod(item);
-            countRef.current = name;
-            console.log("tuvm2", countRef);
-            handleNamMethod();
-          }}
-          debt={{
-            isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
-            debtAmount: store.orderStore.dataDebtLimit.debtLimit,
-          }}
-        />
-        <ModalTaxes
-          arrName={function (name: any): void {
-            nameTax.current = name;
-            selectTexas();
-            setButtonSelect(false);
-            console.log("tuvm09", nameTax);
-          }}
-          arrTaxes={arrTax}
-          isVisible={buttonSelect}
-          closeDialog={function (): void {
-            setButtonSelect(false);
-          }}
-          arrEditName={nameTax}
+          tx={"order.order"}
+          style={styles.buttonOrder}
+          textStyle={styles.textButtonOrder}
         />
       </View>
       <CustomCalendar
