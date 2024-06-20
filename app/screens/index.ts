@@ -83,3 +83,4 @@ export * from "../screens/order/newInvoice/newInvoice";
 export * from "./order/new-order/payment-method-screen";
 export * from "../screens/select-applicable-price-list/select-applicable-price-list"
 export * from "../screens/select-applicable-price-list/filter-select-applicable-price-list";
+export * from "../screens/debt/screen/detail-debt-screen";

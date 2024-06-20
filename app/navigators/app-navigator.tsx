@@ -31,6 +31,7 @@ import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
 
+
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
@@ -132,6 +133,7 @@ export type NavigatorParamList = {
   newInvoice: undefined;
   selectApplicablePriceList: undefined;
   filterSelectApplicablePriceList: undefined;
+  detailDebt: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -211,6 +213,7 @@ export const AppStack = () => {
         component={Screens.NotificationSetting}
       />
       <Stack.Screen name="ballotDetail" component={Screens.BallotDetail} />
+
       <Stack.Screen
         name="detaiExportGoods"
         component={Screens.DetailExportGoods}
@@ -245,7 +248,10 @@ export const AppStack = () => {
       {/* Màn hình công nợ */}
       <Stack.Screen name="debt" component={Screens.DebtScreen} />
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
-
+      <Stack.Screen
+        name="detailDebt"
+        component={Screens.DetailDebtScreen}
+      />
       <Stack.Screen
         name="selectClient"
         component={Screens.SelectClientScreen}
@@ -457,7 +463,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()
