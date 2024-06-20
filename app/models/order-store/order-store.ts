@@ -1,6 +1,6 @@
 import { PriceList } from "./../../screens/order/components/header-order";
 import { ClientSlected } from "./../order-list-select-clien-model";
-import { flow, types } from "mobx-state-tree";
+import { flow, types, applySnapshot } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { ProductApi } from "../../services/api/api-product";
 import { InputSelectModel, OrderResult } from "./entities/order-store-model";
@@ -20,7 +20,6 @@ import {
   OrderWardResult,
   Root1,
 } from "./entities/order-address-model";
-import { number } from "mobx-state-tree/dist/internal";
 import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
 import {
   PriceListResponse,
@@ -54,7 +53,8 @@ export const OrderStoreModel = types
       id: "",
       label: "",
     }),
-    dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
+    dataProductAddOrder: types.optional(types.array(types.frozen()), []),
+    //dataProductAddOrder: types.optional(types.array(types.frozen<never>()), []),
     checkPriceList: types.optional(types.boolean, false),
     sortCreateClient: types.optional(types.string, ""),
     search: types.optional(types.string, ""),
@@ -70,6 +70,7 @@ export const OrderStoreModel = types
     nameCategory: types.optional(types.string, ""),
     checkRenderList: types.optional(types.boolean, false),
     isLoadMoreSelectClient: types.optional(types.boolean, false),
+    clearingDebt: types.optional(types.boolean, false),
     dataAddress: types.optional(types.frozen<Root1>(), {id: 0, partnerId: 0,
       phoneNumber: '',
       addressType: '',
@@ -106,6 +107,7 @@ export const OrderStoreModel = types
       inputPrice: 0,
       apply: false,
     }),
+    
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -161,6 +163,9 @@ export const OrderStoreModel = types
     setCheckIdPartner(value: boolean) {
       self.checkIdPartner = value;
     },
+    setClearingDebt(value: boolean) {
+      self.clearingDebt = value;
+    },
     setDataAddress(value: any) {
       self.dataAddress = value;
     },
@@ -192,7 +197,77 @@ export const OrderStoreModel = types
     setIsLoadMoreSelectClient(value : any){
       console.log("doanlog value isLoadMore Select Client", value);
       self.isLoadMoreSelectClient = value 
-    }
+    },
+    clearTaxValueAndTaxesInput(){
+      const updatedItems = self.dataProductAddOrder.map(item => {
+        return { ...item, taxValue: undefined, taxesInput: undefined, addInputTaxes:undefined, addTaxes:undefined, undefined, amountTotal: undefined, VAT: undefined};
+      });
+      console.log('----updatedItems---', JSON.stringify(updatedItems))
+      applySnapshot(self.dataProductAddOrder, updatedItems);
+      //this.setDataProductAddOrder(updatedItems);
+      console.log('----updatedItems222222---', JSON.stringify(self.dataProductAddOrder))
+    },
+    reset() {
+      self.isModalTracking = false;
+      self.dataFatherStatus.clear();
+      self.fatherStatus = { id: "", label: "" };
+      self.dataChildStatus.clear();
+      self.childStatus = { id: "", label: "" };
+      self.dataProductAddOrder.clear();
+      self.checkPriceList = false;
+      self.sortCreateClient = "";
+      self.search = "";
+      self.checkIdPartner = false;
+      self.sort.clear();
+      self.isLoadMore = false;
+      self.productId = 0;
+      self.viewProductType = "VIEW_PRODUCT";
+      self.viewGrid = true;
+      self.orderId = 0;
+      self.tagId.clear();
+      self.productCategoryId = 0;
+      self.nameCategory = "";
+      self.checkRenderList = false;
+      self.dataAddress = {
+        id: 0,
+        partnerId: 0,
+        phoneNumber: '',
+        addressType: '',
+        country: { id: 0, name: '' },
+        region: { id: 0, name: '' },
+        city: { id: 0, name: '' },
+        district: { id: 0, name: '' },
+        ward: { id: 0, name: '' },
+        address: '',
+        isDefault: false,
+      };
+      self.dataClientSelect = {
+        id: "",
+        name: "",
+        code: "",
+        phoneNumber: "",
+      };
+      self.sortPriceList = "";
+      self.dataPriceListSelected = {
+        id: "",
+        name: "",
+        priceListCategory: "",
+        currencyId: "",
+        pricelistId: "",
+      };
+      self.dataDebtLimit = {
+        isHaveDebtLimit: false,
+        debtAmount: 0,
+        amountOwed: 0,
+      };
+      self.dataDebtPayment = {
+        sumAll: 0,
+        methodPayment: 0,
+        debt: 0,
+        inputPrice: 0,
+        apply: false,
+      };
+    },
   }))
   .actions((self) => ({
     getListOrder: flow(function* (
