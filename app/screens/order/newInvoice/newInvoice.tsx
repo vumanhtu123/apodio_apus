@@ -288,11 +288,18 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const calculateTotalUnTaxPrice = () => {
         let totalPrice = 0;
         data.saleOrderLines?.forEach((item: any) => {
-          const itemTotal = calculateTotalUnitPrice(item.amountUntaxed, item.quantity);
-          totalPrice += itemTotal;
+            const itemTotal = item.amountUntaxed;
+            totalPrice += itemTotal;
         });
         return totalPrice;
-      }
+    }
+    const validateDate = (value : any) => {
+        if (!value) {
+          return "Ngày không được để trống";
+        }
+      
+        return true;
+      };
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
@@ -429,6 +436,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 name="invoiceCreateDate"
                                 rules={{
                                     required: translate('ruleController.emptyText'),
+                                    validate : validateDate
                                 }}
                             />
                         </View>
@@ -509,7 +517,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
-                                                    <Text text={formatCurrency(calculateTotalUnitPrice(item.amountUntaxed, item.quantity))} style={styles.textListProduct} />
+                                                    <Text text={formatCurrency(item.amountUntaxed)} style={styles.textListProduct} />
 
                                                 </View>
                                             </View>

@@ -76,12 +76,15 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     const paddingTop = useSafeAreaInsets().top;
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedIndexStatus, setSelectedIndexStatus] = useState(0);
+    const [totalPages, setTotalPages] = useState<any>(0);
     const selectStatus = [{ status: '', textStatus: 'Tất cả' },
     { status: 'SENT', textStatus: 'Chờ xác nhận' },
     { status: 'SALE', textStatus: 'Đang thực hiện' },
     { status: 'DONE', textStatus: 'Hoàn thành' },
     { status: 'CANCEL', textStatus: 'Hủy đơn' },
     ]
+    const [page, setPage] = useState(0);
+
     // useEffect(() => {
     //   getListOrder()
     // }, [])
@@ -94,15 +97,15 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       return unsubscribe;
     }, [navigation])
     useEffect(() => {
-      getListOrder()
-    }, [selectedStatus, markedDatesS, markedDatesE])
+      getListOrder(searchValue)
+    }, [selectedStatus, markedDatesS, markedDatesE, page])
     const getListOrder = async (searchValue?: any,) => {
       try {
         const formattedMarkedDatesS = markedDatesS
-          ? moment(markedDatesS).set({ hour: 17, minute: 0, second: 0, millisecond: 0 }).toISOString()
+          ? moment(markedDatesS).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISOString()
           : null;
         const formattedMarkedDatesE = markedDatesE
-          ? moment(markedDatesE).set({ hour: 17, minute: 0, second: 0, millisecond: 0 }).toISOString()
+          ? moment(markedDatesE).set({ hour: 23, minute: 59, second: 59, millisecond: 0 }).toISOString()
           : null;
         const response = await orderStore.getListOrder(
           0,
@@ -115,7 +118,15 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
         // console.log('firstxxxxxxxxxx', response)
         if (response && response.kind === "ok") {
           // console.log('orderLisst', JSON.stringify(response.response.data.content))
-          setArrData(response.response.data.content)
+          if (page == 0) {
+            setArrData(response.response.data.content)
+            setTotalPages(response.response.data.totalPages)
+          } else {
+            setArrData((prevProducts: any) => [
+              ...prevProducts,
+              ...response.response.data.content,
+            ]);
+          }
         } else {
           console.error("Failed to fetch order:", response);
         }
@@ -162,19 +173,32 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
       const status = selectStatus[index].status;
       setSelectedStatus(status);
     };
+    const flatListRef = useRef(null);
+    useEffect(() => {
+      if (flatListRef.current) {
+        flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+      }
+    }, [selectStatus])
+    const handleEndReached = () => {
+      if (!isRefreshing && page <= totalPages - 1) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    };
     const refreshOrder = async () => {
-      // setIsRefreshing(true);
+      setIsRefreshing(true);
       setMarkedDatesS(firstDayOfMonth);
       setMarkedDatesE(lastDayOfMonth);
+      setSelectedStatus('')
+      setSelectedIndexStatus(0)
       setSearchValue('')
       setOpenSearch(false)
       setArrData([])
       await getListOrder();
-      // setIsRefreshing(false);
+      setIsRefreshing(false);
     };
-    const handleSubmitSearch = () => {
-      // setPage(0);
-      getListOrder(searchValue);
+    const handleSubmitSearch = async () => {
+      setArrData([])
+      await getListOrder(searchValue);
     };
     return (
       <View style={styles.ROOT}>
@@ -183,7 +207,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           style={styles.header}
           titleStyle={styles.textHeader}
           LeftIcon={Images.back}
-          onLeftPress={()=> navigation.goBack()}
+          onLeftPress={() => navigation.goBack()}
           RightIcon={Images.ic_calender_white}
           RightIcon1={openSearch ? Images.icon_close : Images.search}
           headerInput={openSearch}
@@ -192,7 +216,6 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           searchValue={searchValue}
           handleOnSubmitSearch={handleSubmitSearch}
           onSearchValueChange={handleSearchValueChange}
-
           rightText1={moment(markedDatesS === "" ? firstDayOfMonth : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
@@ -250,6 +273,9 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           data={arrData}
           style={styles.styleFlatlist}
           showsVerticalScrollIndicator={false}
+          ref={flatListRef}
+          keyExtractor={(item) => item.id.toString()}
+          onEndReached={handleEndReached}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing}
