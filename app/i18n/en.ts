@@ -726,11 +726,14 @@ const en = {
     selectOriginUnit: "Chọn đơn vị tính",
   },
   successScreen: {
+    btnBack: "Quay lại trang chủ",
     labelSuccess: "Tạo mới thành công",
     titleSuccess: "Bạn đã thêm mới sản phẩm thành công",
     btnCreate: "Tạo thêm sản phẩm",
     btnDetail: "Xem chi tiết sản phẩm",
-    btnBack: "Quay lại trang chủ",
+    titleSuccessOrder: "Bạn đã tạo đơn hàng thành công",
+    btnCreateOrder: "Tạo thêm đơn hàng",
+    btnDetailOrder: "Xem chi tiết đơn hàng",
   },
 
   wareHouse: {
