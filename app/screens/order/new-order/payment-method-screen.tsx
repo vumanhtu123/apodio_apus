@@ -243,12 +243,18 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 // defaultValue={text===""? "": text}
                 onSubmitEditing={() => {
                   if (Number(value) >= Number(Sum())) {
-                    // setValue('price', price.toString())
+                    setValue('price', price.toString())
                     // onChange(price)
                     setText(price)
                     Remain()
                   }
                   if (Number(value) < Number(Sum())) {
+                    setValue('price', value.toString())
+                    // onChange(price)
+                    setText(value)
+                    Remain()
+                  }
+                  if (Number(value) < Number(Sum1())) {
                     setError("price", {
                       type: "validate",
                       message: 'Khách cần trả lớn hơn số tiền tối thiểu',

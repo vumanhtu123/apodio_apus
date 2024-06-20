@@ -333,7 +333,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      isPrepayment: orderStore.dataDebtPayment.apply == true ? true : false, // boolean thanh toan truoc
+      // isPrepayment: orderStore.dataDebtPayment.apply == true ? true : false, // boolean thanh toan truoc
+      isPayment: !orderStore.clearingDebt,
       amountPrePayment:
         orderStore.dataDebtPayment.apply == true
           ? Number(orderStore.dataDebtPayment.inputPrice)

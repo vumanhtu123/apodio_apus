@@ -188,7 +188,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     }
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
-      (Number(price)- Number(orderStore.dataDebtPayment.inputPrice)) <= Number(store.orderStore.dataDebtLimit.debtAmount)
+      (Number(price) - Number(orderStore.dataDebtPayment.inputPrice)) <= Number(store.orderStore.dataDebtLimit.debtAmount)
     ) {
       orderStore.setMethodPayment({
         sumAll: 0,
@@ -298,8 +298,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
         quantityInventory: data.quantityInventory,
       };
     });
-    const newArr1 = arrProduct.map((item: any)=> {return item.id})
-    const newArr2 = newData.saleOrderLines?.map((item: any)=> {return item.productId})
+    const newArr1 = arrProduct.map((item: any) => { return item.id })
+    const newArr2 = newData.saleOrderLines?.map((item: any) => { return item.productId })
     const newArr3 = newArr2.filter(item => !newArr1.includes(item));
     console.log("data new", JSON.stringify(newArr));
     const order: any = {
@@ -740,22 +740,32 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
   // console.log("price scr", Number(price));
   // console.log("price scr 2", orderStore.dataDebtPayment);
 
-  console.log('arrProduct------2----', JSON.stringify(orderStore.dataProductAddOrder));
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
-      setArrProduct(orderStore.dataProductAddOrder.slice());
-      getListTax();
-      if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
-        getListAddress();
-      }
-      setAddress(orderStore.dataAddress)
-      getListAddress();
-      setIsDeposit(orderStore.dataDebtPayment.apply);
+  // console.log('arrProduct------2----', JSON.stringify(orderStore.dataProductAddOrder));
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener("focus", () => {
+  //     console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
+  //     setArrProduct(orderStore.dataProductAddOrder.slice());
+  //     getListTax();
+  //     if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
+  //       getListAddress();
+  //     }
+  //     setAddress(orderStore.dataAddress)
+  //     getListAddress();
+  //     setIsDeposit(orderStore.dataDebtPayment.apply);
 
-    });
-    return unsubscribe;
-  }, [navigation]);
+  //   });
+  //   return unsubscribe;
+  // }, [navigation]);
+  const getDebtLimit = (id: number) => {
+    if (orderStore.dataClientSelect !== null) {
+      orderStore
+        .getDebtLimit(id)
+        .then((data: any) => {
+          console.log("check cln", data);
+          orderStore.setDataDebtLimit(data);
+        });
+    }
+  };
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (orderStore.checkRenderList === true) {
@@ -773,9 +783,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
         }
         const newArr = newData.saleOrderLines?.map((items: any) => {
           return {
-            ...items?.productInfo, amount: items?.quantity, originAmount: items?.orderQty, priceTotal: items?.amountTotal,
-            unitPrice: items?.unitPrice, VAT: { value: items?.taxLines?.items[0]?.taxId, label: items?.taxLines?.items[0]?.taxName },
-            taxValue: items?.taxLines?.items[0]?.amount, taxesInput: items.discount, addInputTaxes: items.discount !==0? true:false,
+            ...items?.productInfo, amount: items?.quantity, originAmount: items?.orderQty, priceTotal: items?.amountTotal,unitPrice: items?.unitPrice,
+            VAT: items?.taxLines?.items.length === 0 ? undefined : { value: items?.taxLines?.items[0]?.taxId, label: items?.taxLines?.items[0]?.taxName },
+            taxValue: items?.taxLines?.items[0]?.amount, taxesInput: items.discount, addInputTaxes: items.discount !== 0 ? true : false,
           }
         })
         priceAll(newArr)
@@ -786,39 +796,40 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           id: newData.partner.id, code: newData.partner.code, name: newData.partner.name,
           phoneNumber: newData.partner.phoneNumber
         })
+        getDebtLimit(newData.partner.id)
         setPayment({
           label: newData.scopeTypes === "DOMESTICALLY" ? translate("order.DOMESTICALLY") : translate("order.EXPORTED"),
         })
         if (newData.note !== null) {
           setNote(true)
-          }
-        orderStore.setCheckRenderList(false)
-        switch (newData.paymentMethod) {
-          case "CASH":
-            console.log("aaa 1");
-            return countRef.current = translate("order.CASH");
-          case "BANK_TRANSFER":
-            return countRef.current = translate("order.BANK_TRANSFER");
-          case "BANK":
-            return countRef.current = translate("order.BANK");
-          case "CREDIT":
-            return countRef.current = translate("order.CREDIT");
-          case "DEDUCTION_OF_LIABILITIES":
-            return countRef.current = translate("order.DEDUCTION_OF_LIABILITIES");
-          default:
-            return "";
         }
+        orderStore.setCheckRenderList(false)
+        // switch (newData.paymentMethod) {
+        //   case "CASH":
+        //     console.log("aaa 1");
+        //     return countRef.current = translate("order.CASH");
+        //   case "BANK_TRANSFER":
+        //     return countRef.current = translate("order.BANK_TRANSFER");
+        //   case "BANK":
+        //     return countRef.current = translate("order.BANK");
+        //   case "CREDIT":
+        //     return countRef.current = translate("order.CREDIT");
+        //   case "DEDUCTION_OF_LIABILITIES":
+        //     return countRef.current = translate("order.DEDUCTION_OF_LIABILITIES");
+        //   default:
+        //     return "";
+        // }
         // setIsDeposit(true)
 
       } else {
         setArrProduct(orderStore.dataProductAddOrder.slice());
-      getListTax();
-      if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
+        getListTax();
+        if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
+          getListAddress();
+        }
+        setAddress(orderStore.dataAddress)
         getListAddress();
-      }
-      setAddress(orderStore.dataAddress)
-      getListAddress();
-      setIsDeposit(orderStore.dataDebtPayment.apply);
+        setIsDeposit(orderStore.dataDebtPayment.apply);
       }
     });
     return unsubscribe;
