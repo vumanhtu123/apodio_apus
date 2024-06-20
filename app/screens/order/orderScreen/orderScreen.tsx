@@ -319,7 +319,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           toggleModalDate={toggleModalDate}
         />
         <TouchableOpacity onPress={() => {
-          //navigate("newOrder")
+          orderStore.reset();
           navigation.navigate('newOrder' as any)
         }}
           style={styles.btnShowModal}>

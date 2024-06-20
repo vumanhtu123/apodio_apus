@@ -16,7 +16,7 @@ export class AccountApi {
   async checkPhoneNumber(
     phoneNumber: string,
     type: string,
-    identity: string
+    identity: string,
   ): Promise<any> {
     Loading.show({
       text: 'Loading...',

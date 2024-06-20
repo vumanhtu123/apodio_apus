@@ -26,7 +26,10 @@ export const OrderSuccess: FC = () => {
             </View >
             <View style={{
             }}>
-                <TouchableOpacity onPress={() => navigation.reset({index: 1, routes:[{name: 'mainBottom' as any },{name: 'newOrder' as any}]})} style={{
+                <TouchableOpacity onPress={() => {
+                    orderStore.reset();
+                    navigation.goBack();
+                }} style={{
                     justifyContent: 'center',
                     alignItems: 'center',
                     borderRadius: 10, borderColor: '#c8c8c8',

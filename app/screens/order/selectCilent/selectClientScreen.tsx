@@ -41,17 +41,20 @@ export const SelectClientScreen: FC<
   const [isShowSearch, setisShowSearch] = useState(false);
   const [dataItemSelect, setdataItemSelect] = useState(getAPi.orderStore.dataClientSelect)
 
-  const size = useRef(20);
+  const size = useRef(15);
   // const isLoadingMore = useRef<boolean>(false)
   // console.log("doannnnn", totalPage);
 
   const sort = getAPi.orderStore.sortCreateClient;
 
+  const statusLoadMore = getAPi.orderStore.isLoadMoreSelectClient
+  console.log('value is load more', statusLoadMore);
+
   const getListClient = () => {
     getAPi.orderStore
-      .getListSelectClient(0, size.current, sort, valueSearch, true)
+      .getListSelectClient(0, size.current, sort, valueSearch, true, statusLoadMore)
       .then((data) => {
-        console.log("dataaaaaaaaa", data);
+        console.log("data SelectClient", data);
 
         // setTotalPage(data?.totalPages)
 
@@ -103,12 +106,14 @@ export const SelectClientScreen: FC<
   };
 
   const senDataClientSelected = () => {
+
     if (Number(dataItemSelect?.id) === Number(getAPi.orderStore.dataClientSelect.id)) {
       getAPi.orderStore.setCheckIdPartner(false)
     } else {
       getAPi.orderStore.setCheckIdPartner(true)
     }
     getAPi.orderStore.setDataClientSelect(dataItemSelect);
+    getAPi.orderStore.setIsLoadMoreSelectClient(false);
     props.navigation.goBack();
   };
 
@@ -125,13 +130,13 @@ export const SelectClientScreen: FC<
   console.log("load more", isLoadingMore);
 
   const handleLoadMore = () => {
-
+    getAPi.orderStore.setIsLoadMoreSelectClient(true)
     setIsLoadingMore(true);
     console.log('====================================');
     console.log("value loading", isLoadingMore);
     console.log('====================================');
     size.current = (size.current + 3);
-    // getListClient();
+    getListClient();
     setTimeout(() => {
       setIsLoadingMore(false);
     }, 3000);
@@ -145,7 +150,11 @@ export const SelectClientScreen: FC<
       <Header
         headerTx="selectClient.selectClient"
         LeftIcon={Images.back}
-        onLeftPress={() => props.navigation.goBack()}
+        onLeftPress={() => {
+          getAPi.orderStore.setIsLoadMoreSelectClient(false)
+
+          props.navigation.goBack()
+        }}
         RightIcon={Images.icon_funnel}
         RightIcon1={Images.icon_search}
         style={{ height: scaleWidth(52) }}
@@ -158,6 +167,7 @@ export const SelectClientScreen: FC<
         }}
         onRightPress={() => {
           // openTypeFilter
+
           props.navigation.navigate("filterSelectScreen");
         }}
         onRightPress1={() => {
@@ -242,13 +252,22 @@ export const SelectClientScreen: FC<
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
           onEndReached={() => handleLoadMore()}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.2}
 
-        // ListFooterComponent={() => {
-        //     return <View>
-        //         {isLoadingMore && <ActivityIndicator />}
-        //     </View>;
-        // }}
+          ListFooterComponent={() => {
+
+            return <View>
+              {
+                myDataSelectClient.length !== 1 ?
+                  <>
+                    {isLoadingMore && <ActivityIndicator />}
+                  </>
+                  : null
+              }
+
+            </View>;
+
+          }}
         />
 
         <TouchableOpacity
@@ -284,7 +303,11 @@ export const SelectClientScreen: FC<
             onClick === "save" ? Styles.btnSuccessfully : Styles.btnSave,
             { marginRight: 13 },
           ]}
-          onPress={() => props.navigation.goBack()}>
+          onPress={() => {
+            // set = false de co animation loading full man hinh
+            getAPi.orderStore.setIsLoadMoreSelectClient(false)
+            props.navigation.goBack()
+          }}>
           <Text
             style={{
               color:
@@ -301,16 +324,16 @@ export const SelectClientScreen: FC<
           }
           onPress={() => {
             console.log('----indexSelect-------', indexSelect)
-            if(indexSelect >= 0){
+            if (indexSelect >= 0) {
               senDataClientSelected();
               setOnClick("successfully");
               getDebtLimit();
-            }else {
+            } else {
               Toast.show({
                 type: ALERT_TYPE.DANGER,
                 title: '',
                 textBody: translate('ClientScreen.txtChoiceClient'),
-      
+
               })
             }
           }}>

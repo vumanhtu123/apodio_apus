@@ -579,6 +579,8 @@ const en = {
     totalDebt: "Tổng nợ",
     up: "Tăng dần",
     dow: "Giảm dần",
+    debtNeedToPaid: "Nọ cần thanh toán",
+    paymentTerm : " Hạn thanh toán gần nhất",
     
   },
   productScreen: {

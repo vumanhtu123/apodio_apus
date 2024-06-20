@@ -178,11 +178,11 @@ export const OrderDetails: FC = observer(
                     // onRightPress2={() => navigation.navigate('printInvoiceScreen' as never, { invoiceId: invoiceId })}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
                     onRightPress1={() => {
-                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'copy' })
+                        navigation.navigate('newAndEditOrder', { newData: data, screen: 'copy' })
                         orderStore.setCheckRenderList(true)
                     }}
                     onRightPress={() => {
-                        navigation.navigate('newAndEditOrder' as never, { newData: data, screen: 'edit' })
+                        navigation.navigate('newAndEditOrder', { newData: data, screen: 'edit' })
                         orderStore.setCheckRenderList(true)
                     }}
                     titleMiddleStyle={styles.titleHeader}

@@ -697,6 +697,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
   };
 
+  console.log('---------arrProduct--------', JSON.stringify(arrProduct))
   const selectProduct = () => {
     orderStore.setDataProductAddOrder(arrProduct.slice());
   };
@@ -735,7 +736,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   // console.log("price scr", Number(price));
   // console.log("price scr 2", orderStore.dataDebtPayment);
 
-  console.log('arrProduct------2----', JSON.stringify(orderStore.dataProductAddOrder));
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
@@ -815,6 +815,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             arrData={arrPayment}
             onPressChoice={(item: any) => {
               setPayment(item)
+              orderStore.clearTaxValueAndTaxesInput();
+              setArrProduct(orderStore.dataProductAddOrder.slice());
               // getListTax();
             }}
             dataDefault={payment.label}
