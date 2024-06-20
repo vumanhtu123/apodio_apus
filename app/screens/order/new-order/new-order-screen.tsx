@@ -279,7 +279,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         },
         quantity: data.amount,
         uomId: data.uomId,
-        orderQty: data.amount,
+        orderQty: data.originAmount,
         // orderUomId: number, //chon
         unitPrice: data.unitPrice, //don gia cua bang gia
         // amountUntaxed: data.price,
@@ -326,7 +326,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // totalPrice: 0,
       saleOrderLines: newArr,
       // saleOrderLineDeleteIds: [],
-      // isClearingDebts: ,     //co dung doi tru cong no hay ko
+      isClearingDebts: orderStore.clearingDebt,     //co dung doi tru cong no hay ko
       isRetail: false,
       scopeType:
         payment.label == translate("order.DOMESTICALLY")
@@ -342,18 +342,22 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     console.log("done new order: ", JSON.stringify(order));
     store.orderStore.postAddOrderSale(order).then((values) => {
       console.log("success data sale order:", JSON.stringify(values));
-      if (values.id !== null) {
+      if (values.id !== undefined) {
         console.log("success data sale order:", JSON.stringify(values));
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("productScreen.Notification"),
-          textBody: "Thành Công " + values.id,
-          button2: translate("productScreen.BtnNotificationAccept"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Dialog.hide();
-          },
-        });
+        // Dialog.show({
+        //   type: ALERT_TYPE.INFO,
+        //   title: translate("productScreen.Notification"),
+        //   textBody: "Thành Công " + values.id,
+        //   button2: translate("productScreen.BtnNotificationAccept"),
+        //   closeOnOverlayTap: false,
+        //   onPressButton: () => {
+        //     Dialog.hide();
+        //   },
+        // });
+        orderStore.setDataProductAddOrder([])
+        setArrProduct([])
+        handleBack()
+        navigation.navigate('orderSuccess' as never, { idOrder: values.id })
       } else {
         const v = values?.map((data: any) => {
           return data.message;
@@ -498,7 +502,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   };
 
   const handleBack = () => {
-    navigation.goBack();
     orderStore.setDataAddress({
       id: 0, partnerId: 0,
       phoneNumber: '',
@@ -538,6 +541,21 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
     orderStore.setCheckPriceList(false);
     orderStore.setViewGrid(true);
+    orderStore.setClearingDebt(false)
+    orderStore.setCheckIdPartner(false)
+    orderStore.setCheckRenderList(false)
+    orderStore.setDataPriceListSelect({
+      id: "",
+      name: "",
+      priceListCategory: "",
+      currencyId: "",
+      pricelistId: "",
+    })
+    setArrProduct([])
+    setPayment({
+      label: translate("order.DOMESTICALLY"),
+    })
+    setNote(false)
   };
 
   const handleSelectTaxes = (id: any) => {
@@ -589,7 +607,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       })
     );
   };
-  useEffect(()=>{ getListTax()}, [payment])
+  useEffect(() => { getListTax() }, [payment])
 
   const postTaxLines = async (data: any) => {
     const newItem = data.filter((item: any) => item.id === idItemOrder.current);
@@ -623,7 +641,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ...value,
           taxValue: arrTaxLine[0].items[0].amount,
           amountTotal: Number(
-            arrTaxLine[0].items[0].amount 
+            arrTaxLine[0].items[0].amount
             // + Number(value.price)
           ),
         };
@@ -666,7 +684,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const handleDebt = () => {
     arrProduct.map((data: any) => {
       const price = Number(data.amount) * Number(data.unitPrice)
-      const discountPrice = price - (Number(discount)/100)* price
+      const discountPrice = price - (Number(discount) / 100) * price
       if (data.taxValue !== undefined) {
         console.log("tutu", data.taxValue);
         return (priceSumAll.current =
@@ -699,7 +717,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     console.log("test discount", data);
     const all = data.reduce((sum: any, item: any) => {
       if (item.taxesInput !== undefined) {
-        return sum + Number(item.taxesInput?? 0);
+        return sum + Number(item.taxesInput ?? 0);
       }
       return sum;
     }, 0);
@@ -719,16 +737,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
-        setArrProduct(orderStore.dataProductAddOrder.slice());
-        getListTax();
-        if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
-          getListAddress();
-        }
-        setAddress(orderStore.dataAddress)
+      setArrProduct(orderStore.dataProductAddOrder.slice());
+      getListTax();
+      if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
         getListAddress();
-        console.log('orderStore.dataDebtPayment.apply------1----', orderStore.dataDebtPayment.apply);
-        setIsDeposit(orderStore.dataDebtPayment.apply);
-      
+      }
+      setAddress(orderStore.dataAddress)
+      getListAddress();
+      setIsDeposit(orderStore.dataDebtPayment.apply);
+
     });
     return unsubscribe;
   }, [navigation]);
@@ -741,7 +758,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
       <Header
         LeftIcon={Images.back}
-        onLeftPress={() => handleBack()}
+        onLeftPress={() => {
+          handleBack()
+          navigation.goBack();
+        }}
         style={{ height: scaleHeight(70) }}
         headerTx={"order.confirm"}
         titleStyle={styles.textTitle}
@@ -824,18 +844,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         console.log("check validate", item.price);
                         item.unitPrice === undefined || item.unitPrice === 0
                           ? Dialog.show({
-                              type: ALERT_TYPE.INFO,
-                              title: translate("productScreen.Notification"),
-                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
-                              button2: translate(
-                                "productScreen.BtnNotificationAccept"
-                              ),
-                              closeOnOverlayTap: false,
-                              onPressButton: () => {
-                                // navigation.goBack();
-                                Dialog.hide();
-                              },
-                            })
+                            type: ALERT_TYPE.INFO,
+                            title: translate("productScreen.Notification"),
+                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                            button2: translate(
+                              "productScreen.BtnNotificationAccept"
+                            ),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                              // navigation.goBack();
+                              Dialog.hide();
+                            },
+                          })
                           : handleSelectTaxes(item.id);
                       }}
                       taxesInput={item.taxesInput}
@@ -858,7 +878,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           ? false
                           : true
                       }
-                      editDiscount={()=> {
+                      editDiscount={() => {
                         selectInputTaxes(item.id);
                       }}
                       inputDiscount={(text: any) =>

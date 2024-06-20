@@ -182,6 +182,8 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           type={"AntDesign"}
           style={styles.header}
           titleStyle={styles.textHeader}
+          LeftIcon={Images.back}
+          onLeftPress={()=> navigation.goBack()}
           RightIcon={Images.ic_calender_white}
           RightIcon1={openSearch ? Images.icon_close : Images.search}
           headerInput={openSearch}
