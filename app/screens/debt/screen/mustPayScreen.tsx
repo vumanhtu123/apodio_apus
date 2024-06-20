@@ -128,6 +128,7 @@ export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> 
                                     onClick={() => {
                                         // console.log(item.id)
                                         setValueItemSelect(item.id)
+                                        props.navigation.navigate('detailDebt')
                                     }}
                                     idSelect={valueItemSelect}
                                 />}

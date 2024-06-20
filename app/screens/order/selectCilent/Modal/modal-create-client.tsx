@@ -189,14 +189,17 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         onPressChoice={(item: any) => {
                             setSelectCustomerType(item)
                         }}
-                        styleView={{ marginBottom: scaleHeight(15) }}
+                        styleView={{}}
 
 
                     />
+                    <View style={{ marginVertical: 5 }}>
+                        <CheckErrorClient checkValue={checkHind} />
 
-                    <CheckErrorClient checkValue={checkHind} />
+                    </View>
 
                     <Controller
+
                         control={control}
                         name="phoneNumber"
                         render={({ field: { onBlur, onChange, value } }) => (
@@ -206,7 +209,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 labelTx={"NCCScreen.enterPhone"}
                                 style={{
                                     // marginBottom: scaleHeight(10),
-                                    marginBottom: scaleHeight(15),
+                                    marginBottom: scaleHeight(5),
                                     justifyContent: "center",
                                 }}
                                 inputStyle={{
@@ -252,7 +255,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 labelTx={"selectClient.nameClient"}
                                 style={{
                                     // marginBottom: scaleHeight(10),
-                                    marginBottom: scaleHeight(15),
+                                    marginBottom: scaleHeight(5),
                                     justifyContent: "center",
                                 }}
                                 inputStyle={{
