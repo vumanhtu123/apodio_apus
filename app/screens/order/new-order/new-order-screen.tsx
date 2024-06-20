@@ -94,6 +94,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const idItemOrder = useRef(0);
   const store = useStores();
   const discount = useRef(0);
+  const { goBackPayment }: any = route?.params || {};
 
   const getListAddress = async () => {
     if (
@@ -325,6 +326,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // totalPrice: 0,
       saleOrderLines: newArr,
       // saleOrderLineDeleteIds: [],
+      // isClearingDebts: ,     //co dung doi tru cong no hay ko
       isRetail: false,
       scopeType:
         payment.label == translate("order.DOMESTICALLY")
@@ -714,16 +716,19 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   // console.log("price scr", Number(price));
   // console.log("price scr 2", orderStore.dataDebtPayment);
 
+  console.log('arrProduct------2----', JSON.stringify(orderStore.dataProductAddOrder));
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      setArrProduct(orderStore.dataProductAddOrder.slice());
-      getListTax();
-      if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
+      console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
+        setArrProduct(orderStore.dataProductAddOrder.slice());
+        getListTax();
+        if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
+          getListAddress();
+        }
+        setAddress(orderStore.dataAddress)
         getListAddress();
-      }
-      setAddress(orderStore.dataAddress)
-      getListAddress();
-      setIsDeposit(orderStore.dataDebtPayment.apply);
+        setIsDeposit(orderStore.dataDebtPayment.apply);
+      
     });
     return unsubscribe;
   }, [navigation]);
@@ -840,7 +845,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       valueVAT={item.taxValue}
                       name={item.name}
                       unit={item.uomName}
-                      images={item.productImage}
+                      // images={item.productImage}
+                      images={item.images}
                       cost={item.unitPrice}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
@@ -1062,7 +1068,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                               ? store.orderStore.dataDebtLimit.debtAmount
-                              : null,
+                              : 0,
                         },
                       });
                     }}
@@ -1247,6 +1253,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       />
       <ModalPayment
         isVisible={buttonPayment}
+        isPayment={true}
         closeDialog={function (): void {
           setButtonPayment(false);
         }}

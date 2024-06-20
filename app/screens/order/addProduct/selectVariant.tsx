@@ -284,7 +284,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 ...item,
                 isSelect: true,
                 amount: aMap.get(item.id).amount,
-                price: aMap.get(item.id).price,
+                unitPrice: aMap.get(item.id).unitPrice,
                 conversionRate: aMap.get(item.id).conversionRate,
                 saleUom: aMap.get(item.id).saleUom,
                 originAmount: aMap.get(item.id).originAmount,

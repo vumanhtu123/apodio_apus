@@ -12,6 +12,7 @@ interface InputSelect {
   method: number;
   setMethod: (item: number, name: string) => void;
   debt: { isHaveDebtLimit: any; debtAmount: any };
+  isPayment?: boolean; 
 }
 
 export const ModalPayment = (data: InputSelect) => {
@@ -37,7 +38,7 @@ export const ModalPayment = (data: InputSelect) => {
           }}
         />
         <Text
-          tx="order.payment_method"
+          tx={data.isPayment === true ? "order.payment_method" : "order.advance_payment_method"}
           style={{
             color: "#242424",
             fontWeight: "700",
@@ -55,6 +56,7 @@ export const ModalPayment = (data: InputSelect) => {
               name={payment.label}
               id={data.method}
               index={index}
+              length={data.arrData.length}
             />
           );
         })}
@@ -120,6 +122,7 @@ interface InputItem {
   id: number;
   debt: { isHaveDebtLimit: any; debtAmount: any };
   index: number;
+  length: number;
 }
 
 const Item_Payment = (data: InputItem) => {
@@ -141,7 +144,7 @@ const Item_Payment = (data: InputItem) => {
       <TouchableOpacity
         onPress={() => {
           {
-            data.index === 4 && data.debt.isHaveDebtLimit === false
+            data.index === data.length-1 && data.debt.isHaveDebtLimit === false
               ? null
               : data.setData(data.index, data.name);
           }
@@ -167,7 +170,7 @@ const Item_Payment = (data: InputItem) => {
                 width: 16,
                 height: 16,
                 backgroundColor:
-                  data.index === 4 && data.debt.isHaveDebtLimit === false
+                  data.index === data.length-1 && data.debt.isHaveDebtLimit === false
                     ? "white"
                     : data.id == data.index
                     ? "#0078D4"
@@ -181,14 +184,14 @@ const Item_Payment = (data: InputItem) => {
               fontSize: 14,
               fontWeight: "500",
               color:
-                data.index === 4 && data.debt.isHaveDebtLimit === false
+                data.index === data.length-1 && data.debt.isHaveDebtLimit === false
                   ? "#DFE0EB"
-                  : data.index !== 4 && data.debt.isHaveDebtLimit === true
+                  : data.index !== data.length-1 && data.debt.isHaveDebtLimit === true
                   ? "#242424"
                   : "#242424",
               paddingHorizontal: 8,
             }}></Text>
-          {data.index === 4 && data.debt.isHaveDebtLimit === true ? (
+          {data.index === data.length-1 && data.debt.isHaveDebtLimit === true ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 tx="order.available_limit"

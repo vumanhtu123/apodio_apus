@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   ViewStyle,
   StyleSheet,
   TextStyle,
 } from 'react-native';
+import { Text } from '../../text/text';
 
 const CustomTabs = ({
   titles,
@@ -56,8 +56,8 @@ const CustomTabs = ({
                 color: selectedIndex === index ? tintColor : inactiveTintColor,
               },
             ]}
+            tx={item}
             numberOfLines={1}>
-            {item}
           </Text>
         </TouchableOpacity>
       </View>

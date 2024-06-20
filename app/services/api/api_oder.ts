@@ -23,7 +23,9 @@ export class OrderApi {
     page: number,
     size: number,
     state: string,
-    search: string
+    search: string,
+    fromCreateDate : any,
+    toCreateDate : any
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -37,6 +39,8 @@ export class OrderApi {
           size,
           state,
           search,
+          fromCreateDate,
+          toCreateDate
           // activated
         }
       );
@@ -262,6 +266,59 @@ export class OrderApi {
           warehouseId: warehouseId,
           productTemplateId: productTemplateId,
           priceListId: priceListId,
+        }
+      );
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
+      Loading.hide();
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+  async getListAccountLedger(): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
+        ApiEndpoint.GET_LIST_ACCOUNT_LEDGER + "?isDefault=true"
+      );
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
+      Loading.hide();
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+  async getDebtAccountLedger(
+    accountLedgerId: any,
+    start: string,
+    end: string,
+    customerId: any,
+  ): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
+        ApiEndpoint.GET_DEBT_ACCOUNT_LEDGER + "?type=EXTERNAL" ,
+        {
+          accountLedgerId: accountLedgerId,
+          start: start,
+          end: end,
+          customerId: customerId,
         }
       );
       console.log("-----------------respone", response);

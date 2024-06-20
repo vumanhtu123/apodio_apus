@@ -193,7 +193,9 @@ export const OrderStoreModel = types
       page: number,
       size: number,
       state: string,
-      search: string
+      search: string,
+      fromCreateDate,
+      toCreateDate
     ) {
       console.log("page", page);
       const orderApi = new OrderApi(
@@ -204,7 +206,9 @@ export const OrderStoreModel = types
         page,
         size,
         state,
-        search
+        search,
+        fromCreateDate,
+        toCreateDate
       );
       console.log("-----------dsa", result);
       if (result.kind === "ok") {
@@ -523,6 +527,37 @@ export const OrderStoreModel = types
       const result: CreateAddressResult = yield orderApi.createAddress(value);
       // console.log('resulttt' , result)
       if (result.kind === "ok") {
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getListAccountLedger: flow(function* () {
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      const result = yield orderApi.getListAccountLedger();
+      // console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getDebtAccountLedger: flow(function* (accountLedgerId: number, start: string, end: string, customerId: number) {
+      console.log("page", accountLedgerId);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      const result = yield orderApi.getDebtAccountLedger(accountLedgerId, start, end, customerId);
+      // console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
