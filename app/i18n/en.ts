@@ -180,6 +180,7 @@ const en = {
     copy: "Sao chép",
     return: "Huỷ đơn",
     printInvoice: "In hoá đơn",
+    showInvoiceDetail: "Xem chi tiết hóa đơn",
     arrange: "Sắp xếp",
     searchCodeName: "Tìm kiếm theo mã và tên",
     orderDetail: "Chi tiết đơn hàng",
@@ -904,7 +905,7 @@ const en = {
     no: "Chưa thanh toán",
     toInvoice: "Chờ thanh toán",
     partialInvoice: "Thanh toán một phần",
-    invoiced: "Thanh toán đầy đủ",
+    invoiced: "Đã thanh toán",
   },
   selectClient: {
     selectClient: "Chọn khách hàng",

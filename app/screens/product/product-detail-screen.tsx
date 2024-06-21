@@ -39,6 +39,7 @@ export const ProductDetailScreen: FC = (item) => {
   const navigation = useNavigation();
   const route = useRoute();
   const reload = route?.params?.reload;
+  const screen = route?.params?.screen;
   const [showDetails, setShowDetails] = useState(false);
   const [showRetailPrice, setShowRetailPrice] = useState(false);
   const [showWholesalePrice, setShowWholesalePrice] = useState(false);
@@ -264,8 +265,8 @@ export const ProductDetailScreen: FC = (item) => {
         headerText={`Chi tiết sản phẩm`}
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
-        RightIcon2={Images.icon_trashWhite}
-        RightIcon1={Images.icon_editWhite}
+        RightIcon2={screen === "seeDetail" ? null : Images.icon_trashWhite}
+        RightIcon1={screen === "seeDetail" ? null :  Images.icon_editWhite}
         onRightPress1={() =>
           navigation.navigate("ProductEditScreen" as any, {
             dataEdit: dataClassificationToEdit,
