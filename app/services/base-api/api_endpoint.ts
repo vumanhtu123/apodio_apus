@@ -30,7 +30,7 @@ export const ApiEndpoint = {
   GET_LIST_PRODUCT: "/api/v1/goods/mobile-product-template/list",
   ADD_PRODUCT: "/api/v1/goods/mobile-product-template",
   PUT_MOVE_CATEGORY: "/api/v3/goods/product-category/move-sequence",
-  GET_PRODUCT_DETAIL: "/api/v1/goods/product-template",
+  GET_PRODUCT_DETAIL: "/api/v1/goods/mobile-product-template",
   GET_CLASSIFY_DETAIL: "/api/v1/goods/mobile-product-template/variant",
   GET_LIST_VENDOR: "/api/v1/vendor/partners/list",
   UPLOAD_IMAGES: "/api/v1/file-upload",

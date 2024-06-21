@@ -471,73 +471,18 @@ export function additiveInverseArray(arr: number[]) {
 }
 
 
-// const uploadImages = async (imageArray: any[], checkUploadSlider: boolean) => {
-//   try {
-//     const uploadPromises = imageArray.map(async (image: any, index: any) => {
-//       const { fileSize, uri, type, fileName } = image
-//       const checkFileSize = validateFileSize(fileSize)
-//       if (checkFileSize) {
-//         hideLoading()
-//         showDialog(translate("imageUploadExceedLimitedSize"), "danger", "", "OK", "", "")
-//       } else {
-//         const formData = new FormData()
-//         const timestamp = Date.now();
-//         const name = `image_${timestamp}_${fileName}`;
-//         formData.append("file", {
-//           uri,
-//           type,
-//           name: name,
-//         })
-//         // Trả về một promise chứa cả vị trí của hình ảnh trong mảng
-//       return  await productStore.uploadImages(formData).then(result => ({ result, index }));
-//       }
-//     });
-
-//     // Gửi các yêu cầu upload đồng thời và chờ cho đến khi tất cả hoàn thành
-//     const results = await Promise.all(uploadPromises);
-//     console.log(`successfully----------`, results);
-//     // Sắp xếp kết quả theo thứ tự của các hình ảnh
-//     results.sort((a, b) => a.index - b.index);
-//     if(checkUploadSlider){
-//       if(results){
-//         setImagesURLSlider(results)
-//       }
-//     }
-//     // Xử lý kết quả upload
-//     results.forEach((result, index) => {
-//       if (result) {
-//         console.log(`Upload image ${imageArray[index]} successfully`);
-//       } else {
-//         console.log(`Failed to upload image ${imageArray[index]}`);
-//       }
-//     });
-//   } catch (error) {
-//     console.error('Error uploading images:', error);
-//   }
-// };
-
-// export function toASCII(chars) {
-//   let ascii = ""
-//   for (var i = 0, l = chars.length; i < l; i++) {
-//     let c = chars[i].charCodeAt(0)
-//     if (c === 12288) {
-//       c = chars[i].charCodeAt(0) - 12256
-//     }
-//     if (c >= 0xff00 && c <= 0xffef) {
-//       c = 0xff & (c + 0x20)
-//     }
-//     ascii += String.fromCharCode(c)
-//   }
-
-//   return ascii
-// }
-
-// export function searchData(data, txt) {
-//   const arr = data?.filter((i) => {
-//     if (i?.name) {
-//       return toASCII(i?.name).toLowerCase().includes(toASCII(txt)?.toLowerCase())
-//     }
-//     return i
-//   })
-//   return arr
-// }
+export function groupedTaxValues (products: []) {
+  products.reduce((acc, product) => {
+    const vatValue = product.VAT.value;
+    if (acc[vatValue]) {
+      acc[vatValue].taxValue += product.taxValue;
+    } else {
+      acc[vatValue] = {
+        label: product.VAT.label,
+        value: vatValue,
+        taxValue: product.taxValue
+      };
+    }
+    return acc;
+  }, {});
+}

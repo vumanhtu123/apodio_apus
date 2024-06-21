@@ -293,11 +293,11 @@ export const ShowNote = (props: InputNote) => {
             />
           </View>
 
-          <TouchableOpacity onPress={() => props.setModalImage(true)}>
+          <TouchableOpacity onPress={() => setModalImage(true)}>
             <TouchableOpacity
               // key={index}
               onPress={() => {
-                props.setModalImage(true);
+                setModalImage(true);
                 // setModalImages(true);
                 // setActiveSlide(index);
               }}>
