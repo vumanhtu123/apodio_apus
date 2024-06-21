@@ -9,6 +9,7 @@ export const VendorStoreModel = types
   .model("VendorStore")
   .props({
     checkSeparator: types.optional(types.string, ''),
+    checkCurrency: types.optional(types.string, ''),
     sort: types.optional(types.string, '')
   
   })
@@ -17,6 +18,9 @@ export const VendorStoreModel = types
   .actions((self) => ({
     setCheckSeparator(value: any) {
       self.checkSeparator = value
+    },
+    setCheckCurrency(value: any) {
+      self.checkCurrency = value
     },
     setSort(sort: any) {
       self.sort = sort;

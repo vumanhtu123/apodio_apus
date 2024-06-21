@@ -213,9 +213,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 displayType: "PRODUCT",
                 note: saleOrderLine.note || "",
                 taxes:
-                    saleOrderLine.tax?.map((taxId: any) => ({
-                        id: taxId.id,
-                    })),
+                    saleOrderLine.taxes,
                 taxNames: [],
                 accountMoveId: 0,
                 // taxInfo: [],
@@ -261,6 +259,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 navigation.navigate("orderDetails", { idInvoices: submit.response.data.id })
                 // Perform any success actions here (e.g., navigation)
             } else {
+                console.log('first', JSON.stringify(submit.response.errorCodes))
                 Dialog.show({
                     type: ALERT_TYPE.DANGER,
                     title: translate("txtDialog.txt_title_dialog"),
@@ -293,13 +292,13 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         });
         return totalPrice;
     }
-    const validateDate = (value : any) => {
+    const validateDate = (value: any) => {
         if (!value) {
-          return "Ngày không được để trống";
+            return "Ngày không được để trống";
         }
-      
+
         return true;
-      };
+    };
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
@@ -436,7 +435,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 name="invoiceCreateDate"
                                 rules={{
                                     required: translate('ruleController.emptyText'),
-                                    validate : validateDate
+                                    validate: validateDate
                                 }}
                             />
                         </View>

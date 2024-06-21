@@ -25,7 +25,7 @@ export const ListCompany: FC<
 > = observer(function ListCompany(props) {
   const [data, setData] = useState();
   const [idCompany, setIdCompany] = useState();
-  const { HomeStore, authenticationStore } = useStores();
+  const { HomeStore, authenticationStore ,vendorStore } = useStores();
   const [refresControl, setRefresControl] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,6 +50,24 @@ export const ListCompany: FC<
       // setData(result.data);
     });
   };
+  const handleGetInfoCompany = async () => {
+    if (vendorStore.checkSeparator === '') {
+        try {
+            const response = await vendorStore.getInfoCompany();
+            if (response && response.kind === "ok") {
+                // console.log('response', response.result.data.thousandSeparator)
+                vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
+                vendorStore.setCheckCurrency(response.result.data.currency)
+            } else {
+                console.error("Failed to fetch info company:", response);
+            }
+        } catch (error) {
+            console.error("Error fetching :", error);
+        }
+    } else {
+        console.log('Đã có key')
+    }
+};
   useEffect(() => {
     getListCompany(authenticationStore.userId);
   }, []);
@@ -73,6 +91,7 @@ export const ListCompany: FC<
       await setAccessToken('')
       const refreshToken = await getRefreshToken();
       await getTokenCompany(refreshToken);
+      await handleGetInfoCompany()
       props.navigation.navigate("mainBottom");
     } catch (error) {
       console.error("Error getting new token:", error);

@@ -106,8 +106,8 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               />
             )}
             // Account test setup new pin
-            //defaultValue={"afs@gmail.com"}
-            defaultValue={"apodio@gmail.com"}
+            defaultValue={"afs@gmail.com"}
+            // defaultValue={"apodio@gmail.com"}
             // Account test
             // defaultValue={"67076743544"}
             name="username"
@@ -116,7 +116,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
           <Controller
             control={control}
             // Account test setup new pin
-            //defaultValue={"system@123456"}
+            // defaultValue={"system@123456"}
             // Account test
             defaultValue={"system@123456"}
             render={({ field: { onChange, value, onBlur } }) => (
