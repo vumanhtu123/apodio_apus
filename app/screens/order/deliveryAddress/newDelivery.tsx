@@ -274,25 +274,30 @@ export const NewDelivery: FC = observer(function NewDelivery() {
         const response = await orderStore.createAddress(dataCreate);
 
         if (response && response.kind === "ok") {
-          Dialog.show({
-            type: ALERT_TYPE.INFO,
-            title: translate("productScreen.Notification"),
-            textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"),
-            button2: translate("productScreen.BtnNotificationAccept"),
-            closeOnOverlayTap: false,
-            onPressButton: () => {
-              navigation.goBack();
-              Dialog.hide();
-            },
-          });
+          Toast.show({ type: ALERT_TYPE.SUCCESS, 
+            textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"), })
+            setTimeout(() => navigation.goBack(), 5000)
+          // Dialog.show({
+          //   type: ALERT_TYPE.INFO,
+          //   title: translate("productScreen.Notification"),
+          //   textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"),
+          //   button2: translate("productScreen.BtnNotificationAccept"),
+          //   closeOnOverlayTap: false,
+          //   onPressButton: () => {
+          //     navigation.goBack();
+          //     Dialog.hide();
+          //   },
+          // });
         } else {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: translate("txtDialog.txt_title_dialog"),
-            textBody: response.response.errorCodes[0].message,
-            button: translate("common.ok"),
-            closeOnOverlayTap: false,
-          });
+          Toast.show({ type: ALERT_TYPE.SUCCESS, 
+            textBody: response.response.errorCodes[0].message })
+          // Dialog.show({
+          //   type: ALERT_TYPE.DANGER,
+          //   title: translate("txtDialog.txt_title_dialog"),
+          //   textBody: response.response.errorCodes[0].message,
+          //   button: translate("common.ok"),
+          //   closeOnOverlayTap: false,
+          // });
           console.error(
             "Failed to fetch categories:",
             response.response.message
@@ -354,7 +359,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 RightIconClear={Images.icon_delete2}
                 isImportant={true}
                 error={errors?.phone?.message}
-                // defaultValue={dataEdit !== undefined ? dataEdit.phoneNumber : ''}
+              // defaultValue={dataEdit !== undefined ? dataEdit.phoneNumber : ''}
               />
             )}
             name="phone"
@@ -418,7 +423,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 RightIconClear={Images.icon_delete2}
                 isImportant={true}
                 error={errors?.address?.message}
-                // defaultValue={dataEdit !== undefined ? dataEdit.address : ''}
+              // defaultValue={dataEdit !== undefined ? dataEdit.address : ''}
               />
             )}
             name="address"
