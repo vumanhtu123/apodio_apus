@@ -102,5 +102,38 @@ export  const Styles = StyleSheet.create({
         backgroundColor: '#EDEDEE', 
         borderRadius: 8, 
         padding: scaleHeight(2) 
-    }
+    },
+    textHeader: {
+        color: colors.palette.neutral100,
+        fontWeight: "700",
+        fontSize: 16,
+        alignSelf: "flex-start",
+        // fontFamily: typography.primary.bold,
+      },
+    groupContainer: {
+        flex: 1,
+        paddingHorizontal: 10,
+        // backgroundColor: 'red',
+        borderRadius: 5,
+
+    },
+    dateText: {
+        fontSize: scaleWidth(12),
+        marginBottom: 5,
+        textAlign: 'center',
+        color: colors.palette.dolphin
+    },
+    productContainer: {
+        // backgroundColor: "yellow",
+        paddingHorizontal: scaleWidth(10),
+
+    },
+    flexRow: {
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    productName: {
+        fontSize: scaleWidth(12),
+        fontWeight: 'bold',
+    },
 })
