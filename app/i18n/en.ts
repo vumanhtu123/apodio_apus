@@ -1,3 +1,5 @@
+import { createClient } from "reactotron-core-client";
+
 const en = {
   common: {
     ok: "OK",
@@ -181,6 +183,7 @@ const en = {
     editOrder: "Sửa đơn hàng",
     return: "Huỷ đơn",
     printInvoice: "In hoá đơn",
+    showInvoiceDetail: "Xem chi tiết hóa đơn",
     arrange: "Sắp xếp",
     searchCodeName: "Tìm kiếm theo mã và tên",
     orderDetail: "Chi tiết đơn hàng",
@@ -905,7 +908,7 @@ const en = {
     no: "Chưa thanh toán",
     toInvoice: "Chờ thanh toán",
     partialInvoice: "Thanh toán một phần",
-    invoiced: "Thanh toán đầy đủ",
+    invoiced: "Đã thanh toán",
   },
   selectClient: {
     selectClient: "Chọn khách hàng",
@@ -928,6 +931,7 @@ const en = {
     brick40x40: "Gạch 40*40",
     brick60x60: "Gạch 60*60",
     brick80x80: "Gạch 80*80",
+    createClient: "Tạo khách hàng",
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",

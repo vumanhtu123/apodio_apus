@@ -691,7 +691,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             style={styles.textDetailInfor}
           />
           <TouchableOpacity
-            onPress={() => navigation.navigate("productDetailScreen" as never)}>
+            onPress={() => navigation.navigate("productDetailScreen" as never, { screen: 'seeDetail' })}>
             <Text tx={"order.seeDetail"} style={styles.textViewInfo} />
           </TouchableOpacity>
         </View>

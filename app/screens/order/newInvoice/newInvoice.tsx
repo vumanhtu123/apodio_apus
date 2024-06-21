@@ -293,6 +293,32 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         });
         return totalPrice;
       }
+
+      function groupTaxValues(dataTax: any[] | undefined) {
+        if (dataTax === undefined) {
+          return [];
+        }
+        
+        const groupedTaxValues = dataTax.reduce((acc: { [x: string]: { taxName: any; taxId: any; amount: any; }; }, curr: { items: any[]; }) => {
+          curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
+            const key = item.taxId;
+            if (acc[key]) {
+              acc[key].amount += item.amount;
+            } else {
+              acc[key] = {
+                taxName: item.taxName,
+                taxId: key,
+                amount: item.amount
+              };
+            }
+          });
+          return acc;
+        }, {});
+        
+        return Object.values(groupedTaxValues);
+      }
+      
+      console.log('-----groupTaxValues2222-----', groupTaxValues(data.computeTaxInfo?.taxLines))
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
@@ -528,13 +554,13 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 labelTx="order.totalPrice"
                                 value={formatCurrency(calculateTotalUnTaxPrice())}
                             />
-                            {data.computeTaxInfo?.taxLines.map((tax: any) => (
-                                tax.items?.map((item: any) => (
+                            { groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
+                                
                                     <ProductAttribute
                                         label={item.taxName}
                                         value={formatCurrency(item.amount)}
                                     />
-                                ))
+                              
                             ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"

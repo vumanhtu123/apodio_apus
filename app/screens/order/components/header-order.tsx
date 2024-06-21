@@ -209,17 +209,32 @@ interface DataSumMoney {
 export const SumMoney = (props: DataSumMoney) => {
   const { orderStore } = useStores()
 
-  const total = props.arrVat.reduce((accumulator, currentObject) => {
+  const total = props.arrVat.reduce((accumulator: number, currentObject: { unitPrice: any; amount: any; taxesInput: any; taxValue: any; }) => {
     return accumulator + ((Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0)) - ((Number(currentObject.taxesInput ?? 0) / 100) * (Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0))) + Number(currentObject.taxValue ?? 0));
   }, 0);
-  const discount = props.arrVat.reduce((accumulator, currentObject) => {
+  const discount = props.arrVat.reduce((accumulator: number, currentObject: { taxesInput: any; unitPrice: any; amount: any; }) => {
     return accumulator + ((Number(currentObject.taxesInput ?? 0) / 100) * (Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0)));
   }, 0);
 
 
+  // Gom nhóm các item và tính tổng taxValue
+  const groupedTaxValues = props.arrVat.reduce((acc: { [x: string]: { label: any; value: any; taxValue: any; }; }, product: { VAT: { value: any; label: any; }; taxValue: any; }) => {
+    const vatValue = product.VAT.value;
+    if (acc[vatValue]) {
+      acc[vatValue].taxValue += product.taxValue;
+    } else {
+      acc[vatValue] = {
+        label: product.VAT.label,
+        value: vatValue,
+        taxValue: product.taxValue
+      };
+    }
+    return acc;
+  }, {});
+  const arrTaxValues = Object.values(groupedTaxValues);
 
   orderStore.setDataProductAddOrder(props.arrVat.slice());
-  console.log('props.arrVat------', props.arrVat)
+  console.log('props.arrVat------', arrTaxValues)
   const Sum = () => {
     return Number(props.sumVat ?? 0) - Number(props.discount ?? 0);
   };
@@ -232,19 +247,27 @@ export const SumMoney = (props: DataSumMoney) => {
       style={{
         paddingHorizontal: 16,
         paddingVertical: 12,
-        flexDirection: "row",
+        // flexDirection: "row",
         borderRadius: 8,
         backgroundColor: "white",
         justifyContent: "space-between",
         marginVertical: 15,
       }}>
-      <View style={{ flexDirection: "column" }}>
+
+
+      <View style={{ flexDirection: "row", flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
         <Text
           tx="order.sum_no_texas"
-          style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}></Text>
-        {props.arrVat != null
-          ? props.arrVat.map((data: any) => {
-            return data.VAT != undefined ? (
+          style={{ fontSize: 10, fontWeight: "400", color: "#747475" }} />
+        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475", justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+          {(isNaN(props.sumNoVat) ? 0 : props.sumNoVat) ?? 0}
+        </Text>
+      </View>
+
+      {props.arrVat != undefined
+        ? arrTaxValues?.map((data: any) => {
+          return data.taxValue != undefined ? (
+            <View style={{ flexDirection: "row", flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 10,
@@ -252,45 +275,8 @@ export const SumMoney = (props: DataSumMoney) => {
                   color: "#747475",
                   marginTop: 8,
                 }}>
-                {data?.VAT?.label ?? null}
+                {data?.label ?? null}
               </Text>
-            ) : null;
-          })
-          : null}
-        {orderStore.checkPriceList === false ?
-          (props.discount !== null ? (
-            <Text
-              tx="order.discount"
-              style={{
-                fontSize: 10,
-                fontWeight: "400",
-                color: "#747475",
-                marginTop: 8,
-              }}></Text>
-          ) : null) : null}
-        <Text
-          tx="order.sum_yes_texas"
-          style={{
-            fontSize: 10,
-            fontWeight: "400",
-            color: "#747475",
-            marginTop: 8,
-          }}></Text>
-      </View>
-      <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
-          {(isNaN(props.sumNoVat) ? 0 : props.sumNoVat) ?? 0}
-        </Text>
-        {props.arrVat != undefined
-          ? props.arrVat.map((data: any) => {
-            if (data.taxValue !== undefined) {
-              sumValue =
-                Number(data.taxValue) +
-                Number(props.sumNoVat) -
-                Number(props.discount ?? 0);
-              console.log("tutu", data.taxValue, props.sumNoVat);
-            }
-            return data.taxValue != undefined ? (
               <Text
                 style={{
                   fontSize: 10,
@@ -300,19 +286,42 @@ export const SumMoney = (props: DataSumMoney) => {
                 }}>
                 {data?.taxValue ?? null}
               </Text>
-            ) : null;
-          })
-          : null}
-        {orderStore.checkPriceList === false ?
-          (<Text
-            style={{
-              fontSize: 10,
-              fontWeight: "400",
-              color: "#747475",
-              marginTop: 8,
-            }}>
-            {discount ?? 0}
-          </Text>) : null}
+            </View>
+          ) : null;
+        })
+        : null}
+
+      {orderStore.checkPriceList === false ?
+        (
+          <View style={{ flexDirection: "row", flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+            <Text
+              tx="order.discount"
+              style={{
+                fontSize: 10,
+                fontWeight: "400",
+                color: "#747475",
+                marginTop: 8,
+              }} />
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: "400",
+                color: "#747475",
+                marginTop: 8,
+              }}>
+              {discount ?? 0}
+            </Text>
+          </View>
+        ) : null}
+      <View style={{ flexDirection: "row", flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text
+          tx="order.sum_yes_texas"
+          style={{
+            fontSize: 10,
+            fontWeight: "400",
+            color: "#747475",
+            marginTop: 8,
+          }} />
         <Text
           style={{
             fontSize: 12,
@@ -320,7 +329,6 @@ export const SumMoney = (props: DataSumMoney) => {
             color: "#FF4956",
             marginTop: 8,
           }}>
-          {/* {(isNaN(Sum()) ? sumValue : SumNoVAT()) ?? 0} */}
           {total}
         </Text>
       </View>

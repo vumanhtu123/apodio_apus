@@ -11,13 +11,15 @@ import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { useStores } from "../../../../models";
 import { boolean } from "mobx-state-tree/dist/internal";
 import { RectButton } from "react-native-gesture-handler";
-import { Dialog } from "../../../../components/dialog-notification";
+import { Dialog, Loading } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import en from "../../../../i18n/en";
+import { clientData } from "../../../../models/add-client-props";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
     handleRefresh: () => void;
+    sendIdCreate: ({ id }: any) => void;
 }
 
 
@@ -68,10 +70,19 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
             "partnerTagIds": [],
             "b2cActivated": true,
         })
+        // .then((value) => {
+
+        //     console.log("value create", props.sendIdCreate(value.result.data.id));
+        // })
         // console.log('====================================');
         // console.log('test', result);
         // console.log('====================================');
+
         if (result.kind === "ok") {
+            console.log("result create ", result.result.data);
+            const id = result.result.data
+
+            props.sendIdCreate({ id })
             setCheckHind(false)
             setSelectCustomerType({ label: "" })
             reset({
@@ -79,6 +90,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 NameClient: ''
             })
             props.setIsVisible(!props.isVisible)
+
             Dialog.show({
                 title: translate("txtDialog.txt_title_dialog"),
                 button: '',
@@ -86,6 +98,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 textBody: "Tạo khách hàng thành công",
                 closeOnOverlayTap: false,
                 onPressButton: () => {
+
                     Dialog.hide();
                     props.handleRefresh()
                 }
@@ -98,6 +111,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 textBody: result.result.errorCodes[0].message,
                 closeOnOverlayTap: false
             })
+
         }
     }
     // Hàm được gọi khi người dùng nhấn nút
@@ -173,9 +187,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 <View style={styles.modalView}>
                     <Text style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}></Text>
-
-
+                        <Text style={styles.headerTitle} tx="selectClient.createClient"></Text>
                     </View>
 
                     <View style={styles.horizontalLine} />

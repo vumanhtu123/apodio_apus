@@ -43,18 +43,19 @@ export const SelectClientScreen: FC<
 
   const size = useRef(15);
   // const isLoadingMore = useRef<boolean>(false)
-  // console.log("doannnnn", totalPage);
+  // console.log("doannnnn", dataItemSelect);
+
 
   const sort = getAPi.orderStore.sortCreateClient;
 
   const statusLoadMore = getAPi.orderStore.isLoadMoreSelectClient
-  console.log('value is load more', statusLoadMore);
+  // console.log('value is load more', statusLoadMore);
 
   const getListClient = () => {
     getAPi.orderStore
       .getListSelectClient(0, size.current, sort, valueSearch, true, statusLoadMore)
       .then((data) => {
-        console.log("data SelectClient", data);
+        // console.log("data SelectClient", data);
 
         // setTotalPage(data?.totalPages)
 
@@ -183,6 +184,14 @@ export const SelectClientScreen: FC<
         <FlatList
           data={myDataSelectClient}
           renderItem={({ item, index }): any => {
+            console.log('====================================');
+            console.log("data item:", item);
+            console.log('====================================');
+            if (dataItemSelect?.id == item.id) {
+              // console.log("id send", dataItemSelect?.id);
+              // console.log("data item 2:", item);
+              setdataItemSelect(item)
+            }
             return (
               <TouchableOpacity
                 style={{
@@ -197,6 +206,7 @@ export const SelectClientScreen: FC<
                   justifyContent: "space-between",
                 }}
                 onPress={() => {
+
                   setdataItemSelect(item);
                   setIndexSelect(index);
                 }}>
@@ -306,6 +316,9 @@ export const SelectClientScreen: FC<
           onPress={() => {
             // set = false de co animation loading full man hinh
             getAPi.orderStore.setIsLoadMoreSelectClient(false)
+
+            setdataItemSelect({ id: "", name: "", code: "", phoneNumber: "" })
+            getAPi.orderStore.setDataClientSelect(dataItemSelect)
             props.navigation.goBack()
           }}>
           <Text
@@ -324,7 +337,7 @@ export const SelectClientScreen: FC<
           }
           onPress={() => {
             console.log('----indexSelect-------', indexSelect)
-            if (indexSelect >= 0) {
+            if (dataItemSelect.id != "") {
               senDataClientSelected();
               setOnClick("successfully");
               getDebtLimit();
@@ -356,6 +369,13 @@ export const SelectClientScreen: FC<
         isVisible={isVisibleCreateClient}
         setIsVisible={setIsVisibleCreateClient}
         handleRefresh={() => getListClient()}
+        sendIdCreate={({ id }) => {
+          // console.log('====================================');
+          // console.log("da ta id", id);
+          // console.log('====================================');
+
+          setdataItemSelect(id)
+        }}
       />
     </View>
   );
