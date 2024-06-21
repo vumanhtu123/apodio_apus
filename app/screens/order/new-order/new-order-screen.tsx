@@ -359,7 +359,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         orderStore.setDataProductAddOrder([])
         setArrProduct([])
         handleBack()
-        navigation.navigate('orderSuccess' as never, { idOrder: values.id })
+        navigation.navigate('orderSuccess' as never, { idOrder: values.id, screnn: 'create' })
       } else {
         const v = values?.map((data: any) => {
           return data.message;

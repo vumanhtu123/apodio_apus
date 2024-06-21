@@ -219,12 +219,12 @@ export const SumMoney = (props: DataSumMoney) => {
 
   // Gom nhóm các item và tính tổng taxValue
   const groupedTaxValues = props.arrVat.reduce((acc: { [x: string]: { label: any; value: any; taxValue: any; }; }, product: { VAT: { value: any; label: any; }; taxValue: any; }) => {
-    const vatValue = product.VAT.value;
+    const vatValue = product.VAT?.value;
     if (acc[vatValue]) {
       acc[vatValue].taxValue += product.taxValue;
     } else {
       acc[vatValue] = {
-        label: product.VAT.label,
+        label: product.VAT?.label,
         value: vatValue,
         taxValue: product.taxValue
       };

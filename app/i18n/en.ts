@@ -734,7 +734,9 @@ const en = {
   successScreen: {
     btnBack: "Quay lại trang chủ",
     labelSuccess: "Tạo mới thành công",
+    editSuccess: "Sửa đơn hàng thành công",
     titleSuccess: "Bạn đã thêm mới sản phẩm thành công",
+    editTitleSuccess: "Bạn đã sửa đơn hàng thành công",
     btnCreate: "Tạo thêm sản phẩm",
     btnDetail: "Xem chi tiết sản phẩm",
     titleSuccessOrder: "Bạn đã tạo đơn hàng thành công",
