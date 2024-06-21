@@ -61,18 +61,18 @@ export const methodData = [
     id: 0,
     label: translate("order.CASH"),
   },
-  {
-    id: 1,
-    label: translate("order.BANK_TRANSFER"),
-  },
+  // {
+  //   id: 1,
+  //   label: translate("order.BANK_TRANSFER"),
+  // },
   {
     id: 2,
     label: translate("order.BANK"),
   },
-  {
-    id: 3,
-    label: translate("order.CREDIT"),
-  },
+  // {
+  //   id: 3,
+  //   label: translate("order.CREDIT"),
+  // },
   {
     id: 4,
     label: translate("order.DEDUCTION_OF_LIABILITIES"),

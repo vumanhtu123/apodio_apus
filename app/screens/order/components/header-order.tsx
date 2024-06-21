@@ -9,6 +9,7 @@ import { useStores } from "../../../models";
 interface InputData {
   openDialog: () => void;
   data: any;
+  disabled?: boolean;
 }
 interface AddressData {
   onPressAddress: () => void;
@@ -20,11 +21,13 @@ interface PriceData {
   priceListCategory: string;
   currencyId: number;
   pricelistId: number;
+  disabled?: boolean;
 }
 export const HeaderOrder = (data: InputData) => {
   console.log(data);
   return (
     <TouchableOpacity
+    disabled={data.disabled}
       onPress={() => {
         data.openDialog();
       }}>
@@ -66,7 +69,9 @@ export const HeaderOrder = (data: InputData) => {
               }}></Text>
           )}
         </View>
+        {data.disabled === true ? null:
         <Images.icon_caretRight2 />
+        }
       </View>
     </TouchableOpacity>
   );
@@ -86,6 +91,7 @@ export const PriceList = (data: PriceData) => {
         borderRadius: 8,
         justifyContent: "space-between",
       }}
+      disabled={data.disabled}
       onPress={() => navigation.navigate("selectApplicablePriceList" as never)}>
       <View
         style={{
@@ -117,7 +123,7 @@ export const PriceList = (data: PriceData) => {
             }}></Text>
         )}
       </View>
-      <Images.icon_caretRight2 />
+     {data.disabled === true ? null : <Images.icon_caretRight2 />}
     </TouchableOpacity>
   );
 };

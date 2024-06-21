@@ -211,6 +211,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
 
     const newArr = arrProduct.map((data: any) => {
       return {
+        id: screen === "copy" ? null : data.lineId,
         productId: data.id,
         productInfo: {
           id: data.id,
@@ -301,6 +302,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     const newArr1 = arrProduct.map((item: any) => { return item.id })
     const newArr2 = newData.saleOrderLines?.map((item: any) => { return item.productId })
     const newArr3 = newArr2.filter(item => !newArr1.includes(item));
+    const formattedDate = moment.utc(markedDatesS).endOf('day').toISOString();
+
     console.log("data new", JSON.stringify(newArr));
     const order: any = {
       id: screen === "copy" ? null : newData.id,
@@ -309,7 +312,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
       // invoiceAddressId: 0,
       deliveryAddressId: address.id,
       // quotationDate: "",
-      // orderDate: "",
+      orderDate: formattedDate,
       // quoteCreationDate: "",
       // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
@@ -326,7 +329,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
       // campaignId: 0,
       // discount: 0, //chiet khau
       discountComputeType: "FIXED",
-      note: "",
+      note: note,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
@@ -731,31 +734,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     console.log("discount all: ", discount.current);
   };
 
-  // console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
-  // console.log("post add tuvm 2", JSON.stringify(arrProduct));
-  // console.log(
-  //   "post add tuvm 3",
-  //   JSON.stringify(store.orderStore.dataDebtLimit)
-  // );
-  // console.log("price scr", Number(price));
-  // console.log("price scr 2", orderStore.dataDebtPayment);
-
-  // console.log('arrProduct------2----', JSON.stringify(orderStore.dataProductAddOrder));
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener("focus", () => {
-  //     console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
-  //     setArrProduct(orderStore.dataProductAddOrder.slice());
-  //     getListTax();
-  //     if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
-  //       getListAddress();
-  //     }
-  //     setAddress(orderStore.dataAddress)
-  //     getListAddress();
-  //     setIsDeposit(orderStore.dataDebtPayment.apply);
-
-  //   });
-  //   return unsubscribe;
-  // }, [navigation]);
   const getDebtLimit = (id: number) => {
     if (orderStore.dataClientSelect !== null) {
       orderStore
@@ -783,12 +761,13 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
         }
         const newArr = newData.saleOrderLines?.map((items: any) => {
           return {
-            ...items?.productInfo, amount: items?.quantity, originAmount: items?.orderQty, priceTotal: items?.amountTotal,unitPrice: items?.unitPrice,
+            ...items?.productInfo, amount: items?.quantity, originAmount: items?.orderQty, priceTotal: items?.amountTotal, unitPrice: items?.unitPrice,
             VAT: items?.taxLines?.items.length === 0 ? undefined : { value: items?.taxLines?.items[0]?.taxId, label: items?.taxLines?.items[0]?.taxName },
             taxValue: items?.taxLines?.items[0]?.amount, taxesInput: items.discount, addInputTaxes: items.discount !== 0 ? true : false,
+            lineId: screen === 'edit' ? items.id : null,
           }
         })
-        priceAll(newArr)
+        priceAll(newArr) 
         handleSumAmountVAT(newArr)
         console.log(newArr, 'log =====')
         setArrProduct(newArr)
@@ -796,6 +775,10 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           id: newData.partner.id, code: newData.partner.code, name: newData.partner.name,
           phoneNumber: newData.partner.phoneNumber
         })
+        if(newData.orderDate !== ""){
+          setDesiredDate(true)
+          setMarkedDatesS(moment.utc(newData.orderDate).format('YYYY-MM-DD'))
+        }
         getDebtLimit(newData.partner.id)
         setPayment({
           label: newData.scopeTypes === "DOMESTICALLY" ? translate("order.DOMESTICALLY") : translate("order.EXPORTED"),
@@ -804,21 +787,23 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           setNote(true)
         }
         orderStore.setCheckRenderList(false)
-        // switch (newData.paymentMethod) {
-        //   case "CASH":
-        //     console.log("aaa 1");
-        //     return countRef.current = translate("order.CASH");
-        //   case "BANK_TRANSFER":
-        //     return countRef.current = translate("order.BANK_TRANSFER");
-        //   case "BANK":
-        //     return countRef.current = translate("order.BANK");
-        //   case "CREDIT":
-        //     return countRef.current = translate("order.CREDIT");
-        //   case "DEDUCTION_OF_LIABILITIES":
-        //     return countRef.current = translate("order.DEDUCTION_OF_LIABILITIES");
-        //   default:
-        //     return "";
-        // }
+        if (screen === 'edit') {
+          switch (newData.paymentMethod) {
+            case "CASH":
+              console.log("aaa 1");
+              return countRef.current = translate("order.CASH");
+            case "BANK_TRANSFER":
+              return countRef.current = translate("order.BANK_TRANSFER");
+            case "BANK":
+              return countRef.current = translate("order.BANK");
+            case "CREDIT":
+              return countRef.current = translate("order.CREDIT");
+            case "DEDUCTION_OF_LIABILITIES":
+              return countRef.current = translate("order.DEDUCTION_OF_LIABILITIES");
+            default:
+              return "";
+          }
+        }
         // setIsDeposit(true)
 
       } else {
@@ -828,7 +813,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           getListAddress();
         }
         setAddress(orderStore.dataAddress)
-        getListAddress();
+        // getListAddress();
         setIsDeposit(orderStore.dataDebtPayment.apply);
       }
     });
@@ -871,6 +856,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
             openDialog={function (): void {
               selectClient();
             }}
+            disabled={screen === 'edit' ? true : false}
             data={store.orderStore.dataClientSelect}
           />
           <AddressOrder
@@ -883,6 +869,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
             priceListCategory={
               orderStore.dataPriceListSelected.priceListCategory
             }
+            disabled={screen === 'edit' ? true : false}
             currencyId={Number(orderStore.dataPriceListSelected.currencyId)}
             pricelistId={Number(orderStore.dataPriceListSelected.pricelistId)}
           />
@@ -893,6 +880,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
               paddingVertical: 8,
               marginVertical: 15,
             }}
+            disabled={screen === 'edit' ? true : false}
             required={true}
             hintTx={"order.selectPayment"}
             titleTx={"order.paymentMethods"}
@@ -906,6 +894,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           <View style={styles.viewListProduct}>
             <Button
               style={styles.buttonListProduct}
+              disabled={screen === 'edit' ? true : false}
               onPress={() => {
                 navigation.navigate("addProductOrder" as never);
                 selectProduct();
@@ -925,6 +914,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
                 return (
                   <View>
                     <ItemListProduct
+                      disabled={screen === 'edit' ? true : false}
                       onPressAddTexas={() => handleAddTaxes(item.id)}
                       onPressSelectTexas={() => {
                         console.log("check validate", item.price);
@@ -1003,6 +993,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
             <View style={{ marginTop: 15 }}></View>
           )}
           <TouchableOpacity
+            disabled={screen === 'edit' ? true : false}
             onPress={() => {
               setButtonPayment(true);
             }}>
@@ -1033,7 +1024,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
                       color: "#242424",
                       marginRight: 6,
                     }}></Text>
-                  <Images.icon_caretRight2 />
+                  {screen === 'edit' ? null : <Images.icon_caretRight2 />}
                 </View>
                 {countRef.current.toString() ===
                   translate("order.DEDUCTION_OF_LIABILITIES") ? (
@@ -1334,7 +1325,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           onPress={() => {
             addProduct();
           }}
-          tx={"order.order"}
+          tx={screen === 'edit' ? 'order.editOrder' : "order.order"}
           style={styles.buttonOrder}
           textStyle={styles.textButtonOrder}
         />
@@ -1356,6 +1347,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
         isSortByDate={isSortByDate}
         isOneDate={true}
         toggleModalDate={toggleModalDate}
+        minDate={new Date()}
       />
       <ModalPayment
         isVisible={buttonPayment}

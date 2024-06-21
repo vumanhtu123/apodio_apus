@@ -388,7 +388,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           ...data,
           saleUom: { id: uomData.uomId, name: uomData.uomName },
           conversionRate: uomData.conversionRate,
-          price: undefined,
+          unitPrice: undefined,
           amount: newAmount,
           originAmount: Math.ceil(newAmount * uomData.conversionRate),
         };
