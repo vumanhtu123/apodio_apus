@@ -9,6 +9,7 @@ import { useStores } from "../../../models";
 interface InputData {
   openDialog: () => void;
   data: any;
+  disabled?: boolean;
 }
 interface AddressData {
   onPressAddress: () => void;
@@ -20,11 +21,13 @@ interface PriceData {
   priceListCategory: string;
   currencyId: number;
   pricelistId: number;
+  disabled?: boolean;
 }
 export const HeaderOrder = (data: InputData) => {
   console.log(data);
   return (
     <TouchableOpacity
+    disabled={data.disabled}
       onPress={() => {
         data.openDialog();
       }}>
@@ -66,7 +69,9 @@ export const HeaderOrder = (data: InputData) => {
               }}></Text>
           )}
         </View>
+        {data.disabled === true ? null:
         <Images.icon_caretRight2 />
+        }
       </View>
     </TouchableOpacity>
   );
@@ -86,6 +91,7 @@ export const PriceList = (data: PriceData) => {
         borderRadius: 8,
         justifyContent: "space-between",
       }}
+      disabled={data.disabled}
       onPress={() => navigation.navigate("selectApplicablePriceList" as never)}>
       <View
         style={{
@@ -117,7 +123,7 @@ export const PriceList = (data: PriceData) => {
             }}></Text>
         )}
       </View>
-      <Images.icon_caretRight2 />
+     {data.disabled === true ? null : <Images.icon_caretRight2 />}
     </TouchableOpacity>
   );
 };
@@ -204,7 +210,6 @@ function groupTaxValues(dataTax: any[] | undefined) {
   if (dataTax === undefined) {
     return [];
   }
-
   const groupedTaxValues = dataTax.reduce((acc: { [x: string]: { label: any; value: any; taxValue: any; }; }, product: { VAT: { value: any; label: any; }; taxValue: any; }) => {
     console.log('------------groupedTaxValues----------', JSON.stringify(product));
     if (!product.VAT) {
@@ -215,7 +220,7 @@ function groupTaxValues(dataTax: any[] | undefined) {
       acc[vatValue].taxValue += product.taxValue;
     } else {
       acc[vatValue] = {
-        label: product.VAT.label,
+        label: product.VAT?.label,
         value: vatValue,
         taxValue: product.taxValue
       };
@@ -228,16 +233,6 @@ function groupTaxValues(dataTax: any[] | undefined) {
 
 export const SumMoney = (props: DataSumMoney) => {
   const { orderStore } = useStores()
-
-  // const total = props.arrVat.reduce((accumulator: number, currentObject: { unitPrice: any; amount: any; taxesInput: any; taxValue: any; }) => {
-  //   return accumulator + ((Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0)) - ((Number(currentObject.taxesInput ?? 0) / 100) * (Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0))) + Number(currentObject.taxValue ?? 0));
-  // }, 0);
-  // const discount = props.arrVat.reduce((accumulator: number, currentObject: { taxesInput: any; unitPrice: any; amount: any; }) => {
-  //   return accumulator + ((Number(currentObject.taxesInput ?? 0) / 100) * (Number(currentObject.unitPrice ?? 0) * Number(currentObject.amount ?? 0)));
-  // }, 0);
-
-  
-
   // Sử dụng useMemo để ghi nhớ kết quả của các phép tính
   const total = useMemo(() => {
     return props.arrVat.reduce((accumulator: number, currentObject: { unitPrice: any; amount: any; taxesInput: any; taxValue: any; }) => {
@@ -255,14 +250,7 @@ export const SumMoney = (props: DataSumMoney) => {
     orderStore.setDataProductAddOrder(props.arrVat.slice());
   }, [props.arrVat, orderStore]);
 
-  // orderStore.setDataProductAddOrder(props.arrVat.slice());
-  // const Sum = () => {
-  //   return Number(props.sumVat ?? 0) - Number(props.discount ?? 0);
-  // };
-  // const SumNoVAT = () => {
-  //   return Number(props.sumNoVat ?? 0) - Number(props.discount ?? 0);
-  // };
-  // var sumValue;
+
   return (
     <View
       style={{

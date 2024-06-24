@@ -1,3 +1,5 @@
+import { createClient } from "reactotron-core-client";
+
 const en = {
   common: {
     ok: "OK",
@@ -178,6 +180,7 @@ const en = {
     update_shipping_status: "Cập nhật trạng thái vận chuyển",
     update_status: "Cập nhật trạng thái",
     copy: "Sao chép",
+    editOrder: "Sửa đơn hàng",
     return: "Huỷ đơn",
     printInvoice: "In hoá đơn",
     showInvoiceDetail: "Xem chi tiết hóa đơn",
@@ -245,7 +248,7 @@ const en = {
     sum_yes_texas: "Tổng tiền (gồm thuế)",
     DOMESTICALLY: "Trong nước",
     EXPORTED: "Xuất khẩu",
-    CASH: "Tiền mặt",
+    CASH: "COD",
     BANK_TRANSFER: "Chuyển khoản ngân hàng",
     BANK: "Ngân hàng",
     CREDIT: "Tín dụng",
@@ -731,7 +734,9 @@ const en = {
   successScreen: {
     btnBack: "Quay lại trang chủ",
     labelSuccess: "Tạo mới thành công",
+    editSuccess: "Sửa đơn hàng thành công",
     titleSuccess: "Bạn đã thêm mới sản phẩm thành công",
+    editTitleSuccess: "Bạn đã sửa đơn hàng thành công",
     btnCreate: "Tạo thêm sản phẩm",
     btnDetail: "Xem chi tiết sản phẩm",
     titleSuccessOrder: "Bạn đã tạo đơn hàng thành công",
@@ -928,6 +933,7 @@ const en = {
     brick40x40: "Gạch 40*40",
     brick60x60: "Gạch 60*60",
     brick80x80: "Gạch 80*80",
+    createClient: "Tạo khách hàng",
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",

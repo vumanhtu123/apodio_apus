@@ -130,16 +130,16 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       inputPrice: Number(text) ?? 0,
       apply: true,
     });
+    navigation.goBack();
     if(countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")){
       orderStore.setClearingDebt(true)
     }else{
       orderStore.setClearingDebt(false)
     }
     // navigation.navigate('newOrder', { goBackPayment: true })
-    navigation.goBack();
   };
   console.log("tuvm", type);
-  const [check, setCheck] = useState(false)
+  // const [check, setCheck] = useState(false)
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [text, setText] = useState("");
   const {
@@ -170,7 +170,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {check !== true ? (
+          {/* {check !== true ? ( */}
             <View
               style={{
                 backgroundColor: "#FEF7E5",
@@ -188,7 +188,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   fontWeight: "400",
                 }}></Text>
             </View>
-          ) : null}
+          {/* ) : null} */}
           <Text
             style={{
               fontSize: 20,
@@ -242,18 +242,18 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 }}
                 // defaultValue={text===""? "": text}
                 onSubmitEditing={() => {
-                  if (Number(value) >= Number(Sum())) {
-                    setValue('price', price.toString())
-                    // onChange(price)
-                    setText(price)
-                    Remain()
-                  }
-                  if (Number(value) < Number(Sum())) {
+                  if (Number(value) >= Number(Sum1())) {
                     setValue('price', value.toString())
                     // onChange(price)
                     setText(value)
                     Remain()
                   }
+                  // if (Number(value) < Number(Sum())) {
+                  //   setValue('price', value.toString())
+                  //   // onChange(price)
+                  //   setText(value)
+                  //   Remain()
+                  // }
                   if (Number(value) < Number(Sum1())) {
                     setError("price", {
                       type: "validate",
@@ -359,7 +359,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         setMethod={function (item: number, name: string): void {
           setMethod(item);
           countRef.current = name;
-          setCheck(true)
+          // setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
             if(Number(Sum())<= credit){
               setText(Sum().toString())

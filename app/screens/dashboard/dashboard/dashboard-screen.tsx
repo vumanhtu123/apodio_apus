@@ -92,18 +92,21 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
 
       // Lấy ngày mồng 1 của tháng hiện tại
       const firstDayOfMonth = today.clone().startOf("month");
+      // Lấy ngày cuối của tháng hiện tại
+      const lastDayOfMonth = today.clone().endOf("month");
 
       // Định dạng ngày thành chuỗi "YYYY-MM-DDTHH:mm:ss+07:00"
       const formattedDateStart = firstDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
       const formattedDateNow = today.format("YYYY-MM-DDTHH:mm:ssZ");
+      const formattedDateEnd = lastDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
 
       console.log("====================================");
-      console.log("date one of the month", formattedDateNow);
+      console.log("date one of the month", formattedDateStart);
       console.log("====================================");
       getAPI.dashBoardStore
         .getDataRevenueThisMonth(
-          "2024-06-12T00:00:00+07:00",
-          "2024-06-12T00:00:00+07:00"
+          formattedDateStart,
+          formattedDateEnd
         )
         .then((data) => {
           console.log("====================================");

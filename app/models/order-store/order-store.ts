@@ -32,6 +32,7 @@ import {
   PriceVariantResult,
 } from "./entities/order-variant-model";
 import { TaxModel } from "./entities/order-tax-model";
+import { Loading } from "../../components/dialog-notification";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -348,11 +349,14 @@ export const OrderStoreModel = types
     }),
 
     postClient: flow(function* (clientData) {
+   
       const client = new AddClientAPI(self.environment.apiErp);
       const result = yield client.createClient(clientData);
       if (result.kind === "ok") {
+   
         return result;
       } else {
+      
         return result;
       }
     }),
