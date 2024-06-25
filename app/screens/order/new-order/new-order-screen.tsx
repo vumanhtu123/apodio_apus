@@ -52,6 +52,7 @@ import {
   Dialog,
   Toast,
 } from "../../../components/dialog-notification";
+import { formatStringToFloat } from "../../../utils/validate";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -295,7 +296,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         },
         quantity: data.amount,
         uomId: data.uomId,
-        orderQty: data.originAmount,
+        orderQty: data.amount,
         // orderUomId: number, //chon
         unitPrice: data.unitPrice, //don gia cua bang gia
         // amountUntaxed: data.price,
@@ -351,14 +352,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      isPrepayment: orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
+      isPrepayment: handleNamPreMethod() !== '' && orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
       isPayment: handleNamPreMethod() === '' ? true: false,
       amountPrePayment:
-        orderStore.clearingDebt == false
-          ? Number(orderStore.dataDebtPayment.inputPrice)
-          : 0, // so tien gui len
+      handleNamPreMethod() === '' ? formatStringToFloat(Number(price).toString()) :(orderStore.clearingDebt == false
+        ? formatStringToFloat(Number(orderStore.dataDebtPayment.inputPrice).toString())
+        : 0),  // so tien gui len
       amountClearings: orderStore.clearingDebt == true
-        ? Number(orderStore.dataDebtPayment.inputPrice)
+        ? formatStringToFloat(Number(orderStore.dataDebtPayment.inputPrice).toString())
         : 0,
     };
     console.log("done new order: ", JSON.stringify(order));
@@ -619,9 +620,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       "VAT_RATES",
       0,
       20,
-      payment.label == translate("order.DOMESTICALLY")
-        ? "DOMESTICALLY"
-        : "EXPORTED"
+      "SALE"
     );
     setArrTax(
       result.content.map((item: { name: any; id: any }) => {

@@ -92,13 +92,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   };
   const handleGetProduct = async (searchValue?: any) => {
     try {
-      const parseSort =
-        orderStore.sort.length === 0
-          ? ""
-          : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
-            (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
+      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderProduct(
         page,
         size,
@@ -141,13 +135,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   };
   const handleGetVariant = async (searchValue?: any) => {
     try {
-      const parseSort =
-        orderStore.sort.length === 0
-          ? ""
-          : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
-            (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
+      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderVariant(
         page,
         size,
@@ -267,13 +255,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   };
   const handleGetProductPrice = async (searchValue?: any) => {
     try {
-      const parseSort =
-        orderStore.sort.length === 0
-          ? ""
-          : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
-            (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
+      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderProductPrice(
         page,
         size,
@@ -317,14 +299,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   };
   const handleGetVariantPrice = async (searchValue?: any) => {
     try {
-      const parseSort =
-        orderStore.sort.length === 0
-          ? ""
-          : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
-            (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
-
+      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderVariantPrice(
         page,
         size,
@@ -613,7 +588,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   const handlePressViewProduct = (type: any) => {
     viewProductType(type);
     setPage(0);
-    orderStore.setSort([]);
+    orderStore.setSort('');
     orderStore.setTagId([]);
   };
   const viewProductType = (type: any) => {
@@ -699,7 +674,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     setSearchValue("");
     orderStore.setNameCategory("");
     setDataProduct([]);
-    orderStore.setSort([]);
+    orderStore.setSort('');
     orderStore.setTagId([]);
     if (
       orderStore.checkPriceList === false &&
@@ -766,7 +741,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         LeftIcon={Images.back}
         onLeftPress={() => {
           navigation.goBack();
-          orderStore.setSort([]);
+          orderStore.setSort('');
           orderStore.setProductCategoryId(0);
           orderStore.setNameCategory("");
           orderStore.setTagId([]);

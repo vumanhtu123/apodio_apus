@@ -348,6 +348,19 @@ export function getDateToday() {
   return markedDates;
 }
 
+export function formatStringToFloat(input: string) {
+  // Loại bỏ dấu chấm
+  let withoutDots = input.replace(/\./g, '');
+  
+  // Thay thế dấu phẩy bằng dấu chấm
+  let formattedString = withoutDots.replace(',', '.');
+  
+  // Chuyển đổi thành số kiểu float
+  let result = parseFloat(formattedString);
+  
+  return result;
+}
+
 export function getDateTodayOneDate() {
   var today = moment().format("YYYY-MM-DD");
   let markedDates = {};

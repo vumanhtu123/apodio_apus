@@ -299,7 +299,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
         },
         quantity: data.amount,
         uomId: data.uomId,
-        orderQty: data.originAmount,
+        orderQty: data.amount,
         // orderUomId: number, //chon
         unitPrice: data.unitPrice, //don gia cua bang gia
         // amountUntaxed: data.price,
@@ -360,16 +360,17 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      isPrepayment: orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
+      isPrepayment: handleNamPreMethod() !== '' && orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
       isPayment: handleNamPreMethod() === '' ? true: false,
       amountPrePayment:
-      orderStore.clearingDebt == false
+      handleNamPreMethod() === '' ? Number(price) :(orderStore.clearingDebt == false
           ? Number(orderStore.dataDebtPayment.inputPrice)
-          : 0, // so tien gui len
+          : 0), // so tien gui len
       amountClearings: orderStore.clearingDebt == true
         ? Number(orderStore.dataDebtPayment.inputPrice)
         : 0,
     };
+    console.log(handleNamPreMethod())
     console.log("done new order: ", JSON.stringify(order));
     store.orderStore.postAddOrderSale(order).then((values) => {
       console.log("success data sale order:", JSON.stringify(values));
@@ -628,9 +629,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
       "VAT_RATES",
       0,
       20,
-      payment.label == translate("order.DOMESTICALLY")
-        ? "DOMESTICALLY"
-        : "EXPORTED"
+     "SALE"
     );
     setArrTax(
       result.content.map((item: { name: any; id: any }) => {
