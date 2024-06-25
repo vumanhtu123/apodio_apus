@@ -20,9 +20,9 @@ const ROOT: ViewStyle = {
 }
 const TITLE: TextStyle = { textAlign: "center", color: "white", fontSize: fontSize.size16, fontWeight: '700' }
 const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: "center" }
-const LEFT: ViewStyle = { width: 32 }
+const LEFT: ViewStyle = { width: scaleWidth(16) }
 // const TOP: ViewStyle = { height: Platform.OS === 'ios' ? scaleHeight(44) : scaleHeight(32) }
-const RIGHT: ViewStyle = { width: 32, marginRight: 2, zIndex: 2 }
+const RIGHT: ViewStyle = { width: scaleWidth(32), marginRight: 2, zIndex: 2 }
 const BTNLEFT: ViewStyle = { width: scaleWidth(30), height: scaleHeight(30), alignItems: 'center' }
 const BTNRIGHT: ViewStyle = { width: scaleWidth(25), height: scaleHeight(20), alignItems: 'center'  }
 const LOGO: ViewStyle = {
@@ -101,7 +101,8 @@ export function Header(props: HeaderProps) {
           </Button>
         ) : (
           <View style={LEFT} />
-        )}
+        )
+        }
         {leftText && (
           <TouchableOpacity onPress={onLeftTextPress} style={{ width: 80, justifyContent: 'center' }}>
             <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center', }} />

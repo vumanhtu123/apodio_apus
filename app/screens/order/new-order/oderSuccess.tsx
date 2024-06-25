@@ -10,7 +10,7 @@ import { useStores } from "../../../models"
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder } = route.params || undefined
+    const { idOrder, screen } = route.params || undefined
     const { orderStore } = useStores()
     return (
         <View style={{
@@ -20,12 +20,13 @@ export const OrderSuccess: FC = () => {
           }}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Images.ic_checkCircleBlue width={scaleWidth(98)} height={scaleHeight(98)} />
-                <Text tx="successScreen.labelSuccess" style={{ fontSize: fontSize.size18, fontWeight: '700', marginTop: scaleHeight(40), marginBottom: scaleHeight(10) }} />
-                <Text tx="successScreen.titleSuccessOrder" style={{ fontSize: fontSize.size14, fontWeight: '500', color: '#84888D' }} />
+                <Text tx={screen === 'edit' ? 'successScreen.editSuccess' : "successScreen.labelSuccess"} style={{ fontSize: fontSize.size18, fontWeight: '700', marginTop: scaleHeight(40), marginBottom: scaleHeight(10) }} />
+                <Text tx={screen === 'edit' ? 'successScreen.editTitleSuccess' : "successScreen.titleSuccessOrder"} style={{ fontSize: fontSize.size14, fontWeight: '500', color: '#84888D' }} />
 
             </View >
             <View style={{
             }}>
+               {screen === 'edit'? null:
                 <TouchableOpacity onPress={() => {
                     orderStore.reset();
                     navigation.goBack();
@@ -37,7 +38,7 @@ export const OrderSuccess: FC = () => {
                     backgroundColor: '#0078d4'
                 }}>
                     <Text tx="successScreen.btnCreateOrder" style={{ fontSize: fontSize.size14, color: 'white', fontWeight: '600' }} />
-                </TouchableOpacity>
+                </TouchableOpacity>}
                 <TouchableOpacity
                     onPress={() => {
                         orderStore.setOrderId(idOrder);
@@ -48,7 +49,7 @@ export const OrderSuccess: FC = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('mainBottom' as never)
+                        navigation.navigate('mainBottom' as never , {isReload : true})
                     }}
                     style={{ justifyContent: 'center', alignItems: 'center', marginTop: scaleHeight(15), marginBottom: scaleHeight(30) }}>
                     <Text tx="successScreen.btnBack" style={{ fontSize: fontSize.size14, color: '#0078D4', fontWeight: '700' }} />

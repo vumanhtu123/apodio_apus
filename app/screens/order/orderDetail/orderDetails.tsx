@@ -236,7 +236,7 @@ export const OrderDetails: FC = observer(
                                     <Text text={formatCurrency(data?.totalPrice)} />
                                 </View>
                                 <Button
-                                    tx={invoiceId ? 'order.printInvoice' : 'order.sendInvoice'} // Conditional text
+                                    tx={invoiceId ? 'order.showInvoiceDetail' : 'order.sendInvoice'} // Conditional text
                                     onPress={() => {
                                         if (invoiceId) {
                                             navigation.navigate('printInvoiceScreen', { invoiceId: invoiceId })// Pass the first invoice ID

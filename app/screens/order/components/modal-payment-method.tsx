@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { margin, scaleHeight, scaleWidth ,fontSize } from "../../../theme";
 import { Text } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 
@@ -27,7 +27,8 @@ export const ModalPayment = (data: InputSelect) => {
         margin: 0,
         justifyContent: "flex-end",
       }}>
-      <View style={{ backgroundColor: "white", borderTopLeftRadius: scaleWidth(20), borderTopRightRadius: scaleWidth(20) }}>
+      <View style={{ backgroundColor: "white", borderTopLeftRadius: margin.border_top_left_radius, 
+                    borderTopRightRadius: margin.border_top_right_radius,}}>
         <View
           style={{
             height: 5,
@@ -226,7 +227,7 @@ const Item_Payment = (data: InputItem) => {
                     color: "#747475",
                     alignContent: "center",
                   }}>
-                  )
+                  
                 </Text>
               </Text>
             </View>

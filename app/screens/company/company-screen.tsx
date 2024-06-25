@@ -25,7 +25,7 @@ export const ListCompany: FC<
 > = observer(function ListCompany(props) {
   const [data, setData] = useState();
   const [idCompany, setIdCompany] = useState();
-  const { HomeStore, authenticationStore ,vendorStore } = useStores();
+  const { HomeStore, authenticationStore, vendorStore } = useStores();
   const [refresControl, setRefresControl] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -43,7 +43,7 @@ export const ListCompany: FC<
       setData(result.data);
     });
   };
-  const getTokenCompany = async (refreshToken : string) => {
+  const getTokenCompany = async (refreshToken: string) => {
     console.log("doan dccc ", refreshToken);
     await authenticationStore.getRefreshToken(refreshToken).then((result) => {
       console.log("getRefreshToken", result);
@@ -52,22 +52,23 @@ export const ListCompany: FC<
   };
   const handleGetInfoCompany = async () => {
     if (vendorStore.checkSeparator === '') {
-        try {
-            const response = await vendorStore.getInfoCompany();
-            if (response && response.kind === "ok") {
-                // console.log('response', response.result.data.thousandSeparator)
-                vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
-                vendorStore.setCheckCurrency(response.result.data.currency)
-            } else {
-                console.error("Failed to fetch info company:", response);
-            }
-        } catch (error) {
-            console.error("Error fetching :", error);
+      try {
+        const response = await vendorStore.getInfoCompany();
+        if (response && response.kind === "ok") {
+          // console.log('response', response.result.data.thousandSeparator)
+          vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
+          vendorStore.setCheckCurrency(response.result.data.currency)
+          vendorStore.setFloatRounding(response.result.data.floatRounding)
+        } else {
+          console.error("Failed to fetch info company:", response);
         }
+      } catch (error) {
+        console.error("Error fetching :", error);
+      }
     } else {
-        console.log('Đã có key')
+      console.log('Đã có key')
     }
-};
+  };
   useEffect(() => {
     getListCompany(authenticationStore.userId);
   }, []);
@@ -85,7 +86,7 @@ export const ListCompany: FC<
       </View>
     );
   };
-  const getNewToken = async (item : any) => {
+  const getNewToken = async (item: any) => {
     try {
       await setTenantId(item.id);
       await setAccessToken('')

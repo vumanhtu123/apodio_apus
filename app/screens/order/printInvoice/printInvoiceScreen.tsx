@@ -86,7 +86,30 @@ export const PrintInvoiceScreen: FC = observer(
                 console.error('Error downloading image:', error);
             }
         };
-
+        function groupTaxValues(dataTax: any[] | undefined) {
+            if (dataTax === undefined) {
+              return [];
+            }
+            
+            const groupedTaxValues = dataTax.reduce((acc: { [x: string]: { taxName: any; taxId: any; amount: any; }; }, curr: { items: any[]; }) => {
+              curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
+                const key = item.taxId;
+                if (acc[key]) {
+                  acc[key].amount += item.amount;
+                } else {
+                  acc[key] = {
+                    taxName: item.taxName,
+                    taxId: key,
+                    amount: item.amount
+                  };
+                }
+              });
+              return acc;
+            }, {});
+            
+            return Object.values(groupedTaxValues);
+          }
+          
         useEffect(() => {
             handleGetDetailInvoice()
             handleGetInfoCompany()
@@ -215,15 +238,14 @@ export const PrintInvoiceScreen: FC = observer(
                                 labelTx="dashboard.promotions"
                                 value={formatCurrency(calculateTotalDiscount(data.invoiceLines))}
                             />
-                            {data.computeTaxInfo?.taxLines.map((tax: any) => (
-                                tax.items?.map((item: any, index: any) => (
-                                    <ProductAttribute
-                                        key={index}
-                                        label={item.taxName}
-                                        value={formatCurrency(item.amount)}
-                                    />
-                                ))
-                            ))}
+                            { groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
+                                
+                                <ProductAttribute
+                                    label={item.taxName}
+                                    value={formatCurrency(item.amount)}
+                                />
+                          
+                        ))}
                             {/* <ProductAttribute
                                 labelTx="printInvoiceScreen.amountUntaxed"
                                 value={formatCurrency(data.amountUntaxed)}

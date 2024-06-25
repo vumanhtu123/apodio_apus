@@ -1,3 +1,5 @@
+import { createClient } from "reactotron-core-client";
+
 const en = {
   common: {
     ok: "OK",
@@ -12,6 +14,7 @@ const en = {
 
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
+    selected : 'Đã chọn'
     // @demo remove-current-line
   },
   txtToats: {
@@ -178,8 +181,10 @@ const en = {
     update_shipping_status: "Cập nhật trạng thái vận chuyển",
     update_status: "Cập nhật trạng thái",
     copy: "Sao chép",
+    editOrder: "Sửa đơn hàng",
     return: "Huỷ đơn",
     printInvoice: "In hoá đơn",
+    showInvoiceDetail: "Xem chi tiết hóa đơn",
     arrange: "Sắp xếp",
     searchCodeName: "Tìm kiếm theo mã và tên",
     orderDetail: "Chi tiết đơn hàng",
@@ -244,7 +249,7 @@ const en = {
     sum_yes_texas: "Tổng tiền (gồm thuế)",
     DOMESTICALLY: "Trong nước",
     EXPORTED: "Xuất khẩu",
-    CASH: "Tiền mặt",
+    CASH: "COD",
     BANK_TRANSFER: "Chuyển khoản ngân hàng",
     BANK: "Ngân hàng",
     CREDIT: "Tín dụng",
@@ -320,6 +325,7 @@ const en = {
     totalInvoice: "Tổng hoá đơn",
     symbol: "Kí hiệu",
     invoiceType: "Loại hoá đơn",
+    cart : 'Giỏ hàng'
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -730,7 +736,9 @@ const en = {
   successScreen: {
     btnBack: "Quay lại trang chủ",
     labelSuccess: "Tạo mới thành công",
+    editSuccess: "Sửa đơn hàng thành công",
     titleSuccess: "Bạn đã thêm mới sản phẩm thành công",
+    editTitleSuccess: "Bạn đã sửa đơn hàng thành công",
     btnCreate: "Tạo thêm sản phẩm",
     btnDetail: "Xem chi tiết sản phẩm",
     titleSuccessOrder: "Bạn đã tạo đơn hàng thành công",
@@ -904,7 +912,7 @@ const en = {
     no: "Chưa thanh toán",
     toInvoice: "Chờ thanh toán",
     partialInvoice: "Thanh toán một phần",
-    invoiced: "Thanh toán đầy đủ",
+    invoiced: "Đã thanh toán",
   },
   selectClient: {
     selectClient: "Chọn khách hàng",
@@ -927,6 +935,7 @@ const en = {
     brick40x40: "Gạch 40*40",
     brick60x60: "Gạch 60*60",
     brick80x80: "Gạch 80*80",
+    createClient: "Tạo khách hàng",
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",

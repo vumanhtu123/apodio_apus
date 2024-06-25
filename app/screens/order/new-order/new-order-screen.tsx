@@ -189,13 +189,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
       (Number(price)- Number(orderStore.dataDebtPayment.inputPrice)) > Number(store.orderStore.dataDebtLimit.debtAmount)
     ) {
-      orderStore.setMethodPayment({
-        sumAll: 0,
-        methodPayment: 0,
-        debt: 0,
-        inputPrice: 0,
-        apply: true,
-      });
+      // orderStore.setMethodPayment({
+      //   sumAll: 0,
+      //   methodPayment: 0,
+      //   debt: 0,
+      //   inputPrice: 0,
+      //   apply: false,
+      // });
       return navigation.navigate("paymentBuy", {
         params: {
           type: false,
@@ -298,13 +298,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       };
     });
     console.log("data new", JSON.stringify(newArr));
+    const formattedDate = moment.utc(markedDatesS).endOf('day').toISOString();
     const order: any = {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
       // invoiceAddressId: 0,
       deliveryAddressId: address.id,
       // quotationDate: "",
-      // orderDate: "",
+      orderDate: formattedDate,
       // quoteCreationDate: "",
       // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
@@ -321,7 +322,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // campaignId: 0,
       // discount: 0, //chiet khau
       discountComputeType: "FIXED",
-      note: "",
+      note: note,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
@@ -359,7 +360,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         orderStore.setDataProductAddOrder([])
         setArrProduct([])
         handleBack()
-        navigation.navigate('orderSuccess' as never, { idOrder: values.id })
+        navigation.navigate('orderSuccess' as never, { idOrder: values.id, screnn: 'create' })
       } else {
         const v = values?.map((data: any) => {
           return data.message;
@@ -628,6 +629,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       environmentalResourceTax: 0,
       vat: 0,
     };
+    console.log('log data 12345', valueApi)
     console.log("tuvm tax 1234", JSON.stringify(arrTaxAll.current));
     await store.orderStore.postTaxLine([valueApi]).then((value: any) => {
       console.log("tuvm tax post", JSON.stringify(value));
@@ -1075,13 +1077,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           },
                         });
                       }
-                      orderStore.setMethodPayment({
-                        sumAll: 0,
-                        methodPayment: 0,
-                        debt: 0,
-                        inputPrice: 0,
-                        apply: true,
-                      });
+                      // orderStore.setMethodPayment({
+                      //   sumAll: 0,
+                      //   methodPayment: 0,
+                      //   debt: 0,
+                      //   inputPrice: 0,
+                      //   apply: false,
+                      // });
                       handleDebt();
                       navigation.navigate("paymentBuy", {
                         params: {
@@ -1205,14 +1207,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  orderStore.setMethodPayment({
-                    sumAll: 0,
-                    methodPayment: 0,
-                    debt: 0,
-                    inputPrice: 0,
-                    apply: true,
-                  });
-                  return navigation.navigate("paymentBuy", {
+                  // orderStore.setMethodPayment({
+                  //   sumAll: 0,
+                  //   methodPayment: 0,
+                  //   debt: 0,
+                  //   inputPrice: 0,
+                  //   apply: false,
+                  // });
+                  return navigation.navigate("paymentBuy" , {
                     params: {
                       type:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1275,6 +1277,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         isSortByDate={isSortByDate}
         isOneDate={true}
         toggleModalDate={toggleModalDate}
+        minDate={new Date()}
       />
       <ModalPayment
         isVisible={buttonPayment}
