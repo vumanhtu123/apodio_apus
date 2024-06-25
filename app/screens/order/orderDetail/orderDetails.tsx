@@ -131,7 +131,7 @@ export const OrderDetails: FC = observer(
             { status: 'Đã giao thành công', complete: false },
         ];
 
-        const OrderStatusItem = ({ item, isFirstStep, isLastStep }: any) => {
+        const OrderStatusItem = ({ item, isLastStep }: any) => {
             return (
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: scaleHeight(12) }}>
                     <View style={{}}>
@@ -171,7 +171,7 @@ export const OrderDetails: FC = observer(
                     headerTx={'order.orderDetail'}
                     RightIcon1={Images.icon_copy}
                     TitleIcon1="order.copy"
-                    RightIcon={Images.icon_editWhite}
+                    RightIcon={stateAllow.isAllowCancel ? Images.icon_editWhite : null}
                     TitleIcon="common.edit"
                     // RightIcon2={Images.icon_printer}
                     // TitleIcon2="order.printInvoice"

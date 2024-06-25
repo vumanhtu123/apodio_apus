@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { margin, scaleHeight } from "../../../theme";
+import { fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 
@@ -27,7 +27,7 @@ export const ModalTaxes = (data: InputSelect) => {
       animationIn={"fadeIn"}
       animationOut={"fadeOut"}
       style={{
-        backgroundColor: "rgba(0,0,0,0.1)",
+        backgroundColor: "rgba(0,0,0,0.1)s",
         margin: 0,
         justifyContent: "flex-end",
         // paddingTop: showMore ? scaleHeight(160) : null,
@@ -40,10 +40,10 @@ export const ModalTaxes = (data: InputSelect) => {
         }}>
         <View
           style={{
-            height: 5,
+            height: scaleHeight(5),
             backgroundColor: "#C7C7C7",
             marginTop: scaleHeight(8),
-            marginHorizontal: 137,
+            marginHorizontal: scaleWidth(137),
             borderRadius: 100,
           }}
         />
@@ -52,16 +52,16 @@ export const ModalTaxes = (data: InputSelect) => {
           style={{
             color: "#242424",
             fontWeight: "700",
-            fontSize: 14,
-            marginHorizontal: 24,
-            marginTop: 25,
+            fontSize: fontSize.size14,
+            marginHorizontal: scaleWidth(24),
+            marginTop: scaleHeight(25),
           }}></Text>
         <View
           style={{
             height: 1,
             backgroundColor: "#E7EFFF",
-            marginVertical: 18,
-            marginHorizontal: 15,
+            marginTop: scaleHeight(18),
+            marginHorizontal: scaleWidth(15),
           }}
         />
         <InputSelect
@@ -77,10 +77,10 @@ export const ModalTaxes = (data: InputSelect) => {
           }}
           styleView={{
             backgroundColor: "#F6F7F9",
-            paddingHorizontal: 15,
-            paddingVertical: 8,
-            marginVertical: 15,
-            marginHorizontal: 15,
+            paddingHorizontal: scaleWidth(15),
+            paddingVertical: scaleHeight(8),
+            marginVertical: scaleHeight(22),
+            marginHorizontal: scaleWidth(15),
           }}
         />
         <View
@@ -88,54 +88,60 @@ export const ModalTaxes = (data: InputSelect) => {
             flexDirection: "row",
             marginHorizontal: 15,
             justifyContent: "space-between",
-            marginBottom: Platform.OS === "ios" ? 50 : 15,
-            marginTop: 5,
+            marginBottom: Platform.OS === "ios" ? scaleHeight(50) : scaleHeight(15),
+            marginTop: scaleHeight(5),
           }}>
           <TouchableOpacity
+            style={{
+              backgroundColor: "white",
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: "#c8c8c8",
+              alignItems: 'center',
+              paddingHorizontal: scaleWidth(55),
+              paddingVertical: scaleWidth(12),
+              // width: scaleWidth(150)
+            }}
             onPress={() => {
               data.closeDialog();
             }}>
-            <View
+            <Text
+              tx="order.back"
               style={{
-                backgroundColor: "white",
-                borderRadius: 8,
-                borderWidth: 1,
-                borderColor: "#747475",
-              }}>
-              <Text
-                tx="order.back"
-                style={{
-                  color: "#747475",
-                  fontSize: 14,
-                  fontWeight: "600",
-                  marginHorizontal: 60,
-                  marginVertical: 12,
-                }}></Text>
-            </View>
+                color: "#747475",
+                fontSize: fontSize.size14,
+                fontWeight: "600",
+                textAlign : 'center',
+                width : scaleWidth(55)
+              }} />
           </TouchableOpacity>
+          <View style={{width:scaleWidth(12)}}></View>
           <TouchableOpacity
             onPress={() => {
               data.arrName(name);
               console.log("item b", name);
-            }}>
-            <View
+            }}
+            style={{
+              backgroundColor: "#0078D4",
+              borderRadius: 8,
+              alignItems :'center',
+              paddingHorizontal: scaleWidth(55),
+              paddingVertical: scaleWidth(12),
+              // width: scaleWidth(150)
+            }}
+          >
+            <Text
+              tx="order.select"
               style={{
-                backgroundColor: "#0078D4",
-                borderRadius: 8,
-              }}>
-              <Text
-                tx="order.select"
-                style={{
-                  color: "white",
-                  fontSize: 14,
-                  fontWeight: "600",
-                  marginHorizontal: 65,
-                  marginVertical: 12,
-                }}></Text>
-            </View>
+                color: "white",
+                fontSize: fontSize.size14,
+                fontWeight: "600",
+                textAlign : 'center',
+                width : scaleWidth(55)
+              }}/>
           </TouchableOpacity>
         </View>
-      </View>
-    </Modal>
+      </View >
+    </Modal >
   );
 };

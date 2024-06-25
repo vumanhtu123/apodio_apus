@@ -177,52 +177,52 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
           renderItem={({ item }) => <ItemListCompany item={item} />}
           keyExtractor={(item: any, index: any) => index}
           showsVerticalScrollIndicator={false}
-          // "để hiện hình quay quay khi kéo xuống"
-          // refreshControl={
-          //     <RefreshControl refreshing={refresControl} onRefresh={() => {
-          //         setRefresControl(true)
-          //         console.log('====================================');
-          //         console.log("doandev");
-          //         console.log('====================================');
-          //         setRefresControl(false)
-          //     }}
-          //         colors={['red']}
-          //     />
-          // }
+        // "để hiện hình quay quay khi kéo xuống"
+        // refreshControl={
+        //     <RefreshControl refreshing={refresControl} onRefresh={() => {
+        //         setRefresControl(true)
+        //         console.log('====================================');
+        //         console.log("doandev");
+        //         console.log('====================================');
+        //         setRefresControl(false)
+        //     }}
+        //         colors={['red']}
+        //     />
+        // }
 
-          // Để hiện hình quay quay khi kéo lên
-          // ListFooterComponent={() => (
-          //     isLoading ? <View
+        // Để hiện hình quay quay khi kéo lên
+        // ListFooterComponent={() => (
+        //     isLoading ? <View
 
-          //     style={{
+        //     style={{
 
-          //         marginTop:30,
-          //         alignItems:'center',
-          //         justifyContent:'center',
-          //         // justifyContent:'space-between',
-          //         flexDirection:'row',
+        //         marginTop:30,
+        //         alignItems:'center',
+        //         justifyContent:'center',
+        //         // justifyContent:'space-between',
+        //         flexDirection:'row',
 
-          //         padding:10
-          //     }}>
-          //         <ActivityIndicator size={"large"} color={'blue'} />
+        //         padding:10
+        //     }}>
+        //         <ActivityIndicator size={"large"} color={'blue'} />
 
-          //     </View>
+        //     </View>
 
-          //         : null
-          //     )}
+        //         : null
+        //     )}
 
-          // "Phần sử lý logic khi load more"
-          // onEndReached={() =>{
-          //     setIsLoading(true)
-          //     // setPrevPaget(prevPaget+1)
-          //     console.log("doandev load more");
-          //     setdata(data.concat([{id:"10",name: "Cong Ty A", code: "123",hotline:"836666"}]))
-          //     setTimeout(() => {
-          //         setIsLoading(false)
-          //     }, 3000);
-          // }}
+        // "Phần sử lý logic khi load more"
+        // onEndReached={() =>{
+        //     setIsLoading(true)
+        //     // setPrevPaget(prevPaget+1)
+        //     console.log("doandev load more");
+        //     setdata(data.concat([{id:"10",name: "Cong Ty A", code: "123",hotline:"836666"}]))
+        //     setTimeout(() => {
+        //         setIsLoading(false)
+        //     }, 3000);
+        // }}
 
-          // onEndReachedThreshold={0.2}
+        // onEndReachedThreshold={0.2}
         />
       </View>
     );

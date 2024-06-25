@@ -129,10 +129,10 @@ export const AuthenticationStoreModel = types
       console.log("tuvm result", JSON.stringify(result));
       if (result.kind === "ok") {
         console.log("result forgot", JSON.stringify(result));
-        return result;
+        return result.data;
       } else {
         __DEV__ && console.tron.log(result.kind);
-        return result;
+        return result.data;
       }
     }),
 
@@ -141,9 +141,7 @@ export const AuthenticationStoreModel = types
         store.environment.apiGetWay,
         store.environment.apiUaa
       );
-      console.log("otp receiver : ", newPassword);
       const result: any = yield authApi.submitPassword(otp, newPassword);
-      console.log("tuvm result submit pass", JSON.stringify(result));
       if (result.kind === "ok") {
         console.log("result submit pass", JSON.stringify(result));
         return result;
