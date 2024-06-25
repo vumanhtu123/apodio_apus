@@ -22,9 +22,9 @@ import {
   spacing,
 } from "../../theme";
 import { translate, TxKeyPath } from "../../i18n";
-import { Text } from "../text/text";
 import { SvgIcon } from "../svg-icon";
 import { Images } from "../../../assets";
+import { Text } from "../text/text";
 
 // the base styling for the container
 // const CONTAINER: ViewStyle = {
@@ -102,7 +102,7 @@ export interface TextFieldProps extends TextInputProps {
    */
   inputStyle?: StyleProp<TextStyle>;
   labelDolphin?: boolean;
-  styleError?: StyleProp<ViewStyle>
+  styleError?: StyleProp<ViewStyle>;
   /**
    * Various look & feels.
    */
@@ -127,7 +127,7 @@ export interface TextFieldProps extends TextInputProps {
   RightIcon?: any;
   pressRightIcon?: () => void;
   showRightIcon?: boolean;
-  styleTextError?: StyleProp<TextStyle>
+  styleTextError?: StyleProp<TextStyle>;
   isMultiline?: boolean;
   value?: any;
   valueInput?: any;
@@ -187,7 +187,6 @@ export function TextField(props: TextFieldProps) {
     onBlur();
   };
 
-
   // console.log("error------------------------", error);
   // const actualPlaceholder = (placeholderTx || placeholder) ? (placeholderTx ? translate(placeholderTx) : placeholder) : '';
   return (
@@ -195,11 +194,27 @@ export function TextField(props: TextFieldProps) {
       <View
         style={[
           containerStyles,
-          { borderColor: colors.palette.aliceBlue, flexDirection: 'row', justifyContent: 'space-between', alignItems: isMultiline === true ? 'flex-start' : 'center' },
+          {
+            borderColor: colors.palette.aliceBlue,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: isMultiline === true ? "flex-start" : "center",
+          },
+          {
+            borderColor: colors.palette.aliceBlue,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: isMultiline === true ? "flex-start" : "center",
+          },
 
           //  { borderColor: isFocused ? color.yellow : color.gray }
         ]}>
-        <View style={{ flex: 1, paddingTop: Platform.OS === 'android' ? scaleHeight(8) : scaleHeight(0) }}>
+        <View
+          style={{
+            flex: 1,
+            paddingTop:
+              Platform.OS === "android" ? scaleHeight(8) : scaleHeight(0),
+          }}>
           <View style={{ flexDirection: "row" }}>
             {labelTx ? (
               <Text
@@ -222,8 +237,8 @@ export function TextField(props: TextFieldProps) {
                   color: labelDolphin
                     ? colors.palette.dolphin
                     : !isFocused
-                      ? txColor
-                      : colors.palette.dolphin,
+                    ? txColor
+                    : colors.palette.dolphin,
                   paddingLeft: scaleWidth(16),
                   marginTop:
                     isFocused && !actualPlaceholder && value === ""
@@ -262,7 +277,6 @@ export function TextField(props: TextFieldProps) {
           <View
             style={{
               flexDirection: "row",
-
             }}>
             <TextInput
               {...props}
@@ -298,7 +312,7 @@ export function TextField(props: TextFieldProps) {
                 onClearText();
                 focus.current.focus();
               }}>
-              <RightIconClear />
+              {RightIconClear !== null ? <RightIconClear /> : null}
             </TouchableOpacity>
           ) : RightIcon ? (
             <TouchableOpacity onPress={pressRightIcon} style={{}}>
@@ -310,16 +324,22 @@ export function TextField(props: TextFieldProps) {
       {error ? (
         <View style={styleError}>
           <Text
-            style={[{
-              marginTop: Platform.OS === "android" ? scaleHeight(2) : scaleHeight(-5),
-              fontSize: fontSize.size12,
-              color: colors.error,
-            }, styleTextError]}
+            style={[
+              {
+                marginTop:
+                  Platform.OS === "android" ? scaleHeight(2) : scaleHeight(-5),
+                fontSize: fontSize.size12,
+                color: colors.error,
+              },
+              styleTextError,
+            ]}
             preset="fieldLabel"
             text={error}
           />
         </View>
-      ) : <View style={{ flex: 1 }}></View>}
+      ) : (
+        <View style={{ flex: 1 }}></View>
+      )}
     </View>
   );
 }
