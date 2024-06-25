@@ -45,8 +45,6 @@ export const styles = StyleSheet.create({
     height: scaleHeight(32),
   },
   viewSelect: {
-    // marginLeft: scaleWidth(padding.padding_16),    
-    // paddingHorizontal: scaleWidth(padding.padding_16),
     height: scaleHeight(48),
     backgroundColor: colors.palette.neutral100,
     paddingTop: scaleHeight(padding.padding_4),
@@ -66,19 +64,16 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   styleFlatlist: {
-    marginBottom: scaleHeight(margin.margin_20),
+    marginBottom: scaleHeight(margin.margin_10),
     marginHorizontal: scaleWidth(margin.margin_16),
-    // height: Dimensions.get('screen').height *0.5
   },
   btnShowModal: {
     width: scaleWidth(40),
     height: scaleHeight(40),
-    // backgroundColor: colors.palette.navyBlue,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
     right: 16,
     bottom: scaleHeight(11),
-    // borderRadius: scaleHeight(20),
   },
 });

@@ -126,7 +126,12 @@ export interface TextFieldProps extends TextInputProps {
   editable?: boolean;
   RightIcon?: any;
   pressRightIcon?: () => void;
+  pressRightIcon?: () => void;
   showRightIcon?: boolean;
+  styleTextError?: StyleProp<TextStyle>;
+  isMultiline?: boolean;
+  value?: any;
+  valueInput?: any;
   styleTextError?: StyleProp<TextStyle>;
   isMultiline?: boolean;
   value?: any;
@@ -166,6 +171,7 @@ export function TextField(props: TextFieldProps) {
     styleError,
     styleTextError,
     isMultiline,
+    valueInput,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
@@ -192,6 +198,12 @@ export function TextField(props: TextFieldProps) {
       <View
         style={[
           containerStyles,
+          {
+            borderColor: colors.palette.aliceBlue,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: isMultiline === true ? "flex-start" : "center",
+          },
           {
             borderColor: colors.palette.aliceBlue,
             flexDirection: "row",
@@ -276,7 +288,7 @@ export function TextField(props: TextFieldProps) {
               placeholder={actualPlaceholder}
               // underlineColorAndroid={colors.palette.neutral900}
               placeholderTextColor={colors.palette.dolphin}
-              value={value}
+              value={valueInput ? valueInput : value}
               style={[
                 inputStyles,
                 { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
