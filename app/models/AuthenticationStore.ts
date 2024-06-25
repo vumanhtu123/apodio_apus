@@ -2,7 +2,14 @@ import { Instance, SnapshotOut, flow, types } from "mobx-state-tree";
 import { withEnvironment } from "./extensions/with-environment";
 import { AuthApi } from "../services/api/api-config-auth";
 import { LoginResponse } from "./login-model";
-import { clear, getAccessToken, setAccessToken, setFirstOpenApp, setRefreshToken, setTenantId } from "../utils/storage";
+import {
+  clear,
+  getAccessToken,
+  setAccessToken,
+  setFirstOpenApp,
+  setRefreshToken,
+  setTenantId,
+} from "../utils/storage";
 
 export const AuthenticationStoreModel = types
   .model("AuthenticationStore")
@@ -38,20 +45,11 @@ export const AuthenticationStoreModel = types
     },
   }))
   .actions((store) => ({
-    setAccessToken(token: string) {
-      store.accessToken = token;
-    },
-    setRefreshToken(token: string) {
-      store.refreshToken = token;
-    },
     setUserID(id?: number) {
       store.userId = id ?? 0;
     },
     setJTI(jti: string) {
       store.jti = jti;
-    },
-    setAuthToken(value?: string) {
-      store.accessToken = value;
     },
     setAuthEmail(value: string) {
       store.authEmail = value.replace(/ /g, "");
@@ -82,11 +80,10 @@ export const AuthenticationStoreModel = types
           yield authApi.login(username, password);
         if (result.data != undefined) {
           console.log("tuvm", result);
-          store.setAccessToken(result.data.accessToken);
           store.setUserID(result.data.userId);
           setAccessToken(result.data.accessToken);
-          setRefreshToken(result.data.refreshToken)
-          setTenantId(result.data.tenantId);
+          setRefreshToken(result.data.refreshToken);
+          setTenantId(result.data.userId);
           return result.data;
         } else {
           const errorM = result.errorCodes.find((error) => error.code)?.message;
@@ -108,10 +105,9 @@ export const AuthenticationStoreModel = types
       );
       console.log("jti : ", store.jti);
       const result: any = yield authApi.logout(store.jti);
-      store.setAccessToken('')
-      clear()
+      setAccessToken("");
       store.setUserID();
-      store.setJTI('')
+      store.setJTI("");
       console.log("tuvm logout", result);
       if (result.kind === "ok") {
         console.log("token set", store.accessToken);
@@ -122,41 +118,54 @@ export const AuthenticationStoreModel = types
       }
     }),
 
-    forgotPass: flow(function* (otpReceiver: string, receiverType: "EMAIL") {
+    forgotPass: flow(function* (otpReceiver: string, receiverType: string) {
       const authApi = new AuthApi(
         store.environment.apiGetWay,
         store.environment.apiUaa
       );
       console.log("otp receiver : ", otpReceiver);
-      const result: any = yield authApi.forgotPass(otpReceiver, receiverType);
-      console.log("tuvm result", result);
+      const result: any = yield authApi.forgotPass(otpReceiver, "EMAIL");
+      console.log("tuvm result", JSON.stringify(result));
       if (result.kind === "ok") {
-        console.log("result forgot", result);
+        console.log("result forgot", JSON.stringify(result));
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
         return result;
       }
     }),
+
+    submitPassword: flow(function* (otp: number, newPassword: string) {
+      const authApi = new AuthApi(
+        store.environment.apiGetWay,
+        store.environment.apiUaa
+      );
+      console.log("otp receiver : ", newPassword);
+      const result: any = yield authApi.submitPassword(otp, newPassword);
+      console.log("tuvm result submit pass", JSON.stringify(result));
+      if (result.kind === "ok") {
+        console.log("result submit pass", JSON.stringify(result));
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+
     getRefreshToken: flow(function* (refreshToken: string) {
-      // store.setUserName(username);
-      // store.setPassWord(password);
       const authApi = new AuthApi(
         store.environment.apiGetWay,
         store.environment.apiUaa
       );
       try {
-        const result: BaseResponse<any, ErrorCode> =
-          yield authApi.refreshToken(refreshToken);
+        const result: BaseResponse<any, ErrorCode> = yield authApi.refreshToken(
+          refreshToken
+        );
         if (result.data != undefined) {
-          store.setAccessToken(result.data.accessToken);
-          // store.setAccessToken(result.data.accessToken);
-          // store.setRefreshToken(result.data.refreshToken);
           store.setUserID(result.data.userId);
           store.setJTI(result.data.jti);
           setAccessToken(result.data.accessToken);
-          setRefreshToken(result.data.refreshToken)
-          // setTenantId(store.tenantId);
+          setRefreshToken(result.data.refreshToken);
           setTenantId(result.data.tenantId);
           return result.data;
         } else {
@@ -174,8 +183,8 @@ export const AuthenticationStoreModel = types
   }));
 
 export interface AuthenticationStore
-  extends Instance<typeof AuthenticationStoreModel> { }
+  extends Instance<typeof AuthenticationStoreModel> {}
 export interface AuthenticationStoreSnapshot
-  extends SnapshotOut<typeof AuthenticationStoreModel> { }
+  extends SnapshotOut<typeof AuthenticationStoreModel> {}
 
 // @demo remove-file

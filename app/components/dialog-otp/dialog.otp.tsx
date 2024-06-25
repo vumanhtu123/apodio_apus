@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import React, { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -10,16 +10,16 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-} from 'react-native';
-import { colors, scaleHeight, scaleWidth } from '../../theme';
-import { TextField } from '../text-field/text-field';
-import { Text } from '../text/text';
-import { useStores } from '../../models';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+} from "react-native";
+import { colors, scaleHeight, scaleWidth } from "../../theme";
+import { TextField } from "../text-field/text-field";
+import { Text } from "../text/text";
+import { useStores } from "../../models";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get("screen");
 
-const VerificationCodeModal = ({
+export const VerificationCodeModal = ({
   setIsVisible,
   getOTP,
   checkOTP,
@@ -36,7 +36,7 @@ const VerificationCodeModal = ({
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'all',
+    mode: "all",
   });
   const [secondss, resetSeconds] = useCountDown(60);
   const timer = useRef<NodeJS.Timeout | null>(null);
@@ -56,11 +56,11 @@ const VerificationCodeModal = ({
     return [seconds, setSeconds];
   }
   useEffect(() => {
-    if (initStore) {
-      setValue('otp', '');
-      setIsButtonEnable(false);
-    }
-  }, [initStore]);
+    // if (initStore) {
+    setValue("otp", "");
+    setIsButtonEnable(false);
+    // }
+  }, []);
   const handleResend = async () => {
     resetSeconds(60);
     resend();
@@ -72,37 +72,37 @@ const VerificationCodeModal = ({
         keyboardShouldPersistTaps="handled">
         <View style={styles.modalView}>
           <TextRN style={styles.modalText} />
-          <Text tx='dialog.title' style={styles.text} />
+          <Text tx="dialog.title" style={styles.text} />
           <Text
-            tx='dialog.content'
+            tx="dialog.content"
             style={{
-              maxWidth: '80%',
-              textAlign: 'center',
+              maxWidth: "80%",
+              textAlign: "center",
               fontSize: 14,
-              color: '#84888D',
+              color: "#84888D",
               marginBottom: 18,
               marginHorizontal: 28,
-              alignSelf: 'center',
-              fontWeight: '700',
+              alignSelf: "center",
+              fontWeight: "700",
             }}>
             <Text
               style={{
-                color: '#323232',
-                fontWeight: '700',
+                color: "#323232",
+                fontWeight: "700",
               }}>
-              {' +' + numberPhone}
+              {" +" + numberPhone}
             </Text>
           </Text>
           <Controller
             control={control}
-            defaultValue={''}
+            defaultValue={""}
             render={({ field: { onChange, value, onBlur } }) => (
               <View>
                 <TextField
                   autoFocus
                   maxLength={6}
-                  keyboardType={'number-pad'}
-                  labelTx={'demoPodcastListScreen.dialogOtp.OTP'}
+                  keyboardType={"number-pad"}
+                  labelTx={"demoPodcastListScreen.dialogOtp.OTP"}
                   // labelStyle = {{color : colors.palette.navyBlue}}
                   txColor="red"
                   style={{
@@ -113,8 +113,8 @@ const VerificationCodeModal = ({
                   value={value}
                   onBlur={() => onBlur()}
                   isShowPassword
-                  onClearText={() => onChange('')}
-                  onChangeText={value => {
+                  onClearText={() => onChange("")}
+                  onChangeText={(value) => {
                     onChange(value);
                     getOTP(value);
                     if (value.length === 6) {
@@ -132,13 +132,13 @@ const VerificationCodeModal = ({
                     <Text
                       style={[
                         styles.textResend,
-                        { color: secondss === 0 ? '#3F91FF' : '#3F91FF80' },
+                        { color: secondss === 0 ? "#3F91FF" : "#3F91FF80" },
                       ]}
                       text="Resend"
                     />
                   </TouchableOpacity>
                   <Text style={styles.countDownNumber}>
-                    {' '}
+                    {" "}
                     (00:{secondss < 10 ? `0${secondss}` : secondss})
                   </Text>
                 </View>
@@ -146,18 +146,18 @@ const VerificationCodeModal = ({
             )}
             name="otp"
             rules={{
-              required: 'Password is required',
+              required: "Password is required",
             }}
           />
           <View style={styles.viewButton}>
             <TouchableOpacity
               style={styles.buttonCancel}
               onPress={() => {
-                setValue('otp', '');
+                setValue("otp", "");
                 setIsButtonEnable(false);
-                setIsVisible(false);
+                // setIsVisible(false);
               }}>
-              <Text tx='common.cancel' style={styles.textCancel}/>
+              <Text tx="common.cancel" style={styles.textCancel} />
             </TouchableOpacity>
             <TouchableOpacity
               style={
@@ -165,8 +165,8 @@ const VerificationCodeModal = ({
                   ? styles.buttonConfirm
                   : styles.buttonConfirm2
               }
-              onPress={isButtonEnable === true ? checkOTP : () => { }}>
-              <Text tx='common.confirm' style={styles.textConfirm}/>
+              onPress={() => {}}>
+              <Text tx="common.confirm" style={styles.textConfirm} />
             </TouchableOpacity>
           </View>
         </View>
@@ -175,36 +175,36 @@ const VerificationCodeModal = ({
   );
 };
 
-export default VerificationCodeModal;
+// export default VerificationCodeModal;
 
 const styles = StyleSheet.create({
   main: {
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: "rgba(0, 0, 0, 0.65)",
     width: width,
     height: height,
     flex: 1,
   },
   content: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 22,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   background: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   centeredView: {
     width: width - 16,
-    alignSelf: 'center',
-    justifyContent: 'flex-end',
+    alignSelf: "center",
+    justifyContent: "flex-end",
   },
   modalView: {
     width: width - 32,
     // height: 279,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 8,
     marginHorizontal: 16,
   },
@@ -213,126 +213,126 @@ const styles = StyleSheet.create({
     marginBottom: 23,
     height: 48,
     borderRadius: 8,
-    backgroundColor: '#F4AD22',
+    backgroundColor: "#F4AD22",
   },
   textButton: {
     fontSize: 14,
-    color: 'white',
+    color: "white",
     paddingVertical: 12,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   textStyle: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
   },
   modalText: {
     marginTop: 10,
-    textAlign: 'center',
+    textAlign: "center",
     width: 68,
     height: 5,
-    backgroundColor: '#C7C7C7',
+    backgroundColor: "#C7C7C7",
     borderRadius: 8,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   icon: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 37,
     marginBottom: 24,
   },
   text: {
-    alignSelf: 'center',
-    color: '#323232',
+    alignSelf: "center",
+    color: "#323232",
     fontSize: 18,
     marginTop: 23,
     marginBottom: 14,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   row: {
     marginHorizontal: 16,
   },
   row1: {
     marginTop: 38,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   selectType: {
     fontSize: 14,
-    color: '#323232',
+    color: "#323232",
   },
   cancel: {
     fontSize: 14,
-    color: '#FF0000',
+    color: "#FF0000",
   },
   horizontalLine: {
     height: 1,
-    backgroundColor: '#E7EFFF',
+    backgroundColor: "#E7EFFF",
     marginTop: 18,
     marginBottom: 14,
   },
   row2: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   viewButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginHorizontal: 16,
     marginTop: 14,
-    width: 'auto',
+    width: "auto",
     paddingBottom: scaleHeight(15),
   },
   buttonCancel: {
     height: 44,
-    backgroundColor: '#F2F2F2',
+    backgroundColor: "#F2F2F2",
     borderRadius: 8,
-    width: '49%',
+    width: "49%",
   },
   buttonConfirm: {
     height: 44,
     backgroundColor: colors.palette.navyBlue,
     borderRadius: 8,
-    width: '49%',
+    width: "49%",
   },
   buttonConfirm2: {
     height: 44,
-    backgroundColor: 'rgb(153,201,238)',
+    backgroundColor: "rgb(153,201,238)",
     borderRadius: 8,
-    width: '49%',
+    width: "49%",
   },
   textCancel: {
     paddingHorizontal: 52,
     paddingVertical: 12,
     fontSize: 14,
-    color: '#1F88D8',
-    textAlign: 'center',
-    fontWeight: '700',
+    color: "#1F88D8",
+    textAlign: "center",
+    fontWeight: "700",
   },
   textConfirm: {
     paddingHorizontal: 52,
     paddingVertical: 12,
     fontSize: 14,
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontWeight: '700',
+    color: "#FFFFFF",
+    textAlign: "center",
+    fontWeight: "700",
   },
   textResend: {
     fontSize: 14,
-    color: '#3F91FF80',
-    fontWeight: '700',
+    color: "#3F91FF80",
+    fontWeight: "700",
   },
   reSendOtp: {
-    position: 'absolute',
+    position: "absolute",
     right: 27,
     top: 20,
     zIndex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   countDownNumber: {
     fontSize: 14,
-    color: '#FF3B30',
-    fontWeight: '700',
+    color: "#FF3B30",
+    fontWeight: "700",
   },
 });

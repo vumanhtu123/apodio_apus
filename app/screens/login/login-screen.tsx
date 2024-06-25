@@ -19,7 +19,6 @@ import { colors, palette, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
 import { Images } from "../../../assets/index";
 import { LinearGradient } from "react-native-linear-gradient";
-import { useAuth } from "../contexts/auth";
 
 export const LoginScreen: FC = observer(function LoginScreen(props) {
   // Pull in one of our MST stores
@@ -38,7 +37,6 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   const navigation = useNavigation();
 
   console.log("login 2");
-  const auth = useAuth();
   useEffect(() => {
     checkValidation();
   }, [userName, password]);
@@ -55,7 +53,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   const onSubmit = async (data: any) => {
     await authenticationStore.login(data.username, data.password);
     if (authenticationStore.isAuthenticated === true) {
-      auth.changeLoginStatus();
+      navigation.navigate("listCompany" as never);
     }
   };
 
