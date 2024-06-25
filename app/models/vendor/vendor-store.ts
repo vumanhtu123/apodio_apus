@@ -12,6 +12,7 @@ export const VendorStoreModel = types
     checkSeparator: types.optional(types.string, ''),
     checkCurrency: types.optional(types.string, ''),
     sort: types.optional(types.string, ''),
+    infoCompany: types.optional(types.array(types.string), []),
     floatRounding: types.optional(types.number, 0)
   })
 
@@ -28,6 +29,9 @@ export const VendorStoreModel = types
     },
     setFloatRounding(number: any) {
       self.floatRounding = number;
+    },
+    setInfoCompany(data: any) {
+      self.infoCompany = data;
     }
   }))
   .actions((self) => ({

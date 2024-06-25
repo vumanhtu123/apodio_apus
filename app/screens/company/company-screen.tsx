@@ -56,9 +56,7 @@ export const ListCompany: FC<
         const response = await vendorStore.getInfoCompany();
         if (response && response.kind === "ok") {
           // console.log('response', response.result.data.thousandSeparator)
-          vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
-          vendorStore.setCheckCurrency(response.result.data.currency)
-          vendorStore.setFloatRounding(response.result.data.floatRounding)
+          vendorStore.setInfoCompany(response.result.data)
         } else {
           console.error("Failed to fetch info company:", response);
         }
@@ -72,20 +70,6 @@ export const ListCompany: FC<
   useEffect(() => {
     getListCompany(authenticationStore.userId);
   }, []);
-  // useEffect(() => {
-  //     // getListCompany(1)
-  //     authenticationStore.setIdCompany(idCompany)
-
-  //     console.log('nkdsna', authenticationStore.idCompany)
-  // }, [idCompany])
-  const renderFooter = () => {
-    if (!isLoading) return null;
-    return (
-      <View style={{ paddingVertical: 20 }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  };
   const getNewToken = async (item: any) => {
     try {
       await setTenantId(item.id);

@@ -578,7 +578,7 @@ const en = {
     totalDebtMustPay: "Tổng số công nợ phải trả",
     nameProviders: "Tên NCC",
     totalLiabilities: "Tổng nợ",
-    paid: "Đã trả",
+    paid: "Đã thanh toán",
     notThing: "Bạn không có phát sinh công nợ với NCC nào",
     sort: "Sắp xếp",
     theMoneyHaveToPay:"Số tiền phải trả",
@@ -587,7 +587,18 @@ const en = {
     dow: "Giảm dần",
     debtNeedToPaid: "Nọ cần thanh toán",
     paymentTerm : " Hạn thanh toán gần nhất",
-    
+    order: "Đơn hàng",
+    valueOrder: "Giá trị đơn hàng",
+    dateOfPayment: "Ngày thanh toán",
+    remainingDebt:"Nợ còn lại",
+    latePaymentPenalty:"Phạt thanh toán muộn",
+    totalRemainingDebt: "Tổng nợ còn lại", 
+    paymentTerm2: "Hạn thanh toán",
+    exChange: "Trao đổi",
+    detailDebt: "Chi tiết công nợ NCC",
+    like: "Thích",
+    comment: "Bình luận",
+
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -940,6 +951,7 @@ const en = {
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",
     noApplyPriceList: "Không áp dụng bảng giá",
+    inputPrice : 'Nhập giá'
   },
   calendar : {
     today : 'Hôm nay',

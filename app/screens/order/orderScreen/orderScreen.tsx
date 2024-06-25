@@ -101,9 +101,9 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
     useEffect(() => {
       getListOrder(searchValue)
     }, [selectedStatus, markedDatesS, markedDatesE , page])
-    useEffect (()=>{
-      console.log('firstzzz' , page)
-    },[page])
+    // useEffect (()=>{
+    //   console.log('firstzzz' , page)
+    // },[page])
     const getListOrder = async (searchValue?: any,) => {
       try {
         const formattedMarkedDatesS = markedDatesS
@@ -261,21 +261,7 @@ export const OrderScreen: FC<TabScreenProps<'orders'>> = observer(
           </ScrollView>
         </View>
         <View style={{ height: 1, marginVertical: 0 }}></View>
-        {/* <View style={styles.boxTimeSelect}>
-          <Text style={styles.textTime}>
-            {moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("MMMM DD, YYYY")} -{" "}
-            {moment(markedDatesE === "" ? new Date() : markedDatesE).format("MMMM DD, YYYY")}
-          </Text>
-          <TouchableOpacity
-            style={{ alignSelf: "center" }}
-            onPress={() => {
-              toggleModalDate()
-            }}
-          >
-            <Images.icon_calendar />
-          </TouchableOpacity>
-        </View> */}
-        {/* {(arrData && arrData.length > 0) ? ( */}
+
         <FlatList
           data={arrData}
           style={styles.styleFlatlist}

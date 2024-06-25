@@ -29,6 +29,7 @@ import {
 import { useStores } from "../../../models";
 import { ItemSelectVariant } from "../components/itemSelectVariant";
 import { styles } from "./styles";
+import PriceModal from "../components/modal-price";
 
 export const SelectVariant: FC = observer(function SelectVariant() {
   const navigation = useNavigation();
@@ -43,6 +44,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   const [arrImagesProduct, setArrImagesProduct] = useState([]);
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dataVariant, setDataVariant] = useState<Content[]>([]);
+  const [modalPrice, setModalPrice] = useState<any>(false);
   const refCarousel = useRef(null);
   const productTemplateId = route?.params?.productTemplateId;
 
@@ -755,7 +757,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
               tx="common.selected"
-              style={[styles.textViewInfo, { color: colors.nero, marginRight: scaleWidth(3)   }]}
+              style={[styles.textViewInfo, { color: colors.nero, marginRight: scaleWidth(3) }]}
             />
             <Text
               text={dataVariant
@@ -871,6 +873,24 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           ) : null}
         </View>
       </Modal>
+      <PriceModal
+        isVisible={true}
+        setIsVisible={() => setModalPrice(false)}
+        title={"productDetail.retailPrice"}
+        onCancel={() => {
+          setModalPrice(false);
+          // dataModal?.length !== 0
+          //   ? setDataModal([])
+          //   : setDataModal([{ min: "", price: "" }]);
+        }}
+        // onConfirm={(data) => {
+        //   setRetailPriceProduct(data.price);
+        //   setModalRetailPrice(false);
+        //   setDataModal([{ min: "", price: "" }]);
+        // }}
+        onConfirm={()=> console.log('first')}
+        dataAdd={[]}
+      />
     </View>
   );
 });
