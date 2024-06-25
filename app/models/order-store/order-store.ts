@@ -725,7 +725,7 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       const result: OrderResult = yield orderApi.createInvoice(invoiceAdd);
-      console.log("-----------dsa", result);
+      console.log("-----------dsa", JSON.stringify(result));
       if (result.kind === "ok") {
         console.log("order", result);
         return result;

@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { OnProgressEvent } from "react-native-fast-image";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
 import { useStores } from "../../../models";
+import { formatCurrency } from "../../../utils/validate";
 interface InputData {
   openDialog: () => void;
   data: any;
@@ -292,7 +293,7 @@ export const SumMoney = (props: DataSumMoney) => {
                   color: "#747475",
                   marginTop: 8,
                 }}>
-                {data?.taxValue ?? null}
+                {formatCurrency(data?.taxValue) ?? null}
               </Text>
             </View>
           ) : null;
@@ -316,7 +317,7 @@ export const SumMoney = (props: DataSumMoney) => {
                 color: "#747475",
                 marginTop: 8,
               }}>
-              {discount ?? 0}
+              {formatCurrency(discount) ?? 0}
             </Text>
           </View>
         ) : null}
@@ -336,7 +337,8 @@ export const SumMoney = (props: DataSumMoney) => {
             color: "#FF4956",
             marginTop: 8,
           }}>
-          {total}
+          {/* {(isNaN(Sum()) ? sumValue : SumNoVAT()) ?? 0} */}
+          {formatCurrency(total)}
         </Text>
       </View>
     </View>

@@ -11,6 +11,7 @@ import { useStores } from "../../../models";
 import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
 import moment from "moment";
+import { TextFieldCurrency } from "../../../components/text-field-currency/text-field-currency";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
@@ -214,7 +215,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           <Controller
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
+              <TextFieldCurrency
                 keyboardType='numeric'
                 labelTx={"order.customer_paid"}
                 style={{

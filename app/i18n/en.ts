@@ -14,6 +14,7 @@ const en = {
 
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
+    selected : 'Đã chọn'
     // @demo remove-current-line
   },
   txtToats: {
@@ -328,6 +329,7 @@ const en = {
     totalInvoice: "Tổng hoá đơn",
     symbol: "Kí hiệu",
     invoiceType: "Loại hoá đơn",
+    cart : 'Giỏ hàng'
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -953,9 +955,9 @@ const en = {
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",
     noApplyPriceList: "Không áp dụng bảng giá",
+    inputPrice : 'Nhập giá'
   },
   calendar : {
-    
     today : 'Hôm nay',
     last7days : '7 ngày trước',
     thisMonth : 'Tháng này',

@@ -917,12 +917,12 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
               />
             </View>
             <Text
+              tx="order.cart"
               style={{
                 color: "white",
                 fontSize: fontSize.size14,
                 fontWeight: "600",
               }}>
-              Giỏ hàng
             </Text>
           </View>
           <View>

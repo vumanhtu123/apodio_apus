@@ -200,9 +200,9 @@ export const PrintInvoiceScreen: FC = observer(
                                 <Text tx='printInvoiceScreen.address' style={styles.companyName} />
                                 <Text style={styles.textInfo}>
                                     {data.deliveryAddress?.address ? data.deliveryAddress.address + " " : ""}
-                                    {data.deliveryAddress?.ward?.name ? data.deliveryAddress.ward.name + ", " : ""}
-                                    {data.deliveryAddress?.district?.name ? data.deliveryAddress.district.name + ", " : ""}
-                                    {data.deliveryAddress?.city?.name ? data.deliveryAddress.city.name : ""}
+                                    {data.deliveryAddress?.ward ? data.deliveryAddress.ward + ", " : ""}
+                                    {data.deliveryAddress?.district ? data.deliveryAddress.district + ", " : ""}
+                                    {data.deliveryAddress?.city ? data.deliveryAddress.city : ""}
                                     {/* { ` ${data.deliveryAddress?.address}, ${data.deliveryAddress?.wardName}, ${data.deliveryAddress?.districtName}, ${data.deliveryAddress?.cityName}`} */}
                                 </Text>
                             </View>

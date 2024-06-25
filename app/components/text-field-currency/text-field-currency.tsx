@@ -22,30 +22,12 @@ import {
   spacing,
 } from "../../theme";
 import { translate, TxKeyPath } from "../../i18n";
+import { Text } from "../text/text";
 import { SvgIcon } from "../svg-icon";
 import { Images } from "../../../assets";
-import { Text } from "../text/text";
+import CurrencyInput from 'react-native-currency-input';
 
-// the base styling for the container
-// const CONTAINER: ViewStyle = {
-//   backgroundColor: colors.palette.aliceBlue,
-//   borderRadius: 8,
-//   height: 56,
-//   // borderWidth: 1,
-//   // borderColor : 'red'
 
-// }
-
-// // the base styling for the TextInput
-// const INPUT: TextStyle = {
-//   // fontFamily: typography.primary,
-//   // color: colors.palette.neutral900,
-//   // minHeight: 50,
-//   fontSize: 16,
-//   paddingTop: Platform.OS === "android" ? 6 : 8,
-//   paddingHorizontal: scaleWidth(16),
-//   flex: 1,
-// }
 const CONTAINER: ViewStyle = {
   backgroundColor: colors.palette.aliceBlue,
   borderRadius: 8,
@@ -102,7 +84,7 @@ export interface TextFieldProps extends TextInputProps {
    */
   inputStyle?: StyleProp<TextStyle>;
   labelDolphin?: boolean;
-  styleError?: StyleProp<ViewStyle>;
+  styleError?: StyleProp<ViewStyle>
   /**
    * Various look & feels.
    */
@@ -113,6 +95,7 @@ export interface TextFieldProps extends TextInputProps {
   forwardedRef?: any;
   error?: any;
   isShowPassword?: boolean;
+  onChangeValue?: () => void;
   onClearText?: () => void;
   onShowPassword?: () => void;
   children?: React.ReactNode;
@@ -127,16 +110,15 @@ export interface TextFieldProps extends TextInputProps {
   RightIcon?: any;
   pressRightIcon?: () => void;
   showRightIcon?: boolean;
-  styleTextError?: StyleProp<TextStyle>;
+  styleTextError?: StyleProp<TextStyle>
   isMultiline?: boolean;
   value?: any;
-  valueInput?: any;
 }
 
 /**
  * A component which has a label and an input together.
  */
-export function TextField(props: TextFieldProps) {
+export function TextFieldCurrency(props: TextFieldProps) {
   const {
     placeholderTx,
     placeholder,
@@ -149,6 +131,7 @@ export function TextField(props: TextFieldProps) {
     value,
     oldValue,
     error,
+    onChangeValue,
     onClearText,
     onShowPassword,
     isShowPassword,
@@ -167,11 +150,11 @@ export function TextField(props: TextFieldProps) {
     styleError,
     styleTextError,
     isMultiline,
-    valueInput,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
   const focus = useRef(null);
+  const [rawValue, setRawValue] = useState('');
 
   const containerStyles = [CONTAINER, PRESETS[preset], styleOverride];
   const inputStyles = [INPUT, inputStyleOverride];
@@ -187,34 +170,49 @@ export function TextField(props: TextFieldProps) {
     onBlur();
   };
 
-  // console.log("error------------------------", error);
-  // const actualPlaceholder = (placeholderTx || placeholder) ? (placeholderTx ? translate(placeholderTx) : placeholder) : '';
+  // Hàm định dạng tiền tệ
+  function formatCurrency(value, options = {}) {
+    if (value == null || value === '') {
+      return '';
+    }
+
+    const { separator = '.', prefix = '', suffix = '' } = options;
+
+    // Loại bỏ ký tự không phải số và không phải dấu phẩy
+    value = value.toString().replace(/[^0-9,]/g, '');
+
+    // Thay dấu phẩy bằng dấu chấm để định dạng
+    let [integerPart, decimalPart] = value.split(',');
+
+    // Giới hạn số ký tự sau dấu phẩy
+    if (decimalPart) {
+      decimalPart = decimalPart.substring(0, 2);
+    }
+
+    // Thêm dấu phân cách hàng ngàn cho phần nguyên
+    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+
+    // Ghép phần nguyên và phần thập phân (nếu có)
+    return decimalPart !== undefined ? `${prefix}${integerPart},${decimalPart}${suffix}` : `${prefix}${integerPart}${suffix}`;
+
+  }
+
+  const handleTextChange = (value) => {
+    // Chỉ giữ lại các ký tự số và dấu phẩy
+    const numericValue = value.replace(/[^0-9,]/g, '');
+    setRawValue(numericValue);
+  };
+
   return (
     <View style={{}}>
       <View
         style={[
           containerStyles,
-          {
-            borderColor: colors.palette.aliceBlue,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: isMultiline === true ? "flex-start" : "center",
-          },
-          {
-            borderColor: colors.palette.aliceBlue,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: isMultiline === true ? "flex-start" : "center",
-          },
+          { borderColor: colors.palette.aliceBlue, flexDirection: 'row', justifyContent: 'space-between', alignItems: isMultiline === true ? 'flex-start' : 'center' },
 
           //  { borderColor: isFocused ? color.yellow : color.gray }
         ]}>
-        <View
-          style={{
-            flex: 1,
-            paddingTop:
-              Platform.OS === "android" ? scaleHeight(8) : scaleHeight(0),
-          }}>
+        <View style={{ flex: 1, paddingTop: Platform.OS === 'android' ? scaleHeight(8) : scaleHeight(0) }}>
           <View style={{ flexDirection: "row" }}>
             {labelTx ? (
               <Text
@@ -237,8 +235,8 @@ export function TextField(props: TextFieldProps) {
                   color: labelDolphin
                     ? colors.palette.dolphin
                     : !isFocused
-                    ? txColor
-                    : colors.palette.dolphin,
+                      ? txColor
+                      : colors.palette.dolphin,
                   paddingLeft: scaleWidth(16),
                   marginTop:
                     isFocused && !actualPlaceholder && value === ""
@@ -277,14 +275,19 @@ export function TextField(props: TextFieldProps) {
           <View
             style={{
               flexDirection: "row",
+
             }}>
+
+
             <TextInput
               {...props}
               editable={editable}
               placeholder={actualPlaceholder}
               // underlineColorAndroid={colors.palette.neutral900}
               placeholderTextColor={colors.palette.dolphin}
-              value={valueInput ? valueInput : value}
+              value={formatCurrency(rawValue)}
+              //value={formatCurrency(rawValue, { suffix: ' VND' })}
+              onChangeText={handleTextChange}
               style={[
                 inputStyles,
                 { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
@@ -295,6 +298,32 @@ export function TextField(props: TextFieldProps) {
               blurOnSubmit
               keyboardType={keyboardType}
             />
+
+
+            {/* <CurrencyInput
+              {...props}
+              value={value}
+              onChangeValue={onChangeValue}
+              editable={editable}
+              placeholder={actualPlaceholder}
+              placeholderTextColor={colors.palette.dolphin}
+              style={[
+                inputStyles,
+                { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
+              ]}
+              ref={forwardedRef ? forwardedRef : focus}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              blurOnSubmit
+              suffix=" VND"
+              delimiter="."
+              separator=","
+              precision={2}
+              minValue={0}
+              onChangeText={(formattedValue) => {
+                console.log(formattedValue);
+              }}
+            /> */}
           </View>
         </View>
         <View style={{ flexDirection: "row", paddingRight: scaleWidth(16) }}>
@@ -312,7 +341,7 @@ export function TextField(props: TextFieldProps) {
                 onClearText();
                 focus.current.focus();
               }}>
-              {RightIconClear !== null ? <RightIconClear /> : null}
+              <RightIconClear />
             </TouchableOpacity>
           ) : RightIcon ? (
             <TouchableOpacity onPress={pressRightIcon} style={{}}>
@@ -324,22 +353,16 @@ export function TextField(props: TextFieldProps) {
       {error ? (
         <View style={styleError}>
           <Text
-            style={[
-              {
-                marginTop:
-                  Platform.OS === "android" ? scaleHeight(2) : scaleHeight(-5),
-                fontSize: fontSize.size12,
-                color: colors.error,
-              },
-              styleTextError,
-            ]}
+            style={[{
+              marginTop: Platform.OS === "android" ? scaleHeight(2) : scaleHeight(-5),
+              fontSize: fontSize.size12,
+              color: colors.error,
+            }, styleTextError]}
             preset="fieldLabel"
             text={error}
           />
         </View>
-      ) : (
-        <View style={{ flex: 1 }}></View>
-      )}
+      ) : <View style={{ flex: 1 }}></View>}
     </View>
   );
 }
