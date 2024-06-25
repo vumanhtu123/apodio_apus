@@ -19,6 +19,7 @@ import { colors, palette, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
 import { Images } from "../../../assets/index";
 import { LinearGradient } from "react-native-linear-gradient";
+import { getAccessToken } from "../../utils/storage";
 
 export const LoginScreen: FC = observer(function LoginScreen(props) {
   // Pull in one of our MST stores
@@ -31,8 +32,8 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
 
   const [isShowPassword, setIsShowPassword] = useState<boolean>(true);
   const [emptyInputData, setEmptyInputData] = useState<boolean>(true);
-  const [userName, setUserName] = useState<String>("apodio@gmail.com");
-  const [password, setPassWord] = useState<String>("system@123456");
+  const [userName, setUserName] = useState<string>("apodio@gmail.com");
+  const [password, setPassWord] = useState<string>("system@123456");
   // Pull in navigation via hook
   const navigation = useNavigation();
 
@@ -52,7 +53,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
 
   const onSubmit = async (data: any) => {
     await authenticationStore.login(data.username, data.password);
-    if (authenticationStore.isAuthenticated === true) {
+    if (getAccessToken() !== null) {
       navigation.navigate("listCompany" as never);
     }
   };
@@ -104,8 +105,8 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               />
             )}
             // Account test setup new pin
-            // defaultValue={"afs@gmail.com"}
-            defaultValue={"apodio@gmail.com"}
+            defaultValue={"afs@gmail.com"}
+            // defaultValue={"apodio@gmail.com"}
             // Account test
             // defaultValue={"67076743544"}
             name="username"

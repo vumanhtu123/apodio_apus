@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { FC, useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import {
@@ -25,7 +24,6 @@ import {
 import Modal from "react-native-modal";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { TabScreenProps } from "../../../navigators/BottomTabNavigator";
 import { Images } from "../../../../assets/index";
 import ViewInfo from "../component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
@@ -39,8 +37,11 @@ import { da } from "date-fns/locale/da";
 import { set } from "date-fns/set";
 import moment from "moment";
 import "moment-timezone";
+import { TabScreenProps } from "../../../navigators/bottom-navigation";
+import { formatCurrency } from "../../../utils/validate";
+import { formatDateTime } from "../../../utils/formatDate";
 
-export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
+export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
   function DashBoardScreen(props) {
     // Pull in one of our MST stores
     const refCarousel = useRef(null);
@@ -54,6 +55,22 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
     const [revenue, setRevenue] = useState("");
     const [order, setOrder] = useState("");
     const getAPI = useStores();
+    const { orderStore } = useStores();
+    const [arrData, setArrData] = useState<any>([]);
+    // Lấy ngày hiện tại theo giờ Việt Nam
+    const today = moment().tz("Asia/Ho_Chi_Minh");
+
+    // Lấy ngày mồng 1 của tháng hiện tại
+    const firstDayOfMonth = today.clone().startOf("month");
+    // Lấy ngày cuối của tháng hiện tại
+    const lastDayOfMonth = today.clone().endOf("month");
+
+    // Định dạng ngày thành chuỗi "YYYY-MM-DDTHH:mm:ss+07:00"
+    const formattedDateStart = firstDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
+    const formattedDateNow = today.format("YYYY-MM-DDTHH:mm:ssZ");
+    const formattedDateEnd = lastDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
+    const formattedDateStartOrder = firstDayOfMonth.toISOString();
+    const formattedDateEndOrder = lastDayOfMonth.toISOString();
 
     // const { accountStore, promotionStore, notifitionStoreModel } = useStores()
     // const { userId } = accountStore
@@ -72,43 +89,26 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
     // }, [])
     const { authenticationStore } = useStores();
 
+    const selectStatus = [
+      { status: "", textStatus: "Tất cả" },
+      { status: "SENT", textStatus: "Chờ xác nhận" },
+      { status: "SALE", textStatus: "Đang thực hiện" },
+      { status: "DONE", textStatus: "Hoàn thành" },
+      { status: "CANCEL", textStatus: "Hủy đơn" },
+    ];
+
     const handleScroll = (event: any) => {
       const scrollHeight = event.nativeEvent.contentOffset.y;
       setScrollHeight(scrollHeight);
     };
 
-    function testDebug() {
-      console.log("abcc");
-
-      authenticationStore.onLogin();
-    }
-
-    // const revenue = 1235780000;
-    // const debt = 1235780;
-
     const getDataRevenueThisMonth = () => {
-      // Lấy ngày hiện tại theo giờ Việt Nam
-      const today = moment().tz("Asia/Ho_Chi_Minh");
-
-      // Lấy ngày mồng 1 của tháng hiện tại
-      const firstDayOfMonth = today.clone().startOf("month");
-      // Lấy ngày cuối của tháng hiện tại
-      const lastDayOfMonth = today.clone().endOf("month");
-
-      // Định dạng ngày thành chuỗi "YYYY-MM-DDTHH:mm:ss+07:00"
-      const formattedDateStart = firstDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
-      const formattedDateNow = today.format("YYYY-MM-DDTHH:mm:ssZ");
-      const formattedDateEnd = lastDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
-
       console.log("====================================");
-      console.log("date one of the month", formattedDateStart);
+      console.log("date one of the month", formattedDateStartOrder);
       console.log("====================================");
       getAPI.dashBoardStore
-        .getDataRevenueThisMonth(
-          formattedDateStart,
-          formattedDateEnd
-        )
-        .then((data) => {
+        .getDataRevenueThisMonth(formattedDateStart, formattedDateEnd)
+        .then((data: any) => {
           console.log("====================================");
           console.log("data revenue this month:", data);
           console.log("====================================");
@@ -118,15 +118,41 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
         });
     };
 
+    const getListOrder = async (searchValue?: any) => {
+      try {
+        const response = await orderStore.getListOrder(
+          0,
+          50,
+          "",
+          "",
+          formattedDateStartOrder,
+          formattedDateEndOrder
+        );
+        // console.log('firstxxxxxxxxxx', response)
+        if (response && response.kind === "ok") {
+          // console.log('orderLisst', JSON.stringify(response.response.data.content))
+          setArrData(response.response.data.content);
+        } else {
+          console.error("Failed to fetch order:", response);
+        }
+      } catch (error) {
+        console.error("Error fetching order:", error);
+      }
+    };
+
+    const handleDetailOrder = (id: number) => {
+      orderStore.setOrderId(id);
+      console.log("first", orderStore.orderId);
+      navigation.navigate("orderDetails" as never);
+    };
+
     useEffect(() => {
+      getListOrder();
       getDataRevenueThisMonth();
     }, [navigation]);
 
     const hideRevenue = "*".repeat(revenue?.toString().length);
     const hideDebt = "*".repeat(debt?.toString().length);
-
-    // const hideRevenue = "*";
-    // const hideDebt = "*";
 
     const arrBanner = [
       {
@@ -152,125 +178,32 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
       },
     ];
 
-    const arrPromotions: Array<{}> = [
-      {
-        id: 1,
-        name: "Nguyen Ha Dung",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Đã gửi YC",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Đã thanh toán",
-        amount: "7",
-      },
-      {
-        id: 2,
-        name: "Nguyen Ha Dung",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Đang xử lý",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Chưa thanh toán",
-        amount: "7",
-      },
-      {
-        id: 3,
-        name: "Nguyen Ha Dung",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Hủy đơn",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Đã thanh toán",
-        amount: "7",
-      },
-      {
-        id: 4,
-        name: "Nguyen Ha Dung",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Chờ lấy hàng",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Chưa thanh toán",
-        amount: "7",
-      },
-      {
-        id: 5,
-        name: "Nguyen Ha Dung",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Đã giao",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Đã thanh toán",
-        amount: "7",
-      },
-      {
-        id: 6,
-        name: "Nguyen Ha Dung 6",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Đang vận chuyển",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Chưa thanh toán",
-        amount: "7",
-      },
-      {
-        id: 7,
-        name: "Nguyen Ha Dung 7",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Đang xử lý",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Đã thanh toán",
-        amount: "7",
-      },
-      {
-        id: 8,
-        name: "Nguyen Ha Dung 8",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Chờ lấy hàng",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Đã thanh toán",
-        amount: "7",
-      },
-      {
-        id: 9,
-        name: "Nguyen Ha Dung 9",
-        time: "13:56 01/03",
-        code: "Dh_21090930",
-        status: "Đã giao",
-        money: "89.000.000",
-        discount: "5.000.000",
-        totalAmount: "84.000.000",
-        weight: "37kg",
-        payStatus: "Đã thanh toán",
-        amount: "7",
-      },
-    ];
+    function getOrderStateText(state: string) {
+      if (state === "SENT") {
+        return "orderDetailScreen.sent";
+      } else if (state === "SALE") {
+        return "orderDetailScreen.sale";
+      } else if (state === "DONE") {
+        return "orderDetailScreen.done";
+      } else if (state === "CANCEL") {
+        return "orderDetailScreen.cancel";
+      } else {
+        return "";
+      }
+    }
+    function getInvoiceStateText(state: string) {
+      if (state === "NO") {
+        return "orderDetailScreen.no";
+      } else if (state === "TO_INVOICE") {
+        return "orderDetailScreen.toInvoice";
+      } else if (state === "PARTIAL_INVOICE") {
+        return "orderDetailScreen.partialInvoice";
+      } else if (state === "INVOICED") {
+        return "orderDetailScreen.invoiced";
+      } else {
+        return "";
+      }
+    }
 
     // const getToken = async () => {
     //   const promotion = await promotionStore.getPromotion({}, true)
@@ -488,7 +421,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text={'hideRevenue'}
+                      text={"hideRevenue"}
                     />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
@@ -553,7 +486,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                         styles.textRevenue,
                         { color: colors.palette.neutral100 },
                       ]}
-                      text={'hideDebt'}
+                      text={"hideDebt"}
                     />
                   ) : (
                     <View style={{ flexDirection: "row" }}>
@@ -595,13 +528,13 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
             kind={1}
             onChangeAVT={() => {
               // navigation.dispatch(DrawerActions.openDrawer);
-              testDebug();
+              // testDebug();
             }}
           />
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => {}}>
             <Images.icon_search />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnNotification} onPress={() => { }}>
+          <TouchableOpacity style={styles.btnNotification} onPress={() => {}}>
             <Images.icon_notification />
             {/* {notifitionStoreModel.notiUnreadHome > 0 ? ( */}
             <View style={styles.circleNoti}>
@@ -634,7 +567,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
               styles={{ backgroundColor: colors.palette.heatWave }}
               name={"dashboard.orders"}
               Icon={Images.icon_orders}
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.metallicBlue }}
@@ -652,9 +585,9 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
               styles={{ backgroundColor: colors.palette.verdigris }}
               name={"dashboard.promotions"}
               Icon={Images.icon_promotion}
-            // onPress={() => {
-            //   props.navigation.navigate('transferToBank', {});
-            // }}
+              // onPress={() => {
+              //   props.navigation.navigate('transferToBank', {});
+              // }}
             />
           </View>
           <View style={{ flexDirection: "row" }}>
@@ -668,7 +601,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
               styles={{ backgroundColor: colors.palette.torchRed }}
               name={"dashboard.product"}
               Icon={Images.icon_product}
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.malachite }}
@@ -701,10 +634,16 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 autoplay={true}
                 ref={refCarousel}
                 loop
-                renderItem={({ item }) => (
+                sliderWidth={Dimensions.get("window").width - 32}
+                itemWidth={Dimensions.get("window").width - 32}
+                onSnapToItem={(index) => setactiveSlide(index)}
+                lockScrollWhileSnapping={true}
+                enableMomentum={false}
+                decelerationRate={0.5}
+                renderItem={({ item }: any) => (
                   <TouchableOpacity
                     style={{ height: 200, width: "100%", borderRadius: 4 }}
-                  // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
+                    // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
                   >
                     <ImageBackground
                       source={{
@@ -759,18 +698,12 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                     </ImageBackground>
                   </TouchableOpacity>
                 )}
-                sliderWidth={Dimensions.get("window").width - 32}
-                itemWidth={Dimensions.get("window").width - 32}
-                onSnapToItem={(index) => setactiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
               />
             </View>
           ) : null}
           <Text style={styles.textTitle} tx={"dashboard.titleOrder"} />
           <SafeAreaView style={{ flex: 1 }}>
-            {arrPromotions && arrPromotions.length > 0 ? (
+            {/* {arrPromotions && arrPromotions.length > 0 ? (
               <FlatList
                 // keyExtractor={arrPromotions.indexOf}
                 data={arrPromotions}
@@ -819,7 +752,71 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                   />
                 )}
               />
-            ) : null}
+            ) : null} */}
+            <FlatList
+              data={arrData}
+              style={styles.styleFlatlist}
+              showsVerticalScrollIndicator={false}
+              // refreshControl={
+              //   <RefreshControl
+              //     refreshing={isRefreshing}
+              //     onRefresh={refreshOrder}
+              //     title="ok"
+              //   />
+              // }
+              renderItem={({ item }) => (
+                <ItemOrder
+                  onPress={() => handleDetailOrder(item.id)}
+                  name={item.partner?.name}
+                  time={formatDateTime(item.quoteCreationDate)}
+                  code={item.code}
+                  status={getOrderStateText(item.state)}
+                  amount={item.quantity}
+                  discount={formatCurrency(item.amountDiscount)}
+                  payStatus={getInvoiceStateText(item.invoiceStatus)}
+                  // weight={item.weight}
+                  totalAmount={formatCurrency(item.amountTotal)}
+                  totalTax={formatCurrency(item.amountTax)}
+                  // money={formatCurrency(calculateTotalPrice(item))}
+                  money={formatCurrency(item.amountTotalUnDiscount)}
+                  styleViewStatus={{
+                    backgroundColor:
+                      item.state === "SALE"
+                        ? colors.palette.solitude
+                        : item.state === "SENT"
+                        ? colors.palette.floralWhite
+                        : item.state === "CANCEL"
+                        ? colors.palette.amour
+                        : item.state === "DONE"
+                        ? colors.palette.mintCream
+                        : "",
+                    justifyContent: "center",
+                  }}
+                  styleTextStatus={{
+                    color:
+                      item.state === "SALE"
+                        ? colors.palette.metallicBlue
+                        : item.state === "SENT"
+                        ? colors.palette.yellow
+                        : item.state === "CANCEL"
+                        ? colors.palette.radicalRed
+                        : item.state === "DONE"
+                        ? colors.palette.malachite
+                        : "",
+                  }}
+                  styleTextPayStatus={{
+                    color:
+                      item.invoiceStatus === "NO"
+                        ? colors.palette.darkTangerine
+                        : item.invoiceStatus === "PARTIAL_INVOICE"
+                        ? colors.palette.darkTangerine
+                        : item.invoiceStatus === "TO_INVOICE"
+                        ? colors.palette.darkTangerine
+                        : colors.palette.malachite,
+                  }}
+                />
+              )}
+            />
           </SafeAreaView>
         </Animated.ScrollView>
         {isShowModal === false ? (
@@ -836,13 +833,13 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
           <View style={styles.viewModal}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderNCC"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderApodio"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
@@ -853,7 +850,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
                 alignItems: "center",
               }}>
               <Text tx={"dashboard.request"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_handWaving />
               </TouchableOpacity>
             </View>

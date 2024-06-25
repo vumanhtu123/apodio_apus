@@ -83,7 +83,7 @@ export const AuthenticationStoreModel = types
           store.setUserID(result.data.userId);
           setAccessToken(result.data.accessToken);
           setRefreshToken(result.data.refreshToken);
-          setTenantId(result.data.userId);
+          // setTenantId(result.data.tenantId);
           return result.data;
         } else {
           const errorM = result.errorCodes.find((error) => error.code)?.message;
@@ -106,6 +106,7 @@ export const AuthenticationStoreModel = types
       console.log("jti : ", store.jti);
       const result: any = yield authApi.logout(store.jti);
       setAccessToken("");
+      setTenantId("");
       store.setUserID();
       store.setJTI("");
       console.log("tuvm logout", result);
