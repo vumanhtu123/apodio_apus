@@ -95,7 +95,7 @@ export interface TextFieldProps extends TextInputProps {
   forwardedRef?: any;
   error?: any;
   isShowPassword?: boolean;
-  onChangeValue?: () => void;
+  onChangeValue: (value: any) => void;
   onClearText?: () => void;
   onShowPassword?: () => void;
   children?: React.ReactNode;
@@ -191,9 +191,10 @@ export function TextFieldCurrency(props: TextFieldProps) {
 
     // Thêm dấu phân cách hàng ngàn cho phần nguyên
     integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
-
+    const textValue = decimalPart !== undefined ? `${prefix}${integerPart},${decimalPart}${suffix}` : `${prefix}${integerPart}${suffix}`;
+    onChangeValue(textValue);
     // Ghép phần nguyên và phần thập phân (nếu có)
-    return decimalPart !== undefined ? `${prefix}${integerPart},${decimalPart}${suffix}` : `${prefix}${integerPart}${suffix}`;
+    return textValue;
 
   }
 
@@ -298,32 +299,6 @@ export function TextFieldCurrency(props: TextFieldProps) {
               blurOnSubmit
               keyboardType={keyboardType}
             />
-
-
-            {/* <CurrencyInput
-              {...props}
-              value={value}
-              onChangeValue={onChangeValue}
-              editable={editable}
-              placeholder={actualPlaceholder}
-              placeholderTextColor={colors.palette.dolphin}
-              style={[
-                inputStyles,
-                { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
-              ]}
-              ref={forwardedRef ? forwardedRef : focus}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              blurOnSubmit
-              suffix=" VND"
-              delimiter="."
-              separator=","
-              precision={2}
-              minValue={0}
-              onChangeText={(formattedValue) => {
-                console.log(formattedValue);
-              }}
-            /> */}
           </View>
         </View>
         <View style={{ flexDirection: "row", paddingRight: scaleWidth(16) }}>

@@ -267,8 +267,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   // if (Number(value) >= Number(price)) {
                   //   setValue('price', price.toString())
                   // } else {
+                  
                   onChange(value)
                   // }
+                }}
+                onChangeValue={(value) => {
+                  console.log('---price--', value)
                 }}
                 // defaultValue={text===""? "": text}
                 onSubmitEditing={() => {
