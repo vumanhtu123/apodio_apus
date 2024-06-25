@@ -49,6 +49,7 @@ interface AddProduct {
   selectUpdate?: boolean;
   priceList?: boolean;
   textDiscount?: number;
+  disabled?: boolean;
   inputDiscount: (textInput: any) => void;
   inputPrice: (textInput: any) => void;
 }
@@ -106,6 +107,7 @@ export default function ItemListProduct(props: AddProduct) {
     <View>
       <TouchableOpacity
         onPress={(item) => onPress(item)}
+        disabled={props.disabled}
         style={{
           position: "absolute",
           left: 0,
@@ -202,6 +204,7 @@ export default function ItemListProduct(props: AddProduct) {
             {priceList ? (
               !selectUpdate ? (
                 <TouchableOpacity
+                disabled={props.disabled}
                   onPress={(item) => {
                     handleUpdatePrice(item);
                   }}>
@@ -249,7 +252,7 @@ export default function ItemListProduct(props: AddProduct) {
               </View>
             </View>
           ) : null}
-          <TouchableOpacity onPress={(item) => onPressSelectTexas(item)}>
+          <TouchableOpacity disabled={props.disabled} onPress={(item) => onPressSelectTexas(item)}>
             <View
               style={{
                 flexDirection: "row",
@@ -271,7 +274,7 @@ export default function ItemListProduct(props: AddProduct) {
           </TouchableOpacity>
           {priceList == true ? (
             addTaxes == false ? (
-              <TouchableOpacity onPress={(item) => onPressAddTexas(item)}>
+              <TouchableOpacity disabled={props.disabled} onPress={(item) => onPressAddTexas(item)}>
                 <View style={{ flexDirection: "row" }}>
                   <Images.icon_plusGreen />
                   <Text
@@ -287,7 +290,7 @@ export default function ItemListProduct(props: AddProduct) {
                 </View>
               </TouchableOpacity>
             ) : editTaxes == true ? (
-              <TouchableOpacity onPress={(item) => onPressAddTexas(item)}>
+              <TouchableOpacity disabled={props.disabled} onPress={(item) => onPressAddTexas(item)}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -339,7 +342,7 @@ export default function ItemListProduct(props: AddProduct) {
                 }}>
                   {taxesInput + ' %'}
                 </Text>
-                <TouchableOpacity onPress={() => editDiscount()}>
+                <TouchableOpacity disabled={props.disabled} onPress={() => editDiscount()}>
                   <Images.icon_edit />
                 </TouchableOpacity>
               </View>
@@ -379,6 +382,7 @@ export default function ItemListProduct(props: AddProduct) {
           }}>
           <TouchableOpacity
             onPress={(item) => onPressMinus(item)}
+            disabled={props.disabled}
             style={{
               marginHorizontal: scaleWidth(margin.margin_6),
               alignItems: "center",
@@ -397,6 +401,7 @@ export default function ItemListProduct(props: AddProduct) {
           </Text>
           <TouchableOpacity
             onPress={(item) => onPressPlus(item)}
+            disabled={props.disabled}
             style={{
               marginHorizontal: scaleWidth(margin.margin_6),
               alignContent: "center",
