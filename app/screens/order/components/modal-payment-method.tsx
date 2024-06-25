@@ -72,53 +72,44 @@ export const ModalPayment = (data: InputSelect) => {
           <TouchableOpacity
             onPress={() => {
               data.closeDialog();
-            }}>
-            <View
+            }}
               style={{
                 backgroundColor: "white",
                 borderRadius: 8,
                 borderWidth: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: scaleWidth(160),
-                height: scaleHeight(40),
+                width: '48%',
+                height: scaleHeight(48),
                 borderColor: "#747475",
               }}>
               <Text
                 tx="order.cancel"
                 style={{
                   color: "#747475",
-                  
                   fontSize: 14,
                   fontWeight: "600",
-                  marginHorizontal: 60,
-                  marginVertical: 12,
                 }}></Text>
-            </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               data.closeDialog();
+            }}
+            style={{
+              backgroundColor: "#0078D4",
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 8,
+              width: '48%',
+              height: scaleHeight(48)
             }}>
-            <View
-              style={{
-                backgroundColor: "#0078D4",
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 8,
-                width: scaleWidth(160),
-                height: scaleHeight(40)
-              }}>
               <Text
                 tx="order.apply"
                 style={{
                   color: "white",
                   fontSize: 14,
                   fontWeight: "600",
-                  marginHorizontal: 50,
-                  marginVertical: 12,
                 }}></Text>
-            </View>
           </TouchableOpacity>
         </View>
       </View>

@@ -70,7 +70,7 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
     // useEffect(() => {
     //   getToken()
     // }, [])
-    const { authenticationStore } = useStores();
+    const { authenticationStore, vendorStore } = useStores();
 
     const handleScroll = (event: any) => {
       const scrollHeight = event.nativeEvent.contentOffset.y;
@@ -85,6 +85,27 @@ export const DashBoardScreen: FC<TabScreenProps<"dashboard">> = observer(
 
     // const revenue = 1235780000;
     // const debt = 1235780;
+
+    const handleGetInfoCompany = async () => {
+      try {
+        const response = await vendorStore.getInfoCompany();
+        console.log('INFO COMPANY', response)
+        if (response && response.kind === "ok") {
+          // vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
+          console.log(response.result.data, 'log infocompany')
+          vendorStore.setCompanyInfo(response.result.data)
+          // setDataInfoCompany(response.result.data)
+        } else {
+          console.error("Failed to fetch categories:", response.result.errorCodes);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+  
+    };
+    useEffect(() => {
+      handleGetInfoCompany()
+    }, [])
 
     const getDataRevenueThisMonth = () => {
       // Lấy ngày hiện tại theo giờ Việt Nam

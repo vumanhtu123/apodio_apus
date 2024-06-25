@@ -272,10 +272,23 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       };
       try {
         const response = await orderStore.createAddress(dataCreate);
+        console.log(response)
 
         if (response && response.kind === "ok") {
           Toast.show({ type: ALERT_TYPE.SUCCESS, 
             textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"), })
+            if(valueSwitch === true){
+              orderStore.setDataAddress({id: response.response.data.id, partnerId: Number(orderStore.dataClientSelect.id),
+                phoneNumber: data.phone,
+                addressType: "DELIVERY_ADDRESS",
+                country: newCountry,
+                region: null,
+                city: newCity,
+                district: newDistrict,
+                ward: newWard,
+                address: data.address,
+                isDefault: valueSwitch,})
+            }
             setTimeout(() => navigation.goBack(), 5000)
           // Dialog.show({
           //   type: ALERT_TYPE.INFO,
