@@ -51,31 +51,27 @@ export default function ItemOrder(props: ItemOrder) {
     styleTextPayStatus,
     dataTax
   } = props;
-  
-  function groupTaxValues(dataTax: any[] | undefined) {
-    if (dataTax === undefined) {
-      return [];
-    }
-  
-    const groupedTaxValues = dataTax.reduce((acc: { [x: string]: { taxName: any; taxId: any; amount: any; }; }, curr: { items: any[]; }) => {
-      curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
-        const key = item.taxId;
-        if (acc[key]) {
-          acc[key].amount += item.amount;
-        } else {
-          acc[key] = {
-            taxName: item.taxName,
-            taxId: key,
-            amount: item.amount
-          };
-        }
-      });
-      return acc;
-    }, {});
-  
-    return Object.values(groupedTaxValues);
-  }
-  
+
+  // Gom nhóm các item và tính tổng taxValue
+  const groupedTaxValues = dataTax !== undefined ? dataTax?.reduce((acc: { [x: string]: { taxName: any; taxId: any; amount: any; }; }, curr: { items: any[]; }) => {
+    curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
+      const key = item.taxId;
+      if (acc[key]) {
+        acc[key].amount += item.amount;
+      } else {
+        acc[key] = {
+          taxName: item.taxName,
+          taxId: key,
+          amount: item.amount
+        };
+      }
+    });
+    return acc;
+  }, {}) : [];
+
+  const arrTaxValues = groupedTaxValues !== undefined ? Object.values(groupedTaxValues) : [];
+
+  console.log('---------dataTax--', JSON.stringify(arrTaxValues))
 
   return (
     <TouchableOpacity
@@ -132,13 +128,13 @@ export default function ItemOrder(props: ItemOrder) {
           <Text style={TEXTMONEY} text={totalTax} />
         </View>
       ) : null}
-      {groupTaxValues(dataTax)?.map((item: any) => (
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1 }}>
-              <Text style={TEXTCONTENT} text={item.taxName} />
-            </View>
-            <Text style={TEXTMONEY} text={formatCurrency(item.amount)} />
+      {arrTaxValues?.map((item: any) => (
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={TEXTCONTENT} text={item.taxName} />
           </View>
+          <Text style={TEXTMONEY} text={formatCurrency(item.amount)} />
+        </View>
       ))}
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>

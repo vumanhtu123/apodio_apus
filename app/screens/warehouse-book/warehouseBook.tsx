@@ -214,18 +214,18 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                 setIsRefreshhing(false)
             }, 2000);
         }
-        const  handleLoadMore = () => {
+        const handleLoadMore = () => {
             setIsloadMore(true)
         }
         const renderFooter = () => {
             if (!isloadMore) return null;
-          
+
             setTimeout(() => {
-              setIsloadMore(false);
+                setIsloadMore(false);
             }, 2000);
-          
+
             return <ActivityIndicator size="small" color={colors.palette.navyBlue} />;
-          };
+        };
         return (
             <View style={{ flex: 1 }}>
 
@@ -262,10 +262,10 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
 
                             }}
                         >
-                            <Images.ic_Feilter/>
-                        
+                            <Images.ic_Feilter />
+
                         </TouchableOpacity>
-                        
+
 
                         <View style={{
                             // width:scaleWidth(260),
@@ -362,21 +362,21 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                             </View>
 
                             <View style={{ backgroundColor: '#FFFFFF', padding: scaleWidth(6), borderRadius: scaleWidth(8) }}>
-                                {products.map((product,index) => (
+                                {products.map((product, index) => (
                                     <View key={product.id} style={styles.productContainer}>
                                         <View style={styles.flexRow}>
                                             <Text style={styles.productName}>{product.nameProduct}</Text>
                                             <Text style={styles.productPrice}>{product.price}</Text>
                                         </View>
-                                        <View style={[styles.flexRow,{marginVertical:scaleWidth(6)}]}>
+                                        <View style={[styles.flexRow, { marginVertical: scaleWidth(6) }]}>
                                             <Text style={styles.productCode}>{product.productCode}</Text>
                                             <Text style={styles.productQuantity}>SL:+ {product.quantity}</Text>
                                         </View>
-                                        
+
                                         <Text style={styles.styleTextgray}  >{product.status}</Text>
-                                     
-                                       
-                                        {index !== products.length -1 && <View style={styles.line} /> } 
+
+
+                                        {index !== products.length - 1 && <View style={styles.line} />}
                                     </View>
                                 ))}
                             </View>
@@ -395,20 +395,20 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
 
                 />
 
-                <View style={[styles.styleBTNBottom,styles.flexRow ]}>
-                    <TouchableOpacity style={[styles.StyleTextBtn,{backgroundColor:colors.palette.radicalRed}]}>
-                        <Text tx="warehouseBook.productDelivery" style={{color:'#FFFFFF'}}/>
+                <View style={[styles.styleBTNBottom, styles.flexRow]}>
+                    <TouchableOpacity style={[styles.StyleTextBtn, { backgroundColor: colors.palette.radicalRed }]}>
+                        <Text tx="warehouseBook.productDelivery" style={{ color: '#FFFFFF' }} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.StyleTextBtn,{backgroundColor:colors.palette.navyBlue}]}>
-                        <Text tx="warehouseBook.productDelivery" style={{color:'#FFFFFF'}}/>
+                    <TouchableOpacity style={[styles.StyleTextBtn, { backgroundColor: colors.palette.navyBlue }]}>
+                        <Text tx="warehouseBook.productDelivery" style={{ color: '#FFFFFF' }} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={[styles.StyleTextBtn,{backgroundColor:colors.palette.malachite}]}>
-                        <Text tx="warehouseBook.productDelivery" style={{color:'#FFFFFF'}}/>
+                    <TouchableOpacity style={[styles.StyleTextBtn, { backgroundColor: colors.palette.malachite }]}>
+                        <Text tx="warehouseBook.productDelivery" style={{ color: '#FFFFFF' }} />
                     </TouchableOpacity>
                 </View>
-                
+
             </View>
         )
 
