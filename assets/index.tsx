@@ -220,6 +220,9 @@ import ic_avatar_order from "./Images/AvatarInOrder.svg";
 import ic_warning_yellow from "./Images/warning_yellow.svg";
 import ic_plus_orange from "./Images/ic_plus_orange.svg";
 import minus_ic from "./Images/minus_ic.svg";
+import ic_messenger from "./Images/ic_messenger.svg";
+import ic_Like from "./Images/ic_like.svg";
+import ic_comment from "./Images/ic_comment.svg";
 
 export const Images = {
   icon_test: _test,
@@ -430,10 +433,13 @@ export const Images = {
   icon_plus_blue: ic_plus_blue,
   ic_dot: ic_dot,
   icon_plus_blue2: icon_plus_blue2,
-  icon_QRCode : icon_QRCode,
-  icon_CalenderBlank :icon_CalenderBlank,
+  icon_QRCode: icon_QRCode,
+  icon_CalenderBlank: icon_CalenderBlank,
   ic_avatar_order: ic_avatar_order,
   ic_warning_yellow: ic_warning_yellow,
   ic_plus_orange: ic_plus_orange,
   minus_ic: minus_ic,
+  ic_messenger: ic_messenger,
+  ic_Like: ic_Like,
+  ic_comment: ic_comment,
 };

@@ -4,13 +4,15 @@ import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { TouchableOpacity, View, FlatList } from "react-native";
 import { Header, Text } from "../../../components";
-import { colors, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Images } from "../../../../assets";
 import en from "../../../i18n/en";
 import React from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { Styles } from "./styles";
 import data from "../../../components/svg-icon/data";
+import { styles } from "../../login/styles";
+import { ModalExchange } from "../component/ModalExchange";
 
 export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDebt">> = observer(
     function detailDebtScreen(props) {
@@ -148,7 +150,7 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                 <Header
                     style={{ height: scaleHeight(52) }}
                     LeftIcon={Images.back}
-                    headerTx="debtScreen.toPaydebt"
+                    headerTx="debtScreen.detailDebt"
                     onLeftPress={() => {
                         props.navigation.goBack()
                     }}
@@ -182,23 +184,86 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                 </View>
 
                 <FlatList
-                    data={Object.entries(data)}
+                    style={{ marginTop: 50 }}
+                    data={Object.entries(dataGroup)}
                     showsVerticalScrollIndicator={false}
-                    renderItem={({ item }) => {
-                        <View style={[Styles.groupContainer, { backgroundColor: 'red' }]}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
-                                <View style={{ width: '40%', height: 1, backgroundColor: "#E6E7EA" }} />
-                                <Text style={Styles.dateText}>{item.createDateTransaction}</Text>
-                                <View style={{ width: '40%', height: 1, backgroundColor: "#E6E7EA" }} />
-                            </View>
+                    keyExtractor={([createDateTransaction]) => createDateTransaction}
+                    renderItem={({ item: [createDateTransaction, products] }) => {
+                        return (
+                            <View style={[Styles.groupContainer,]}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
+                                    <View style={{ width: '40%', height: 1, backgroundColor: "#E6E7EA" }} />
+                                    <Text style={Styles.dateText}>{createDateTransaction}</Text>
+                                    <View style={{ width: '40%', height: 1, backgroundColor: "#E6E7EA" }} />
+                                </View>
+                                {
+                                    products.map((item, index) => (
+                                        <View key={item.id} style={{ backgroundColor: '#FFF', marginBottom: 10, borderRadius: margin.margin_8, padding: scaleWidth(15) }}>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.order" style={Styles.label} />
+                                                <Text style={Styles.styleOrder} >{item.order}</Text>
 
-                        </View>
+                                            </View>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.valueOrder" style={Styles.label} />
+                                                <Text style={[Styles.styleOrder, { color: colors.palette.malachite }]} >{item.valueOrder}</Text>
+                                            </View>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.paid" style={Styles.label} />
+                                                <Text style={[Styles.styleOrder, { color: colors.palette.malachite }]} >{item.paid}</Text>
+                                            </View>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.dateOfPayment" style={Styles.label} />
+                                                <Text style={[Styles.styleOrder,]} >{item.dateOfPayment}</Text>
+                                            </View>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.remainingDebt" style={Styles.label} />
+                                                <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed }]} >{item.remainingDebt}</Text>
+                                            </View>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.latePaymentPenalty" style={Styles.label} />
+                                                <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed }]} >{item.latePaymentPenalty}</Text>
+                                            </View>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.totalRemainingDebt" style={Styles.label} />
+                                                <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed }]} >{item.totalRemainingDebt}</Text>
+                                            </View>
+                                            <View style={Styles.flexRow}>
+                                                <Text tx="debtScreen.paymentTerm2" style={Styles.label} />
+                                                <Text style={[Styles.styleOrder,]} >{item.paymentTerm}</Text>
+                                            </View>
+                                            <TouchableOpacity style={Styles.flexRow}
+                                                onPress={() => {
+                                                    setIsVisible(!isVisible)
+                                                }}
+                                            >
+                                                <Text tx="debtScreen.exChange" style={Styles.label} />
+                                                <View style={{ flexDirection: 'row' }}>
+                                                    <Images.ic_messenger />
+                                                    <Text style={[Styles.styleOrder, { color: colors.palette.navyBlue, marginHorizontal: 4 }]} >
+                                                        {item.exchange}
+                                                    </Text>
+                                                    <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed, }]}>(2 Chưa xem)</Text>
+
+                                                </View>
+                                            </TouchableOpacity>
+
+                                        </View>
+                                    ))
+                                }
+
+                            </View>
+                        )
+
                     }}
 
-                    keyExtractor={([createDateTransaction]) => createDateTransaction}
 
                 />
 
+                {/* <ModalExchange
+                    isVisible={isVisible}
+                    setIsVisible={() => setIsVisible(!isVisible)}
+                /> */}
             </View>
         )
     }
