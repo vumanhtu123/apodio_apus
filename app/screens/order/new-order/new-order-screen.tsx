@@ -52,6 +52,7 @@ import {
   Dialog,
   Toast,
 } from "../../../components/dialog-notification";
+import { formatCurrency } from "../../../utils/validate";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -940,10 +941,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={priceNoVat}
-              sumVat={priceSumVAT.current}
+              sumNoVat={formatCurrency(priceNoVat)}
+              sumVat={formatCurrency(priceSumVAT.current)}
               arrVat={arrProduct}
-              discount={discount.current}
+              discount={formatCurrency(discount.current)}
             />
           ) : (
             <View style={{ marginTop: 15 }}></View>
@@ -1204,7 +1205,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             {/* {isNaN(priceSumVAT.current)
               ? Number(priceSumVAT.current)
               : price.current} */}
-            {Number(price)}
+            {formatCurrency(Number(price))}
           </Text>
         </View>
         {isDeposit === true && orderStore.dataDebtPayment.apply ? (
@@ -1223,12 +1224,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
-                {Number(orderStore.dataDebtPayment.sumAll)}
+                {formatCurrency(Number(orderStore.dataDebtPayment.sumAll))}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textTotal}>
-                {Number(orderStore.dataDebtPayment.inputPrice)}
+                {formatCurrency(Number(orderStore.dataDebtPayment.inputPrice))}
               </Text>
               <TouchableOpacity
                 onPress={() => {

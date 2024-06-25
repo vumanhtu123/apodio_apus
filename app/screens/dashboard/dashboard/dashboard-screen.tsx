@@ -738,7 +738,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                 data={arrPromotions}
                 style={styles.styleFlatlist}
                 scrollEnabled={false}
-                renderItem={({ item }) => (
+                renderItem={({ item } : any) => (
                   <ItemOrder
                     onPress={() => {
                       navigation.navigate("orderDetails" as never, {

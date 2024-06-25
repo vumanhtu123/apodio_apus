@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
   companyName: {
     fontSize: fontSize.size12,
     fontWeight: 'bold',
+    marginRight : scaleWidth(2)
     // textAlign: 'center',
   },
   textInfo: {

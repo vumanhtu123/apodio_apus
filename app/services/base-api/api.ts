@@ -93,7 +93,7 @@ export class  Api {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "en",
             "Content-Type": "multipart/form-data",
-            // "X-TenantId": 77,
+            // "X-TenantId": tenantId,
           };
         } else {
           request.headers = {

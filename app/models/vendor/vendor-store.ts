@@ -1,3 +1,4 @@
+import { number } from 'mobx-state-tree/dist/internal';
 import { size } from 'lodash';
 import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { VendorApi } from "../../services/api/api-vendor"
@@ -12,7 +13,6 @@ export const VendorStoreModel = types
     checkSeparator: types.optional(types.string, ''),
     sort: types.optional(types.string, ''),
     companyInfo: types.optional(types.frozen(), {}),
-  
   })
 
   .extend(withEnvironment)
@@ -32,7 +32,7 @@ export const VendorStoreModel = types
       try {
         const vendorApi = new VendorApi(self.environment.apiErp)
         const result: VendorResult = yield vendorApi.getListVendor(page, size, vendorActivated, search)
-        console.log("VendorResult-------------",JSON.stringify(result))
+        console.log("VendorResult-------------", JSON.stringify(result))
         return result
       } catch (error) {
         console.log("LOG ERROR PROMOTION", error)

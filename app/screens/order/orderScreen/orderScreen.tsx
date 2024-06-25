@@ -32,18 +32,20 @@ import { NavigatorParamList, navigate } from "../../../navigators";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
 import moment from "moment";
-import { Text } from "../../../components/text/text";
-import CustomCalendar from "../../../components/calendar";
-import ItemOrder from "../components/item-order";
-import { useNavigation } from "@react-navigation/native";
-import { useStores } from "../../../models";
-import { formatCurrency } from "../../../utils/validate";
-import { formatDateTime } from "../../../utils/formatDate";
+import { Text } from '../../../components/text/text';
+import CustomCalendar from '../../../components/calendar';
+import ItemOrder from '../components/item-order';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useStores } from '../../../models';
+import { formatCurrency } from '../../../utils/validate';
+import { formatDateTime } from '../../../utils/formatDate';
 
 export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
   function OrderScreen(props) {
     // Pull in one of our MST stores
     // const refCarousel = useRef(null)
+    const route = useRoute();
+    const isReload = route?.params?.isReload
     const { orderStore } = useStores();
     const [data, setData] = useState([]);
     const [arrData, setArrData] = useState<any>([]);
@@ -89,41 +91,42 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     const paddingTop = useSafeAreaInsets().top;
     const [selectedStatus, setSelectedStatus] = useState("");
     const [selectedIndexStatus, setSelectedIndexStatus] = useState(0);
-    const selectStatus = [
-      { status: "", textStatus: "Tất cả" },
-      { status: "SENT", textStatus: "Chờ xác nhận" },
-      { status: "SALE", textStatus: "Đang thực hiện" },
-      { status: "DONE", textStatus: "Hoàn thành" },
-      { status: "CANCEL", textStatus: "Hủy đơn" },
-    ];
-    // useEffect(() => {
-    //   getListOrder()
-    // }, [])
-
+    const [totalPages, setTotalPages] = useState<any>(0);
+    const selectStatus = [{ status: '', textStatus: 'Tất cả' },
+    { status: 'SENT', textStatus: 'Chờ xác nhận' },
+    { status: 'SALE', textStatus: 'Đang thực hiện' },
+    { status: 'DONE', textStatus: 'Hoàn thành' },
+    { status: 'CANCEL', textStatus: 'Hủy đơn' },
+    ]
+    const [page, setPage] = useState(0);
+    useEffect(() => {
+      getListOrder()
+    }, [])
     useEffect(() => {
       console.log("---------useEffect---------reload------------------");
-      const unsubscribe = navigation.addListener("focus", () => {
-        getListOrder();
+      const unsubscribe = navigation.addListener('focus', () => {
+        if (isReload) {
+          getListOrder()
+        }
       });
       return unsubscribe;
     }, [navigation]);
     useEffect(() => {
-      getListOrder();
-    }, [selectedStatus, markedDatesS, markedDatesE]);
-    const getListOrder = async (searchValue?: any) => {
+      getListOrder(searchValue)
+    }, [selectedStatus, markedDatesS, markedDatesE , page])
+    // useEffect (()=>{
+    //   console.log('firstzzz' , page)
+    // },[page])
+    const getListOrder = async (searchValue?: any,) => {
       try {
         const formattedMarkedDatesS = markedDatesS
-          ? moment(markedDatesS)
-              .set({ hour: 17, minute: 0, second: 0, millisecond: 0 })
-              .toISOString()
+          ? moment(markedDatesS).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISOString()
           : null;
         const formattedMarkedDatesE = markedDatesE
-          ? moment(markedDatesE)
-              .set({ hour: 17, minute: 0, second: 0, millisecond: 0 })
-              .toISOString()
+          ? moment(markedDatesE).set({ hour: 23, minute: 59, second: 59, millisecond: 0 }).toISOString()
           : null;
         const response = await orderStore.getListOrder(
-          0,
+          page,
           50,
           selectedStatus,
           searchValue,
@@ -132,8 +135,16 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
         );
         // console.log('firstxxxxxxxxxx', response)
         if (response && response.kind === "ok") {
+          setTotalPages(response.response.data.totalPages)
           // console.log('orderLisst', JSON.stringify(response.response.data.content))
-          setArrData(response.response.data.content);
+          if (page == 0) {
+            setArrData(response.response.data.content)
+          } else {
+            setArrData((prevProducts: any) => [
+              ...prevProducts,
+              ...response.response.data.content,
+            ]);
+          }
         } else {
           console.error("Failed to fetch order:", response);
         }
@@ -179,20 +190,35 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       setSelectedIndexStatus(index);
       const status = selectStatus[index].status;
       setSelectedStatus(status);
+      setPage(0)
+    };
+    const flatListRef = useRef(null);
+    useEffect(() => {
+      if (flatListRef.current) {
+        flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+      }
+    }, [selectStatus])
+    const handleEndReached = () => {
+      if (!isRefreshing && page < totalPages - 1) {
+        setPage((prevPage) => prevPage + 1);
+      }
     };
     const refreshOrder = async () => {
-      // setIsRefreshing(true);
+      setIsRefreshing(true);
+      setPage(0)
       setMarkedDatesS(firstDayOfMonth);
       setMarkedDatesE(lastDayOfMonth);
-      setSearchValue("");
-      setOpenSearch(false);
-      setArrData([]);
+      setSelectedStatus('')
+      setSelectedIndexStatus(0)
+      setSearchValue('')
+      setOpenSearch(false)
+      setArrData([])
       await getListOrder();
-      // setIsRefreshing(false);
+      setIsRefreshing(false);
     };
-    const handleSubmitSearch = () => {
-      // setPage(0);
-      getListOrder(searchValue);
+    const handleSubmitSearch = async () => {
+      setArrData([])
+      await getListOrder(searchValue);
     };
     return (
       <View style={styles.ROOT}>
@@ -201,8 +227,8 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           type={"AntDesign"}
           style={styles.header}
           titleStyle={styles.textHeader}
-          LeftIcon={Images.back}
-          onLeftPress={() => navigation.goBack()}
+          // LeftIcon={Images.back}
+          // onLeftPress={() => navigation.goBack()}
           RightIcon={Images.ic_calender_white}
           RightIcon1={openSearch ? Images.icon_close : Images.search}
           headerInput={openSearch}
@@ -211,15 +237,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           searchValue={searchValue}
           handleOnSubmitSearch={handleSubmitSearch}
           onSearchValueChange={handleSearchValueChange}
-          rightText1={
-            moment(markedDatesS === "" ? firstDayOfMonth : markedDatesS).format(
-              "DD/MM/YYYY"
-            ) +
-            " - " +
-            moment(markedDatesE === "" ? new Date() : markedDatesE).format(
-              "DD/MM/YYYY"
-            )
-          }
+          rightText1={moment(markedDatesS === "" ? firstDayOfMonth : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -257,25 +275,16 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           </ScrollView>
         </View>
         <View style={{ height: 1, marginVertical: 0 }}></View>
-        {/* <View style={styles.boxTimeSelect}>
-          <Text style={styles.textTime}>
-            {moment(markedDatesS === "" ? sevenDaysBefore : markedDatesS).format("MMMM DD, YYYY")} -{" "}
-            {moment(markedDatesE === "" ? new Date() : markedDatesE).format("MMMM DD, YYYY")}
-          </Text>
-          <TouchableOpacity
-            style={{ alignSelf: "center" }}
-            onPress={() => {
-              toggleModalDate()
-            }}
-          >
-            <Images.icon_calendar />
-          </TouchableOpacity>
-        </View> */}
-        {/* {(arrData && arrData.length > 0) ? ( */}
+
         <FlatList
           data={arrData}
           style={styles.styleFlatlist}
           showsVerticalScrollIndicator={false}
+          ref={flatListRef}
+          // keyExtractor={(item, index) => 'key'+index}
+          // keyExtractor={(item) => item.id}
+          keyExtractor={(item: any, index: any) => index.toString() + item.id}
+          onEndReached={handleEndReached}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing}
@@ -283,7 +292,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
               title="ok"
             />
           }
-          renderItem={({ item }) => (
+          renderItem={({ item , index }) => (
             <ItemOrder
               onPress={() => handleDetailOrder(item.id)}
               name={item.partner?.name}

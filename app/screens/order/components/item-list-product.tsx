@@ -25,6 +25,7 @@ import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
 import { number } from "mobx-state-tree/dist/internal";
 import FastImage from "react-native-fast-image";
+import { formatCurrency, formatNumberByString } from "../../../utils/validate";
 
 interface AddProduct {
   onPress: ({ }) => void;
@@ -123,26 +124,26 @@ export default function ItemListProduct(props: AddProduct) {
           marginVertical: scaleHeight(margin.margin_12),
           marginLeft: scaleWidth(margin.margin_8),
         }}>
-        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>       
-              <ImageBackground
-                style={{ width: scaleWidth(48), height: scaleHeight(48) }}
-                imageStyle={{
-                  borderRadius: 12,
-                }}
-                source={require("../../../../assets/Images/no_images.png")}>
-                <FastImage 
-                  style={{
-                    width: scaleWidth(48),
-                    height: scaleHeight(48),
-                    borderRadius: 12
-                  }}
-                  source={{
-                    uri: images != null && images.length > 0 ? images[0] : '' ,
-                    cache: FastImage.cacheControl.immutable,
-                  }}
-                  defaultSource={require("../../../../assets/Images/no_images.png")}
-                />
-              </ImageBackground>
+        <View style={{ marginRight: scaleWidth(margin.margin_10) }}>
+          <ImageBackground
+            style={{ width: scaleWidth(48), height: scaleHeight(48) }}
+            imageStyle={{
+              borderRadius: 12,
+            }}
+            source={require("../../../../assets/Images/no_images.png")}>
+            <FastImage
+              style={{
+                width: scaleWidth(48),
+                height: scaleHeight(48),
+                borderRadius: 12
+              }}
+              source={{
+                uri: images != null && images.length > 0 ? images[0] : '',
+                cache: FastImage.cacheControl.immutable,
+              }}
+              defaultSource={require("../../../../assets/Images/no_images.png")}
+            />
+          </ImageBackground>
         </View>
         <View style={{ flex: 1 }}>
           <Text
@@ -175,6 +176,7 @@ export default function ItemListProduct(props: AddProduct) {
                         borderBottomWidth: 1,
                         textAlignVertical: "bottom",
                       }}
+                      
                       keyboardType="numeric"
                       placeholder={translate("order.input_price")}
                       placeholderTextColor={"#747475"}
@@ -182,8 +184,9 @@ export default function ItemListProduct(props: AddProduct) {
                         // inputPrice(newText);
                         onChange(newText)
                       }}
-                      value={value}
-                      onSubmitEditing={() => inputPrice(value)}
+                      value={formatCurrency(value)}
+                      
+                      onSubmitEditing={() => inputPrice(formatNumberByString(value))}
                     />
                   </View>
                 )}
@@ -247,7 +250,7 @@ export default function ItemListProduct(props: AddProduct) {
                     fontStyle: "italic",
                     color: "#F4AD22",
                   }}>
-                  {valueVAT}
+                  {formatCurrency(valueVAT)}
                 </Text>
               </View>
             </View>
@@ -364,7 +367,7 @@ export default function ItemListProduct(props: AddProduct) {
                 color: "#FF4956",
                 fontStyle: "italic",
               }}>
-              {" " + (Sum().toString() === "NaN" ? "0" : Sum())}
+              {" " + (Sum().toString() === "NaN" ? "0" : formatCurrency(Sum()))}
             </Text>
           </Text>
           {/* ) : null} */}
