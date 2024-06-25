@@ -352,7 +352,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
       isPrepayment: orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
-      isPayment: !orderStore.clearingDebt,
+      isPayment: handleNamPreMethod() === '' ? true: false,
       amountPrePayment:
         orderStore.clearingDebt == false
           ? Number(orderStore.dataDebtPayment.inputPrice)

@@ -360,7 +360,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      isPrepayment: orderStore.dataDebtPayment.apply == true ? true : false, // boolean thanh toan truoc
+      isPrepayment: orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
+      isPayment: handleNamPreMethod() === '' ? true: false,
       amountPrePayment:
       orderStore.clearingDebt == false
           ? Number(orderStore.dataDebtPayment.inputPrice)
