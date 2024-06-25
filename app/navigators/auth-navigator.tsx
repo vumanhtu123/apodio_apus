@@ -12,6 +12,7 @@ import {
   ForgotPasswordMerchant,
   ForgotPasswordStaff,
   SplashScreen1,
+  ListCompany,
   TestDebugger,
 } from "../screens";
 
@@ -22,6 +23,7 @@ export type AuthParamList = {
   accountSecurity: undefined;
   SplashScreen: undefined;
   TestDebug: undefined;
+  listCompany: undefined;
 };
 
 const Stack = createNativeStackNavigator<AuthParamList>();
@@ -62,6 +64,11 @@ export const AuthStack = () => {
         name="TestDebug"
         options={{ gestureEnabled: false }}
         component={TestDebugger}
+      />
+      <Stack.Screen
+        name="listCompany"
+        options={{ gestureEnabled: false }}
+        component={ListCompany}
       />
     </Stack.Navigator>
   );
