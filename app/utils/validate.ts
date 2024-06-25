@@ -266,7 +266,7 @@ export function removeNonNumeric(num: any) {
   return num.toString().replace(/[^0-9.]/g, "");
 }
 export function formatNumberByString(num: any) {
-  console.log('num-------------------', num)
+  // console.log('num-------------------', num)
   if (num === 0 || num === null || num === undefined) {
     return 0;
   }

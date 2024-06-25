@@ -112,10 +112,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: 0,
+                amount: items.minQuantity,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: 0,
+                originAmount: items.minQuantity,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -126,10 +126,12 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: 0,
+                amount: newAmount,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: 0,
+                originAmount: Math.ceil(
+                  newAmount * newObject[0].conversionRate
+                ),
               };
             }
           });
@@ -169,10 +171,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: 0,
+                amount: items.minQuantity,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: 0,
+                originAmount: items.minQuantity,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -183,10 +185,12 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: 0,
+                amount: newAmount,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: 0,
+                originAmount: Math.ceil(
+                  newAmount * newObject[0].conversionRate
+                ),
               };
             }
           });
@@ -869,8 +873,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           ) : null}
         </View>
       </Modal>
-      <PriceModal
-        isVisible={true}
+      {/* <PriceModal
+        isVisible={modalPrice}
         setIsVisible={() => setModalPrice(false)}
         title={"productDetail.retailPrice"}
         onCancel={() => {
@@ -886,7 +890,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         // }}
         onConfirm={()=> console.log('first')}
         dataAdd={[]}
-      />
+      /> */}
     </View>
   );
 });

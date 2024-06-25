@@ -71,7 +71,7 @@ export default function ItemOrder(props: ItemOrder) {
 
   const arrTaxValues = groupedTaxValues !== undefined ? Object.values(groupedTaxValues) : [];
 
-  console.log('---------dataTax--', JSON.stringify(arrTaxValues))
+  // console.log('---------dataTax--', JSON.stringify(arrTaxValues))
 
   return (
     <TouchableOpacity
