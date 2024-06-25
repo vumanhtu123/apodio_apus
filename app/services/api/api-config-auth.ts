@@ -1,4 +1,4 @@
-import { id } from 'date-fns/locale';
+import { id } from "date-fns/locale";
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
@@ -22,7 +22,7 @@ export class AuthApi {
     this.getway = getway;
     this.uaa = uaa;
   }
-  async login(username: string, password: string): Promise<LoginResponse> {
+  async login(username: string, password: string): Promise<any> {
     Loading.show({
       text: "Loading...",
     });
@@ -115,7 +115,26 @@ export class AuthApi {
       return { kind: "bad-data" };
     }
   }
-  async refreshToken(refreshToken: string, ): Promise<any> {
+  async submitPassword(otp: number, newPassword: string): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<BaseResponse<any, ErrorCode>> =
+        await this.uaa.apisauce.post(ApiEndpoint.POST_SUBMIT_PASSWORD, {
+          otp,
+          newPassword,
+        });
+      Loading.hide();
+      console.log("response", response.data);
+      const data = response.data;
+      return data;
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+  async refreshToken(refreshToken: string): Promise<any> {
     Loading.show({
       text: "Loading...",
     });

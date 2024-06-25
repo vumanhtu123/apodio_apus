@@ -266,6 +266,7 @@ const en = {
     discount: "Chiết khấu: ",
     changeDeliveryAddress: "Chọn địa chỉ giao hàng",
     staff: "Staff: ",
+    still: "Còn: ",
     paymentMethods: "Loại chứng từ",
     selectPayment: "Chọn loại chứng từ",
     requestCancellation: "Request cancellation",

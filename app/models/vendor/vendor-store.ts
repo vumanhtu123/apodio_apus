@@ -4,16 +4,15 @@ import { Instance, SnapshotIn, SnapshotOut, flow, types } from "mobx-state-tree"
 import { VendorApi } from "../../services/api/api-vendor"
 import { withEnvironment } from "../extensions/with-environment"
 import { VendorResult } from "./vendor-model"
+import { CompanyResult } from './companyInfo-model';
 
 
 export const VendorStoreModel = types
   .model("VendorStore")
   .props({
     checkSeparator: types.optional(types.string, ''),
-    checkCurrency: types.optional(types.string, ''),
     sort: types.optional(types.string, ''),
-    infoCompany: types.optional(types.array(types.string), []),
-    floatRounding: types.optional(types.number, 0)
+    companyInfo: types.optional(types.frozen(), {}),
   })
 
   .extend(withEnvironment)
@@ -21,17 +20,11 @@ export const VendorStoreModel = types
     setCheckSeparator(value: any) {
       self.checkSeparator = value
     },
-    setCheckCurrency(value: any) {
-      self.checkCurrency = value
-    },
     setSort(sort: any) {
       self.sort = sort;
     },
-    setFloatRounding(number: any) {
-      self.floatRounding = number;
-    },
-    setInfoCompany(data: any) {
-      self.infoCompany = data;
+    setCompanyInfo(value: any) {
+      self.companyInfo = value
     }
   }))
   .actions((self) => ({
