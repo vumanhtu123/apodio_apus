@@ -62,7 +62,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     scaleHeight(52) -
     paddingTop;
   const route = useRoute();
-  const { orderStore } = useStores();
+  const { orderStore, vendorStore } = useStores();
   console.log("props", orderStore.dataDebtPayment.sumAll);
   const newData = route?.params?.newData
   const screen = route?.params?.screen
@@ -172,6 +172,23 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     }
   };
 
+  const handleNamPreMethod = (): string => {
+    switch (orderStore.dataDebtPayment.methodPayment) {
+      case translate("order.money_face"):
+        return "CASH";
+      // case translate("order.BANK_TRANSFER"):
+      //   return "BANK_TRANSFER";
+      // case translate("order.BANK"):
+      //   return "BANK";
+      // case translate("order.CREDIT"):
+      //   return "CREDIT";
+      case translate("order.EXCEPT_FOR_LIABILITIES"):
+        return "DEDUCTION_OF_LIABILITIES";
+      default:
+        return "";
+    }
+  };
+
   const addProduct = () => {
     if (handleNamMethod() == "") {
       return Dialog.show({
@@ -188,7 +205,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     }
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
-      (Number(price) - Number(orderStore.dataDebtPayment.inputPrice)) <= Number(store.orderStore.dataDebtLimit.debtAmount)
+      (Number(price) - Number(orderStore.dataDebtPayment.inputPrice)) > (Number(store.orderStore.dataDebtLimit.debtAmount)- Number(store.orderStore.dataDebtLimit.amountOwed??0))
     ) {
       orderStore.setMethodPayment({
         sumAll: 0,
@@ -203,7 +220,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
           price: price,
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-              ? store.orderStore.dataDebtLimit.debtAmount
+              ? (Number(store.orderStore.dataDebtLimit.debtAmount)- Number(store.orderStore.dataDebtLimit.amountOwed??0))
               : null,
         },
       });
@@ -316,10 +333,11 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
       // quoteCreationDate: "",
       // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
-      currencyId: orderStore.dataPriceListSelected.currencyId ?? null,
+      currencyId: vendorStore.companyInfo.currencyId,
       // paymentTermId: 0,
       // promotionIds: [],
       paymentMethod: handleNamMethod(),
+      paymentMethodPrepayment: handleNamPreMethod() !== '' ? handleNamPreMethod() : handleNamMethod(),
       // salePersonIds: [],
       // saleUserIds: [],
       deliveryType: "SHIP", //
@@ -344,9 +362,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
       isMobile: true,
       isPrepayment: orderStore.dataDebtPayment.apply == true ? true : false, // boolean thanh toan truoc
       amountPrePayment:
-        orderStore.dataDebtPayment.apply == true
+      orderStore.clearingDebt == false
           ? Number(orderStore.dataDebtPayment.inputPrice)
-          : "", // so tien gui len
+          : 0, // so tien gui len
+      amountClearings: orderStore.clearingDebt == true
+        ? Number(orderStore.dataDebtPayment.inputPrice)
+        : 0,
     };
     console.log("done new order: ", JSON.stringify(order));
     store.orderStore.postAddOrderSale(order).then((values) => {
@@ -1043,7 +1064,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
                         fontWeight: "400",
                         color: "#FF0000",
                       }}>
-                      {store.orderStore.dataDebtLimit.debtAmount ?? 0}
+                      {(Number(store.orderStore.dataDebtLimit.debtAmount)- Number(store.orderStore.dataDebtLimit.amountOwed??0)) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1164,7 +1185,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? store.orderStore.dataDebtLimit.debtAmount
+                              ? (Number(store.orderStore.dataDebtLimit.debtAmount)- Number(store.orderStore.dataDebtLimit.amountOwed??0))
                               : 0,
                         },
                       });
@@ -1293,7 +1314,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
                       price: price,
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                          ? store.orderStore.dataDebtLimit.debtAmount
+                          ? (Number(store.orderStore.dataDebtLimit.debtAmount)- Number(store.orderStore.dataDebtLimit.amountOwed??0))
                           : null,
                     },
                   });
@@ -1365,7 +1386,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
         }}
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
-          debtAmount: store.orderStore.dataDebtLimit.debtAmount,
+          debtAmount: (Number(store.orderStore.dataDebtLimit.debtAmount)- Number(store.orderStore.dataDebtLimit.amountOwed??0)),
         }}
       />
       <ModalTaxes

@@ -33,6 +33,7 @@ import {
 } from "./entities/order-variant-model";
 import { TaxModel } from "./entities/order-tax-model";
 import { Loading } from "../../components/dialog-notification";
+import { HomeApi } from "../../services/api/api-home";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -103,7 +104,7 @@ export const OrderStoreModel = types
     }),
     dataDebtPayment: types.optional(types.frozen<any>(), {
       sumAll: 0,
-      methodPayment: 0,
+      methodPayment: '',
       debt: 0,
       inputPrice: 0,
       apply: false,
@@ -642,6 +643,22 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       const result = yield orderApi.getDebtAccountLedger(accountLedgerId, start, end, customerId);
+      // console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+    getBalanceLimit: flow(function* (partnerId: number) {
+      console.log("page", partnerId);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount,
+      );
+      const result = yield orderApi.getBalanceLimit(partnerId);
       // console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
