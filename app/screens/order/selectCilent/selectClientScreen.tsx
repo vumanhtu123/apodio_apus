@@ -90,7 +90,7 @@ export const SelectClientScreen: FC<
     }
   };
 
-  console.log("load more", isLoadingMore);
+  // console.log("load more", isLoadingMore);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -133,9 +133,9 @@ export const SelectClientScreen: FC<
   const handleLoadMore = () => {
     getAPi.orderStore.setIsLoadMoreSelectClient(true)
     setIsLoadingMore(true);
-    console.log('====================================');
-    console.log("value loading", isLoadingMore);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log("value loading", isLoadingMore);
+    // console.log('====================================');
     size.current = (size.current + 3);
     getListClient();
     setTimeout(() => {
@@ -184,9 +184,9 @@ export const SelectClientScreen: FC<
         <FlatList
           data={myDataSelectClient}
           renderItem={({ item, index }): any => {
-            console.log('====================================');
-            console.log("data item:", item);
-            console.log('====================================');
+            // console.log('====================================');
+            // console.log("data item:", item);
+            // console.log('====================================');
             if (dataItemSelect?.id == item.id) {
               // console.log("id send", dataItemSelect?.id);
               // console.log("data item 2:", item);

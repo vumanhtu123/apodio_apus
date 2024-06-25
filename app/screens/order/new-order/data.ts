@@ -74,7 +74,7 @@ export const methodData = [
 export const advanceMethodData = [
   {
     id: 0,
-    label: translate("order.CASH"),
+    label: translate("order.money_face"),
   },
   // {
     // id: 1,
