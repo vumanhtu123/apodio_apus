@@ -338,9 +338,12 @@ export const OrderStoreModel = types
       sort: string,
       search: string
     ) {
+     
       try {
+        console.log("SlectPriceList-------------", );
         const PriceListAPI = new SelectPriceListAPI(self.environment.api);
-        const result: BaseResponse<PriceListResponse, ErrorCode> =
+        // const result: BaseResponse<PriceListResponse, ErrorCode> =
+        const result: any =
           yield PriceListAPI.getSelectPriceListAPI(page, size, sort, search);
         console.log("SlectPriceList-------------", JSON.stringify(result.data));
         return result.data;

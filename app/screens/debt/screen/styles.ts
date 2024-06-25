@@ -1,3 +1,4 @@
+
 import { Dimensions, StyleSheet } from "react-native"
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme"
 
@@ -135,5 +136,15 @@ export  const Styles = StyleSheet.create({
     productName: {
         fontSize: scaleWidth(12),
         fontWeight: 'bold',
+    },
+    styleOrder: {
+        fontWeight:"700",
+        fontSize: fontSize.size12,
+    },
+    label: {
+        fontSize: fontSize.size12,
+        fontWeight:"400",
+        color: colors.dolphin
+
     },
 })
