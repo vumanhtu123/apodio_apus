@@ -1,5 +1,3 @@
-import { number } from "mobx-state-tree/dist/internal";
-import { size } from "lodash";
 import {
   Instance,
   SnapshotIn,

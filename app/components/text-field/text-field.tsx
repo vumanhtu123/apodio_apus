@@ -126,15 +126,11 @@ export interface TextFieldProps extends TextInputProps {
   editable?: boolean;
   RightIcon?: any;
   pressRightIcon?: () => void;
-  pressRightIcon?: () => void;
   showRightIcon?: boolean;
   styleTextError?: StyleProp<TextStyle>;
   isMultiline?: boolean;
   value?: any;
   valueInput?: any;
-  styleTextError?: StyleProp<TextStyle>;
-  isMultiline?: boolean;
-  value?: any;
 }
 
 /**
