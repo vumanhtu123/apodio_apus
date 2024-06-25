@@ -68,10 +68,10 @@ export default function ItemOrder(props: ItemOrder) {
     });
     return acc;
   }, {}) : [];
-  
-  const arrTaxValues = groupedTaxValues !== undefined ?  Object.values(groupedTaxValues) : [];
 
-  console.log('---------dataTax--',JSON.stringify(arrTaxValues))
+  const arrTaxValues = groupedTaxValues !== undefined ? Object.values(groupedTaxValues) : [];
+
+  // console.log('---------dataTax--',JSON.stringify(arrTaxValues))
 
   return (
     <TouchableOpacity
@@ -129,12 +129,12 @@ export default function ItemOrder(props: ItemOrder) {
         </View>
       ) : null}
       {arrTaxValues?.map((item: any) => (
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1 }}>
-              <Text style={TEXTCONTENT} text={item.taxName} />
-            </View>
-            <Text style={TEXTMONEY} text={formatCurrency(item.amount)} />
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={TEXTCONTENT} text={item.taxName} />
           </View>
+          <Text style={TEXTMONEY} text={formatCurrency(item.amount)} />
+        </View>
       ))}
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
