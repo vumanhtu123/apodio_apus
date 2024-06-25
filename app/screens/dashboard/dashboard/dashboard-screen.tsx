@@ -29,12 +29,9 @@ import ViewInfo from "../component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
 import ItemFunction from "../component/item-function";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import { Screen } from "../../../components/screen/screen";
 import ItemOrder from "../../order/components/item-order";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useStores } from "../../../models";
-import { da } from "date-fns/locale/da";
-import { set } from "date-fns/set";
 import moment from "moment";
 import "moment-timezone";
 import { TabScreenProps } from "../../../navigators/bottom-navigation";
@@ -87,7 +84,6 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     // useEffect(() => {
     //   getToken()
     // }, [])
-    const { authenticationStore } = useStores();
 
     const selectStatus = [
       { status: "", textStatus: "Tất cả" },
@@ -96,11 +92,44 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
       { status: "DONE", textStatus: "Hoàn thành" },
       { status: "CANCEL", textStatus: "Hủy đơn" },
     ];
+    const { authenticationStore, vendorStore } = useStores();
 
     const handleScroll = (event: any) => {
       const scrollHeight = event.nativeEvent.contentOffset.y;
       setScrollHeight(scrollHeight);
     };
+
+    // function testDebug() {
+    //   console.log("abcc");
+
+    //   authenticationStore.onLogin();
+    // }
+
+    // const revenue = 1235780000;
+    // const debt = 1235780;
+
+    const handleGetInfoCompany = async () => {
+      try {
+        const response: any = await vendorStore.getInfoCompany();
+        console.log("INFO COMPANY", response);
+        if (response && response.kind === "ok") {
+          // vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
+          console.log(response.result.data, "log infocompany");
+          vendorStore.setCompanyInfo(response.result.data);
+          // setDataInfoCompany(response.result.data)
+        } else {
+          console.error(
+            "Failed to fetch categories:",
+            response.result.errorCodes
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    useEffect(() => {
+      handleGetInfoCompany();
+    }, []);
 
     const getDataRevenueThisMonth = () => {
       console.log("====================================");

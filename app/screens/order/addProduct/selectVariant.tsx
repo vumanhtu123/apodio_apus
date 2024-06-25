@@ -110,10 +110,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: items.minQuantity,
+                amount: 0,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: items.minQuantity,
+                originAmount: 0,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -124,12 +124,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: newAmount,
+                amount: 0,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: Math.ceil(
-                  newAmount * newObject[0].conversionRate
-                ),
+                originAmount: 0,
               };
             }
           });
@@ -169,10 +167,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: items.minQuantity,
+                amount: 0,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: items.minQuantity,
+                originAmount: 0,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -183,12 +181,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: newAmount,
+                amount: 0,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: Math.ceil(
-                  newAmount * newObject[0].conversionRate
-                ),
+                originAmount: 0,
               };
             }
           });

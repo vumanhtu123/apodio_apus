@@ -334,6 +334,33 @@ export class OrderApi {
       return { kind: "bad-data" };
     }
   }
+  
+async getBalanceLimit(
+    partnerId: any,
+  ): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
+        ApiEndpoint.GET_BALANCE_LIMIT + "?type=EXTERNAL" + '&moveType=OUT_INVOICE' ,
+        {
+          partnerId: partnerId,
+        }
+      );
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-----------------data", data);
+      Loading.hide();
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
 
   async getDetailOrder(id: number): Promise<any> {
     Loading.show({
