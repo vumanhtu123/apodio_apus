@@ -45,7 +45,10 @@ import { LinearGradient } from "react-native-linear-gradient";
 // import { string } from "mobx-state-tree/dist/internal"
 // import { BulletItem } from "app/components/bullet-item/bullet-item"
 import { Row } from "../../../../app/components/Row";
-import { BottomParamList, TabScreenProps } from "../../../navigators/bottom-navigation";
+import {
+  BottomParamList,
+  TabScreenProps,
+} from "../../../navigators/bottom-navigation";
 import { TextField } from "../../../components";
 // import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors"
 // import { UsersScreen } from "../users/view/users-screen"
@@ -115,7 +118,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     // const { userId, imageUrl, name, selectedLanguage, setSelectedLanguage } = accountStore
 
     const navigation = useNavigation();
-    const [isVisibleFeedback, setIsVisibleFeedback] = useState(false)
+    const [isVisibleFeedback, setIsVisibleFeedback] = useState(false);
     const [selectLanguage, setSelectLanguage] = useState("");
     const { top } = useSafeAreaInsets();
     const [data, setData] = useState();
@@ -235,7 +238,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       {
         title: "inforMerchant.btnIntroduct",
         icon: Images.ic_inTroduce,
-        onPress: () => props.navigation.navigate('Introduce'),
+        onPress: () => props.navigation.navigate("Introduce"),
       },
       {
         title: "inforMerchant.btnFeedback",
@@ -245,7 +248,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       {
         title: "inforMerchant.btnSettingBell",
         icon: Images.ic_settingBell,
-        onPress: () => props.navigation.navigate('notificationSetting'),
+        onPress: () => props.navigation.navigate("notificationSetting"),
       },
     ];
 
@@ -469,15 +472,14 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 textAlign: "center",
                 justifyContent: "center",
                 paddingVertical: 16,
-                fontWeight: "700"
+                fontWeight: "700",
               }}
             />
             <View
-
               style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
             />
             <TouchableOpacity
-              style={{ marginVertical: 15, alignItems: 'center' }}
+              style={{ marginVertical: 15, alignItems: "center" }}
               onPress={() => {
                 console.log("log out app");
                 authenticationStore.logout();
@@ -488,8 +490,6 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 style={{ color: colors.palette.radicalRed, fontWeight: "700" }}
               />
             </TouchableOpacity>
-
-
           </View>
           <View
             style={[
@@ -505,7 +505,6 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 width: "100%",
                 alignItems: "center",
                 paddingVertical: 12,
-
               }}
               onPress={() => {
                 setDiaLogout(!diaLogLogout);
@@ -523,42 +522,60 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
           backdropOpacity={0.5}
           isVisible={isVisibleFeedback}
           onBackdropPress={() => {
-            setIsVisibleFeedback(!isVisibleFeedback)
+            setIsVisibleFeedback(!isVisibleFeedback);
           }}
-          style={{ justifyContent: 'flex-end' }}
-        >
+          style={{ justifyContent: "flex-end" }}>
           <View
-            style={{ backgroundColor: colors.palette.white, borderRadius: 8 }}
-          >
-
-            <View style={{ backgroundColor: "#C7C7C7", width: 68, height: 5, borderRadius: 100, alignSelf: 'center', marginTop: 8 }} />
+            style={{ backgroundColor: colors.palette.white, borderRadius: 8 }}>
+            <View
+              style={{
+                backgroundColor: "#C7C7C7",
+                width: 68,
+                height: 5,
+                borderRadius: 100,
+                alignSelf: "center",
+                marginTop: 8,
+              }}
+            />
             <View style={{ padding: scaleWidth(15) }}>
               <View
-
-                style={{ paddingVertical: scaleWidth(18), paddingHorizontal: scaleHeight(10), flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, marginBottom: scaleHeight(15), borderBottomColor: "#E7EFFF" }}
-              >
-                <Text tx="menuDrawer.feedback" style={{ fontWeight: 'bold' }} />
+                style={{
+                  paddingVertical: scaleWidth(18),
+                  paddingHorizontal: scaleHeight(10),
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  borderBottomWidth: 1,
+                  marginBottom: scaleHeight(15),
+                  borderBottomColor: "#E7EFFF",
+                }}>
+                <Text tx="menuDrawer.feedback" style={{ fontWeight: "bold" }} />
                 <TouchableOpacity
-                  onPress={() => setIsVisibleFeedback(!isVisibleFeedback)}
-                >
-                  <Text tx="inforMerchant.cancel" style={{ color: colors.palette.radicalRed }} />
+                  onPress={() => setIsVisibleFeedback(!isVisibleFeedback)}>
+                  <Text
+                    tx="inforMerchant.cancel"
+                    style={{ color: colors.palette.radicalRed }}
+                  />
                 </TouchableOpacity>
               </View>
 
               <TextField
                 labelTx={"feedBack.improtFeedback"}
-                style={{ height: scaleWidth(210), }}
+                style={{ height: scaleWidth(210) }}
               />
-              <TouchableOpacity style={{ alignItems: 'center', padding: scaleWidth(12), backgroundColor: colors.palette.navyBlue, borderRadius: 8 }}>
-                <Text tx="inforMerchant.btnSen"
+              <TouchableOpacity
+                style={{
+                  alignItems: "center",
+                  padding: scaleWidth(12),
+                  backgroundColor: colors.palette.navyBlue,
+                  borderRadius: 8,
+                }}>
+                <Text
+                  tx="inforMerchant.btnSen"
                   style={{ color: palette.white }}
                 />
               </TouchableOpacity>
             </View>
-
-
           </View>
-
         </ReactNativeModal>
       </ScrollView>
     );
