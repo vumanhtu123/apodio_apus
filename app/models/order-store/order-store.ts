@@ -264,7 +264,7 @@ export const OrderStoreModel = types
       };
       self.dataDebtPayment = {
         sumAll: 0,
-        methodPayment: 0,
+        methodPayment: '',
         debt: 0,
         inputPrice: 0,
         apply: false,

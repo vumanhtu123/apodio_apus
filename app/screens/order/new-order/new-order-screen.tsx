@@ -544,7 +544,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     })
     orderStore.setMethodPayment({
       sumAll: 0,
-      methodPayment: 0,
+      methodPayment: '',
       debt: 0,
       inputPrice: 0,
       apply: false,
@@ -775,6 +775,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         countRef.current = translate("order.CASH")
         handleNamMethod()
       }
+      if(orderStore.dataProductAddOrder.length !== 0){
+        priceAll(orderStore.dataProductAddOrder)
+      }
 
     });
     return unsubscribe;
@@ -899,7 +902,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       unit={item.uomName}
                       // images={item.productImage}
                       images={item.images}
-                      cost={formatCurrency(commasToDots(item.unitPrice))}
+                      cost={item.unitPrice}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
