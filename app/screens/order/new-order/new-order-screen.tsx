@@ -82,8 +82,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const [buttonSelect, setButtonSelect] = useState<boolean>(false);
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [method, setMethod] = useState<number>(0);
-  const [address, setAddress] = useState(orderStore.dataAddress)
-  const [editTaxes, setEditTaxes] = useState(false)
+  const [address, setAddress] = useState(orderStore.dataAddress);
+  const [editTaxes, setEditTaxes] = useState(false);
   const countRef = useRef(translate("order.CASH"));
   const nameTax = useRef("");
   // const price = useRef(0);
@@ -93,6 +93,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const priceSumAll = useRef(0);
   const arrTaxAll = useRef([{ percent: "", amount: "" }]);
   const idItemOrder = useRef(0);
+  const valueNote = useRef("");
   const store = useStores();
   const discount = useRef(0);
   const { goBackPayment }: any = route?.params || {};
@@ -108,7 +109,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       const response = await orderStore.getListAddress(
         Number(store.orderStore.dataClientSelect.id)
       );
-      orderStore.setCheckIdPartner(false)
+      orderStore.setCheckIdPartner(false);
       // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         console.log(
@@ -116,35 +117,37 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           JSON.stringify(response.response.data)
         );
         const newArr = response.response.data;
-        const newData = newArr.filter((item: any) => item.isDefault === true)
+        const newData = newArr.filter((item: any) => item.isDefault === true);
         if (newData.length !== 0) {
-          orderStore.setDataAddress(newData[0])
-          setAddress(newData[0])
+          orderStore.setDataAddress(newData[0]);
+          setAddress(newData[0]);
         } else {
           setAddress({
-            id: 0, partnerId: 0,
-            phoneNumber: '',
-            addressType: '',
-            country: { id: 0, name: '' },
-            region: { id: 0, name: '' },
-            city: { id: 0, name: '' },
-            district: { id: 0, name: '' },
-            ward: { id: 0, name: '' },
-            address: '',
+            id: 0,
+            partnerId: 0,
+            phoneNumber: "",
+            addressType: "",
+            country: { id: 0, name: "" },
+            region: { id: 0, name: "" },
+            city: { id: 0, name: "" },
+            district: { id: 0, name: "" },
+            ward: { id: 0, name: "" },
+            address: "",
             isDefault: false,
-          })
+          });
           orderStore.setDataAddress({
-            id: 0, partnerId: 0,
-            phoneNumber: '',
-            addressType: '',
-            country: { id: 0, name: '' },
-            region: { id: 0, name: '' },
-            city: { id: 0, name: '' },
-            district: { id: 0, name: '' },
-            ward: { id: 0, name: '' },
-            address: '',
+            id: 0,
+            partnerId: 0,
+            phoneNumber: "",
+            addressType: "",
+            country: { id: 0, name: "" },
+            region: { id: 0, name: "" },
+            city: { id: 0, name: "" },
+            district: { id: 0, name: "" },
+            ward: { id: 0, name: "" },
+            address: "",
             isDefault: false,
-          })
+          });
         }
       } else {
         console.error("Failed to fetch categories:", response);
@@ -196,14 +199,17 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          navigation.navigate('orders' as never)
+          navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
     }
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
-      (Number(price) - Number(formatCurrency(orderStore.dataDebtPayment.inputPrice))) > (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
+      Number(price) -
+        Number(formatCurrency(orderStore.dataDebtPayment.inputPrice)) >
+        Number(store.orderStore.dataDebtLimit.debtAmount) -
+          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
     ) {
       // orderStore.setMethodPayment({
       //   sumAll: 0,
@@ -218,7 +224,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           price: price,
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-              ? (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
+              ? Number(store.orderStore.dataDebtLimit.debtAmount) -
+                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
               : null,
         },
       });
@@ -287,12 +294,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             data.warehouses == undefined
               ? []
               : [
-                {
-                  id: data.warehouses.id,
-                  name: data.warehouses.name,
-                  quantity: data.warehouses.quantity,
-                },
-              ],
+                  {
+                    id: data.warehouses.id,
+                    name: data.warehouses.name,
+                    quantity: data.warehouses.quantity,
+                  },
+                ],
         },
         quantity: data.amount,
         uomId: data.uomId,
@@ -308,13 +315,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         discount: data.taxesInput ?? 0, // nhập chiết khấu
         // discountComputeType: string,
         type: "PRODUCT",
-        // note: string,
+        // note: valueNote.current,
         isPriceChange: true,
         quantityInventory: data.quantityInventory,
       };
     });
     console.log("data new", JSON.stringify(newArr));
-    const formattedDate = moment.utc(markedDatesS).endOf('day').toISOString();
+    const formattedDate = moment.utc(markedDatesS).endOf("day").toISOString();
     const order: any = {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
@@ -329,7 +336,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // paymentTermId: 0,
       // promotionIds: [],
       paymentMethod: handleNamMethod(),
-      paymentMethodPrepayment: handleNamPreMethod() !== '' ? handleNamPreMethod() : handleNamMethod(),
+      paymentMethodPrepayment:
+        handleNamPreMethod() !== "" ? handleNamPreMethod() : handleNamMethod(),
       // salePersonIds: [],
       // saleUserIds: [],
       deliveryType: "SHIP", //
@@ -339,28 +347,34 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // campaignId: 0,
       // discount: 0, //chiet khau
       discountComputeType: "FIXED",
-      note: note,
+      note: valueNote.current,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
       saleOrderLines: newArr,
       // saleOrderLineDeleteIds: [],
-      isClearingDebts: orderStore.clearingDebt,     //co dung doi tru cong no hay ko
+      isClearingDebts: orderStore.clearingDebt, //co dung doi tru cong no hay ko
       isRetail: false,
       scopeType:
         payment.label == translate("order.DOMESTICALLY")
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      isPrepayment: handleNamPreMethod() !== '' && orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
-      isPayment: handleNamPreMethod() === '' ? true: false,
+      isPrepayment:
+        handleNamPreMethod() !== "" && orderStore.clearingDebt === false
+          ? true
+          : false, // boolean thanh toan truoc
+      isPayment: handleNamPreMethod() === "" ? true : false,
       amountPrePayment:
-      handleNamPreMethod() === '' ? Number(price) :(orderStore.clearingDebt == false
-        ? Number(orderStore.dataDebtPayment.inputPrice)
-        : 0),  // so tien gui len
-      amountClearings: orderStore.clearingDebt == true
-        ? Number(orderStore.dataDebtPayment.inputPrice)
-        : 0,
+        handleNamPreMethod() === ""
+          ? Number(price)
+          : orderStore.clearingDebt == false
+          ? Number(orderStore.dataDebtPayment.inputPrice)
+          : 0, // so tien gui len
+      amountClearings:
+        orderStore.clearingDebt == true
+          ? Number(orderStore.dataDebtPayment.inputPrice)
+          : 0,
     };
     console.log("done new order: ", JSON.stringify(order));
     store.orderStore.postAddOrderSale(order).then((values) => {
@@ -377,10 +391,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         //     Dialog.hide();
         //   },
         // });
-        orderStore.setDataProductAddOrder([])
-        setArrProduct([])
-        handleBack()
-        navigation.navigate('orderSuccess' as never, { idOrder: values.id, screnn: 'create', price: price, inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0 })
+        orderStore.setDataProductAddOrder([]);
+        setArrProduct([]);
+        handleBack();
+        navigation.navigate("orderSuccess" as never, {
+          idOrder: values.id,
+          screnn: "create",
+          price: price,
+          inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0,
+        });
       } else {
         const v = values?.map((data: any) => {
           return data.message;
@@ -407,13 +426,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     if (orderStore.dataClientSelect.id === "") {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.noClient'),
-      })
+        title: "",
+        textBody: translate("txtToats.noClient"),
+      });
     } else {
-      navigation.navigate("deliveryAddress" as never)
+      navigation.navigate("deliveryAddress" as never);
     }
-  }
+  };
 
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
@@ -455,13 +474,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     console.log("input taxes", text);
     let newArr = arrProduct!.map((item: any) => {
       if (item.id === id) {
-        return { ...item, taxesInput: Number(text), addInputTaxes: false, };
+        return { ...item, taxesInput: Number(text), addInputTaxes: false };
       }
       return item;
     });
     setArrProduct(newArr);
     // discountAll(newArr);
-    postTaxLines(newArr)
+    postTaxLines(newArr);
     // setEditTaxes(false)
     if (isDeposit === true) {
       handleDebt();
@@ -474,6 +493,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         return {
           ...item,
           addTaxes: (item.addTaxes = !item.addTaxes),
+          addInputTaxes: true,
           taxesInput: 0,
         };
       }
@@ -514,34 +534,35 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         return {
           ...item,
           unitPrice: Number(text),
-          price: Number(text) * Number(item.amount)
+          price: Number(text) * Number(item.amount),
         };
       }
       return item;
     });
-    console.log(newArr, 'log=====')
+    console.log(newArr, "log=====");
     setArrProduct(newArr);
-    postTaxLines(newArr)
+    postTaxLines(newArr);
   };
 
   const handleBack = () => {
     orderStore.setDataAddress({
-      id: 0, partnerId: 0,
-      phoneNumber: '',
-      addressType: '',
-      country: { id: 0, name: '' },
-      region: { id: 0, name: '' },
-      city: { id: 0, name: '' },
-      district: { id: 0, name: '' },
-      ward: { id: 0, name: '' },
-      address: '',
+      id: 0,
+      partnerId: 0,
+      phoneNumber: "",
+      addressType: "",
+      country: { id: 0, name: "" },
+      region: { id: 0, name: "" },
+      city: { id: 0, name: "" },
+      district: { id: 0, name: "" },
+      ward: { id: 0, name: "" },
+      address: "",
       isDefault: false,
-    })
+    });
     orderStore.setDataDebtLimit({
       isHaveDebtLimit: false,
       debtAmount: 0,
       amountOwed: 0,
-    })
+    });
     orderStore.setMethodPayment({
       sumAll: 0,
       methodPayment: 0,
@@ -564,21 +585,21 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
     orderStore.setCheckPriceList(false);
     orderStore.setViewGrid(true);
-    orderStore.setClearingDebt(false)
-    orderStore.setCheckIdPartner(false)
-    orderStore.setCheckRenderList(false)
+    orderStore.setClearingDebt(false);
+    orderStore.setCheckIdPartner(false);
+    orderStore.setCheckRenderList(false);
     orderStore.setDataPriceListSelect({
       id: "",
       name: "",
       priceListCategory: "",
       currencyId: "",
       pricelistId: "",
-    })
-    setArrProduct([])
+    });
+    setArrProduct([]);
     setPayment({
       label: translate("order.DOMESTICALLY"),
-    })
-    setNote(false)
+    });
+    setNote(false);
   };
 
   const handleSelectTaxes = (id: any) => {
@@ -628,7 +649,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       })
     );
   };
-  useEffect(() => { getListTax() }, [payment])
+  useEffect(() => {
+    getListTax();
+  }, [payment]);
 
   const postTaxLines = async (data: any) => {
     const newItem = data.filter((item: any) => item.id === idItemOrder.current);
@@ -647,7 +670,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       environmentalResourceTax: 0,
       vat: 0,
     };
-    console.log('log data 12345', valueApi)
+    console.log("log data 12345", valueApi);
     console.log("tuvm tax 1234", JSON.stringify(arrTaxAll.current));
     await store.orderStore.postTaxLine([valueApi]).then((value: any) => {
       console.log("tuvm tax post", JSON.stringify(value));
@@ -670,7 +693,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       }
       return value;
     });
-    console.log('zxxzczxcx' , newArr)
+    console.log("zxxzczxcx", newArr);
     handleSumAmountVAT(newArr);
     setArrProduct(newArr);
     console.log("data new tuvm", JSON.stringify(newArr));
@@ -706,12 +729,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
 
   const handleDebt = () => {
     arrProduct.map((data: any) => {
-      const price = Number(data.amount) * Number(data.unitPrice)
-      const discountPrice = price - (Number(discount) / 100) * price
+      const price = Number(data.amount) * Number(data.unitPrice);
+      const discountPrice = price - (Number(discount) / 100) * price;
       if (data.taxValue !== undefined) {
         console.log("tutu", data.taxValue);
-        return (priceSumAll.current =
-          Number(data.taxValue) + discountPrice)
+        return (priceSumAll.current = Number(data.taxValue) + discountPrice);
       } else {
         console.log("tutuiii", data.taxValue);
         return discountPrice;
@@ -719,7 +741,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
   };
 
-  console.log('---------arrProduct--------', JSON.stringify(arrProduct))
+  console.log("---------arrProduct--------", JSON.stringify(arrProduct));
   const selectProduct = () => {
     orderStore.setDataProductAddOrder(arrProduct.slice());
   };
@@ -727,13 +749,19 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const priceAll = (data: any) => {
     console.log("data first", data);
     const all = data.reduce((sum: any, item: any) => {
-      return sum + ((Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) - ((Number(item.taxesInput ?? 0) / 100) * (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0))) + Number(item.taxValue ?? 0));
+      return (
+        sum +
+        (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0) -
+          (Number(item.taxesInput ?? 0) / 100) *
+            (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) +
+          Number(item.taxValue ?? 0))
+      );
     }, 0);
     const allNoVat = data.reduce((sum: any, item: any) => {
-      return sum + (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0));
+      return sum + Number(item.unitPrice ?? 0) * Number(item.amount ?? 0);
     }, 0);
     setPrice(all);
-    setPriceNoVat(allNoVat)
+    setPriceNoVat(allNoVat);
     console.log("sum all: ", all);
   };
 
@@ -760,22 +788,31 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      console.log('arrProduct------1----', JSON.stringify(orderStore.dataProductAddOrder));
+      console.log(
+        "arrProduct------1----",
+        JSON.stringify(orderStore.dataProductAddOrder)
+      );
       setArrProduct(orderStore.dataProductAddOrder.slice());
       getListTax();
-      if (orderStore.dataAddress.id === 0 || orderStore.checkIdPartner === true) {
+      if (
+        orderStore.dataAddress.id === 0 ||
+        orderStore.checkIdPartner === true
+      ) {
         getListAddress();
       }
-      setAddress(orderStore.dataAddress)
+      setAddress(orderStore.dataAddress);
       // getListAddress();
       setIsDeposit(orderStore.dataDebtPayment.apply);
-      if ((Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)) === 0) {
-        setMethod(0)
-        setButtonPayment(false)
-        countRef.current = translate("order.CASH")
-        handleNamMethod()
+      if (
+        Number(store.orderStore.dataDebtLimit.debtAmount) -
+          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0) ===
+        0
+      ) {
+        setMethod(0);
+        setButtonPayment(false);
+        countRef.current = translate("order.CASH");
+        handleNamMethod();
       }
-
     });
     return unsubscribe;
   }, [navigation]);
@@ -789,7 +826,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       <Header
         LeftIcon={Images.back}
         onLeftPress={() => {
-          handleBack()
+          handleBack();
           navigation.goBack();
         }}
         style={{ height: scaleHeight(70) }}
@@ -842,7 +879,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             titleTx={"order.paymentMethods"}
             arrData={arrPayment}
             onPressChoice={(item: any) => {
-              setPayment(item)
+              setPayment(item);
               orderStore.clearTaxValueAndTaxesInput();
               setArrProduct(orderStore.dataProductAddOrder.slice());
               // getListTax();
@@ -876,18 +913,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         console.log("check validate", item.price);
                         item.unitPrice === undefined || item.unitPrice === 0
                           ? Dialog.show({
-                            type: ALERT_TYPE.INFO,
-                            title: translate("productScreen.Notification"),
-                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
-                            button2: translate(
-                              "productScreen.BtnNotificationAccept"
-                            ),
-                            closeOnOverlayTap: false,
-                            onPressButton: () => {
-                              // navigation.goBack();
-                              Dialog.hide();
-                            },
-                          })
+                              type: ALERT_TYPE.INFO,
+                              title: translate("productScreen.Notification"),
+                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                              button2: translate(
+                                "productScreen.BtnNotificationAccept"
+                              ),
+                              closeOnOverlayTap: false,
+                              onPressButton: () => {
+                                // navigation.goBack();
+                                Dialog.hide();
+                              },
+                            })
                           : handleSelectTaxes(item.id);
                       }}
                       taxesInput={item.taxesInput}
@@ -917,7 +954,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         handleInputTaxes(item.id, text)
                       }
                       textDiscount={item.taxesInput}
-                      handleUpdatePrice={function ({ }: {}): void {
+                      handleUpdatePrice={function ({}: {}): void {
                         selectInputPrice(item.id);
                       }}
                       selectUpdate={item.addPrice}
@@ -982,7 +1019,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   <Images.icon_caretRight2 />
                 </View>
                 {countRef.current.toString() ===
-                  translate("order.DEDUCTION_OF_LIABILITIES") ? (
+                translate("order.DEDUCTION_OF_LIABILITIES") ? (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text
                       tx="order.available_limit"
@@ -996,9 +1033,19 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       style={{
                         fontSize: 10,
                         fontWeight: "400",
-                        color: (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))> Number(price) ? "#00CC6A" : "#FF0000",
+                        color:
+                          Number(store.orderStore.dataDebtLimit.debtAmount) -
+                            Number(
+                              store.orderStore.dataDebtLimit.amountOwed ?? 0
+                            ) >
+                          Number(price)
+                            ? "#00CC6A"
+                            : "#FF0000",
                       }}>
-                      {(Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)) ?? 0}
+                      {Number(store.orderStore.dataDebtLimit.debtAmount) -
+                        Number(
+                          store.orderStore.dataDebtLimit.amountOwed ?? 0
+                        ) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1017,7 +1064,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
 
           <ShowNote
             note={note}
-            setNoteData={function (note: String, arr: []): void {
+            setNoteData={function (note: string, arr: []): void {
+              valueNote.current = note;
               console.log("note---------", note);
               console.log("arr---------", arr);
             }}
@@ -1119,7 +1167,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
+                              ? Number(
+                                  store.orderStore.dataDebtLimit.debtAmount
+                                ) -
+                                Number(
+                                  store.orderStore.dataDebtLimit.amountOwed ?? 0
+                                )
                               : 0,
                         },
                       });
@@ -1217,18 +1270,22 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             <View style={{ flexDirection: "row" }}>
               <Text tx={"order.prepayment"} style={[styles.textTotal]} />
               <Text
-                text={'(' + orderStore.dataDebtPayment.methodPayment + ')'}
+                text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
                   color: "#747475",
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
-                {formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.sumAll)))}
+                {formatCurrency(
+                  commasToDots(Number(orderStore.dataDebtPayment.sumAll))
+                )}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textTotal}>
-                {formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.inputPrice)))}
+                {formatCurrency(
+                  commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
+                )}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -1248,7 +1305,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       price: price,
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                          ? (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
+                          ? Number(store.orderStore.dataDebtLimit.debtAmount) -
+                            Number(
+                              store.orderStore.dataDebtLimit.amountOwed ?? 0
+                            )
                           : null,
                     },
                   });
@@ -1272,7 +1332,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              {formatCurrency(commasToDots(Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)))}
+              {formatCurrency(
+                commasToDots(
+                  Number(price ?? 0) -
+                    Number(orderStore.dataDebtPayment.inputPrice ?? 0)
+                )
+              )}
             </Text>
           </View>
         ) : null}
@@ -1320,7 +1385,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         }}
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
-          debtAmount: (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)),
+          debtAmount:
+            Number(store.orderStore.dataDebtLimit.debtAmount) -
+            Number(store.orderStore.dataDebtLimit.amountOwed ?? 0),
         }}
       />
       <ModalTaxes
