@@ -324,6 +324,7 @@ const en = {
     totalInvoice: "Tổng hoá đơn",
     symbol: "Kí hiệu",
     invoiceType: "Loại hoá đơn",
+    createOrderSuccess: "Tạo đơn hàng thành công",
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -750,9 +751,13 @@ const en = {
     editTitleSuccess: "Bạn đã sửa đơn hàng thành công",
     btnCreate: "Tạo thêm sản phẩm",
     btnDetail: "Xem chi tiết sản phẩm",
-    titleSuccessOrder: "Bạn đã tạo đơn hàng thành công",
+    titleSuccessOrder: "Bạn đã tạo đơn hàng thành công đơn hàng mã",
     btnCreateOrder: "Tạo thêm đơn hàng",
     btnDetailOrder: "Xem chi tiết đơn hàng",
+    timeCreateOderSuccess: "Thời gian tạo đơn hàng thành công",
+    orderHasBeenPaid: "Đơn hàng đã thanh toán ",
+    theRemainingAmount: "Số tiền còn lại phải thu khách hàng",
+    value: " trị giá ",
   },
 
   wareHouse: {
@@ -945,6 +950,7 @@ const en = {
     brick60x60: "Gạch 60*60",
     brick80x80: "Gạch 80*80",
     createClient: "Tạo khách hàng",
+
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",

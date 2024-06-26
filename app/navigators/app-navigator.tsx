@@ -153,6 +153,7 @@ export const AppStack = () => {
         gestureDirection: "horizontal",
         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
+      // orderSuccess
       initialRouteName={"listCompany"}>
       <Stack.Screen
         name="accountSecurity"

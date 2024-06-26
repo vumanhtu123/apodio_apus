@@ -51,15 +51,23 @@ export const SelectClientScreen: FC<
   const statusLoadMore = getAPi.orderStore.isLoadMoreSelectClient
   // console.log('value is load more', statusLoadMore);
 
+  var partnerTagIds = props.route.params?.myTag
+  console.log('====================================');
+  console.log("My data Tag", partnerTagIds);
+  console.log('====================================');
+
+  const type = partnerTagIds?.map((item: any) => item).join(", ")
+  // console.log("My data Tag 2", type);
+
   const getListClient = () => {
     getAPi.orderStore
-      .getListSelectClient(0, size.current, sort, valueSearch, true, statusLoadMore)
+      .getListSelectClient(0, size.current, sort, valueSearch, true, statusLoadMore, type ?? null)
       .then((data) => {
         // console.log("data SelectClient", data);
 
         // setTotalPage(data?.totalPages)
 
-        const dataSelectClien = data?.content.map((item) => {
+        const dataSelectClient = data?.content.map((item) => {
           return {
             id: item.id,
             name: item.name,
@@ -67,13 +75,13 @@ export const SelectClientScreen: FC<
             phoneNumber: item.phoneNumber,
           };
         });
-        setMyDataSelectClient(dataSelectClien);
+        setMyDataSelectClient(dataSelectClient);
       });
   };
 
   useEffect(() => {
     getListClient();
-  }, [getAPi.orderStore.sortCreateClient]);
+  }, [getAPi.orderStore.sortCreateClient,]);
 
   useEffect(() => {
     getListClient();
@@ -122,7 +130,7 @@ export const SelectClientScreen: FC<
 
     getListClient();
 
-  }, [getAPi.orderStore.sortCreateClient,]);
+  }, [getAPi.orderStore.sortCreateClient, partnerTagIds]);
 
   useEffect(() => {
     getListClient()
@@ -184,9 +192,9 @@ export const SelectClientScreen: FC<
         <FlatList
           data={myDataSelectClient}
           renderItem={({ item, index }): any => {
-            console.log('====================================');
-            console.log("data item:", item);
-            console.log('====================================');
+            // console.log('====================================');
+            // console.log("data item:", item);
+            // console.log('====================================');
             if (dataItemSelect?.id == item.id) {
               // console.log("id send", dataItemSelect?.id);
               // console.log("data item 2:", item);
@@ -268,7 +276,7 @@ export const SelectClientScreen: FC<
 
             return <View>
               {
-                myDataSelectClient.length !== 1 ?
+                myDataSelectClient?.length !== 1 ?
                   <>
                     {isLoadingMore && <ActivityIndicator />}
                   </>

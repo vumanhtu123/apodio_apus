@@ -167,6 +167,8 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
                             </>
                         )}
                     </View>
+
+
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
                         <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
                             <Text style={{ fontSize: fontSize.size14 }}>Thiết lập lại</Text>
