@@ -389,7 +389,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
         orderStore.setDataProductAddOrder([])
         setArrProduct([])
         handleBack()
-        navigation.navigate('orderSuccess' as never, { idOrder: values.id, screen: screen === "copy" ? 'create' : 'edit'  })
+        navigation.navigate('orderSuccess' as never, { idOrder: values.id, screen: screen === "copy" ? 'create' : 'edit', price: price, inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0  })
       } else {
         const v = values?.map((data: any) => {
           return data.message;

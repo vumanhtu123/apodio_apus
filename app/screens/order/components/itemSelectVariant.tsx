@@ -118,7 +118,9 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 <Images.icon_plusGreen />
                             </TouchableOpacity>
                         </View>
-                        <View style={{ width: '20%' }}></View>
+                        <View style={{ width: '20%' }}>
+                            <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                        </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
@@ -166,7 +168,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         height: scaleHeight(48), backgroundColor: colors.navyBlue, borderRadius: 8
                     }}
                         onPress={() => {
-                            item.saleUom = {name: uom.label, id: uom.id}
+                            item.saleUom = { name: uom.label, id: uom.id }
                             item.conversionRate = uom.conversionRate
                             setIsModal(false)
                         }}
@@ -243,7 +245,9 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 <Images.icon_plusGreen />
                             </TouchableOpacity>
                         </View>
-                        <View style={{ width: '20%' }}></View>
+                        <View style={{ width: '20%' }}>
+                            <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                        </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
@@ -257,9 +261,9 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 <Text style={styles.textPriceInput} text={formatCurrency(commasToDots(item.unitPrice))} />
                                 <TouchableOpacity onPress={() => {
                                     // setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
-                                    console.log('first price' , item.unitPrice)
+                                    console.log('first price', item.unitPrice)
                                     setCheck(true)
-                                    
+
                                 }}>
                                     <Images.icon_edit />
                                 </TouchableOpacity>
@@ -269,7 +273,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                         // backgroundColor: 'red',
                                         paddingRight: scaleWidth(20),
                                         paddingBottom: scaleHeight(5),
-                                        justifyContent : 'center'
+                                        justifyContent: 'center'
                                     }}
                                     onPress={() => {
                                         setModalPrice(true)
@@ -308,7 +312,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         height: scaleHeight(48), backgroundColor: colors.navyBlue, borderRadius: 8
                     }}
                         onPress={() => {
-                            item.saleUom = {name: uom.label, id: uom.id}
+                            item.saleUom = { name: uom.label, id: uom.id }
                             item.conversionRate = uom.conversionRate
                             setIsModal(false)
                             console.log(item)

@@ -36,6 +36,7 @@ const en = {
     noClient: 'Vui lòng chọn khách hàng',
     change_city: "Vui lòng chọn Tỉnh/Thành phố",
     change_district: "Vui lòng chọn Quận/Huyện",
+    change_payment: "Vui lòng chọ phuơng thức thanh toán trước"
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",

@@ -10,8 +10,10 @@ import { useStores } from "../../../models"
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder, screen } = route.params || undefined
+    const { idOrder, screen, price, inputPrice } = route.params || undefined
     const { orderStore } = useStores()
+    console.log(price, '234234'),
+    console.log(inputPrice)
     return (
         <View style={{
             backgroundColor: "#Ffffff",
