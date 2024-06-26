@@ -644,7 +644,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(props: any)
     const valueApi = {
       quantity: newItem[0].amount,
       unitPrice: newItem[0].unitPrice,
-      discount: newItem[0].taxesInput,
+      discount: newItem[0].taxesInput ?? 0,
       taxes: [
         {
           id: newItem[0].VAT ? newItem[0].VAT.value : 0,

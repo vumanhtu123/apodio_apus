@@ -12,6 +12,7 @@ import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
 import moment from "moment";
 import { TextFieldCurrency } from "../../../components/text-field-currency/text-field-currency";
+import { formatCurrency } from "../../../utils/validate";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
@@ -19,8 +20,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const type = props.route.params.params.type;
   const price = props.route.params.params.price;
   const debtAmount = props.route.params.params.debtAmount;
-  const [method, setMethod] = useState<number>(0);
-  const countRef = useRef(translate("order.CASH"));
+  const [method, setMethod] = useState<number>();
+  const countRef = useRef();
   const [credit, setCredit] = useState(0)
   const [isCredit, setIsCredit] = useState(false)
 
@@ -126,11 +127,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const Apply = () => {
     orderStore.setMethodPayment({
       sumAll: price ?? 0,
-      methodPayment: "Tien Mat",
+      methodPayment: countRef.current,
       debt: Remain(),
       inputPrice: Number(text) ?? 0,
       apply: true,
     });
+    console.log(text, '==============+')
     navigation.goBack();
     if(countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")){
       orderStore.setClearingDebt(true)
@@ -140,7 +142,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     // navigation.navigate('newOrder', { goBackPayment: true })
   };
   console.log("tuvm", type);
-  // const [check, setCheck] = useState(false)
+  const [check, setCheck] = useState(false)
   const [buttonPayment, setButtonPayment] = useState<boolean>(false);
   const [text, setText] = useState("");
   const {
@@ -171,7 +173,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {/* {check !== true ? ( */}
+          {type === true ? null: (check !== true ? (
             <View
               style={{
                 backgroundColor: "#FEF7E5",
@@ -189,7 +191,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   fontWeight: "400",
                 }}></Text>
             </View>
-          {/* ) : null} */}
+          ) : null)}
           <Text
             style={{
               fontSize: 20,
@@ -215,7 +217,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           <Controller
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
-              <TextFieldCurrency
+              <TextField
                 keyboardType='numeric'
                 labelTx={"order.customer_paid"}
                 style={{
@@ -243,11 +245,17 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 }}
                 // defaultValue={text===""? "": text}
                 onSubmitEditing={() => {
-                  if (Number(value) >= Number(Sum1())) {
+                  if (Number(value) >= Number(Sum1())&& Number(value)<= Number(price)) {
                     setValue('price', value.toString())
                     // onChange(price)
                     setText(value)
                     Remain()
+                  }
+                  if(Number(value) >= Number(price)){
+                    setError('price', {
+                      type: "validate",
+                      message: "Không thể trả trước quá giá trị đơn hàng",
+                    })
                   }
                   // if (Number(value) < Number(Sum())) {
                   //   setValue('price', value.toString())
@@ -261,6 +269,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       message: 'Khách cần trả lớn hơn số tiền tối thiểu',
                     });
                   }
+
                   // if (Number(price) > Number(value) && Number(value) >= Number(Sum())) {
                   //   setText(value)
                   //   Remain()
@@ -360,7 +369,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         setMethod={function (item: number, name: string): void {
           setMethod(item);
           countRef.current = name;
-          // setCheck(true)
+          setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
             if(Number(Sum())<= credit){
               setText(Sum().toString())

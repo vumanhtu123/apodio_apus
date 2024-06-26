@@ -163,8 +163,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         height: scaleHeight(48), backgroundColor: colors.navyBlue, borderRadius: 8
                     }}
                         onPress={() => {
-                            item.saleUom.name = uom.label
-                            item.saleUom.id = uom.id
+                            item.saleUom = {name: uom.label, id: uom.id}
                             item.conversionRate = uom.conversionRate
                             setIsModal(false)
                         }}
@@ -309,8 +308,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         height: scaleHeight(48), backgroundColor: colors.navyBlue, borderRadius: 8
                     }}
                         onPress={() => {
-                            item.saleUom.name = uom.label
-                            item.saleUom.id = uom.id
+                            item.saleUom = {name: uom.label, id: uom.id}
                             item.conversionRate = uom.conversionRate
                             setIsModal(false)
                             console.log(item)

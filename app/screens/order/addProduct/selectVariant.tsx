@@ -780,7 +780,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         </View>
       </Modal>
       <PriceModal
-        isVisible={true}
+        isVisible={modalPrice}
         setIsVisible={() => setModalPrice(false)}
         title={"productDetail.retailPrice"}
         onCancel={() => {

@@ -52,8 +52,7 @@ import {
   Dialog,
   Toast,
 } from "../../../components/dialog-notification";
-import { formatStringToFloat } from "../../../utils/validate";
-import { formatCurrency } from "../../../utils/validate";
+import { formatCurrency, formatStringToFloat } from "../../../utils/validate";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -204,7 +203,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     }
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
-      (Number(price) - Number(orderStore.dataDebtPayment.inputPrice)) > (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
+      (Number(price) - Number(formatCurrency(orderStore.dataDebtPayment.inputPrice))) > (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
     ) {
       // orderStore.setMethodPayment({
       //   sumAll: 0,
@@ -636,7 +635,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     const valueApi = {
       quantity: newItem[0].amount,
       unitPrice: newItem[0].unitPrice,
-      discount: newItem[0].taxesInput,
+      discount: newItem[0].taxesInput ?? 0,
       taxes: [
         {
           id: newItem[0].VAT ? newItem[0].VAT.value : 0,
@@ -996,7 +995,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       style={{
                         fontSize: 10,
                         fontWeight: "400",
-                        color: "#FF0000",
+                        color: (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))> Number(price) ? "#00CC6A" : "#FF0000",
                       }}>
                       {(Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)) ?? 0}
                       <Text
@@ -1228,7 +1227,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textTotal}>
-                {formatCurrency(Number(orderStore.dataDebtPayment.inputPrice))}
+                {Number(orderStore.dataDebtPayment.inputPrice)}
               </Text>
               <TouchableOpacity
                 onPress={() => {
