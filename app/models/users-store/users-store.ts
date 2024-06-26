@@ -15,7 +15,7 @@ export const UserStoreModal = types
 }))
 .actions((self) =>({
     getInforAccount: flow(function* (
-        id : string
+        id : number
     ){
         try {
             const inforAccountAPI = new InforAccountAPI(self.environment.apiErp)

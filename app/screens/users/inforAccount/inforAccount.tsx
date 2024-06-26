@@ -16,9 +16,11 @@ export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount
         const [inforAccount, setInforAccount] = useState<any>()
 
         const getApi = useStores()
+        const getUserId = getApi.authenticationStore.userId
+        console.log("User Id", getUserId);
 
         const getInforAccount = () => {
-            getApi.userStore.getInforAccount('1403').then((data: any) => {
+            getApi.userStore.getInforAccount(getUserId).then((data: any) => {
                 console.log("data inforAccount", data)
 
                 setInforAccount(data)

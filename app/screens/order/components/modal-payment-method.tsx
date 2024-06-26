@@ -221,6 +221,7 @@ const Item_Payment = (data: InputItem) => {
                 }}>
                 {data.debt.debtAmount ?? 0}
                 <Text
+                text=")"
                   style={{
                     fontWeight: "400",
                     fontSize: 12,

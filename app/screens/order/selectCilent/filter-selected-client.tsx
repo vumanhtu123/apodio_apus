@@ -6,7 +6,7 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Header, Text } from "../../../components";
 import { Images } from "../../../../assets";
-import { colors, scaleHeight } from "../../../theme";
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Styles } from "./styles";
 import { useStores } from "../../../models";
 
@@ -15,6 +15,8 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
     function filterSelect(props) {
         const [onClick, setOnClick] = useState('successfully')
         const [sort, setSort] = useState<any>()
+        const [MyDataTag, setMyDataTag] = useState<any>()
+        const [selectedTagId, setSelectedTagId] = useState([])
         const { orderStore } = useStores()
 
         // console.log('====================================');
@@ -24,21 +26,55 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
         // console.log('tessss2', aToz);
         // console.log('====================================');
 
+        const getDataTag = () => {
+            orderStore.getListTagClient(true).then((data) => {
+                // console.log('====================================');
+                // console.log("My data Tag", data);
+                // console.log('====================================');
 
+                const MyDataTag = data?.content.map((item) => {
+                    return {
+                        id: item.id,
+                        name: item.name
+                    }
+                })
 
+                setMyDataTag(MyDataTag)
+            })
+        }
 
+        // console.log('====================================');
+        // console.log("My data Tag", MyDataTag);
+        // console.log('====================================');
+        useEffect(() => {
+            getDataTag()
+        }, [props.navigation])
+
+        const handleItemTagPress = (id: number) => {
+            setSelectedTagId((prevSelectedIds: any) => {
+
+                if (prevSelectedIds.includes(id)) {
+                    // Nếu ID đã được chọn, loại bỏ nó khỏi mảng
+                    return prevSelectedIds.filter((itemId: any) => itemId !== id);
+                } else {
+                    // Nếu ID chưa được chọn, thêm nó vào mảng
+                    return [...prevSelectedIds, id];
+                }
+            });
+        };
 
 
         const handleSort = () => {
             orderStore.setSortCreateClient(sort)
+
             // console.log("sorttttttt", orderStore.sortCreateClient);
             // console.log('====================================');
             // console.log("2222");
             // console.log('====================================');
-            props.navigation.navigate('selectClient')
+            props.navigation.navigate('selectClient', { myTag: selectedTagId })
         }
 
-
+        console.log("arr data item tag", selectedTagId);
         // console.log("keqqqqqqqq", newOrOld);
         return (
             <View style={{ flex: 1 }}>
@@ -74,10 +110,6 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                     </View>
 
 
-
-
-
-
                     <View style={{ marginBottom: 20 }}>
                         <Text tx="selectClient.followName" style={Styles.stylesTitle} />
                         <View style={Styles.flexRow}>
@@ -101,6 +133,43 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                         </View>
                     </View>
 
+                    <View>
+                        <Text tx="selectClient.tag" style={Styles.stylesTitle} />
+                        <FlatList
+                            // horizontal={true}
+                            data={MyDataTag}
+                            renderItem={({ item }) => {
+                                return (
+                                    <TouchableOpacity style={{
+                                        width: scaleWidth(109),
+                                        height: scaleHeight(38),
+                                        borderRadius: 8,
+                                        backgroundColor: selectedTagId.includes(item.id) ? colors.palette.aliceBlue2 : "#F6F7F9",
+                                        borderWidth: 1,
+                                        borderColor: selectedTagId.includes(item.id) ? colors.palette.navyBlue : '#F6F7F9',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        marginRight: scaleWidth(8),
+                                        marginBottom: scaleHeight(8)
+                                    }}
+                                        onPress={() => {
+                                            handleItemTagPress(item.id)
+
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontWeight: "400",
+                                                fontSize: fontSize.size10,
+                                                color: colors.palette.dolphin
+                                            }}
+                                        >{item.name}</Text>
+                                    </TouchableOpacity>
+                                )
+                            }}
+                            numColumns={3}
+                        />
+                    </View>
 
 
                 </View>

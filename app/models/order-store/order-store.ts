@@ -1,3 +1,4 @@
+import { TagList } from './../tag-list-filter-client-model';
 import { PriceList } from "./../../screens/order/components/header-order";
 import { ClientSlected } from "./../order-list-select-clien-model";
 import { flow, types, applySnapshot } from "mobx-state-tree";
@@ -32,8 +33,6 @@ import {
   PriceVariantResult,
 } from "./entities/order-variant-model";
 import { TaxModel } from "./entities/order-tax-model";
-import { Loading } from "../../components/dialog-notification";
-import { HomeApi } from "../../services/api/api-home";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -61,7 +60,7 @@ export const OrderStoreModel = types
     sortCreateClient: types.optional(types.string, ""),
     search: types.optional(types.string, ""),
     checkIdPartner: types.optional(types.boolean, false),
-    sort: types.optional(types.array(types.string), []),
+    sort: types.optional(types.string, ''),
     isLoadMore: types.optional(types.boolean, false),
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
@@ -73,16 +72,19 @@ export const OrderStoreModel = types
     checkRenderList: types.optional(types.boolean, false),
     isLoadMoreSelectClient: types.optional(types.boolean, false),
     clearingDebt: types.optional(types.boolean, false),
-    dataAddress: types.optional(types.frozen<Root1>(), {id: 0, partnerId: 0,
-      phoneNumber: '',
-      addressType: '',
-      country: {id: 0, name: ''},
-      region: {id: 0, name: ''},
-      city: {id: 0, name: ''},
-      district: {id: 0, name: ''},
-      ward: {id: 0, name: ''},
-      address: '',
-      isDefault: false,}),
+    dataAddress: types.optional(types.frozen<Root1>(), {
+      id: 0,
+      partnerId: 0,
+      phoneNumber: "",
+      addressType: "",
+      country: { id: 0, name: "" },
+      region: { id: 0, name: "" },
+      city: { id: 0, name: "" },
+      district: { id: 0, name: "" },
+      ward: { id: 0, name: "" },
+      address: "",
+      isDefault: false,
+    }),
     dataClientSelect: types.optional(types.frozen<ClientSlected>(), {
       id: "",
       name: "",
@@ -104,12 +106,11 @@ export const OrderStoreModel = types
     }),
     dataDebtPayment: types.optional(types.frozen<any>(), {
       sumAll: 0,
-      methodPayment: '',
+      methodPayment: "",
       debt: 0,
       inputPrice: 0,
       apply: false,
     }),
-    
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -196,18 +197,30 @@ export const OrderStoreModel = types
       self.dataPriceListSelected = value;
     },
 
-    setIsLoadMoreSelectClient(value : any){
+    setIsLoadMoreSelectClient(value: any) {
       console.log("doanlog value isLoadMore Select Client", value);
-      self.isLoadMoreSelectClient = value 
+      self.isLoadMoreSelectClient = value;
     },
-    clearTaxValueAndTaxesInput(){
-      const updatedItems = self.dataProductAddOrder.map(item => {
-        return { ...item, taxValue: undefined, taxesInput: undefined, addInputTaxes:undefined, addTaxes:undefined, undefined, amountTotal: undefined, VAT: undefined};
+    clearTaxValueAndTaxesInput() {
+      const updatedItems = self.dataProductAddOrder.map((item) => {
+        return {
+          ...item,
+          taxValue: undefined,
+          taxesInput: undefined,
+          addInputTaxes: undefined,
+          addTaxes: undefined,
+          undefined,
+          amountTotal: undefined,
+          VAT: undefined,
+        };
       });
-      console.log('----updatedItems---', JSON.stringify(updatedItems))
+      console.log("----updatedItems---", JSON.stringify(updatedItems));
       applySnapshot(self.dataProductAddOrder, updatedItems);
       //this.setDataProductAddOrder(updatedItems);
-      console.log('----updatedItems222222---', JSON.stringify(self.dataProductAddOrder))
+      console.log(
+        "----updatedItems222222---",
+        JSON.stringify(self.dataProductAddOrder)
+      );
     },
     reset() {
       self.isModalTracking = false;
@@ -220,7 +233,7 @@ export const OrderStoreModel = types
       self.sortCreateClient = "";
       self.search = "";
       self.checkIdPartner = false;
-      self.sort.clear();
+      self.sort = "";
       self.isLoadMore = false;
       self.productId = 0;
       self.viewProductType = "VIEW_PRODUCT";
@@ -233,14 +246,14 @@ export const OrderStoreModel = types
       self.dataAddress = {
         id: 0,
         partnerId: 0,
-        phoneNumber: '',
-        addressType: '',
-        country: { id: 0, name: '' },
-        region: { id: 0, name: '' },
-        city: { id: 0, name: '' },
-        district: { id: 0, name: '' },
-        ward: { id: 0, name: '' },
-        address: '',
+        phoneNumber: "",
+        addressType: "",
+        country: { id: 0, name: "" },
+        region: { id: 0, name: "" },
+        city: { id: 0, name: "" },
+        district: { id: 0, name: "" },
+        ward: { id: 0, name: "" },
+        address: "",
         isDefault: false,
       };
       self.dataClientSelect = {
@@ -310,6 +323,7 @@ export const OrderStoreModel = types
       search: string,
       b2cActivated: boolean,
       isLoadMore: boolean,
+      partnerTagIds?: []
     ) {
       try {
         const clientAPI = new SelectClientAPI(self.environment.apiErp);
@@ -320,7 +334,8 @@ export const OrderStoreModel = types
             sort,
             search,
             b2cActivated,
-            isLoadMore
+            isLoadMore,
+            partnerTagIds
           );
         console.log(
           "SlectClientResult-------------",
@@ -328,8 +343,30 @@ export const OrderStoreModel = types
         );
         return result.data;
       } catch (error) {
-        console.log("Get list info company", error);
+        console.log("Get list select client error", error);
       }
+    }),
+
+    getListTagClient: flow(function * (
+      activated: boolean
+    ) {
+      try {
+        "TagClientResult-------------"
+        const tagAPI = new SelectClientAPI(self.environment.apiErp)
+        const result : BaseResponse<TagList, ErrorCode> =
+        yield tagAPI.getListTagClient(
+          activated
+        );
+        console.log(
+          "TagClientResult-------------",
+          JSON.stringify(result.data)
+        );
+        return result.data;
+
+      }catch(error){
+        console.log("Get list Tag client Error", error);
+      }
+
     }),
 
     getListPriceList: flow(function* (
@@ -338,13 +375,16 @@ export const OrderStoreModel = types
       sort: string,
       search: string
     ) {
-     
       try {
-        console.log("SlectPriceList-------------", );
+        console.log("SlectPriceList-------------");
         const PriceListAPI = new SelectPriceListAPI(self.environment.api);
         // const result: BaseResponse<PriceListResponse, ErrorCode> =
-        const result: any =
-          yield PriceListAPI.getSelectPriceListAPI(page, size, sort, search);
+        const result: any = yield PriceListAPI.getSelectPriceListAPI(
+          page,
+          size,
+          sort,
+          search
+        );
         console.log("SlectPriceList-------------", JSON.stringify(result.data));
         return result.data;
       } catch (error) {
@@ -353,14 +393,11 @@ export const OrderStoreModel = types
     }),
 
     postClient: flow(function* (clientData) {
-   
       const client = new AddClientAPI(self.environment.apiErp);
       const result = yield client.createClient(clientData);
       if (result.kind === "ok") {
-   
         return result;
       } else {
-      
         return result;
       }
     }),
@@ -639,13 +676,23 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    getDebtAccountLedger: flow(function* (accountLedgerId: number, start: string, end: string, customerId: number) {
+    getDebtAccountLedger: flow(function* (
+      accountLedgerId: number,
+      start: string,
+      end: string,
+      customerId: number
+    ) {
       console.log("page", accountLedgerId);
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
       );
-      const result = yield orderApi.getDebtAccountLedger(accountLedgerId, start, end, customerId);
+      const result = yield orderApi.getDebtAccountLedger(
+        accountLedgerId,
+        start,
+        end,
+        customerId
+      );
       // console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);
@@ -659,7 +706,7 @@ export const OrderStoreModel = types
       console.log("page", partnerId);
       const orderApi = new OrderApi(
         self.environment.apiOrder,
-        self.environment.apiAccount,
+        self.environment.apiAccount
       );
       const result = yield orderApi.getBalanceLimit(partnerId);
       // console.log("-----------dsa", result);
@@ -764,11 +811,10 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<OrderResult, ErrorCode> = yield orderApi.cancelOrder(
-          id
-        );
+        const result: BaseResponse<OrderResult, ErrorCode> =
+          yield orderApi.cancelOrder(id);
         console.log("tuvm getTax result", JSON.stringify(result));
-        if (result.kind === 'ok') {
+        if (result.kind === "ok") {
           return result;
         } else {
           return result;

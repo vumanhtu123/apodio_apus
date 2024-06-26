@@ -223,6 +223,7 @@ import minus_ic from "./Images/minus_ic.svg";
 import ic_messenger from "./Images/ic_messenger.svg";
 import ic_Like from "./Images/ic_like.svg";
 import ic_comment from "./Images/ic_comment.svg";
+import ic_Frame from "./Images/ic_Frame.svg"
 
 export const Images = {
   icon_test: _test,
@@ -442,4 +443,5 @@ export const Images = {
   ic_messenger: ic_messenger,
   ic_Like: ic_Like,
   ic_comment: ic_comment,
+  ic_Frame: ic_Frame,
 };

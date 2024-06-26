@@ -151,6 +151,7 @@ export const AppStack = () => {
         gestureDirection: "horizontal",
         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
+      // orderSuccess
       initialRouteName={"mainBottom"}>
       <Stack.Screen
         name="accountSecurity"
@@ -470,7 +471,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()
