@@ -12,8 +12,15 @@ import moment from "moment"
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder, screen } = route.params || undefined
+    const { idOrder, screen, price, inputPrice } = route.params || undefined
     const { orderStore } = useStores()
+    // console.log(price, '234234')
+    // console.log(inputPrice)
+    const formattedPrice = price.toLocaleString('vi-VN');
+    const formattedInputPrice = inputPrice.toLocaleString('vi-VN');
+    const receivables = price - inputPrice;
+    const formattedReceivables = receivables.toLocaleString('vi-VN')
+    // console.log("so tien phai thu", formattedReceivables);
 
     moment.locale('vi')
     const now = moment()
@@ -21,10 +28,8 @@ export const OrderSuccess: FC = () => {
     return (
 
         <View style={{
-            // backgroundColor: "red",
             flex: 1,
             justifyContent: 'space-between'
-            // paddingHorizontal: scaleWidth(16)
         }}>
             <View>
                 <Header
@@ -65,13 +70,13 @@ export const OrderSuccess: FC = () => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                             <Text style={{ fontSize: fontSize.size14 }}>
-                                #1194871287
+                                {idOrder}
                             </Text>
                             <Text tx="successScreen.value"
                                 style={{ fontSize: fontSize.size14 }}
                             />
                             <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14 }}>
-                                80.000.000đ
+                                {formattedPrice} đ
                             </Text>
                         </View>
 
@@ -80,7 +85,7 @@ export const OrderSuccess: FC = () => {
                                 tx="successScreen.orderHasBeenPaid"
                             />
                             <Text style={{ fontSize: fontSize.size14 }}>
-                                40.000.000đ
+                                {formattedInputPrice}
                             </Text>
                         </View>
 
@@ -88,7 +93,7 @@ export const OrderSuccess: FC = () => {
                             tx="successScreen.theRemainingAmount"
                         />
                         <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14, marginBottom: scaleWidth(12) }}>
-                            40.000.000đ
+                            {formattedReceivables} đ
                         </Text>
                         <Text style={{ fontSize: fontSize.size14, color: colors.palette.dolphin }}
                             tx="successScreen.timeCreateOderSuccess"

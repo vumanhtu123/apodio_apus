@@ -8,6 +8,8 @@ import { Text } from '../../../components';
 import { Images } from '../../../../assets';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import Modal from 'react-native-modal'
+import { InputSelect } from '../../../components/input-select/inputSelect';
+import { translate } from '../../../i18n';
 import { commasToDots, formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
 import PriceModal from './modal-price';
 
@@ -17,19 +19,23 @@ interface ItemSelectVariant {
     handleMinus: ({ }) => void,
     handlePlusPrice: ({ }) => void,
     handlePlus: ({ }) => void,
-    handleAddToCart?: ({ }: any) => void,
+    handleAddToCart: ({ }: any) => void,
+    handleAddToCartPrice: ({ }: any) => void,
     uomGroupLine?: {},
     selectUomPrice?: ({ }, { }) => void,
-    selectUom?: ({ }, { }) => void,
-    changeText?: ({ }, { }) => void,
+    selectUom: ({ }, { }) => void,
+    changeText: ({ }, { }) => void,
 }
 
 export function ItemSelectVariant(props: ItemSelectVariant) {
-    const { item, handleMinus, handleMinusPrice, handlePlusPrice, selectUomPrice, handlePlus, handleAddToCart, selectUom, changeText } = props
+    const { item, handleMinus, handleMinusPrice, handlePlusPrice, selectUomPrice, handlePlus, handleAddToCart, selectUom, changeText, handleAddToCartPrice } = props
     const { orderStore } = useStores()
     const [check, setCheck] = useState(false)
     const [isModal, setIsModal] = useState(false)
+    const [arrData, setArrData] = useState([])
     const [uomId, setUomId] = useState(item?.saleUom?.id)
+    const [uom, setUom] = useState({ label: '', id: '', conversionRate: 0 })
+
     const [modalPrice, setModalPrice] = useState<any>(false);
     const [priceId, setPriceId] = useState<any>(0);
 
@@ -45,7 +51,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
 
     if (orderStore.checkPriceList === true) {
         return (
-            <TouchableOpacity onPress={() => handleAddToCart(item)}
+            <TouchableOpacity onPress={() => handleAddToCartPrice(item)}
                 disabled={item.quantityInventory < item.minQuantity ? true : false}
                 style={[styles.ROOT, {
                     borderColor: item.isSelect === true ? colors.palette.navyBlue : colors.palette.aliceBlue
@@ -73,22 +79,32 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         {item.isSelect === true ? <Images.icon_checkCircleBlue /> : null}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3) }}>
-
+                        <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.orderAccordingly'} />
+                        {item.saleUom.id === item.uomGroup.uomOriginId ? null :
+                            <Text style={styles.text400Nero10} text={parseFloat((Number(item.amount) / Number(item.conversionRate)).toFixed(2)).toString()} />}
                         <TouchableOpacity disabled={item.uomGroup === null ? true : false}
-                            onPress={() => setIsModal(true)}
-                            style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center', width: '12%' }}>
+                            onPress={() => {
+                                setIsModal(true)
+                                // const newArr = item?.uomGroup?.uomGroupLineItems.filter((items: any)=> items.id!== item?.saleUom.id)
+                                const newArr1 = item?.uomGroup?.uomGroupLineItems.map((items: any) => { return { ...items, id: items.uomId, label: items.uomName } })
+                                setArrData(newArr1)
+                                setUom({ label: item.saleUom.name, id: item.saleUom.id, conversionRate: item.conversionRate })
+                            }}
+                            style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.text400Nero10} text={item.saleUom?.name} />
                             <Images.icon_caretRightDown />
                         </TouchableOpacity>
                         {item.uomId === item.saleUom?.id ? null :
-                            <View style={{ width: '28%' }} >
+                            <View >
                                 <Text style={[styles.text400Nero10, { color: colors.dolphin, fontStyle: 'italic' }]}
                                     text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
                             </View>}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1 }}>
                         <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
-                        <View style={styles.viewAmount}>
+                        <View style={[styles.viewAmount,
+                        { borderWidth: scaleHeight(1), borderColor: item.amount !== 0 ? (item.amount < item.minQuantity ? colors.palette.radicalRed : colors.textWhite) : colors.palette.white }
+                        ]}>
                             <TouchableOpacity disabled={item.amount === 0 ? true : false}
                                 onPress={() => handleMinusPrice(item)}
                                 style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
@@ -102,17 +118,17 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 <Images.icon_plusGreen />
                             </TouchableOpacity>
                         </View>
-                        <View style={{ width: '20%' }}></View>
+                        <View style={{ width: '20%' }}>
+                            <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                        </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
-                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />
                         </View>
-
-
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        {item.amount >= item.minQuantity ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(4) }}>
+                        {item.amount === 0 ? null : (item.amount >= item.minQuantity ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
                             <Text style={styles.text400Nero12} tx={'order.price2'} />
                             <Text style={[styles.text400Nero12, { color: colors.palette.radicalRed, fontStyle: 'italic' }]} text={formatNumber(item.unitPrice)} />
                         </View> :
@@ -121,30 +137,44 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 <Text style={[styles.text400Nero8, { fontStyle: 'italic', marginRight: scaleWidth(2) }]}
                                     text={item?.minQuantity?.toString()} />
                                 <Text style={[styles.text400Nero8, { fontStyle: 'italic' }]} text={item.uomGroup.uomOriginName} />
-                            </View>}
+                            </View>)}
                     </View>
                 </View>
                 <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={() => setIsModal(false)}>
-                    <FlatList
-                        data={item?.uomGroup?.uomGroupLineItems}
-                        keyExtractor={items => items.uomId.toString()}
-                        style={{ marginVertical: scaleHeight(20), marginHorizontal: scaleWidth(16) }}
-                        renderItem={(items) => {
-                            return (
-                                <TouchableOpacity onPress={() => {
-                                    if (uomId === items.item.uomId) {
-                                        setIsModal(false)
-                                    } else {
-                                        selectUomPrice(item, items.item)
-                                        setIsModal(false)
-                                    }
-                                }}>
-                                    <Text text={items?.item?.uomName} />
-                                    <View style={styles.viewLine} />
-                                </TouchableOpacity>
-                            )
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(20), }}>
+                        <Text tx={'order.orderUnit'} style={{
+                            fontWeight: '600', fontSize: fontSize.size16, lineHeight: scaleHeight(19.36), color: colors.nero,
+                            flex: 1
+                        }} />
+                        <TouchableOpacity onPress={() => setIsModal(false)}>
+                            <Images.icon_deleteDolphin />
+                        </TouchableOpacity>
+                    </View>
+                    <InputSelect
+                        arrData={arrData}
+                        onPressChoice={(items: any) => {
+                            setUom({ label: items.label, id: items.id, conversionRate: items.conversionRate })
                         }}
+                        styleView={{ marginHorizontal: scaleWidth(16) }}
+                        dataDefault={uom.label}
+                        titleTx={'productScreen.select_unit'}
                     />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginTop: scaleHeight(8), marginBottom: scaleHeight(20) }}>
+                        <Text style={[styles.text400Nero12, { color: colors.dolphin }]} tx={'order.conversionRate'} />
+                        <Text style={[styles.text400Nero12, { color: colors.navyBlue }]} text={' 1 ' + uom.label + ' = ' + uom.conversionRate + ' ' + item.uomGroup.uomOriginName} />
+                    </View>
+                    <TouchableOpacity style={{
+                        marginBottom: scaleHeight(20), marginHorizontal: scaleWidth(16), justifyContent: 'center', alignItems: 'center',
+                        height: scaleHeight(48), backgroundColor: colors.navyBlue, borderRadius: 8
+                    }}
+                        onPress={() => {
+                            item.saleUom = { name: uom.label, id: uom.id }
+                            item.conversionRate = uom.conversionRate
+                            setIsModal(false)
+                        }}
+                    >
+                        <Text tx={'common.confirm'} style={{ color: colors.textWhite, fontWeight: '600', fontSize: fontSize.size14, lineHeight: scaleHeight(24) }} />
+                    </TouchableOpacity>
                 </Modal>
             </TouchableOpacity>
         )
@@ -177,35 +207,52 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             style={[styles.textName, { color: item.isSelect === true ? colors.palette.navyBlue : colors.nero }]} />
                         {item.isSelect === true ? <Images.icon_checkCircleBlue /> : null}
                     </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3) }}>
+                        <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.orderAccordingly'} />
+                        {item.saleUom.id === item.uomGroup.uomOriginId ? null :
+                            <Text style={styles.text400Nero10} text={parseFloat((Number(item.amount) / Number(item.conversionRate)).toFixed(2)).toString()} />}
+                        <TouchableOpacity disabled={item.uomGroup === null ? true : false}
+                            onPress={() => {
+                                setIsModal(true)
+                                // const newArr = item?.uomGroup?.uomGroupLineItems.filter((items: any)=> items.id!== item?.saleUom.id)
+                                const newArr1 = item?.uomGroup?.uomGroupLineItems.map((items: any) => { return { ...items, id: items.uomId, label: items.uomName } })
+                                setArrData(newArr1)
+                                setUom({ label: item.saleUom.name, id: item.saleUom.id, conversionRate: item.conversionRate })
+                            }}
+                            style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.text400Nero10} text={item.saleUom?.name} />
+                            <Images.icon_caretRightDown />
+                        </TouchableOpacity>
+                        {item.uomId === item.saleUom?.id ? null :
+                            <View >
+                                <Text style={[styles.text400Nero10, { color: colors.dolphin, fontStyle: 'italic' }]}
+                                    text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
+                            </View>}
+                    </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1 }}>
                         <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
                         <View style={styles.viewAmount}>
                             <TouchableOpacity disabled={item.amount === 0 ? true : false}
                                 onPress={() => handleMinus(item)}
-                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.minQuantity ? 0.5 : 1 }}
+                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
                             >
                                 <Images.icon_minus />
                             </TouchableOpacity>
                             <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
-                            <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false}
-                                onPress={() => handlePlus(item)}
+                            <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlus(item)}
                                 style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
                             >
                                 <Images.icon_plusGreen />
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity disabled={item.uomGroup === null ? true : false}
-                            onPress={() => setIsModal(true)}
-                            style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center', width: '15%', }}>
-                            <Text numberOfLines={1} style={styles.text400Nero10} text={item.saleUom?.name} />
-                            <Images.icon_caretRightDown />
-                        </TouchableOpacity>
-                        {item.uomId === item.saleUom?.id ? null :
-                            <View style={{ width: '28%' }} >
-                                <Text style={[styles.text400Nero10, {
-                                    color: colors.dolphin, fontStyle: 'italic'
-                                }]} text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
-                            </View>}
+                        <View style={{ width: '20%' }}>
+                            <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Text style={styles.text400Nero10} tx={'order.still'} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />
+                        </View>
                     </View>
                     {item.isSelect === true ?
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(3) }}>
@@ -214,9 +261,9 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 <Text style={styles.textPriceInput} text={formatCurrency(commasToDots(item.unitPrice))} />
                                 <TouchableOpacity onPress={() => {
                                     // setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
-                                    console.log('first price' , item.unitPrice)
+                                    console.log('first price', item.unitPrice)
                                     setCheck(true)
-                                    
+
                                 }}>
                                     <Images.icon_edit />
                                 </TouchableOpacity>
@@ -226,7 +273,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                         // backgroundColor: 'red',
                                         paddingRight: scaleWidth(20),
                                         paddingBottom: scaleHeight(5),
-                                        justifyContent : 'center'
+                                        justifyContent: 'center'
                                     }}
                                     onPress={() => {
                                         setModalPrice(true)
@@ -237,27 +284,42 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             }
                         </View> : <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(17.52), marginTop: scaleHeight(3) }}></View>}
                 </View>
-                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={() => setIsModal(false)} >
-                    <FlatList
-                        data={item?.uomGroup?.uomGroupLineItems}
-                        keyExtractor={items => items.uomId.toString()}
-                        style={{ marginVertical: scaleHeight(20), marginHorizontal: scaleWidth(16) }}
-                        renderItem={(items) => {
-                            return (
-                                <TouchableOpacity onPress={() => {
-                                    if (uomId === items.item.uomId) {
-                                        setIsModal(false)
-                                    } else {
-                                        selectUom(item, items.item)
-                                        setIsModal(false)
-                                    }
-                                }}>
-                                    <Text text={items?.item?.uomName} />
-                                    <View style={styles.viewLine} />
-                                </TouchableOpacity>
-                            )
+                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={() => setIsModal(false)}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(20), }}>
+                        <Text tx={'order.orderUnit'} style={{
+                            fontWeight: '600', fontSize: fontSize.size16, lineHeight: scaleHeight(19.36), color: colors.nero,
+                            flex: 1
+                        }} />
+                        <TouchableOpacity onPress={() => setIsModal(false)}>
+                            <Images.icon_deleteDolphin />
+                        </TouchableOpacity>
+                    </View>
+                    <InputSelect
+                        arrData={arrData}
+                        onPressChoice={(items: any) => {
+                            setUom({ label: items.label, id: items.id, conversionRate: items.conversionRate })
                         }}
+                        styleView={{ marginHorizontal: scaleWidth(16) }}
+                        dataDefault={uom.label}
+                        titleTx={'productScreen.select_unit'}
                     />
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginTop: scaleHeight(8), marginBottom: scaleHeight(20) }}>
+                        <Text style={[styles.text400Nero12, { color: colors.dolphin }]} tx={'order.conversionRate'} />
+                        <Text style={[styles.text400Nero12, { color: colors.navyBlue }]} text={' 1 ' + uom.label + ' = ' + uom.conversionRate + ' ' + item.uomGroup.uomOriginName} />
+                    </View>
+                    <TouchableOpacity style={{
+                        marginBottom: scaleHeight(20), marginHorizontal: scaleWidth(16), justifyContent: 'center', alignItems: 'center',
+                        height: scaleHeight(48), backgroundColor: colors.navyBlue, borderRadius: 8
+                    }}
+                        onPress={() => {
+                            item.saleUom = { name: uom.label, id: uom.id }
+                            item.conversionRate = uom.conversionRate
+                            setIsModal(false)
+                            console.log(item)
+                        }}
+                    >
+                        <Text tx={'common.confirm'} style={{ color: colors.textWhite, fontWeight: '600', fontSize: fontSize.size14, lineHeight: scaleHeight(24) }} />
+                    </TouchableOpacity>
                 </Modal>
                 <PriceModal
                     isVisible={modalPrice}

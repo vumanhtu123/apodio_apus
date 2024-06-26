@@ -81,7 +81,7 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
                     style={{ borderRadius: 8, borderWidth: 1 }}
                 >
                     <Text tx="debtScreen.writeCommentHere"
-                        style={{ fontSize: fontSize.size12, color: colors.palette.dolphin }}
+                        style={{ fontSize: fontSize.size12, color: colors.palette.dolphin, marginTop: 20 }}
                     />
                 </View>
 

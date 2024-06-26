@@ -152,7 +152,7 @@ export const AppStack = () => {
         cardStyleInterpolator: CardStyleInterpolators.forScaleFromCenterAndroid,
       }}
       // orderSuccess
-      initialRouteName={"listCompany"}>
+      initialRouteName={"mainBottom"}>
       <Stack.Screen
         name="accountSecurity"
         component={Screens.AccountSecurity}
