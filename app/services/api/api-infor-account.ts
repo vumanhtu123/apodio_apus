@@ -12,7 +12,7 @@ export class InforAccountAPI {
     }
 
     async getInforAccount (
-        id: string
+        id: number
     ):Promise<any> {
         showLoading()
         try {

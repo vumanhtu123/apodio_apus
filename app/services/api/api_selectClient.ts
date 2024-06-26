@@ -8,6 +8,7 @@ import { OderListResponse  } from "../../models/order-list-select-clien-model";
 import { Loading } from "../../components/dialog-notification";
 import store from '../../screens/users/comment/comment';
 import { useStores } from '../../models';
+import { TagList } from '../../models/tag-list-filter-client-model';
 
 export class SelectClientAPI {
    private api: ApiErp; 
@@ -23,7 +24,8 @@ export class SelectClientAPI {
     sort: string,
     search: string,
     b2cActivated: boolean,
-    isLoadMore: boolean
+    isLoadMore: boolean,
+    partnerTagIds: []
    ): Promise<any> {
       if (isLoadMore){
         Loading.hide 
@@ -40,7 +42,8 @@ export class SelectClientAPI {
                 size: size,
                 sort: sort,
                 search: search,
-                b2cActivated: b2cActivated
+                b2cActivated: b2cActivated,
+                partnerTagIds: partnerTagIds,
               }
             );
             Loading.hide();
@@ -73,7 +76,8 @@ export class SelectClientAPI {
                 size: size,
                 sort: sort,
                 search: search,
-                b2cActivated: b2cActivated
+                b2cActivated: b2cActivated,
+                partnerTagIds: partnerTagIds,
               }
             );
             Loading.hide();
@@ -89,6 +93,38 @@ export class SelectClientAPI {
           return { kind: "bad-data", result: error };
           
       }}
+    }
 
-   } 
+    async getListTagClient (
+      activated : boolean
+    ): Promise<any> {
+      Loading.show({
+          text: 'Loading...',
+      })
+
+      try {
+        console.log("doandev url tag filter client " , this.api.config.url);
+          
+        const response:  ApiResponse<BaseResponse<TagList, ErrorCode>> =  await  this.api.apisauce.get(
+          ApiEndpoint.GET_LIST_TAG_CLIENT,
+          {
+              activated : activated
+          }
+        );
+          Loading.hide();
+          const result = response.data
+
+          if (result?.data != null) {
+            return result;
+          } else {
+            return result?.errorCodes ;
+          }  
+          
+      } catch (error) {
+          Loading.hide();
+          return { kind: "bad-data", result: error };
+      }
+  }
+
+
 }

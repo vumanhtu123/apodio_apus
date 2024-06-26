@@ -72,6 +72,7 @@ export const ApiEndpoint = {
   // GET_DEBT_LIMIT: "/api/v1/mobile/account-move/debt",
   GET_LIST_ACCOUNT_LEDGER: "/api/v1/account-ledger/list",
   GET_DEBT_ACCOUNT_LEDGER: "/api/v2/debt/total",
+  GET_LIST_TAG_CLIENT: "/api/v1/b2c/partner-tag/list",
   GET_BALANCE_LIMIT: "/api/v1/mobile/account-move/balance",
   POST_SUBMIT_PASSWORD: "/public-api/v1/user/submit-password",
 };

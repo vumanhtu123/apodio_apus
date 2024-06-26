@@ -1,3 +1,5 @@
+import { TagList } from './../tag-list-filter-client-model';
+import { PriceList } from "./../../screens/order/components/header-order";
 import { ClientSlected } from "./../order-list-select-clien-model";
 import { flow, types, applySnapshot } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
@@ -320,7 +322,8 @@ export const OrderStoreModel = types
       sort: string,
       search: string,
       b2cActivated: boolean,
-      isLoadMore: boolean
+      isLoadMore: boolean,
+      partnerTagIds?: []
     ) {
       try {
         const clientAPI = new SelectClientAPI(self.environment.apiErp);
@@ -331,7 +334,8 @@ export const OrderStoreModel = types
             sort,
             search,
             b2cActivated,
-            isLoadMore
+            isLoadMore,
+            partnerTagIds
           );
         console.log(
           "SlectClientResult-------------",
@@ -339,8 +343,30 @@ export const OrderStoreModel = types
         );
         return result.data;
       } catch (error) {
-        console.log("Get list info company", error);
+        console.log("Get list select client error", error);
       }
+    }),
+
+    getListTagClient: flow(function * (
+      activated: boolean
+    ) {
+      try {
+        "TagClientResult-------------"
+        const tagAPI = new SelectClientAPI(self.environment.apiErp)
+        const result : BaseResponse<TagList, ErrorCode> =
+        yield tagAPI.getListTagClient(
+          activated
+        );
+        console.log(
+          "TagClientResult-------------",
+          JSON.stringify(result.data)
+        );
+        return result.data;
+
+      }catch(error){
+        console.log("Get list Tag client Error", error);
+      }
+
     }),
 
     getListPriceList: flow(function* (
