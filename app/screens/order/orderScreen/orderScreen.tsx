@@ -93,7 +93,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     const [selectedIndexStatus, setSelectedIndexStatus] = useState(0);
     const [totalPages, setTotalPages] = useState<any>(0);
     const selectStatus = [{ status: '', textStatus: 'Tất cả' },
-    { status: 'SENT', textStatus: 'Chờ xác nhận' },
+    // { status: 'SENT', textStatus: 'Chờ xác nhận' },
     { status: 'SALE', textStatus: 'Đang thực hiện' },
     { status: 'DONE', textStatus: 'Hoàn thành' },
     { status: 'CANCEL', textStatus: 'Hủy đơn' },
@@ -127,7 +127,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           : null;
         const response = await orderStore.getListOrder(
           page,
-          50,
+          10,
           selectedStatus,
           searchValue,
           formattedMarkedDatesS,
@@ -136,7 +136,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
         // console.log('firstxxxxxxxxxx', response)
         if (response && response.kind === "ok") {
           setTotalPages(response.response.data.totalPages)
-          // console.log('orderLisst', JSON.stringify(response.response.data.content))
+          console.log('orderLisst', JSON.stringify(response.response.data.content))
           if (page == 0) {
             setArrData(response.response.data.content)
           } else {
