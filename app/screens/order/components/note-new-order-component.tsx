@@ -7,19 +7,32 @@ import { Images } from "../../../../assets";
 import Modal from "react-native-modal";
 import { colors, padding, scaleHeight, scaleWidth } from "../../../theme";
 import ImagesGroup from "../../product/component/imageGroup";
-import { ALERT_TYPE, Dialog, Loading, Toast } from "../../../components/dialog-notification";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Loading,
+  Toast,
+} from "../../../components/dialog-notification";
 import { translate } from "../../../i18n/translate";
 import { RESULTS } from "react-native-permissions";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from "../../../utils/requesPermissions";
-import { checkArrayIsEmptyOrNull, validateFileSize } from "../../../utils/validate";
+import {
+  checkCameraPermission,
+  checkLibraryPermission,
+  requestCameraPermission,
+  requestLibraryPermission,
+} from "../../../utils/requesPermissions";
+import {
+  checkArrayIsEmptyOrNull,
+  validateFileSize,
+} from "../../../utils/validate";
 import { useStores } from "../../../models";
 
 interface InputNote {
   note: boolean;
-  setNoteData: (note: String, arr: []) => void;
+  setNoteData: (note: string, arr: []) => void;
+  dataNote?: string;
 }
-
 
 export const ShowNote = (props: InputNote) => {
   const [modalImage, setModalImage] = useState(false);
@@ -28,24 +41,25 @@ export const ShowNote = (props: InputNote) => {
   const {
     control,
     formState: { errors },
-    getValues
+    getValues,
   } = useForm();
 
   const handleDeleteImage = () => {
     setImagesNote([]);
-  }
+  };
   const handleDeleteImageItem = () => {
     const newArr1 = imagesNote.slice();
     newArr1.splice(productStore.imageModalIndex, 1);
     setImagesNote(newArr1);
-  }
+  };
 
   const handleLibraryUse = async () => {
     const permissionStatus = await checkLibraryPermission();
-    const numberUrl = checkArrayIsEmptyOrNull(imagesNote) ? 0 : imagesNote.length;
+    const numberUrl = checkArrayIsEmptyOrNull(imagesNote)
+      ? 0
+      : imagesNote.length;
     console.log("----------------indexItem-----------------", numberUrl);
     if (permissionStatus === RESULTS.GRANTED) {
-
       const options = {
         cameraType: "back",
         quality: 1,
@@ -70,15 +84,13 @@ export const ShowNote = (props: InputNote) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-
       } else {
         console.log("Permission denied");
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-
-        })
+          title: "",
+          textBody: translate("txtToats.permission_denied"),
+        });
 
         Dialog.show({
           type: ALERT_TYPE.INFO,
@@ -90,16 +102,15 @@ export const ShowNote = (props: InputNote) => {
           onPressButton: () => {
             Linking.openSettings();
             Dialog.hide();
-          }
-        })
+          },
+        });
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-
-      })
+        title: "",
+        textBody: translate("txtToats.permission_blocked"),
+      });
 
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
@@ -123,11 +134,9 @@ export const ShowNote = (props: InputNote) => {
           if (selectedAssets.length + numberUrl > 6) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
-              title: '',
-              textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-            })
-
+              title: "",
+              textBody: translate("txtToats.required_maximum_number_of_photos"),
+            });
           } else {
             uploadImages(selectedAssets);
           }
@@ -136,10 +145,11 @@ export const ShowNote = (props: InputNote) => {
     }
   };
 
-
   const handleCameraUse = async () => {
     const permissionStatus = await checkCameraPermission();
-    const numberUrl = checkArrayIsEmptyOrNull(imagesNote) ? 0 : imagesNote.length;
+    const numberUrl = checkArrayIsEmptyOrNull(imagesNote)
+      ? 0
+      : imagesNote.length;
     console.log(permissionStatus);
 
     if (permissionStatus === RESULTS.GRANTED) {
@@ -161,7 +171,7 @@ export const ShowNote = (props: InputNote) => {
           console.log("User cancelled photo picker1");
         } else if (response?.assets[0].uri) {
           console.log(response?.assets[0].uri);
-          const imageAssets = [response?.assets[0]]
+          const imageAssets = [response?.assets[0]];
           setModalImage(false);
           uploadImages(imageAssets);
         }
@@ -169,16 +179,14 @@ export const ShowNote = (props: InputNote) => {
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
-
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-
-        })
+          title: "",
+          textBody: translate("txtToats.permission_denied"),
+        });
         Dialog.show({
           type: ALERT_TYPE.INFO,
           title: translate("txtDialog.permission_allow"),
@@ -187,26 +195,22 @@ export const ShowNote = (props: InputNote) => {
           button2: translate("txtDialog.settings"),
           closeOnOverlayTap: false,
           onPressButton: () => {
-            Linking.openSettings()
+            Linking.openSettings();
             Dialog.hide();
-          }
-        })
+          },
+        });
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-
-      })
+        title: "",
+        textBody: translate("txtToats.permission_blocked"),
+      });
       console.log("Permission blocked, you need to enable it from settings");
     }
   };
 
-
-  const uploadImages = async (
-    imageArray: any[]
-  ) => {
+  const uploadImages = async (imageArray: any[]) => {
     try {
       const uploadPromises = imageArray.map(async (image: any, index: any) => {
         const { fileSize, uri, type, fileName } = image;
@@ -218,8 +222,8 @@ export const ShowNote = (props: InputNote) => {
             title: translate("txtDialog.txt_title_dialog"),
             textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
             button: translate("common.ok"),
-            closeOnOverlayTap: false
-          })
+            closeOnOverlayTap: false,
+          });
         } else {
           const formData = new FormData();
           formData.append("file", {
@@ -237,9 +241,9 @@ export const ShowNote = (props: InputNote) => {
       let hasNull = results.some((item) => item === null);
       if (!hasNull) {
         console.log("results-------123 : ", JSON.stringify(results));
-        const newArr = imagesNote.concat(results)
+        const newArr = imagesNote.concat(results);
         setImagesNote(newArr);
-        props.setNoteData(getValues("noteText"), newArr)
+        props.setNoteData(getValues("noteText"), newArr);
       }
       // Xử lý kết quả upload
       results.forEach((result, index) => {
@@ -272,11 +276,11 @@ export const ShowNote = (props: InputNote) => {
                         ? scaleHeight(padding.padding_8)
                         : 0,
                   }}
-                  value={value}
+                  value={value != undefined ? value : props.dataNote}
                   onBlur={onBlur}
                   onChangeText={(value) => {
-                    onChange(value)
-                    props.setNoteData(value, imagesNote)
+                    onChange(value);
+                    props.setNoteData(value, imagesNote);
                   }}
                   // onClearText={() => onChange("")}
                   showRightIcon={false}
@@ -285,11 +289,11 @@ export const ShowNote = (props: InputNote) => {
                   placeholderTx={"order.placeNote"}
                   placeholderTextColor={colors.palette.nero}
                   //isImportant={true}
-                // error={errors?.phone?.message}
+                  // error={errors?.phone?.message}
                 />
               )}
               name="noteText"
-            // rules={{ required: "Address is required" }}
+              // rules={{ required: "Address is required" }}
             />
           </View>
 
@@ -301,7 +305,6 @@ export const ShowNote = (props: InputNote) => {
                 // setModalImages(true);
                 // setActiveSlide(index);
               }}>
-
               <ImagesGroup
                 arrData={imagesNote || []}
                 onPressOpenLibrary={() => {
@@ -311,20 +314,18 @@ export const ShowNote = (props: InputNote) => {
                     } else {
                       Toast.show({
                         type: ALERT_TYPE.DANGER,
-                        title: '',
-                        textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                      })
-
+                        title: "",
+                        textBody: translate(
+                          "txtToats.required_maximum_number_of_photos"
+                        ),
+                      });
                     }
                   } else {
                     setModalImage(true);
                   }
                 }}
                 onPressDelete={() => handleDeleteImage()}
-                onPressDelete1={() =>
-                  handleDeleteImageItem()
-                }
+                onPressDelete1={() => handleDeleteImageItem()}
               />
             </TouchableOpacity>
           </TouchableOpacity>
@@ -340,16 +341,18 @@ export const ShowNote = (props: InputNote) => {
         <View style={styles.viewModalImage}>
           <Text tx={"order.chooseImage"} style={styles.textTitleModalImage} />
           <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => {
-            setModalImage(false)
-            setTimeout(handleCameraUse, 300);
+          <TouchableOpacity
+            onPress={() => {
+              setModalImage(false);
+              setTimeout(handleCameraUse, 300);
             }}>
             <Text tx={"order.newImage"} style={styles.textButtonModalImage} />
           </TouchableOpacity>
           <View style={styles.viewLineModal} />
-          <TouchableOpacity onPress={() => {
-            setModalImage(false)
-            setTimeout(handleLibraryUse, 300);
+          <TouchableOpacity
+            onPress={() => {
+              setModalImage(false);
+              setTimeout(handleLibraryUse, 300);
             }}>
             <Text
               tx={"order.chooseLibrary"}
