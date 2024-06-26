@@ -746,7 +746,7 @@ export const OrderStoreModel = types
       );
       try {
         const result: BaseResponse<TaxModel, ErrorCode> =
-          yield orderApi.getTaxList(type, scopeType);
+          yield orderApi.getTaxList(type, scopeType, page , size);
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");

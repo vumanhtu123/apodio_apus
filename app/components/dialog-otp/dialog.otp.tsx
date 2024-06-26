@@ -2,31 +2,28 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Dimensions,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
   StyleSheet,
   Text as TextRN,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
-import { TextField } from "../text-field/text-field";
 import { Text } from "../text/text";
-import { useStores } from "../../models";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { TextField } from "../text-field/text-field";
 
 const { width, height } = Dimensions.get("screen");
 
-export const VerificationCodeModal = ({
-  setIsVisible,
-  getOTP,
-  checkOTP,
-  resend,
-  numberPhone,
-  initStore,
-}: any) => {
+interface VerificationProps {
+  setIsVisible: any;
+  getOTP: any;
+  checkOTP: any;
+  resend: any;
+  numberPhone: any;
+  initStore: any;
+}
+
+export function VerificationCodeModal(props: VerificationProps) {
   const [isButtonEnable, setIsButtonEnable] = useState(false);
   // const { forgotPassStore } = useStores()
   const {
@@ -63,7 +60,7 @@ export const VerificationCodeModal = ({
   }, []);
   const handleResend = async () => {
     resetSeconds(60);
-    resend();
+    props.resend();
   };
   return (
     <View style={styles.main}>
@@ -86,12 +83,11 @@ export const VerificationCodeModal = ({
               fontWeight: "700",
             }}>
             <Text
+              text={" +" + props.numberPhone.toString()}
               style={{
                 color: "#323232",
                 fontWeight: "700",
-              }}>
-              {" +" + numberPhone}
-            </Text>
+              }}></Text>
           </Text>
           <Controller
             control={control}
@@ -103,20 +99,20 @@ export const VerificationCodeModal = ({
                   maxLength={6}
                   keyboardType={"number-pad"}
                   labelTx={"demoPodcastListScreen.dialogOtp.OTP"}
-                  // labelStyle = {{color : colors.palette.navyBlue}}
                   txColor="red"
                   style={{
                     marginHorizontal: scaleWidth(14),
-                    borderWidth: 1.5,
+                    // borderWidth: 1.5,
                     borderColor: colors.palette.navyBlue,
                   }}
+                  RightIconClear={null}
                   value={value}
                   onBlur={() => onBlur()}
-                  isShowPassword
+                  error={""}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => {
                     onChange(value);
-                    getOTP(value);
+                    props.getOTP(value);
                     if (value.length === 6) {
                       setIsButtonEnable(true);
                     } else {
@@ -155,7 +151,7 @@ export const VerificationCodeModal = ({
               onPress={() => {
                 setValue("otp", "");
                 setIsButtonEnable(false);
-                // setIsVisible(false);
+                props.setIsVisible(false);
               }}>
               <Text tx="common.cancel" style={styles.textCancel} />
             </TouchableOpacity>
@@ -165,7 +161,9 @@ export const VerificationCodeModal = ({
                   ? styles.buttonConfirm
                   : styles.buttonConfirm2
               }
-              onPress={() => {}}>
+              onPress={() => {
+                isButtonEnable === true ? props.checkOTP() : null;
+              }}>
               <Text tx="common.confirm" style={styles.textConfirm} />
             </TouchableOpacity>
           </View>
@@ -173,9 +171,7 @@ export const VerificationCodeModal = ({
       </KeyboardAwareScrollView>
     </View>
   );
-};
-
-// export default VerificationCodeModal;
+}
 
 const styles = StyleSheet.create({
   main: {
@@ -326,8 +322,8 @@ const styles = StyleSheet.create({
   reSendOtp: {
     position: "absolute",
     right: 27,
-    top: 20,
-    zIndex: 1,
+    top: scaleHeight(15),
+    // zIndex: 1,
     flexDirection: "row",
   },
   countDownNumber: {

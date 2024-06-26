@@ -259,8 +259,37 @@ numeral.locale("vi");
 
 //   return `${formattedWholePart}${decimalPart ? "." : ""}`;
 // }
-export function formatCurrency(amount: any) {
-  return numeral(amount).format("0,0").replace(/,/g, ".");
+// export function formatCurrency(amount: any) {
+//   return numeral(amount).format("0,0").replace(/,/g, ".");
+// }
+export function commasToDots(str: any): string {
+  if (str == null) {
+    return ''; // Hoặc trả về một giá trị mặc định khác nếu cần
+  }
+  return str.toString().replace(/\./g, ',');
+}
+export function formatCurrency(value: any, options = {}) {
+  if (value == null || value === '') {
+    return '';
+  }
+  const { separator = '.', prefix = '', suffix = '' } = options;
+  // Loại bỏ ký tự không phải số và không phải dấu phẩy
+  value = value.toString().replace(/[^0-9,]/g, '');
+
+  // Thay dấu phẩy bằng dấu chấm để định dạng
+  let [integerPart, decimalPart] = value.split(',');
+
+  // Giới hạn số ký tự sau dấu phẩy
+  if (decimalPart) {
+    decimalPart = decimalPart.substring(0, 2);
+  }
+
+  // Thêm dấu phân cách hàng ngàn cho phần nguyên
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+
+  // Ghép phần nguyên và phần thập phân (nếu có)
+  return decimalPart !== undefined ? `${prefix}${integerPart},${decimalPart}${suffix}` : `${prefix}${integerPart}${suffix}`;
+
 }
 export function removeNonNumeric(num: any) {
   return num.toString().replace(/[^0-9.]/g, "");

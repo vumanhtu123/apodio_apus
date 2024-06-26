@@ -362,7 +362,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
 
   const handleEndReached = () => {
     if (dataVariant.length < 20) {
-      console.log("123");
+      // console.log("123");
     } else {
       if (page <= totalPagesProduct - 1) {
         orderStore.setIsLoadMore(true);
@@ -654,7 +654,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       if (items.id === data.id) {
         return {
           ...items,
-          unitPrice: Number(text),
+          unitPrice: text,
           // price: Number(text) * Number(data.amount),
           amount: data.amount,
           isSelect: true,
@@ -664,6 +664,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         return items;
       }
     });
+    console.log('dsadassa0',newArr1)
     setDataVariant(newArr1);
   };
   const addVariantToCart = () => {
@@ -873,24 +874,6 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           ) : null}
         </View>
       </Modal>
-      {/* <PriceModal
-        isVisible={modalPrice}
-        setIsVisible={() => setModalPrice(false)}
-        title={"productDetail.retailPrice"}
-        onCancel={() => {
-          setModalPrice(false);
-          // dataModal?.length !== 0
-          //   ? setDataModal([])
-          //   : setDataModal([{ min: "", price: "" }]);
-        }}
-        // onConfirm={(data) => {
-        //   setRetailPriceProduct(data.price);
-        //   setModalRetailPrice(false);
-        //   setDataModal([{ min: "", price: "" }]);
-        // }}
-        onConfirm={()=> console.log('first')}
-        dataAdd={[]}
-      /> */}
     </View>
   );
 });

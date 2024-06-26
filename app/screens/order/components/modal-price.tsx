@@ -9,6 +9,7 @@ import { TxKeyPath, translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme';
 import { addCommas, formatCurrency, formatNumberByString, removeNonNumeric } from '../../../utils/validate';
+import { TextFieldCurrency } from '../../../components/text-field-currency/text-field-currency';
 const { width, height } = Dimensions.get('screen');
 
 interface PriceModalProps {
@@ -18,7 +19,7 @@ interface PriceModalProps {
     titleTx?: TxKeyPath | {};
     onCancel: () => void
     onConfirm: (value: any) => void
-    id? : number;
+    id?: number;
 }
 
 const VIEWMODAL: ViewStyle = {
@@ -27,22 +28,24 @@ const VIEWMODAL: ViewStyle = {
 }
 
 const PriceModal = (props: PriceModalProps) => {
-    const { isVisible, setIsVisible, title, titleTx, onCancel, onConfirm , id } = props;
+    const { isVisible, setIsVisible, title, titleTx, onCancel, onConfirm, id } = props;
     const { vendorStore } = useStores();
     const { control, reset, handleSubmit, watch } = useForm({
     });
-    const [valueCheck, setValueCheck] = useState()
+    const [valueCheck, setValueCheck] = useState<any>()
     const priceWatch = watch('price');
-    console.log(valueCheck)
+    // console.log(priceWatch , 'checkkkk')
     const onSubmit = () => {
         const formatValue = formatNumberByString(valueCheck)
-        onConfirm(formatValue);
+        const formatDots = formatValue.replace(/,/g, '.');
+        console.log('first', formatDots)
+        onConfirm(formatDots);
         reset();
     }
     const [modalNotify, setModalNotify] = useState(false)
     const [modalClose, setModalClose] = useState(false)
     const [modalError, setModalError] = useState(false)
-
+    
     return (
         <Modal
             animationIn={'fadeIn'}
@@ -81,7 +84,7 @@ const PriceModal = (props: PriceModalProps) => {
                             name={`price.${id}.price`}
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <TextField
-                                    keyboardType={'numeric'}
+                                    // keyboardType={'numeric'}
                                     labelTx={'productScreen.priceProduct'}
                                     style={{
                                         width: '100%'
@@ -91,16 +94,21 @@ const PriceModal = (props: PriceModalProps) => {
                                     }}
                                     value={value}
                                     onBlur={onBlur}
+                                    // onChangeText={(value) => {
+                                    //     onChange(value)
+                                    //     setValueCheck(value)
+                                    // }}
                                     onChangeText={(value) => {
-                                        onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : addCommas(removeNonNumeric(value)))
+                                        onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(removeNonNumeric(value)))
                                         setValueCheck(formatCurrency(value))
                                     }}
-                                    isImportant={true}
+                                    // isImportant={true}
                                     showRightIcon={false}
                                     maxLength={15}
                                     placeholder='Nhập giá'
                                 />)}
                             rules={{ required: "Nhập giá sản phẩm" }}
+                            
                         />
                     </View>
                     <View style={{
@@ -108,8 +116,8 @@ const PriceModal = (props: PriceModalProps) => {
                         justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_15)
                     }}>
                         <Button onPress={() => {
-                                onCancel()
-                                // setModalClose(true)
+                            onCancel()
+                            // setModalClose(true)
                         }}
                             tx={'productScreen.cancel'} style={{
                                 height: scaleHeight(48), backgroundColor: colors.palette.neutral100,

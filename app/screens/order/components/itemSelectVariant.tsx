@@ -8,7 +8,7 @@ import { Text } from '../../../components';
 import { Images } from '../../../../assets';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import Modal from 'react-native-modal'
-import { formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
+import { commasToDots, formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
 import PriceModal from './modal-price';
 
 interface ItemSelectVariant {
@@ -208,43 +208,32 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             </View>}
                     </View>
                     {item.isSelect === true ?
-                        <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(14.52), marginTop: scaleHeight(3) }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(3) }}>
                             {item.unitPrice !== undefined && check === false ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
                                 <Text style={styles.text400Nero10} tx={'order.price2'} />
-                                <Text style={styles.textPriceInput} text={formatNumber(item.unitPrice)} />
+                                <Text style={styles.textPriceInput} text={formatCurrency(commasToDots(item.unitPrice))} />
                                 <TouchableOpacity onPress={() => {
-                                    setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
+                                    // setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
+                                    console.log('first price' , item.unitPrice)
                                     setCheck(true)
+                                    
                                 }}>
                                     <Images.icon_edit />
                                 </TouchableOpacity>
                             </View> :
-                                <TouchableOpacity onPress={() => {
-                                    setModalPrice(true)
-                                    setPriceId(item.id)
-                                }}>
-                                    <Text>Nhập giá</Text>
+                                <TouchableOpacity
+                                    style={{
+                                        // backgroundColor: 'red',
+                                        paddingRight: scaleWidth(20),
+                                        paddingBottom: scaleHeight(5),
+                                        justifyContent : 'center'
+                                    }}
+                                    onPress={() => {
+                                        setModalPrice(true)
+                                        setPriceId(item.id)
+                                    }}>
+                                    <Text style={{ fontSize: fontSize.size12 }}>Nhập giá</Text>
                                 </TouchableOpacity>
-                                // <Controller
-                                //     control={control}
-                                //     name={`price.${item.id}.price`}
-                                //     render={({ field: { onChange, value, onBlur } }) => (
-                                //         <TextInput
-                                //             keyboardType={'numeric'}
-                                //             placeholder="Nhập giá"
-                                //             placeholderTextColor={colors.navyBlue}
-                                //             style={styles.viewTextInput}
-                                //             value={value}
-                                //             onBlur={onBlur}
-                                //             onChangeText={(value) => onChange(formatCurrency(removeNonNumeric(value)))}
-                                //             onSubmitEditing={() => {
-                                //                 changeText(item, value.split('.').join(''))
-                                //                 reset()
-                                //                 setCheck(false)
-                                //             }}
-                                //             maxLength={50}
-                                //         />)}
-                                // />
                             }
                         </View> : <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(17.52), marginTop: scaleHeight(3) }}></View>}
                 </View>
@@ -279,9 +268,8 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     }}
                     id={priceId}
                     onConfirm={(data) => {
-                        changeText(data)
-                        
-                        console.log('firstzzzz', data)
+                        changeText(item, data)
+                        setModalPrice(false)
                         setCheck(false)
                     }}
                 />
