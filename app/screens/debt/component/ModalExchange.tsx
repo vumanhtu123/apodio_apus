@@ -5,8 +5,10 @@ import Modal from 'react-native-modal'
 import { Styles } from "../screen/styles"
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme"
 import { View, FlatList } from "react-native"
-import { Text } from "../../../components"
+import { Text, TextField } from "../../../components"
 import ItemListExChange from "./itemListExChange"
+import { Controller, useForm } from "react-hook-form"
+import { Images } from "../../../../assets"
 
 
 interface propModal {
@@ -40,6 +42,7 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
 
     ]
 
+    const { control, handleSubmit, formState: { errors } } = useForm()
 
 
     return (
@@ -78,11 +81,35 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
                 />
 
                 <View
-                    style={{ borderRadius: 8, borderWidth: 1 }}
+                    style={{ borderRadius: 8, borderWidth: 1, borderColor: colors.palette.dolphin, padding: scaleWidth(6) }}
                 >
-                    <Text tx="debtScreen.writeCommentHere"
-                        style={{ fontSize: fontSize.size12, color: colors.palette.dolphin, marginTop: 20 }}
+                    {/* <Text tx="debtScreen.writeCommentHere"
+                        style={{
+                            fontSize: fontSize.size12,
+                            color: colors.palette.dolphin,
+                            marginTop: scaleHeight(4),
+                            marginLeft: scaleWidth(12)
+                        }}
+                    /> */}
+                    <Controller
+                        control={control}
+                        name="writeComment"
+                        render={({ field: { onBlur, onChange, value } }) => (
+                            <TextField
+                                labelTx={"debtScreen.writeCommentHere"}
+                                // placeholderTx={"debtScreen.writeCommentHere"}
+                                style={{ backgroundColor: '#FFF' }}
+                            />
+                        )}
+                        rules={{
+                            required: "Please enter data"
+                        }}
                     />
+                    <View style={{}}>
+
+                    </View>
+
+
                 </View>
 
 

@@ -25,7 +25,7 @@ export class SelectClientAPI {
     search: string,
     b2cActivated: boolean,
     isLoadMore: boolean,
-    partnerTagIds: []
+    partnerTagIds?: []
    ): Promise<any> {
       if (isLoadMore){
         Loading.hide 
