@@ -474,6 +474,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         return {
           ...item,
           addTaxes: (item.addTaxes = !item.addTaxes),
+          addInputTaxes: true,
           taxesInput: 0,
         };
       }
