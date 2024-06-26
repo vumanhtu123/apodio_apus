@@ -96,7 +96,7 @@ export const OrderSuccess: FC = () => {
                             {formattedReceivables} đ
                         </Text>
                         <Text style={{ fontSize: fontSize.size14, color: colors.palette.dolphin }}
-                            tx="successScreen.timeCreateOderSuccess"
+                            tx={screen == "edit" ? "successScreen.timeEditOderSuccess" : "successScreen.timeCreateOderSuccess"}
                         />
                         <Text style={{ fontSize: fontSize.size14 }}>
                             {formattedDateTime}
