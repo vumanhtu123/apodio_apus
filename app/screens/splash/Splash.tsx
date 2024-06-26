@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { AppStackParamList } from "../../../app/navigators";
+import { AppStackParamList } from "../../navigators/app-navigator";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
 import { Button, View } from "react-native";

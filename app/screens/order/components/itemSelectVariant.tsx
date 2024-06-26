@@ -8,7 +8,8 @@ import { Text } from '../../../components';
 import { Images } from '../../../../assets';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import Modal from 'react-native-modal'
-import { formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
+import { commasToDots, formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
+import PriceModal from './modal-price';
 
 interface ItemSelectVariant {
     item: any,
@@ -29,6 +30,8 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
     const [check, setCheck] = useState(false)
     const [isModal, setIsModal] = useState(false)
     const [uomId, setUomId] = useState(item?.saleUom?.id)
+    const [modalPrice, setModalPrice] = useState<any>(false);
+    const [priceId, setPriceId] = useState<any>(0);
 
     const { control, reset, handleSubmit, watch, register, setValue, formState: { errors }, } = useForm({
         defaultValues: {
@@ -70,32 +73,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         {item.isSelect === true ? <Images.icon_checkCircleBlue /> : null}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3) }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
-                            <Text style={styles.text400Nero12} tx={'order.price2'} />
-                            <Text style={[styles.text400Nero12, { color: colors.palette.radicalRed, fontStyle: 'italic' }]} text={formatNumber(item.unitPrice)} />
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', width: '60%' }}>
-                            <Text style={styles.text400Nero12} tx={'order.miniumQuanlity'} />
-                            <Text style={[styles.text400Nero12, { color: colors.palette.radicalRed, fontStyle: 'italic' }]}
-                                text={item?.minQuantity?.toString()} />
-                        </View>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1 }}>
-                        <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
-                        <View style={styles.viewAmount}>
-                            <TouchableOpacity disabled={item.amount === item.minQuantity || item.amount === Math.ceil(item.minQuantity / item.conversionRate) ? true : false}
-                                onPress={() => handleMinusPrice(item)}
-                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.minQuantity ? 0.5 : 1 }}
-                            >
-                                <Images.icon_minus />
-                            </TouchableOpacity>
-                            <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
-                            <TouchableOpacity disabled={item.amount === item.quantityInventory || item.amount === Math.floor(item.quantityInventory / item.conversionRate) ? true : false} onPress={() => handlePlusPrice(item)}
-                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
-                            >
-                                <Images.icon_plusGreen />
-                            </TouchableOpacity>
-                        </View>
+
                         <TouchableOpacity disabled={item.uomGroup === null ? true : false}
                             onPress={() => setIsModal(true)}
                             style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center', width: '12%' }}>
@@ -108,8 +86,45 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
                             </View>}
                     </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1 }}>
+                        <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
+                        <View style={styles.viewAmount}>
+                            <TouchableOpacity disabled={item.amount === 0 ? true : false}
+                                onPress={() => handleMinusPrice(item)}
+                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
+                            >
+                                <Images.icon_minus />
+                            </TouchableOpacity>
+                            <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
+                            <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlusPrice(item)}
+                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
+                            >
+                                <Images.icon_plusGreen />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ width: '20%' }}></View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Text style={styles.text400Nero10} tx={'order.still'} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />
+                        </View>
+
+
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        {item.amount >= item.minQuantity ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
+                            <Text style={styles.text400Nero12} tx={'order.price2'} />
+                            <Text style={[styles.text400Nero12, { color: colors.palette.radicalRed, fontStyle: 'italic' }]} text={formatNumber(item.unitPrice)} />
+                        </View> :
+                            <View style={{ flexDirection: 'row', alignItems: 'center', width: '60%' }}>
+                                <Text style={styles.text400Nero8} tx={'order.miniumQuanlity'} />
+                                <Text style={[styles.text400Nero8, { fontStyle: 'italic', marginRight: scaleWidth(2) }]}
+                                    text={item?.minQuantity?.toString()} />
+                                <Text style={[styles.text400Nero8, { fontStyle: 'italic' }]} text={item.uomGroup.uomOriginName} />
+                            </View>}
+                    </View>
                 </View>
-                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={()=> setIsModal(false)}>
+                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={() => setIsModal(false)}>
                     <FlatList
                         data={item?.uomGroup?.uomGroupLineItems}
                         keyExtractor={items => items.uomId.toString()}
@@ -193,39 +208,36 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             </View>}
                     </View>
                     {item.isSelect === true ?
-                        <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(14.52), marginTop: scaleHeight(3) }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(3) }}>
                             {item.unitPrice !== undefined && check === false ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
                                 <Text style={styles.text400Nero10} tx={'order.price2'} />
-                                <Text style={styles.textPriceInput} text={formatNumber(item.unitPrice)} />
+                                <Text style={styles.textPriceInput} text={formatCurrency(commasToDots(item.unitPrice))} />
                                 <TouchableOpacity onPress={() => {
-                                    setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
+                                    // setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
+                                    console.log('first price' , item.unitPrice)
                                     setCheck(true)
+                                    
                                 }}>
                                     <Images.icon_edit />
                                 </TouchableOpacity>
-                            </View> : <Controller
-                                control={control}
-                                name={`price.${item.id}.price`}
-                                render={({ field: { onChange, value, onBlur } }) => (
-                                    <TextInput
-                                        keyboardType={'numeric'}
-                                        placeholder="Nhập giá"
-                                        placeholderTextColor={colors.navyBlue}
-                                        style={styles.viewTextInput}
-                                        value={value}
-                                        onBlur={onBlur}
-                                        onChangeText={(value) => onChange(formatCurrency(removeNonNumeric(value)))}
-                                        onSubmitEditing={() => {
-                                            changeText(item, value.split('.').join(''))
-                                            reset()
-                                            setCheck(false)
-                                        }}
-                                        maxLength={50}
-                                    />)}
-                            />}
+                            </View> :
+                                <TouchableOpacity
+                                    style={{
+                                        // backgroundColor: 'red',
+                                        paddingRight: scaleWidth(20),
+                                        paddingBottom: scaleHeight(5),
+                                        justifyContent : 'center'
+                                    }}
+                                    onPress={() => {
+                                        setModalPrice(true)
+                                        setPriceId(item.id)
+                                    }}>
+                                    <Text style={{ fontSize: fontSize.size12 }}>Nhập giá</Text>
+                                </TouchableOpacity>
+                            }
                         </View> : <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(17.52), marginTop: scaleHeight(3) }}></View>}
                 </View>
-                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={()=> setIsModal(false)} >
+                <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={() => setIsModal(false)} >
                     <FlatList
                         data={item?.uomGroup?.uomGroupLineItems}
                         keyExtractor={items => items.uomId.toString()}
@@ -247,6 +259,20 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         }}
                     />
                 </Modal>
+                <PriceModal
+                    isVisible={modalPrice}
+                    setIsVisible={() => setModalPrice(false)}
+                    title={"productDetail.retailPrice"}
+                    onCancel={() => {
+                        setModalPrice(false);
+                    }}
+                    id={priceId}
+                    onConfirm={(data) => {
+                        changeText(item, data)
+                        setModalPrice(false)
+                        setCheck(false)
+                    }}
+                />
             </TouchableOpacity>
         )
 
@@ -318,6 +344,12 @@ const styles = StyleSheet.create({
         fontSize: fontSize.size10,
         lineHeight: scaleHeight(12.1),
         color: colors.nero,
+    },
+    text400Nero8: {
+        fontWeight: "400",
+        fontSize: fontSize.size8,
+        lineHeight: scaleHeight(9.68),
+        color: colors.palette.radicalRed,
     },
     textName: {
         fontWeight: "500",

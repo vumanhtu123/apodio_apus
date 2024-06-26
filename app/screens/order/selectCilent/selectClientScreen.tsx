@@ -98,7 +98,7 @@ export const SelectClientScreen: FC<
     }
   };
 
-  console.log("load more", isLoadingMore);
+  // console.log("load more", isLoadingMore);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -141,9 +141,9 @@ export const SelectClientScreen: FC<
   const handleLoadMore = () => {
     getAPi.orderStore.setIsLoadMoreSelectClient(true)
     setIsLoadingMore(true);
-    console.log('====================================');
-    console.log("value loading", isLoadingMore);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log("value loading", isLoadingMore);
+    // console.log('====================================');
     size.current = (size.current + 3);
     getListClient();
     setTimeout(() => {

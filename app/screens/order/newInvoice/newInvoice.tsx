@@ -40,7 +40,6 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         scaleHeight(120) -
         scaleHeight(52) -
         paddingTop;
-    const route = useRoute();
     const {
         control,
         handleSubmit,
@@ -109,7 +108,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         const dataSubmit = ({
             code: invoiceCode,
             paymentStatus: "NOT_PAYMENT",
-            state: "POSTED",
+            state: "AWAITING_POSTED",
             scopeType: data.scopeType,
             paymentTerm: null,
             partner: { id: data.partner?.id },
@@ -212,10 +211,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 discount: saleOrderLine.discount || 0,
                 displayType: "PRODUCT",
                 note: saleOrderLine.note || "",
-                taxes:
-                    saleOrderLine.tax?.map((taxId: any) => ({
-                        id: taxId.id,
-                    })),
+                taxes: saleOrderLine.taxes || [],
                 taxNames: [],
                 accountMoveId: 0,
                 // taxInfo: [],
@@ -261,6 +257,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 navigation.navigate("orderDetails", { idInvoices: submit.response.data.id })
                 // Perform any success actions here (e.g., navigation)
             } else {
+                console.log('first', JSON.stringify(submit.response.errorCodes))
                 Dialog.show({
                     type: ALERT_TYPE.DANGER,
                     title: translate("txtDialog.txt_title_dialog"),
@@ -288,37 +285,46 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const calculateTotalUnTaxPrice = () => {
         let totalPrice = 0;
         data.saleOrderLines?.forEach((item: any) => {
-          const itemTotal = calculateTotalUnitPrice(item.amountUntaxed, item.quantity);
-          totalPrice += itemTotal;
+            const itemTotal = item.amountUntaxed;
+            totalPrice += itemTotal;
         });
         return totalPrice;
-      }
-
-      function groupTaxValues(dataTax: any[] | undefined) {
-        if (dataTax === undefined) {
-          return [];
+    }
+    const validateDate = (value: any) => {
+        if (!value) {
+            return "Ngày không được để trống";
         }
-        
+
+        return true;
+    };
+
+
+    function groupTaxValues(dataTax: any[] | undefined) {
+        if (dataTax === undefined) {
+            return [];
+        }
+
         const groupedTaxValues = dataTax.reduce((acc: { [x: string]: { taxName: any; taxId: any; amount: any; }; }, curr: { items: any[]; }) => {
-          curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
-            const key = item.taxId;
-            if (acc[key]) {
-              acc[key].amount += item.amount;
-            } else {
-              acc[key] = {
-                taxName: item.taxName,
-                taxId: key,
-                amount: item.amount
-              };
-            }
-          });
-          return acc;
+            curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
+                const key = item.taxId;
+                if (acc[key]) {
+                    acc[key].amount += item.amount;
+                } else {
+                    acc[key] = {
+                        taxName: item.taxName,
+                        taxId: key,
+                        amount: item.amount
+                    };
+                }
+            });
+            return acc;
         }, {});
-        
+
         return Object.values(groupedTaxValues);
-      }
-      
-      console.log('-----groupTaxValues2222-----', groupTaxValues(data.computeTaxInfo?.taxLines))
+    }
+
+    // console.log('-----groupTaxValues2222-----', groupTaxValues(data.computeTaxInfo?.taxLines))
+
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
@@ -455,6 +461,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 name="invoiceCreateDate"
                                 rules={{
                                     required: translate('ruleController.emptyText'),
+                                    validate: validateDate
                                 }}
                             />
                         </View>
@@ -535,7 +542,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
-                                                    <Text text={formatCurrency(calculateTotalUnitPrice(item.amountUntaxed, item.quantity))} style={styles.textListProduct} />
+                                                    <Text text={formatCurrency(item.amountUntaxed)} style={styles.textListProduct} />
 
                                                 </View>
                                             </View>
@@ -554,13 +561,13 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 labelTx="order.totalPrice"
                                 value={formatCurrency(calculateTotalUnTaxPrice())}
                             />
-                            { groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
-                                
-                                    <ProductAttribute
-                                        label={item.taxName}
-                                        value={formatCurrency(item.amount)}
-                                    />
-                              
+                            {groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
+
+                                <ProductAttribute
+                                    label={item.taxName}
+                                    value={formatCurrency(item.amount)}
+                                />
+
                             ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"

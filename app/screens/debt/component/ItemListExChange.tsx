@@ -1,9 +1,9 @@
-import { View } from "moti"
+
 import React from "react"
 import { FC } from "react"
-import { Image, TouchableOpacity } from "react-native"
+import { Image, TouchableOpacity, View } from "react-native"
 import { Text } from "../../../components"
-import { fontSize } from "../../../theme"
+import { colors, fontSize, scaleWidth } from "../../../theme"
 import { Images } from "../../../../assets"
 import { Styles } from "../screen/styles"
 
@@ -20,33 +20,35 @@ interface ItemProps {
     onClickLike?: () => void,
     onClickComment?: () => void
 }
-export const ItemListExChange: FC<ItemProps> = ({ item, onClickLike, onClickComment }) => {
+const ItemListExChange: FC<ItemProps> = ({ item, onClickLike, onClickComment }) => {
     return (
         <View
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginBottom: scaleWidth(20) }}
         >
-            <View style={[{ flexDirection: 'row' }]}>
+            <View style={[{ flexDirection: 'row', alignItems: 'center' }]}>
                 <Image source={{ uri: item.avatar }}
                     width={25}
                     height={25}
-                    borderRadius={10}
+                    borderRadius={25}
                 />
-                <Text style={{ fontSize: fontSize.size14, fontWeight: "700" }}>{item.name}</Text>
-                <Text>{item.timeCreate}</Text>
+                <Text style={{ fontSize: fontSize.size14, fontWeight: "700", marginRight: scaleWidth(5), marginLeft: scaleWidth(5) }}>{item.name}</Text>
+                <Text style={{ fontSize: fontSize.size12, color: colors.palette.dolphin }}>{item.timeCreate}</Text>
             </View>
-            <Text>
+            <Text style={{ fontSize: fontSize.size12, }}>
                 {item.content}
             </Text>
-            <View style={Styles.flexRow}>
-                <View >
+            <View style={[Styles.flexRow, { marginTop: scaleWidth(9) }]}>
+                <View style={Styles.flexRow}>
                     <View style={[{ flexDirection: 'row' }]}>
-                        <Text>2</Text>
-                        <Text tx="debtScreen.like" />
+                        <Text style={{ fontSize: fontSize.size12, color: colors.palette.dolphin }}>2 </Text>
+                        <Text style={{ fontSize: fontSize.size12, color: colors.palette.dolphin }} tx="debtScreen.like" />
 
                     </View>
-                    <View>
-                        <Images.ic_comment />
-                        <Text tx="debtScreen.comment" />
+                    <View style={[Styles.flexRow, { marginLeft: scaleWidth(12), alignItems: 'center' }]}>
+                        <Images.ic_comment
+                            width={scaleWidth(12)}
+                        />
+                        <Text style={{ fontSize: fontSize.size12, color: colors.palette.dolphin }} tx="debtScreen.comment" />
                     </View>
                 </View>
                 <TouchableOpacity>
@@ -56,3 +58,5 @@ export const ItemListExChange: FC<ItemProps> = ({ item, onClickLike, onClickComm
         </View>
     )
 }
+export default ItemListExChange
+

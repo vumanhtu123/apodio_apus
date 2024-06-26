@@ -31,7 +31,6 @@ import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
 
-
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
@@ -90,7 +89,6 @@ export type NavigatorParamList = {
   inventoryManagenment: undefined;
   addCheckIventory: undefined;
   addProduct: undefined;
-  listCompany: undefined;
   transactionHistory: undefined;
   transactionHistoryDetail: undefined;
   wareHouse: undefined;
@@ -251,10 +249,7 @@ export const AppStack = () => {
       {/* Màn hình công nợ */}
       <Stack.Screen name="debt" component={Screens.DebtScreen} />
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
-      <Stack.Screen
-        name="detailDebt"
-        component={Screens.DetailDebtScreen}
-      />
+      <Stack.Screen name="detailDebt" component={Screens.DetailDebtScreen} />
       <Stack.Screen
         name="selectClient"
         component={Screens.SelectClientScreen}

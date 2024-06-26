@@ -96,8 +96,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         orderStore.sort.length === 0
           ? ""
           : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
+            ? "&sort=" + orderStore.sort[0]
+            : "" +
             (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
       const response: any = await orderStore.getListOrderProduct(
         page,
@@ -145,8 +145,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         orderStore.sort.length === 0
           ? ""
           : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
+            ? "&sort=" + orderStore.sort[0]
+            : "" +
             (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
       const response: any = await orderStore.getListOrderVariant(
         page,
@@ -271,8 +271,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         orderStore.sort.length === 0
           ? ""
           : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
+            ? "&sort=" + orderStore.sort[0]
+            : "" +
             (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
       const response: any = await orderStore.getListOrderProductPrice(
         page,
@@ -321,8 +321,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         orderStore.sort.length === 0
           ? ""
           : orderStore.sort[0] !== ""
-          ? "&sort=" + orderStore.sort[0]
-          : "" +
+            ? "&sort=" + orderStore.sort[0]
+            : "" +
             (orderStore.sort[1] !== "" ? "&sort=" + orderStore.sort[1] : "");
 
       const response: any = await orderStore.getListOrderVariantPrice(
@@ -942,12 +942,12 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
               />
             </View>
             <Text
+              tx="order.cart"
               style={{
                 color: "white",
                 fontSize: fontSize.size14,
                 fontWeight: "600",
               }}>
-              Giỏ hàng
             </Text>
           </View>
           <View>

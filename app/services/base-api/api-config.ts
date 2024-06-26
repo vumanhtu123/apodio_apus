@@ -35,7 +35,6 @@ const getDomainErp = () => {
   return domain;
 };
 
-
 const getDomainGetWay = () => {
   const env = CONFIG.ENV;
   const domain = CONFIG.API.STAGING.URL_GET_WAY_ERP;

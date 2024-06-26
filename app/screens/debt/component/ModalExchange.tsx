@@ -3,10 +3,10 @@ import React from "react"
 import { FC, } from "react"
 import Modal from 'react-native-modal'
 import { Styles } from "../screen/styles"
-import { margin, scaleHeight, scaleWidth } from "../../../theme"
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme"
 import { View, FlatList } from "react-native"
-import { ItemListExChange } from "./ItemListExChange"
 import { Text } from "../../../components"
+import ItemListExChange from "./itemListExChange"
 
 
 interface propModal {
@@ -51,7 +51,7 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
             isVisible={isVisible}
             style={{ justifyContent: 'flex-end', margin: 0 }}
             avoidKeyboard={true}
-            onBackdropPress={() => setIsVisible}
+            onBackdropPress={setIsVisible}
         >
             <View style={Styles.modalView}>
 
@@ -67,15 +67,23 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
                 <FlatList
                     data={dataExchangeFake}
                     keyExtractor={(item) => item?.id?.toString()}
-                    renderItem={({ item }) => {
-                        return (
-                            <View>
-                                <Text>{item.name}</Text>
-                            </View>
-                        )
-                    }}
+                    renderItem={({ item }) => <ItemListExChange item={item}
+                        onClickComment={() => {
+
+                        }}
+                        onClickLike={() => {
+
+                        }}
+                    />}
                 />
 
+                <View
+                    style={{ borderRadius: 8, borderWidth: 1 }}
+                >
+                    <Text tx="debtScreen.writeCommentHere"
+                        style={{ fontSize: fontSize.size12, color: colors.palette.dolphin }}
+                    />
+                </View>
 
 
             </View>

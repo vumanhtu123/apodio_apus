@@ -20,16 +20,18 @@ import {
   patternPassword,
   validatePhoneStartsWith,
 } from "../../../theme/validate";
-import SelectTypeModal from "../merchant/modal-select-type";
 import { styles } from "./styles";
-import VerificationCodeModal from "../../../components/dialog-otp/dialog.otp";
 import DialogSuccessUnSuccess from "../../../components/dialog-success-unsuccess.tsx/index";
 import { Images } from "../../../../assets/index";
-import { Screen } from "../../../../app/components/screen/screen";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useStores } from "../../../models";
+import { AuthParamList } from "../../../navigators/auth-navigator";
+import { VerificationCodeModal } from "../../../components/dialog-otp/dialog.otp";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
+import { translate } from "../../../i18n";
+import { Text } from "../../../components";
 export const ForgotPasswordStaff: FC<
-  StackScreenProps<NavigatorParamList, "forgotPasswordStaff">
+  StackScreenProps<AuthParamList, "forgotPasswordStaff">
 > = observer(function ForgotPasswordStaff() {
   const navigation = useNavigation();
   // const [selectLanguage, setSelectLanguage] = useState(LANGUAGE.ENGLISH)
@@ -43,13 +45,13 @@ export const ForgotPasswordStaff: FC<
   const [isSuccessModalVisible, setIsSuccessModalVisible] = useState(false);
   const [isUnsuccessModalVisible, setIsUnsuccessModalVisible] = useState(false);
   const [isShowPass, setIsShowPass] = useState<boolean>(false);
-  const [valueEmailPhone, setValueEmailPhone] = useState<String>("");
-  const [valuePassNew, setValuePassNew] = useState<String>("");
-  const [valuePassConfirm, setValuePassConfirm] = useState<String>("");
+  const [valueEmailPhone, setValueEmailPhone] = useState<string>("");
+  const [valuePassNew, setValuePassNew] = useState<string>("");
+  const [valuePassConfirm, setValuePassConfirm] = useState<string>("");
+  const [valueErrorCheck, setValueErrorCheck] = useState<string>("");
   const { bottom } = useSafeAreaInsets();
   const { authenticationStore } = useStores();
 
-  const fixedOTP = "123456";
   const {
     control,
     handleSubmit,
@@ -84,7 +86,6 @@ export const ForgotPasswordStaff: FC<
     setIsUnsuccessModalVisible(false);
   };
 
-  const onClickShowConfirm = () => {};
   const onShowButtonGetOtp = () => {
     if (valuePassConfirm != "" && valuePassNew != "") {
       setIsButtonConfirm(true);
@@ -92,7 +93,9 @@ export const ForgotPasswordStaff: FC<
       setIsButtonConfirm(false);
     }
   };
-  const onSubmit = async (data: any) => {
+  //0855564423
+  const onSubmitCheck = async (data: any) => {
+    setValueErrorCheck("");
     console.log("onclick");
     if (data.valueEmailPhone == "") {
       return;
@@ -101,16 +104,60 @@ export const ForgotPasswordStaff: FC<
       await authenticationStore
         .forgotPass(data.valueEmailPhone, "PHONE")
         .then((item: any) => {
+          console.log("tuvm check success ==1", item);
           if (item.message == "Success") {
             setIsShowPass(true);
             setIsButton(false);
           } else {
+            setValueErrorCheck(item.errorCodes[0].message);
             setIsShowPass(false);
             setIsButton(true);
           }
         });
-    } catch (e) {
-      console.log(e.message);
+    } catch (e: any) {
+      console.log("forgot pass tuvm", e.message);
+    }
+  };
+
+  const onSubmitPassword = async (data: any) => {
+    console.log("onSubmit", data, valuePassConfirm, otp);
+    // if (data.valueOtp == "") {
+    //   Dialog.show({
+    //     type: ALERT_TYPE.INFO,
+    //     title: translate("txtDialog.permission_allow"),
+    //     textBody: "Bạn cần nhập đủ OTP",
+    //     button: translate("common.cancel"),
+    //     button2: translate("txtDialog.settings"),
+    //     closeOnOverlayTap: false,
+    //     onPressButton: () => {
+    //       Dialog.hide();
+    //     },
+    //   });
+    //   return;
+    // }
+    try {
+      await authenticationStore
+        .submitPassword(Number(otp), valuePassConfirm)
+        .then((item: any) => {
+          console.log("tuvm check success ==", item.errorCodes[0].message);
+          if (item.message == "Success") {
+            console.log("success tuvm forgot");
+          } else {
+            Dialog.show({
+              type: ALERT_TYPE.INFO,
+              title: translate("txtDialog.notification"),
+              textBody: item.errorCodes[0].message,
+              button: translate("common.cancel"),
+              closeOnOverlayTap: false,
+              onPressButton: () => {
+                setIsVisibleDialogOtp(false);
+                Dialog.hide();
+              },
+            });
+          }
+        });
+    } catch (e: any) {
+      console.log("forgot pass", e.message);
     }
   };
   return (
@@ -148,6 +195,7 @@ export const ForgotPasswordStaff: FC<
               onClearText={() => {
                 onChange("");
                 setValueEmailPhone("");
+                setValueErrorCheck("");
               }}
               onChangeText={(value) => {
                 onChange(value);
@@ -162,6 +210,16 @@ export const ForgotPasswordStaff: FC<
           name="valueEmailPhone"
           rules={{ required: "Username is required" }}
         />
+        {valueErrorCheck != "" ? (
+          <Text
+            text={valueErrorCheck}
+            style={{
+              fontSize: 10,
+              fontWeight: "400",
+              color: "red",
+            }}
+          />
+        ) : null}
         {isShowPass ? (
           <View>
             <Controller
@@ -200,7 +258,7 @@ export const ForgotPasswordStaff: FC<
               rules={{ required: "Password is required" }}
             />
 
-            <View style={{ marginBottom: scaleHeight(130) }}>
+            <View style={{ marginBottom: scaleHeight(130), marginTop: 7 }}>
               <Controller
                 control={control}
                 // Account test setup new pin
@@ -247,7 +305,7 @@ export const ForgotPasswordStaff: FC<
       {isButton ? (
         <Button
           tx={"forgotPass.continue"}
-          onPress={handleSubmit(onSubmit)}
+          onPress={handleSubmit(onSubmitCheck)}
           // onPress={() => { }}
           style={[
             styles.btnBottom,
@@ -304,8 +362,10 @@ export const ForgotPasswordStaff: FC<
           <VerificationCodeModal
             setIsVisible={setIsVisibleDialogOtp}
             getOTP={setOtp}
-            // checkOTP={checkOtp}
-            // resend={handleSubmit(handleResendOtp)}
+            checkOTP={handleSubmit(onSubmitPassword)}
+            resend={handleSubmit(onSubmitCheck)}
+            numberPhone={""}
+            initStore={undefined}
           />
         </Modal>
         <Modal

@@ -29,6 +29,7 @@ import {
 import { useStores } from "../../../models";
 import { ItemSelectVariant } from "../components/itemSelectVariant";
 import { styles } from "./styles";
+import PriceModal from "../components/modal-price";
 
 export const SelectVariant: FC = observer(function SelectVariant() {
   const navigation = useNavigation();
@@ -43,6 +44,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   const [arrImagesProduct, setArrImagesProduct] = useState([]);
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dataVariant, setDataVariant] = useState<Content[]>([]);
+  const [modalPrice, setModalPrice] = useState<any>(false);
   const refCarousel = useRef(null);
   const productTemplateId = route?.params?.productTemplateId;
 
@@ -58,7 +60,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         console.log("response---getDetailProduct-------", data);
         setArrImagesProduct(data.imageUrls);
       } else {
-        console.error("Failed to fetch detail:", response);
+        console.error("Failed to fetch detail:", response.response.errorCodes[0].message);
       }
     } catch (error) {
       console.error("Error fetching detail:", error);
@@ -143,7 +145,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 quantity: items.amount * items.conversionRate,
               };
               const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, unitPrice: newPrice};
+              return { ...items, unitPrice: newPrice };
             })
           );
           const newArr1 = newArr2.map((item) => {
@@ -202,7 +204,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 quantity: items.amount * items.conversionRate,
               };
               const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, unitPrice: newPrice};
+              return { ...items, unitPrice: newPrice };
             })
           );
           const newArr1 = newArr2.map((item: any) => {
@@ -360,7 +362,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
 
   const handleEndReached = () => {
     if (dataVariant.length < 20) {
-      console.log("123");
+      // console.log("123");
     } else {
       if (page <= totalPagesProduct - 1) {
         orderStore.setIsLoadMore(true);
@@ -383,14 +385,14 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   const handleSelectUom = (data: any, uomData: any) => {
     const newArr1 = dataVariant.map((items) => {
       if (items.id === data.id) {
-        const newAmount = Math.ceil(data.originAmount / uomData.conversionRate);
+        const newAmount = Math.ceil(data.originAmount / uomData?.conversionRate);
         return {
           ...data,
           saleUom: { id: uomData.uomId, name: uomData.uomName },
           conversionRate: uomData.conversionRate,
           unitPrice: undefined,
           amount: newAmount,
-          originAmount: Math.ceil(newAmount * uomData.conversionRate),
+          originAmount: Math.ceil(newAmount * uomData?.conversionRate),
         };
       } else {
         return items;
@@ -408,7 +410,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             // price: data.unitPrice * (data.amount + 1),
             amount: data.amount + 1,
             isSelect: true,
-            originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
+            originAmount: Math.ceil((data.amount + 1) * data?.conversionRate),
           };
         } else {
           return {
@@ -417,7 +419,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             // price: data.unitPrice * (data.amount+1),
             amount: data.amount + 1,
             isSelect: true,
-            originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
+            originAmount: Math.ceil((data.amount + 1) * data?.conversionRate),
           };
         }
       } else {
@@ -652,7 +654,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       if (items.id === data.id) {
         return {
           ...items,
-          unitPrice: Number(text),
+          unitPrice: text,
           // price: Number(text) * Number(data.amount),
           amount: data.amount,
           isSelect: true,
@@ -662,6 +664,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         return items;
       }
     });
+    console.log('dsadassa0',newArr1)
     setDataVariant(newArr1);
   };
   const addVariantToCart = () => {
@@ -734,8 +737,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             />
           </View>
         )}
-        <ProductAttribute label="Mã sản phẩm" value={detailProduct.sku} />
-        <ProductAttribute label="Tên sản phẩm" value={detailProduct.name} />
+        <ProductAttribute labelTx="detailScreen.productCode" value={detailProduct.sku} />
+        <ProductAttribute labelTx="detailScreen.nameProduct" value={detailProduct.name} />
         <View
           style={{
             flexDirection: "row",
@@ -745,17 +748,17 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <Text
               text={dataVariant.length.toString()}
-              style={[styles.textViewInfo, { color: colors.nero }]}
+              style={[styles.textViewInfo, { color: colors.nero, marginRight: scaleWidth(3) }]}
             />
             <Text
-              text=" phân loại sản phẩm"
+              tx="createProductScreen.productClassification"
               style={[styles.textViewInfo, { color: colors.nero }]}
             />
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
-              text="Đã chọn "
-              style={[styles.textViewInfo, { color: colors.nero }]}
+              tx="common.selected"
+              style={[styles.textViewInfo, { color: colors.nero, marginRight: scaleWidth(3) }]}
             />
             <Text
               text={dataVariant

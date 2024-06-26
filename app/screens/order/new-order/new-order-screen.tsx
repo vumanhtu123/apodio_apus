@@ -52,6 +52,7 @@ import {
   Dialog,
   Toast,
 } from "../../../components/dialog-notification";
+import { commasToDots, formatCurrency } from "../../../utils/validate";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -62,7 +63,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     scaleHeight(52) -
     paddingTop;
   const route = useRoute();
-  const { orderStore } = useStores();
+  const { orderStore, vendorStore } = useStores();
   console.log("props", orderStore.dataDebtPayment.sumAll);
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
@@ -169,6 +170,22 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         return "";
     }
   };
+  const handleNamPreMethod = (): string => {
+    switch (orderStore.dataDebtPayment.methodPayment) {
+      case translate("order.money_face"):
+        return "CASH";
+      // case translate("order.BANK_TRANSFER"):
+      //   return "BANK_TRANSFER";
+      // case translate("order.BANK"):
+      //   return "BANK";
+      // case translate("order.CREDIT"):
+      //   return "CREDIT";
+      case translate("order.EXCEPT_FOR_LIABILITIES"):
+        return "DEDUCTION_OF_LIABILITIES";
+      default:
+        return "";
+    }
+  };
 
   const addProduct = () => {
     if (handleNamMethod() == "") {
@@ -186,7 +203,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     }
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
-      (Number(price)- Number(orderStore.dataDebtPayment.inputPrice)) > Number(store.orderStore.dataDebtLimit.debtAmount)
+      (Number(price) - Number(orderStore.dataDebtPayment.inputPrice)) > (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
     ) {
       // orderStore.setMethodPayment({
       //   sumAll: 0,
@@ -201,7 +218,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           price: price,
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-              ? store.orderStore.dataDebtLimit.debtAmount
+              ? (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
               : null,
         },
       });
@@ -308,10 +325,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // quoteCreationDate: "",
       // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
-      currencyId: orderStore.dataPriceListSelected.currencyId ?? null,
+      currencyId: vendorStore.companyInfo.currencyId,
       // paymentTermId: 0,
       // promotionIds: [],
       paymentMethod: handleNamMethod(),
+      paymentMethodPrepayment: handleNamPreMethod() !== '' ? handleNamPreMethod() : handleNamMethod(),
       // salePersonIds: [],
       // saleUserIds: [],
       deliveryType: "SHIP", //
@@ -334,12 +352,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      // isPrepayment: orderStore.dataDebtPayment.apply == true ? true : false, // boolean thanh toan truoc
-      isPayment: !orderStore.clearingDebt,
+      isPrepayment: orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
+      isPayment: handleNamPreMethod() === '' ? true: false,
       amountPrePayment:
-        orderStore.dataDebtPayment.apply == true
+        orderStore.clearingDebt == false
           ? Number(orderStore.dataDebtPayment.inputPrice)
-          : "", // so tien gui len
+          : 0, // so tien gui len
+      amountClearings: orderStore.clearingDebt == true
+        ? Number(orderStore.dataDebtPayment.inputPrice)
+        : 0,
     };
     console.log("done new order: ", JSON.stringify(order));
     store.orderStore.postAddOrderSale(order).then((values) => {
@@ -600,8 +621,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       0,
       20,
       payment.label == translate("order.DOMESTICALLY")
-        ? "DOMESTICALLY"
-        : "EXPORTED"
+        ? "SALE"
+        : "PURCHASE"
     );
     setArrTax(
       result.content.map((item: { name: any; id: any }) => {
@@ -651,6 +672,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       }
       return value;
     });
+    console.log('zxxzczxcx' , newArr)
     handleSumAmountVAT(newArr);
     setArrProduct(newArr);
     console.log("data new tuvm", JSON.stringify(newArr));
@@ -747,8 +769,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         getListAddress();
       }
       setAddress(orderStore.dataAddress)
-      getListAddress();
+      // getListAddress();
       setIsDeposit(orderStore.dataDebtPayment.apply);
+      if ((Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)) === 0) {
+        setMethod(0)
+        setButtonPayment(false)
+        countRef.current = translate("order.CASH")
+        handleNamMethod()
+      }
 
     });
     return unsubscribe;
@@ -873,7 +901,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       unit={item.uomName}
                       // images={item.productImage}
                       images={item.images}
-                      cost={item.unitPrice}
+                      cost={formatCurrency(commasToDots(item.unitPrice))}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
@@ -914,10 +942,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={priceNoVat}
-              sumVat={priceSumVAT.current}
+              sumNoVat={formatCurrency(commasToDots(priceNoVat))}
+              sumVat={formatCurrency(commasToDots(priceSumVAT.current))}
               arrVat={arrProduct}
-              discount={discount.current}
+              discount={formatCurrency(commasToDots(discount.current))}
             />
           ) : (
             <View style={{ marginTop: 15 }}></View>
@@ -972,7 +1000,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         fontWeight: "400",
                         color: "#FF0000",
                       }}>
-                      {store.orderStore.dataDebtLimit.debtAmount ?? 0}
+                      {(Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1093,7 +1121,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? store.orderStore.dataDebtLimit.debtAmount
+                              ? (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
                               : 0,
                         },
                       });
@@ -1178,7 +1206,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             {/* {isNaN(priceSumVAT.current)
               ? Number(priceSumVAT.current)
               : price.current} */}
-            {Number(price)}
+            {formatCurrency(commasToDots(Number(price)))}
           </Text>
         </View>
         {isDeposit === true && orderStore.dataDebtPayment.apply ? (
@@ -1191,18 +1219,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             <View style={{ flexDirection: "row" }}>
               <Text tx={"order.prepayment"} style={[styles.textTotal]} />
               <Text
-                tx="order.contrast"
+                text={'(' + orderStore.dataDebtPayment.methodPayment + ')'}
                 style={{
                   color: "#747475",
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
-                {Number(orderStore.dataDebtPayment.sumAll)}
+                {formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.sumAll)))}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textTotal}>
-                {Number(orderStore.dataDebtPayment.inputPrice)}
+                {formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.inputPrice)))}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -1213,7 +1241,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   //   inputPrice: 0,
                   //   apply: false,
                   // });
-                  return navigation.navigate("paymentBuy" , {
+                  return navigation.navigate("paymentBuy", {
                     params: {
                       type:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1222,7 +1250,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       price: price,
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                          ? store.orderStore.dataDebtLimit.debtAmount
+                          ? (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
                           : null,
                     },
                   });
@@ -1246,7 +1274,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              {Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)}
+              {formatCurrency(commasToDots(Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)))}
             </Text>
           </View>
         ) : null}
@@ -1294,7 +1322,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         }}
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
-          debtAmount: store.orderStore.dataDebtLimit.debtAmount,
+          debtAmount: (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)),
         }}
       />
       <ModalTaxes

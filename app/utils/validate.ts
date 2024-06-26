@@ -201,9 +201,9 @@ export const calculateTotalPrice = (items: any) => {
   });
   return totalPrice;
 }
-export const calculateTotalDiscount = (items :any) => {
+export const calculateTotalDiscount = (items: any) => {
   let totalPrice = 0;
-  items?.forEach((item : any) => {
+  items?.forEach((item: any) => {
     const itemTotal = calculateTotalUnitPrice(item.unitPrice, item.quantity);
     const discountTotal = calculateTotalDiscountPrice(itemTotal, item.discount);
     totalPrice += discountTotal;
@@ -250,15 +250,52 @@ export function formatNumber(inputNumber: number) {
 }
 
 numeral.locale("vi");
+// export function formatCurrencyWithCommas(amount: any) {
+//   const [wholePart, decimalPart = ""] = amount.split(","); 
+//   console.log('wholePart', wholePart)
+//   console.log('decimalPart', decimalPart)
+//   const formattedWholePart = formatCurrency(wholePart); // Format phần nguyên
+//   // const formattedDecimalPart = decimalPart.replace(/,/g, "."); // Format phần thập phân nếu có
 
-export function formatCurrency(amount: any) {
-  return numeral(amount).format("0,0").replace(/,/g, ".");
+//   return `${formattedWholePart}${decimalPart ? "." : ""}`;
+// }
+// export function formatCurrency(amount: any) {
+//   return numeral(amount).format("0,0").replace(/,/g, ".");
+// }
+export function commasToDots(str: any): string {
+  if (str == null) {
+    return ''; // Hoặc trả về một giá trị mặc định khác nếu cần
+  }
+  return str.toString().replace(/\./g, ',');
+}
+export function formatCurrency(value: any, options = {}) {
+  if (value == null || value === '') {
+    return '';
+  }
+  const { separator = '.', prefix = '', suffix = '' } = options;
+  // Loại bỏ ký tự không phải số và không phải dấu phẩy
+  value = value.toString().replace(/[^0-9,]/g, '');
+
+  // Thay dấu phẩy bằng dấu chấm để định dạng
+  let [integerPart, decimalPart] = value.split(',');
+
+  // Giới hạn số ký tự sau dấu phẩy
+  if (decimalPart) {
+    decimalPart = decimalPart.substring(0, 2);
+  }
+
+  // Thêm dấu phân cách hàng ngàn cho phần nguyên
+  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
+
+  // Ghép phần nguyên và phần thập phân (nếu có)
+  return decimalPart !== undefined ? `${prefix}${integerPart},${decimalPart}${suffix}` : `${prefix}${integerPart}${suffix}`;
+
 }
 export function removeNonNumeric(num: any) {
   return num.toString().replace(/[^0-9.]/g, "");
 }
 export function formatNumberByString(num: any) {
-  console.log('num-------------------', num)
+  // console.log('num-------------------', num)
   if (num === 0 || num === null || num === undefined) {
     return 0;
   }
@@ -267,6 +304,29 @@ export function formatNumberByString(num: any) {
   }
   return num.replace(/\./g, "");
 }
+// export function formatInputNumber(inputString: string): string {
+//   const hasComma = inputString.includes(",");
+//   if (!hasComma) {
+//     // Kiểm tra xem người dùng có nhập dấu chấm hay không
+//     const hasDecimalPoint = inputString.includes(".");
+
+//     // Nếu có dấu chấm, coi đó là dấu thập phân
+//     if (hasDecimalPoint) {
+//       // Loại bỏ dấu phẩy đã nhập (nếu có) và thay thế dấu chấm bằng dấu phẩy
+//       const normalizedInput = inputString.replace(/,/g, "").replace(".", ",");
+
+//       // Định dạng lại thành số thập phân
+//       return numeral(normalizedInput).format("0.0,00"); // Hoặc định dạng tùy chỉnh khác
+//     } else {
+//       // Nếu không có dấu chấm, coi đó là số nguyên và định dạng với dấu chấm phân cách hàng nghìn
+//       const normalizedInput = inputString.replace(/,/g, ""); // Loại bỏ dấu phẩy đã nhập
+//       return formatCurrency(normalizedInput); // Sử dụng hàm formatCurrency của bạn
+//     }
+//   } else {
+//     // Nếu đã có dấu phẩy, giữ nguyên input
+//     return inputString;
+//   }
+// }
 
 
 export function convertArrStringToArrNumber(arr: any) {
@@ -471,7 +531,7 @@ export function additiveInverseArray(arr: number[]) {
 }
 
 
-export function groupedTaxValues (products: []) {
+export function groupedTaxValues(products: []) {
   products.reduce((acc, product) => {
     const vatValue = product.VAT.value;
     if (acc[vatValue]) {

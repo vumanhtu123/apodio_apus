@@ -14,6 +14,7 @@ const en = {
 
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
+    selected : 'Đã chọn'
     // @demo remove-current-line
   },
   txtToats: {
@@ -197,7 +198,7 @@ const en = {
     date: "Date",
     money: "Money",
     cash: "Cash",
-    editOrder: "Sửa đơn hàng",
+    // editOrder: "Sửa đơn hàng",
     newAddressDialog: "Thêm địa chỉ mới thành công",
     editAddressDialog: "Sửa địa chỉ thành công",
     addProduct: "Chọn sản phẩm",
@@ -265,6 +266,7 @@ const en = {
     discount: "Chiết khấu: ",
     changeDeliveryAddress: "Chọn địa chỉ giao hàng",
     staff: "Staff: ",
+    still: "Còn: ",
     paymentMethods: "Loại chứng từ",
     selectPayment: "Chọn loại chứng từ",
     requestCancellation: "Request cancellation",
@@ -325,6 +327,7 @@ const en = {
     symbol: "Kí hiệu",
     invoiceType: "Loại hoá đơn",
     createOrderSuccess: "Tạo đơn hàng thành công",
+    cart : 'Giỏ hàng'
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -597,7 +600,8 @@ const en = {
     detailDebt: "Chi tiết công nợ NCC",
     like: "Thích",
     comment: "Bình luận",
-
+    writeCommentHere: "Viết bình luận của bạn tại đây",
+    
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -955,9 +959,9 @@ const en = {
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",
     noApplyPriceList: "Không áp dụng bảng giá",
+    inputPrice : 'Nhập giá'
   },
   calendar : {
-    
     today : 'Hôm nay',
     last7days : '7 ngày trước',
     thisMonth : 'Tháng này',

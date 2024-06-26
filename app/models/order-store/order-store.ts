@@ -34,6 +34,7 @@ import {
 } from "./entities/order-variant-model";
 import { TaxModel } from "./entities/order-tax-model";
 import { Loading } from "../../components/dialog-notification";
+import { HomeApi } from "../../services/api/api-home";
 
 export const OrderStoreModel = types
   .model("OderStore")
@@ -104,7 +105,7 @@ export const OrderStoreModel = types
     }),
     dataDebtPayment: types.optional(types.frozen<any>(), {
       sumAll: 0,
-      methodPayment: 0,
+      methodPayment: '',
       debt: 0,
       inputPrice: 0,
       apply: false,
@@ -679,6 +680,22 @@ export const OrderStoreModel = types
         return result;
       }
     }),
+    getBalanceLimit: flow(function* (partnerId: number) {
+      console.log("page", partnerId);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount,
+      );
+      const result = yield orderApi.getBalanceLimit(partnerId);
+      // console.log("-----------dsa", result);
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
     getDetailOrder: flow(function* (id: number) {
       console.log("page", id);
       const orderApi = new OrderApi(
@@ -733,7 +750,7 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       const result: OrderResult = yield orderApi.createInvoice(invoiceAdd);
-      console.log("-----------dsa", result);
+      console.log("-----------dsa", JSON.stringify(result));
       if (result.kind === "ok") {
         console.log("order", result);
         return result;
@@ -754,7 +771,7 @@ export const OrderStoreModel = types
       );
       try {
         const result: BaseResponse<TaxModel, ErrorCode> =
-          yield orderApi.getTaxList(type, scopeType);
+          yield orderApi.getTaxList(type, scopeType, page , size);
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");

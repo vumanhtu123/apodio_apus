@@ -260,10 +260,10 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
 
                 />
 
-                {/* <ModalExchange
+                <ModalExchange
                     isVisible={isVisible}
                     setIsVisible={() => setIsVisible(!isVisible)}
-                /> */}
+                />
             </View>
         )
     }
