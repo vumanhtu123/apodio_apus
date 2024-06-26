@@ -398,7 +398,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           idOrder: values.id,
           screnn: "create",
           price: price,
-          inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0,
+          inputPrice: orderStore.dataDebtPayment.inputPrice,
         });
       } else {
         const v = values?.map((data: any) => {
@@ -758,7 +758,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       );
     }, 0);
     const allNoVat = data.reduce((sum: any, item: any) => {
-      return sum + Number(item.unitPrice ?? 0) * Number(item.amount ?? 0);
+      return sum + Number(commasToDots(item.unitPrice) ?? 0) * Number(item.amount ?? 0);
     }, 0);
     setPrice(all);
     setPriceNoVat(allNoVat);
@@ -981,10 +981,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={formatCurrency(commasToDots(priceNoVat))}
-              sumVat={formatCurrency(commasToDots(priceSumVAT.current))}
+              sumNoVat={priceNoVat}
+              sumVat={priceSumVAT.current}
               arrVat={arrProduct}
-              discount={formatCurrency(commasToDots(discount.current))}
+              discount={discount.current}
             />
           ) : (
             <View style={{ marginTop: 15 }}></View>
@@ -1046,10 +1046,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                             ? "#00CC6A"
                             : "#FF0000",
                       }}>
-                      {Number(store.orderStore.dataDebtLimit.debtAmount) -
+                      {formatCurrency(Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
                           store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        ) ?? 0}
+                        )) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",

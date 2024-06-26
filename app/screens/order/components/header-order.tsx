@@ -270,7 +270,7 @@ export const SumMoney = (props: DataSumMoney) => {
           tx="order.sum_no_texas"
           style={{ fontSize: 10, fontWeight: "400", color: "#747475" }} />
         <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475", justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-          {(isNaN(props.sumNoVat) ? 0 : props.sumNoVat) ?? 0}
+          {(isNaN(props.sumNoVat) ? 0 : formatCurrency(props.sumNoVat)) ?? 0}
         </Text>
       </View>
 
