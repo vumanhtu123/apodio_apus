@@ -217,7 +217,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           <Controller
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
+              <TextFieldCurrency
                 keyboardType='numeric'
                 labelTx={"order.customer_paid"}
                 style={{
@@ -242,6 +242,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   // } else {
                     onChange(value)
                   // }
+                }}
+                onChangeValue={(value) => {
+                  console.log('---price--', value)
                 }}
                 // defaultValue={text===""? "": text}
                 onSubmitEditing={() => {

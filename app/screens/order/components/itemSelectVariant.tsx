@@ -8,9 +8,10 @@ import { Text } from '../../../components';
 import { Images } from '../../../../assets';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import Modal from 'react-native-modal'
-import { formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
 import { InputSelect } from '../../../components/input-select/inputSelect';
 import { translate } from '../../../i18n';
+import { commasToDots, formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
+import PriceModal from './modal-price';
 
 interface ItemSelectVariant {
     item: any,
@@ -35,6 +36,8 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
     const [uomId, setUomId] = useState(item?.saleUom?.id)
     const [uom, setUom] = useState({ label: '', id: '', conversionRate: 0 })
 
+    const [modalPrice, setModalPrice] = useState<any>(false);
+    const [priceId, setPriceId] = useState<any>(0);
 
     const { control, reset, handleSubmit, watch, register, setValue, formState: { errors }, } = useForm({
         defaultValues: {
@@ -248,36 +251,33 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         </View>
                     </View>
                     {item.isSelect === true ?
-                        <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(14.52), marginTop: scaleHeight(3) }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(3) }}>
                             {item.unitPrice !== undefined && check === false ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
                                 <Text style={styles.text400Nero10} tx={'order.price2'} />
-                                <Text style={styles.textPriceInput} text={formatNumber(item.unitPrice)} />
+                                <Text style={styles.textPriceInput} text={formatCurrency(commasToDots(item.unitPrice))} />
                                 <TouchableOpacity onPress={() => {
-                                    setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
+                                    // setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
+                                    console.log('first price' , item.unitPrice)
                                     setCheck(true)
+                                    
                                 }}>
                                     <Images.icon_edit />
                                 </TouchableOpacity>
-                            </View> : <Controller
-                                control={control}
-                                name={`price.${item.id}.price`}
-                                render={({ field: { onChange, value, onBlur } }) => (
-                                    <TextInput
-                                        keyboardType={'numeric'}
-                                        placeholder="Nhập giá"
-                                        placeholderTextColor={colors.navyBlue}
-                                        style={styles.viewTextInput}
-                                        value={value}
-                                        onBlur={onBlur}
-                                        onChangeText={(value) => onChange(formatCurrency(removeNonNumeric(value)))}
-                                        onSubmitEditing={() => {
-                                            changeText(item, value.split('.').join(''))
-                                            reset()
-                                            setCheck(false)
-                                        }}
-                                        maxLength={50}
-                                    />)}
-                            />}
+                            </View> :
+                                <TouchableOpacity
+                                    style={{
+                                        // backgroundColor: 'red',
+                                        paddingRight: scaleWidth(20),
+                                        paddingBottom: scaleHeight(5),
+                                        justifyContent : 'center'
+                                    }}
+                                    onPress={() => {
+                                        setModalPrice(true)
+                                        setPriceId(item.id)
+                                    }}>
+                                    <Text style={{ fontSize: fontSize.size12 }}>Nhập giá</Text>
+                                </TouchableOpacity>
+                            }
                         </View> : <View style={{ flexDirection: 'row', alignItems: 'center', height: scaleHeight(17.52), marginTop: scaleHeight(3) }}></View>}
                 </View>
                 <Modal style={styles.viewModal} isVisible={isModal} onBackdropPress={() => setIsModal(false)}>
@@ -317,6 +317,20 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         <Text tx={'common.confirm'} style={{ color: colors.textWhite, fontWeight: '600', fontSize: fontSize.size14, lineHeight: scaleHeight(24) }} />
                     </TouchableOpacity>
                 </Modal>
+                <PriceModal
+                    isVisible={modalPrice}
+                    setIsVisible={() => setModalPrice(false)}
+                    title={"productDetail.retailPrice"}
+                    onCancel={() => {
+                        setModalPrice(false);
+                    }}
+                    id={priceId}
+                    onConfirm={(data) => {
+                        changeText(item, data)
+                        setModalPrice(false)
+                        setCheck(false)
+                    }}
+                />
             </TouchableOpacity>
         )
 
