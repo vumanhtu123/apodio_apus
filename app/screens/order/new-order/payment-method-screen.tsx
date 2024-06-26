@@ -12,6 +12,7 @@ import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
 import moment from "moment";
 import { TextFieldCurrency } from "../../../components/text-field-currency/text-field-currency";
+import { formatCurrency } from "../../../utils/validate";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
@@ -20,7 +21,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const price = props.route.params.params.price;
   const debtAmount = props.route.params.params.debtAmount;
   const [method, setMethod] = useState<number>();
-  const countRef = useRef('');
+  const countRef = useRef();
   const [credit, setCredit] = useState(0)
   const [isCredit, setIsCredit] = useState(false)
 
@@ -76,38 +77,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       console.error("Error fetching list account ledger:", error);
     }
   };
-  const getBalanceLimit = async () => {
-    if (orderStore.dataClientSelect !== null) {
-      const response = await orderStore.getBalanceLimit(Number(orderStore.dataClientSelect.id))
-      console.log('127301265349263', response)
-      if (response && response.kind === "ok") {
-        console.log(response.response.data.inventory, 'log data')
-        if (response.response.data.inventory === 0) {
-          setCredit(0)
-          setIsCredit(false)
-        } else {
-          if (type === false) {
-            if (Number(response.response.data.inventory) >= (Number(price) - Number(debtAmount))) {
-              setCredit(response.response.data.inventory)
-              setIsCredit(true)
-            } else {
-              setCredit(response.response.data.inventory)
-              setIsCredit(false)
-            }
-          } else {
-            setCredit(response.response.data.inventory)
-            setIsCredit(true)
-          }
-        }
-      } else {
-        console.error("Failed to fetch balance limit:", response);
-      }
-    }
-  }
 
   useEffect(() => {
-    // getDebtAccountLedger()
-    getBalanceLimit()
+    getDebtAccountLedger()
   }, [])
 
   const Sum = () => {
@@ -145,7 +117,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         return 0
       }
     } else {
-      if ((Number(price) - Number(debtAmount) - Number(text)) >= Number(0)) {
+      if ((Number(price)- Number(debtAmount) - Number(text)) >= Number(0)) {
         return Number(price) - Number(debtAmount) - Number(text)
       } else {
         return 0
@@ -153,19 +125,20 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     }
   };
   const Apply = () => {
-    if(countRef.current !== ''){orderStore.setMethodPayment({
+    orderStore.setMethodPayment({
       sumAll: price ?? 0,
       methodPayment: countRef.current,
       debt: Remain(),
       inputPrice: Number(text) ?? 0,
       apply: true,
     });
-    if (countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
-      orderStore.setClearingDebt(true)
-    } else {
-      orderStore.setClearingDebt(false)
-    }}
+    console.log(text, '==============+')
     navigation.goBack();
+    if(countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")){
+      orderStore.setClearingDebt(true)
+    }else{
+      orderStore.setClearingDebt(false)
+    }
     // navigation.navigate('newOrder', { goBackPayment: true })
   };
   console.log("tuvm", type);
@@ -200,25 +173,25 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {type === false ? (check !== true ? (
-          <View
-            style={{
-              backgroundColor: "#FEF7E5",
-              flexDirection: "row",
-              paddingHorizontal: 20,
-              justifyContent: "flex-start",
-              paddingVertical: 10,
-            }}>
-            <Images.ic_warning_yellow />
-            <Text
-              tx="order.tittle_warning"
+          {type === true ? null: (check !== true ? (
+            <View
               style={{
-                color: "#242424",
-                fontSize: 12,
-                fontWeight: "400",
-              }}></Text>
-          </View>
-          ) : null): null}
+                backgroundColor: "#FEF7E5",
+                flexDirection: "row",
+                paddingHorizontal: 20,
+                justifyContent: "flex-start",
+                paddingVertical: 10,
+              }}>
+              <Images.ic_warning_yellow />
+              <Text
+                tx="order.tittle_warning"
+                style={{
+                  color: "#242424",
+                  fontSize: 12,
+                  fontWeight: "400",
+                }}></Text>
+            </View>
+          ) : null)}
           <Text
             style={{
               fontSize: 20,
@@ -267,8 +240,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   // if (Number(value) >= Number(price)) {
                   //   setValue('price', price.toString())
                   // } else {
-                  
-                  onChange(value)
+                    onChange(value)
                   // }
                 }}
                 onChangeValue={(value) => {
@@ -300,6 +272,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       message: 'Khách cần trả lớn hơn số tiền tối thiểu',
                     });
                   }
+
                   // if (Number(price) > Number(value) && Number(value) >= Number(Sum())) {
                   //   setText(value)
                   //   Remain()
@@ -401,12 +374,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           countRef.current = name;
           setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
-            if (Number(Sum()) <= credit) {
+            if(Number(Sum())<= credit){
               setText(Sum().toString())
-              setValue('price', Sum().toString())
-            } else {
+              setValue('price',Sum().toString())
+            }else{
               setText(credit.toString())
-              setValue('price', credit.toString())
+              setValue('price',credit.toString())
             }
           } else {
             setText('')

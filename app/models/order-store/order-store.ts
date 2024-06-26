@@ -61,7 +61,7 @@ export const OrderStoreModel = types
     sortCreateClient: types.optional(types.string, ""),
     search: types.optional(types.string, ""),
     checkIdPartner: types.optional(types.boolean, false),
-    sort: types.optional(types.array(types.string), []),
+    sort: types.optional(types.string, ''),
     isLoadMore: types.optional(types.boolean, false),
     productId: types.optional(types.number, 0),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
@@ -220,7 +220,7 @@ export const OrderStoreModel = types
       self.sortCreateClient = "";
       self.search = "";
       self.checkIdPartner = false;
-      self.sort.clear();
+      self.sort = "";
       self.isLoadMore = false;
       self.productId = 0;
       self.viewProductType = "VIEW_PRODUCT";
