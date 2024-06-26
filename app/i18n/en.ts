@@ -36,6 +36,7 @@ const en = {
     noClient: 'Vui lòng chọn khách hàng',
     change_city: "Vui lòng chọn Tỉnh/Thành phố",
     change_district: "Vui lòng chọn Quận/Huyện",
+    change_payment: "Vui lòng chọ phuơng thức thanh toán trước"
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -238,6 +239,8 @@ const en = {
     method_payment: "Phương thức thanh toán",
     money_face: "Tiền mặt",
     taxes_vat: "Thuế VAT ",
+    orderUnit: "Đơn vị đặt hàng",
+    conversionRate: "Tỷ lệ quy đổi:",
     select_texas: "Chọn thuế",
     add_texas: "Thêm chiết khấu",
     sum_texas: "Thành tiền",
@@ -267,6 +270,7 @@ const en = {
     changeDeliveryAddress: "Chọn địa chỉ giao hàng",
     staff: "Staff: ",
     still: "Còn: ",
+    orderAccordingly: "Đặt hàng theo: ",
     paymentMethods: "Loại chứng từ",
     selectPayment: "Chọn loại chứng từ",
     requestCancellation: "Request cancellation",

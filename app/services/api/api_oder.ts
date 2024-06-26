@@ -414,7 +414,9 @@ async getBalanceLimit(
   }
   async getTaxList(
     type: any,
-    scopeType: any
+    scopeType: any,
+    page : any,
+    size : any
   ): Promise<BaseResponse<TaxModel, ErrorCode>> {
     Loading.show({
       text: "Loading...",
@@ -424,6 +426,8 @@ async getBalanceLimit(
         await this.apiAccount.apisauce.get(ApiEndpoint.GET_LIST_TAX, {
           type: type,
           scopeType: scopeType,
+          page : page,
+          size : size
         });
       const data = response.data;
       Loading.hide();

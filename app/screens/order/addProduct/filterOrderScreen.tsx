@@ -23,6 +23,7 @@ import { useStores } from "../../../models";
     ]);
     const { productStore } = useStores();
     const [dataTag, setDataTag] = useState([]);
+    const [sort, setSort] = useState('')
     useEffect(() => {
       initData();
     }, []);
@@ -41,41 +42,14 @@ import { useStores } from "../../../models";
       })
       setDataTag(newArr2);
     };
-    const [selectedNameFilter, setSelectedNameFilter] = useState(orderStore.sort[0]);
-    const [selectedTimeFilter, setSelectedTimeFilter] = useState(orderStore.sort[1]);
-    const handleNamePress = (item: any) => {
-      if (selectedNameFilter === item) {
-        setSelectedNameFilter(null);
-      } else {
-        setSelectedNameFilter(item);
-      }
-    };
-    const handleTimePress = (item: any) => {
-      if (selectedTimeFilter === item) {
-        setSelectedTimeFilter(null);
-      } else {
-        setSelectedTimeFilter(item);
-      }
-    };
-    const route = useRoute();
-    const getFilterData = () => {
-      const sortCreatedAt = selectedTimeFilter || "";
-      const sortName = selectedNameFilter || "";
-      return {
-        sortCreatedAt,
-        sortName,
-      };
-    };
     useFocusEffect(
       React.useCallback(() => {
-        setSelectedNameFilter(orderStore.sort[1]);
-        setSelectedTimeFilter(orderStore.sort[0]);
+        setSort(orderStore.sort);
       }, [])
     );
     
     const handleSort = () => {
-      const filterData = getFilterData();
-      orderStore.setSort(Object.values(filterData));
+      orderStore.setSort(sort)
       const newArr = dataTag.filter((items: any)=> items.isSelect === true)
       const newArr1 = newArr.map((items: any)=> {return items.id})
       orderStore.setTagId(newArr1);
@@ -140,16 +114,15 @@ import { useStores } from "../../../models";
                 marginTop: scaleHeight(12),
               }}>
               {typeNoti.map((item, index) => {
-                const isSelected = selectedTimeFilter === item.sort;
                 return (
                   <TouchableOpacity
-                    onPress={() => handleTimePress(item.sort)}
+                    onPress={() => setSort(item.sort)}
                     key={index}
                     style={{
-                      backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
+                      backgroundColor: item.sort ===sort ? "#eff8ff" : "#F6F7F9",
                       borderRadius: 10,
-                      borderWidth: isSelected ? 1 : 0,
-                      borderColor: isSelected ? "#0078D4" : "#c8c8c8",
+                      borderWidth: item.sort ===sort ? 1 : 0,
+                      borderColor: item.sort ===sort ? "#0078D4" : "#c8c8c8",
                       marginRight: scaleWidth(12),
                       width: scaleWidth(165),
                       height: scaleHeight(38),
@@ -157,7 +130,7 @@ import { useStores } from "../../../models";
                     }}>
                     <Text
                       style={{
-                        color: isSelected ? "#0078D4" : "#747475",
+                        color: item.sort ===sort ? "#0078D4" : "#747475",
                         textAlign: "center",
                         fontWeight: "400",
                         fontSize: fontSize.size14,
@@ -180,16 +153,15 @@ import { useStores } from "../../../models";
                 justifyContent: "space-between",
               }}>
               {typeAZ.map((item, index) => {
-                const isSelected = selectedNameFilter === item.sort;
                 return (
                   <TouchableOpacity
-                    onPress={() => handleNamePress(item.sort)}
+                    onPress={() => setSort(item.sort)}
                     key={index}
                     style={{
-                      backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
+                      backgroundColor: item.sort ===sort ? "#eff8ff" : "#F6F7F9",
                       borderRadius: 10,
-                      borderWidth: isSelected ? 1 : 0,
-                      borderColor: isSelected ? "#0078D4" : "#c8c8c8",
+                      borderWidth: item.sort ===sort ? 1 : 0,
+                      borderColor: item.sort ===sort ? "#0078D4" : "#c8c8c8",
                       marginRight: scaleWidth(12),
                       width: scaleWidth(165),
                       height: scaleHeight(38),
@@ -197,7 +169,7 @@ import { useStores } from "../../../models";
                     }}>
                     <Text
                       style={{
-                        color: isSelected ? "#0078D4" : "#747475",
+                        color: item.sort ===sort ? "#0078D4" : "#747475",
                         textAlign: "center",
                         fontWeight: "400",
                         fontSize: fontSize.size14,

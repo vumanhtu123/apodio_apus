@@ -112,10 +112,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: 0,
+                amount: items.minQuantity,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: 0,
+                originAmount: items.minQuantity,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -126,10 +126,12 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: 0,
+                amount: newAmount,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: 0,
+                originAmount: Math.ceil(
+                  newAmount * newObject[0].conversionRate
+                ),
               };
             }
           });
@@ -169,10 +171,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: 0,
+                amount: items.minQuantity,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: 0,
+                originAmount: items.minQuantity,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -183,10 +185,12 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: 0,
+                amount: newAmount,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: 0,
+                originAmount: Math.ceil(
+                  newAmount * newObject[0].conversionRate
+                ),
               };
             }
           });
@@ -358,7 +362,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
 
   const handleEndReached = () => {
     if (dataVariant.length < 20) {
-      console.log("123");
+      // console.log("123");
     } else {
       if (page <= totalPagesProduct - 1) {
         orderStore.setIsLoadMore(true);
@@ -367,10 +371,28 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     }
   };
 
+  const handleAddToCartPrice = (data: any) => {
+    const newArr1 = dataVariant.map((items) => {
+      if (items.id === data.id) {
+        if (Number(items.amount) >= Number(items.minQuantity)) {
+          return { ...data, isSelect: !data.isSelect };
+        } else {
+          return { ...data, isSelect: false }
+        }
+      } else {
+        return items;
+      }
+    });
+    setDataVariant(newArr1);
+  };
   const handleAddToCart = (data: any) => {
     const newArr1 = dataVariant.map((items) => {
       if (items.id === data.id) {
-        return { ...data, isSelect: !data.isSelect };
+        if (items.amount !== 0) {
+          return { ...data, isSelect: !data.isSelect };
+        } else {
+          return { ...data, isSelect: false }
+        }
       } else {
         return items;
       }
@@ -378,24 +400,6 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     setDataVariant(newArr1);
   };
 
-  const handleSelectUom = (data: any, uomData: any) => {
-    const newArr1 = dataVariant.map((items) => {
-      if (items.id === data.id) {
-        const newAmount = Math.ceil(data.originAmount / uomData?.conversionRate);
-        return {
-          ...data,
-          saleUom: { id: uomData.uomId, name: uomData.uomName },
-          conversionRate: uomData.conversionRate,
-          unitPrice: undefined,
-          amount: newAmount,
-          originAmount: Math.ceil(newAmount * uomData?.conversionRate),
-        };
-      } else {
-        return items;
-      }
-    });
-    setDataVariant(newArr1);
-  };
   const handlePlus = (data: Content) => {
     const newArr1 = dataVariant.slice().map((items) => {
       if (items.id === data.id) {
@@ -406,7 +410,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             // price: data.unitPrice * (data.amount + 1),
             amount: data.amount + 1,
             isSelect: true,
-            originAmount: Math.ceil((data.amount + 1) * data?.conversionRate),
+            originAmount: data.amount + 1,
           };
         } else {
           return {
@@ -415,7 +419,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             // price: data.unitPrice * (data.amount+1),
             amount: data.amount + 1,
             isSelect: true,
-            originAmount: Math.ceil((data.amount + 1) * data?.conversionRate),
+            originAmount: data.amount + 1,
           };
         }
       } else {
@@ -437,7 +441,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               // price: data.unitPrice * (data.amount-1),
               amount: data.amount - 1,
               isSelect: false,
-              originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
+              originAmount: data.amount - 1,
             };
           } else {
             return {
@@ -446,7 +450,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               // price: data.unitPrice * (data.amount- 1),
               amount: data.amount - 1,
               isSelect: true,
-              originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
+              originAmount: data.amount - 1,
             };
           }
         } else {
@@ -457,7 +461,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               // price: data.unitPrice * (data.amount -1),
               amount: data.amount - 1,
               isSelect: false,
-              originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
+              originAmount: data.amount - 1,
             };
           } else {
             return {
@@ -466,7 +470,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               // price: data.unitPrice *  (data.amount -1),
               amount: data.amount - 1,
               isSelect: true,
-              originAmount: Math.ceil((data.amount - 1) * data.conversionRate),
+              originAmount: data.amount - 1,
             };
           }
         }
@@ -476,75 +480,37 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     });
     setDataVariant(newArr2);
   };
-  const handleSelectUomPrice = async (data: any, uomData: any) => {
+  
+  const handlePlusPrice = async (data: Content) => {
     const newArr1 = await Promise.all(
-      dataVariant.map(async (items) => {
+      dataVariant.slice().map(async (items) => {
         if (items.id === data.id) {
-          const newAmount = Math.ceil(
-            data.originAmount / uomData.conversionRate
-          );
           const dataGetPrice = {
             productCategoryId: data.productTemplate.productCategoryId,
             productTemplateId: data.productTemplate.id,
             productId: data.id,
             priceListId: Number(orderStore.dataPriceListSelected.id),
-            quantity: newAmount * uomData.conversionRate,
+            quantity: data.amount + 1,
           };
           const newPrice = await getPriceVariant(dataGetPrice);
-          return {
-            ...data,
-            saleUom: { id: uomData.uomId, name: uomData.uomName },
-            conversionRate: uomData.conversionRate,
-            unitPrice: newPrice,
-            // price: newPrice * newAmount,
-            amount: newAmount,
-            originAmount: Math.ceil(newAmount * uomData.conversionRate),
-          };
-        } else {
-          return items;
-        }
-      })
-    );
-    setDataVariant(newArr1);
-  };
-  const handlePlusPrice = async (data: Content) => {
-    const newArr1 = await Promise.all(
-      dataVariant.slice().map(async (items) => {
-        if (items.id === data.id) {
-          if (data.saleUom.id === data.uomId) {
-            const dataGetPrice = {
-              productCategoryId: data.productTemplate.productCategoryId,
-              productTemplateId: data.productTemplate.id,
-              productId: data.id,
-              priceListId: Number(orderStore.dataPriceListSelected.id),
-              quantity: data.amount + 1,
-            };
-            const newPrice = await getPriceVariant(dataGetPrice);
-            console.log(newPrice);
+          console.log(newPrice);
+          if (data.amount + 1 >= items.minQuantity) {
             return {
               ...items,
               unitPrice: newPrice,
               // price: newPrice * (data.amount +1),
               amount: data.amount + 1,
               isSelect: true,
-              originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
+              originAmount: data.amount + 1,
             };
           } else {
-            const dataGetPrice = {
-              productCategoryId: data.productTemplate.productCategoryId,
-              productTemplateId: data.productTemplate.id,
-              productId: data.id,
-              priceListId: Number(orderStore.dataPriceListSelected.id),
-              quantity: (data.amount + 1) * data.conversionRate,
-            };
-            const newPrice = await getPriceVariant(dataGetPrice);
             return {
               ...items,
               unitPrice: newPrice,
               // price: newPrice * (data.amount +1),
               amount: data.amount + 1,
-              isSelect: true,
-              originAmount: Math.ceil((data.amount + 1) * data.conversionRate),
+              isSelect: false,
+              originAmount: data.amount + 1,
             };
           }
         } else {
@@ -560,7 +526,6 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     const newArr2 = await Promise.all(
       newArr1.map(async (items: any) => {
         if (items.id === data.id) {
-          if (data.saleUom.id === data.uomId) {
             const dataGetPrice = {
               productCategoryId: data.productTemplate.productCategoryId,
               productTemplateId: data.productTemplate.id,
@@ -569,73 +534,23 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               quantity: data.amount - 1,
             };
             const newPrice = await getPriceVariant(dataGetPrice);
-            if (data.amount - 1 === items.minQuantity) {
+            if (data.amount - 1 < items.minQuantity) {
               return {
                 ...items,
                 unitPrice: newPrice,
-                // price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: false,
-                originAmount: Math.ceil(
-                  (data.amount - 1) * data.conversionRate
-                ),
+                originAmount: (data.amount - 1),
               };
             } else {
               return {
                 ...items,
                 unitPrice: newPrice,
-                // price: newPrice * (data.amount -1),
                 amount: data.amount - 1,
                 isSelect: true,
-                originAmount: Math.ceil(
-                  (data.amount - 1) * data.conversionRate
-                ),
+                originAmount: (data.amount - 1),
               };
             }
-          } else {
-            if (
-              data.amount - 1 ===
-              Math.ceil(data.minQuantity / data.conversionRate)
-            ) {
-              const dataGetPrice = {
-                productCategoryId: data.productTemplate.productCategoryId,
-                productTemplateId: data.productTemplate.id,
-                productId: data.id,
-                priceListId: Number(orderStore.dataPriceListSelected.id),
-                quantity: (data.amount - 1) * data.conversionRate,
-              };
-              const newPrice = await getPriceVariant(dataGetPrice);
-              return {
-                ...items,
-                unitPrice: newPrice,
-                // price: newPrice * (data.amount -1),
-                amount: data.amount - 1,
-                isSelect: false,
-                originAmount: Math.ceil(
-                  (data.amount - 1) * data.conversionRate
-                ),
-              };
-            } else {
-              const dataGetPrice = {
-                productCategoryId: data.productTemplate.productCategoryId,
-                productTemplateId: data.productTemplate.id,
-                productId: data.id,
-                priceListId: Number(orderStore.dataPriceListSelected.id),
-                quantity: (data.amount - 1) * data.conversionRate,
-              };
-              const newPrice = await getPriceVariant(dataGetPrice);
-              return {
-                ...items,
-                unitPrice: newPrice,
-                // price: newPrice * (data.amount -1),
-                amount: data.amount - 1,
-                isSelect: true,
-                originAmount: Math.ceil(
-                  (data.amount - 1) * data.conversionRate
-                ),
-              };
-            }
-          }
         } else {
           return items;
         }
@@ -650,7 +565,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       if (items.id === data.id) {
         return {
           ...items,
-          unitPrice: Number(text),
+          unitPrice: text,
           // price: Number(text) * Number(data.amount),
           amount: data.amount,
           isSelect: true,
@@ -660,6 +575,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         return items;
       }
     });
+    console.log('dsadassa0',newArr1)
     setDataVariant(newArr1);
   };
   const addVariantToCart = () => {
@@ -773,10 +689,9 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               handleMinusPrice={handleMinusPrice}
               handlePlusPrice={handlePlusPrice}
               handleAddToCart={handleAddToCart}
-              selectUomPrice={handleSelectUomPrice}
+              handleAddToCartPrice={handleAddToCartPrice}
               handleMinus={handleMinus}
               handlePlus={handlePlus}
-              selectUom={handleSelectUom}
               changeText={changePrice}
             />
           )}
@@ -869,24 +784,6 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           ) : null}
         </View>
       </Modal>
-      <PriceModal
-        isVisible={true}
-        setIsVisible={() => setModalPrice(false)}
-        title={"productDetail.retailPrice"}
-        onCancel={() => {
-          setModalPrice(false);
-          // dataModal?.length !== 0
-          //   ? setDataModal([])
-          //   : setDataModal([{ min: "", price: "" }]);
-        }}
-        // onConfirm={(data) => {
-        //   setRetailPriceProduct(data.price);
-        //   setModalRetailPrice(false);
-        //   setDataModal([{ min: "", price: "" }]);
-        // }}
-        onConfirm={()=> console.log('first')}
-        dataAdd={[]}
-      />
     </View>
   );
 });

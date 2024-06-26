@@ -52,7 +52,7 @@ import {
   Dialog,
   Toast,
 } from "../../../components/dialog-notification";
-import { formatCurrency } from "../../../utils/validate";
+import { commasToDots, formatCurrency } from "../../../utils/validate";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -206,7 +206,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     }
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
-      Number(price) - Number(orderStore.dataDebtPayment.inputPrice) >
+      Number(price) -
+        Number(formatCurrency(orderStore.dataDebtPayment.inputPrice)) >
         Number(store.orderStore.dataDebtLimit.debtAmount) -
           Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
     ) {
@@ -302,7 +303,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         },
         quantity: data.amount,
         uomId: data.uomId,
-        orderQty: data.originAmount,
+        orderQty: data.amount,
         // orderUomId: number, //chon
         unitPrice: data.unitPrice, //don gia cua bang gia
         // amountUntaxed: data.price,
@@ -359,10 +360,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ? "DOMESTICALLY"
           : "EXPORTED", //trong nuoc hoac xuat khau
       isMobile: true,
-      isPrepayment: orderStore.clearingDebt === false ? true : false, // boolean thanh toan truoc
+      isPrepayment:
+        handleNamPreMethod() !== "" && orderStore.clearingDebt === false
+          ? true
+          : false, // boolean thanh toan truoc
       isPayment: handleNamPreMethod() === "" ? true : false,
       amountPrePayment:
-        orderStore.clearingDebt == false
+        handleNamPreMethod() === ""
+          ? Number(price)
+          : orderStore.clearingDebt == false
           ? Number(orderStore.dataDebtPayment.inputPrice)
           : 0, // so tien gui len
       amountClearings:
@@ -391,6 +397,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         navigation.navigate("orderSuccess" as never, {
           idOrder: values.id,
           screnn: "create",
+          price: price,
+          inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0,
         });
       } else {
         const v = values?.map((data: any) => {
@@ -632,9 +640,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       "VAT_RATES",
       0,
       20,
-      payment.label == translate("order.DOMESTICALLY")
-        ? "DOMESTICALLY"
-        : "EXPORTED"
+      "SALE"
     );
     setArrTax(
       result.content.map((item: { name: any; id: any }) => {
@@ -651,7 +657,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     const valueApi = {
       quantity: newItem[0].amount,
       unitPrice: newItem[0].unitPrice,
-      discount: newItem[0].taxesInput,
+      discount: newItem[0].taxesInput ?? 0,
       taxes: [
         {
           id: newItem[0].VAT ? newItem[0].VAT.value : 0,
@@ -686,6 +692,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       }
       return value;
     });
+    console.log("zxxzczxcx", newArr);
     handleSumAmountVAT(newArr);
     setArrProduct(newArr);
     console.log("data new tuvm", JSON.stringify(newArr));
@@ -928,7 +935,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       unit={item.uomName}
                       // images={item.productImage}
                       images={item.images}
-                      cost={item.unitPrice}
+                      cost={formatCurrency(commasToDots(item.unitPrice))}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
@@ -969,10 +976,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={formatCurrency(priceNoVat)}
-              sumVat={formatCurrency(priceSumVAT.current)}
+              sumNoVat={formatCurrency(commasToDots(priceNoVat))}
+              sumVat={formatCurrency(commasToDots(priceSumVAT.current))}
               arrVat={arrProduct}
-              discount={formatCurrency(discount.current)}
+              discount={formatCurrency(commasToDots(discount.current))}
             />
           ) : (
             <View style={{ marginTop: 15 }}></View>
@@ -1025,7 +1032,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       style={{
                         fontSize: 10,
                         fontWeight: "400",
-                        color: "#FF0000",
+                        color:
+                          Number(store.orderStore.dataDebtLimit.debtAmount) -
+                            Number(
+                              store.orderStore.dataDebtLimit.amountOwed ?? 0
+                            ) >
+                          Number(price)
+                            ? "#00CC6A"
+                            : "#FF0000",
                       }}>
                       {Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
@@ -1242,7 +1256,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             {/* {isNaN(priceSumVAT.current)
               ? Number(priceSumVAT.current)
               : price.current} */}
-            {formatCurrency(Number(price))}
+            {formatCurrency(commasToDots(Number(price)))}
           </Text>
         </View>
         {isDeposit === true && orderStore.dataDebtPayment.apply ? (
@@ -1261,12 +1275,16 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
-                {formatCurrency(Number(orderStore.dataDebtPayment.sumAll))}
+                {formatCurrency(
+                  commasToDots(Number(orderStore.dataDebtPayment.sumAll))
+                )}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textTotal}>
-                {formatCurrency(Number(orderStore.dataDebtPayment.inputPrice))}
+                {formatCurrency(
+                  commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
+                )}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -1313,8 +1331,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              {Number(price ?? 0) -
-                Number(orderStore.dataDebtPayment.inputPrice ?? 0)}
+              {formatCurrency(
+                commasToDots(
+                  Number(price ?? 0) -
+                    Number(orderStore.dataDebtPayment.inputPrice ?? 0)
+                )
+              )}
             </Text>
           </View>
         ) : null}
