@@ -53,7 +53,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       const response = await productStore.getDetailProduct(
         productStore.productId
       );
-      console.log("productId", productStore.productId);
+      console.log("productId", response);
       if (response && response.kind === "ok") {
         const data: any = response.response.data;
         setDetailProduct(response.response.data);

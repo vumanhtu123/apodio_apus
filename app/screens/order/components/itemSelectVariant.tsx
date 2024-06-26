@@ -8,7 +8,7 @@ import { Text } from '../../../components';
 import { Images } from '../../../../assets';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import Modal from 'react-native-modal'
-import { commasToDots, formatCurrency, formatNumber, removeNonNumeric } from '../../../utils/validate';
+import { commasToDots, formatCurrency, formatNumber, formatVND, removeNonNumeric } from '../../../utils/validate';
 import PriceModal from './modal-price';
 
 interface ItemSelectVariant {
@@ -211,7 +211,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(3) }}>
                             {item.unitPrice !== undefined && check === false ? <View style={{ flexDirection: 'row', alignItems: 'center', width: '40%' }}>
                                 <Text style={styles.text400Nero10} tx={'order.price2'} />
-                                <Text style={styles.textPriceInput} text={formatCurrency(commasToDots(item.unitPrice))} />
+                                <Text style={styles.textPriceInput} text={formatVND(formatCurrency(commasToDots(item.unitPrice)))} />
                                 <TouchableOpacity onPress={() => {
                                     // setValue(`price.${item.id}.price`, formatCurrency(removeNonNumeric(item.unitPrice)).toString())
                                     console.log('first price' , item.unitPrice)

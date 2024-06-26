@@ -90,7 +90,7 @@ const PriceModal = (props: PriceModalProps) => {
                                         width: '100%'
                                     }}
                                     inputStyle={{
-                                        marginTop: scaleHeight(4)
+                                        // marginTop: scaleHeight(4)
                                     }}
                                     value={value}
                                     onBlur={onBlur}
