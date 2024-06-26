@@ -90,7 +90,7 @@ const PriceModal = (props: PriceModalProps) => {
                                         width: '100%'
                                     }}
                                     inputStyle={{
-                                        marginTop: scaleHeight(4)
+                                        // marginTop: scaleHeight(4)
                                     }}
                                     value={value}
                                     onBlur={onBlur}
@@ -99,7 +99,7 @@ const PriceModal = (props: PriceModalProps) => {
                                     //     setValueCheck(value)
                                     // }}
                                     onChangeText={(value) => {
-                                        onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(removeNonNumeric(value)))
+                                        onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
                                         setValueCheck(formatCurrency(value))
                                     }}
                                     // isImportant={true}
