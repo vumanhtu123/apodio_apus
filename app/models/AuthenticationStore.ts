@@ -104,13 +104,13 @@ export const AuthenticationStoreModel = types
         store.environment.apiUaa
       );
       console.log("jti : ", store.jti);
-      const result: any = yield authApi.logout(store.jti);
-      setAccessToken("");
       setTenantId("");
-      store.setUserID();
-      store.setJTI("");
+      const result: any = yield authApi.logout(store.jti);
       console.log("tuvm logout", result);
       if (result.kind === "ok") {
+        setAccessToken("");
+        store.setUserID();
+        store.setJTI("");
         console.log("token set", store.accessToken);
         return result;
       } else {
