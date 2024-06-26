@@ -26,7 +26,7 @@ export const SplashScreen1: FC<
     setTimeout(() => {
       setAccessToken(null);
       console.log("logout", getAccessToken());
-      authenticationStore.logout();
+      // authenticationStore.logout();
       auth.changeLoginStatus();
     }, 4000);
   };

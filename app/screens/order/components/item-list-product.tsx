@@ -278,7 +278,10 @@ export default function ItemListProduct(props: AddProduct) {
           </TouchableOpacity>
           {priceList == true ? (
             addTaxes == false ? (
-              <TouchableOpacity disabled={props.disabled} onPress={(item) => onPressAddTexas(item)}>
+              <TouchableOpacity disabled={props.disabled} onPress={(item) =>{
+                console.log('---------onPressAddTexas---1--')
+                onPressAddTexas(item)
+              }}>
                 <View style={{ flexDirection: "row" }}>
                   <Images.icon_plusGreen />
                   <Text
@@ -294,7 +297,10 @@ export default function ItemListProduct(props: AddProduct) {
                 </View>
               </TouchableOpacity>
             ) : editTaxes == true ? (
-              <TouchableOpacity disabled={props.disabled} onPress={(item) => onPressAddTexas(item)}>
+              <TouchableOpacity disabled={props.disabled} onPress={(item) => {
+                console.log('---------onPressAddTexas---2--')
+                onPressAddTexas(item)
+              }}>
                 <View
                   style={{
                     flexDirection: "row",
