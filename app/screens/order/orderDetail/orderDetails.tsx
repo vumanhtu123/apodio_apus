@@ -149,13 +149,13 @@ export const OrderDetails: FC = observer(
             );
         };
         function getInvoiceStateText(state: string) {
-            if (state === 'NO') {
+            if (state === 'NOT_PAYMENT') {
                 return 'orderDetailScreen.no';
-            } else if (state === 'TO_INVOICE') {
+            } else if (state === 'REVERSE') {
                 return 'orderDetailScreen.toInvoice';
-            } else if (state === 'PARTIAL_INVOICE') {
+            } else if (state === 'PARTIAL_PAYMENT') {
                 return 'orderDetailScreen.partialInvoice';
-            } else if (state === 'INVOICED') {
+            } else if (state === 'PAID') {
                 return 'orderDetailScreen.invoiced';
             } else {
                 return '';
@@ -247,7 +247,7 @@ export const OrderDetails: FC = observer(
                                     style={styles.buttonSend}
                                 />
                             </View>
-                            <Text tx={getInvoiceStateText(data.invoiceStatus)} style={[styles.textPayStatus2, {
+                            <Text tx={getInvoiceStateText(data.paymentStatus)} style={[styles.textPayStatus2, {
                                 color: data.invoiceStatus === 'NO' ? colors.palette.darkTangerine :
                                     data.invoiceStatus === 'PARTIAL_INVOICE' ? colors.palette.darkTangerine :
                                         data.invoiceStatus === 'TO_INVOICE' ? colors.palette.darkTangerine :
@@ -367,14 +367,14 @@ export const OrderDetails: FC = observer(
                     />
                     <View style={styles.viewDateMoney}>
                         <Text tx={'order.sellerConfirm'} style={[styles.textDateMoney, { flex: 1 }]} />
-                        <Text tx={getInvoiceStateText(data.invoiceStatus)} style={[styles.textPayStatus2, {
+                        <Text tx={getInvoiceStateText(data.paymentStatus)} style={[styles.textPayStatus2, {
                             color: data.invoiceStatus === 'NO' ? colors.palette.darkTangerine :
                                 data.invoiceStatus === 'PARTIAL_INVOICE' ? colors.palette.darkTangerine :
                                     data.invoiceStatus === 'TO_INVOICE' ? colors.palette.darkTangerine :
                                         colors.palette.malachite
                         }]} />
                     </View>
-                    {dataPayment?.paymentResponses?.lengh > 0 ? (
+                    {/* {dataPayment?.paymentResponses?.lengh > 0 ? ( */}
                         <View style={styles.viewCash}>
                             {dataPayment.paymentResponses?.map((item: any) => (
                                 <View style={{
@@ -394,7 +394,7 @@ export const OrderDetails: FC = observer(
                                 </View>
                             ))}
                         </View>
-                    ) : null}
+                    {/* ) : null} */}
                     <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)} style={{
                         paddingHorizontal: scaleWidth(padding.padding_16),
                         backgroundColor: colors.palette.neutral100,

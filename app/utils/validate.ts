@@ -231,7 +231,7 @@ export function formatNumberFloat(inputNumber: string) {
 
   return result;
 }
-export function formatNumber(inputNumber: number) {
+export function formatNumber(inputNumber: any) {
   if (isNaN(inputNumber)) {
     return "0";
   }
@@ -248,7 +248,11 @@ export function formatNumber(inputNumber: number) {
 
   return result;
 }
+export function formatVND(value: any) {
+  const result = value + "đ";
 
+  return result;
+}
 numeral.locale("vi");
 // export function formatCurrencyWithCommas(amount: any) {
 //   const [wholePart, decimalPart = ""] = amount.split(","); 
@@ -281,7 +285,7 @@ export function formatCurrency(value: any, options = {}) {
 
   // Giới hạn số ký tự sau dấu phẩy
   if (decimalPart) {
-    decimalPart = decimalPart.substring(0, 2);
+    decimalPart = decimalPart.substring(0, 3);
   }
 
   // Thêm dấu phân cách hàng ngàn cho phần nguyên
