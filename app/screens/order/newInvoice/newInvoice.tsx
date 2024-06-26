@@ -108,7 +108,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         const dataSubmit = ({
             code: invoiceCode,
             paymentStatus: "NOT_PAYMENT",
-            state: "POSTED",
+            state: "AWAITING_POSTED",
             scopeType: data.scopeType,
             paymentTerm: null,
             partner: { id: data.partner?.id },
@@ -211,8 +211,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 discount: saleOrderLine.discount || 0,
                 displayType: "PRODUCT",
                 note: saleOrderLine.note || "",
-                taxes:
-                    saleOrderLine.taxes,
+                taxes: saleOrderLine.taxes || [],
                 taxNames: [],
                 accountMoveId: 0,
                 // taxInfo: [],
