@@ -16,6 +16,7 @@ import { translate } from "../../../../i18n/translate";
 import en from "../../../../i18n/en";
 import { clientData } from "../../../../models/add-client-props";
 import { values } from "mobx";
+import { checkPhoneNumber } from "../../../../utils/validate";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
@@ -248,26 +249,10 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         rules={{
 
                             validate: {
-                                checkLength: (value) => {
-                                    if (value.startsWith("03") || value.startsWith("05") || value.startsWith("07") || value.startsWith("08") || value.startsWith("09")) {
-
-                                        return value.length === 10 || en.ClientScreen.phoneNumber10
-                                    } else if (value.startsWith("02")) {
-                                        return value.length === 11 || en.ClientScreen.startNumber02
-                                    } else {
-                                        return en.ClientScreen.formatError
-                                    }
-
-                                }
+                                checkLength: (value) => checkPhoneNumber(value)
                             }
-
                             ,
 
-                            // minLength: {
-                            //     value: 10,
-                            //     message: en.ClientScreen.phoneNumber10
-
-                            // },
                             pattern: {
                                 value: /^\S+$/,
                                 message: en.ClientScreen.checkSpace

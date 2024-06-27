@@ -5,6 +5,7 @@ import numeral from "numeral";
 import "numeral/locales/vi";
 import { FieldErrors, FieldValues } from "react-hook-form";
 import { Platform } from "react-native";
+import en from "../i18n/en";
 
 // const ValidateJS = require("validate.js")
 export function isFormValid(error: FieldErrors<FieldValues>, ...fields: any[]) {
@@ -562,4 +563,17 @@ export function groupedTaxValues(products: []) {
     }
     return acc;
   }, {});
+}
+
+export function checkPhoneNumber (value: string) {
+   
+      if (value.startsWith("03") || value.startsWith("05") || value.startsWith("07") || value.startsWith("08") || value.startsWith("09")) {
+
+        return value.length === 10 || en.ClientScreen.phoneNumber10
+    } else if (value.startsWith("02")) {
+        return value.length === 11 || en.ClientScreen.startNumber02
+    } else {
+        return en.ClientScreen.formatError
+    }
+    
 }

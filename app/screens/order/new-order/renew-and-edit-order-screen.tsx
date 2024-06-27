@@ -212,8 +212,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
       Number(price) - Number(orderStore.dataDebtPayment.inputPrice) >
-        Number(store.orderStore.dataDebtLimit.debtAmount) -
-          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+      Number(store.orderStore.dataDebtLimit.debtAmount) -
+      Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
     ) {
       orderStore.setMethodPayment({
         sumAll: 0,
@@ -229,7 +229,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
               ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
               : null,
         },
       });
@@ -299,12 +299,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             data.warehouses == undefined
               ? []
               : [
-                  {
-                    id: data.warehouses.id,
-                    name: data.warehouses.name,
-                    quantity: data.warehouses.quantity,
-                  },
-                ],
+                {
+                  id: data.warehouses.id,
+                  name: data.warehouses.name,
+                  quantity: data.warehouses.quantity,
+                },
+              ],
         },
         quantity: data.amount,
         uomId: data.uomId,
@@ -383,8 +383,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         handleNamPreMethod() === ""
           ? Number(price)
           : orderStore.clearingDebt == false
-          ? Number(orderStore.dataDebtPayment.inputPrice)
-          : 0, // so tien gui len
+            ? Number(orderStore.dataDebtPayment.inputPrice)
+            : 0, // so tien gui len
       amountClearings:
         orderStore.clearingDebt == true
           ? Number(orderStore.dataDebtPayment.inputPrice)
@@ -406,15 +406,15 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         //     Dialog.hide();
         //   },
         // });
-        orderStore.setDataProductAddOrder([]);
-        setArrProduct([]);
-        handleBack();
         navigation.navigate("orderSuccess" as never, {
           idOrder: values.id,
           screen: screen === "copy" ? "create" : "edit",
           price: price,
           inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0,
         });
+        orderStore.setDataProductAddOrder([]);
+        setArrProduct([]);
+        handleBack();
       } else {
         const v = values?.map((data: any) => {
           return data.message;
@@ -764,7 +764,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         sum +
         (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0) -
           (Number(item.taxesInput ?? 0) / 100) *
-            (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) +
+          (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) +
           Number(item.taxValue ?? 0))
       );
     }, 0);
@@ -825,9 +825,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               items?.taxLines?.items.length === 0
                 ? undefined
                 : {
-                    value: items?.taxLines?.items[0]?.taxId,
-                    label: items?.taxLines?.items[0]?.taxName,
-                  },
+                  value: items?.taxLines?.items[0]?.taxId,
+                  label: items?.taxLines?.items[0]?.taxName,
+                },
             taxValue: items?.taxLines?.items[0]?.amount,
             taxesInput: items.discount,
             addInputTaxes: items.discount !== 0 ? true : false,
@@ -996,18 +996,18 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         console.log("check validate", item.price);
                         item.unitPrice === undefined || item.unitPrice === 0
                           ? Dialog.show({
-                              type: ALERT_TYPE.INFO,
-                              title: translate("productScreen.Notification"),
-                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
-                              button2: translate(
-                                "productScreen.BtnNotificationAccept"
-                              ),
-                              closeOnOverlayTap: false,
-                              onPressButton: () => {
-                                // navigation.goBack();
-                                Dialog.hide();
-                              },
-                            })
+                            type: ALERT_TYPE.INFO,
+                            title: translate("productScreen.Notification"),
+                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                            button2: translate(
+                              "productScreen.BtnNotificationAccept"
+                            ),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                              // navigation.goBack();
+                              Dialog.hide();
+                            },
+                          })
                           : handleSelectTaxes(item.id);
                       }}
                       taxesInput={item.taxesInput}
@@ -1037,7 +1037,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         handleInputTaxes(item.id, text)
                       }
                       textDiscount={item.taxesInput}
-                      handleUpdatePrice={function ({}: {}): void {
+                      handleUpdatePrice={function ({ }: {}): void {
                         selectInputPrice(item.id);
                       }}
                       selectUpdate={item.addPrice}
@@ -1103,7 +1103,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                   {screen === "edit" ? null : <Images.icon_caretRight2 />}
                 </View>
                 {countRef.current.toString() ===
-                translate("order.DEDUCTION_OF_LIABILITIES") ? (
+                  translate("order.DEDUCTION_OF_LIABILITIES") ? (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text
                       tx="order.available_limit"
@@ -1246,11 +1246,11 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                               ? Number(
-                                  store.orderStore.dataDebtLimit.debtAmount
-                                ) -
-                                Number(
-                                  store.orderStore.dataDebtLimit.amountOwed ?? 0
-                                )
+                                store.orderStore.dataDebtLimit.debtAmount
+                              ) -
+                              Number(
+                                store.orderStore.dataDebtLimit.amountOwed ?? 0
+                              )
                               : 0,
                         },
                       });
@@ -1380,9 +1380,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                           ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                            Number(
-                              store.orderStore.dataDebtLimit.amountOwed ?? 0
-                            )
+                          Number(
+                            store.orderStore.dataDebtLimit.amountOwed ?? 0
+                          )
                           : null,
                     },
                   });

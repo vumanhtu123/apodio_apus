@@ -391,15 +391,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         //     Dialog.hide();
         //   },
         // });
-        orderStore.setDataProductAddOrder([]);
-        setArrProduct([]);
-        handleBack();
         navigation.navigate("orderSuccess" as never, {
           idOrder: values.id,
           screnn: "create",
           price: price,
           inputPrice: orderStore.dataDebtPayment.inputPrice,
         });
+        orderStore.setDataProductAddOrder([]);
+        setArrProduct([]);
+        handleBack();
       } else {
         const v = values?.map((data: any) => {
           return data.message;
@@ -1165,9 +1165,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       navigation.navigate("paymentBuy", {
                         params: {
                           type: true,
-                            // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                            //   ? false
-                            //   : true,
+                          // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                          //   ? false
+                          //   : true,
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
