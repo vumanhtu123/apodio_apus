@@ -37,7 +37,7 @@ import CustomCalendar from '../../../components/calendar';
 import ItemOrder from '../components/item-order';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useStores } from '../../../models';
-import { formatCurrency } from '../../../utils/validate';
+import { commasToDots, formatCurrency } from '../../../utils/validate';
 import { formatDateTime } from '../../../utils/formatDate';
 
 export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
@@ -300,13 +300,13 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
               code={item.code}
               status={getOrderStateText(item.state)}
               amount={item.quantity}
-              discount={formatCurrency(item.amountDiscount)}
+              discount={formatCurrency(commasToDots(item.amountDiscount))}
               payStatus={getInvoiceStateText(item.invoiceStatus)}
               // weight={item.weight}
-              totalAmount={formatCurrency(item.amountTotal)}
-              totalTax={formatCurrency(item.amountTax)}
+              totalAmount={formatCurrency(commasToDots(item.amountTotal))}
+              totalTax={formatCurrency(commasToDots(item.amountTax))}
               // money={formatCurrency(calculateTotalPrice(item))}
-              money={formatCurrency(item.amountTotalUnDiscount)}
+              money={formatCurrency(commasToDots(item.amountTotalUnDiscount))}
               styleViewStatus={{
                 backgroundColor:
                   item.state === "SALE"

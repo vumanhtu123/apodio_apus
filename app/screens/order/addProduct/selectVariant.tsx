@@ -112,10 +112,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: items.minQuantity,
+                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: items.minQuantity,
+                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -126,12 +126,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: newAmount,
+                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: Math.ceil(
-                  newAmount * newObject[0].conversionRate
-                ),
+                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
               };
             }
           });
@@ -171,10 +169,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
-                amount: items.minQuantity,
+                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
                 isSelect: false,
                 conversionRate: 1,
-                originAmount: items.minQuantity,
+                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
               };
             } else {
               const newObject = items.uomGroup.uomGroupLineItems.filter(
@@ -185,12 +183,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
               );
               return {
                 ...items,
-                amount: newAmount,
+                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
                 isSelect: false,
                 conversionRate: newObject[0].conversionRate,
-                originAmount: Math.ceil(
-                  newAmount * newObject[0].conversionRate
-                ),
+                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
               };
             }
           });

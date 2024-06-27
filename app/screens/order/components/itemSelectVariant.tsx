@@ -100,28 +100,30 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
                             </View>}
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1 }}>
-                        <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
-                        <View style={[styles.viewAmount,
-                        { borderWidth: scaleHeight(1), borderColor: item.amount !== 0 ? (item.amount < item.minQuantity ? colors.palette.radicalRed : colors.textWhite) : colors.palette.white }
-                        ]}>
-                            <TouchableOpacity disabled={item.amount === 0 ? true : false}
-                                onPress={() => handleMinusPrice(item)}
-                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
-                            >
-                                <Images.icon_minus />
-                            </TouchableOpacity>
-                            <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
-                            <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlusPrice(item)}
-                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
-                            >
-                                <Images.icon_plusGreen />
-                            </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, flex: 1 }}>
+                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
+                            <View style={[styles.viewAmount,
+                            { borderWidth: scaleHeight(1), borderColor: item.amount !== 0 ? (item.amount < item.minQuantity ? colors.palette.radicalRed : colors.textWhite) : colors.palette.white }
+                            ]}>
+                                <TouchableOpacity disabled={item.amount === 0 ? true : false}
+                                    onPress={() => handleMinusPrice(item)}
+                                    style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
+                                >
+                                    <Images.icon_minus />
+                                </TouchableOpacity>
+                                <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
+                                <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlusPrice(item)}
+                                    style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
+                                >
+                                    <Images.icon_plusGreen />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ width: '20%' }}>
+                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                            </View>
                         </View>
-                        <View style={{ width: '20%' }}>
-                            <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: scaleWidth(66) }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />
@@ -229,26 +231,28 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
                             </View>}
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1 }}>
-                        <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
-                        <View style={styles.viewAmount}>
-                            <TouchableOpacity disabled={item.amount === 0 ? true : false}
-                                onPress={() => handleMinus(item)}
-                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
-                            >
-                                <Images.icon_minus />
-                            </TouchableOpacity>
-                            <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
-                            <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlus(item)}
-                                style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
-                            >
-                                <Images.icon_plusGreen />
-                            </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, flex: 1 }}>
+                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
+                            <View style={styles.viewAmount}>
+                                <TouchableOpacity disabled={item.amount === 0 ? true : false}
+                                    onPress={() => handleMinus(item)}
+                                    style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
+                                >
+                                    <Images.icon_minus />
+                                </TouchableOpacity>
+                                <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
+                                <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlus(item)}
+                                    style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
+                                >
+                                    <Images.icon_plusGreen />
+                                </TouchableOpacity>
+                            </View>
+                            <View >
+                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                            </View>
                         </View>
-                        <View style={{ width: '20%' }}>
-                            <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: scaleWidth(66) }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />

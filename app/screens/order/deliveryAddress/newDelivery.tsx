@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import React, {
   Dimensions,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -254,6 +255,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
         textBody: translate('txtToats.required_information'),
       });
     } else {
+      Keyboard.dismiss()
       const newCountry = { id: 366, name: "Việt Nam" };
       const newCity = { id: city.id, name: city.label };
       const newDistrict = { id: district.id, name: district.label };
@@ -289,7 +291,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 address: data.address,
                 isDefault: valueSwitch,})
             }
-            setTimeout(() => navigation.goBack(), 5000)
+            setTimeout(() => navigation.goBack(), 1000)
           // Dialog.show({
           //   type: ALERT_TYPE.INFO,
           //   title: translate("productScreen.Notification"),

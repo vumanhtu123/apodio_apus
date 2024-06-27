@@ -11,7 +11,7 @@ import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import { formatDateTime } from "../../../utils/formatDate";
-import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, formatCurrency } from "../../../utils/validate";
+import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency } from "../../../utils/validate";
 import ItemOrder from "../components/item-order";
 import { styles } from "./styles";
 export const OrderDetails: FC = observer(
@@ -233,7 +233,7 @@ export const OrderDetails: FC = observer(
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ flex: 1 }} >
-                                    <Text text={formatCurrency(data?.totalPrice)} />
+                                    <Text text={formatCurrency(commasToDots(data?.totalPrice))} />
                                 </View>
                                 <Button
                                     tx={invoiceId ? 'order.showInvoiceDetail' : 'order.sendInvoice'} // Conditional text
@@ -343,8 +343,8 @@ export const OrderDetails: FC = observer(
                                             </View>
                                         </View>
                                         <View>
-                                            <Text text={formatCurrency(item.amountUntaxed)} style={styles.textListProduct} />
-                                            <Text text={formatCurrency(calculateTotalUnitPrice(item.unitPrice, item.quantity))} style={styles.priceOriginal} />
+                                            <Text text={formatCurrency(commasToDots(item.amountUntaxed))} style={styles.textListProduct} />
+                                            <Text text={formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity)))} style={styles.priceOriginal} />
                                         </View>
                                     </TouchableOpacity>
                                 )
@@ -352,10 +352,10 @@ export const OrderDetails: FC = observer(
                         }
                     </View>
                     <ItemOrder
-                        money={formatCurrency(calculateTotalPrice(data.saleOrderLines))}
+                        money={formatCurrency(commasToDots(calculateTotalPrice(data.saleOrderLines)))}
                         // totalTax={formatCurrency(data.computeTaxInfo?.taxLines?.[0]?.amount)}
-                        discount={formatCurrency(calculateTotalDiscount(data.saleOrderLines))}
-                        totalAmount={formatCurrency(data?.totalPrice)}
+                        discount={formatCurrency(commasToDots(calculateTotalDiscount(data.saleOrderLines)))}
+                        totalAmount={formatCurrency(commasToDots(data?.totalPrice))}
                         // weight={data?.weight}
                         // payStatus={data?.payStatus}
                         dataTax={data.computeTaxInfo?.taxLines}
@@ -389,7 +389,7 @@ export const OrderDetails: FC = observer(
                                     </View>
                                     <View style={styles.viewTextCash}>
                                         <Text text={item.paymentPopUpResponse?.paymentMethod} style={[styles.textContent, { flex: 1 }]} />
-                                        <Text text={formatCurrency(item.amount)} />
+                                        <Text text={formatCurrency(commasToDots(item.amount))} />
                                     </View>
                                 </View>
                             ))}
