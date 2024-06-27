@@ -69,6 +69,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   console.log("props", orderStore.dataDebtPayment.sumAll);
   const newData = route?.params?.newData;
   const screen = route?.params?.screen;
+  console.log('asigdoiuashd', newData)
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
@@ -196,6 +197,45 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   };
 
   const addProduct = () => {
+    if (store.orderStore.dataClientSelect.id === '') {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn khách hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (address.id === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần nhập địa chỉ giao hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (arrProduct.length === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn sản phẩm",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
     if (handleNamMethod() == "") {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
@@ -204,7 +244,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          navigation.navigate("orders" as never);
+          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -212,8 +252,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
       Number(price) - Number(orderStore.dataDebtPayment.inputPrice) >
-        Number(store.orderStore.dataDebtLimit.debtAmount) -
-          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+      Number(store.orderStore.dataDebtLimit.debtAmount) -
+      Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
     ) {
       orderStore.setMethodPayment({
         sumAll: 0,
@@ -229,7 +269,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
               ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
               : null,
         },
       });
@@ -299,12 +339,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             data.warehouses == undefined
               ? []
               : [
-                  {
-                    id: data.warehouses.id,
-                    name: data.warehouses.name,
-                    quantity: data.warehouses.quantity,
-                  },
-                ],
+                {
+                  id: data.warehouses.id,
+                  name: data.warehouses.name,
+                  quantity: data.warehouses.quantity,
+                },
+              ],
         },
         quantity: data.amount,
         uomId: data.uomId,
@@ -383,8 +423,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         handleNamPreMethod() === ""
           ? Number(price)
           : orderStore.clearingDebt == false
-          ? Number(orderStore.dataDebtPayment.inputPrice)
-          : 0, // so tien gui len
+            ? Number(orderStore.dataDebtPayment.inputPrice)
+            : 0, // so tien gui len
       amountClearings:
         orderStore.clearingDebt == true
           ? Number(orderStore.dataDebtPayment.inputPrice)
@@ -764,7 +804,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         sum +
         (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0) -
           (Number(item.taxesInput ?? 0) / 100) *
-            (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) +
+          (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) +
           Number(item.taxValue ?? 0))
       );
     }, 0);
@@ -825,12 +865,13 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               items?.taxLines?.items.length === 0
                 ? undefined
                 : {
-                    value: items?.taxLines?.items[0]?.taxId,
-                    label: items?.taxLines?.items[0]?.taxName,
-                  },
+                  value: items?.taxLines?.items[0]?.taxId,
+                  label: items?.taxLines?.items[0]?.taxName,
+                },
             taxValue: items?.taxLines?.items[0]?.amount,
             taxesInput: items.discount,
-            addInputTaxes: items.discount !== 0 ? true : false,
+            addInputTaxes: items.discount !== 0 ? false : true,
+            addTaxes: items.discount !== 0 ? true : false,
             lineId: screen === "edit" ? items.id : null,
           };
         });
@@ -860,6 +901,39 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           valueNote.current = newData.note;
         }
         orderStore.setCheckRenderList(false);
+
+        if (newData.isClearingDebts === true && screen === 'edit') {
+          setIsDeposit(true)
+          orderStore.setClearingDebt(true)
+          orderStore.setMethodPayment({
+            sumAll: newData.totalPrice ?? 0,
+            methodPayment: translate("order.EXCEPT_FOR_LIABILITIES"),
+            debt: 0,
+            inputPrice: newData.amountClearings,
+            apply: true,
+          })
+        }
+        if (newData.isPrepayment === true && screen === 'edit') {
+          setIsDeposit(true)
+          orderStore.setClearingDebt(false)
+          orderStore.setMethodPayment({
+            sumAll: newData.totalPrice ?? 0,
+            methodPayment: translate("order.money_face"),
+            debt: 0,
+            inputPrice: newData.amountPrePayment,
+            apply: true,
+          })
+        }
+        if (newData.isPrepayment === false && newData.isClearingDebts === false && screen === 'edit') {
+          orderStore.setClearingDebt(false)
+          orderStore.setMethodPayment({
+            sumAll: newData.totalPrice ?? 0,
+            methodPayment: '',
+            debt: 0,
+            inputPrice: 0,
+            apply: false,
+          })
+        }
         if (screen === "edit") {
           switch (newData.paymentMethod) {
             case "CASH":
@@ -996,18 +1070,18 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         console.log("check validate", item.price);
                         item.unitPrice === undefined || item.unitPrice === 0
                           ? Dialog.show({
-                              type: ALERT_TYPE.INFO,
-                              title: translate("productScreen.Notification"),
-                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
-                              button2: translate(
-                                "productScreen.BtnNotificationAccept"
-                              ),
-                              closeOnOverlayTap: false,
-                              onPressButton: () => {
-                                // navigation.goBack();
-                                Dialog.hide();
-                              },
-                            })
+                            type: ALERT_TYPE.INFO,
+                            title: translate("productScreen.Notification"),
+                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                            button2: translate(
+                              "productScreen.BtnNotificationAccept"
+                            ),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                              // navigation.goBack();
+                              Dialog.hide();
+                            },
+                          })
                           : handleSelectTaxes(item.id);
                       }}
                       taxesInput={item.taxesInput}
@@ -1017,6 +1091,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       valueVAT={item.taxValue}
                       name={item.name}
                       unit={item.uomName}
+                      id={item.id}
                       // images={item.productImage}
                       images={item.images}
                       cost={item.unitPrice}
@@ -1037,7 +1112,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         handleInputTaxes(item.id, text)
                       }
                       textDiscount={item.taxesInput}
-                      handleUpdatePrice={function ({}: {}): void {
+                      handleUpdatePrice={function ({ }: {}): void {
                         selectInputPrice(item.id);
                       }}
                       selectUpdate={item.addPrice}
@@ -1103,7 +1178,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                   {screen === "edit" ? null : <Images.icon_caretRight2 />}
                 </View>
                 {countRef.current.toString() ===
-                translate("order.DEDUCTION_OF_LIABILITIES") ? (
+                  translate("order.DEDUCTION_OF_LIABILITIES") ? (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text
                       tx="order.available_limit"
@@ -1210,7 +1285,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                     ]}
                   />
                 ) : null}
-                {isDeposit === false ? (
+                {isDeposit === false ? (screen === 'edit'? null :
                   <Button
                     tx={"order.deposit"}
                     onPress={() => {
@@ -1246,11 +1321,11 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                               ? Number(
-                                  store.orderStore.dataDebtLimit.debtAmount
-                                ) -
-                                Number(
-                                  store.orderStore.dataDebtLimit.amountOwed ?? 0
-                                )
+                                store.orderStore.dataDebtLimit.debtAmount
+                              ) -
+                              Number(
+                                store.orderStore.dataDebtLimit.amountOwed ?? 0
+                              )
                               : 0,
                         },
                       });
@@ -1361,7 +1436,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               <Text style={styles.textTotal}>
                 {formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.inputPrice)))}
               </Text>
-              <TouchableOpacity
+              {screen === 'edit' ? null :
+               <TouchableOpacity 
                 onPress={() => {
                   orderStore.setMethodPayment({
                     sumAll: 0,
@@ -1380,9 +1456,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                           ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                            Number(
-                              store.orderStore.dataDebtLimit.amountOwed ?? 0
-                            )
+                          Number(
+                            store.orderStore.dataDebtLimit.amountOwed ?? 0
+                          )
                           : null,
                     },
                   });
@@ -1390,7 +1466,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                 <Images.icon_edit
                   style={{ marginLeft: scaleWidth(margin.margin_6) }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity>}
             </View>
           </View>
         ) : null}
