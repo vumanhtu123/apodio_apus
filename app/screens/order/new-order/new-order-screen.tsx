@@ -1207,9 +1207,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       navigation.navigate("paymentBuy", {
                         params: {
                           type: true,
-                            // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                            //   ? false
-                            //   : true,
+                          // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                          //   ? false
+                          //   : true,
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"

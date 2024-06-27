@@ -446,15 +446,15 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         //     Dialog.hide();
         //   },
         // });
-        orderStore.setDataProductAddOrder([]);
-        setArrProduct([]);
-        handleBack();
         navigation.navigate("orderSuccess" as never, {
           idOrder: values.id,
           screen: screen === "copy" ? "create" : "edit",
           price: price,
           inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0,
         });
+        orderStore.setDataProductAddOrder([]);
+        setArrProduct([]);
+        handleBack();
       } else {
         const v = values?.map((data: any) => {
           return data.message;
