@@ -120,7 +120,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       }else{
         setMethod(0)
       }
-      setCheck(true)
+      // setCheck(true)
     }
   }, [])
 
@@ -215,7 +215,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {type === true ? null: (check !== true ? (
+          {type === true ? null: 
+          // (check !== true ? (
             <View
               style={{
                 backgroundColor: "#FEF7E5",
@@ -232,8 +233,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   fontSize: 12,
                   fontWeight: "400",
                 }}></Text>
-            </View>
-          ) : null)}
+            </View>}
+          {/* ) : null)} */}
           <Text
             style={{
               fontSize: 20,
@@ -416,6 +417,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         isPayment={false}
         closeDialog={function (): void {
           setButtonPayment(false);
+        }}
+        onSave={()=>{
+          console.log('da chon')
         }}
         arrData={advanceMethodData}
         method={method}

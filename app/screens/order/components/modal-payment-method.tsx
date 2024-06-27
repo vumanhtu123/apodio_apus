@@ -9,6 +9,7 @@ import { commasToDots, formatCurrency } from "../../../utils/validate";
 interface InputSelect {
   isVisible: boolean;
   closeDialog: () => void;
+  onSave?: () => void;
   arrData: {}[];
   method: number;
   setMethod: (item: number, name: string) => void;
@@ -101,6 +102,7 @@ export const ModalPayment = (data: InputSelect) => {
           <TouchableOpacity
             onPress={() => {
               data.closeDialog();
+              data.onSave();
             }}
             style={{
               backgroundColor: "#0078D4",

@@ -52,6 +52,7 @@ import {
   Dialog,
   Toast,
 } from "../../../components/dialog-notification";
+import { commasToDots, formatCurrency } from "../../../utils/validate";
 
 export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   props: any
@@ -1118,10 +1119,10 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         fontWeight: "400",
                         color: "#FF0000",
                       }}>
-                      {Number(store.orderStore.dataDebtLimit.debtAmount) -
+                      {formatCurrency(commasToDots(Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
                           store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        ) ?? 0}
+                        ))) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1142,6 +1143,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             dataNote={valueNote.current}
             note={note}
             setNoteData={function (note: string, arr: []): void {
+              valueNote.current = note
               console.log("note---------", note);
               console.log("arr---------", arr);
             }}
@@ -1333,7 +1335,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             {/* {isNaN(priceSumVAT.current)
               ? Number(priceSumVAT.current)
               : price.current} */}
-            {Number(price)}
+            {formatCurrency(commasToDots(Number(price)))}
           </Text>
         </View>
         {isDeposit === true && orderStore.dataDebtPayment.apply ? (
@@ -1352,12 +1354,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
-                {Number(orderStore.dataDebtPayment.sumAll)}
+                {formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.sumAll)))}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textTotal}>
-                {Number(orderStore.dataDebtPayment.inputPrice)}
+                {formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.inputPrice)))}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -1404,8 +1406,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              {Number(price ?? 0) -
-                Number(orderStore.dataDebtPayment.inputPrice ?? 0)}
+              {formatCurrency(commasToDots(Number(price ?? 0) -
+                Number(orderStore.dataDebtPayment.inputPrice ?? 0)))}
             </Text>
           </View>
         ) : null}
