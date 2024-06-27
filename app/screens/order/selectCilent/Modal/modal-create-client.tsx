@@ -15,6 +15,7 @@ import { Dialog, Loading } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import en from "../../../../i18n/en";
 import { clientData } from "../../../../models/add-client-props";
+import { values } from "mobx";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
@@ -33,7 +34,8 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
         defaultValues: {
             phoneNumber: '',
             NameClient: ''
-        }
+        },
+        mode: "onChange"
     })
 
     const getAPIcreateClient = useStores();
@@ -52,12 +54,12 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
         const phoneNumber = data.phoneNumber
         setCheckHind(true)
 
-        console.log('====================================');
-        console.log("value hind", checkHind);
-        console.log('====================================');
-        console.log('====================================');
-        console.log('data test', nameClient, phoneNumber, selectCustomerType);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log("value hind", checkHind);
+        // console.log('====================================');
+        // console.log('====================================');
+        // console.log('data test', nameClient, phoneNumber, selectCustomerType);
+        // console.log('====================================');
 
         const result = await getAPIcreateClient.orderStore.postClient({
             "name": nameClient,
@@ -95,7 +97,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 title: translate("txtDialog.txt_title_dialog"),
                 button: '',
                 button2: translate("common.ok"),
-                textBody: "Tạo khách hàng thành công",
+                textBody: en.ClientScreen.createClientSuccess,
                 closeOnOverlayTap: false,
                 onPressButton: () => {
 
@@ -244,14 +246,31 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                             />
                         )}
                         rules={{
-                            maxLength: {
-                                value: 10,
-                                message: en.ClientScreen.phoneNumber10
-                            },
-                            minLength: {
-                                value: 10,
-                                message: en.ClientScreen.phoneNumber10
 
+                            validate: {
+                                checkLength: (value) => {
+                                    if (value.startsWith("03") || value.startsWith("05") || value.startsWith("07") || value.startsWith("08") || value.startsWith("09")) {
+
+                                        return value.length === 10 || en.ClientScreen.phoneNumber10
+                                    } else if (value.startsWith("02")) {
+                                        return value.length === 11 || en.ClientScreen.startNumber02
+                                    } else {
+                                        return en.ClientScreen.formatError
+                                    }
+
+                                }
+                            }
+
+                            ,
+
+                            // minLength: {
+                            //     value: 10,
+                            //     message: en.ClientScreen.phoneNumber10
+
+                            // },
+                            pattern: {
+                                value: /^\S+$/,
+                                message: en.ClientScreen.checkSpace
                             },
                             required: en.ClientScreen.pleaseInputPhoneNumber
                         }}

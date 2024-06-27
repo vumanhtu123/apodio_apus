@@ -14,8 +14,8 @@ export const OrderSuccess: FC = () => {
     const route = useRoute()
     const { idOrder, screen, price, inputPrice } = route.params || undefined
     const { orderStore } = useStores()
-    // console.log(price, '234234')
-    // console.log(inputPrice)
+    console.log(price, '234234')
+    console.log(inputPrice)
     const formattedPrice = price.toLocaleString('vi-VN');
     const formattedInputPrice = inputPrice.toLocaleString('vi-VN');
     const receivables = price - inputPrice;
