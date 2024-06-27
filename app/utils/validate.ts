@@ -249,9 +249,7 @@ export function formatNumber(inputNumber: any) {
   return result;
 }
 export function formatVND(value: any) {
-  const result = value + "đ";
-
-  return result;
+  return `${value}đ`;
 }
 numeral.locale("vi");
 // export function formatCurrencyWithCommas(amount: any) {

@@ -29,7 +29,7 @@ import CustomCalendar from "../../../components/calendar";
 import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
-import { calculateTotalPrice, calculateTotalUnitPrice, formatCurrency } from "../../../utils/validate";
+import { calculateTotalPrice, calculateTotalUnitPrice, formatCurrency, formatVND } from "../../../utils/validate";
 import ProductAttribute from "../../product/component/productAttribute";
 
 export const NewInvoice: FC = observer(function NewInvoice(props) {
@@ -542,7 +542,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
-                                                    <Text text={formatCurrency(item.amountUntaxed)} style={styles.textListProduct} />
+                                                    <Text text={formatVND(formatCurrency(item.amountUntaxed))} style={styles.textListProduct} />
 
                                                 </View>
                                             </View>
@@ -559,19 +559,19 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                             <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
-                                value={formatCurrency(calculateTotalUnTaxPrice())}
+                                value={formatVND(formatCurrency(calculateTotalUnTaxPrice()))}
                             />
                             {groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
 
                                 <ProductAttribute
                                     label={item.taxName}
-                                    value={formatCurrency(item.amount)}
+                                    value={formatVND(formatCurrency(item.amount))}
                                 />
 
                             ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"
-                                value={formatCurrency(data.totalPrice)}
+                                value={formatVND(formatCurrency(data.totalPrice))}
                             />
                         </View>
                     </ScrollView>

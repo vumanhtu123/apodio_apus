@@ -18,7 +18,7 @@ import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStores } from '../../../models';
-import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, formatCurrency } from '../../../utils/validate';
+import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, formatCurrency, formatVND } from '../../../utils/validate';
 import ProductAttribute from '../../product/component/productAttribute';
 import FastImage from 'react-native-fast-image';
 import RNFS from 'react-native-fs';
@@ -120,11 +120,11 @@ export const PrintInvoiceScreen: FC = observer(
                     <View style={styles.cell}>
                         <Text style={styles.sanPhamText}>{item.product.name}</Text>
                     </View>
-                    <Text style={styles.cellUnitPrice}>{formatCurrency(item.unitPrice)}</Text>
+                    <Text style={styles.cellUnitPrice}>{formatVND(formatCurrency(item.unitPrice))}</Text>
                     <Text style={styles.cellAmount}>
                         {item.quantity} <Text style={{ fontSize: fontSize.size12 }}>
                             {item.uom.name}</Text></Text>
-                    <Text style={styles.cellMoney}>{formatCurrency(calculateTotalUnitPrice(item.unitPrice, item.quantity))}</Text>
+                    <Text style={styles.cellMoney}>{formatVND(formatCurrency(calculateTotalUnitPrice(item.unitPrice, item.quantity)))}</Text>
                 </View>
             </View>
         );
@@ -232,17 +232,17 @@ export const PrintInvoiceScreen: FC = observer(
                             ))} */}
                             <ProductAttribute
                                 labelTx="printInvoiceScreen.amountUntaxed"
-                                value={formatCurrency(calculateTotalPrice(data.invoiceLines))}
+                                value={formatVND(formatCurrency(calculateTotalPrice(data.invoiceLines)))}
                             />
                             <ProductAttribute
                                 labelTx="dashboard.promotions"
-                                value={formatCurrency(calculateTotalDiscount(data.invoiceLines))}
+                                value={formatVND(formatCurrency(calculateTotalDiscount(data.invoiceLines)))}
                             />
                             { groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
                                 
                                 <ProductAttribute
                                     label={item.taxName}
-                                    value={formatCurrency(item.amount)}
+                                    value={formatVND(formatCurrency(item.amount))}
                                 />
                           
                         ))}
@@ -252,7 +252,7 @@ export const PrintInvoiceScreen: FC = observer(
                             /> */}
                             <ProductAttribute
                                 labelTx="printInvoiceScreen.totalPrice"
-                                value={formatCurrency(data.amountTotal)}
+                                value={formatVND(formatCurrency(data.amountTotal))}
                             />
                         </View>
                     </View>
