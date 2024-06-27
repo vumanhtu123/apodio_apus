@@ -14,8 +14,8 @@ export const OrderSuccess: FC = () => {
     const route = useRoute()
     const { idOrder, screen, price, inputPrice } = route.params || undefined
     const { orderStore } = useStores()
-    // console.log(price, '234234')
-    // console.log(inputPrice)
+    console.log(price, '234234')
+    console.log(inputPrice)
     const formattedPrice = price.toLocaleString('vi-VN');
     const formattedInputPrice = inputPrice.toLocaleString('vi-VN');
     const receivables = price - inputPrice;
@@ -72,29 +72,44 @@ export const OrderSuccess: FC = () => {
                             <Text style={{ fontSize: fontSize.size14 }}>
                                 {idOrder}
                             </Text>
-                            <Text tx="successScreen.value"
-                                style={{ fontSize: fontSize.size14 }}
-                            />
-                            <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14 }}>
-                                {formattedPrice} đ
-                            </Text>
+                            {
+                                screen === 'edit' ?
+                                    null
+                                    : <>
+                                        <Text tx="successScreen.value"
+                                            style={{ fontSize: fontSize.size14 }}
+                                        />
+                                        <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14 }}>
+                                            {formattedPrice} đ
+                                        </Text>
+                                    </>
+
+                            }
+
                         </View>
 
-                        <View style={{ marginVertical: scaleWidth(12), flexDirection: 'row' }}>
-                            <Text style={{ fontSize: fontSize.size14 }}
-                                tx="successScreen.orderHasBeenPaid"
-                            />
-                            <Text style={{ fontSize: fontSize.size14 }}>
-                                {formattedInputPrice}
-                            </Text>
-                        </View>
+                        {
+                            screen === 'edit' ?
+                                null
+                                : <>
+                                    <View style={{ marginVertical: scaleWidth(12), flexDirection: 'row' }}>
+                                        <Text style={{ fontSize: fontSize.size14 }}
+                                            tx="successScreen.orderHasBeenPaid"
+                                        />
+                                        <Text style={{ fontSize: fontSize.size14 }}>
+                                            {formattedInputPrice}
+                                        </Text>
+                                    </View>
 
-                        <Text style={{ fontSize: fontSize.size14 }}
-                            tx="successScreen.theRemainingAmount"
-                        />
-                        <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14, marginBottom: scaleWidth(12) }}>
-                            {formattedReceivables} đ
-                        </Text>
+                                    <Text style={{ fontSize: fontSize.size14 }}
+                                        tx="successScreen.theRemainingAmount"
+                                    />
+                                    <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14, marginBottom: scaleWidth(12) }}>
+                                        {formattedReceivables} đ
+                                    </Text>
+                                </>
+                        }
+
                         <Text style={{ fontSize: fontSize.size14, color: colors.palette.dolphin }}
                             tx={screen == "edit" ? "successScreen.timeEditOderSuccess" : "successScreen.timeCreateOderSuccess"}
                         />
