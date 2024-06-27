@@ -312,7 +312,7 @@ const en = {
     total: "Tổng thanh toán",
     prepayment: "Thanh toán trước",
     contrast: "(Đối trừ công nợ)",
-    stillInDebt: "Còn nợ",
+    stillInDebt: "Còn phải thanh toán",
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",

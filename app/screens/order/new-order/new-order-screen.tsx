@@ -207,9 +207,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
       Number(price) -
-        Number(formatCurrency(orderStore.dataDebtPayment.inputPrice)) >
-        Number(store.orderStore.dataDebtLimit.debtAmount) -
-          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+      Number(formatCurrency(orderStore.dataDebtPayment.inputPrice)) >
+      Number(store.orderStore.dataDebtLimit.debtAmount) -
+      Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
     ) {
       // orderStore.setMethodPayment({
       //   sumAll: 0,
@@ -225,7 +225,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
               ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
               : null,
         },
       });
@@ -294,12 +294,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             data.warehouses == undefined
               ? []
               : [
-                  {
-                    id: data.warehouses.id,
-                    name: data.warehouses.name,
-                    quantity: data.warehouses.quantity,
-                  },
-                ],
+                {
+                  id: data.warehouses.id,
+                  name: data.warehouses.name,
+                  quantity: data.warehouses.quantity,
+                },
+              ],
         },
         quantity: data.amount,
         uomId: data.uomId,
@@ -369,8 +369,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         handleNamPreMethod() === ""
           ? Number(price)
           : orderStore.clearingDebt == false
-          ? Number(orderStore.dataDebtPayment.inputPrice)
-          : 0, // so tien gui len
+            ? Number(orderStore.dataDebtPayment.inputPrice)
+            : 0, // so tien gui len
       amountClearings:
         orderStore.clearingDebt == true
           ? Number(orderStore.dataDebtPayment.inputPrice)
@@ -398,7 +398,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           idOrder: values.id,
           screnn: "create",
           price: price,
-          inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0,
+          inputPrice: orderStore.dataDebtPayment.inputPrice,
         });
       } else {
         const v = values?.map((data: any) => {
@@ -565,7 +565,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
     orderStore.setMethodPayment({
       sumAll: 0,
-      methodPayment: 0,
+      methodPayment: '',
       debt: 0,
       inputPrice: 0,
       apply: false,
@@ -753,7 +753,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         sum +
         (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0) -
           (Number(item.taxesInput ?? 0) / 100) *
-            (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) +
+          (Number(item.unitPrice ?? 0) * Number(item.amount ?? 0)) +
           Number(item.taxValue ?? 0))
       );
     }, 0);
@@ -805,7 +805,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       setIsDeposit(orderStore.dataDebtPayment.apply);
       if (
         Number(store.orderStore.dataDebtLimit.debtAmount) -
-          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0) ===
+        Number(store.orderStore.dataDebtLimit.amountOwed ?? 0) ===
         0
       ) {
         setMethod(0);
@@ -813,6 +813,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         countRef.current = translate("order.CASH");
         handleNamMethod();
       }
+      if (orderStore.dataProductAddOrder.length !== 0) {
+        priceAll(orderStore.dataProductAddOrder)
+      }
+
     });
     return unsubscribe;
   }, [navigation]);
@@ -913,18 +917,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         console.log("check validate", item.price);
                         item.unitPrice === undefined || item.unitPrice === 0
                           ? Dialog.show({
-                              type: ALERT_TYPE.INFO,
-                              title: translate("productScreen.Notification"),
-                              textBody: "Bạn cần nhập giá trước khi chọn thuế",
-                              button2: translate(
-                                "productScreen.BtnNotificationAccept"
-                              ),
-                              closeOnOverlayTap: false,
-                              onPressButton: () => {
-                                // navigation.goBack();
-                                Dialog.hide();
-                              },
-                            })
+                            type: ALERT_TYPE.INFO,
+                            title: translate("productScreen.Notification"),
+                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                            button2: translate(
+                              "productScreen.BtnNotificationAccept"
+                            ),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                              // navigation.goBack();
+                              Dialog.hide();
+                            },
+                          })
                           : handleSelectTaxes(item.id);
                       }}
                       taxesInput={item.taxesInput}
@@ -936,7 +940,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       unit={item.uomName}
                       // images={item.productImage}
                       images={item.images}
-                      cost={formatCurrency(commasToDots(item.unitPrice))}
+                      cost={item.unitPrice}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
@@ -954,7 +958,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         handleInputTaxes(item.id, text)
                       }
                       textDiscount={item.taxesInput}
-                      handleUpdatePrice={function ({}: {}): void {
+                      handleUpdatePrice={function ({ }: {}): void {
                         selectInputPrice(item.id);
                       }}
                       selectUpdate={item.addPrice}
@@ -977,10 +981,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={formatCurrency(commasToDots(priceNoVat))}
-              sumVat={formatCurrency(commasToDots(priceSumVAT.current))}
+              sumNoVat={priceNoVat}
+              sumVat={priceSumVAT.current}
               arrVat={arrProduct}
-              discount={formatCurrency(commasToDots(discount.current))}
+              discount={discount.current}
             />
           ) : (
             <View style={{ marginTop: 15 }}></View>
@@ -1019,7 +1023,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   <Images.icon_caretRight2 />
                 </View>
                 {countRef.current.toString() ===
-                translate("order.DEDUCTION_OF_LIABILITIES") ? (
+                  translate("order.DEDUCTION_OF_LIABILITIES") ? (
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text
                       tx="order.available_limit"
@@ -1038,14 +1042,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                             Number(
                               store.orderStore.dataDebtLimit.amountOwed ?? 0
                             ) >
-                          Number(price)
+                            Number(price)
                             ? "#00CC6A"
                             : "#FF0000",
                       }}>
-                      {Number(store.orderStore.dataDebtLimit.debtAmount) -
+                      {formatCurrency(Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
                           store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        ) ?? 0}
+                        )) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1160,19 +1164,19 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       handleDebt();
                       navigation.navigate("paymentBuy", {
                         params: {
-                          type:
-                            handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? false
-                              : true,
+                          type: true,
+                            // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                            //   ? false
+                            //   : true,
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                               ? Number(
-                                  store.orderStore.dataDebtLimit.debtAmount
-                                ) -
-                                Number(
-                                  store.orderStore.dataDebtLimit.amountOwed ?? 0
-                                )
+                                store.orderStore.dataDebtLimit.debtAmount
+                              ) -
+                              Number(
+                                store.orderStore.dataDebtLimit.amountOwed ?? 0
+                              )
                               : 0,
                         },
                       });
@@ -1306,9 +1310,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                           ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                            Number(
-                              store.orderStore.dataDebtLimit.amountOwed ?? 0
-                            )
+                          Number(
+                            store.orderStore.dataDebtLimit.amountOwed ?? 0
+                          )
                           : null,
                     },
                   });
@@ -1335,7 +1339,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               {formatCurrency(
                 commasToDots(
                   Number(price ?? 0) -
-                    Number(orderStore.dataDebtPayment.inputPrice ?? 0)
+                  Number(orderStore.dataDebtPayment.inputPrice ?? 0)
                 )
               )}
             </Text>
@@ -1374,6 +1378,19 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         isPayment={true}
         closeDialog={function (): void {
           setButtonPayment(false);
+        }}
+        onSave={() => {
+          if (countRef.current !== translate("order.DEDUCTION_OF_LIABILITIES")) {
+            console.log('12312312312312')
+            orderStore.setMethodPayment({
+              sumAll: 0,
+              methodPayment: '',
+              debt: 0,
+              inputPrice: 0,
+              apply: false,
+            });
+            setIsDeposit(false)
+          }
         }}
         arrData={methodData}
         method={method}
