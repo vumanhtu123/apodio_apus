@@ -12,7 +12,7 @@ import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
 import moment from "moment";
 import { TextFieldCurrency } from "../../../components/text-field-currency/text-field-currency";
-import { formatCurrency, formatStringToFloat } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatStringToFloat } from "../../../utils/validate";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
@@ -111,6 +111,17 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   useEffect(() => {
     // getDebtAccountLedger()
     getBalanceLimit()
+    if (orderStore.dataDebtPayment.methodPayment !== '') {
+      setText(formatCurrency(commasToDots(orderStore.dataDebtPayment.inputPrice)))
+      setValue('price', formatCurrency(commasToDots(orderStore.dataDebtPayment.inputPrice)))
+      countRef.current = orderStore.dataDebtPayment.methodPayment
+      if(orderStore.dataDebtPayment.methodPayment=== translate("order.EXCEPT_FOR_LIABILITIES")){
+        setMethod(1)
+      }else{
+        setMethod(0)
+      }
+      // setCheck(true)
+    }
   }, [])
 
   const Sum = () => {
@@ -204,7 +215,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {type === true ? null: (check !== true ? (
+          {type === true ? null: 
+          // (check !== true ? (
             <View
               style={{
                 backgroundColor: "#FEF7E5",
@@ -221,8 +233,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   fontSize: 12,
                   fontWeight: "400",
                 }}></Text>
-            </View>
-          ) : null)}
+            </View>}
+          {/* ) : null)} */}
           <Text
             style={{
               fontSize: 20,
@@ -231,7 +243,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               textAlign: "center",
               marginVertical: 20,
             }}>
-            {formatCurrency(Sum())}
+            {formatCurrency(commasToDots(Sum()))}
           </Text>
           <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
             <Text
@@ -242,7 +254,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.text_money_limit"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              {formatCurrency(Sum1())}
+              {formatCurrency(commasToDots(Sum1()))}
             </Text>
           </View>
           <Controller
@@ -369,7 +381,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.amount_paid"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              {formatCurrency(Remain())}
+              {formatCurrency(commasToDots(Remain()))}
             </Text>
           </View>
         </View>
@@ -406,6 +418,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         closeDialog={function (): void {
           setButtonPayment(false);
         }}
+        onSave={()=>{
+          console.log('da chon')
+        }}
         arrData={advanceMethodData}
         method={method}
         setMethod={function (item: number, name: string): void {
@@ -414,11 +429,11 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
             if(Number(Sum())<= credit){
-              setText(Sum().toString())
-              setValue('price',Sum().toString())
+              setText(formatCurrency(Sum().toString()))
+              setValue('price',formatCurrency(commasToDots(Sum().toString())))
             }else{
-              setText(credit.toString())
-              setValue('price',credit.toString())
+              setText(formatCurrency(credit.toString()))
+              setValue('price',formatCurrency((credit.toString())))
             }
           } else {
             setText('')

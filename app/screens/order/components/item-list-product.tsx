@@ -25,7 +25,7 @@ import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
 import { number } from "mobx-state-tree/dist/internal";
 import FastImage from "react-native-fast-image";
-import { formatCurrency, formatNumberByString } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatNumberByString, formatStringToFloat } from "../../../utils/validate";
 
 interface AddProduct {
   onPress: ({ }) => void;
@@ -94,7 +94,7 @@ export default function ItemListProduct(props: AddProduct) {
   });
   console.log("taxes VAT", props.cost);
   const Price = () => {
-    return Number(props.cost ?? 0) * Number(props.qty);
+    return Number((props.cost) ?? 0) * Number(props.qty);
   };
 
   const Sum = (): Number => {
@@ -103,7 +103,7 @@ export default function ItemListProduct(props: AddProduct) {
     );
   };
 
-  console.log("sum", Sum());
+  console.log("sumfnjewdnf", cost);
   return (
     <View>
       <TouchableOpacity
@@ -186,7 +186,8 @@ export default function ItemListProduct(props: AddProduct) {
                       }}
                       value={formatCurrency(value)}
                       
-                      onSubmitEditing={() => inputPrice(formatNumberByString(value))}
+                      // onSubmitEditing={() => inputPrice(formatNumberByString(value).replace(/,/g, '.'))}
+                      onSubmitEditing={() => inputPrice(formatStringToFloat(value))}
                     />
                   </View>
                 )}
@@ -194,7 +195,7 @@ export default function ItemListProduct(props: AddProduct) {
               />
             ) : (
               <Text
-                text={cost}
+                text={formatCurrency(commasToDots(cost))}
                 style={{
                   fontWeight: "400",
                   fontSize: fontSize.size12,
@@ -250,7 +251,7 @@ export default function ItemListProduct(props: AddProduct) {
                     fontStyle: "italic",
                     color: "#F4AD22",
                   }}>
-                  {formatCurrency(valueVAT)}
+                  {formatCurrency(commasToDots(valueVAT))}
                 </Text>
               </View>
             </View>
@@ -373,7 +374,7 @@ export default function ItemListProduct(props: AddProduct) {
                 color: "#FF4956",
                 fontStyle: "italic",
               }}>
-              {" " + (Sum().toString() === "NaN" ? "0" : formatCurrency(Sum()))}
+              {" " + (Sum().toString() === "NaN" ? "0" : formatCurrency(commasToDots(Sum())))}
             </Text>
           </Text>
           {/* ) : null} */}

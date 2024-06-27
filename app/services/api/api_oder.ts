@@ -88,8 +88,8 @@ export class OrderApi {
     });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
-      const response: ApiResponse<any> = await this.apiAccount.apisauce.post(
-        ApiEndpoint.GET_DETAIL_INVOICE,
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.put(
+        ApiEndpoint.CREATE_INVOICE,
         invoiceAdd
       );
       Loading.hide();

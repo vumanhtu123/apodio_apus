@@ -391,15 +391,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         //     Dialog.hide();
         //   },
         // });
-        orderStore.setDataProductAddOrder([]);
-        setArrProduct([]);
-        handleBack();
         navigation.navigate("orderSuccess" as never, {
           idOrder: values.id,
           screnn: "create",
           price: price,
-          inputPrice: orderStore.dataDebtPayment.inputPrice ?? 0,
+          inputPrice: orderStore.dataDebtPayment.inputPrice,
         });
+        orderStore.setDataProductAddOrder([]);
+        setArrProduct([]);
+        handleBack();
       } else {
         const v = values?.map((data: any) => {
           return data.message;
@@ -565,7 +565,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
     orderStore.setMethodPayment({
       sumAll: 0,
-      methodPayment: 0,
+      methodPayment: '',
       debt: 0,
       inputPrice: 0,
       apply: false,
@@ -813,6 +813,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         countRef.current = translate("order.CASH");
         handleNamMethod();
       }
+      if (orderStore.dataProductAddOrder.length !== 0) {
+        priceAll(orderStore.dataProductAddOrder)
+      }
+
     });
     return unsubscribe;
   }, [navigation]);
@@ -936,7 +940,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       unit={item.uomName}
                       // images={item.productImage}
                       images={item.images}
-                      cost={formatVND(formatCurrency(commasToDots(item.unitPrice)))}
+                      cost={item.unitPrice}
                       qty={item.amount}
                       onPressPlus={() => handleIncrease(item.id)}
                       onPressMinus={() => handleDecrease(item.id)}
@@ -977,10 +981,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
           {arrProduct.length > 0 ? (
             <SumMoney
-              sumNoVat={formatVND(formatCurrency(commasToDots(priceNoVat)))}
-              sumVat={formatVND(formatCurrency(commasToDots(priceSumVAT.current)))}
+              sumNoVat={priceNoVat}
+              sumVat={priceSumVAT.current}
               arrVat={arrProduct}
-              discount={formatVND(formatCurrency(commasToDots(discount.current)))}
+              discount={discount.current}
             />
           ) : (
             <View style={{ marginTop: 15 }}></View>
@@ -1042,10 +1046,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                             ? "#00CC6A"
                             : "#FF0000",
                       }}>
-                      {Number(store.orderStore.dataDebtLimit.debtAmount) -
+                      {formatCurrency(Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
                           store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        ) ?? 0}
+                        )) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1160,10 +1164,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       handleDebt();
                       navigation.navigate("paymentBuy", {
                         params: {
-                          type:
-                            handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? false
-                              : true,
+                          type: true,
+                            // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                            //   ? false
+                            //   : true,
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1374,6 +1378,19 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         isPayment={true}
         closeDialog={function (): void {
           setButtonPayment(false);
+        }}
+        onSave={() => {
+          if (countRef.current !== translate("order.DEDUCTION_OF_LIABILITIES")) {
+            console.log('12312312312312')
+            orderStore.setMethodPayment({
+              sumAll: 0,
+              methodPayment: '',
+              debt: 0,
+              inputPrice: 0,
+              apply: false,
+            });
+            setIsDeposit(false)
+          }
         }}
         arrData={methodData}
         method={method}

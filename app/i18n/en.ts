@@ -312,7 +312,7 @@ const en = {
     total: "Tổng thanh toán",
     prepayment: "Thanh toán trước",
     contrast: "(Đối trừ công nợ)",
-    stillInDebt: "Còn nợ",
+    stillInDebt: "Còn phải thanh toán",
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",
@@ -605,7 +605,7 @@ const en = {
     like: "Thích",
     comment: "Bình luận",
     writeCommentHere: "Viết bình luận của bạn tại đây",
-    
+
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -763,6 +763,7 @@ const en = {
     btnCreateOrder: "Tạo thêm đơn hàng",
     btnDetailOrder: "Xem chi tiết đơn hàng",
     timeCreateOderSuccess: "Thời gian tạo đơn hàng thành công",
+    timeEditOderSuccess: "Thời gian sửa đơn hàng thành công",
     orderHasBeenPaid: "Đơn hàng đã thanh toán ",
     theRemainingAmount: "Số tiền còn lại phải thu khách hàng",
     value: " trị giá ",

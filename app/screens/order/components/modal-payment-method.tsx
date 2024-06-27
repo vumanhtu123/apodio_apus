@@ -4,10 +4,12 @@ import Modal from "react-native-modal";
 import { margin, scaleHeight, scaleWidth ,fontSize } from "../../../theme";
 import { Text } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
+import { commasToDots, formatCurrency } from "../../../utils/validate";
 
 interface InputSelect {
   isVisible: boolean;
   closeDialog: () => void;
+  onSave?: () => void;
   arrData: {}[];
   method: number;
   setMethod: (item: number, name: string) => void;
@@ -100,6 +102,7 @@ export const ModalPayment = (data: InputSelect) => {
           <TouchableOpacity
             onPress={() => {
               data.closeDialog();
+              data.onSave();
             }}
             style={{
               backgroundColor: "#0078D4",
@@ -219,7 +222,7 @@ const Item_Payment = (data: InputItem) => {
                   fontWeight: "400",
                   color: "#FF0000",
                 }}>
-                {data.debt.debtAmount ?? 0}
+                {formatCurrency(commasToDots(data.debt.debtAmount)) ?? 0}
                 <Text
                 text=")"
                   style={{

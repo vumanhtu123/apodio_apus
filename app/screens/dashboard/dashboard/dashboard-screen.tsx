@@ -179,7 +179,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
       getListOrder();
       getDataRevenueThisMonth();
     }, [navigation]);
-
+    // console.log('zzzzzzzwwerewrew' ,vendorStore.companyInfo.symbol )
     const hideRevenue = "*".repeat(revenue?.toString().length);
     const hideDebt = "*".repeat(debt?.toString().length);
 

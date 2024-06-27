@@ -29,7 +29,7 @@ import CustomCalendar from "../../../components/calendar";
 import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
-import { calculateTotalPrice, calculateTotalUnitPrice, formatCurrency, formatVND } from "../../../utils/validate";
+import { calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 import ProductAttribute from "../../product/component/productAttribute";
 
 export const NewInvoice: FC = observer(function NewInvoice(props) {
@@ -55,7 +55,8 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const [isReset, setIReset] = useState<boolean>(false);
     const [markedDatesS, setMarkedDatesS] = useState("");
     const [markedDatesE, setMarkedDatesE] = useState("");
-    const [payment, setPayment] = useState({ label: "" })
+    const [payment, setPayment] = useState<any>({ label: "" })
+    // const [paymentId, setPaymentId] = useState({ label: "" })
     const [invoiceTypeLabel, setInvoiceTypeLabel] = useState({ label: "" })
     const [invoiceType, setInvoiceType] = useState('')
     const [data, setData] = useState<any>([])
@@ -63,6 +64,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const { orderStore } = useStores();
     const { orderId } = orderStore;
     const [invoiceCode, setInvoiceCode] = useState('')
+    const [symbolValue, setSymbolValue] = useState('')
     const toggleModalDate = () => {
         setIsSortByDate(!isSortByDate);
     };
@@ -246,6 +248,15 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
             isOptionPrice: data?.isOptionPrice,
             isPrepayment: null,
         });
+        // const dataSubmit = ({
+        //     codeInvoice: invoiceCode,
+        //     paymentTerm: payment.id,
+        //     invoiceDate: minDateS,
+        //     dueDate: minDateE,
+        //     symbol: symbolValue,
+        //     accountJournal: null,
+        // })
+        console.log('dataSubmit',dataSubmit)
         try {
             const submit = await orderStore.createInvoice(dataSubmit);
             if (submit.kind === "ok") {
@@ -414,7 +425,10 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         RightIconClear={Images.icon_delete2}
                                         error={errors?.symbol?.message}
                                         onClearText={() => onChange('')}
-                                        onChangeText={value => onChange(value)}
+                                        onChangeText={value => {
+                                            setSymbolValue(value)
+                                            onChange(value)
+                                        }}
                                         placeholderTx={"order.symbol"}
                                     />
                                 )}
@@ -506,6 +520,8 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 arrData={arrPayment}
                                 onPressChoice={(item) => {
                                     setPayment(item);
+                                    console.log('checkkk', item)
+                                    // setPaymentId(item.id);
                                 }}
                                 dataDefault={payment.label}
                             />
@@ -542,41 +558,41 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
-                                                    <Text text={formatVND(formatCurrency(item.amountUntaxed))} style={styles.textListProduct} />
+                                                    <Text text={formatVND(formatCurrency(commasToDots(item.amountUntaxed)))} style={styles.textListProduct} />
 
-                                                </View>
-                                            </View>
+                                                </View >
+                                            </View >
                                             <View>
                                                 <Text text={item.quantity} style={styles.textListProduct} />
                                                 {/* <Text text={formatCurrency(item.amountUntaxed)} style={styles.priceOriginal} /> */}
                                             </View>
-                                        </TouchableOpacity>
+                                        </TouchableOpacity >
                                     )
                                 })
                             }
-                        </View>
+                        </View >
                         <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(12), marginTop: scaleHeight(15) }}>
                             <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
-                                value={formatVND(formatCurrency(calculateTotalUnTaxPrice()))}
+                                value={formatVND(formatCurrency(commasToDots(calculateTotalUnTaxPrice())))}
                             />
                             {groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
 
                                 <ProductAttribute
                                     label={item.taxName}
-                                    value={formatVND(formatCurrency(item.amount))}
+                                    value={formatVND(formatCurrency(commasToDots(item.amount)))}
                                 />
 
                             ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"
-                                value={formatVND(formatCurrency(data.totalPrice))}
+                                value={formatVND(formatCurrency(commasToDots(data.totalPrice)))}
                             />
                         </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </View>
+                    </ScrollView >
+                </KeyboardAvoidingView >
+            </View >
 
             <View
                 style={[
@@ -633,6 +649,6 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 isOneDate={true}
                 toggleModalDate={toggleModalDateEnd}
             />
-        </View>
+        </View >
     );
 });

@@ -9,7 +9,7 @@ import {
 } from "../../../theme";
 import { Text } from "../../../components/text/text";
 import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
-import { formatCurrency, formatVND } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 
 interface ItemOrder {
   onPress?: () => void;
@@ -115,20 +115,20 @@ export default function ItemOrder(props: ItemOrder) {
         <View style={{ flex: 1 }}>
           <Text style={TEXTCONTENT} tx={"dashboard.goods"} />
         </View>
-        <Text style={TEXTMONEY} text={formatVND(formatCurrency(money))} />
+        <Text style={TEXTMONEY} text={formatVND(formatCurrency(commasToDots(money)))} />
       </View>
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
           <Text style={TEXTCONTENT} tx={"dashboard.promotions"} />
         </View>
-        <Text style={TEXTMONEY} text={formatVND(formatCurrency(discount))} />
+        <Text style={TEXTMONEY} text={formatVND(formatCurrency(commasToDots(discount)))} />
       </View>
       {totalTax ? (
         <View style={{ flexDirection: "row" }}>
           <View style={{ flex: 1 }}>
             <Text style={TEXTCONTENT} tx={"dashboard.totalTax"} />
           </View>
-          <Text style={TEXTMONEY} text={formatVND(formatCurrency(totalTax))} />
+          <Text style={TEXTMONEY} text={formatVND(formatCurrency(commasToDots(totalTax)))} />
         </View>
       ) : null}
                         
@@ -137,14 +137,14 @@ export default function ItemOrder(props: ItemOrder) {
           <View style={{ flex: 1 }}>
             <Text style={TEXTCONTENT} text={item.taxName} />
           </View>
-          <Text style={TEXTMONEY} text={formatVND(formatCurrency(item.amount))} />
+          <Text style={TEXTMONEY} text={formatVND(formatCurrency(commasToDots(item.amount)))} />
         </View>
       ))}
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
           <Text style={TEXTCONTENT} tx={"dashboard.totalAmount"} />
         </View>
-        <Text style={TEXTTOTALAMOUNT} text={formatVND(formatCurrency(totalAmount))} />
+        <Text style={TEXTTOTALAMOUNT} text={formatVND(formatCurrency(commasToDots(totalAmount)))} />
       </View>
       {weight ? (
         <View style={{ flexDirection: "row" }}>

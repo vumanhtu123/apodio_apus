@@ -5,6 +5,8 @@ import numeral from "numeral";
 import "numeral/locales/vi";
 import { FieldErrors, FieldValues } from "react-hook-form";
 import { Platform } from "react-native";
+import { useStores } from "../models";
+
 
 // const ValidateJS = require("validate.js")
 export function isFormValid(error: FieldErrors<FieldValues>, ...fields: any[]) {
@@ -249,7 +251,8 @@ export function formatNumber(inputNumber: any) {
   return result;
 }
 export function formatVND(value: any) {
-  return `${value}đ`;
+  const {vendorStore } = useStores();
+  return `${value} ${vendorStore.companyInfo.symbol}`;
 }
 numeral.locale("vi");
 // export function formatCurrencyWithCommas(amount: any) {
@@ -265,12 +268,15 @@ numeral.locale("vi");
 //   return numeral(amount).format("0,0").replace(/,/g, ".");
 // }
 export function commasToDots(str: any): string {
+  
   if (str == null) {
     return ''; // Hoặc trả về một giá trị mặc định khác nếu cần
   }
   return str.toString().replace(/\./g, ',');
 }
 export function formatCurrency(value: any, options = {}) {
+  const {vendorStore } = useStores();
+  const limit = vendorStore.companyInfo.floatRounding
   if (value == null || value === '') {
     return '';
   }
@@ -283,9 +289,8 @@ export function formatCurrency(value: any, options = {}) {
 
   // Giới hạn số ký tự sau dấu phẩy
   if (decimalPart) {
-    decimalPart = decimalPart.substring(0, 3);
+    decimalPart = decimalPart.substring(0, limit);
   }
-
   // Thêm dấu phân cách hàng ngàn cho phần nguyên
   integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
 
