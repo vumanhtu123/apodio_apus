@@ -1442,7 +1442,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             <View style={{ flexDirection: "row" }}>
               <Text tx={"order.prepayment"} style={[styles.textTotal]} />
               <Text
-                tx="order.contrast"
+                text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
                   color: "#747475",
                   fontSize: 12,
