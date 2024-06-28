@@ -179,7 +179,7 @@ export const AppStack = () => {
       <Stack.Screen name="addCheckIventory" component={addCheckInventory} />
       <Stack.Screen name="addProduct" component={addProductCreate} />
 
-      <Stack.Screen name="listCompany" component={Screens.ListCompany} />
+      {/* <Stack.Screen name="listCompany" component={Screens.ListCompany} /> */}
 
       {/* màn hình lịch sử mua hàng */}
       <Stack.Screen
@@ -208,7 +208,7 @@ export const AppStack = () => {
         component={Screens.DetailExportGoods}
       />
 
-      <Stack.Screen name="inforAccount" component={Screens.InforAccount} />
+      <Stack.Screen name="inforAccount" component={Screens.InfoAccount} />
       <Stack.Screen
         name="notificationSetting"
         component={Screens.NotificationSetting}
@@ -471,7 +471,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()

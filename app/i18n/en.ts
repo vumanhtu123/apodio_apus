@@ -14,7 +14,7 @@ const en = {
 
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
-    selected : 'Đã chọn'
+    selected: "Đã chọn",
     // @demo remove-current-line
   },
   txtToats: {
@@ -32,11 +32,11 @@ const en = {
     cannot_create_duplicate: "Không thể tạo giá trị trùng",
     product_is_using:
       "Sản phẩm đã được sử dụng, bạn không được phép thay đổi thông tin này",
-    create_success : 'Tạo hoá đơn thành công',
-    noClient: 'Vui lòng chọn khách hàng',
+    create_success: "Tạo hoá đơn thành công",
+    noClient: "Vui lòng chọn khách hàng",
     change_city: "Vui lòng chọn Tỉnh/Thành phố",
     change_district: "Vui lòng chọn Quận/Huyện",
-    change_payment: "Vui lòng chọn phuơng thức thanh toán trước"
+    change_payment: "Vui lòng chọn phuơng thức thanh toán trước",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -148,7 +148,7 @@ const en = {
     promotions: "Chiết khấu",
     transactionHistory: "Transaction history",
     sampleRequest: "Sample request",
-    orders: "Đơn hàng",
+    orders: "Đơn hàng đã hoàn thành",
     product: "Product",
     moreFeatures: "More features",
     supply: "Supply",
@@ -169,6 +169,7 @@ const en = {
     amountProduct: "Số lượng sản phẩm",
     client: "Khách hàng",
     totalTax: "Tổng thuế:",
+    send: "Gửi",
   },
   order: {
     orderTracking: "Theo dõi hành trình đơn hàng",
@@ -331,7 +332,7 @@ const en = {
     symbol: "Kí hiệu",
     invoiceType: "Loại hoá đơn",
     createOrderSuccess: "Tạo đơn hàng thành công",
-    cart : 'Giỏ hàng'
+    cart: "Giỏ hàng",
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -527,7 +528,7 @@ const en = {
     pleaseSelectTypeClient: "Vui lòng chon kiểu khách hàng",
     phoneNumber10: "Vui lòng nhập đủ 10 số",
     pleaseInputPhoneNumber: "Vui lòng nhập số điện thoại",
-    pleaseInputName:"Vui lòng nhập họ tên",
+    pleaseInputName: "Vui lòng nhập họ tên",
     txtChoiceClient: "Vui lòng chọn khách hàng",
     checkSpace: "Vui lòng không nhập khoản trắng",
     formatError: "Sai định dạng sô điện thoại",
@@ -591,25 +592,25 @@ const en = {
     paid: "Đã thanh toán",
     notThing: "Bạn không có phát sinh công nợ với NCC nào",
     sort: "Sắp xếp",
-    theMoneyHaveToPay:"Số tiền phải trả",
+    theMoneyHaveToPay: "Số tiền phải trả",
     totalDebt: "Tổng nợ",
     up: "Tăng dần",
     dow: "Giảm dần",
     debtNeedToPaid: "Nọ cần thanh toán",
-    paymentTerm : " Hạn thanh toán gần nhất",
+    paymentTerm: " Hạn thanh toán gần nhất",
     order: "Đơn hàng",
     valueOrder: "Giá trị đơn hàng",
     dateOfPayment: "Ngày thanh toán",
-    remainingDebt:"Nợ còn lại",
-    latePaymentPenalty:"Phạt thanh toán muộn",
-    totalRemainingDebt: "Tổng nợ còn lại", 
+    remainingDebt: "Nợ còn lại",
+    latePaymentPenalty: "Phạt thanh toán muộn",
+    totalRemainingDebt: "Tổng nợ còn lại",
     paymentTerm2: "Hạn thanh toán",
     exChange: "Trao đổi",
     detailDebt: "Chi tiết công nợ NCC",
     like: "Thích",
     comment: "Bình luận",
     writeCommentHere: "Viết bình luận của bạn tại đây",
-
+    pay: "Thanh toán nợ",
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -661,6 +662,8 @@ const en = {
     validateMin: "Số lượng không được trùng lặp",
     product: "sản phẩm",
     addBank: "Thêm ngân hàng",
+    weight: "Tải trọng",
+    weightOriginal: "Tải trọng theo đơn vị gốc",
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -760,7 +763,7 @@ const en = {
     labelSuccess: "Tạo mới thành công",
     editSuccess: "Sửa đơn hàng thành công",
     titleSuccess: "Bạn đã thêm mới sản phẩm thành công",
-    editTitleSuccess: "Bạn đã sửa đơn hàng thành công",
+    editTitleSuccess: "Bạn đã sửa thành công đơn hàng mã:",
     btnCreate: "Tạo thêm sản phẩm",
     btnDetail: "Xem chi tiết sản phẩm",
     titleSuccessOrder: "Bạn đã tạo đơn hàng thành công đơn hàng mã",
@@ -963,20 +966,19 @@ const en = {
     brick60x60: "Gạch 60*60",
     brick80x80: "Gạch 80*80",
     createClient: "Tạo khách hàng",
-
   },
   selectPriceListApply: {
     selectPriceListApply: "Chọn bảng giá áp dụng",
     noApplyPriceList: "Không áp dụng bảng giá",
-    inputPrice : 'Nhập giá'
+    inputPrice: "Nhập giá",
   },
-  calendar : {
-    today : 'Hôm nay',
-    last7days : '7 ngày trước',
-    thisMonth : 'Tháng này',
-    reset : 'Đặt lại',
-    done : 'Xác nhận'
-  }
+  calendar: {
+    today: "Hôm nay",
+    last7days: "7 ngày trước",
+    thisMonth: "Tháng này",
+    reset: "Đặt lại",
+    done: "Xác nhận",
+  },
 
   // @demo remove-block-end
 };
