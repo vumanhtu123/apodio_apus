@@ -247,8 +247,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
       Number(price) -
       Number(formatCurrency(orderStore.dataDebtPayment.inputPrice)) >
-      Number(store.orderStore.dataDebtLimit.debtAmount) -
-      Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+      Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+        Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
     ) {
       // orderStore.setMethodPayment({
       //   sumAll: 0,
@@ -263,13 +263,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           price: price,
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-              ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+              ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
               : null,
         },
       });
     }
-    
+
 
     const newArr = arrProduct.map((data: any) => {
       return {
@@ -844,8 +844,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // getListAddress();
       setIsDeposit(orderStore.dataDebtPayment.apply);
       if (
-        Number(store.orderStore.dataDebtLimit.debtAmount) -
-        Number(store.orderStore.dataDebtLimit.amountOwed ?? 0) ===
+        Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))) ===
         0
       ) {
         setMethod(0);
@@ -1080,18 +1080,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         fontSize: 10,
                         fontWeight: "400",
                         color:
-                          Number(store.orderStore.dataDebtLimit.debtAmount) -
+                          Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                             Number(
                               store.orderStore.dataDebtLimit.amountOwed ?? 0
-                            ) >
+                            ))) >
                             Number(price)
                             ? "#00CC6A"
                             : "#FF0000",
                       }}>
-                      {formatCurrency(Number(store.orderStore.dataDebtLimit.debtAmount) -
+                      {formatCurrency(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
                           store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        )) ?? 0}
+                        )))) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1213,12 +1213,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? Number(
+                              ? Math.max(0, (Number(
                                 store.orderStore.dataDebtLimit.debtAmount
                               ) -
-                              Number(
-                                store.orderStore.dataDebtLimit.amountOwed ?? 0
-                              )
+                                Number(
+                                  store.orderStore.dataDebtLimit.amountOwed ?? 0
+                                )))
                               : 0,
                         },
                       });
@@ -1351,10 +1351,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       price: price,
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                          ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                          Number(
-                            store.orderStore.dataDebtLimit.amountOwed ?? 0
-                          )
+                          ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                            Number(
+                              store.orderStore.dataDebtLimit.amountOwed ?? 0
+                            )))
                           : null,
                     },
                   });
@@ -1445,8 +1445,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
           debtAmount:
-            Number(store.orderStore.dataDebtLimit.debtAmount) -
-            Number(store.orderStore.dataDebtLimit.amountOwed ?? 0),
+            Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))),
         }}
       />
       <ModalTaxes
