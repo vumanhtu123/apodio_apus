@@ -148,7 +148,7 @@ const en = {
     promotions: "Chiết khấu",
     transactionHistory: "Transaction history",
     sampleRequest: "Sample request",
-    orders: "Đơn hàng",
+    orders: "Đơn hàng đã hoàn thành",
     product: "Product",
     moreFeatures: "More features",
     supply: "Supply",
@@ -169,6 +169,7 @@ const en = {
     amountProduct: "Số lượng sản phẩm",
     client: "Khách hàng",
     totalTax: "Tổng thuế:",
+    send: "Gửi"  
   },
   order: {
     orderTracking: "Theo dõi hành trình đơn hàng",
@@ -609,7 +610,8 @@ const en = {
     like: "Thích",
     comment: "Bình luận",
     writeCommentHere: "Viết bình luận của bạn tại đây",
-
+    pay: "Thanh toán nợ",
+    
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -760,7 +762,7 @@ const en = {
     labelSuccess: "Tạo mới thành công",
     editSuccess: "Sửa đơn hàng thành công",
     titleSuccess: "Bạn đã thêm mới sản phẩm thành công",
-    editTitleSuccess: "Bạn đã sửa đơn hàng thành công",
+    editTitleSuccess: "Bạn đã sửa thành công đơn hàng mã:",
     btnCreate: "Tạo thêm sản phẩm",
     btnDetail: "Xem chi tiết sản phẩm",
     titleSuccessOrder: "Bạn đã tạo đơn hàng thành công đơn hàng mã",
