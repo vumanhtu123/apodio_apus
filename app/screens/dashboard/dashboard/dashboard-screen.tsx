@@ -67,7 +67,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     const formattedDateNow = today.format("YYYY-MM-DDTHH:mm:ssZ");
     const formattedDateEnd = lastDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
 
-    const formattedDateStartOrder = firstDayOfMonth.toISOString();
+    const formattedDateStartOrder = firstDayOfMonth.hours(7).toISOString();
     const formattedDateEndOrder = lastDayOfMonth.toISOString();
 
     // const { accountStore, promotionStore, notifitionStoreModel } = useStores()
@@ -134,7 +134,16 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
 
     const getDataRevenueThisMonth = () => {
       console.log("====================================");
-      console.log("date one of the month", formattedDateStart, formattedDateNow);
+      console.log(
+        "date one of the month",
+        formattedDateStart,
+        formattedDateNow
+      );
+      console.log(
+        "date one of the month",
+        formattedDateStartOrder,
+        formattedDateEndOrder
+      );
       console.log("====================================");
       getAPI.dashBoardStore
         .getDataRevenueThisMonth(formattedDateStart, formattedDateNow)
@@ -386,10 +395,19 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
             </View>
             <View style={styles.viewLine} />
             <View>
-              <View style={{ flexDirection: "row", width: scaleWidth(100), marginRight: 30 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: scaleWidth(100),
+                  marginRight: 30,
+                }}>
                 <Images.icon_orderBlue />
                 <View style={{ marginLeft: margin.margin_4 }}>
-                  <Text style={[styles.textContent, { width: '100%' }]} tx={"dashboard.orders"} numberOfLines={1} />
+                  <Text
+                    style={[styles.textContent, { width: "100%" }]}
+                    tx={"dashboard.orders"}
+                    numberOfLines={1}
+                  />
                   <View style={{ flexDirection: "row" }}>
                     <Text style={styles.textRevenue}>{order?.toString()}</Text>
                   </View>
@@ -401,7 +419,10 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               <View style={{ flexDirection: "row", width: scaleWidth(119) }}>
                 <Images.icon_money />
                 <View style={{ marginLeft: margin.margin_4 }}>
-                  <Text style={[styles.textContent, {}]} tx={"dashboard.debt"} />
+                  <Text
+                    style={[styles.textContent, {}]}
+                    tx={"dashboard.debt"}
+                  />
                   {showRevenue === false ? (
                     <Text style={styles.textRevenue} text={hideDebt} />
                   ) : (
@@ -561,10 +582,10 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               // testDebug();
             }}
           />
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => {}}>
             <Images.icon_search />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnNotification} onPress={() => { }}>
+          <TouchableOpacity style={styles.btnNotification} onPress={() => {}}>
             <Images.icon_notification />
             {/* {notifitionStoreModel.notiUnreadHome > 0 ? ( */}
             <View style={styles.circleNoti}>
@@ -597,7 +618,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.heatWave }}
               name={"dashboard.orders"}
               Icon={Images.icon_orders}
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.metallicBlue }}
@@ -615,9 +636,9 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.verdigris }}
               name={"dashboard.promotions"}
               Icon={Images.icon_promotion}
-            // onPress={() => {
-            //   props.navigation.navigate('transferToBank', {});
-            // }}
+              // onPress={() => {
+              //   props.navigation.navigate('transferToBank', {});
+              // }}
             />
           </View>
           <View style={{ flexDirection: "row" }}>
@@ -631,7 +652,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.torchRed }}
               name={"dashboard.product"}
               Icon={Images.icon_product}
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.malachite }}
@@ -673,7 +694,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                 renderItem={({ item }: any) => (
                   <TouchableOpacity
                     style={{ height: 200, width: "100%", borderRadius: 4 }}
-                  // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
+                    // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
                   >
                     <ImageBackground
                       source={{
@@ -814,12 +835,12 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                       item.state === "SALE"
                         ? colors.palette.solitude
                         : item.state === "SENT"
-                          ? colors.palette.floralWhite
-                          : item.state === "CANCEL"
-                            ? colors.palette.amour
-                            : item.state === "DONE"
-                              ? colors.palette.mintCream
-                              : "",
+                        ? colors.palette.floralWhite
+                        : item.state === "CANCEL"
+                        ? colors.palette.amour
+                        : item.state === "DONE"
+                        ? colors.palette.mintCream
+                        : "",
                     justifyContent: "center",
                   }}
                   styleTextStatus={{
@@ -827,22 +848,22 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                       item.state === "SALE"
                         ? colors.palette.metallicBlue
                         : item.state === "SENT"
-                          ? colors.palette.yellow
-                          : item.state === "CANCEL"
-                            ? colors.palette.radicalRed
-                            : item.state === "DONE"
-                              ? colors.palette.malachite
-                              : "",
+                        ? colors.palette.yellow
+                        : item.state === "CANCEL"
+                        ? colors.palette.radicalRed
+                        : item.state === "DONE"
+                        ? colors.palette.malachite
+                        : "",
                   }}
                   styleTextPayStatus={{
                     color:
                       item.invoiceStatus === "NO"
                         ? colors.palette.darkTangerine
                         : item.invoiceStatus === "PARTIAL_INVOICE"
-                          ? colors.palette.darkTangerine
-                          : item.invoiceStatus === "TO_INVOICE"
-                            ? colors.palette.darkTangerine
-                            : colors.palette.malachite,
+                        ? colors.palette.darkTangerine
+                        : item.invoiceStatus === "TO_INVOICE"
+                        ? colors.palette.darkTangerine
+                        : colors.palette.malachite,
                   }}
                 />
               )}
@@ -863,13 +884,13 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
           <View style={styles.viewModal}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderNCC"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderApodio"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
@@ -880,7 +901,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                 alignItems: "center",
               }}>
               <Text tx={"dashboard.request"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
                 <Images.icon_handWaving />
               </TouchableOpacity>
             </View>
