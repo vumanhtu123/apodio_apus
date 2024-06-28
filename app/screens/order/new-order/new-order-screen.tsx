@@ -191,6 +191,45 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   };
 
   const addProduct = () => {
+    if (store.orderStore.dataClientSelect.id === '') {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn khách hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (address.id === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần nhập địa chỉ giao hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (arrProduct.length === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn sản phẩm",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
     if (handleNamMethod() == "") {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
@@ -199,7 +238,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          navigation.navigate("orders" as never);
+          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -230,6 +269,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         },
       });
     }
+    
 
     const newArr = arrProduct.map((data: any) => {
       return {
@@ -391,15 +431,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         //     Dialog.hide();
         //   },
         // });
-        orderStore.setDataProductAddOrder([]);
-        setArrProduct([]);
-        handleBack();
         navigation.navigate("orderSuccess" as never, {
           idOrder: values.id,
           screnn: "create",
           price: price,
-          inputPrice: orderStore.dataDebtPayment.inputPrice,
+          inputPrice: Number(orderStore.dataDebtPayment.inputPrice),
         });
+        orderStore.setDataProductAddOrder([]);
+        setArrProduct([]);
+        handleBack();
       } else {
         const v = values?.map((data: any) => {
           return data.message;
@@ -494,7 +534,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ...item,
           addTaxes: (item.addTaxes = !item.addTaxes),
           addInputTaxes: true,
-          taxesInput: 0,
+          taxesInput: item.taxesInput ?? 0,
         };
       }
       return item;
@@ -820,6 +860,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
     return unsubscribe;
   }, [navigation]);
+  console.log(vendorStore.companyInfo)
 
   useEffect(() => {
     priceAll(arrProduct);
@@ -938,6 +979,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       valueVAT={item.taxValue}
                       name={item.name}
                       unit={item.uomName}
+                      id={item.id}
                       // images={item.productImage}
                       images={item.images}
                       cost={item.unitPrice}
@@ -1165,9 +1207,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       navigation.navigate("paymentBuy", {
                         params: {
                           type: true,
-                            // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                            //   ? false
-                            //   : true,
+                          // handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                          //   ? false
+                          //   : true,
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"

@@ -26,6 +26,8 @@ import { Controller, useForm } from "react-hook-form";
 import { number } from "mobx-state-tree/dist/internal";
 import FastImage from "react-native-fast-image";
 import { commasToDots, formatCurrency, formatNumberByString, formatStringToFloat } from "../../../utils/validate";
+import PriceModal from "./modal-price";
+import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 
 interface AddProduct {
   onPress: ({ }) => void;
@@ -51,6 +53,7 @@ interface AddProduct {
   priceList?: boolean;
   textDiscount?: number;
   disabled?: boolean;
+  id: number;
   inputDiscount: (textInput: any) => void;
   inputPrice: (textInput: any) => void;
 }
@@ -67,6 +70,7 @@ export default function ItemListProduct(props: AddProduct) {
     cost,
     qty,
     VAT,
+    id,
     valueVAT,
     sumTexas,
     onPressAddTexas,
@@ -92,6 +96,9 @@ export default function ItemListProduct(props: AddProduct) {
   } = useForm({
     mode: "all",
   });
+  const [modalPrice, setModalPrice] = useState(false)
+  const [dataModal, setDataModal] = useState('')
+  const [taxesId, setTaxesId] = useState(0)
   console.log("taxes VAT", props.cost);
   const Price = () => {
     return Number((props.cost) ?? 0) * Number(props.qty);
@@ -106,17 +113,17 @@ export default function ItemListProduct(props: AddProduct) {
   console.log("sum", Sum());
   return (
     <View>
-      <TouchableOpacity
-        onPress={(item) => onPress(item)}
-        disabled={props.disabled}
-        style={{
-          position: "absolute",
-          left: 0,
-          top: scaleHeight(8),
-          zIndex: 1,
-        }}>
-        <Images.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
-      </TouchableOpacity>
+      {props.disabled === true ? null :
+        <TouchableOpacity
+          onPress={(item) => onPress(item)}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: scaleHeight(8),
+            zIndex: 1,
+          }}>
+          <Images.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
+        </TouchableOpacity>}
       <View
         style={{
           flexDirection: "row",
@@ -176,7 +183,7 @@ export default function ItemListProduct(props: AddProduct) {
                         borderBottomWidth: 1,
                         textAlignVertical: "bottom",
                       }}
-                      
+
                       keyboardType="numeric"
                       placeholder={translate("order.input_price")}
                       placeholderTextColor={"#747475"}
@@ -185,7 +192,7 @@ export default function ItemListProduct(props: AddProduct) {
                         onChange(newText)
                       }}
                       value={formatCurrency(value)}
-                      
+
                       // onSubmitEditing={() => inputPrice(formatNumberByString(value).replace(/,/g, '.'))}
                       onSubmitEditing={() => inputPrice(formatStringToFloat(value))}
                     />
@@ -206,9 +213,8 @@ export default function ItemListProduct(props: AddProduct) {
               />
             )}
             {priceList ? (
-              !selectUpdate ? (
+              !selectUpdate ? (props.disabled === true ? null :
                 <TouchableOpacity
-                disabled={props.disabled}
                   onPress={(item) => {
                     handleUpdatePrice(item);
                   }}>
@@ -226,6 +232,7 @@ export default function ItemListProduct(props: AddProduct) {
                 color: colors.palette.black,
                 marginRight: scaleWidth(margin.margin_4),
               }}
+              numberOfLines={1}
             />
           </View>
           {VAT != undefined ? (
@@ -256,31 +263,35 @@ export default function ItemListProduct(props: AddProduct) {
               </View>
             </View>
           ) : null}
-          <TouchableOpacity disabled={props.disabled} onPress={(item) => onPressSelectTexas(item)}>
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: 6,
-                alignItems: "center",
-              }}>
-              <Images.ic_plus_orange />
-              <Text
+          {props.disabled === true ? null :
+            <TouchableOpacity onPress={(item) => onPressSelectTexas(item)}>
+              <View
                 style={{
-                  fontSize: 10,
-                  fontWeight: "600",
-                  color: "#F4AD22",
-                  marginHorizontal: 2,
-                  fontStyle: "italic",
+                  flexDirection: "row",
+                  marginVertical: 6,
+                  alignItems: "center",
                 }}>
-                {translate("order.select_texas")}
-              </Text>
-            </View>
-          </TouchableOpacity>
+                <Images.ic_plus_orange />
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "600",
+                    color: "#F4AD22",
+                    marginHorizontal: 2,
+                    fontStyle: "italic",
+                  }}>
+                  {translate("order.select_texas")}
+                </Text>
+              </View>
+            </TouchableOpacity>}
           {priceList == true ? (
-            addTaxes == false ? (
-              <TouchableOpacity disabled={props.disabled} onPress={(item) =>{
+            addTaxes == false ? (props.disabled === true ? null :
+              <TouchableOpacity onPress={(item) => {
                 console.log('---------onPressAddTexas---1--')
                 onPressAddTexas(item)
+                setTaxesId(props.id)
+                setDataModal(taxesInput?.toString() ?? '')
+                setModalPrice(true)
               }}>
                 <View style={{ flexDirection: "row" }}>
                   <Images.icon_plusGreen />
@@ -296,65 +307,73 @@ export default function ItemListProduct(props: AddProduct) {
                   </Text>
                 </View>
               </TouchableOpacity>
-            ) : editTaxes == true ? (
-              <TouchableOpacity disabled={props.disabled} onPress={(item) => {
-                console.log('---------onPressAddTexas---2--')
-                onPressAddTexas(item)
-              }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}>
-                  <Images.minus_ic />
-                  <Controller
-                    control={control}
-                    defaultValue={""}
-                    render={({ field: { onChange, value, onBlur } }) => (
-                      <View style={{ flex: 1, alignContent: "center" }}>
-                        <TextInput
-                          style={{
-                            fontWeight: "400",
-                            height: scaleHeight(16),
-                            alignContent: "center",
-                            borderColor: "#F6F7FB",
-                            padding: 0,
-                            paddingBottom: 2,
-                            paddingLeft: 4,
-                            fontSize: 10,
-                            color: "black",
-                            borderBottomWidth: 1,
-                            textAlignVertical: "bottom",
-                          }}
-                          keyboardType="numeric"
-                          maxLength={3}
-                          placeholder={translate("order.input_texas")}
-                          placeholderTextColor={"#747475"}
-                          onChangeText={(newText) => {
-                            // inputDiscount(newText);
-                            onChange(newText)
-                          }}
-                          value={value}
-                          onSubmitEditing={() => inputDiscount(value)}
-                        />
-                      </View>
-                    )}
-                    name="input_texas"
-                  />
-                </View>
-              </TouchableOpacity>
-            ) :
+            )
+              // : editTaxes == true ? (props.disabled === true ? null :
+              //   <TouchableOpacity onPress={(item) => {
+              //     console.log('---------onPressAddTexas---2--')
+              //     onPressAddTexas(item)
+              //   }}>
+              //     <View
+              //       style={{
+              //         flexDirection: "row",
+              //         alignItems: "center",
+              //       }}>
+              //       <Images.minus_ic />
+              //       <Controller
+              //         control={control}
+              //         defaultValue={""}
+              //         render={({ field: { onChange, value, onBlur } }) => (
+              //           <View style={{ flex: 1, alignContent: "center" }}>
+              //             <TextInput
+              //               style={{
+              //                 fontWeight: "400",
+              //                 height: scaleHeight(16),
+              //                 alignContent: "center",
+              //                 borderColor: "#F6F7FB",
+              //                 padding: 0,
+              //                 paddingBottom: 2,
+              //                 paddingLeft: 4,
+              //                 fontSize: 10,
+              //                 color: "black",
+              //                 borderBottomWidth: 1,
+              //                 textAlignVertical: "bottom",
+              //               }}
+              //               keyboardType="numeric"
+              //               maxLength={3}
+              //               placeholder={translate("order.input_texas")}
+              //               placeholderTextColor={"#747475"}
+              //               onChangeText={(newText) => {
+              //                 // inputDiscount(newText);
+              //                 onChange(newText)
+              //               }}
+              //               value={value}
+              //               onSubmitEditing={() => inputDiscount(value)}
+              //             />
+              //           </View>
+              //         )}
+              //         name="input_texas"
+              //       />
+              //     </View>
+              //   </TouchableOpacity>
+              // ) 
+              :
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text tx={'order.promotions'} style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  marginHorizontal: 2,
+                }} />
                 <Text style={{
                   fontSize: 10,
                   fontWeight: "400",
                   marginHorizontal: 2,
                 }}>
-                  {taxesInput + ' %'}
+                  {formatCurrency(commasToDots(taxesInput)) + ' %'}
                 </Text>
-                <TouchableOpacity disabled={props.disabled} onPress={() => editDiscount()}>
-                  <Images.icon_edit />
-                </TouchableOpacity>
+                {props.disabled === true ? null :
+                  <TouchableOpacity onPress={() => setModalPrice(true)}>
+                    <Images.icon_edit />
+                  </TouchableOpacity>}
               </View>
           ) : null}
           {/* {sumTexas != null ? ( */}
@@ -390,15 +409,15 @@ export default function ItemListProduct(props: AddProduct) {
             borderRadius: 8,
             marginTop: scaleHeight(margin.margin_12),
           }}>
-          <TouchableOpacity
-            onPress={(item) => onPressMinus(item)}
-            disabled={props.disabled}
-            style={{
-              marginHorizontal: scaleWidth(margin.margin_6),
-              alignItems: "center",
-            }}>
-            <Images.icon_minus />
-          </TouchableOpacity>
+          {props.disabled === true ? null :
+            <TouchableOpacity
+              onPress={(item) => onPressMinus(item)}
+              style={{
+                marginHorizontal: scaleWidth(margin.margin_6),
+                alignItems: "center",
+              }}>
+              <Images.icon_minus />
+            </TouchableOpacity>}
           <Text
             style={{
               marginHorizontal: 15,
@@ -409,17 +428,37 @@ export default function ItemListProduct(props: AddProduct) {
             }}>
             {qty}
           </Text>
-          <TouchableOpacity
+          {props.disabled === true ? null : <TouchableOpacity
             onPress={(item) => onPressPlus(item)}
-            disabled={props.disabled}
             style={{
               marginHorizontal: scaleWidth(margin.margin_6),
               alignContent: "center",
             }}>
             <Images.icon_plusGreen />
-          </TouchableOpacity>
+          </TouchableOpacity>}
         </View>
       </View>
+      <PriceModal
+        isVisible={modalPrice}
+        setIsVisible={() => setModalPrice(false)}
+        title={"productDetail.retailPrice"}
+        onCancel={() => {
+          setModalPrice(false);
+        }}
+        id={taxesId}
+        onConfirm={(data) => {
+          if(Number(data)< 100){
+            inputDiscount(data)
+            setModalPrice(false)
+          }else{
+            Toast.show({ type: ALERT_TYPE.DANGER, 
+              textBody: 'Chiết khấu không thể lớn hơn 100' })
+          }
+        }}
+        titleTx={'ImprotGoodsBook.discount'}
+        placeholderTx={'order.input_texas'}
+        titleInputTx={'ImprotGoodsBook.discount'}
+      />
     </View>
   );
 }

@@ -36,7 +36,7 @@ const en = {
     noClient: 'Vui lòng chọn khách hàng',
     change_city: "Vui lòng chọn Tỉnh/Thành phố",
     change_district: "Vui lòng chọn Quận/Huyện",
-    change_payment: "Vui lòng chọ phuơng thức thanh toán trước"
+    change_payment: "Vui lòng chọn phuơng thức thanh toán trước"
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -528,7 +528,11 @@ const en = {
     phoneNumber10: "Vui lòng nhập đủ 10 số",
     pleaseInputPhoneNumber: "Vui lòng nhập số điện thoại",
     pleaseInputName:"Vui lòng nhập họ tên",
-    txtChoiceClient: "Vui lòng chọn khách hàng"
+    txtChoiceClient: "Vui lòng chọn khách hàng",
+    checkSpace: "Vui lòng không nhập khoản trắng",
+    formatError: "Sai định dạng sô điện thoại",
+    startNumber02: "Vui lòng nhập 11 số",
+    createClientSuccess: "Tạo khách hàng thành công",
   },
   NCCScreen: {
     idSupliers: "Mã nhà cung cấp",
