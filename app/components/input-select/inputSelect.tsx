@@ -143,12 +143,12 @@ export function InputSelect(props: InputSelectProps) {
       dataDefault !== null &&
       dataDefault !== ""
     ) {
-      console.log("dataDefault---------------------------", dataDefault);
-      const dataChoiceItem = arrData.filter(
-        (item) => item.label !== dataDefault
-      );
-      setFilteredData(dataChoiceItem);
-    } else {
+    //   console.log("dataDefault---------------------------", dataDefault);
+    //   const dataChoiceItem = arrData.filter(
+    //     (item) => item.label !== dataDefault
+    //   );
+    //   setFilteredData(dataChoiceItem);
+    // } else {
       setFilteredData(arrData);
     }
   }, [arrData]);

@@ -223,7 +223,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     return (
       <View style={styles.ROOT}>
         <Header
-          headerTx={"dashboard.orders"}
+          headerTx={"detailScreen.orders"}
           type={"AntDesign"}
           style={styles.header}
           titleStyle={styles.textHeader}

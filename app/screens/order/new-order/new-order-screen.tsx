@@ -191,6 +191,45 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   };
 
   const addProduct = () => {
+    if (store.orderStore.dataClientSelect.id === '') {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn khách hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (address.id === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần nhập địa chỉ giao hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (arrProduct.length === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn sản phẩm",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
     if (handleNamMethod() == "") {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
@@ -199,7 +238,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          navigation.navigate("orders" as never);
+          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -208,8 +247,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
       Number(price) -
       Number(formatCurrency(orderStore.dataDebtPayment.inputPrice)) >
-      Number(store.orderStore.dataDebtLimit.debtAmount) -
-      Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+      Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+        Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
     ) {
       // orderStore.setMethodPayment({
       //   sumAll: 0,
@@ -224,12 +263,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           price: price,
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-              ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+              ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
               : null,
         },
       });
     }
+
 
     const newArr = arrProduct.map((data: any) => {
       return {
@@ -395,7 +435,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           idOrder: values.id,
           screnn: "create",
           price: price,
-          inputPrice: orderStore.dataDebtPayment.inputPrice,
+          inputPrice: Number(orderStore.dataDebtPayment.inputPrice),
         });
         orderStore.setDataProductAddOrder([]);
         setArrProduct([]);
@@ -494,7 +534,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ...item,
           addTaxes: (item.addTaxes = !item.addTaxes),
           addInputTaxes: true,
-          taxesInput: 0,
+          taxesInput: item.taxesInput ?? 0,
         };
       }
       return item;
@@ -804,8 +844,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // getListAddress();
       setIsDeposit(orderStore.dataDebtPayment.apply);
       if (
-        Number(store.orderStore.dataDebtLimit.debtAmount) -
-        Number(store.orderStore.dataDebtLimit.amountOwed ?? 0) ===
+        Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+          Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))) ===
         0
       ) {
         setMethod(0);
@@ -820,6 +860,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
     return unsubscribe;
   }, [navigation]);
+  console.log(vendorStore.companyInfo)
 
   useEffect(() => {
     priceAll(arrProduct);
@@ -938,6 +979,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       valueVAT={item.taxValue}
                       name={item.name}
                       unit={item.uomName}
+                      id={item.id}
                       // images={item.productImage}
                       images={item.images}
                       cost={item.unitPrice}
@@ -1038,18 +1080,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         fontSize: 10,
                         fontWeight: "400",
                         color:
-                          Number(store.orderStore.dataDebtLimit.debtAmount) -
+                          Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                             Number(
                               store.orderStore.dataDebtLimit.amountOwed ?? 0
-                            ) >
+                            ))) >
                             Number(price)
                             ? "#00CC6A"
                             : "#FF0000",
                       }}>
-                      {formatCurrency(Number(store.orderStore.dataDebtLimit.debtAmount) -
+                      {formatCurrency(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
                           store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        )) ?? 0}
+                        )))) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1171,12 +1213,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? Number(
+                              ? Math.max(0, (Number(
                                 store.orderStore.dataDebtLimit.debtAmount
                               ) -
-                              Number(
-                                store.orderStore.dataDebtLimit.amountOwed ?? 0
-                              )
+                                Number(
+                                  store.orderStore.dataDebtLimit.amountOwed ?? 0
+                                )))
                               : 0,
                         },
                       });
@@ -1309,10 +1351,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       price: price,
                       debtAmount:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                          ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                          Number(
-                            store.orderStore.dataDebtLimit.amountOwed ?? 0
-                          )
+                          ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                            Number(
+                              store.orderStore.dataDebtLimit.amountOwed ?? 0
+                            )))
                           : null,
                     },
                   });
@@ -1403,8 +1445,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
           debtAmount:
-            Number(store.orderStore.dataDebtLimit.debtAmount) -
-            Number(store.orderStore.dataDebtLimit.amountOwed ?? 0),
+            Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))),
         }}
       />
       <ModalTaxes

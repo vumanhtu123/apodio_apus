@@ -161,8 +161,8 @@ const Item_Payment = (data: InputItem) => {
       <TouchableOpacity
         onPress={() => {
           {
-            data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
-              ? null
+            data.index === data.length - 1 && data.debt.isHaveDebtLimit === false 
+              ? null : data.index === data.length - 1 && data.debt.debtAmount ===0 ? null
               : data.setData(data.index, data.name);
           }
           console.log("0", data.name);
@@ -188,7 +188,7 @@ const Item_Payment = (data: InputItem) => {
                 height: 16,
                 backgroundColor:
                   data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
-                    ? "white"
+                    ? "white" : data.index === data.length - 1 && data.debt.debtAmount === 0 ?  "white"
                     : data.id == data.index
                       ? "#0078D4"
                       : "white",
@@ -202,13 +202,13 @@ const Item_Payment = (data: InputItem) => {
               fontWeight: "500",
               color:
                 data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
-                  ? "#DFE0EB"
+                  ? "#DFE0EB" : data.index === data.length - 1 && data.debt.debtAmount === 0 ?  "#DFE0EB"
                   : data.index !== data.length - 1 && data.debt.isHaveDebtLimit === true
                     ? "#242424"
                     : "#242424",
               paddingHorizontal: 8,
             }}></Text>
-          {data.index === data.length - 1 && data.debt.isHaveDebtLimit === true ? (
+          {data.index === data.length - 1 && data.debt.isHaveDebtLimit === true && data.debt.debtAmount !== 0 ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 tx="order.available_limit"

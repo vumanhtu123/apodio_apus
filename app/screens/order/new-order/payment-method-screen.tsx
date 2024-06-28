@@ -10,8 +10,6 @@ import { ModalPayment } from "../components/modal-payment-method";
 import { useStores } from "../../../models";
 import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
-import moment from "moment";
-import { TextFieldCurrency } from "../../../components/text-field-currency/text-field-currency";
 import { commasToDots, formatCurrency, formatStringToFloat } from "../../../utils/validate";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 
@@ -27,57 +25,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const [isCredit, setIsCredit] = useState(false)
 
   const { orderStore } = useStores();
-  console.log("debt tuvm", debtAmount);
 
-  const getDebtAccountLedger = async () => {
-    try {
-      const response = await orderStore.getListAccountLedger()
-      if (response && response.kind === "ok") {
-        const accountLedgerId = response.response.data.content[0].id
-        const date = new Date()
-        const month = date.getUTCMonth()
-        const year = date.getUTCFullYear();
-        const firstDayOfNextYear = new Date(year + 2, 0, 1);
-        const lastDayOfCurrentYear = new Date(firstDayOfNextYear - 1);
-        const firstDayOfMonth = new Date(year, month, 1);
-        const start = moment(firstDayOfMonth).format('YYYY-MM-DD')
-        const end = moment(lastDayOfCurrentYear).format('YYYY-MM-DD')
-        console.log(start)
-        console.log(end)
-        try {
-          const response1 = await orderStore.getDebtAccountLedger(accountLedgerId, start, end, Number(orderStore.dataClientSelect.id))
-          if (response1 && response1.kind === "ok") {
-            console.log(response1.response.data.endingBalance.credit, 'log data')
-            if (response1.response.data.endingBalance.credit === 0) {
-              setCredit(0)
-              setIsCredit(false)
-            } else {
-              if (type === false) {
-                if (Number(response1.response.data.endingBalance.credit) >= (Number(price) - Number(debtAmount))) {
-                  setCredit(response1.response.data.endingBalance.credit)
-                  setIsCredit(true)
-                } else {
-                  setCredit(response1.response.data.endingBalance.credit)
-                  setIsCredit(false)
-                }
-              } else {
-                setCredit(response1.response.data.endingBalance.credit)
-                setIsCredit(true)
-              }
-            }
-          } else {
-            console.error("Failed to fetch list account ledger:", response1);
-          }
-        } catch (error) {
-          console.error("Error fetching list account ledger:", error);
-        }
-      } else {
-        console.error("Failed to fetch list account ledger:", response);
-      }
-    } catch (error) {
-      console.error("Error fetching list account ledger:", error);
-    }
-  };
   const getBalanceLimit = async () => {
     if (orderStore.dataClientSelect !== null) {
       const response = await orderStore.getBalanceLimit(Number(orderStore.dataClientSelect.id))
@@ -107,9 +55,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     }
   }
 
-
   useEffect(() => {
-    // getDebtAccountLedger()
     getBalanceLimit()
     if (orderStore.dataDebtPayment.methodPayment !== '') {
       setText(formatCurrency(commasToDots(orderStore.dataDebtPayment.inputPrice)))
@@ -125,7 +71,6 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   }, [])
 
   const Sum = () => {
-    console.log(type, 'log=======')
     if (type === true) {
       return Number(price)
     } else {
@@ -134,11 +79,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       } else {
         return 0
       }
-
     }
   };
   const Sum1 = () => {
-    console.log(type, 'log=======')
     if (type === true) {
       return 0
     } else {
@@ -147,7 +90,6 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       } else {
         return 0
       }
-
     }
   };
 
@@ -167,20 +109,29 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     }
   };
   const Apply = () => {
-    orderStore.setMethodPayment({
+    if(countRef.current === ''){
+      orderStore.setMethodPayment({
+        sumAll: price ?? 0,
+        methodPayment: countRef.current,
+        debt: 0,
+        inputPrice: 0,
+        apply: false,
+      });
+      navigation.goBack();
+    }else{
+      orderStore.setMethodPayment({
       sumAll: price ?? 0,
       methodPayment: countRef.current,
       debt: Remain(),
       inputPrice: Number(formatStringToFloat(text)) ?? 0,
       apply: true,
     });
-    console.log(text, '==============+')
     navigation.goBack();
     if(countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")){
       orderStore.setClearingDebt(true)
     }else{
       orderStore.setClearingDebt(false)
-    }
+    }}
     // navigation.navigate('newOrder', { goBackPayment: true })
   };
   console.log("tuvm", type);
@@ -275,14 +226,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 RightIconClear={Images.icon_delete2}
                 error={errors?.price?.message}
                 styleError={{ marginLeft: scaleHeight(16) }}
-                // onClearText={() => {
-                //   onChange("");
-                //   setText("");
-                // }}
                 onChangeText={(value) => {
-                  // if (Number(value) >= Number(price)) {
-                  //   setValue('price', price.toString())
-                  // } else {
                   if(countRef.current === ''){
                     Toast.show({
                       type: ALERT_TYPE.DANGER,
@@ -293,15 +237,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   }else{
                     onChange(formatCurrency(value))
                   }
-                  // }
                 }}
-                // defaultValue={text===""? "": text}
                 onSubmitEditing={() => {
                   if (Number(formatStringToFloat(value)) >= Number(Sum1())&& Number(formatStringToFloat(value))<= Number(price)) {
                     setValue('price', value.toString())
-                    // onChange(price)
                     console.log(value, '123')
-                    setError('price', null)
+                    setError('price', {})
                     setText(value)
                     Remain()
                   }
@@ -311,23 +252,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       message: "Không thể trả trước quá giá trị đơn hàng",
                     })
                   }
-                  // if (Number(value) < Number(Sum())) {
-                  //   setValue('price', value.toString())
-                  //   // onChange(price)
-                  //   setText(value)
-                  //   Remain()
-                  // }
                   if (Number(formatStringToFloat(value)) < Number(Sum1())) {
                     setError("price", {
                       type: "validate",
                       message: 'Khách cần trả lớn hơn số tiền tối thiểu',
                     });
                   }
-
-                  // if (Number(price) > Number(value) && Number(value) >= Number(Sum())) {
-                  //   setText(value)
-                  //   Remain()
-                  // }
                 }}
               />
             )}
@@ -353,8 +283,6 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text
-                  // text={}
-                  // tx="order.money_face"
                   style={{
                     fontSize: 12,
                     fontWeight: "400",
@@ -429,15 +357,18 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
             if(Number(Sum())<= credit){
-              setText(formatCurrency(Sum().toString()))
+              setText(formatCurrency(commasToDots(Sum().toString())))
               setValue('price',formatCurrency(commasToDots(Sum().toString())))
+              setError('price', {})
             }else{
-              setText(formatCurrency(credit.toString()))
-              setValue('price',formatCurrency((credit.toString())))
+              setText(formatCurrency(commasToDots(credit.toString())))
+              setValue('price',formatCurrency(commasToDots(credit.toString())))
+              setError('price', {})
             }
           } else {
             setText('')
             setValue('price', '')
+            setError('price', {})
           }
           console.log("tuvm method", countRef);
         }}

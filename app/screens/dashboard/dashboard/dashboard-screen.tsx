@@ -67,7 +67,8 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     const formattedDateStart = firstDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
     const formattedDateNow = today.format("YYYY-MM-DDTHH:mm:ssZ");
     const formattedDateEnd = lastDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
-    const formattedDateStartOrder = firstDayOfMonth.toISOString();
+
+    const formattedDateStartOrder = firstDayOfMonth.hours(7).toISOString();
     const formattedDateEndOrder = lastDayOfMonth.toISOString();
 
     // const { accountStore, promotionStore, notifitionStoreModel } = useStores()
@@ -137,10 +138,19 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     
     const getDataRevenueThisMonth = () => {
       console.log("====================================");
-      console.log("date one of the month", formattedDateStartOrder);
+      console.log(
+        "date one of the month",
+        formattedDateStart,
+        formattedDateNow
+      );
+      console.log(
+        "date one of the month",
+        formattedDateStartOrder,
+        formattedDateEndOrder
+      );
       console.log("====================================");
       getAPI.dashBoardStore
-        .getDataRevenueThisMonth(formattedDateStart, formattedDateEnd)
+        .getDataRevenueThisMonth(formattedDateStart, formattedDateNow)
         .then((data: any) => {
           console.log("====================================");
           console.log("data revenue this month:", data);
@@ -369,7 +379,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
             showsHorizontalScrollIndicator={false}
             style={{ flexDirection: "row", margin: margin.margin_16 }}>
             <View>
-              <View style={{ flexDirection: "row", width: scaleWidth(119) }}>
+              <View style={{ flexDirection: "row", width: scaleWidth(50) }}>
                 <Images.icon_chartBar />
                 <View style={{ marginLeft: margin.margin_4 }}>
                   <Text style={styles.textContent} tx={"dashboard.revenue"} />
@@ -389,10 +399,19 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
             </View>
             <View style={styles.viewLine} />
             <View>
-              <View style={{ flexDirection: "row", width: scaleWidth(71) }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  width: scaleWidth(100),
+                  marginRight: 30,
+                }}>
                 <Images.icon_orderBlue />
                 <View style={{ marginLeft: margin.margin_4 }}>
-                  <Text style={styles.textContent} tx={"dashboard.orders"} />
+                  <Text
+                    style={[styles.textContent, { width: "100%" }]}
+                    tx={"dashboard.orders"}
+                    numberOfLines={1}
+                  />
                   <View style={{ flexDirection: "row" }}>
                     <Text style={styles.textRevenue}>{order?.toString()}</Text>
                   </View>
@@ -404,7 +423,10 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               <View style={{ flexDirection: "row", width: scaleWidth(119) }}>
                 <Images.icon_money />
                 <View style={{ marginLeft: margin.margin_4 }}>
-                  <Text style={styles.textContent} tx={"dashboard.debt"} />
+                  <Text
+                    style={[styles.textContent, {}]}
+                    tx={"dashboard.debt"}
+                  />
                   {showRevenue === false ? (
                     <Text style={styles.textRevenue} text={hideDebt} />
                   ) : (

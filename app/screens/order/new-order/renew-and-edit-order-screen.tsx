@@ -69,6 +69,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   console.log("props", orderStore.dataDebtPayment.sumAll);
   const newData = route?.params?.newData;
   const screen = route?.params?.screen;
+  console.log('asigdoiuashd', newData)
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
@@ -196,6 +197,45 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   };
 
   const addProduct = () => {
+    if (store.orderStore.dataClientSelect.id === '') {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn khách hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (address.id === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần nhập địa chỉ giao hàng",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
+    if (arrProduct.length === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: "Bạn cần chọn sản phẩm",
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          // navigation.navigate("orders" as never);
+          Dialog.hide();
+        },
+      });
+    }
     if (handleNamMethod() == "") {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
@@ -204,7 +244,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          navigation.navigate("orders" as never);
+          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -212,8 +252,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
     if (
       handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
       Number(price) - Number(orderStore.dataDebtPayment.inputPrice) >
-      Number(store.orderStore.dataDebtLimit.debtAmount) -
-      Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+      Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+        Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
     ) {
       orderStore.setMethodPayment({
         sumAll: 0,
@@ -228,8 +268,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           price: price,
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-              ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
+              ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
               : null,
         },
       });
@@ -830,7 +870,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                 },
             taxValue: items?.taxLines?.items[0]?.amount,
             taxesInput: items.discount,
-            addInputTaxes: items.discount !== 0 ? true : false,
+            addInputTaxes: items.discount !== 0 ? false : true,
+            addTaxes: items.discount !== 0 ? true : false,
             lineId: screen === "edit" ? items.id : null,
           };
         });
@@ -860,6 +901,39 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           valueNote.current = newData.note;
         }
         orderStore.setCheckRenderList(false);
+
+        if (newData.isClearingDebts === true && screen === 'edit') {
+          setIsDeposit(true)
+          orderStore.setClearingDebt(true)
+          orderStore.setMethodPayment({
+            sumAll: newData.totalPrice ?? 0,
+            methodPayment: translate("order.EXCEPT_FOR_LIABILITIES"),
+            debt: 0,
+            inputPrice: newData.amountClearings,
+            apply: true,
+          })
+        }
+        if (newData.isPrepayment === true && screen === 'edit') {
+          setIsDeposit(true)
+          orderStore.setClearingDebt(false)
+          orderStore.setMethodPayment({
+            sumAll: newData.totalPrice ?? 0,
+            methodPayment: translate("order.money_face"),
+            debt: 0,
+            inputPrice: newData.amountPrePayment,
+            apply: true,
+          })
+        }
+        if (newData.isPrepayment === false && newData.isClearingDebts === false && screen === 'edit') {
+          orderStore.setClearingDebt(false)
+          orderStore.setMethodPayment({
+            sumAll: newData.totalPrice ?? 0,
+            methodPayment: '',
+            debt: 0,
+            inputPrice: 0,
+            apply: false,
+          })
+        }
         if (screen === "edit") {
           switch (newData.paymentMethod) {
             case "CASH":
@@ -892,6 +966,19 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         setAddress(orderStore.dataAddress);
         // getListAddress();
         setIsDeposit(orderStore.dataDebtPayment.apply);
+        if (
+          Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+            Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))) ===
+          0
+        ) {
+          setMethod(0);
+          setButtonPayment(false);
+          countRef.current = translate("order.CASH");
+          handleNamMethod();
+        }
+        if (orderStore.dataProductAddOrder.length !== 0) {
+          priceAll(orderStore.dataProductAddOrder)
+        }
       }
     });
     return unsubscribe;
@@ -1017,6 +1104,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       valueVAT={item.taxValue}
                       name={item.name}
                       unit={item.uomName}
+                      id={item.id}
                       // images={item.productImage}
                       images={item.images}
                       cost={item.unitPrice}
@@ -1103,7 +1191,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                   {screen === "edit" ? null : <Images.icon_caretRight2 />}
                 </View>
                 {countRef.current.toString() ===
-                  translate("order.DEDUCTION_OF_LIABILITIES") ? (
+                  translate("order.DEDUCTION_OF_LIABILITIES") ? ( screen === 'edit' ? null :
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text
                       tx="order.available_limit"
@@ -1117,12 +1205,18 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       style={{
                         fontSize: 10,
                         fontWeight: "400",
-                        color: "#FF0000",
+                        color: Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                          Number(
+                            store.orderStore.dataDebtLimit.amountOwed ?? 0
+                          ))) >
+                          Number(price)
+                          ? "#00CC6A"
+                          : "#FF0000",
                       }}>
-                      {formatVND(formatCurrency(commasToDots(Number(store.orderStore.dataDebtLimit.debtAmount) -
+                      {formatVND(formatCurrency(commasToDots(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
                           store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        )))) ?? 0}
+                        )))))) ?? 0}
                       <Text
                         style={{
                           fontWeight: "400",
@@ -1210,7 +1304,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                     ]}
                   />
                 ) : null}
-                {isDeposit === false ? (
+                {isDeposit === false ? (screen === 'edit' ? null :
                   <Button
                     tx={"order.deposit"}
                     onPress={() => {
@@ -1245,12 +1339,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                           price: price,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? Number(
+                              ? Math.max(0, (Number(
                                 store.orderStore.dataDebtLimit.debtAmount
                               ) -
-                              Number(
-                                store.orderStore.dataDebtLimit.amountOwed ?? 0
-                              )
+                                Number(
+                                  store.orderStore.dataDebtLimit.amountOwed ?? 0
+                                )))
                               : 0,
                         },
                       });
@@ -1361,36 +1455,37 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               <Text style={styles.textTotal}>
                 {formatVND(formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.inputPrice))))}
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  orderStore.setMethodPayment({
-                    sumAll: 0,
-                    methodPayment: 0,
-                    debt: 0,
-                    inputPrice: 0,
-                    apply: false,
-                  });
-                  return navigation.navigate("paymentBuy", {
-                    params: {
-                      type:
-                        handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                          ? false
-                          : true,
-                      price: price,
-                      debtAmount:
-                        handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                          ? Number(store.orderStore.dataDebtLimit.debtAmount) -
-                          Number(
-                            store.orderStore.dataDebtLimit.amountOwed ?? 0
-                          )
-                          : null,
-                    },
-                  });
-                }}>
-                <Images.icon_edit
-                  style={{ marginLeft: scaleWidth(margin.margin_6) }}
-                />
-              </TouchableOpacity>
+              {screen === 'edit' ? null :
+                <TouchableOpacity
+                  onPress={() => {
+                    orderStore.setMethodPayment({
+                      sumAll: 0,
+                      methodPayment: 0,
+                      debt: 0,
+                      inputPrice: 0,
+                      apply: false,
+                    });
+                    return navigation.navigate("paymentBuy", {
+                      params: {
+                        type:
+                          handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                            ? false
+                            : true,
+                        price: price,
+                        debtAmount:
+                          handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                            ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                              Number(
+                                store.orderStore.dataDebtLimit.amountOwed ?? 0
+                              )))
+                            : null,
+                      },
+                    });
+                  }}>
+                  <Images.icon_edit
+                    style={{ marginLeft: scaleWidth(margin.margin_6) }}
+                  />
+                </TouchableOpacity>}
             </View>
           </View>
         ) : null}
@@ -1456,8 +1551,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         debt={{
           isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
           debtAmount:
-            Number(store.orderStore.dataDebtLimit.debtAmount) -
-            Number(store.orderStore.dataDebtLimit.amountOwed ?? 0),
+            Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))),
         }}
       />
       <ModalTaxes

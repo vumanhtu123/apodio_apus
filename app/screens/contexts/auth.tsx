@@ -1,5 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { getAccessToken, getFirstOpenApp } from "../../utils/storage";
+import {
+  getAccessToken,
+  getFirstOpenApp,
+  getTenantId,
+} from "../../utils/storage";
 
 /** redirect value
  * 0: selectLanguage
@@ -14,8 +18,8 @@ type AuthContextData = {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-//const AuthProvider = ({children}: {children: React.ReactNode}) =>
-const AuthProvider: React.FC = ({ children }) => {
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  // const AuthProvider: React.FC = ({ children }) => {
   const [redirect, setRedirect] = useState<number>();
   const [loading, setLoading] = useState(true);
 
@@ -24,18 +28,22 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   async function loadStorageData(): Promise<void> {
+    console.log("check loadStorageData");
     try {
-      const accessToken = await getAccessToken();
+      const accessToken = await getTenantId();
       console.log("accessToken", accessToken);
       setLoading(true);
       if (accessToken) {
+        console.log("check loadStorageData 2");
         setRedirect(2);
       } else {
         const openApp = await getFirstOpenApp();
         console.log("openApp", openApp);
         if (openApp) {
+          console.log("check loadStorageData 1");
           setRedirect(1);
         } else {
+          console.log("check loadStorageData 0");
           setRedirect(0);
         }
       }

@@ -9,28 +9,29 @@ import { Header } from "../../../components";
 import { Images } from "../../../../assets";
 import { scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../components";
+import { Dimensions } from 'react-native';
+import { useStores } from "../../../models";
+export const InfoAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount">> = observer(
 
-export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount">> = observer(
-
-    function inforAccount(props) {
-        const [inforAccount, setInforAccount] = useState<any>()
+    function infoAccount(props) {
+        const [infoAccount, setInfoAccount] = useState<any>()
 
         const getApi = useStores()
         const getUserId = getApi.authenticationStore.userId
         console.log("User Id", getUserId);
 
-        const getInforAccount = () => {
-            getApi.userStore.getInforAccount(getUserId).then((data: any) => {
+        const getInfoAccount = () => {
+            getApi.userStore.getInfoAccount(getUserId).then((data: any) => {
                 console.log("data inforAccount", data)
 
-                setInforAccount(data)
+                // setInfoAccount(data)
             })
 
         }
 
         useEffect(() => {
 
-            getInforAccount()
+            getInfoAccount()
         }, [props.navigation])
 
 
@@ -104,25 +105,25 @@ export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount
 
                             <MerchantInfo
                                 label={"inforMerchant.loading"}
-                                value={inforAccount?.code ?? ""}
+                                value={infoAccount?.code ?? ""}
                             />
 
                             <MerchantInfo
                                 label={'inforMerchant.city'}
-                                value={inforAccount?.city ?? ""}
+                                value={infoAccount?.city ?? ""}
                             />
 
-                            <MerchantInfo label={'inforMerchant.district'} value={inforAccount?.district ?? ""} />
-                            <MerchantInfo label={'inforMerchant.ward'} value={inforAccount?.ward ?? ""} />
-                            <MerchantInfo label={'inforMerchant.address'} value={inforAccount?.address ?? ""} />
-                            <MerchantInfo label={'inforMerchant.gender'} value={inforAccount?.contacts[0]?.gender ?? ""} />
+                            <MerchantInfo label={'inforMerchant.district'} value={infoAccount?.district ?? ""} />
+                            <MerchantInfo label={'inforMerchant.ward'} value={infoAccount?.ward ?? ""} />
+                            <MerchantInfo label={'inforMerchant.address'} value={infoAccount?.address ?? ""} />
+                            <MerchantInfo label={'inforMerchant.gender'} value={infoAccount?.contacts[0]?.gender ?? ""} />
                             <MerchantInfo
                                 label={'inforMerchant.email'}
-                                value={inforAccount?.email ?? ""}
+                                value={infoAccount?.email ?? ""}
                             />
                             <MerchantInfo
                                 label={'inforMerchant.phoneNumber'}
-                                value={inforAccount?.phoneNumber ?? ""}
+                                value={infoAccount?.phoneNumber ?? ""}
                             />
                         </View>
                     </View>
@@ -132,17 +133,17 @@ export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount
                         <View style={{ marginHorizontal: 24, marginTop: 9 }}>
                             <MerchantInfo
                                 label={'inforMerchant.bank'}
-                                value={inforAccount?.bankAccounts[0]?.bank ?? ""}
+                                value={infoAccount?.bankAccounts[0]?.bank ?? ""}
                             />
                             <MerchantInfo
                                 label={'inforMerchant.accountNumber'}
-                                value={inforAccount?.bankAccounts[0]?.accountNumber ?? ""}
+                                value={infoAccount?.bankAccounts[0]?.accountNumber ?? ""}
                             />
                             <MerchantInfo
                                 label={'inforMerchant.accountHolder'}
-                                value={inforAccount?.bankAccounts[0]?.accountHolder ?? ""}
+                                value={infoAccount?.bankAccounts[0]?.accountHolder ?? ""}
                             />
-                            <MerchantInfo label={'inforMerchant.bankBranch'} value={inforAccount?.bankAccounts[0]?.bankBranch ?? ""} />
+                            <MerchantInfo label={'inforMerchant.bankBranch'} value={infoAccount?.bankAccounts[0]?.bankBranch ?? ""} />
                         </View>
                     </View>
                 </View>
@@ -153,8 +154,7 @@ export const InforAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount
 
 )
 
-import { Dimensions } from 'react-native';
-import { useStores } from "../../../models";
+
 const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
     header: {

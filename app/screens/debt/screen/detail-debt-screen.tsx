@@ -4,7 +4,7 @@ import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { TouchableOpacity, View, FlatList } from "react-native";
 import { Header, Text } from "../../../components";
-import { colors, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Images } from "../../../../assets";
 import en from "../../../i18n/en";
 import React from "react";
@@ -13,15 +13,27 @@ import { Styles } from "./styles";
 import data from "../../../components/svg-icon/data";
 import { styles } from "../../login/styles";
 import { ModalExchange } from "../component/ModalExchange";
+import CustomCalendar from "../../../components/calendar";
+import moment from "moment";
+import { ModalPay } from "../component/ModalPay";
 
 export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDebt">> = observer(
     function detailDebtScreen(props) {
-        const [valueItemSelect, setValueItemSelect] = useState("")
+        const [valueStatusShowOrHiddenPay, setValueStatusShowOrHiddenPay] = useState<boolean>(false)
         const [refreshing, setRefreshing] = useState(false);
         const [isLoadingMore, setIsLoadingMore] = useState(false);
         const [isVisible, setIsVisible] = useState(false)
+        const [isReset, setIsReset] = useState<boolean>()
+        const [makeDateS, setMakeDateS] = useState<any>()
+        const [makeDateE, setMakeDateE] = useState<any>()
+        const [timeStart, setTimeStart] = useState("");
+        const [timeEnd, setTimeEnd] = useState("");
+        const [isSortByDate, setIsSortByDate] = useState<boolean>(false)
+        const [isVisiblePay, setIsVisiblePay] = useState<boolean>(false)
 
-
+        const toggleModalDate = () => {
+            setIsSortByDate(!isSortByDate);
+        };
         interface DataItem {
             id: string,
             order: string,
@@ -35,6 +47,7 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
             exchange: number,
             createDateTransaction: string
         }
+
 
         const fakeData: DataItem[] = [
 
@@ -143,7 +156,7 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
             }, 3000);
         }
 
-        console.log('data fake', fakeData);
+        console.log('data date start ,end', moment(makeDateE).format("DD/MM/YYYY"), makeDateE);
 
         return (
             <View style={{ flex: 1, }}>
@@ -156,7 +169,10 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                     }}
                     titleStyle={Styles.textHeader}
                     RightIcon={Images.ic_calender_white}
-                    btnRightStyle={{}}
+                    onRightPress={() => {
+                        setIsSortByDate(!isSortByDate)
+                    }}
+                    rightText1={moment(makeDateS).format("DD/MM/YYYY") + '-' + moment(makeDateE).format("DD/MM/YYYY")}
                     headerInput={true}
                     searchText={en.NCCScreen.nameSuppliers}
                 />
@@ -198,57 +214,75 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                                 </View>
                                 {
                                     products.map((item, index) => (
-                                        <View key={item.id} style={{ backgroundColor: '#FFF', marginBottom: 10, borderRadius: margin.margin_8, padding: scaleWidth(15) }}>
-                                            <View style={Styles.flexRow}>
+                                        <TouchableOpacity
+                                            key={item.id}
+                                            style={{ backgroundColor: '#FFF', marginBottom: 10, borderRadius: margin.margin_8, padding: scaleWidth(15) }}
+                                            onPress={() => setValueStatusShowOrHiddenPay(!valueStatusShowOrHiddenPay)}
+                                        >
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.order" style={Styles.label} />
                                                 <Text style={Styles.styleOrder} >{item.order}</Text>
 
                                             </View>
-                                            <View style={Styles.flexRow}>
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.valueOrder" style={Styles.label} />
                                                 <Text style={[Styles.styleOrder, { color: colors.palette.malachite }]} >{item.valueOrder}</Text>
                                             </View>
-                                            <View style={Styles.flexRow}>
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.paid" style={Styles.label} />
                                                 <Text style={[Styles.styleOrder, { color: colors.palette.malachite }]} >{item.paid}</Text>
                                             </View>
-                                            <View style={Styles.flexRow}>
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.dateOfPayment" style={Styles.label} />
                                                 <Text style={[Styles.styleOrder,]} >{item.dateOfPayment}</Text>
                                             </View>
-                                            <View style={Styles.flexRow}>
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.remainingDebt" style={Styles.label} />
                                                 <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed }]} >{item.remainingDebt}</Text>
                                             </View>
-                                            <View style={Styles.flexRow}>
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.latePaymentPenalty" style={Styles.label} />
                                                 <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed }]} >{item.latePaymentPenalty}</Text>
                                             </View>
-                                            <View style={Styles.flexRow}>
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.totalRemainingDebt" style={Styles.label} />
                                                 <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed }]} >{item.totalRemainingDebt}</Text>
                                             </View>
-                                            <View style={Styles.flexRow}>
+                                            <View style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
                                                 <Text tx="debtScreen.paymentTerm2" style={Styles.label} />
                                                 <Text style={[Styles.styleOrder,]} >{item.paymentTerm}</Text>
                                             </View>
-                                            <TouchableOpacity style={Styles.flexRow}
-                                                onPress={() => {
-                                                    setIsVisible(!isVisible)
-                                                }}
-                                            >
-                                                <Text tx="debtScreen.exChange" style={Styles.label} />
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Images.ic_messenger />
-                                                    <Text style={[Styles.styleOrder, { color: colors.palette.navyBlue, marginHorizontal: 4 }]} >
-                                                        {item.exchange}
-                                                    </Text>
-                                                    <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed, }]}>(2 Chưa xem)</Text>
+                                            {
+                                                valueStatusShowOrHiddenPay ?
+                                                    <TouchableOpacity
+                                                        style={Styles.btnPay}
+                                                    >
+                                                        <Images.ic_pay_hand
+                                                            width={scaleWidth(17)}
+                                                            height={scaleHeight(17)}
+                                                        />
+                                                        <Text tx="debtScreen.paid" style={{ color: '#FFF', fontSize: fontSize.size10 }}></Text>
+                                                    </TouchableOpacity>
+                                                    :
+                                                    <TouchableOpacity style={Styles.flexRow}
+                                                        onPress={() => {
+                                                            setIsVisible(!isVisible)
+                                                        }}
+                                                    >
+                                                        <Text tx="debtScreen.exChange" style={Styles.label} />
+                                                        <View style={{ flexDirection: 'row' }}>
+                                                            <Images.ic_messenger />
+                                                            <Text style={[Styles.styleOrder, { color: colors.palette.navyBlue, marginHorizontal: 4 }]} >
+                                                                {item.exchange}
+                                                            </Text>
+                                                            <Text style={[Styles.styleOrder, { color: colors.palette.radicalRed, }]}>(2 Chưa xem)</Text>
 
-                                                </View>
-                                            </TouchableOpacity>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                            }
 
-                                        </View>
+
+                                        </TouchableOpacity>
                                     ))
                                 }
 
@@ -260,9 +294,61 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
 
                 />
 
+                {
+                    valueStatusShowOrHiddenPay ?
+                        <View style={{
+                            backgroundColor: colors.palette.white,
+                            paddingHorizontal: scaleWidth(16),
+                            paddingVertical: scaleWidth(20)
+                        }}
+                        >
+                            <TouchableOpacity
+                                style={[Styles.btnPay, { padding: scaleWidth(12), borderRadius: scaleWidth(8) }]}
+                            >
+                                <Images.ic_pay_hand
+                                    width={scaleWidth(24)}
+                                    height={scaleHeight(24)}
+                                />
+                                <Text tx="debtScreen.paid" style={{ color: '#FFF', fontSize: fontSize.size14 }}></Text>
+                            </TouchableOpacity>
+
+                        </View> : null
+                }
+
+
                 <ModalExchange
                     isVisible={isVisible}
                     setIsVisible={() => setIsVisible(!isVisible)}
+                />
+
+                <ModalPay
+                    isVisible={isVisiblePay}
+                    setIsVisible={() => setIsVisiblePay(!isVisiblePay)}
+                />
+
+                <CustomCalendar
+                    isReset={() => { setIsReset(!isReset) }}
+                    handleShort={() => {
+                        setMakeDateE(timeEnd)
+                        setMakeDateS(timeStart)
+                        toggleModalDate()
+                    }}
+                    onMarkedDatesChangeS={(
+                        markedDatesS: React.SetStateAction<string>
+                    ) => {
+                        console.log("markedDatesS------", markedDatesS);
+                        setTimeStart(markedDatesS)
+                    }}
+                    onMarkedDatesChangeE={(
+                        markedDatesE: React.SetStateAction<string>
+                    ) => {
+                        console.log("markedDatesE------", markedDatesE);
+                        setTimeEnd(markedDatesE)
+                    }}
+                    isShowTabs={true}
+                    isSortByDate={isSortByDate}
+                    toggleModalDate={toggleModalDate}
+
                 />
             </View>
         )

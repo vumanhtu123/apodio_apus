@@ -122,7 +122,6 @@ export const OrderDetails: FC = observer(
             const unsubscribe = navigation.addListener('focus', () => {
                 handleGetDetailOrder()
             });
-
             return unsubscribe;
         }, [navigation]);
         const dataStatus = [
@@ -131,7 +130,6 @@ export const OrderDetails: FC = observer(
             { status: 'Đang vận chuyển', complete: true },
             { status: 'Đã giao thành công', complete: false },
         ];
-
         const OrderStatusItem = ({ item, isLastStep }: any) => {
             return (
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: scaleHeight(12) }}>
