@@ -1,7 +1,7 @@
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
-import { InforAccountAPI } from "../../services/api/api-infor-account";
-import { InforAccount } from "./infor-account/infor-account-model";
+import { InfoAccountAPI } from "../../services/api/api-infor-account";
+import { InfoAccount } from "./infor-account/infor-account-model";
 
 export const UserStoreModal = types
 .model("UserStore")
@@ -14,14 +14,17 @@ export const UserStoreModal = types
 
 }))
 .actions((self) =>({
-    getInforAccount: flow(function* (
+    getInfoAccount: flow(function* (
         id : number
     ){
+        console.log('====================================');
+        console.log("id user", id);
+        console.log('====================================');
         try {
-            const inforAccountAPI = new InforAccountAPI(self.environment.apiErp)
-            const result : BaseResponse<InforAccount,ErrorCode> = yield inforAccountAPI.getInforAccount(id)
-            console.log("InforAccount------------", JSON.stringify(result.data))
-            return result.data
+            const infoAccountAPI = new InfoAccountAPI(self.environment.apiErp)
+            const result : BaseResponse<InfoAccount,ErrorCode> = yield infoAccountAPI.getInfoAccount(id)
+            console.log("InforAccount------------", JSON.stringify(result))
+            return result
         } catch (error) {
              console.log("Error get data inforAccount" ,error);
                 

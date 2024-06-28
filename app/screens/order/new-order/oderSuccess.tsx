@@ -8,21 +8,21 @@ import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme"
 import { useStores } from "../../../models"
 import LinearGradient from "react-native-linear-gradient"
 import moment from "moment"
+import { commasToDots, formatCurrency } from "../../../utils/validate"
 
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder, screen, price, inputPrice } = route.params || undefined
+    const { idOrder, screen, price, inputPrice }: any = route.params || undefined
     const { orderStore } = useStores()
     console.log(price, '234234')
     console.log(inputPrice)
-    const formattedPrice = price.toLocaleString('vi-VN');
-    const formattedInputPrice = inputPrice.toLocaleString('vi-VN');
+    const formattedPrice = price;
+    const formattedInputPrice = inputPrice;
     const receivables = price - inputPrice;
-    const formattedReceivables = receivables.toLocaleString('vi-VN')
+    const formattedReceivables = receivables
     // console.log("so tien phai thu", formattedReceivables);
 
-    moment.locale('vi')
     const now = moment()
     const formattedDateTime = now.format('HH:mm:ss - DD/MM/YYYY')
     return (
@@ -80,7 +80,7 @@ export const OrderSuccess: FC = () => {
                                             style={{ fontSize: fontSize.size14 }}
                                         />
                                         <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14 }}>
-                                            {formattedPrice} đ
+                                            {formatCurrency(commasToDots(formattedPrice))} VND
                                         </Text>
                                     </>
 
@@ -97,7 +97,7 @@ export const OrderSuccess: FC = () => {
                                             tx="successScreen.orderHasBeenPaid"
                                         />
                                         <Text style={{ fontSize: fontSize.size14 }}>
-                                            {formattedInputPrice}
+                                            {formatCurrency(commasToDots(formattedInputPrice))} VND
                                         </Text>
                                     </View>
 
@@ -105,7 +105,7 @@ export const OrderSuccess: FC = () => {
                                         tx="successScreen.theRemainingAmount"
                                     />
                                     <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14, marginBottom: scaleWidth(12) }}>
-                                        {formattedReceivables} đ
+                                        {formatCurrency(commasToDots(formattedReceivables))} VND
                                     </Text>
                                 </>
                         }

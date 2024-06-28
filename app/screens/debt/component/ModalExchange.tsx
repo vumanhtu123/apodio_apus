@@ -6,14 +6,16 @@ import {
   colors,
   fontSize,
   margin,
+  palette,
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Touchable, TouchableOpacity } from "react-native";
 import { Text, TextField } from "../../../components";
+import ItemListExChange from "./itemListExChange";
 import { Controller, useForm } from "react-hook-form";
 import { Images } from "../../../../assets";
-import ItemListExChange from "./ItemListExChange";
+import { Row } from "../../../components/Row";
 
 interface propModal {
   isVisible?: boolean;
@@ -95,7 +97,7 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
           style={{
             borderRadius: 8,
             borderWidth: 1,
-            borderColor: colors.palette.dolphin,
+            borderColor: "#BDBDBD",
             padding: scaleWidth(6),
           }}>
           {/* <Text tx="debtScreen.writeCommentHere"
@@ -120,7 +122,52 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
               required: "Please enter data",
             }}
           />
-          <View style={{}}></View>
+          <View
+            style={{
+              backgroundColor: "#F8F8F8",
+              padding: scaleWidth(10),
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+              <Text
+                style={{
+                  fontSize: fontSize.size20,
+                  color: colors.palette.dolphin,
+                }}>
+                B
+              </Text>
+              <Text
+                style={{
+                  fontSize: fontSize.size17,
+                  marginHorizontal: scaleWidth(15),
+                }}>
+                /
+              </Text>
+              <Images.ic_S width={scaleWidth(13)} />
+            </View>
+
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity>
+                <Images.ic_smile />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  paddingHorizontal: scaleWidth(14),
+                  paddingVertical: scaleWidth(6),
+                  backgroundColor: "#BDBDBD",
+                  borderRadius: 8,
+                  marginLeft: 8,
+                }}>
+                <Text tx="dashboard.send" style={{ color: palette.white }} />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </View>
     </Modal>

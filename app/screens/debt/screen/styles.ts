@@ -147,4 +147,12 @@ export  const Styles = StyleSheet.create({
         color: colors.dolphin
 
     },
+    btnPay:{ 
+        backgroundColor: colors.palette.navyBlue, 
+        padding: scaleWidth(7), 
+        borderRadius: 4,
+        alignItems:'center',
+        justifyContent:'center',
+        flexDirection:'row' 
+    },
 })

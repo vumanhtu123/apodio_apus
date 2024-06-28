@@ -36,7 +36,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
             phoneNumber: '',
             NameClient: ''
         },
-        mode: "onChange"
+        // mode: "onChange"
     })
 
     const getAPIcreateClient = useStores();
@@ -235,8 +235,9 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 onBlur={onBlur}
                                 onClearText={() => onChange("")}
                                 onChangeText={(value) => {
+                                    const filteredValue = value.replace(/\s/g, '').replace(/[^0-9]/g, '');
 
-                                    onChange(value)
+                                    onChange(filteredValue)
 
                                 }}
                                 isImportant
@@ -252,6 +253,20 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 checkLength: (value) => checkPhoneNumber(value)
                             }
                             ,
+                            // validate: {
+                            //     checkLength: (value) => {
+                            //         // Biểu thức chính quy chỉ giữ lại các ký tự số
+                            //         const filteredValue = value.replace(/[^0-9]/g, '');
+
+                            //         if (filteredValue.startsWith("03") || filteredValue.startsWith("05") || filteredValue.startsWith("07") || filteredValue.startsWith("08") || filteredValue.startsWith("09")) {
+                            //             return filteredValue.length === 10 || en.ClientScreen.phoneNumber10;
+                            //         } else if (filteredValue.startsWith("02")) {
+                            //             return filteredValue.length === 11 || en.ClientScreen.startNumber02;
+                            //         } else {
+                            //             return en.ClientScreen.formatError;
+                            //         }
+                            //     }
+                            // },
 
                             pattern: {
                                 value: /^\S+$/,

@@ -4,7 +4,7 @@
 //     data: Data
 //   }
   
-  export interface InforAccount {
+  export interface InfoAccount {
     id: number
     code: string
     name: string
