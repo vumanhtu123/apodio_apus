@@ -211,7 +211,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3), width: '100%' }}>
                         <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.orderAccordingly'} />
-                        {item.saleUom.id === item.uomGroup.uomOriginId ? null :
+                        {item.saleUom?.id === item.uomGroup?.uomOriginId ? null :
                             <Text style={styles.text400Nero10} text={parseFloat((Number(item.amount) / Number(item.conversionRate)).toFixed(2)).toString()} />}
                         <TouchableOpacity disabled={item.uomGroup === null ? true : false}
                             onPress={() => {
@@ -219,7 +219,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 // const newArr = item?.uomGroup?.uomGroupLineItems.filter((items: any)=> items.id!== item?.saleUom.id)
                                 const newArr1 = item?.uomGroup?.uomGroupLineItems.map((items: any) => { return { ...items, id: items.uomId, label: items.uomName } })
                                 setArrData(newArr1)
-                                setUom({ label: item.saleUom.name, id: item.saleUom.id, conversionRate: item.conversionRate })
+                                setUom({ label: item.saleUom?.name, id: item.saleUom?.id, conversionRate: item.conversionRate })
                             }}
                             style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.text400Nero10} text={item.saleUom?.name} />
