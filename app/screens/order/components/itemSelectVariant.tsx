@@ -101,10 +101,10 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             </View>}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1 }}>
-                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
+                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, width: '60%' }}>
+                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6), width: '22%' }]} tx={'order.quanlity'} />
                             <View style={[styles.viewAmount,
-                            { borderWidth: scaleHeight(1), borderColor: item.amount !== 0 ? (item.amount < item.minQuantity ? colors.palette.radicalRed : colors.textWhite) : colors.palette.white }
+                            { borderWidth: scaleHeight(1), borderColor: item.amount !== 0 ? (item.amount < item.minQuantity ? colors.palette.radicalRed : colors.textWhite) : colors.palette.white, width: '30%' }
                             ]}>
                                 <TouchableOpacity disabled={item.amount === 0 ? true : false}
                                     onPress={() => handleMinusPrice(item)}
@@ -119,14 +119,14 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     <Images.icon_plusGreen />
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ width: '20%' }}>
-                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                            <View >
+                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} numberOfLines={1} />
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '10%' }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
-                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} numberOfLines={1} />
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(4) }}>
@@ -232,9 +232,9 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             </View>}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, }}>
-                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
-                            <View style={styles.viewAmount}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, width: '60%' }}>
+                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6),width: '22%' }]} tx={'order.quanlity'} />
+                            <View style={[styles.viewAmount, {width: '30%'}]}>
                                 <TouchableOpacity disabled={item.amount === 0 ? true : false}
                                     onPress={() => handleMinus(item)}
                                     style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
@@ -249,7 +249,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 </TouchableOpacity>
                             </View>
                             <View >
-                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} numberOfLines={1} />
                             </View>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center',width: '10%' }}>
