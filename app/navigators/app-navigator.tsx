@@ -208,7 +208,7 @@ export const AppStack = () => {
         component={Screens.DetailExportGoods}
       />
 
-      <Stack.Screen name="inforAccount" component={Screens.InforAccount} />
+      <Stack.Screen name="inforAccount" component={Screens.InfoAccount} />
       <Stack.Screen
         name="notificationSetting"
         component={Screens.NotificationSetting}
