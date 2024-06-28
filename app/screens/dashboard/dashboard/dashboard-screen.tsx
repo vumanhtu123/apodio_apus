@@ -66,7 +66,8 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     const formattedDateStart = firstDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
     const formattedDateNow = today.format("YYYY-MM-DDTHH:mm:ssZ");
     const formattedDateEnd = lastDayOfMonth.format("YYYY-MM-DDTHH:mm:ssZ");
-    const formattedDateStartOrder = firstDayOfMonth.toISOString();
+
+    const formattedDateStartOrder = firstDayOfMonth.hours(7).toISOString();
     const formattedDateEndOrder = lastDayOfMonth.toISOString();
 
     // const { accountStore, promotionStore, notifitionStoreModel } = useStores()
@@ -133,7 +134,11 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
 
     const getDataRevenueThisMonth = () => {
       console.log("====================================");
-      console.log("date one of the month", formattedDateStartOrder);
+      console.log(
+        "date one of the month",
+        formattedDateStartOrder,
+        formattedDateEndOrder
+      );
       console.log("====================================");
       getAPI.dashBoardStore
         .getDataRevenueThisMonth(formattedDateStart, formattedDateEnd)

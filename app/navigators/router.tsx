@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DarkTheme,
   DefaultTheme,
@@ -14,12 +14,15 @@ import { ButtonProvider } from "../screens/contexts/button_context";
 import { FloatingButton } from "../components/float-button/FloattingButton";
 import { hideLoading, showLoading } from "../utils/toast";
 
-interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+// interface NavigationProps
+//   extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
-export const Router = (props: NavigationProps) => {
+export const Router = (props: any) => {
   const colorScheme = useColorScheme();
   const { redirect, loading } = useAuth();
+  useEffect(() => {
+    getStack();
+  }, []);
 
   const getStack = () => {
     if (redirect === 1) {
