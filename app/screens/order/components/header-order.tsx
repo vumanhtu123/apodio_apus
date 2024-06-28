@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { OnProgressEvent } from "react-native-fast-image";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
 import { useStores } from "../../../models";
-import { commasToDots, formatCurrency } from "../../../utils/validate";
+import { commasToDots, formatCurrency ,formatVND} from "../../../utils/validate";
 interface InputData {
   openDialog: () => void;
   data: any;
@@ -202,9 +202,9 @@ export const AddressOrder = (data: AddressData) => {
 
 interface DataSumMoney {
   arrVat: any;
-  sumNoVat: number;
-  sumVat: number;
-  discount: number;
+  sumNoVat: any;
+  sumVat: any;
+  discount: any;
 }
 
 function groupTaxValues(dataTax: any[] | undefined) {
@@ -270,7 +270,7 @@ export const SumMoney = (props: DataSumMoney) => {
           tx="order.sum_no_texas"
           style={{ fontSize: 10, fontWeight: "400", color: "#747475" }} />
         <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475", justifyContent: 'flex-end', alignItems: 'flex-end' }}>
-          {formatCurrency(commasToDots(props.sumNoVat)) ?? 0}
+          {formatVND(formatCurrency(commasToDots(props.sumNoVat))) ?? 0}
         </Text>
       </View>
 
@@ -293,7 +293,7 @@ export const SumMoney = (props: DataSumMoney) => {
                   color: "#747475",
                   marginTop: 8,
                 }}>
-                {formatCurrency(commasToDots(data?.taxValue)) ?? null}
+                {formatVND(formatCurrency(commasToDots(data?.taxValue))) ?? null}
               </Text>
             </View>
           ) : null;
@@ -317,7 +317,7 @@ export const SumMoney = (props: DataSumMoney) => {
                 color: "#747475",
                 marginTop: 8,
               }}>
-              {formatCurrency(commasToDots(discount)) ?? 0}
+              {formatVND(formatCurrency(commasToDots(discount))) ?? 0}
             </Text>
           </View>
         ) : null}
@@ -338,7 +338,7 @@ export const SumMoney = (props: DataSumMoney) => {
             marginTop: 8,
           }}>
           {/* {(isNaN(Sum()) ? sumValue : SumNoVAT()) ?? 0} */}
-          {formatCurrency(commasToDots(total))}
+          {formatVND(formatCurrency(commasToDots(total)))}
         </Text>
       </View>
     </View>

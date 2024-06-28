@@ -10,6 +10,7 @@ import { useStores } from '../../../models';
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme';
 import { addCommas, formatCurrency, formatNumberByString, removeNonNumeric } from '../../../utils/validate';
 import { TextFieldCurrency } from '../../../components/text-field-currency/text-field-currency';
+import { Images } from '../../../../assets';
 const { width, height } = Dimensions.get('screen');
 
 interface PriceModalProps {
@@ -97,15 +98,11 @@ const PriceModal = (props: PriceModalProps) => {
                                     style={{
                                         width: '100%'
                                     }}
-                                    inputStyle={{
-                                        // marginTop: scaleHeight(4)
-                                    }}
                                     value={value}
                                     onBlur={onBlur}
-                                    // onChangeText={(value) => {
-                                    //     onChange(value)
-                                    //     setValueCheck(value)
-                                    // }}
+                                    // RightIconClear={Images.icon_delete2}
+                                    // onClearText={() => onChange('')}
+                                    valueCurrency={vendorStore.companyInfo.symbol}
                                     onChangeText={(value) => {
                                         onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
                                         setValueCheck(formatCurrency(value))

@@ -679,6 +679,7 @@ const en = {
     unit: "Đơn vị tính gốc",
     properties: "Thuộc tính chung",
     detailProperty: "Xem chi tiết thuộc tính",
+    orders: "Đơn hàng",
   },
   createProductScreen: {
     classify: "Phân loại",
