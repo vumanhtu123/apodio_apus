@@ -17,6 +17,10 @@ interface PriceModalProps {
     setIsVisible: () => void;
     title?: string;
     titleTx?: TxKeyPath | {};
+    placeholder?: string;
+    placeholderTx?: TxKeyPath | {};
+    titleInput?: string;
+    titleInputTx?: TxKeyPath | {};
     onCancel: () => void
     onConfirm: (value: any) => void
     id?: number;
@@ -28,9 +32,9 @@ const VIEWMODAL: ViewStyle = {
 }
 
 const PriceModal = (props: PriceModalProps) => {
-    const { isVisible, setIsVisible, title, titleTx, onCancel, onConfirm, id } = props;
+    const { isVisible, setIsVisible, title, titleTx, titleInputTx, titleInput, placeholderTx, placeholder, onCancel, onConfirm, id } = props;
     const { vendorStore } = useStores();
-    const { control, reset, handleSubmit, watch } = useForm({
+    const { control, reset, handleSubmit, watch, setValue } = useForm({
     });
     const [valueCheck, setValueCheck] = useState<any>()
     const priceWatch = watch('price');
@@ -45,6 +49,10 @@ const PriceModal = (props: PriceModalProps) => {
     const [modalNotify, setModalNotify] = useState(false)
     const [modalClose, setModalClose] = useState(false)
     const [modalError, setModalError] = useState(false)
+    
+    const titleModal = titleTx ? titleTx : title;
+    const titleInputText = titleInputTx ? titleInputTx : titleInput;
+    const placeholderInputText = placeholderTx ? placeholderTx : placeholder;
     
     return (
         <Modal
@@ -74,7 +82,7 @@ const PriceModal = (props: PriceModalProps) => {
                         color: colors.palette.nero,
                         marginLeft: scaleWidth(margin.margin_24),
                         marginVertical: scaleHeight(margin.margin_16)
-                    }} tx={'selectPriceListApply.inputPrice'} />
+                    }} tx={titleModal} />
                     <View style={{ height: scaleHeight(1), backgroundColor: colors.palette.ghostWhite }} />
                     <View style={{
                         paddingHorizontal: scaleWidth(16), marginVertical: scaleHeight(margin.margin_16),
@@ -85,7 +93,7 @@ const PriceModal = (props: PriceModalProps) => {
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <TextField
                                     // keyboardType={'numeric'}
-                                    labelTx={'productScreen.priceProduct'}
+                                    labelTx={titleInputText}
                                     style={{
                                         width: '100%'
                                     }}
@@ -105,10 +113,9 @@ const PriceModal = (props: PriceModalProps) => {
                                     // isImportant={true}
                                     showRightIcon={false}
                                     maxLength={15}
-                                    placeholder='Nhập giá'
+                                    placeholder={placeholder}
                                 />)}
                             rules={{ required: "Nhập giá sản phẩm" }}
-                            
                         />
                     </View>
                     <View style={{

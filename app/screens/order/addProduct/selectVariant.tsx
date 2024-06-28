@@ -83,7 +83,6 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   };
 
   const getDataVariantPrice = async () => {
-    try {
       const response: OrderVariantResult =
         await orderStore.getListOrderVariantPrice(
           page,
@@ -109,6 +108,16 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         console.log("////////////////", response.response.data.totalPages);
         if (page === 0) {
           const newArr = response.response.data.content.map((items: any) => {
+            if (items.saleUom === null) {
+              return {
+                ...items,
+                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
+                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
+              };
+            } else {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
@@ -132,6 +141,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
               };
             }
+          }
           });
           const newArr2 = await Promise.all(
             newArr.map(async (items: any) => {
@@ -166,6 +176,16 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           setDataVariant(newArr1);
         } else {
           const newArr = response.response.data.content.map((items: any) => {
+            if (items.saleUom === null) {
+              return {
+                ...items,
+                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
+                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
+              };
+            } else {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
@@ -189,6 +209,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
               };
             }
+          }
           });
           const newArr2 = await Promise.all(
             newArr.map(async (items: any) => {
@@ -225,13 +246,9 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       } else {
         console.error("Failed to fetch variant:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
 
   const getDataVariant = async () => {
-    try {
       const response: OrderVariantResult = await orderStore.getListOrderVariant(
         page,
         size,
@@ -255,6 +272,16 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         console.log("////////////////", response.response.data.totalPages);
         if (page === 0) {
           const newArr = response.response.data.content.map((items: any) => {
+            if (items.saleUom === null) {
+              return {
+                ...items,
+                amount: 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount: 0,
+                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
+              };
+            } else {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
@@ -275,6 +302,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 originAmount: 0,
               };
             }
+          }
           });
           const newArr1 = newArr.map((item: any) => {
             if (aMap.has(item.id)) {
@@ -295,6 +323,16 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           setDataVariant(newArr1);
         } else {
           const newArr = response.response.data.content.map((items: any) => {
+            if (items.saleUom === null) {
+              return {
+                ...items,
+                amount: 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount: 0,
+                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
+              };
+            } else {
             if (items.uomId === items.saleUom?.id) {
               return {
                 ...items,
@@ -315,6 +353,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 originAmount: 0,
               };
             }
+          }
           });
           const newArr1 = newArr.map((item: any) => {
             if (aMap.has(item.id)) {
@@ -338,9 +377,6 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       } else {
         console.error("Failed to fetch variant:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
 
   useEffect(() => {
