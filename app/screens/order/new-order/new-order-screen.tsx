@@ -52,7 +52,7 @@ import {
   Dialog,
   Toast,
 } from "../../../components/dialog-notification";
-import { commasToDots, formatCurrency } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -1303,7 +1303,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             {/* {isNaN(priceSumVAT.current)
               ? Number(priceSumVAT.current)
               : price.current} */}
-            {formatCurrency(commasToDots(Number(price)))}
+            {formatVND(formatCurrency(commasToDots(Number(price))))}
           </Text>
         </View>
         {isDeposit === true && orderStore.dataDebtPayment.apply ? (
@@ -1322,16 +1322,16 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
-                {formatCurrency(
+                {formatVND(formatCurrency(
                   commasToDots(Number(orderStore.dataDebtPayment.sumAll))
-                )}
+                ))}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
               <Text style={styles.textTotal}>
-                {formatCurrency(
+                {formatVND(formatCurrency(
                   commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
-                )}
+                ))}
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -1378,11 +1378,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              {formatCurrency(
+              {formatVND(formatCurrency(
                 commasToDots(
                   Number(price ?? 0) -
                   Number(orderStore.dataDebtPayment.inputPrice ?? 0)
-                )
+                ))
               )}
             </Text>
           </View>

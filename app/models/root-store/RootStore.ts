@@ -9,6 +9,7 @@ import { HomeStoreModel } from "../home-store/home-store";
 import { OrderStoreModel } from "../order-store/order-store";
 import { DashBoardStoreModel } from "../dashboard-store/dashborad-store";
 import { UserStoreModal } from "../users-store/users-store";
+import { CompanyStoreModel } from "../company-info-store/company-store";
 
 /**
  * A RootStore model.
@@ -23,7 +24,8 @@ export const RootStoreModel = types.model("RootStore").props({
   HomeStore: types.optional(HomeStoreModel, {}),
   orderStore: types.optional(OrderStoreModel, {}),
   dashBoardStore: types.optional(DashBoardStoreModel,{}), 
-  userStore : types.optional(UserStoreModal, {})
+  userStore : types.optional(UserStoreModal, {}),
+  companyStore : types.optional(CompanyStoreModel, {})
 });
 
 /**
