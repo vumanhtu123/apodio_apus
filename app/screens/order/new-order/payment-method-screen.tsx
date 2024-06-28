@@ -167,7 +167,18 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     }
   };
   const Apply = () => {
-    orderStore.setMethodPayment({
+    if(countRef.current === ''){
+      orderStore.setMethodPayment({
+        sumAll: price ?? 0,
+        methodPayment: countRef.current,
+        debt: 0,
+        inputPrice: 0,
+        apply: false,
+      });
+      console.log(text, '==============+')
+      navigation.goBack();
+    }else{
+      orderStore.setMethodPayment({
       sumAll: price ?? 0,
       methodPayment: countRef.current,
       debt: Remain(),
@@ -180,7 +191,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       orderStore.setClearingDebt(true)
     }else{
       orderStore.setClearingDebt(false)
-    }
+    }}
     // navigation.navigate('newOrder', { goBackPayment: true })
   };
   console.log("tuvm", type);

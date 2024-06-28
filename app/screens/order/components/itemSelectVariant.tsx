@@ -95,16 +95,16 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             <Images.icon_caretRightDown />
                         </TouchableOpacity>
                         {item.uomId === item.saleUom?.id ? null :
-                            <View >
+                            <View style={{ width: '34%'}}>
                                 <Text style={[styles.text400Nero10, { color: colors.dolphin, fontStyle: 'italic' }]}
-                                    text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
+                                    text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} numberOfLines={1} />
                             </View>}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, flex: 1 }}>
-                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
+                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, width: '60%' }}>
+                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6), width: '22%' }]} tx={'order.quanlity'} />
                             <View style={[styles.viewAmount,
-                            { borderWidth: scaleHeight(1), borderColor: item.amount !== 0 ? (item.amount < item.minQuantity ? colors.palette.radicalRed : colors.textWhite) : colors.palette.white }
+                            { borderWidth: scaleHeight(1), borderColor: item.amount !== 0 ? (item.amount < item.minQuantity ? colors.palette.radicalRed : colors.textWhite) : colors.palette.white, width: '30%' }
                             ]}>
                                 <TouchableOpacity disabled={item.amount === 0 ? true : false}
                                     onPress={() => handleMinusPrice(item)}
@@ -119,14 +119,14 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     <Images.icon_plusGreen />
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ width: '20%' }}>
-                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                            <View >
+                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} numberOfLines={1} />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: scaleWidth(66) }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '10%' }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
-                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} numberOfLines={1} />
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: scaleHeight(4) }}>
@@ -209,9 +209,9 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             style={[styles.textName, { color: item.isSelect === true ? colors.palette.navyBlue : colors.nero }]} />
                         {item.isSelect === true ? <Images.icon_checkCircleBlue /> : null}
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3), width: '100%' }}>
                         <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.orderAccordingly'} />
-                        {item.saleUom.id === item.uomGroup.uomOriginId ? null :
+                        {item.saleUom?.id === item.uomGroup?.uomOriginId ? null :
                             <Text style={styles.text400Nero10} text={parseFloat((Number(item.amount) / Number(item.conversionRate)).toFixed(2)).toString()} />}
                         <TouchableOpacity disabled={item.uomGroup === null ? true : false}
                             onPress={() => {
@@ -219,22 +219,22 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 // const newArr = item?.uomGroup?.uomGroupLineItems.filter((items: any)=> items.id!== item?.saleUom.id)
                                 const newArr1 = item?.uomGroup?.uomGroupLineItems.map((items: any) => { return { ...items, id: items.uomId, label: items.uomName } })
                                 setArrData(newArr1)
-                                setUom({ label: item.saleUom.name, id: item.saleUom.id, conversionRate: item.conversionRate })
+                                setUom({ label: item.saleUom?.name, id: item.saleUom?.id, conversionRate: item.conversionRate })
                             }}
                             style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.text400Nero10} text={item.saleUom?.name} />
                             <Images.icon_caretRightDown />
                         </TouchableOpacity>
                         {item.uomId === item.saleUom?.id ? null :
-                            <View >
+                            <View style={{ width: '34%'}} >
                                 <Text style={[styles.text400Nero10, { color: colors.dolphin, fontStyle: 'italic' }]}
-                                    text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} />
+                                    text={item.saleUom?.name + ' = ' + item?.conversionRate + ' ' + item.uomName} numberOfLines={1} />
                             </View>}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, flex: 1 }}>
-                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.quanlity'} />
-                            <View style={styles.viewAmount}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', opacity: item.quantityInventory < item.minQuantity ? 0.5 : 1, width: '60%' }}>
+                            <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6),width: '22%' }]} tx={'order.quanlity'} />
+                            <View style={[styles.viewAmount, {width: '30%'}]}>
                                 <TouchableOpacity disabled={item.amount === 0 ? true : false}
                                     onPress={() => handleMinus(item)}
                                     style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
@@ -249,13 +249,13 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                 </TouchableOpacity>
                             </View>
                             <View >
-                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} />
+                                <Text text={item.uomGroup.uomOriginName} style={[styles.text400Nero10, { marginLeft: scaleWidth(6) }]} numberOfLines={1} />
                             </View>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: scaleWidth(66) }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center',width: '10%' }}>
                             <Text style={styles.text400Nero10} tx={'order.still'} />
                             <Text style={[styles.text400Nero10, { color: colors.palette.dolphin, fontStyle: 'italic', marginRight: scaleWidth(2) }]} text={item.quantityInventory.toString()} />
-                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} />
+                            <Text style={[styles.text400Nero10, { color: colors.palette.dolphin }]} text={item.uomGroup.uomOriginName} numberOfLines={1} />
                         </View>
                     </View>
                     {item.isSelect === true ?
@@ -338,6 +338,9 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         setModalPrice(false)
                         setCheck(false)
                     }}
+                    titleTx={'selectPriceListApply.inputPrice'}
+                    placeholder='Nhập giá'
+                    titleInputTx={'productScreen.priceProduct'}
                 />
             </TouchableOpacity>
         )
