@@ -197,7 +197,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       if (flatListRef.current) {
         flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
       }
-    }, [selectStatus])
+    }, [selectedStatus])
     const handleEndReached = () => {
       if (!isRefreshing && page < totalPages - 1) {
         setPage((prevPage) => prevPage + 1);

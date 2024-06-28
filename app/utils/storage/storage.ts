@@ -48,6 +48,32 @@ export async function getAccessToken() {
     return null;
   }
 }
+export async function setCompanyInfo(data: any) {
+  console.log('zzcz,ádasdz',data)
+  try {
+    await AsyncStorage.setItem(
+      _const.UserStatus.COMPANY_INFO,
+      // token
+      JSON.stringify(data)
+    );
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getCompanyInfo() {
+  try {
+    const userData = await AsyncStorage.getItem(_const.UserStatus.COMPANY_INFO);
+    if (userData !== null) {
+      return JSON.parse(userData);
+      // return userData;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    return null;
+  }
+}
 
 export async function removeAccessToken() {
   try {

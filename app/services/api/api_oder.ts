@@ -24,8 +24,8 @@ export class OrderApi {
     size: number,
     state: string,
     search: string,
-    fromCreateDate : any,
-    toCreateDate : any
+    fromCreateDate: any,
+    toCreateDate: any
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -73,6 +73,32 @@ export class OrderApi {
       console.log("-----------------respone", response);
       const data = response.data;
       console.log("-data", data);
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+  async printInvoice(id: number): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
+      const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
+        ApiEndpoint.PRINT_INVOICE,
+        {
+          id,
+          invoiceType: 'SALE'
+        }
+      );
+      Loading.hide();
+      console.log("-----------------respone", response);
+      const data = response.data;
+      console.log("-dataPrintVoice", data);
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
@@ -206,10 +232,10 @@ export class OrderApi {
         tagIds.length === 0 ? "" : "&tagIds=" + tagIds.join("&tagIds=");
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_ORDER_PRODUCT_PRICE +
-          "?size=" +
-          size +
-          sort +
-          tagString,
+        "?size=" +
+        size +
+        sort +
+        tagString,
         {
           page: page,
           // size: size,
@@ -253,10 +279,10 @@ export class OrderApi {
         tagIds.length === 0 ? "" : "&tagIds=" + tagIds.join("&tagIds=");
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_ORDER_VARIANT_PRICE +
-          "?size=" +
-          size +
-          sort +
-          tagString,
+        "?size=" +
+        size +
+        sort +
+        tagString,
         {
           page: page,
           // size: size,
@@ -313,7 +339,7 @@ export class OrderApi {
     });
     try {
       const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
-        ApiEndpoint.GET_DEBT_ACCOUNT_LEDGER + "?type=EXTERNAL" ,
+        ApiEndpoint.GET_DEBT_ACCOUNT_LEDGER + "?type=EXTERNAL",
         {
           accountLedgerId: accountLedgerId,
           start: start,
@@ -334,8 +360,8 @@ export class OrderApi {
       return { kind: "bad-data" };
     }
   }
-  
-async getBalanceLimit(
+
+  async getBalanceLimit(
     partnerId: any,
   ): Promise<any> {
     Loading.show({
@@ -343,7 +369,7 @@ async getBalanceLimit(
     });
     try {
       const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
-        ApiEndpoint.GET_BALANCE_LIMIT + "?type=EXTERNAL" + '&moveType=OUT_INVOICE' ,
+        ApiEndpoint.GET_BALANCE_LIMIT + "?type=EXTERNAL" + '&moveType=OUT_INVOICE',
         {
           partnerId: partnerId,
         }
@@ -415,8 +441,8 @@ async getBalanceLimit(
   async getTaxList(
     type: any,
     scopeType: any,
-    page : any,
-    size : any
+    page: any,
+    size: any
   ): Promise<BaseResponse<TaxModel, ErrorCode>> {
     Loading.show({
       text: "Loading...",
@@ -426,8 +452,8 @@ async getBalanceLimit(
         await this.apiAccount.apisauce.get(ApiEndpoint.GET_LIST_TAX, {
           type: type,
           scopeType: scopeType,
-          page : page,
-          size : size
+          page: page,
+          size: size
         });
       const data = response.data;
       Loading.hide();

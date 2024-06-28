@@ -25,7 +25,7 @@ import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
 import { number } from "mobx-state-tree/dist/internal";
 import FastImage from "react-native-fast-image";
-import { commasToDots, formatCurrency, formatNumberByString, formatStringToFloat } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatNumberByString, formatStringToFloat, formatVND } from "../../../utils/validate";
 
 interface AddProduct {
   onPress: ({ }) => void;
@@ -195,7 +195,7 @@ export default function ItemListProduct(props: AddProduct) {
               />
             ) : (
               <Text
-                text={formatCurrency(commasToDots(cost))}
+                text={formatVND(formatCurrency(commasToDots(cost)))}
                 style={{
                   fontWeight: "400",
                   fontSize: fontSize.size12,
@@ -251,7 +251,7 @@ export default function ItemListProduct(props: AddProduct) {
                     fontStyle: "italic",
                     color: "#F4AD22",
                   }}>
-                  {formatCurrency(commasToDots(valueVAT))}
+                  {formatVND(formatCurrency(commasToDots(valueVAT)))}
                 </Text>
               </View>
             </View>
@@ -374,7 +374,7 @@ export default function ItemListProduct(props: AddProduct) {
                 color: "#FF4956",
                 fontStyle: "italic",
               }}>
-              {" " + (Sum().toString() === "NaN" ? "0" : formatCurrency(commasToDots(Sum())))}
+              {" " + (Sum().toString() === "NaN" ? "0" : formatVND(formatCurrency(commasToDots(Sum()))))}
             </Text>
           </Text>
           {/* ) : null} */}

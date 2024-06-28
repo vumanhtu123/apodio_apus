@@ -75,4 +75,5 @@ export const ApiEndpoint = {
   GET_LIST_TAG_CLIENT: "/api/v1/b2c/partner-tag/list",
   GET_BALANCE_LIMIT: "/api/v1/mobile/account-move/balance",
   POST_SUBMIT_PASSWORD: "/public-api/v1/user/submit-password",
+  PRINT_INVOICE : '/api/v1/print/invoice-sale'
 };

@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   cellUnitPrice: {
     fontSize : fontSize.size12,
     marginRight: scaleWidth(12),
-    width: scaleWidth(72)
+    width: scaleWidth(80)
 
   },
   cellAmount: {
@@ -80,7 +80,8 @@ export const styles = StyleSheet.create({
     fontSize : fontSize.size12,
     flex: 1,
     width: scaleWidth(72),
-    fontWeight: '600'
+    fontWeight: '600',
+    textAlign : 'right'
   },
   sanPhamText: {
     fontSize: fontSize.size12
@@ -103,7 +104,7 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size12,
     fontWeight: '600',
     marginRight: scaleWidth(12),
-    width: scaleWidth(72)
+    width: scaleWidth(80)
   },
   cellAmountHeader: {
     fontSize: fontSize.size12,
@@ -115,8 +116,10 @@ export const styles = StyleSheet.create({
   cellMoneyHeader: {
     fontSize: fontSize.size12,
     flex: 1,
-    width: scaleWidth(72),
-    fontWeight: '600'
+    fontWeight: '600',
+    textAlign : 'right',
+    width : scaleWidth(72),
+    // backgroundColor : 'red'
   },
   rowPrice: {
     flexDirection: 'row',

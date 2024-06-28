@@ -37,6 +37,7 @@ import "moment-timezone";
 import { TabScreenProps } from "../../../navigators/bottom-navigation";
 import { formatCurrency } from "../../../utils/validate";
 import { formatDateTime } from "../../../utils/formatDate";
+import { getCompanyInfo, setCompanyInfo } from "../../../utils/storage";
 
 export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
   function DashBoardScreen(props) {
@@ -52,7 +53,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     const [revenue, setRevenue] = useState("");
     const [order, setOrder] = useState("");
     const getAPI = useStores();
-    const { orderStore } = useStores();
+    const { orderStore ,companyStore } = useStores();
     const [arrData, setArrData] = useState<any>([]);
     // Lấy ngày hiện tại theo giờ Việt Nam
     const today = moment().tz("Asia/Ho_Chi_Minh");
@@ -116,7 +117,10 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
           // vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
           console.log(response.result.data, "log infocompany");
           vendorStore.setCompanyInfo(response.result.data);
+          // setCompanyInfo(response.result.data)
+          companyStore.setCompanyInfo(response.result.data)
           // setDataInfoCompany(response.result.data)
+          // console.log('firstmmmmmmm' , await getCompanyInfo())S
         } else {
           console.error(
             "Failed to fetch categories:",
@@ -130,7 +134,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     useEffect(() => {
       handleGetInfoCompany();
     }, []);
-
+    
     const getDataRevenueThisMonth = () => {
       console.log("====================================");
       console.log("date one of the month", formattedDateStartOrder);
@@ -151,7 +155,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
       try {
         const response = await orderStore.getListOrder(
           0,
-          50,
+          10,
           "",
           "",
           formattedDateStartOrder,
@@ -801,13 +805,13 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                   code={item.code}
                   status={getOrderStateText(item.state)}
                   amount={item.quantity}
-                  discount={formatCurrency(item.amountDiscount)}
+                  discount={item.amountDiscount}
                   payStatus={getInvoiceStateText(item.invoiceStatus)}
                   // weight={item.weight}
-                  totalAmount={formatCurrency(item.amountTotal)}
-                  totalTax={formatCurrency(item.amountTax)}
+                  totalAmount={item.amountTotal}
+                  totalTax={item.amountTax}
                   // money={formatCurrency(calculateTotalPrice(item))}
-                  money={formatCurrency(item.amountTotalUnDiscount)}
+                  money={item.amountTotalUnDiscount}
                   styleViewStatus={{
                     backgroundColor:
                       item.state === "SALE"
