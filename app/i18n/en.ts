@@ -314,6 +314,7 @@ const en = {
     prepayment: "Thanh toán trước",
     contrast: "(Đối trừ công nợ)",
     stillInDebt: "Còn phải thanh toán",
+    usedDebt: "Công nợ sử dụng",
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",

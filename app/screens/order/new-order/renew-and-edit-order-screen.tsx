@@ -449,7 +449,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         //   },
         // });
         navigation.navigate("orderSuccess" as never, {
-          idOrder: values.code,
+          idOrder: values.id,
+          code: values.code,
           screen: screen === "copy" ? "create" : "edit",
           price: price,
           inputPrice: orderStore.dataDebtPayment.inputPrice,
@@ -1494,22 +1495,71 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             </View>
           </View>
         ) : null}
-        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
+        {isDeposit === true && orderStore.dataDebtPayment.apply && handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ? (
           <View
             style={{
               flexDirection: "row",
               paddingBottom: scaleHeight(padding.padding_12),
             }}>
             <Text
-              tx={"order.stillInDebt"}
+              tx={"order.usedDebt"}
               style={[styles.textTotal, { flex: 1 }]}
             />
             <Text
               style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-              {formatVND(formatCurrency(commasToDots(Number(price ?? 0) -
-                Number(orderStore.dataDebtPayment.inputPrice ?? 0))))}
+              {formatVND(formatCurrency(
+                commasToDots(
+                  Number(price ?? 0) -
+                  Number(orderStore.dataDebtPayment.inputPrice ?? 0)
+                ))
+              )}
             </Text>
           </View>
+        ) : null}
+        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
+          handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ?
+            <View
+              style={{
+                flexDirection: "row",
+                paddingBottom: scaleHeight(padding.padding_12),
+              }}>
+              <Text
+                tx={"order.stillInDebt"}
+                style={[styles.textTotal, { flex: 1 }]}
+              />
+              <Text
+                style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                {Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0) > 
+                Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0)
+                  ? formatVND(formatCurrency(
+                    commasToDots(
+                      (Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)) - 
+                      (Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0))
+                    ))
+                  ): 0
+                  }
+              </Text>
+            </View>
+            :
+            <View
+              style={{
+                flexDirection: "row",
+                paddingBottom: scaleHeight(padding.padding_12),
+              }}>
+              <Text
+                tx={"order.stillInDebt"}
+                style={[styles.textTotal, { flex: 1 }]}
+              />
+              <Text
+                style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                {formatVND(formatCurrency(
+                  commasToDots(
+                    Number(price ?? 0) -
+                    Number(orderStore.dataDebtPayment.inputPrice ?? 0)
+                  ))
+                )}
+              </Text>
+            </View>
         ) : null}
         <Button
           onPress={() => {
