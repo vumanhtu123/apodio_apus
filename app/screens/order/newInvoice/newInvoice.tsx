@@ -288,6 +288,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         handleGetPayment();
     }, [orderId])
     const arrPayment = dataPayment.map((item: any) => {
+        console.log('zzzzzsda', item)
         return { label: item.name, id: item.id }
     })
     // const scopeTypeOptions = [

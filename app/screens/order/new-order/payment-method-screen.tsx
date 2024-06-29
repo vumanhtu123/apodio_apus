@@ -10,7 +10,7 @@ import { ModalPayment } from "../components/modal-payment-method";
 import { useStores } from "../../../models";
 import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
-import { commasToDots, formatCurrency, formatStringToFloat } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatStringToFloat, formatVND } from "../../../utils/validate";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
@@ -194,7 +194,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               textAlign: "center",
               marginVertical: 20,
             }}>
-            {formatCurrency(commasToDots(Sum()))}
+            {formatVND(formatCurrency(commasToDots(Sum())))}
           </Text>
           <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
             <Text
@@ -205,7 +205,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.text_money_limit"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              {formatCurrency(commasToDots(Sum1()))}
+              {formatVND(formatCurrency(commasToDots(Sum1())))}
             </Text>
           </View>
           <Controller
@@ -309,7 +309,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.amount_paid"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              {formatCurrency(commasToDots(Remain()))}
+              {formatVND(formatCurrency(commasToDots(Remain())))}
             </Text>
           </View>
         </View>

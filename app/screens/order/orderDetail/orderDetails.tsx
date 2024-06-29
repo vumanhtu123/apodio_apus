@@ -251,9 +251,9 @@ export const OrderDetails: FC = observer(
                                 }
                             </View>
                             <Text tx={getInvoiceStateText(data.paymentStatus)} style={[styles.textPayStatus2, {
-                                color: data.invoiceStatus === 'NO' ? colors.palette.darkTangerine :
-                                    data.invoiceStatus === 'PARTIAL_INVOICE' ? colors.palette.darkTangerine :
-                                        data.invoiceStatus === 'TO_INVOICE' ? colors.palette.darkTangerine :
+                                color: data.paymentStatus === 'NOT_PAYMENT' ? colors.palette.darkTangerine :
+                                    data.paymentStatus === 'PARTIAL_PAYMENT' ? colors.palette.malachite :
+                                        data.paymentStatus === 'PAID' ? colors.palette.malachite :
                                             colors.palette.malachite
                             }]} />
                         </View>
@@ -292,7 +292,7 @@ export const OrderDetails: FC = observer(
                             <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
                                 <Text text={data?.partner?.name} style={[styles.textMoney2, {
                                     lineHeight: scaleHeight(14.52),
-                                    marginBottom: scaleHeight(margin.margin_8)
+                                    marginBottom: scaleHeight(margin.margin_8),
                                 }]} />
                                 <Text text={data.deliveryAddress?.phoneNumber} style={[styles.textMoney2, {
                                     lineHeight: scaleHeight(14.52),
@@ -371,45 +371,78 @@ export const OrderDetails: FC = observer(
                     <View style={styles.viewDateMoney}>
                         <Text tx={'order.sellerConfirm'} style={[styles.textDateMoney, { flex: 1 }]} />
                         <Text tx={getInvoiceStateText(data.paymentStatus)} style={[styles.textPayStatus2, {
-                            color: data.invoiceStatus === 'NO' ? colors.palette.darkTangerine :
-                                data.invoiceStatus === 'PARTIAL_INVOICE' ? colors.palette.darkTangerine :
-                                    data.invoiceStatus === 'TO_INVOICE' ? colors.palette.darkTangerine :
+                            color: data.paymentStatus === 'NOT_PAYMENT' ? colors.palette.darkTangerine :
+                                data.paymentStatus === 'PARTIAL_PAYMENT' ? colors.palette.malachite :
+                                    data.paymentStatus === 'PAID' ? colors.palette.malachite :
                                         colors.palette.malachite
                         }]} />
                     </View>
                     {dataPayment?.paymentResponses?.length > 0 ? (
                         <View style={styles.viewCash}>
                             {dataPayment.paymentResponses?.map((item: any) => (
-                                <View style={{
-                                    flexDirection: 'row', alignItems: 'center',
-                                    marginBottom: scaleHeight(margin.margin_15)
-                                }}>
-                                    <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                        <Text text={item.timePayment} style={styles.textContent} />
+                                <View>
+                                    <View style={[styles.viewStatus,
+                                    {
+                                        backgroundColor: colors.palette.mintCream,
+                                        width: scaleWidth(75),
+                                        alignItems: 'center',
+                                        paddingVertical: scaleHeight(2),
+                                        // paddingHorizontal : scaleHeight(6),
+
+                                    }]}>
+                                        <Text style={
+                                            [styles.textStatus, {
+                                                color: colors.palette.malachite
+                                            }]
+                                        } tx={'orderDetailScreen.invoiced'} />
                                     </View>
-                                    <View style={styles.viewLineCash}>
-                                        <Images.icon_ellipse />
-                                    </View>
-                                    <View style={styles.viewTextCash}>
-                                        <Text text={item.paymentPopUpResponse?.paymentMethod} style={[styles.textContent, { flex: 1 }]} />
-                                        <Text text={formatVND(formatCurrency(commasToDots(item.amount)))} />
+                                    <View style={{
+                                        flexDirection: 'row', alignItems: 'center',
+                                        marginBottom: scaleHeight(margin.margin_15)
+                                    }}>
+                                        <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                            <Text text={item.timePayment} style={styles.textContent} />
+                                        </View>
+                                        <View style={styles.viewLineCash}>
+                                            <Images.icon_ellipse />
+                                        </View>
+                                        <View style={styles.viewTextCash}>
+                                            <Text tx={item.paymentPopUpResponse?.paymentMethod === 'CASH' ? 'orderDetailScreen.cash' : ''} style={[styles.textContent, { flex: 1 }]} />
+                                            <Text text={formatVND(formatCurrency(commasToDots(item.amount)))} />
+                                        </View>
                                     </View>
                                 </View>
                             ))}
-                            <View style={{
-                                    flexDirection: 'row', alignItems: 'center',
-                                    marginBottom: scaleHeight(margin.margin_15)
-                                }}>
-                                    <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                        <Text text={'Còn phải trả'} style={styles.textContent} />
+                            {dataPayment.moneyPaid > 0 ? (
+                                <View >
+                                    <View style={{ margin: 0 }}>
+                                        <Text style={
+                                            [styles.textStatus, {
+                                                color: colors.palette.yellow,
+                                                width: scaleWidth(50),
+                                                // padding : 0,
+                                                paddingVertical: scaleHeight(2),
+                                                textAlign: 'center',
+                                                backgroundColor: colors.palette.yallowExDG,
+                                            }]
+                                        } tx={'orderDetailScreen.outstanding'} />
                                     </View>
-                                    <View style={styles.viewLineCash}>
-                                        <Images.icon_ellipse />
-                                    </View>
-                                    <View style={[styles.viewTextCash , {flexDirection : 'row-reverse'}]}>
-                                        <Text text={formatVND(formatCurrency(commasToDots(dataPayment.moneyPaid)))} style={{color:'red'}} />
+                                    <View style={{
+                                        flexDirection: 'row', alignItems: 'center',
+                                        marginBottom: scaleHeight(margin.margin_15)
+                                    }}>
+                                        <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                            <Text text={dataPayment.paymentResponses[dataPayment.paymentResponses.length - 1].timePayment} style={styles.textContent} />
+                                        </View>
+                                        <View style={styles.viewLineCash}>
+                                            <Images.icon_ellipse />
+                                        </View>
+                                        <View style={[styles.viewTextCash, { flexDirection: 'row-reverse' }]}>
+                                            <Text text={formatVND(formatCurrency(commasToDots(dataPayment.moneyPaid)))} />
+                                        </View>
                                     </View>
                                 </View>
+                            ) : null}
                             {/* <ProductAttribute textStyle={{color : 'red'}} label="Còn phải trả" value={} /> */}
                         </View>
                     ) : null}
