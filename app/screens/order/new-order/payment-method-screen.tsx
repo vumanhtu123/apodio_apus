@@ -10,13 +10,14 @@ import { ModalPayment } from "../components/modal-payment-method";
 import { useStores } from "../../../models";
 import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
-import { commasToDots, formatCurrency, formatStringToFloat } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatStringToFloat, formatVND } from "../../../utils/validate";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
 ) {
   const type = props.route.params.params.type;
+  const warning = props.route.params.params.warning;
   const price = props.route.params.params.price;
   const debtAmount = props.route.params.params.debtAmount;
   const [method, setMethod] = useState<number>();
@@ -24,7 +25,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const [credit, setCredit] = useState(0)
   const [isCredit, setIsCredit] = useState(false)
 
-  const { orderStore } = useStores();
+  const { orderStore, vendorStore } = useStores();
 
   const getBalanceLimit = async () => {
     if (orderStore.dataClientSelect !== null) {
@@ -61,9 +62,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       setText(formatCurrency(commasToDots(orderStore.dataDebtPayment.inputPrice)))
       setValue('price', formatCurrency(commasToDots(orderStore.dataDebtPayment.inputPrice)))
       countRef.current = orderStore.dataDebtPayment.methodPayment
-      if(orderStore.dataDebtPayment.methodPayment=== translate("order.EXCEPT_FOR_LIABILITIES")){
+      if (orderStore.dataDebtPayment.methodPayment === translate("order.EXCEPT_FOR_LIABILITIES")) {
         setMethod(1)
-      }else{
+      } else {
         setMethod(0)
       }
       // setCheck(true)
@@ -101,7 +102,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         return 0
       }
     } else {
-      if ((Number(price)- Number(debtAmount) - Number(formatStringToFloat(text))) >= Number(0)) {
+      if ((Number(price) - Number(debtAmount) - Number(formatStringToFloat(text))) >= Number(0)) {
         return Number(price) - Number(debtAmount) - Number(formatStringToFloat(text))
       } else {
         return 0
@@ -109,7 +110,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     }
   };
   const Apply = () => {
-    if(countRef.current === ''){
+    if (countRef.current === '') {
       orderStore.setMethodPayment({
         sumAll: price ?? 0,
         methodPayment: countRef.current,
@@ -118,20 +119,21 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         apply: false,
       });
       navigation.goBack();
-    }else{
+    } else {
       orderStore.setMethodPayment({
-      sumAll: price ?? 0,
-      methodPayment: countRef.current,
-      debt: Remain(),
-      inputPrice: Number(formatStringToFloat(text)) ?? 0,
-      apply: true,
-    });
-    navigation.goBack();
-    if(countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")){
-      orderStore.setClearingDebt(true)
-    }else{
-      orderStore.setClearingDebt(false)
-    }}
+        sumAll: price ?? 0,
+        methodPayment: countRef.current,
+        debt: Remain(),
+        inputPrice: Number(formatStringToFloat(text)) ?? 0,
+        apply: true,
+      });
+      navigation.goBack();
+      if (countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
+        orderStore.setClearingDebt(true)
+      } else {
+        orderStore.setClearingDebt(false)
+      }
+    }
     // navigation.navigate('newOrder', { goBackPayment: true })
   };
   console.log("tuvm", type);
@@ -166,8 +168,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
-          {type === true ? null: 
-          // (check !== true ? (
+          {warning == false ? null :
+            // (check !== true ? (
             <View
               style={{
                 backgroundColor: "#FEF7E5",
@@ -194,7 +196,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               textAlign: "center",
               marginVertical: 20,
             }}>
-            {formatCurrency(commasToDots(Sum()))}
+            {formatVND(formatCurrency(commasToDots(Sum())))}
           </Text>
           <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
             <Text
@@ -205,7 +207,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.text_money_limit"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              {formatCurrency(commasToDots(Sum1()))}
+              {formatVND(formatCurrency(commasToDots(Sum1())))}
             </Text>
           </View>
           <Controller
@@ -226,27 +228,21 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 RightIconClear={Images.icon_delete2}
                 error={errors?.price?.message}
                 styleError={{ marginLeft: scaleHeight(16) }}
+                valueCurrency={vendorStore.companyInfo.symbol}
                 onChangeText={(value) => {
-                  if(countRef.current === ''){
+                  if (countRef.current === '') {
                     Toast.show({
                       type: ALERT_TYPE.DANGER,
                       title: '',
                       textBody: translate('txtToats.change_payment'),
                     })
                     setValue('price', '0')
-                  }else{
+                  } else {
                     onChange(formatCurrency(value))
                   }
                 }}
                 onSubmitEditing={() => {
-                  if (Number(formatStringToFloat(value)) >= Number(Sum1())&& Number(formatStringToFloat(value))<= Number(price)) {
-                    setValue('price', value.toString())
-                    console.log(value, '123')
-                    setError('price', {})
-                    setText(value)
-                    Remain()
-                  }
-                  if(Number(formatStringToFloat(value)) >= Number(price)){
+                  if (Number(formatStringToFloat(value)) >= Number(price)) {
                     setError('price', {
                       type: "validate",
                       message: "Không thể trả trước quá giá trị đơn hàng",
@@ -257,6 +253,20 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       type: "validate",
                       message: 'Khách cần trả lớn hơn số tiền tối thiểu',
                     });
+                  }
+                  if (Number(formatStringToFloat(value)) > Number(credit) && countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
+                    setError('price', {
+                      type: "validate",
+                      message: "Không thể trả trước quá giá trị đối trừ công nợ",
+                    })
+                    return 
+                  }
+                  if (Number(formatStringToFloat(value)) >= Number(Sum1()) && Number(formatStringToFloat(value)) <= Number(price)) {
+                    setValue('price', value.toString())
+                    console.log(value, '123')
+                    setError('price', {})
+                    setText(value)
+                    Remain()
                   }
                 }}
               />
@@ -309,7 +319,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               }}
               tx="order.amount_paid"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
-              {formatCurrency(commasToDots(Remain()))}
+              {formatVND(formatCurrency(commasToDots(Remain())))}
             </Text>
           </View>
         </View>
@@ -346,7 +356,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         closeDialog={function (): void {
           setButtonPayment(false);
         }}
-        onSave={()=>{
+        onSave={() => {
           console.log('da chon')
         }}
         arrData={advanceMethodData}
@@ -356,13 +366,13 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           countRef.current = name;
           setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
-            if(Number(Sum())<= credit){
+            if (Number(Sum()) <= credit) {
               setText(formatCurrency(commasToDots(Sum().toString())))
-              setValue('price',formatCurrency(commasToDots(Sum().toString())))
+              setValue('price', formatCurrency(commasToDots(Sum().toString())))
               setError('price', {})
-            }else{
+            } else {
               setText(formatCurrency(commasToDots(credit.toString())))
-              setValue('price',formatCurrency(commasToDots(credit.toString())))
+              setValue('price', formatCurrency(commasToDots(credit.toString())))
               setError('price', {})
             }
           } else {

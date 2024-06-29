@@ -455,6 +455,7 @@ export default function ItemListProduct(props: AddProduct) {
               textBody: 'Chiết khấu không thể lớn hơn 100' })
           }
         }}
+        rightText={'%'}
         titleTx={'ImprotGoodsBook.discount'}
         placeholderTx={'order.input_texas'}
         titleInputTx={'ImprotGoodsBook.discount'}
