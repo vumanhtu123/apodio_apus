@@ -12,7 +12,7 @@ import {
 } from "../../../theme";
 import { View, FlatList, Touchable, TouchableOpacity } from "react-native";
 import { Text, TextField } from "../../../components";
-import ItemListExChange from "./ItemListExChange";
+import ItemListExChange from "./itemListExChange";
 import { Controller, useForm } from "react-hook-form";
 import { Images } from "../../../../assets";
 import { Row } from "../../../components/Row";

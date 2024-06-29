@@ -266,10 +266,11 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         params: {
           type: false,
           price: price,
+          warning: true,
           debtAmount:
             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-              ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
-                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
+              ? Number(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))))
               : null,
         },
       });
@@ -379,6 +380,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       id: screen === "copy" ? null : newData.id,
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
+      code: screen === "copy" ? null : newData.code,
       // invoiceAddressId: 0,
       deliveryAddressId: address.id,
       // quotationDate: "",
@@ -447,7 +449,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         //   },
         // });
         navigation.navigate("orderSuccess" as never, {
-          idOrder: values.id,
+          idOrder: values.code,
           screen: screen === "copy" ? "create" : "edit",
           price: price,
           inputPrice: orderStore.dataDebtPayment.inputPrice,
@@ -896,7 +898,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               ? translate("order.DOMESTICALLY")
               : translate("order.EXPORTED"),
         });
-        if (newData.note !== null) {
+        if (newData.note !== '') {
           setNote(true);
           valueNote.current = newData.note;
         }
@@ -925,6 +927,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           })
         }
         if (newData.isPrepayment === false && newData.isClearingDebts === false && screen === 'edit') {
+          setIsDeposit(false)
           orderStore.setClearingDebt(false)
           orderStore.setMethodPayment({
             sumAll: newData.totalPrice ?? 0,
@@ -1337,14 +1340,15 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                               ? false
                               : true,
                           price: price,
+                          warning: false,
                           debtAmount:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                              ? Math.max(0, (Number(
+                              ? Number(Math.max(0, (Number(
                                 store.orderStore.dataDebtLimit.debtAmount
                               ) -
                                 Number(
                                   store.orderStore.dataDebtLimit.amountOwed ?? 0
-                                )))
+                                ))))
                               : 0,
                         },
                       });
@@ -1439,10 +1443,10 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               paddingBottom: scaleHeight(padding.padding_12),
               justifyContent: "space-between",
             }}>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", alignItems: 'center' }}>
               <Text tx={"order.prepayment"} style={[styles.textTotal]} />
               <Text
-                tx="order.contrast"
+                text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
                   color: "#747475",
                   fontSize: 12,
@@ -1472,12 +1476,13 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                             ? false
                             : true,
                         price: price,
+                        warning: false,
                         debtAmount:
                           handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                            ? Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                            ? Number(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                               Number(
                                 store.orderStore.dataDebtLimit.amountOwed ?? 0
-                              )))
+                              ))))
                             : null,
                       },
                     });
@@ -1539,6 +1544,19 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         isPayment={true}
         closeDialog={function (): void {
           setButtonPayment(false);
+        }}
+        onSave={() => {
+          // if (countRef.current !== translate("order.DEDUCTION_OF_LIABILITIES")) {
+          //   console.log('12312312312312')
+            orderStore.setMethodPayment({
+              sumAll: 0,
+              methodPayment: '',
+              debt: 0,
+              inputPrice: 0,
+              apply: false,
+            });
+            setIsDeposit(false)
+          // }
         }}
         arrData={methodData}
         method={method}
