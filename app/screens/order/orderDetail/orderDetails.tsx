@@ -177,11 +177,11 @@ export const OrderDetails: FC = observer(
                     // onRightPress2={() => navigation.navigate('printInvoiceScreen' as never, { invoiceId: invoiceId })}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
                     onRightPress1={() => {
-                        navigation.navigate('newAndEditOrder', { newData: data, screen: 'copy' })
+                        navigation.navigate({name: 'newAndEditOrder',params: { newData: data, screen: 'copy' }}as never)
                         orderStore.setCheckRenderList(true)
                     }}
                     onRightPress={() => {
-                        navigation.navigate('newAndEditOrder', { newData: data, screen: 'edit' })
+                        navigation.navigate({name: 'newAndEditOrder',params: { newData: data, screen: 'edit' }}as never)
                         orderStore.setCheckRenderList(true)
                     }}
                     titleMiddleStyle={styles.titleHeader}
@@ -240,7 +240,7 @@ export const OrderDetails: FC = observer(
                                         // tx='order.sendInvoice' // Conditional text
                                         onPress={() => {
                                             if (dataPayment.isWithInvoice) {
-                                                navigation.navigate('printInvoiceScreen', { invoiceId: invoiceId })// Pass the first invoice ID
+                                                navigation.navigate({name: 'printInvoiceScreen', params: { invoiceId: invoiceId }}as never)// Pass the first invoice ID
                                             } else {
                                                 navigation.navigate('newInvoice' as never);
                                             }

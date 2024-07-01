@@ -199,7 +199,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -212,7 +211,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -225,7 +223,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -238,7 +235,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -257,11 +253,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       //   inputPrice: 0,
       //   apply: false,
       // });
-      return navigation.navigate("paymentBuy", {
+      return navigation.navigate({name: "paymentBuy", params: {
         params: {
           type: handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-          ? false
-          : true,
+            ? false
+            : true,
           warning: true,
           price: price,
           debtAmount:
@@ -270,7 +266,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))))
               : null,
         },
-      });
+      }} as never);
     }
 
 
@@ -434,12 +430,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         //     Dialog.hide();
         //   },
         // });
-        navigation.navigate("orderSuccess" as never, {
-          idOrder: values.code,
-          screnn: "create",
+        navigation.navigate({name: "orderSuccess" , params:  {
+          idOrder: values.id,
+          code: values.code,
+          screen: "create",
           price: price,
           inputPrice: Number(orderStore.dataDebtPayment.inputPrice),
-        });
+        }}as never);
         orderStore.setDataProductAddOrder([]);
         setArrProduct([]);
         handleBack();
@@ -1208,12 +1205,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       //   apply: false,
                       // });
                       handleDebt();
-                      navigation.navigate("paymentBuy", {
+                      navigation.navigate({ name: "paymentBuy", params: {
                         params: {
-                          type: 
-                          handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                            ? false
-                            : true,
+                          type:
+                            handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                              ? false
+                              : true,
                           price: price,
                           warning: false,
                           debtAmount:
@@ -1226,7 +1223,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                                 ))))
                               : 0,
                         },
-                      });
+                      }} as never);
                     }}
                     style={styles.buttonFeature}
                     textStyle={[
@@ -1347,9 +1344,9 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   //   inputPrice: 0,
                   //   apply: false,
                   // });
-                  return navigation.navigate("paymentBuy", {
+                  return navigation.navigate({name: "paymentBuy", params: {
                     params: {
-                      type: 
+                      type:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
                           ? false
                           : true,
@@ -1363,7 +1360,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                             ))))
                           : null,
                     },
-                  });
+                  }} as never);
                 }}>
                 <Images.icon_edit
                   style={{ marginLeft: scaleWidth(margin.margin_6) }}
@@ -1372,14 +1369,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             </View>
           </View>
         ) : null}
-        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
+        {isDeposit === true && orderStore.dataDebtPayment.apply && handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ? (
           <View
             style={{
               flexDirection: "row",
               paddingBottom: scaleHeight(padding.padding_12),
             }}>
             <Text
-              tx={"order.stillInDebt"}
+              tx={"order.usedDebt"}
               style={[styles.textTotal, { flex: 1 }]}
             />
             <Text
@@ -1392,6 +1389,51 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               )}
             </Text>
           </View>
+        ) : null}
+        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
+          handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ?
+            <View
+              style={{
+                flexDirection: "row",
+                paddingBottom: scaleHeight(padding.padding_12),
+              }}>
+              <Text
+                tx={"order.stillInDebt"}
+                style={[styles.textTotal, { flex: 1 }]}
+              />
+              <Text
+                style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                {Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0) > 
+                Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0)
+                  ? formatVND(formatCurrency(
+                    commasToDots(
+                      (Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)) - 
+                      (Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0))
+                    ))
+                  ): 0
+                  }
+              </Text>
+            </View>
+            :
+            <View
+              style={{
+                flexDirection: "row",
+                paddingBottom: scaleHeight(padding.padding_12),
+              }}>
+              <Text
+                tx={"order.stillInDebt"}
+                style={[styles.textTotal, { flex: 1 }]}
+              />
+              <Text
+                style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                {formatVND(formatCurrency(
+                  commasToDots(
+                    Number(price ?? 0) -
+                    Number(orderStore.dataDebtPayment.inputPrice ?? 0)
+                  ))
+                )}
+              </Text>
+            </View>
         ) : null}
         <Button
           onPress={() => {
@@ -1430,14 +1472,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         onSave={() => {
           // if (countRef.current !== translate("order.DEDUCTION_OF_LIABILITIES")) {
           //   console.log('12312312312312')
-            orderStore.setMethodPayment({
-              sumAll: 0,
-              methodPayment: '',
-              debt: 0,
-              inputPrice: 0,
-              apply: false,
-            });
-            setIsDeposit(false)
+          orderStore.setMethodPayment({
+            sumAll: 0,
+            methodPayment: '',
+            debt: 0,
+            inputPrice: 0,
+            apply: false,
+          });
+          setIsDeposit(false)
           // }
         }}
         arrData={methodData}
