@@ -207,7 +207,7 @@ export function InputSelect(props: InputSelectProps) {
               {/* <Text text="chon ly do" /> */}
               {isSearch ? (
                 <TextInput
-                  style={{ fontSize: 16, fontWeight: "400" }}
+                  style={{ fontSize: 16, fontWeight: "400", paddingVertical: 0 }}
                   onChangeText={(text) => handleSearch(text)}
                   value={search}
                   placeholder="Tìm kiếm..."

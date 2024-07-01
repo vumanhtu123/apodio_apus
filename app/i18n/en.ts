@@ -314,7 +314,8 @@ const en = {
     prepayment: "Thanh toán trước",
     contrast: "(Đối trừ công nợ)",
     stillInDebt: "Còn phải thanh toán",
-    usedDebt: "Công nợ sử dụng",
+    usedDebt: "Thanh toán",
+    debtLimit: "(Hạn mức công nợ)",
     product: "products",
     applyPromoHint: "Apply promo code for discount",
     orderSuccess: "Order success",
@@ -782,7 +783,7 @@ const en = {
     timeCreateOderSuccess: "Thời gian tạo đơn hàng thành công",
     timeEditOderSuccess: "Thời gian sửa đơn hàng thành công",
     orderHasBeenPaid: "Đơn hàng đã thanh toán ",
-    theRemainingAmount: "Số tiền còn lại phải thu khách hàng",
+    theRemainingAmount: "Số tiền còn phải thu của đơn hàng",
     value: " trị giá ",
   },
 

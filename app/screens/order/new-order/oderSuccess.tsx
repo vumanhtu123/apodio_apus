@@ -13,7 +13,7 @@ import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder, screen, price, inputPrice, code }: any = route.params || undefined
+    const { idOrder, screen, price, inputPrice, code, paymentMethod }: any = route.params || undefined
     const { orderStore } = useStores()
 
     const formattedPrice = price;
@@ -85,7 +85,7 @@ export const OrderSuccess: FC = () => {
                                             tx="successScreen.orderHasBeenPaid"
                                         />
                                         <Text style={{ fontSize: fontSize.size14 }}>
-                                            {formatVND(formatCurrency(commasToDots(formattedInputPrice)))}
+                                            {paymentMethod ==true ? formatVND(formatCurrency(commasToDots(formattedPrice))) : formatVND(formatCurrency(commasToDots(formattedInputPrice)))}
                                         </Text>
                                     </View>
 
@@ -93,7 +93,7 @@ export const OrderSuccess: FC = () => {
                                         tx="successScreen.theRemainingAmount"
                                     />
                                     <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14, marginBottom: scaleWidth(12) }}>
-                                        {formatVND(formatCurrency(commasToDots(formattedReceivables)))}
+                                    {paymentMethod ==true ? formatVND(0) : formatVND(formatCurrency(commasToDots(formattedReceivables)))}
                                     </Text>
                                 </>
                         }
