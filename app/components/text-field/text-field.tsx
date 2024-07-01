@@ -60,7 +60,7 @@ const INPUT: TextStyle = {
   // fontFamily: typography.primary,
   // color: colors.palette.neutral900,
   // minHeight: 50,
-  fontSize: 16,
+  fontSize: fontSize.size16,
   paddingTop: Platform.OS === "android" ? 8 : 8,
   paddingLeft: scaleWidth(16),
   flex: 1,
@@ -131,6 +131,7 @@ export interface TextFieldProps extends TextInputProps {
   isMultiline?: boolean;
   value?: any;
   valueInput?: any;
+  valueCurrency?: any
 }
 
 /**
@@ -168,6 +169,7 @@ export function TextField(props: TextFieldProps) {
     styleTextError,
     isMultiline,
     valueInput,
+    valueCurrency,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
@@ -298,6 +300,12 @@ export function TextField(props: TextFieldProps) {
           </View>
         </View>
         <View style={{ flexDirection: "row", paddingRight: scaleWidth(16) }}>
+          {valueCurrency ? (
+            <Text style={{
+              fontSize: fontSize.size16,
+              marginTop: Platform.OS === "android" ? 8 : 8,
+            }}>{valueCurrency}</Text>
+          ) : null}
           {isShowPassword && value ? (
             <TouchableOpacity
               style={{ marginTop: scaleHeight(4) }}
@@ -306,8 +314,10 @@ export function TextField(props: TextFieldProps) {
             </TouchableOpacity>
           ) : null}
           <View style={{ width: scaleWidth(10) }} />
+
           {value && showRightIcon ? (
             <TouchableOpacity
+            style ={{ justifyContent : 'center'}}
               onPress={() => {
                 onClearText();
                 focus.current.focus();

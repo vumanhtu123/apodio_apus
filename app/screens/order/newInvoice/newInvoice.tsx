@@ -29,7 +29,7 @@ import CustomCalendar from "../../../components/calendar";
 import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
-import { calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency } from "../../../utils/validate";
+import { calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 import ProductAttribute from "../../product/component/productAttribute";
 
 export const NewInvoice: FC = observer(function NewInvoice(props) {
@@ -55,7 +55,8 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const [isReset, setIReset] = useState<boolean>(false);
     const [markedDatesS, setMarkedDatesS] = useState("");
     const [markedDatesE, setMarkedDatesE] = useState("");
-    const [payment, setPayment] = useState({ label: "" })
+    const [payment, setPayment] = useState<any>({ label: "" })
+    // const [paymentId, setPaymentId] = useState({ label: "" })
     const [invoiceTypeLabel, setInvoiceTypeLabel] = useState({ label: "" })
     const [invoiceType, setInvoiceType] = useState('')
     const [data, setData] = useState<any>([])
@@ -63,6 +64,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const { orderStore } = useStores();
     const { orderId } = orderStore;
     const [invoiceCode, setInvoiceCode] = useState('')
+    const [symbolValue, setSymbolValue] = useState('')
     const toggleModalDate = () => {
         setIsSortByDate(!isSortByDate);
     };
@@ -104,148 +106,159 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
             console.error("Error fetching detail:", error);
         }
     };
+    console.log('firstáda', data.invoiceIds?.[0])
     const submitAdd = async () => {
+        // const dataSubmit = ({
+        //     code: invoiceCode,
+        //     paymentStatus: "NOT_PAYMENT",
+        //     state: "AWAITING_POSTED",
+        //     scopeType: data.scopeType,
+        //     paymentTerm: null,
+        //     partner: { id: data.partner?.id },
+        //     incomeExpense: null,
+        //     date: minDateS, // ngày tạo
+        //     dueDate: minDateE, // ngày hết hạn
+        //     accountingDate: minDateS,
+        //     accountJournal: null,
+        //     purchaseOrderId: null, // Set to null if not applicable
+        //     returnPurchaseOrderId: null, // Set to null if not applicable
+        //     saleOrderId: data.id,
+        //     returnSaleOrderId: null, // Set to null if not applicable
+        //     amountUntaxed: 0,
+        //     amountTotal: 0,
+        //     policyId: null, // Consider setting to null if there's no policy
+        //     currency: null,
+        //     isPolicyException: null,
+        //     isAnotherBook: null,
+        //     isCreateAnotherBook: null,
+        //     invoiceLines: data.saleOrderLines?.map((saleOrderLine: any, index: any,) => ({
+        //         sequence: saleOrderLine?.sequence,
+        //         product: {
+        //             id: saleOrderLine.productInfo?.id,
+        //             name: saleOrderLine.productInfo?.name,
+        //             sku: saleOrderLine.productInfo?.sku,
+        //             upc: saleOrderLine.productInfo?.upc,
+        //             productImage: saleOrderLine.productInfo?.productImage || [],
+        //             uomId: saleOrderLine.productInfo?.uomId,
+        //             uomCode: saleOrderLine.productInfo?.uomCode,
+        //             uomName: saleOrderLine.productInfo?.uomName,
+        //             brandName: saleOrderLine.productInfo?.brand?.name || null,
+        //             checkingType: null,
+        //             productTemplate: saleOrderLine.productInfo,
+        //             quantity: saleOrderLine.productInfo?.quantityInventory,
+        //             uomGroup: {
+        //                 id: saleOrderLine.productInfo?.uomGroup?.id,
+        //                 code: saleOrderLine.productInfo?.uomGroup?.code,
+        //                 name: saleOrderLine.productInfo?.uomGroup?.name,
+        //                 uomOriginId: saleOrderLine.productInfo?.uomGroup?.uomOriginId,
+        //                 uomOriginName: saleOrderLine.productInfo?.uomGroup?.uomOriginName,
+        //                 uomGroupLineItems: saleOrderLine.productInfo?.uomGroup?.uomGroupLineItems?.map((item: any) => ({
+        //                     uomId: item.uomId,
+        //                     uomName: item.uomName,
+        //                     conversionRate: item.conversionRate,
+        //                     accuracy: item.accuracy,
+        //                     uomLineType: item.uomLineType
+        //                 }))
+        //             },
+        //             saleUom: {
+        //                 id: saleOrderLine.productInfo?.saleUom?.id,
+        //                 name: saleOrderLine.productInfo?.saleUom?.name
+        //             },
+        //             purchaseUom: {
+        //                 id: saleOrderLine.productInfo?.purchaseUom?.id,
+        //                 name: saleOrderLine.productInfo?.purchaseUom?.name
+        //             },
+        //             brand: {
+        //                 id: saleOrderLine.productInfo?.brand?.id,
+        //                 name: saleOrderLine.productInfo?.brand?.name
+        //             },
+        //             baseProductPackingLine: saleOrderLine.productInfo?.baseProductPackingLine
+        //                 ? {
+        //                     id: saleOrderLine.productInfo?.baseProductPackingLine?.id,
+        //                     uomId: saleOrderLine.productInfo?.baseProductPackingLine?.uomId,
+        //                     uomName: saleOrderLine.productInfo?.baseProductPackingLine?.uomName || "",
+        //                     uomGroupLineId: saleOrderLine?.productInfo?.baseProductPackingLine?.uomGroupLineId,
+        //                     productId: saleOrderLine.productInfo?.baseProductPackingLine?.productId,
+        //                     amount: saleOrderLine.productInfo?.baseProductPackingLine?.amount,
+        //                     uomLineType: saleOrderLine.productInfo?.baseProductPackingLine?.uomLineType,
+        //                     length: saleOrderLine.productInfo?.baseProductPackingLine?.length,
+        //                     high: saleOrderLine.productInfo?.baseProductPackingLine?.high,
+        //                     wide: saleOrderLine.productInfo?.baseProductPackingLine?.wide,
+        //                     weight: saleOrderLine.productInfo?.baseProductPackingLine?.weight,
+        //                     volume: saleOrderLine.productInfo?.baseProductPackingLine?.volume
+        //                 }
+        //                 : null,
+        //             productPackingLines: saleOrderLine.productInfo?.productPackingLines?.length > 0 // Check if productPackingLines exist and have data
+        //                 ? saleOrderLine.productInfo?.productPackingLines?.map((packingLine: any) => ({
+        //                     id: packingLine.id,
+        //                     uomId: packingLine.uomId,
+        //                     uomName: packingLine.uomName,
+        //                     uomGroupLineId: packingLine.uomGroupLineId,
+        //                     productId: packingLine.productId,
+        //                     amount: packingLine.amount,
+        //                     uomLineType: packingLine.uomLineType,
+        //                     length: packingLine.length,
+        //                     high: packingLine.high,
+        //                     wide: packingLine.wide,
+        //                     weight: packingLine.weight,
+        //                     volume: packingLine.volume,
+        //                 })) : null,
+        //         },
+        //         quantity: saleOrderLine.quantity || null,
+        //         uom: {
+        //             id: saleOrderLine.uomId,
+        //         },
+        //         unitPrice: saleOrderLine.unitPrice,
+        //         amountUntaxed: saleOrderLine.amountUntaxed,
+        //         amountTotal: saleOrderLine.amountTotal,
+        //         discount: saleOrderLine.discount || 0,
+        //         displayType: "PRODUCT",
+        //         note: saleOrderLine.note || "",
+        //         taxes: saleOrderLine.taxes || [],
+        //         taxNames: [],
+        //         accountMoveId: 0,
+        //         // taxInfo: [],
+        //         importTax: 0,
+        //         specialConsumptionTax: 0,
+        //         environmentalResourceTax: 0,
+        //         vat: 0,
+        //         warehouseType: null,
+        //         warehouse: null,
+        //     })),
+        //     moveLines: [],
+        //     ledgerRefs: [],
+        //     accountLedger: null,
+        //     moveType: "OUT_INVOICE",
+        //     saleType: 'B2C',
+        //     type: "EXTERNAL",
+        //     isWithInvoice: true,
+        //     isWithDeliveryNote: false,
+        //     isTakePricePolicy: false,
+        //     priceList: { id: data.priceList?.id },
+        //     warehouse: { id: data.warehouse?.id },
+        //     deliveryAddress: { id: data.deliveryAddress?.id },
+        //     codeInvoice: null,
+        //     invoiceFormNumber: invoiceType,
+        //     symbol: "string",
+        //     invoiceDate: minDateS,
+        //     paymentMethod: data.paymentMethod == 'BANK_TRANSFER' ? 'BANK' : data.paymentMethod,
+        //     bankAccountPartner: { id: data?.bankAccountPartner?.id },
+        //     bankAccount: { id: data?.bankAccount?.id },
+        //     pickingCode: "",
+        //     applyDate: null,
+        //     isOptionPrice: data?.isOptionPrice,
+        //     isPrepayment: null,
+        // });
         const dataSubmit = ({
-            code: invoiceCode,
-            paymentStatus: "NOT_PAYMENT",
-            state: "AWAITING_POSTED",
-            scopeType: data.scopeType,
-            paymentTerm: null,
-            partner: { id: data.partner?.id },
-            incomeExpense: null,
-            date: minDateS, // ngày tạo
-            dueDate: minDateE, // ngày hết hạn
-            accountingDate: minDateS,
-            accountJournal: null,
-            purchaseOrderId: null, // Set to null if not applicable
-            returnPurchaseOrderId: null, // Set to null if not applicable
-            saleOrderId: data.id,
-            returnSaleOrderId: null, // Set to null if not applicable
-            amountUntaxed: 0,
-            amountTotal: 0,
-            policyId: null, // Consider setting to null if there's no policy
-            currency: null,
-            isPolicyException: null,
-            isAnotherBook: null,
-            isCreateAnotherBook: null,
-            invoiceLines: data.saleOrderLines?.map((saleOrderLine: any, index: any,) => ({
-                sequence: saleOrderLine?.sequence,
-                product: {
-                    id: saleOrderLine.productInfo?.id,
-                    name: saleOrderLine.productInfo?.name,
-                    sku: saleOrderLine.productInfo?.sku,
-                    upc: saleOrderLine.productInfo?.upc,
-                    productImage: saleOrderLine.productInfo?.productImage || [],
-                    uomId: saleOrderLine.productInfo?.uomId,
-                    uomCode: saleOrderLine.productInfo?.uomCode,
-                    uomName: saleOrderLine.productInfo?.uomName,
-                    brandName: saleOrderLine.productInfo?.brand?.name || null,
-                    checkingType: null,
-                    productTemplate: saleOrderLine.productInfo,
-                    quantity: saleOrderLine.productInfo?.quantityInventory,
-                    uomGroup: {
-                        id: saleOrderLine.productInfo?.uomGroup?.id,
-                        code: saleOrderLine.productInfo?.uomGroup?.code,
-                        name: saleOrderLine.productInfo?.uomGroup?.name,
-                        uomOriginId: saleOrderLine.productInfo?.uomGroup?.uomOriginId,
-                        uomOriginName: saleOrderLine.productInfo?.uomGroup?.uomOriginName,
-                        uomGroupLineItems: saleOrderLine.productInfo?.uomGroup?.uomGroupLineItems?.map((item: any) => ({
-                            uomId: item.uomId,
-                            uomName: item.uomName,
-                            conversionRate: item.conversionRate,
-                            accuracy: item.accuracy,
-                            uomLineType: item.uomLineType
-                        }))
-                    },
-                    saleUom: {
-                        id: saleOrderLine.productInfo?.saleUom?.id,
-                        name: saleOrderLine.productInfo?.saleUom?.name
-                    },
-                    purchaseUom: {
-                        id: saleOrderLine.productInfo?.purchaseUom?.id,
-                        name: saleOrderLine.productInfo?.purchaseUom?.name
-                    },
-                    brand: {
-                        id: saleOrderLine.productInfo?.brand?.id,
-                        name: saleOrderLine.productInfo?.brand?.name
-                    },
-                    baseProductPackingLine: saleOrderLine.productInfo?.baseProductPackingLine
-                        ? {
-                            id: saleOrderLine.productInfo?.baseProductPackingLine?.id,
-                            uomId: saleOrderLine.productInfo?.baseProductPackingLine?.uomId,
-                            uomName: saleOrderLine.productInfo?.baseProductPackingLine?.uomName || "",
-                            uomGroupLineId: saleOrderLine?.productInfo?.baseProductPackingLine?.uomGroupLineId,
-                            productId: saleOrderLine.productInfo?.baseProductPackingLine?.productId,
-                            amount: saleOrderLine.productInfo?.baseProductPackingLine?.amount,
-                            uomLineType: saleOrderLine.productInfo?.baseProductPackingLine?.uomLineType,
-                            length: saleOrderLine.productInfo?.baseProductPackingLine?.length,
-                            high: saleOrderLine.productInfo?.baseProductPackingLine?.high,
-                            wide: saleOrderLine.productInfo?.baseProductPackingLine?.wide,
-                            weight: saleOrderLine.productInfo?.baseProductPackingLine?.weight,
-                            volume: saleOrderLine.productInfo?.baseProductPackingLine?.volume
-                        }
-                        : null,
-                    productPackingLines: saleOrderLine.productInfo?.productPackingLines?.length > 0 // Check if productPackingLines exist and have data
-                        ? saleOrderLine.productInfo?.productPackingLines?.map((packingLine: any) => ({
-                            id: packingLine.id,
-                            uomId: packingLine.uomId,
-                            uomName: packingLine.uomName,
-                            uomGroupLineId: packingLine.uomGroupLineId,
-                            productId: packingLine.productId,
-                            amount: packingLine.amount,
-                            uomLineType: packingLine.uomLineType,
-                            length: packingLine.length,
-                            high: packingLine.high,
-                            wide: packingLine.wide,
-                            weight: packingLine.weight,
-                            volume: packingLine.volume,
-                        })) : null,
-                },
-                quantity: saleOrderLine.quantity || null,
-                uom: {
-                    id: saleOrderLine.uomId,
-                },
-                unitPrice: saleOrderLine.unitPrice,
-                amountUntaxed: saleOrderLine.amountUntaxed,
-                amountTotal: saleOrderLine.amountTotal,
-                discount: saleOrderLine.discount || 0,
-                displayType: "PRODUCT",
-                note: saleOrderLine.note || "",
-                taxes: saleOrderLine.taxes || [],
-                taxNames: [],
-                accountMoveId: 0,
-                // taxInfo: [],
-                importTax: 0,
-                specialConsumptionTax: 0,
-                environmentalResourceTax: 0,
-                vat: 0,
-                warehouseType: null,
-                warehouse: null,
-            })),
-            moveLines: [],
-            ledgerRefs: [],
-            accountLedger: null,
-            moveType: "OUT_INVOICE",
-            saleType: 'B2C',
-            type: "EXTERNAL",
-            isWithInvoice: true,
-            isWithDeliveryNote: false,
-            isTakePricePolicy: false,
-            priceList: { id: data.priceList?.id },
-            warehouse: { id: data.warehouse?.id },
-            deliveryAddress: { id: data.deliveryAddress?.id },
-            codeInvoice: null,
-            invoiceFormNumber: invoiceType,
-            symbol: "string",
+            id : data.invoiceIds?.[0],
+            codeInvoice: invoiceCode,
+            paymentTerm: payment.id,
             invoiceDate: minDateS,
-            paymentMethod: data.paymentMethod == 'BANK_TRANSFER' ? 'BANK' : data.paymentMethod,
-            bankAccountPartner: { id: data?.bankAccountPartner?.id },
-            bankAccount: { id: data?.bankAccount?.id },
-            pickingCode: "",
-            applyDate: null,
-            isOptionPrice: data?.isOptionPrice,
-            isPrepayment: null,
-        });
+            dueDate: minDateE,
+            symbol: symbolValue,
+            accountJournal: null,
+        })
+        console.log('dataSubmit', dataSubmit)
         try {
             const submit = await orderStore.createInvoice(dataSubmit);
             if (submit.kind === "ok") {
@@ -277,11 +290,11 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     const arrPayment = dataPayment.map((item: any) => {
         return { label: item.name, id: item.id }
     })
-    const scopeTypeOptions = [
-        { id: 1, value: 'ELECTRONIC_BILL', label: 'Hóa đơn giá trị gia tăng (HĐ điện tử)' },
-        { id: 2, value: 'VAT_BILL', label: 'Hóa đơn giá trị gia tăng' },
-        { id: 3, value: 'SALE_BILL', label: 'Hóa đơn bán hàng (HĐ điện tử)' },
-    ];
+    // const scopeTypeOptions = [
+    //     { id: 1, value: 'ELECTRONIC_BILL', label: 'Hóa đơn giá trị gia tăng (HĐ điện tử)' },
+    //     { id: 2, value: 'VAT_BILL', label: 'Hóa đơn giá trị gia tăng' },
+    //     { id: 3, value: 'SALE_BILL', label: 'Hóa đơn bán hàng (HĐ điện tử)' },
+    // ];
     const calculateTotalUnTaxPrice = () => {
         let totalPrice = 0;
         data.saleOrderLines?.forEach((item: any) => {
@@ -382,7 +395,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                         </View>
                         <Text tx="ClientScreen.client" style={{ fontSize: fontSize.size12, color: '#747475' }} />
                         <Text text={data.partner?.name} style={{ fontSize: fontSize.size16, fontWeight: '600' }} />
-                        <View style={{ marginVertical: scaleHeight(15) }}>
+                        {/* <View style={{ marginVertical: scaleHeight(15) }}>
                             <InputSelect
                                 // required={true}
                                 hintTx={"order.invoiceType"}
@@ -394,8 +407,8 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 }}
                                 dataDefault={invoiceTypeLabel.label}
                             />
-                        </View>
-                        <View style={{}}>
+                        </View> */}
+                        <View style={{ marginTop: scaleHeight(15) }}>
                             <Controller
                                 control={control}
                                 render={({ field: { onChange, value, onBlur } }) => (
@@ -414,7 +427,10 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         RightIconClear={Images.icon_delete2}
                                         error={errors?.symbol?.message}
                                         onClearText={() => onChange('')}
-                                        onChangeText={value => onChange(value)}
+                                        onChangeText={value => {
+                                            setSymbolValue(value)
+                                            onChange(value)
+                                        }}
                                         placeholderTx={"order.symbol"}
                                     />
                                 )}
@@ -506,6 +522,8 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                 arrData={arrPayment}
                                 onPressChoice={(item) => {
                                     setPayment(item);
+                                    console.log('checkkk', item)
+                                    // setPaymentId(item.id);
                                 }}
                                 dataDefault={payment.label}
                             />
@@ -542,41 +560,41 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                                 </View>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     {/* <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} /> */}
-                                                    <Text text={formatCurrency(commasToDots(item.amountUntaxed))} style={styles.textListProduct} />
+                                                    <Text text={formatVND(formatCurrency(commasToDots(item.amountUntaxed)))} style={styles.textListProduct} />
 
-                                                </View>
-                                            </View>
+                                                </View >
+                                            </View >
                                             <View>
                                                 <Text text={item.quantity} style={styles.textListProduct} />
                                                 {/* <Text text={formatCurrency(item.amountUntaxed)} style={styles.priceOriginal} /> */}
                                             </View>
-                                        </TouchableOpacity>
+                                        </TouchableOpacity >
                                     )
                                 })
                             }
-                        </View>
+                        </View >
                         <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(12), marginTop: scaleHeight(15) }}>
                             <Text tx="order.provisional" style={{ fontSize: fontSize.size12, fontWeight: '600', marginBottom: scaleHeight(12) }} />
                             <ProductAttribute
                                 labelTx="order.totalPrice"
-                                value={formatCurrency(commasToDots(calculateTotalUnTaxPrice()))}
+                                value={formatVND(formatCurrency(commasToDots(calculateTotalUnTaxPrice())))}
                             />
                             {groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
 
                                 <ProductAttribute
                                     label={item.taxName}
-                                    value={formatCurrency(commasToDots(item.amount))}
+                                    value={formatVND(formatCurrency(commasToDots(item.amount)))}
                                 />
 
                             ))}
                             <ProductAttribute
                                 labelTx="order.totalInvoice"
-                                value={formatCurrency(commasToDots(data.totalPrice))}
+                                value={formatVND(formatCurrency(commasToDots(data.totalPrice)))}
                             />
                         </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
-            </View>
+                    </ScrollView >
+                </KeyboardAvoidingView >
+            </View >
 
             <View
                 style={[
@@ -633,6 +651,6 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 isOneDate={true}
                 toggleModalDate={toggleModalDateEnd}
             />
-        </View>
+        </View >
     );
 });

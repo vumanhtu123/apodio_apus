@@ -8,6 +8,7 @@ export const UserStatus = {
   IS_FIRST: "IS_FIRST",
   CURRENT_LANG: "CURRENT_LANG",
   TENANT_ID: "TENANT_ID",
+  COMPANY_INFO : 'COMPANY_INFO'
 };
 export const CompanyDomain = {
   DOMAIN : "DOMAIN"
