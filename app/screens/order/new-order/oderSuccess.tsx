@@ -8,12 +8,12 @@ import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme"
 import { useStores } from "../../../models"
 import LinearGradient from "react-native-linear-gradient"
 import moment from "moment"
-import { commasToDots, formatCurrency } from "../../../utils/validate"
+import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate"
 
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder, screen, price, inputPrice, code }: any = route.params || undefined
+    const { idOrder, screen, price, inputPrice, code, paymentMethod }: any = route.params || undefined
     const { orderStore } = useStores()
 
     const formattedPrice = price;
@@ -72,7 +72,7 @@ export const OrderSuccess: FC = () => {
                                             style={{ fontSize: fontSize.size14 }}
                                         />
                                         <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14 }}>
-                                            {formatCurrency(commasToDots(formattedPrice))} VND
+                                            {formatVND(formatCurrency(commasToDots(formattedPrice)))}
                                         </Text>
                                     </>
                             }
@@ -86,7 +86,7 @@ export const OrderSuccess: FC = () => {
                                             tx="successScreen.orderHasBeenPaid"
                                         />
                                         <Text style={{ fontSize: fontSize.size14 }}>
-                                            {formatCurrency(commasToDots(formattedInputPrice))} VND
+                                            {paymentMethod ==true ? formatVND(formatCurrency(commasToDots(formattedPrice))) : formatVND(formatCurrency(commasToDots(formattedInputPrice)))}
                                         </Text>
                                     </View>
 
@@ -94,7 +94,7 @@ export const OrderSuccess: FC = () => {
                                         tx="successScreen.theRemainingAmount"
                                     />
                                     <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14, marginBottom: scaleWidth(12) }}>
-                                        {formatCurrency(commasToDots(formattedReceivables))} VND
+                                    {paymentMethod ==true ? formatVND(0) : formatVND(formatCurrency(commasToDots(formattedReceivables)))}
                                     </Text>
                                 </>
                         }

@@ -251,13 +251,13 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
         Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
     ) {
-      orderStore.setMethodPayment({
-        sumAll: 0,
-        methodPayment: 0,
-        debt: 0,
-        inputPrice: 0,
-        apply: false,
-      });
+      // orderStore.setMethodPayment({
+      //   sumAll: 0,
+      //   methodPayment: 0,
+      //   debt: 0,
+      //   inputPrice: 0,
+      //   apply: false,
+      // });
       return navigation.navigate({name: "paymentBuy", params: {
         params: {
           type: false,
@@ -449,6 +449,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           screen: screen === "copy" ? "create" : "edit",
           price: price,
           inputPrice: orderStore.dataDebtPayment.inputPrice,
+          paymentMethod: handleNamMethod() === "DEDUCTION_OF_LIABILITIES"  ? true : false
         }} as never);
         orderStore.setDataProductAddOrder([]);
         setArrProduct([]);
@@ -1321,15 +1322,15 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                           },
                         });
                       }
-                      orderStore.setMethodPayment({
-                        sumAll: 0,
-                        methodPayment: 0,
-                        debt: 0,
-                        inputPrice: 0,
-                        apply: false,
-                      });
+                      // orderStore.setMethodPayment({
+                      //   sumAll: 0,
+                      //   methodPayment: 0,
+                      //   debt: 0,
+                      //   inputPrice: 0,
+                      //   apply: false,
+                      // });
                       handleDebt();
-                      navigation.navigate("paymentBuy", {
+                      navigation.navigate({name: "paymentBuy", params: {
                         params: {
                           type:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1347,7 +1348,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                                 ))))
                               : 0,
                         },
-                      });
+                      }} as never);
                     }}
                     style={styles.buttonFeature}
                     textStyle={[
@@ -1458,14 +1459,14 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               {screen === 'edit' ? null :
                 <TouchableOpacity
                   onPress={() => {
-                    orderStore.setMethodPayment({
-                      sumAll: 0,
-                      methodPayment: 0,
-                      debt: 0,
-                      inputPrice: 0,
-                      apply: false,
-                    });
-                    return navigation.navigate("paymentBuy", {
+                    // orderStore.setMethodPayment({
+                    //   sumAll: 0,
+                    //   methodPayment: 0,
+                    //   debt: 0,
+                    //   inputPrice: 0,
+                    //   apply: false,
+                    // });
+                    return navigation.navigate({name: "paymentBuy", params: {
                       params: {
                         type:
                           handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1481,7 +1482,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                               ))))
                             : null,
                       },
-                    });
+                    }} as never);
                   }}>
                   <Images.icon_edit
                     style={{ marginLeft: scaleWidth(margin.margin_6) }}
@@ -1498,10 +1499,18 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             }}>
             <Text
               tx={"order.usedDebt"}
-              style={[styles.textTotal, { flex: 1 }]}
+              style={[styles.textTotal,]}
             />
             <Text
-              style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                tx={'order.debtLimit'}
+                style={{
+                  color: "#747475",
+                  fontSize: 12,
+                  fontWeight: "400",
+                  flex: 1,
+                }}></Text>
+            <Text
+              style={[styles.textTotal]}>
               {formatVND(formatCurrency(
                 commasToDots(
                   Number(price ?? 0) -
@@ -1531,7 +1540,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       (Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)) - 
                       (Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0))
                     ))
-                  ): 0
+                  ): formatVND(0)
                   }
               </Text>
             </View>

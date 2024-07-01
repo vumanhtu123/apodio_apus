@@ -436,6 +436,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           screen: "create",
           price: price,
           inputPrice: Number(orderStore.dataDebtPayment.inputPrice),
+          paymentMethod: handleNamMethod() === "DEDUCTION_OF_LIABILITIES"  ? true : false
         }}as never);
         orderStore.setDataProductAddOrder([]);
         setArrProduct([]);
@@ -889,9 +890,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             styles.viewScrollVertical,
             {
               height:
-                isDeposit === true
-                  ? heightScroll - scaleHeight(64)
-                  : heightScroll,
+                isDeposit === false
+                  ? heightScroll 
+                  : handleNamMethod() === "DEDUCTION_OF_LIABILITIES"
+                  ? heightScroll - scaleHeight(96)
+                  : heightScroll - scaleHeight(64),
             },
           ]}>
           <HeaderOrder
@@ -1289,9 +1292,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           styles.viewButtonOrder,
           {
             top:
-              isDeposit === true
-                ? Dimensions.get("window").height - scaleHeight(184)
-                : Dimensions.get("window").height - scaleHeight(120),
+              isDeposit === false
+                ? Dimensions.get("window").height - scaleHeight(120)
+                : handleNamMethod() == "DEDUCTION_OF_LIABILITIES" 
+                ? Dimensions.get("window").height - scaleHeight(216)
+                : Dimensions.get("window").height - scaleHeight(184),
           },
         ]}>
         <View
@@ -1377,10 +1382,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             }}>
             <Text
               tx={"order.usedDebt"}
-              style={[styles.textTotal, { flex: 1 }]}
+              style={[styles.textTotal,]}
             />
             <Text
-              style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                tx={'order.debtLimit'}
+                style={{
+                  color: "#747475",
+                  fontSize: 12,
+                  fontWeight: "400",
+                  flex: 1,
+                }}></Text>
+            <Text
+              style={[styles.textTotal, ]}>
               {formatVND(formatCurrency(
                 commasToDots(
                   Number(price ?? 0) -
@@ -1410,7 +1423,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       (Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)) - 
                       (Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0))
                     ))
-                  ): 0
+                  ): formatVND(0)
                   }
               </Text>
             </View>
