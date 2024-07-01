@@ -138,11 +138,11 @@ export function InputSelect(props: InputSelectProps) {
     }
   };
   useEffect(() => {
-    if (
-      dataDefault !== undefined &&
-      dataDefault !== null &&
-      dataDefault !== ""
-    ) {
+    // if (
+    //   dataDefault !== undefined &&
+    //   dataDefault !== null &&
+    //   dataDefault !== ""
+    // ) {
     //   console.log("dataDefault---------------------------", dataDefault);
     //   const dataChoiceItem = arrData.filter(
     //     (item) => item.label !== dataDefault
@@ -150,7 +150,7 @@ export function InputSelect(props: InputSelectProps) {
     //   setFilteredData(dataChoiceItem);
     // } else {
       setFilteredData(arrData);
-    }
+    // }
   }, [arrData]);
 
   return (

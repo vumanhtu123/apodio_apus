@@ -25,6 +25,7 @@ interface PriceModalProps {
     onCancel: () => void
     onConfirm: (value: any) => void
     id?: number;
+    rightText?: any;
 }
 
 const VIEWMODAL: ViewStyle = {
@@ -33,7 +34,7 @@ const VIEWMODAL: ViewStyle = {
 }
 
 const PriceModal = (props: PriceModalProps) => {
-    const { isVisible, setIsVisible, title, titleTx, titleInputTx, titleInput, placeholderTx, placeholder, onCancel, onConfirm, id } = props;
+    const { isVisible, setIsVisible, title, titleTx, titleInputTx, titleInput, rightText, placeholderTx, placeholder, onCancel, onConfirm, id } = props;
     const { vendorStore } = useStores();
     const { control, reset, handleSubmit, watch, setValue } = useForm({
     });
@@ -102,7 +103,7 @@ const PriceModal = (props: PriceModalProps) => {
                                     onBlur={onBlur}
                                     // RightIconClear={Images.icon_delete2}
                                     // onClearText={() => onChange('')}
-                                    valueCurrency={vendorStore.companyInfo.symbol}
+                                    valueCurrency={rightText}
                                     onChangeText={(value) => {
                                         onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
                                         setValueCheck(formatCurrency(value))

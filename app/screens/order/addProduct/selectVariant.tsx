@@ -432,7 +432,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     setDataVariant(newArr1);
   };
 
-  const handlePlus = (data: Content) => {
+  const handlePlus = (data: any) => {
     const newArr1 = dataVariant.slice().map((items) => {
       if (items.id === data.id) {
         if (data.saleUom.id === data.uomId) {
@@ -513,7 +513,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     setDataVariant(newArr2);
   };
   
-  const handlePlusPrice = async (data: Content) => {
+  const handlePlusPrice = async (data: any) => {
     const newArr1 = await Promise.all(
       dataVariant.slice().map(async (items) => {
         if (items.id === data.id) {
@@ -637,7 +637,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             style={styles.textDetailInfor}
           />
           <TouchableOpacity
-            onPress={() => navigation.navigate("productDetailScreen" as never, { screen: 'seeDetail' })}>
+            onPress={() => navigation.navigate({name: "productDetailScreen" as never, params: { screen: 'seeDetail' }}as never)}>
             <Text tx={"order.seeDetail"} style={styles.textViewInfo} />
           </TouchableOpacity>
         </View>
@@ -713,7 +713,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         </View>
         <FlatList
           data={dataVariant}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
           onEndReached={() => handleEndReached()}
           renderItem={({ item, index }) => (
             <ItemSelectVariant
@@ -764,7 +764,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 autoplay={false}
                 ref={refCarousel}
                 loop
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }: any) => (
                   <View>
                     <Image
                       source={{

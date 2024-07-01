@@ -4,7 +4,7 @@ import Modal from "react-native-modal";
 import { margin, scaleHeight, scaleWidth, fontSize } from "../../../theme";
 import { Text } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
-import { commasToDots, formatCurrency } from "../../../utils/validate";
+import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 
 interface InputSelect {
   isVisible: boolean;
@@ -224,7 +224,7 @@ const Item_Payment = (data: InputItem) => {
                   fontWeight: "400",
                   color: "#FF0000",
                 }}>
-                {formatCurrency(commasToDots(data.debt.debtAmount)) ?? 0}
+                {formatVND(formatCurrency(commasToDots(data.debt.debtAmount))) ?? 0}
                 <Text
                   text=")"
                   style={{
