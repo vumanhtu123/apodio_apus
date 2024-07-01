@@ -31,14 +31,17 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     // const [checkError, setCheckError] = useState(false)
     const [checkHind, setCheckHind] = useState(false)
 
-    const { control, handleSubmit, setError, formState: { errors }, reset, clearErrors } = useForm({
+    const { control, handleSubmit, setError, formState: { errors }, reset, clearErrors, trigger } = useForm({
         defaultValues: {
             phoneNumber: '',
             NameClient: ''
         },
+        mode: "onSubmit"
         // mode: "onChange"
     })
-
+    console.log('====================================');
+    console.log("eeeeee", errors);
+    console.log('====================================');
     const getAPIcreateClient = useStores();
 
     const checkStatusCompany = (): boolean => {
@@ -53,78 +56,86 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
         const nameClient = data.NameClient
         const phoneNumber = data.phoneNumber
-        setCheckHind(true)
 
-        // console.log('====================================');
-        // console.log("value hind", checkHind);
-        // console.log('====================================');
-        // console.log('====================================');
-        // console.log('data test', nameClient, phoneNumber, selectCustomerType);
-        // console.log('====================================');
-
-        const result = await getAPIcreateClient.orderStore.postClient({
-            "name": nameClient,
-            "phoneNumber": phoneNumber,
-            "isCompany": checkStatusCompany(),
-            "deleteContacts": [],
-            "branches": [],
-            "deleteAddress": [],
-            "sharingModeB2c": "PRIVATE",
-            "partnerTagIds": [],
-            "b2cActivated": true,
-        })
-        // .then((value) => {
-
-        //     console.log("value create", props.sendIdCreate(value.result.data.id));
-        // })
-        // console.log('====================================');
-        // console.log('test', result);
-        // console.log('====================================');
-
-        if (result.kind === "ok") {
-            console.log("result create ", result.result.data);
-            const id = result.result.data
-
-            props.sendIdCreate({ id })
-            setCheckHind(false)
-            setSelectCustomerType({ label: "" })
-            reset({
-                phoneNumber: '',
-                NameClient: ''
-            })
-            props.setIsVisible(!props.isVisible)
-
-            Dialog.show({
-                title: translate("txtDialog.txt_title_dialog"),
-                button: '',
-                button2: translate("common.ok"),
-                textBody: en.ClientScreen.createClientSuccess,
-                closeOnOverlayTap: false,
-                onPressButton: () => {
-
-                    Dialog.hide();
-                    props.handleRefresh()
-                }
-            })
+        let hasError = false
+        if (checkPhoneNumber(phoneNumber) !== true) {
+            setError("phoneNumber", {
+                type: "validate",
+                message: checkPhoneNumber(phoneNumber),
+            });
+            hasError = true
+        }
+        if (hasError) {
 
         } else {
-            Dialog.show({
-                title: translate("productScreen.Notification"),
-                button: translate("common.ok"),
-                textBody: result.result.errorCodes[0].message,
-                closeOnOverlayTap: false
-            })
+            setCheckHind(true)
 
+            // console.log('====================================');
+            // console.log("value hind", checkHind);
+            // console.log('====================================');
+            // console.log('====================================');
+            // console.log('data test', nameClient, phoneNumber, selectCustomerType);
+            // console.log('====================================');
+
+            const result = await getAPIcreateClient.orderStore.postClient({
+                "name": nameClient,
+                "phoneNumber": phoneNumber,
+                "isCompany": checkStatusCompany(),
+                "deleteContacts": [],
+                "branches": [],
+                "deleteAddress": [],
+                "sharingModeB2c": "PRIVATE",
+                "partnerTagIds": [],
+                "b2cActivated": true,
+            })
+            // .then((value) => {
+
+            //     console.log("value create", props.sendIdCreate(value.result.data.id));
+            // })
+            // console.log('====================================');
+            // console.log('test', result);
+            // console.log('====================================');
+
+            if (result.kind === "ok") {
+                console.log("result create ", result.result.data);
+                const id = result.result.data
+
+                props.sendIdCreate({ id })
+                setCheckHind(false)
+                setSelectCustomerType({ label: "" })
+
+                reset({
+                    phoneNumber: '',
+                    NameClient: ''
+                })
+                props.setIsVisible(!props.isVisible)
+
+                Dialog.show({
+                    title: translate("txtDialog.txt_title_dialog"),
+                    button: '',
+                    button2: translate("common.ok"),
+                    textBody: en.ClientScreen.createClientSuccess,
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+
+                        Dialog.hide();
+                        props.handleRefresh()
+                    }
+                })
+
+            } else {
+                Dialog.show({
+                    title: translate("productScreen.Notification"),
+                    button: translate("common.ok"),
+                    textBody: result.result.errorCodes[0].message,
+                    closeOnOverlayTap: false
+                })
+
+            }
         }
+
     }
-    // Hàm được gọi khi người dùng nhấn nút
-    const onPressHandler = () => {
-        // Thực hiện các thao tác trước khi submit form (nếu cần)
-        setCheckHind(true)
-        console.log('Button pressed');
-        // Sau đó gọi handleSubmit để xử lý submit form
-        handleSubmit(onSubmit)();
-    };
+
 
 
     // console.log('====================================');
@@ -217,11 +228,13 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
                         control={control}
                         name="phoneNumber"
+
                         render={({ field: { onBlur, onChange, value } }) => (
 
                             <TextField
                                 keyboardType="numeric"
                                 labelTx={"NCCScreen.enterPhone"}
+                                maxLength={11}
                                 style={{
                                     // marginBottom: scaleHeight(10),
                                     marginBottom: scaleHeight(5),
@@ -233,7 +246,13 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                onClearText={() => onChange("")}
+                                onClearText={() => {
+                                    onChange("");
+
+                                    clearErrors("phoneNumber")
+
+                                    console.log('Clear Errors called', errors.phoneNumber);
+                                }}
                                 onChangeText={(value) => {
                                     const filteredValue = value.replace(/\s/g, '').replace(/[^0-9]/g, '');
 
@@ -243,35 +262,21 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 isImportant
                                 placeholder="VD 01231254"
                                 RightIconClear={Images.icon_delete2}
-                                error={errors?.phoneNumber?.message}
-
+                                error={errors?.phoneNumber?.message} // Thay đổi chỗ này
                             />
                         )}
                         rules={{
 
-                            validate: {
-                                checkLength: (value) => checkPhoneNumber(value)
-                            }
-                            ,
                             // validate: {
-                            //     checkLength: (value) => {
-                            //         // Biểu thức chính quy chỉ giữ lại các ký tự số
-                            //         const filteredValue = value.replace(/[^0-9]/g, '');
+                            //     checkLength: (value) => checkPhoneNumber(value)
+                            // }
+                            // ,
 
-                            //         if (filteredValue.startsWith("03") || filteredValue.startsWith("05") || filteredValue.startsWith("07") || filteredValue.startsWith("08") || filteredValue.startsWith("09")) {
-                            //             return filteredValue.length === 10 || en.ClientScreen.phoneNumber10;
-                            //         } else if (filteredValue.startsWith("02")) {
-                            //             return filteredValue.length === 11 || en.ClientScreen.startNumber02;
-                            //         } else {
-                            //             return en.ClientScreen.formatError;
-                            //         }
-                            //     }
+
+                            // pattern: {
+                            //     value: /^\S+$/,
+                            //     message: en.ClientScreen.checkSpace
                             // },
-
-                            pattern: {
-                                value: /^\S+$/,
-                                message: en.ClientScreen.checkSpace
-                            },
                             required: en.ClientScreen.pleaseInputPhoneNumber
                         }}
                     />
@@ -296,9 +301,10 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 value={value}
                                 onBlur={onBlur}
                                 onClearText={() => {
-                                    reset({
-                                        NameClient: ""
-                                    })
+                                    onChange("")
+                                    // reset({
+                                    //     NameClient: ""
+                                    // })
                                 }}
                                 onChangeText={(txt) => {
 
@@ -324,8 +330,10 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                             <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
-                            onPress={
-                                onPressHandler
+                            onPress={() => {
+                                setCheckHind(true)
+                                handleSubmit(onSubmit)()
+                            }
                             }
                         >
                             <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectClient.add"></Text>

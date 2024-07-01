@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { ImageBackground, TouchableOpacity, View } from "react-native"
 import { styles } from "./styles"
 import { useNavigation, useRoute } from "@react-navigation/native"
@@ -60,9 +60,8 @@ export const OrderSuccess: FC = () => {
                         {/* <Text tx={screen === 'edit' ? 'successScreen.editSuccess' : "successScreen.labelSuccess"} style={{ fontSize: fontSize.size18, fontWeight: '700', marginTop: scaleHeight(40), marginBottom: scaleHeight(10) }} /> */}
                         <Text tx={screen === 'edit' ? 'successScreen.editTitleSuccess' : "successScreen.titleSuccessOrder"} style={{ fontSize: fontSize.size14, fontWeight: '500', color: '#84888D' }} />
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-
                             <Text style={{ fontSize: fontSize.size14 }}>
-                                {code}
+                                #{code}
                             </Text>
                             {
                                 screen === 'edit' ?
@@ -136,7 +135,8 @@ export const OrderSuccess: FC = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate({name: 'mainBottom' as never, params: { isReload: true }}as never)
+                        orderStore.setIsReload(true);
+                        navigation.navigate('mainBottom' as never)
                     }}
                     style={{ justifyContent: 'center', alignItems: 'center', marginTop: scaleHeight(15), marginBottom: scaleHeight(30) }}>
                     <Text tx="successScreen.btnBack" style={{ fontSize: fontSize.size14, color: '#0078D4', fontWeight: '700' }} />

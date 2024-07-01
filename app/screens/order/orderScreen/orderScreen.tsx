@@ -105,29 +105,33 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     useEffect(() => {
       console.log("---------useEffect---------reload------------------");
       const unsubscribe = navigation.addListener('focus', () => {
-        if (isReload) {
+        if (orderStore.isReload === true) {
+          console.log("---------useEffect---------reload--------------xcxcx----");
           getListOrder()
+          orderStore.setIsReload(false)
         }
       });
       return unsubscribe;
     }, [navigation]);
     useEffect(() => {
       getListOrder(searchValue)
-    }, [selectedStatus, markedDatesS, markedDatesE, page])
+    }, [selectedStatus, page, markedDatesS, markedDatesE])
     // useEffect (()=>{
     //   console.log('firstzzz' , page)
     // },[page])
     const getListOrder = async (searchValue?: any,) => {
       try {
+        console.log('markedDatesSsssss', markedDatesS)
+        console.log('markedDatesEzzzssss', markedDatesE)
         const formattedMarkedDatesS = markedDatesS
-          ? moment(markedDatesS).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISOString()
+          ? moment.utc(markedDatesS).set({ hour: 0, minute: 1, second: 0, millisecond: 0 }).toISOString()
           : null;
         const formattedMarkedDatesE = markedDatesE
-          ? moment(markedDatesE).set({ hour: 23, minute: 59, second: 59, millisecond: 0 }).toISOString()
+          ? moment.utc(markedDatesE).set({ hour: 23, minute: 59, second: 59, millisecond: 0 }).toISOString()
           : null;
         const response = await orderStore.getListOrder(
           page,
-          10,
+          20,
           selectedStatus,
           searchValue,
           formattedMarkedDatesS,
@@ -174,16 +178,16 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       }
     }
     function getInvoiceStateText(state: string) {
-      if (state === "NO") {
-        return "orderDetailScreen.no";
-      } else if (state === "TO_INVOICE") {
-        return "orderDetailScreen.toInvoice";
-      } else if (state === "PARTIAL_INVOICE") {
-        return "orderDetailScreen.partialInvoice";
-      } else if (state === "INVOICED") {
-        return "orderDetailScreen.invoiced";
+      if (state === 'NOT_PAYMENT') {
+        return 'orderDetailScreen.no';
+      } else if (state === 'REVERSE') {
+        return 'orderDetailScreen.toInvoice';
+      } else if (state === 'PARTIAL_PAYMENT') {
+        return 'orderDetailScreen.partialInvoice';
+      } else if (state === 'PAID') {
+        return 'orderDetailScreen.invoiced';
       } else {
-        return "";
+        return '';
       }
     }
     const onSelectStatus = (index: any) => {
@@ -197,7 +201,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       if (flatListRef.current) {
         flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
       }
-    }, [selectedStatus])
+    }, [selectedStatus , markedDatesS ])
     const handleEndReached = () => {
       if (!isRefreshing && page < totalPages - 1) {
         setPage((prevPage) => prevPage + 1);
@@ -301,7 +305,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
               status={getOrderStateText(item.state)}
               amount={item.quantity}
               discount={item.amountDiscount}
-              payStatus={getInvoiceStateText(item.invoiceStatus)}
+              payStatus={getInvoiceStateText(item.paymentStatus)}
               // weight={item.weight}
               totalAmount={item.amountTotal}
               totalTax={item.amountTax}
@@ -333,14 +337,10 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
                           : "",
               }}
               styleTextPayStatus={{
-                color:
-                  item.invoiceStatus === "NO"
-                    ? colors.palette.darkTangerine
-                    : item.invoiceStatus === "PARTIAL_INVOICE"
-                      ? colors.palette.darkTangerine
-                      : item.invoiceStatus === "TO_INVOICE"
-                        ? colors.palette.darkTangerine
-                        : colors.palette.malachite,
+                color: item.paymentStatus === 'NOT_PAYMENT' ? colors.palette.darkTangerine :
+                  item.paymentStatus === 'PARTIAL_PAYMENT' ? colors.palette.malachite :
+                    item.paymentStatus === 'PAID' ? colors.palette.malachite :
+                      ''
               }}
             />
           )}
@@ -351,15 +351,15 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           handleReset={() => setIReset(!isReset)}
           handleShort={() => {
             // handleOrderMerchant()
-            console.log('firstzzz', timeEnd)
-            console.log('firstzzzStart', timeStart)
             if (timeEnd == '') {
               setMarkedDatesE(timeStart);
             } else {
               setMarkedDatesE(timeEnd);
             }
             setMarkedDatesS(timeStart);
+            setArrData([])
             toggleModalDate();
+            // getListOrder(searchValue);
           }}
           onMarkedDatesChangeS={(
             markedDatesS: React.SetStateAction<string>

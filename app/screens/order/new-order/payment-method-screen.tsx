@@ -222,11 +222,15 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   backgroundColor: "white",
                   borderRadius: 8,
                 }}
+                forwardedRef={countRef}
                 value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
                 error={errors?.price?.message}
+                // onChangeValue={(value) => {
+                //   console.log(value)
+                // }}
                 styleError={{ marginLeft: scaleHeight(16) }}
                 valueCurrency={vendorStore.companyInfo.symbol}
                 onChangeText={(value) => {

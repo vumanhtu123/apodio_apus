@@ -11,9 +11,9 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
   if (isGridView) {
     return (
       <MotiView
-        from={{opacity: 0, translateY: 50}}
-        animate={{opacity: 1, translateY: 0}}
-        transition={{delay: 1000 + index * 200}}>
+        from={{ opacity: 0, translateY: 50 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ delay: 1000 + index * 200 }}>
         <TouchableOpacity
           key={index}
           onPress={() => {
@@ -55,7 +55,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
                   borderTopRightRadius: 12,
                 }}
                 source={require("../../../../assets/Images/no_images.png")}>
-                <FastImage 
+                <FastImage
                   style={{
                     width: scaleWidth(107),
                     height: scaleHeight(70),
@@ -95,75 +95,75 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
   } else {
     return (
       <MotiView
-        from={{opacity: 0, translateY: 50}}
-        animate={{opacity: 1, translateY: 0}}
-        transition={{delay: 1000 + index * 200}}>
-          <TouchableOpacity
-            key={index}
-            onPress={() => viewProduct === 'VIEW_PRODUCT' ? handleProductDetail(item.id) : handleClassifyDetail(item.id)}
-            style={[
-              stylesItem.item,
-              { width: scaleWidth(343)},
-            ]}>
-            <View
-              style={{
-                position: "absolute",
-                top: scaleHeight(56),
-                right: scaleWidth(6),
-                backgroundColor: "#F6F7F9",
-                zIndex: 1,
-              }}>
-              {viewProduct === 'VIEW_VARIANT' && item.scene?.url !== '' ?
-                <TouchableOpacity >
-                  <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
-                </TouchableOpacity> : null
-              }
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-              }}>
-              <View style={{ margin: 6, borderRadius: 10 }}>
-                <ImageBackground
+        from={{ opacity: 0, translateY: 50 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ delay: 1000 + index * 200 }}>
+        <TouchableOpacity
+          key={index}
+          onPress={() => viewProduct === 'VIEW_PRODUCT' ? handleProductDetail(item.id) : handleClassifyDetail(item.id)}
+          style={[
+            stylesItem.item,
+            { width: scaleWidth(343) },
+          ]}>
+          <View
+            style={{
+              position: "absolute",
+              top: scaleHeight(56),
+              right: scaleWidth(6),
+              backgroundColor: "#F6F7F9",
+              zIndex: 1,
+            }}>
+            {viewProduct === 'VIEW_VARIANT' && item.scene?.url !== '' ?
+              <TouchableOpacity >
+                <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+              </TouchableOpacity> : null
+            }
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+            }}>
+            <View style={{ margin: 6, borderRadius: 10 }}>
+              <ImageBackground
+                style={{
+                  width: scaleWidth(70),
+                  height: scaleHeight(70),
+                }}
+                imageStyle={{ borderRadius: 8 }}
+                source={require("../../../../assets/Images/no_images.png")}>
+                <FastImage
                   style={{
                     width: scaleWidth(70),
                     height: scaleHeight(70),
+                    borderRadius: 8,
                   }}
-                  imageStyle={{ borderRadius: 8 }}
-                  source={require("../../../../assets/Images/no_images.png")}>
-                  <FastImage
-                    style={{
-                      width: scaleWidth(70),
-                      height: scaleHeight(70),
-                      borderRadius: 8,
-                    }}
-                    source={{
-                      uri: item.imageUrls && item.imageUrls.length > 0 ? `${item.imageUrls[0]}` : '',
-                      cache: FastImage.cacheControl.immutable,
-                    }}
-                  />
-                </ImageBackground>
-              </View>
-              <View
-                style={[
-                  stylesItem.titleView,
-                  { marginTop: scaleHeight(10), marginHorizontal: scaleWidth(6) },
-                ]}>
-                <View style={{ flexDirection: 'row' , maxWidth: scaleWidth(100) }}>
-                  <Text numberOfLines={1} style={[stylesItem.title, { marginRight: scaleWidth(5) }]}>{item.sku}</Text>
-                  <Text numberOfLines={1} style={stylesItem.title}>
-                    {item.name}
-                  </Text>
-                </View>
-                {viewProduct === "VIEW_PRODUCT" ? (
-                  <Text style={stylesItem.content} numberOfLines={1}>
-                    {item.variantCount} <Text tx="productScreen.productClassification" style={stylesItem.content}></Text>
-                  </Text>
-                ) : null}
-              </View>
+                  source={{
+                    uri: item.imageUrls && item.imageUrls.length > 0 ? `${item.imageUrls[0]}` : '',
+                    cache: FastImage.cacheControl.immutable,
+                  }}
+                />
+              </ImageBackground>
             </View>
-          </TouchableOpacity>
+            <View
+              style={[
+                stylesItem.titleView,
+                { marginTop: scaleHeight(10), marginHorizontal: scaleWidth(6) },
+              ]}>
+              <View style={{ flexDirection: 'row', maxWidth: scaleWidth(100) }}>
+                <Text numberOfLines={1} style={[stylesItem.title, { marginRight: scaleWidth(5) }]}>{item.sku}</Text>
+                <Text numberOfLines={1} style={stylesItem.title}>
+                  {item.name}
+                </Text>
+              </View>
+              {viewProduct === "VIEW_PRODUCT" ? (
+                <Text style={stylesItem.content} numberOfLines={1}>
+                  {item.variantCount} <Text tx="productScreen.productClassification" style={stylesItem.content}></Text>
+                </Text>
+              ) : null}
+            </View>
+          </View>
+        </TouchableOpacity>
       </MotiView>
     );
   }

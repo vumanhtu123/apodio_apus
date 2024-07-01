@@ -5,6 +5,7 @@ import {
     FlatList,
     ImageBackground,
     NativeModules,
+    PermissionsAndroid,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -64,43 +65,29 @@ export const PrintInvoiceScreen: FC = observer(
                 console.error("Error fetching print:", error);
             }
         };
-        // const handleGetInfoCompany = async () => {
-        //     try {
-        //         const response = await vendorStore.getInfoCompany();
-        //         console.log('INFO COMPANY', response)
-        //         if (response && response.kind === "ok") {
-        //             // vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
-        //             setDataInfoCompany(response.result.data)
-        //         } else {
-        //             console.error("Failed to fetch categories:", response.result.errorCodes);
-        //         }
-        //     } catch (error) {
-        //         console.error("Error fetching categories:", error);
-        //     }
 
-        // };
-        const downloadAndPrintImage = async (imageUrl: any) => {
+
+          const downloadAndPrintFile = async (url: any, fileType: any) => {      
+            const extension = fileType === 'pdf' ? 'pdf' : 'jpg'; // Adjust this based on the expected file type
+            const localFilePath = `${RNFS.DocumentDirectoryPath}/downloaded_file.${extension}`;    
+            
             try {
-                // Đường dẫn tạm thời trên thiết bị
-                const localFilePath = `${RNFS.DocumentDirectoryPath}/tempimage.jpg`;
-
-                // Tải file ảnh từ URL về thiết bị
-                const downloadResult = await RNFS.downloadFile({
-                    fromUrl: imageUrl,
-                    toFile: localFilePath,
-                }).promise;
-                console.log('firstưeqe', downloadResult)
-                if (downloadResult.statusCode === 200) {
-                    console.log('Image downloaded to:', localFilePath);
-                    // Gọi hàm in với đường dẫn file cục bộ
-                    PrintManager.print(localFilePath);
-                } else {
-                    console.error('Image download failed:', downloadResult);
-                }
+              const downloadResult = await RNFS.downloadFile({
+                fromUrl: url,
+                toFile: localFilePath,
+              }).promise;
+          
+              if (downloadResult.statusCode === 200) {
+                console.log(`${fileType} downloaded to:`, localFilePath);
+                PrintManager.print(localFilePath, fileType);
+              } else {
+                console.error(`${fileType} download failed:`, downloadResult);
+              }
             } catch (error) {
-                console.error('Error downloading image:', error);
+              console.error(`Error downloading ${fileType}:`, error);
             }
-        };
+          };
+
         function groupTaxValues(dataTax: any[] | undefined) {
             if (dataTax === undefined) {
                 return [];
@@ -174,25 +161,29 @@ export const PrintInvoiceScreen: FC = observer(
                     <View style={{ marginHorizontal: scaleWidth(16) }}>
                         <View style={{ marginTop: 20, flexDirection: 'row' }}>
                             {/* <Images.icon_QRCode width={80} height={80} /> */}
-                            <ImageBackground
-                                style={{ width: scaleWidth(80), height: scaleHeight(80) }}
-                                imageStyle={{
-                                    borderRadius: 20,
-                                }}
-                                source={require("../../../../assets/Images/no_images.png")}>
+                            {vendorStore?.companyInfo?.logo == '' ? (
+                                <ImageBackground
+                                    style={{ width: scaleWidth(80), height: scaleHeight(80) }}
+                                    imageStyle={{
+                                        borderRadius: 20,
+                                    }}
+                                    source={require("../../../../assets/Images/no_images.png")}>
+                                </ImageBackground>
+
+                            ) : (
                                 <FastImage
                                     style={{
                                         width: scaleWidth(80),
                                         height: scaleHeight(80),
                                     }}
-                                    // resizeMode='cover'
+                                    resizeMode='contain'
                                     source={{
                                         uri: vendorStore?.companyInfo?.logo,
                                         cache: FastImage.cacheControl.immutable,
                                     }}
                                     defaultSource={require("../../../../assets/Images/no_images.png")}
                                 />
-                            </ImageBackground>
+                            )}
                             <View style={styles.infoContainer}>
                                 <Text style={styles.companyName}>{vendorStore?.companyInfo?.name}</Text>
                                 {/* <Text style={styles.textInfo} >www.apodio.com.vn</Text> */}
@@ -284,10 +275,15 @@ export const PrintInvoiceScreen: FC = observer(
                     tx={"printInvoiceScreen.printInvoice"}
                     style={styles.viewButton}
                     textStyle={styles.textButton}
+                    
                     onPress={() => {
                         console.log('firstzzz', dataPrintInvoice?.url)
-                        // downloadAndPrintImage(dataPrintInvoice?.url)
-                        downloadAndPrintImage('https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg')
+                        
+                        downloadAndPrintFile(dataPrintInvoice?.url, 'pdf')
+                        // downloadAndPrintFile(
+                        //     'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
+                        //     'image',
+                        //   )
                     }
                     }
                 />

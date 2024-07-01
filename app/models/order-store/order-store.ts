@@ -72,6 +72,7 @@ export const OrderStoreModel = types
     checkRenderList: types.optional(types.boolean, false),
     isLoadMoreSelectClient: types.optional(types.boolean, false),
     clearingDebt: types.optional(types.boolean, false),
+    isReload : types.optional(types.boolean,false),
     dataAddress: types.optional(types.frozen<Root1>(), {
       id: 0,
       partnerId: 0,
@@ -190,7 +191,9 @@ export const OrderStoreModel = types
     setSortPriceList(sort: any) {
       self.sortPriceList = sort;
     },
-
+    setIsReload(reload : any) {
+      self.isReload = reload;
+    },
     // chú ý phải clear khi xong
     setDataPriceListSelect(value: any) {
       console.log("doanlog", value);
