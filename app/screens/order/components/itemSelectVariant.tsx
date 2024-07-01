@@ -336,7 +336,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                         setModalPrice(false)
                         setCheck(false)
                     }}
-                    titleTx={'selectPriceListApply.inputPrice'}
+                    // titleTx={'selectPriceListApply.inputPrice'}
                     placeholder='Nhập giá'
                     titleInputTx={'productScreen.priceProduct'}
                     rightText={vendorStore.companyInfo.symbol}
