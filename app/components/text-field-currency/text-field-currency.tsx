@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Platform,
@@ -13,6 +13,9 @@ import {
   ViewStyle,
   Text as TextRN,
   ScrollView,
+  TouchableWithoutFeedback,
+  Pressable,
+  StyleSheet,
 } from "react-native";
 import {
   colors,
@@ -26,6 +29,7 @@ import { Text } from "../text/text";
 import { SvgIcon } from "../svg-icon";
 import { Images } from "../../../assets";
 import CurrencyInput from 'react-native-currency-input';
+import CustomKeyboard from "./custom-keyboard";
 
 
 const CONTAINER: ViewStyle = {
@@ -164,14 +168,31 @@ export function TextFieldCurrency(props: TextFieldProps) {
 
   const handleFocus = () => {
     setisFocused(true);
+    forwardedRef.current?.blur();
   };
   const handleBlur = () => {
     setisFocused(false);
     onBlur();
   };
 
+  useEffect(() => {
+    if (isFocused) {
+      // Do something when the keyboard is visible
+      forwardedRef.current?.focus();
+    forwardedRef.current?.blur();
+    }
+  }, [isFocused]);
+  
+  const handleInputPress = () => {
+    console.log('forwardedRef.current?.focus()')
+    forwardedRef.current?.focus();
+    forwardedRef.current?.blur();
+    setisFocused(true);
+  };
+
+  console.log('-----isFocused--------', isFocused);
   // Hàm định dạng tiền tệ
-  function formatCurrency(value, options = {}) {
+  function formatCurrency(value: string | null, options = {}) {
     if (value == null || value === '') {
       return '';
     }
@@ -198,11 +219,24 @@ export function TextFieldCurrency(props: TextFieldProps) {
 
   }
 
-  const handleTextChange = (value) => {
+  const handleTextChange = (value: string) => {
     // Chỉ giữ lại các ký tự số và dấu phẩy
     const numericValue = value.replace(/[^0-9,]/g, '');
     setRawValue(numericValue);
   };
+
+  const handleKeyPress = (key) => {
+    console.log('-----key-----', key)
+    if (key === 'Del') {
+      setRawValue((prev) => prev.slice(0, -1));
+    } else if (key === '✓') {
+      setisFocused(false)
+    } else {
+      setRawValue((prev) => prev + key);
+    }
+  };
+
+  
 
   return (
     <View style={{}}>
@@ -279,10 +313,11 @@ export function TextFieldCurrency(props: TextFieldProps) {
 
             }}>
 
-
+        <Pressable onPress={handleInputPress} style={styles.inputContainer}>
+          <View pointerEvents="none" >
             <TextInput
               {...props}
-              editable={editable}
+              editable={false}
               placeholder={actualPlaceholder}
               // underlineColorAndroid={colors.palette.neutral900}
               placeholderTextColor={colors.palette.dolphin}
@@ -291,7 +326,13 @@ export function TextFieldCurrency(props: TextFieldProps) {
               onChangeText={handleTextChange}
               style={[
                 inputStyles,
-                { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
+                { paddingRight: showRightIcon === true ? scaleWidth(16) : 0,  
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  opacity: 0, },
               ]}
               ref={forwardedRef ? forwardedRef : focus}
               onFocus={handleFocus}
@@ -299,6 +340,12 @@ export function TextFieldCurrency(props: TextFieldProps) {
               blurOnSubmit
               keyboardType={keyboardType}
             />
+            <CustomKeyboard 
+              isVisible={isFocused}
+              setIsVisible={handleBlur}
+              onKeyPress={handleKeyPress} />
+            </View>
+            </Pressable>
           </View>
         </View>
         <View style={{ flexDirection: "row", paddingRight: scaleWidth(16) }}>
@@ -341,3 +388,39 @@ export function TextFieldCurrency(props: TextFieldProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor:'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 50,
+  },
+  inputContainer: {
+    width: '100%',
+    height: scaleHeight(50),
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    paddingHorizontal: 10,
+  },
+  hiddenInput: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    opacity: 0,
+  },
+  keyboardContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+  },
+});
