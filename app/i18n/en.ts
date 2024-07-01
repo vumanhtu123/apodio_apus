@@ -611,6 +611,12 @@ const en = {
     comment: "Bình luận",
     writeCommentHere: "Viết bình luận của bạn tại đây",
     pay: "Thanh toán nợ",
+    paymentAmount: "Số tiền thanh toán",
+    amount: 'Tiền mặt',
+    payments: 'Hình thức thanh toán',
+    payTotal: "Thanh toán tổng nợ",
+    
+
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -664,6 +670,8 @@ const en = {
     addBank: "Thêm ngân hàng",
     weight: "Tải trọng",
     weightOriginal: "Tải trọng theo đơn vị gốc",
+    weightExchange: "Tải trọng theo đơn vị quy đổi"
+    
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",

@@ -183,6 +183,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                             handleProductDetail={handleProductDetail}
                             handleClassifyDetail={handleClassifyDetail}
                         />
+                        // <View></View>
                     )}
                 />
             </View>

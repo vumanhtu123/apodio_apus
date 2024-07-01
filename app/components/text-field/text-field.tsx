@@ -237,8 +237,8 @@ export function TextField(props: TextFieldProps) {
                   color: labelDolphin
                     ? colors.palette.dolphin
                     : !isFocused
-                    ? txColor
-                    : colors.palette.dolphin,
+                      ? txColor
+                      : colors.palette.dolphin,
                   paddingLeft: scaleWidth(16),
                   marginTop:
                     isFocused && !actualPlaceholder && value === ""

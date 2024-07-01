@@ -23,6 +23,7 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
         const [refreshing, setRefreshing] = useState(false);
         const [isLoadingMore, setIsLoadingMore] = useState(false);
         const [isVisible, setIsVisible] = useState(false)
+        const [keyToPass, setKeyToPass] = useState<string>()
         const [isReset, setIsReset] = useState<boolean>()
         const [makeDateS, setMakeDateS] = useState<any>()
         const [makeDateE, setMakeDateE] = useState<any>()
@@ -256,17 +257,23 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                                                 valueStatusShowOrHiddenPay ?
                                                     <TouchableOpacity
                                                         style={Styles.btnPay}
+                                                        onPress={() => {
+
+                                                            setKeyToPass('pay');
+                                                            setIsVisiblePay(!isVisiblePay)
+                                                        }}
                                                     >
                                                         <Images.ic_pay_hand
                                                             width={scaleWidth(17)}
                                                             height={scaleHeight(17)}
                                                         />
-                                                        <Text tx="debtScreen.paid" style={{ color: '#FFF', fontSize: fontSize.size10 }}></Text>
+                                                        <Text tx="debtScreen.pay" style={{ color: '#FFF', fontSize: fontSize.size10 }}></Text>
                                                     </TouchableOpacity>
                                                     :
                                                     <TouchableOpacity style={Styles.flexRow}
                                                         onPress={() => {
                                                             setIsVisible(!isVisible)
+
                                                         }}
                                                     >
                                                         <Text tx="debtScreen.exChange" style={Styles.label} />
@@ -301,15 +308,20 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                             paddingHorizontal: scaleWidth(16),
                             paddingVertical: scaleWidth(20)
                         }}
+
                         >
                             <TouchableOpacity
                                 style={[Styles.btnPay, { padding: scaleWidth(12), borderRadius: scaleWidth(8) }]}
+                                onPress={() => {
+                                    setKeyToPass("PayTotal")
+                                    setIsVisiblePay(!isVisiblePay)
+                                }}
                             >
                                 <Images.ic_pay_hand
                                     width={scaleWidth(24)}
                                     height={scaleHeight(24)}
                                 />
-                                <Text tx="debtScreen.paid" style={{ color: '#FFF', fontSize: fontSize.size14 }}></Text>
+                                <Text tx="debtScreen.payTotal" style={{ color: '#FFF', fontSize: fontSize.size14 }}></Text>
                             </TouchableOpacity>
 
                         </View> : null
@@ -324,6 +336,7 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                 <ModalPay
                     isVisible={isVisiblePay}
                     setIsVisible={() => setIsVisiblePay(!isVisiblePay)}
+                    keyToPass={keyToPass}
                 />
 
                 <CustomCalendar
