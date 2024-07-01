@@ -222,11 +222,15 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   backgroundColor: "white",
                   borderRadius: 8,
                 }}
+                forwardedRef={countRef}
                 value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
                 error={errors?.price?.message}
+                // onChangeValue={(value) => {
+                //   console.log(value)
+                // }}
                 styleError={{ marginLeft: scaleHeight(16) }}
                 valueCurrency={vendorStore.companyInfo.symbol}
                 onChangeText={(value) => {
@@ -305,7 +309,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               </View>
             </TouchableOpacity>
           </View>
-          <View
+          {warning === true? null: <View
             style={{
               flexDirection: "row",
               marginHorizontal: 16,
@@ -321,7 +325,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
               {formatVND(formatCurrency(commasToDots(Remain())))}
             </Text>
-          </View>
+          </View>}
         </View>
       </View>
       <View>

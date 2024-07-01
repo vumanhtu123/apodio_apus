@@ -22,13 +22,11 @@ interface ItemSelectVariant {
     handleAddToCart: ({ }: any) => void,
     handleAddToCartPrice: ({ }: any) => void,
     uomGroupLine?: {},
-    selectUomPrice?: ({ }, { }) => void,
-    selectUom: ({ }, { }) => void,
     changeText: ({ }, { }) => void,
 }
 
 export function ItemSelectVariant(props: ItemSelectVariant) {
-    const { item, handleMinus, handleMinusPrice, handlePlusPrice, selectUomPrice, handlePlus, handleAddToCart, selectUom, changeText, handleAddToCartPrice } = props
+    const { item, handleMinus, handleMinusPrice, handlePlusPrice, handlePlus, handleAddToCart, changeText, handleAddToCartPrice } = props
     const { orderStore, vendorStore } = useStores()
     const [check, setCheck] = useState(false)
     const [isModal, setIsModal] = useState(false)

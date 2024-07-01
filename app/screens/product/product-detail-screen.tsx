@@ -118,7 +118,7 @@ export const ProductDetailScreen: FC = (item) => {
     });
 
     return unsubscribe;
-  }, [ navigation, reload]);
+  }, [navigation, reload]);
 
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -238,7 +238,7 @@ export const ProductDetailScreen: FC = (item) => {
           productStore.setReloadProductScreen(true)
           Dialog.hide();
         }
-      })  
+      })
     } else {
       await Dialog.hideDialog();
       Dialog.show({
@@ -246,7 +246,8 @@ export const ProductDetailScreen: FC = (item) => {
         title: translate("productScreen.Notification"),
         button: translate("common.ok"),
         textBody: result.result.errorCodes[0].message,
-        closeOnOverlayTap: false})  
+        closeOnOverlayTap: false
+      })
       setErrorContent(result.result.errorCodes[0].message);
     }
     setDialogDeleteProduct(false);
@@ -266,7 +267,7 @@ export const ProductDetailScreen: FC = (item) => {
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
         RightIcon2={screen === "seeDetail" ? null : Images.icon_trashWhite}
-        RightIcon1={screen === "seeDetail" ? null :  Images.icon_editWhite}
+        RightIcon1={screen === "seeDetail" ? null : Images.icon_editWhite}
         onRightPress1={() =>
           navigation.navigate("ProductEditScreen" as any, {
             dataEdit: dataClassificationToEdit,
@@ -282,7 +283,7 @@ export const ProductDetailScreen: FC = (item) => {
             closeOnOverlayTap: false,
             onPressButton: () =>
               deleteProduct()
-          })  
+          })
         }}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
@@ -395,7 +396,7 @@ export const ProductDetailScreen: FC = (item) => {
                     onPress={() => {
                       setChangeClassification(item.id);
                       setDetailsClassification(item);
-                      console.log('first' , dataClassification)
+                      console.log('first', dataClassification)
                       // setShowDetails(false);
                     }}>
                     <Text
@@ -461,15 +462,15 @@ export const ProductDetailScreen: FC = (item) => {
                 label="Trạng thái"
                 value={
                   dataClassification.saleOk === true &&
-                  dataClassification.purchaseOk === false
+                    dataClassification.purchaseOk === false
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true &&
                       dataClassification.saleOk === false
-                    ? "Có thể mua"
-                    : dataClassification.saleOk === true &&
-                      dataClassification.purchaseOk === true
-                    ? "Có thể bán/ Có thể mua"
-                    : null
+                      ? "Có thể mua"
+                      : dataClassification.saleOk === true &&
+                        dataClassification.purchaseOk === true
+                        ? "Có thể bán/ Có thể mua"
+                        : null
                 }
               />
             </View>
@@ -513,25 +514,25 @@ export const ProductDetailScreen: FC = (item) => {
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.retailPrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={formatNumber(item.price)}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={formatNumber(item.price)}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })
                     : dataClassification?.retailPrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={formatNumber(item.price)}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })}
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={formatNumber(item.price)}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })}
                 </View>
               ) : null}
               <View>
@@ -601,25 +602,25 @@ export const ProductDetailScreen: FC = (item) => {
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.wholesalePrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={formatNumber(item.price)}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={formatNumber(item.price)}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })
                     : dataClassification?.wholesalePrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={formatNumber(item.price)}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })}
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={formatNumber(item.price)}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })}
                 </View>
               ) : null}
             </View>
@@ -649,7 +650,7 @@ export const ProductDetailScreen: FC = (item) => {
             </View>
           </View>
           {dataClassification?.description !== "" &&
-          dataClassification?.description !== null ? (
+            dataClassification?.description !== null ? (
             <View>
               <View style={styles.viewLine} />
               <View style={styles.viewDescribe}>
@@ -666,6 +667,7 @@ export const ProductDetailScreen: FC = (item) => {
               </View>
             </View>
           ) : null}
+
           {attributeDetailsClassification?.length !== 0 ? (
             <View>
               <View style={styles.viewLine} />
@@ -776,42 +778,42 @@ export const ProductDetailScreen: FC = (item) => {
                 </View>
                 {showNCC === true
                   ? arrNCC?.map((item) => {
-                      return (
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              paddingVertical: scaleHeight(padding.padding_8),
-                            }}>
-                            <AutoHeightImage
-                              source={{ uri: item?.avatarUrl }}
-                              width={scaleHeight(40)}
-                              height={scaleHeight(40)}
-                              style={{ borderRadius: 40 }}
-                              fallbackSource={Images.imageError}
-                            />
-                            <View
-                              style={{
-                                marginLeft: scaleWidth(6),
-                                justifyContent: "center",
-                              }}>
-                              <Text style={styles.textNameNCC}>
-                                {item?.vendorCode + "- " + item?.vendorName}
-                              </Text>
-                              <Text style={styles.textNameClassification}>
-                                {item?.phoneNumber}
-                              </Text>
-                            </View>
-                          </View>
-                          <View
-                            style={{
-                              height: scaleHeight(1),
-                              backgroundColor: colors.palette.ghostWhite,
-                            }}
+                    return (
+                      <View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            paddingVertical: scaleHeight(padding.padding_8),
+                          }}>
+                          <AutoHeightImage
+                            source={{ uri: item?.avatarUrl }}
+                            width={scaleHeight(40)}
+                            height={scaleHeight(40)}
+                            style={{ borderRadius: 40 }}
+                            fallbackSource={Images.imageError}
                           />
+                          <View
+                            style={{
+                              marginLeft: scaleWidth(6),
+                              justifyContent: "center",
+                            }}>
+                            <Text style={styles.textNameNCC}>
+                              {item?.vendorCode + "- " + item?.vendorName}
+                            </Text>
+                            <Text style={styles.textNameClassification}>
+                              {item?.phoneNumber}
+                            </Text>
+                          </View>
                         </View>
-                      );
-                    })
+                        <View
+                          style={{
+                            height: scaleHeight(1),
+                            backgroundColor: colors.palette.ghostWhite,
+                          }}
+                        />
+                      </View>
+                    );
+                  })
                   : null}
               </View>
             </View>
@@ -819,7 +821,7 @@ export const ProductDetailScreen: FC = (item) => {
         </ScrollView>
         {/* </Screen> */}
       </SafeAreaView>
-      
+
       <Modal
         isVisible={modalImages}
         onBackdropPress={() => setModalImages(false)}>
@@ -888,7 +890,7 @@ export const ProductDetailScreen: FC = (item) => {
         onBackdropPress={() => setModalImages1(false)}>
         <View>
           {detailsClassification.imageUrls &&
-          detailsClassification.imageUrls?.length > 0 ? (
+            detailsClassification.imageUrls?.length > 0 ? (
             <View>
               <Carousel
                 data={detailsClassification.imageUrls}

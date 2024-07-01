@@ -15,36 +15,15 @@ export const OrderSuccess: FC = () => {
     const route = useRoute()
     const { idOrder, screen, price, inputPrice, code }: any = route.params || undefined
     const { orderStore } = useStores()
-    console.log(price, '234234')
-    console.log(inputPrice)
+
     const formattedPrice = price;
     const formattedInputPrice = inputPrice;
     const receivables = price - inputPrice;
-    const formattedReceivables = receivables
-    const [data, setData] = useState<any>([]);
-    // console.log("so tien phai thu", formattedReceivables);
-    // const handleGetDetailOrder = async () => {
-    //     try {
-    //         const response = await orderStore.getDetailOrder(idOrder);
-    //         console.log("productId", idOrder);
-    //         if (response && response.kind === "ok") {
-    //             const data = response.response.data;
-    //             console.log('dataDetail', JSON.stringify(data))
-    //             setData(data);
-    //         } else {
-    //             console.error("Failed to fetch detail:", response);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching detail:", error);
-    //     }
-    // };
-    // useEffect(()=>{
-    //     handleGetDetailOrder()
-    // },[])
+    const formattedReceivables = receivables;
+
     const now = moment()
     const formattedDateTime = now.format('HH:mm:ss - DD/MM/YYYY')
     return (
-
         <View style={{
             flex: 1,
             justifyContent: 'space-between'
@@ -60,8 +39,6 @@ export const OrderSuccess: FC = () => {
                     colors={[colors.palette.navyBlue, colors.palette.malibu]}
                     style={{ height: scaleHeight(228) }}
                 ></LinearGradient>
-
-
                 <ImageBackground
                     source={require('../../../../assets/Images/back_Ground_Success.png')}
                     style={{
@@ -75,10 +52,7 @@ export const OrderSuccess: FC = () => {
                         // backgroundColor: 'blue',
                     }}
                     resizeMode="cover"
-
-
                 >
-
                     <View style={{ alignItems: 'center', marginTop: scaleWidth(50) }}>
                         <Images.ic_Frame width={scaleWidth(219)} height={scaleHeight(171)} />
                     </View>
@@ -100,11 +74,8 @@ export const OrderSuccess: FC = () => {
                                             {formatVND(formatCurrency(commasToDots(formattedPrice)))}
                                         </Text>
                                     </>
-
                             }
-
                         </View>
-
                         {
                             screen === 'edit' ?
                                 null
@@ -137,12 +108,9 @@ export const OrderSuccess: FC = () => {
 
                 </ImageBackground>
             </View >
-
-
             <View style={{
                 paddingHorizontal: scaleWidth(16),
                 // backgroundColor: 'yellow',
-
             }}>
                 {screen === 'edit' ? null :
                     <TouchableOpacity onPress={() => {
