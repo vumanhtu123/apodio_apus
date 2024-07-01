@@ -67,7 +67,7 @@ export const ClassifyDetailScreen: FC = () => {
       console.log("handleGetDetailClassify----------", response);
       if (response && response.kind === "ok") {
         const data = response.response.data;
-        console.log("response", response.response.data);
+        console.log("response detail classify", JSON.stringify(response.response.data));
 
         setDetailProduct(response.response.data);
         setDataClassification(data);

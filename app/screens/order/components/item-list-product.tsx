@@ -42,7 +42,7 @@ interface AddProduct {
   images?: string;
   name?: string;
   unit?: string;
-  cost?: string;
+  cost?: any;
   qty?: string;
   VAT?: string;
   taxesInput?: string;
@@ -168,7 +168,7 @@ export default function ItemListProduct(props: AddProduct) {
           />
           <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
             <Text
-              text={formatVND(formatCurrency(commasToDots(cost)))}
+              text={cost !== undefined ? formatVND(formatCurrency(commasToDots(cost))) : formatVND(0)}
               style={{
                 fontWeight: "400",
                 fontSize: fontSize.size12,
@@ -178,16 +178,14 @@ export default function ItemListProduct(props: AddProduct) {
               }}
             />
             {priceList ? (
-              !selectUpdate ? (props.disabled === true ? null :
-                <TouchableOpacity
-                  onPress={(item) => {
-                    handleUpdatePrice(item);
-                    setPriceId(props.id)
-                    setModalPriceUnit(true)
-                  }}>
-                  <Images.icon_edit />
-                </TouchableOpacity>
-              ) : null
+              <TouchableOpacity
+                onPress={(item) => {
+                  handleUpdatePrice(item);
+                  setPriceId(props.id)
+                  setModalPriceUnit(true)
+                }}>
+                <Images.icon_edit />
+              </TouchableOpacity>
             ) : null}
             <Text
               text={" " + unit}
@@ -432,7 +430,7 @@ export default function ItemListProduct(props: AddProduct) {
       <PriceModal
         isVisible={modalPriceUnit}
         setIsVisible={() => setModalPriceUnit(false)}
-        title={"productDetail.retailPrice"}
+        // title={"productDetail.retailPrice"}
         onCancel={() => {
           setModalPriceUnit(false);
         }}
@@ -443,7 +441,7 @@ export default function ItemListProduct(props: AddProduct) {
           setModalPriceUnit(false)
           // setCheck(false)
         }}
-        // titleTx={'selectPriceListApply.inputPrice'}
+        titleTx={'selectPriceListApply.inputPrice'}
         placeholder='Nhập giá'
         titleInputTx={'productScreen.priceProduct'}
         rightText={vendorStore.companyInfo.symbol}

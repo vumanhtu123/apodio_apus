@@ -91,6 +91,7 @@ const PriceModal = (props: PriceModalProps) => {
                     }}>
                         <Controller
                             control={control}
+                            // defaultValue={0}
                             name={`price.${id}.price`}
                             render={({ field: { onChange, value, onBlur } }) => (
                                 <TextField
@@ -106,7 +107,7 @@ const PriceModal = (props: PriceModalProps) => {
                                     valueCurrency={rightText}
                                     onChangeText={(value) => {
                                         onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
-                                        setValueCheck(formatCurrency(value))
+                                        setValueCheck(value !== '' ? formatCurrency(value) : 0)
                                     }}
                                     // isImportant={true}
                                     showRightIcon={false}
