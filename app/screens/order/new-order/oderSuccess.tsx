@@ -13,7 +13,7 @@ import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder, screen, price, inputPrice }: any = route.params || undefined
+    const { idOrder, screen, price, inputPrice, code }: any = route.params || undefined
     const { orderStore } = useStores()
     console.log(price, '234234')
     console.log(inputPrice)
@@ -23,24 +23,24 @@ export const OrderSuccess: FC = () => {
     const formattedReceivables = receivables
     const [data, setData] = useState<any>([]);
     // console.log("so tien phai thu", formattedReceivables);
-    const handleGetDetailOrder = async () => {
-        try {
-            const response = await orderStore.getDetailOrder(idOrder);
-            console.log("productId", idOrder);
-            if (response && response.kind === "ok") {
-                const data = response.response.data;
-                console.log('dataDetail', JSON.stringify(data))
-                setData(data);
-            } else {
-                console.error("Failed to fetch detail:", response);
-            }
-        } catch (error) {
-            console.error("Error fetching detail:", error);
-        }
-    };
-    useEffect(()=>{
-        handleGetDetailOrder()
-    },[])
+    // const handleGetDetailOrder = async () => {
+    //     try {
+    //         const response = await orderStore.getDetailOrder(idOrder);
+    //         console.log("productId", idOrder);
+    //         if (response && response.kind === "ok") {
+    //             const data = response.response.data;
+    //             console.log('dataDetail', JSON.stringify(data))
+    //             setData(data);
+    //         } else {
+    //             console.error("Failed to fetch detail:", response);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error fetching detail:", error);
+    //     }
+    // };
+    // useEffect(()=>{
+    //     handleGetDetailOrder()
+    // },[])
     const now = moment()
     const formattedDateTime = now.format('HH:mm:ss - DD/MM/YYYY')
     return (
@@ -87,7 +87,7 @@ export const OrderSuccess: FC = () => {
                         <Text tx={screen === 'edit' ? 'successScreen.editTitleSuccess' : "successScreen.titleSuccessOrder"} style={{ fontSize: fontSize.size14, fontWeight: '500', color: '#84888D' }} />
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ fontSize: fontSize.size14 }}>
-                                #{data.code}
+                                #{code}
                             </Text>
                             {
                                 screen === 'edit' ?

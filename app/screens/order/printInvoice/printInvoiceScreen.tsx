@@ -174,25 +174,29 @@ export const PrintInvoiceScreen: FC = observer(
                     <View style={{ marginHorizontal: scaleWidth(16) }}>
                         <View style={{ marginTop: 20, flexDirection: 'row' }}>
                             {/* <Images.icon_QRCode width={80} height={80} /> */}
-                            <ImageBackground
-                                style={{ width: scaleWidth(80), height: scaleHeight(80) }}
-                                imageStyle={{
-                                    borderRadius: 20,
-                                }}
-                                source={require("../../../../assets/Images/no_images.png")}>
+                            {vendorStore?.companyInfo?.logo == '' ? (
+                                <ImageBackground
+                                    style={{ width: scaleWidth(80), height: scaleHeight(80) }}
+                                    imageStyle={{
+                                        borderRadius: 20,
+                                    }}
+                                    source={require("../../../../assets/Images/no_images.png")}>
+                                </ImageBackground>
+
+                            ) : (
                                 <FastImage
                                     style={{
                                         width: scaleWidth(80),
                                         height: scaleHeight(80),
                                     }}
-                                    // resizeMode='cover'
+                                    resizeMode='contain'
                                     source={{
                                         uri: vendorStore?.companyInfo?.logo,
                                         cache: FastImage.cacheControl.immutable,
                                     }}
                                     defaultSource={require("../../../../assets/Images/no_images.png")}
                                 />
-                            </ImageBackground>
+                            )}
                             <View style={styles.infoContainer}>
                                 <Text style={styles.companyName}>{vendorStore?.companyInfo?.name}</Text>
                                 {/* <Text style={styles.textInfo} >www.apodio.com.vn</Text> */}

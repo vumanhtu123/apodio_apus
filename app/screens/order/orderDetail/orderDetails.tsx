@@ -26,10 +26,6 @@ export const OrderDetails: FC = observer(
         const [stateAllow, setStateAllow] = useState<any>(false);
         const [invoiceId, setInvoiceId] = useState<any>(null);
 
-        useEffect(() => {
-            console.log('id', orderId)
-            // console.log('first' , stateAllow)
-        })
         const handleGetDetailInvoice = async (id: any) => {
             try {
                 const response = await orderStore.getDetailInvoice(id);
@@ -52,7 +48,8 @@ export const OrderDetails: FC = observer(
                     const data = response.response.data;
                     console.log('dataDetail', JSON.stringify(data))
                     setData(data);
-                    setInvoiceId(data.invoiceIds?.[0])
+                    setInvoiceId(data.invoiceIds[0])
+                    handleGetDetailInvoice(data.invoiceIds[0])
                     console.log('zzzzzzzzzzzzzzz', data.invoiceIds[0])
                 } else {
                     console.error("Failed to fetch detail:", response);
@@ -61,7 +58,6 @@ export const OrderDetails: FC = observer(
                 console.error("Error fetching detail:", error);
             }
         };
-
         const handleGetStateAllow = async () => {
             try {
                 const response = await orderStore.stateAllow(orderId);
@@ -114,13 +110,14 @@ export const OrderDetails: FC = observer(
             handleGetDetailOrder()
             handleGetStateAllow()
         }, [orderId]);
-        useEffect(() => {
-            handleGetDetailInvoice(invoiceId)
-        }, [invoiceId]);
+        // useEffect(() => {
+        //     handleGetDetailInvoice(invoiceId)
+        // }, [invoiceId]);
         useEffect(() => {
             console.log("---------useEffect---------reload------------------");
             const unsubscribe = navigation.addListener('focus', () => {
                 handleGetDetailOrder()
+                // handleGetDetailInvoice(invoiceId)
             });
             return unsubscribe;
         }, [navigation]);
@@ -345,10 +342,16 @@ export const OrderDetails: FC = observer(
                                                 <Text text={item.quantity} style={styles.textListProduct} />
                                             </View>
                                         </View>
-                                        <View>
-                                            <Text text={formatVND(formatCurrency(commasToDots(item.amountUntaxed)))} style={styles.textListProduct} />
-                                            <Text text={formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity))))} style={styles.priceOriginal} />
-                                        </View>
+                                        {item.discount !== 0 ? (
+                                            <View>
+                                                <Text text={formatVND(formatCurrency(commasToDots(item.amountUntaxed)))} style={styles.textListProduct} />
+                                                <Text text={formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity))))} style={styles.priceOriginal} />
+                                            </View>
+                                        ) : (
+                                            <View>
+                                                <Text text={formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity))))} style={[styles.priceOriginal, { textDecorationLine: 'none', color: colors.palette.nero , fontWeight :'600' }]} />
+                                            </View>
+                                        )}
                                     </TouchableOpacity>
                                 )
                             })

@@ -267,6 +267,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                     title: '',
                     textBody: translate('txtToats.create_success'),
                 })
+                // console.log('firstxzcxz',submit.response.data.id)
                 navigation.navigate("orderDetails", { idInvoices: submit.response.data.id })
                 // Perform any success actions here (e.g., navigation)
             } else {
