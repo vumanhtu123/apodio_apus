@@ -13,20 +13,17 @@ import { commasToDots, formatCurrency } from "../../../utils/validate"
 export const OrderSuccess: FC = () => {
     const navigation = useNavigation()
     const route = useRoute()
-    const { idOrder, screen, price, inputPrice }: any = route.params || undefined
+    const { idOrder, screen, price, inputPrice, code }: any = route.params || undefined
     const { orderStore } = useStores()
-    console.log(price, '234234')
-    console.log(inputPrice)
+
     const formattedPrice = price;
     const formattedInputPrice = inputPrice;
     const receivables = price - inputPrice;
-    const formattedReceivables = receivables
-    // console.log("so tien phai thu", formattedReceivables);
+    const formattedReceivables = receivables;
 
     const now = moment()
     const formattedDateTime = now.format('HH:mm:ss - DD/MM/YYYY')
     return (
-
         <View style={{
             flex: 1,
             justifyContent: 'space-between'
@@ -42,8 +39,6 @@ export const OrderSuccess: FC = () => {
                     colors={[colors.palette.navyBlue, colors.palette.malibu]}
                     style={{ height: scaleHeight(228) }}
                 ></LinearGradient>
-
-
                 <ImageBackground
                     source={require('../../../../assets/Images/back_Ground_Success.png')}
                     style={{
@@ -57,10 +52,7 @@ export const OrderSuccess: FC = () => {
                         // backgroundColor: 'blue',
                     }}
                     resizeMode="cover"
-
-
                 >
-
                     <View style={{ alignItems: 'center', marginTop: scaleWidth(50) }}>
                         <Images.ic_Frame width={scaleWidth(219)} height={scaleHeight(171)} />
                     </View>
@@ -70,7 +62,7 @@ export const OrderSuccess: FC = () => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                             <Text style={{ fontSize: fontSize.size14 }}>
-                                {idOrder}
+                                {code}
                             </Text>
                             {
                                 screen === 'edit' ?
@@ -83,11 +75,8 @@ export const OrderSuccess: FC = () => {
                                             {formatCurrency(commasToDots(formattedPrice))} VND
                                         </Text>
                                     </>
-
                             }
-
                         </View>
-
                         {
                             screen === 'edit' ?
                                 null
@@ -120,12 +109,9 @@ export const OrderSuccess: FC = () => {
 
                 </ImageBackground>
             </View >
-
-
             <View style={{
                 paddingHorizontal: scaleWidth(16),
                 // backgroundColor: 'yellow',
-
             }}>
                 {screen === 'edit' ? null :
                     <TouchableOpacity onPress={() => {
@@ -150,7 +136,7 @@ export const OrderSuccess: FC = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
-                        navigation.navigate('mainBottom' as never, { isReload: true })
+                        navigation.navigate({name: 'mainBottom' as never, params: { isReload: true }}as never)
                     }}
                     style={{ justifyContent: 'center', alignItems: 'center', marginTop: scaleHeight(15), marginBottom: scaleHeight(30) }}>
                     <Text tx="successScreen.btnBack" style={{ fontSize: fontSize.size14, color: '#0078D4', fontWeight: '700' }} />

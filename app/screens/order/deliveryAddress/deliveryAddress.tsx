@@ -39,7 +39,6 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
     navigation.goBack()
   };
 
-
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       getListAddress();
@@ -48,11 +47,9 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
   }, [navigation]);
 
   const getListAddress = async () => {
-    try {
       const response = await orderStore.getListAddress(
         Number(orderStore.dataClientSelect.id)
       );
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         console.log(
           "getListAddress---------------------",
@@ -60,7 +57,7 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
         );
         const newArr = response.response.data;
         if (orderStore.dataAddress.id === undefined) {
-          newArr.map((items) => {
+          newArr.map((items: any) => {
             if (items.isDefault === true) {
               setAddressChoice(items.id);
               orderStore.setDataAddress(items)
@@ -73,9 +70,6 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
       } else {
         console.error("Failed to fetch categories:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
 
   return (
@@ -116,9 +110,9 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
                             />
                             <TouchableOpacity
                               onPress={() =>
-                                navigation.navigate("newDelivery" as never, {
+                                navigation.navigate({name: "newDelivery", params: {
                                   dataEdit: item.item, screen: 'edit'
-                                })
+                                }}as never)
                               }>
                               <Images.icon_edit
                                 style={{
@@ -239,9 +233,9 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
               flexDirection: "row",
               marginTop: scaleHeight(margin.margin_15),
             }}
-            onPress={() => navigation.navigate("newDelivery" as never, {
+            onPress={() => navigation.navigate({name: "newDelivery" as never, params: {
               dataEdit: undefined, screen: 'new'
-            })}>
+            }} as never)}>
             <Images.icon_add width={14} height={14} />
             <Text tx={"order.addAddress"} style={styles.textAddAddress} />
           </TouchableOpacity>

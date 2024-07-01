@@ -199,7 +199,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -212,7 +211,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -225,7 +223,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -238,7 +235,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          // navigation.navigate("orders" as never);
           Dialog.hide();
         },
       });
@@ -257,7 +253,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       //   inputPrice: 0,
       //   apply: false,
       // });
-      return navigation.navigate("paymentBuy", {
+      return navigation.navigate({name: "paymentBuy", params: {
         params: {
           type: handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
             ? false
@@ -270,7 +266,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))))
               : null,
         },
-      });
+      }} as never);
     }
 
 
@@ -434,13 +430,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         //     Dialog.hide();
         //   },
         // });
-        navigation.navigate("orderSuccess" as never, {
+        navigation.navigate({name: "orderSuccess" , params:  {
           idOrder: values.id,
           code: values.code,
-          screnn: "create",
+          screen: "create",
           price: price,
           inputPrice: Number(orderStore.dataDebtPayment.inputPrice),
-        });
+        }}as never);
         orderStore.setDataProductAddOrder([]);
         setArrProduct([]);
         handleBack();
@@ -1209,7 +1205,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       //   apply: false,
                       // });
                       handleDebt();
-                      navigation.navigate("paymentBuy", {
+                      navigation.navigate({ name: "paymentBuy", params: {
                         params: {
                           type:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1227,7 +1223,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                                 ))))
                               : 0,
                         },
-                      });
+                      }} as never);
                     }}
                     style={styles.buttonFeature}
                     textStyle={[
@@ -1348,7 +1344,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   //   inputPrice: 0,
                   //   apply: false,
                   // });
-                  return navigation.navigate("paymentBuy", {
+                  return navigation.navigate({name: "paymentBuy", params: {
                     params: {
                       type:
                         handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1364,7 +1360,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                             ))))
                           : null,
                     },
-                  });
+                  }} as never);
                 }}>
                 <Images.icon_edit
                   style={{ marginLeft: scaleWidth(margin.margin_6) }}
