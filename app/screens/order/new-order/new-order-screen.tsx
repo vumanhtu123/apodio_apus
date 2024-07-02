@@ -97,6 +97,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const valueNote = useRef("");
   const store = useStores();
   const discount = useRef(0);
+  const imageNote = useRef([])
   const { goBackPayment }: any = route?.params || {};
 
   const getListAddress = async () => {
@@ -354,14 +355,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       };
     });
     console.log("data new", JSON.stringify(newArr));
-    const formattedDate = moment.utc(markedDatesS).endOf("day").toISOString();
+    const formattedDate = moment(markedDatesS).endOf("day").toISOString();
     const order: any = {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
       // invoiceAddressId: 0,
       deliveryAddressId: address.id,
       // quotationDate: "",
-      orderDate: formattedDate,
+      commitmentDate: formattedDate,
       // quoteCreationDate: "",
       // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
@@ -381,6 +382,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // discount: 0, //chiet khau
       discountComputeType: "FIXED",
       note: valueNote.current,
+      noteImages: imageNote.current,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
@@ -1085,6 +1087,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             note={note}
             setNoteData={function (note: string, arr: []): void {
               valueNote.current = note;
+              imageNote.current = arr
               console.log(arr, 'day la anh')
             }}
           />
