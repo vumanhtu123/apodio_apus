@@ -954,7 +954,8 @@ const en = {
     partialInvoice: "Thanh toán một phần",
     invoiced: "Đã thanh toán",
     outstanding : 'Còn nợ',
-    cash : 'Tiền mặt'
+    cash : 'Tiền mặt',
+    debt : 'Công nợ'
   },
   selectClient: {
     selectClient: "Chọn khách hàng",
