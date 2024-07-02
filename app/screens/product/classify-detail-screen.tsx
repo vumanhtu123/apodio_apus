@@ -69,7 +69,7 @@ export const ClassifyDetailScreen: FC = () => {
         const data = response.response.data;
         console.log("response detail classify", JSON.stringify(response.response.data));
 
-        setDetailProduct(response.response.data);
+        setDetailProduct(data.baseProductPackingLine);
         setDataClassification(data);
         setArrImagesProduct(data.imageUrls);
         setArrClassification(data.productVariants);
@@ -439,12 +439,12 @@ export const ClassifyDetailScreen: FC = () => {
 
                 <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14 }} />
                 <FlatList
-                  data={dataWeightOriginal}
+                  data={detailProduct.baseProductPackingLine}
                   renderItem={({ item }) => {
                     return (
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: scaleWidth(9) }}>
                         <Text style={[styles.fontSizeWeight, { flex: 2, textAlign: 'center', marginRight: scaleWidth(10) }]}>
-                          {item.name}
+                          {detailProduct.uom?.name}
                         </Text>
                         <Text style={[styles.fontSizeWeight, { flex: 3, textAlign: 'center', marginRight: scaleWidth(20) }]}>
                           Trọng lượng {item.weight} kg
