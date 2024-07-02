@@ -21,6 +21,7 @@ import { Images } from "../../../../assets";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
+  fontSize,
   margin,
   padding,
   scaleHeight,
@@ -1084,6 +1085,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             note={note}
             setNoteData={function (note: string, arr: []): void {
               valueNote.current = note;
+              console.log(arr, 'day la anh')
             }}
           />
           {desiredDate === true ? (
@@ -1248,7 +1250,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
                   color: "#747475",
-                  fontSize: 12,
+                  fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}>
                 {formatVND(formatCurrency(
@@ -1257,11 +1259,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textTotal}>
-                {formatVND(formatCurrency(
-                  commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
-                ))}
-              </Text>
               <TouchableOpacity
                 onPress={() => {
                   return navigation.navigate({name: "paymentBuy", params: {
@@ -1283,9 +1280,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   }} as never);
                 }}>
                 <Images.icon_edit
-                  style={{ marginLeft: scaleWidth(margin.margin_6) }}
+                  style={{ marginRight: scaleWidth(margin.margin_6) }}
                 />
               </TouchableOpacity>
+              <Text style={styles.textTotal}>
+                {formatVND(formatCurrency(
+                  commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
+                ))}
+              </Text>
             </View>
           </View>
         ) : null}
@@ -1303,7 +1305,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 tx={'order.debtLimit'}
                 style={{
                   color: "#747475",
-                  fontSize: 12,
+                  fontSize: fontSize.size12,
                   fontWeight: "400",
                   flex: 1,
                 }}></Text>

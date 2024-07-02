@@ -195,17 +195,17 @@ const RenderOrderItem = ({
                 }}>
                 <TouchableOpacity
                   onPress={() => handleMinus(item)}
-                  disabled={
-                    orderStore.checkPriceList === true
-                      ? item.amount === item.minQuantity ||
-                        item.amount ===
-                          Math.ceil(item.minQuantity / item.conversionRate)
-                        ? true
-                        : false
-                      : item.amount === 1
-                      ? true
-                      : false
-                  }
+                  // disabled={
+                  //   orderStore.checkPriceList === true
+                  //     ? item.amount === item.minQuantity ||
+                  //       item.amount ===
+                  //         Math.ceil(item.minQuantity / item.conversionRate)
+                  //       ? true
+                  //       : false
+                  //     : item.amount === 1
+                  //     ? true
+                  //     : false
+                  // }
                   style={{ width: "30%", alignItems: "center" }}>
                   <Images.icon_minus />
                 </TouchableOpacity>
@@ -406,17 +406,17 @@ const RenderOrderItem = ({
                 }}>
                 <TouchableOpacity
                   onPress={() => handleMinus(item)}
-                  disabled={
-                    orderStore.checkPriceList === true
-                      ? item.amount === item.minQuantity ||
-                        item.amount ===
-                          Math.ceil(item.minQuantity / item.conversionRate)
-                        ? true
-                        : false
-                      : item.amount === 1
-                      ? true
-                      : false
-                  }
+                  // disabled={
+                  //   orderStore.checkPriceList === true
+                  //     ? item.amount === item.minQuantity ||
+                  //       item.amount ===
+                  //         Math.ceil(item.minQuantity / item.conversionRate)
+                  //       ? true
+                  //       : false
+                  //     : item.amount === 1
+                  //     ? true
+                  //     : false
+                  // }
                   style={{ width: "15%", alignItems: "center" }}>
                   <Images.icon_minus />
                 </TouchableOpacity>
