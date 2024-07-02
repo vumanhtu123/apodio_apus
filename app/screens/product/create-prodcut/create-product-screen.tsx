@@ -20,7 +20,13 @@ import {
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
 import { Text } from "../../../components/text/text";
-import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
+import {
+  colors,
+  fontSize,
+  margin,
+  scaleHeight,
+  scaleWidth,
+} from "../../../theme";
 import { products, suppliers, detailProduct, listCreateProduct } from "../data";
 // import { styles } from "./styles"
 import { AutoImage } from "../../../components/auto-image/auto-image";
@@ -37,17 +43,43 @@ import PriceModal from "../component/modal-price";
 import DescribeModal from "../component/modal-describe";
 import ImagesGroup from "../component/imageGroup";
 import { useStores } from "../../../models";
-import { addCommas, checkArrayIsEmptyOrNull, convertAttributeRetailPrice, convertAttributeWholesalePrice, convertRetailPrice, convertWholesalePrice, formatCurrency, formatNumber, formatNumberByString, isFormValid, mapDataDistribute, parternValidateSku, removeNonNumeric, validateFileSize } from "../../../utils/validate";
+import {
+  addCommas,
+  checkArrayIsEmptyOrNull,
+  convertAttributeRetailPrice,
+  convertAttributeWholesalePrice,
+  convertRetailPrice,
+  convertWholesalePrice,
+  formatCurrency,
+  formatNumber,
+  formatNumberByString,
+  isFormValid,
+  mapDataDistribute,
+  parternValidateSku,
+  removeNonNumeric,
+  validateFileSize,
+} from "../../../utils/validate";
 import { G } from "react-native-svg";
 import UnitModal from "../component/modal-unit";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+  Loading,
+} from "../../../components/dialog-notification";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Modal from "react-native-modal/dist/modal";
 import { translate } from "../../../i18n/translate";
 // import { styles } from "./styles";
-import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from "../../../utils/requesPermissions";
+import {
+  checkCameraPermission,
+  checkLibraryPermission,
+  requestCameraPermission,
+  requestLibraryPermission,
+} from "../../../utils/requesPermissions";
 import ImageProduct from "./imageProduct";
 import { styles } from "./styles";
+import ItemWeight from "../component/weight-component";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -71,21 +103,25 @@ export const ProductCreateScreen: FC = (item) => {
   const [nameProduct, setNameProduct] = useState("");
   const [category, setCategory] = useState({ label: "", id: 0 });
   const [brand, setBrand] = useState({ label: "", id: 0 });
-  const [brands, setBrands] = useState({ id: 0, label: 'Mặc định', label2: 'DEFAULT' });
+  const [brands, setBrands] = useState({
+    id: 0,
+    label: "Mặc định",
+    label2: "DEFAULT",
+  });
   const [dataTagConvert, setDataTagConvert] = useState<{}[]>([]);
   const [tags, setTags] = useState([]);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
   const [detailUnitGroupData, setDetailUnitGroupData] = useState();
-  const [retailPriceProduct, setRetailPriceProduct] = useState([])
-  const [costPriceProduct, setCostPriceProduct] = useState(0)
-  const [listPriceProduct, setListPriceProduct] = useState(0)
-  const [description, setDescription] = useState('')
-  const [indexVariant, setIndexVariant] = useState(0)
-  const [defaultTags, setDefaultTags] = useState([])
-  const [attributeValues, setAttributeValues] = useState([])
-  const [textAttributes, setTextAttributes] = useState([])
-  const [errorSku, setErrorSku] = useState('')
-  const [dataModal, setDataModal] = useState<{}[]>([])
+  const [retailPriceProduct, setRetailPriceProduct] = useState([]);
+  const [costPriceProduct, setCostPriceProduct] = useState(0);
+  const [listPriceProduct, setListPriceProduct] = useState(0);
+  const [description, setDescription] = useState("");
+  const [indexVariant, setIndexVariant] = useState(0);
+  const [defaultTags, setDefaultTags] = useState([]);
+  const [attributeValues, setAttributeValues] = useState([]);
+  const [textAttributes, setTextAttributes] = useState([]);
+  const [errorSku, setErrorSku] = useState("");
+  const [dataModal, setDataModal] = useState<{}[]>([]);
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
   const [selectedItems, setSelectedItems] = useState([]);
   const [dataCreateProduct, setDataCreateProduct] = useState([]);
@@ -101,15 +137,27 @@ export const ProductCreateScreen: FC = (item) => {
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
   const [uomId, setUomId] = useState({ id: "", label: "" });
   const route = useRoute();
-  const { selectedIds, idUnitGroup, nameUnitGroup, attributeArr, dropdownSelected, resetData, goBackConversionGroup }: any = route?.params || {};
+  const {
+    selectedIds,
+    idUnitGroup,
+    nameUnitGroup,
+    attributeArr,
+    dropdownSelected,
+    resetData,
+    goBackConversionGroup,
+  }: any = route?.params || {};
   const [modalImages, setModalImages] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const refCarousel = useRef(null);
 
-  const arrBrands = [{ id: 3746, label: 'Mặc định', label2: 'DEFAULT' }, { id: 4638, label: 'Lô', label2: 'LOTS' }, { id: 4398, label: 'Serial', label2: 'SERIAL' }]
+  const arrBrands = [
+    { id: 3746, label: "Mặc định", label2: "DEFAULT" },
+    { id: 4638, label: "Lô", label2: "LOTS" },
+    { id: 4398, label: "Serial", label2: "SERIAL" },
+  ];
 
   useEffect(() => {
-    setBrands(arrBrands[0])
+    setBrands(arrBrands[0]);
     getListBrand();
     getListCategory();
     getListTags();
@@ -117,19 +165,18 @@ export const ProductCreateScreen: FC = (item) => {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       if (idUnitGroup !== undefined) {
         const dataModified = {
           id: idUnitGroup,
           label: nameUnitGroup,
         };
         setUomGroupId(dataModified);
-        getDetailUnitGroup(idUnitGroup)
+        getDetailUnitGroup(idUnitGroup);
       }
     });
     return unsubscribe;
   }, [idUnitGroup]);
-
 
   const getDetailUnitGroup = async (id: number) => {
     // call nhieu lan
@@ -156,7 +203,7 @@ export const ProductCreateScreen: FC = (item) => {
       unitResult = await unitStore.getListUnitGroup();
       console.log("getListUnitGroup---------------------:", unitResult);
     } else {
-      unitResult = await unitStore.getListUnit()
+      unitResult = await unitStore.getListUnit();
       console.log("getListUnit---------------------:", unitResult);
     }
     if (unitResult && unitResult.kind === "ok") {
@@ -284,10 +331,9 @@ export const ProductCreateScreen: FC = (item) => {
     if (uomId.id === "") {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.required_information'),
-    
-    })
+        title: "",
+        textBody: translate("txtToats.required_information"),
+      });
     } else {
       console.log(
         "post-product-data---retailPriceProduct---- : ",
@@ -295,32 +341,51 @@ export const ProductCreateScreen: FC = (item) => {
       );
       const newArr = dataCreateProduct.map((item) => {
         return {
-          name: nameProduct + ' - ' + item.name,
+          name: nameProduct + " - " + item.name,
           imageUrls: item.imageUrls,
           costPrice: item.costPrice,
           retailPrice: item.retailPrice,
           listPrice: item.listPrice,
           wholesalePrice: item.wholesalePrice,
-          attributeValues: item.attributeValues
+          attributeValues: item.attributeValues,
         };
-      })
-      const dataPrice2 = retailPriceProduct.map(item => {
-        return { min: item.min, price: Number(formatNumberByString(item.price.toString())) }
-      })
-      const dataPrice = wholesalePriceProduct.map(item => {
-        return { min: item.min, price: Number(formatNumberByString(item.price.toString())) }
-      })
-      const newArr2 = newArr.map(item => {
+      });
+      const dataPrice2 = retailPriceProduct.map((item) => {
+        return {
+          min: item.min,
+          price: Number(formatNumberByString(item.price.toString())),
+        };
+      });
+      const dataPrice = wholesalePriceProduct.map((item) => {
+        return {
+          min: item.min,
+          price: Number(formatNumberByString(item.price.toString())),
+        };
+      });
+      const newArr2 = newArr.map((item) => {
         return {
           ...item,
-          retailPrice: item.retailPrice?.map((items: any) => { return { ...items, price: formatNumberByString(items.price.toString()) } }),
-          wholesalePrice: item.wholesalePrice?.map((items: any) => { return { ...items, price: formatNumberByString(items.price.toString()) } }),
+          retailPrice: item.retailPrice?.map((items: any) => {
+            return {
+              ...items,
+              price: formatNumberByString(items.price.toString()),
+            };
+          }),
+          wholesalePrice: item.wholesalePrice?.map((items: any) => {
+            return {
+              ...items,
+              price: formatNumberByString(items.price.toString()),
+            };
+          }),
           costPrice: Number(formatNumberByString(item.costPrice.toString())),
           listPrice: Number(formatNumberByString(item.listPrice.toString())),
-        }
-      })
-      const arrUrlRoot = imagesURLSlider.map(obj => obj.result);
-      console.log("post-product-data---submitAdd---- : ", JSON.stringify(newArr));
+        };
+      });
+      const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
+      console.log(
+        "post-product-data---submitAdd---- : ",
+        JSON.stringify(newArr)
+      );
       console.log("submitAdd---------------------:", imagesURLSlider);
       const data = await productStore.postProduct({
         sku: sku,
@@ -346,22 +411,24 @@ export const ProductCreateScreen: FC = (item) => {
         listPrice: Number(formatNumberByString(listPriceProduct)),
         wholesalePrice: dataPrice,
         deleteVariantIds: [],
-        activated: true
+        activated: true,
       });
-      console.log('data test---------', JSON.stringify(data))
-      if (data.kind === 'ok') {
-        navigation.navigate("successScreen" as any, { idProduct: data.result.data.id })
+      console.log("data test---------", JSON.stringify(data));
+      if (data.kind === "ok") {
+        navigation.navigate("successScreen" as any, {
+          idProduct: data.result.data.id,
+        });
       } else {
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: translate("txtDialog.txt_title_dialog"),
           textBody: data.result.errorCodes[0].message,
           button: translate("common.ok"),
-          closeOnOverlayTap: false
-      })
-      };
+          closeOnOverlayTap: false,
+        });
+      }
     }
-  }
+  };
 
   const handleCameraUse = async () => {
     const permissionStatus = await checkCameraPermission();
@@ -369,7 +436,7 @@ export const ProductCreateScreen: FC = (item) => {
 
     if (permissionStatus === RESULTS.GRANTED) {
       console.log("You can use the camera");
-      
+
       const options = {
         cameraType: "back",
         quality: 1,
@@ -386,7 +453,7 @@ export const ProductCreateScreen: FC = (item) => {
           console.log("User cancelled photo picker1");
         } else if (response?.assets[0].uri) {
           console.log(response?.assets[0].uri);
-          const imageAssets = [response?.assets[0]]
+          const imageAssets = [response?.assets[0]];
           setModalImage(false);
           uploadImages(imageAssets, true, -1);
         }
@@ -394,16 +461,14 @@ export const ProductCreateScreen: FC = (item) => {
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
-       
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-      
-      })
+          title: "",
+          textBody: translate("txtToats.permission_denied"),
+        });
         Dialog.show({
           type: ALERT_TYPE.INFO,
           title: translate("txtDialog.permission_allow"),
@@ -412,27 +477,30 @@ export const ProductCreateScreen: FC = (item) => {
           button2: translate("txtDialog.settings"),
           closeOnOverlayTap: false,
           onPressButton: () => {
-              Linking.openSettings()
-              Dialog.hide();
-          }
-      })
+            Linking.openSettings();
+            Dialog.hide();
+          },
+        });
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-    
-    })
+        title: "",
+        textBody: translate("txtToats.permission_blocked"),
+      });
       console.log("Permission blocked, you need to enable it from settings");
     }
   };
 
-  const uploadImages = async (imageArray: any[], checkUploadSlider: boolean, indexItem?: number) => {
+  const uploadImages = async (
+    imageArray: any[],
+    checkUploadSlider: boolean,
+    indexItem?: number
+  ) => {
     try {
       const uploadPromises = imageArray.map(async (image: any, index: any) => {
-        const { fileSize, uri, type, fileName } = image
-        const checkFileSize = validateFileSize(fileSize)
+        const { fileSize, uri, type, fileName } = image;
+        const checkFileSize = validateFileSize(fileSize);
         if (checkFileSize) {
           Loading.hide();
           Dialog.show({
@@ -440,17 +508,17 @@ export const ProductCreateScreen: FC = (item) => {
             title: translate("txtDialog.txt_title_dialog"),
             textBody: translate("imageUploadExceedLimitedSize"),
             button: translate("common.ok"),
-            closeOnOverlayTap: false
-        })
+            closeOnOverlayTap: false,
+          });
         } else {
-          const formData = new FormData()
+          const formData = new FormData();
           formData.append("file", {
             uri,
             type,
             name: fileName,
-          })
+          });
           // Trả về một promise chứa cả vị trí của hình ảnh trong mảng
-          return await productStore.uploadImages(formData)
+          return await productStore.uploadImages(formData);
         }
       });
 
@@ -462,10 +530,10 @@ export const ProductCreateScreen: FC = (item) => {
         if (checkUploadSlider) {
           setImagesNote([...imagesNote, ...results]);
         } else {
-          const newArr = dataCreateProduct.slice()
-          const newArr1 = newArr[indexItem].imageUrls.concat(results)
-          dataCreateProduct[indexItem].imageUrls = newArr1
-          setDataCreateProduct(newArr)
+          const newArr = dataCreateProduct.slice();
+          const newArr1 = newArr[indexItem].imageUrls.concat(results);
+          dataCreateProduct[indexItem].imageUrls = newArr1;
+          setDataCreateProduct(newArr);
         }
       }
       // Xử lý kết quả upload
@@ -477,7 +545,7 @@ export const ProductCreateScreen: FC = (item) => {
         }
       });
     } catch (error) {
-      console.error('Error uploading images:', error);
+      console.error("Error uploading images:", error);
     }
   };
 
@@ -491,7 +559,7 @@ export const ProductCreateScreen: FC = (item) => {
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
-        selectionLimit: (6 - productStore.imagesLimit),
+        selectionLimit: 6 - productStore.imagesLimit,
       };
       launchImageLibrary(options, (response) => {
         console.log("==========> response4564546", response);
@@ -509,16 +577,14 @@ export const ProductCreateScreen: FC = (item) => {
     } else if (permissionStatus === RESULTS.DENIED) {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
-        
         console.log("Permission granted");
       } else {
         console.log("Permission denied");
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-      
-      })
+          title: "",
+          textBody: translate("txtToats.permission_denied"),
+        });
         Dialog.show({
           type: ALERT_TYPE.INFO,
           title: translate("txtDialog.permission_allow"),
@@ -527,19 +593,18 @@ export const ProductCreateScreen: FC = (item) => {
           button2: translate("txtDialog.settings"),
           closeOnOverlayTap: false,
           onPressButton: () => {
-              Linking.openSettings()
-              Dialog.hide();
-          }
-      })
+            Linking.openSettings();
+            Dialog.hide();
+          },
+        });
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-    
-    })
-      
+        title: "",
+        textBody: translate("txtToats.permission_blocked"),
+      });
+
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
       const options = {
@@ -547,7 +612,7 @@ export const ProductCreateScreen: FC = (item) => {
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
-        selectionLimit: (6 - productStore.imagesLimit),
+        selectionLimit: 6 - productStore.imagesLimit,
       };
       launchImageLibrary(options, (response) => {
         console.log("==========> response4564546", response);
@@ -562,10 +627,9 @@ export const ProductCreateScreen: FC = (item) => {
           if (selectedAssets.length + imagesNote.length > 6) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
-              title: '',
-              textBody: translate('txtToats.required_maximum_number_of_photos'),
-          
-          })
+              title: "",
+              textBody: translate("txtToats.required_maximum_number_of_photos"),
+            });
           } else {
             uploadImages(selectedAssets, true, -1);
           }
@@ -575,17 +639,20 @@ export const ProductCreateScreen: FC = (item) => {
   };
 
   const handleDeleteImage = (index: number) => {
-    const newArr = dataCreateProduct.slice()
-    newArr[index].imageUrls = []
+    const newArr = dataCreateProduct.slice();
+    newArr[index].imageUrls = [];
     console.log("==========> handleDeleteImage--All");
     setDataCreateProduct(newArr);
   };
   const handleDeleteImageItem = (index: number) => {
-    console.log('-------productStore.imageModalIndex-----------', productStore.imageModalIndex)
-    const newArr = dataCreateProduct.slice()
-    const newArrUrl = newArr[index].imageUrls.slice()
-    newArrUrl.splice(productStore.imageModalIndex, 1)
-    newArr[index].imageUrls = newArrUrl
+    console.log(
+      "-------productStore.imageModalIndex-----------",
+      productStore.imageModalIndex
+    );
+    const newArr = dataCreateProduct.slice();
+    const newArrUrl = newArr[index].imageUrls.slice();
+    newArrUrl.splice(productStore.imageModalIndex, 1);
+    newArr[index].imageUrls = newArrUrl;
     console.log("==========> handleDeleteImageItem---", newArr);
     setDataCreateProduct(newArr);
   };
@@ -598,7 +665,7 @@ export const ProductCreateScreen: FC = (item) => {
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
-        selectionLimit: (6 - productStore.imagesLimit),
+        selectionLimit: 6 - productStore.imagesLimit,
       };
       launchImageLibrary(options, (response) => {
         console.log("==========> response---Phan loai", response);
@@ -610,14 +677,16 @@ export const ProductCreateScreen: FC = (item) => {
           console.log("User cancelled photo picker1");
         } else if (response?.assets && response.assets.length > 0) {
           const selectedAssets = response.assets.map((asset) => asset);
-          console.log('first ', selectedAssets.length + productStore.imagesLimit)
+          console.log(
+            "first ",
+            selectedAssets.length + productStore.imagesLimit
+          );
           if (selectedAssets.length + productStore.imagesLimit > 6) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
-              title: '',
-              textBody: translate('txtToats.required_maximum_number_of_photos'),
-          
-          })
+              title: "",
+              textBody: translate("txtToats.required_maximum_number_of_photos"),
+            });
           } else {
             uploadImages(selectedAssets, false, indexItem);
           }
@@ -627,15 +696,13 @@ export const ProductCreateScreen: FC = (item) => {
       const newStatus = await requestLibraryPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
-        
       } else {
         console.log("Permission denied");
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-      
-      })
+          title: "",
+          textBody: translate("txtToats.permission_denied"),
+        });
         Dialog.show({
           type: ALERT_TYPE.INFO,
           title: translate("txtDialog.permission_allow"),
@@ -644,19 +711,18 @@ export const ProductCreateScreen: FC = (item) => {
           button2: translate("txtDialog.settings"),
           closeOnOverlayTap: false,
           onPressButton: () => {
-              Linking.openSettings()
-              Dialog.hide();
-          }
-      })
+            Linking.openSettings();
+            Dialog.hide();
+          },
+        });
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-    
-    })
-  
+        title: "",
+        textBody: translate("txtToats.permission_blocked"),
+      });
+
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
       const options = {
@@ -664,7 +730,7 @@ export const ProductCreateScreen: FC = (item) => {
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
-        selectionLimit: (6 - productStore.imagesLimit),
+        selectionLimit: 6 - productStore.imagesLimit,
       };
       launchImageLibrary(options, (response) => {
         console.log("==========> responsePhan loai upload", response);
@@ -677,15 +743,16 @@ export const ProductCreateScreen: FC = (item) => {
         } else if (response?.assets && response.assets.length > 0) {
           const selectedAssets = response.assets.map((asset) => asset);
           // uploadImages(selectedAssets, false, indexItem);
-          console.log('first ', selectedAssets.length + productStore.imagesLimit)
+          console.log(
+            "first ",
+            selectedAssets.length + productStore.imagesLimit
+          );
           if (selectedAssets.length + productStore.imagesLimit > 6) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
-              title: '',
-              textBody: translate('txtToats.required_maximum_number_of_photos'),
-          
-          })
-            
+              title: "",
+              textBody: translate("txtToats.required_maximum_number_of_photos"),
+            });
           } else {
             uploadImages(selectedAssets, false, indexItem);
           }
@@ -695,9 +762,11 @@ export const ProductCreateScreen: FC = (item) => {
   };
 
   const handleRemoveImage = (index: number, url: any) => {
-    let fileName = url.split('/').pop();
+    let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
-    const indexToRemoveLocal = imagesNote.findIndex((item: string) => item.split('/').pop() === fileName);
+    const indexToRemoveLocal = imagesNote.findIndex(
+      (item: string) => item.split("/").pop() === fileName
+    );
     if (indexToRemoveLocal !== -1) {
       const updatedImages = [...imagesNote];
       updatedImages.splice(indexToRemoveLocal, 1);
@@ -705,20 +774,23 @@ export const ProductCreateScreen: FC = (item) => {
     }
   };
 
-
   const getConvertedUnitsForGroup = () => {
-    return detailUnitGroupData ? detailUnitGroupData.uomGroupLines != null ? detailUnitGroupData.uomGroupLines : [] : [];
+    return detailUnitGroupData
+      ? detailUnitGroupData.uomGroupLines != null
+        ? detailUnitGroupData.uomGroupLines
+        : []
+      : [];
   };
 
   const goToChooseSupplierScreen = () => {
     const listIds = selectedIds;
-    navigation.navigate("ChooseVendorScreen", { listIds, mode: 'create' });
-  }
+    navigation.navigate("ChooseVendorScreen", { listIds, mode: "create" });
+  };
 
   const arrBrand = dataBrand.map((item) => {
     return { label: item.name, id: item.id };
   });
-  const arrCategory = dataCategory.map((item: { name: any; id: any; }) => {
+  const arrCategory = dataCategory.map((item: { name: any; id: any }) => {
     return { label: item.name, id: item.id };
   });
 
@@ -739,7 +811,7 @@ export const ProductCreateScreen: FC = (item) => {
   const handleCloseDescribe = () => {
     setAddDescribe(false);
   };
-  const isValid = isFormValid(errors, watch('productName'));
+  const isValid = isFormValid(errors, watch("productName"));
 
   return (
     <View style={styles.ROOT}>
@@ -748,7 +820,7 @@ export const ProductCreateScreen: FC = (item) => {
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerTx={'productScreen.create_product'}
+        headerTx={"productScreen.create_product"}
         style={{ height: scaleHeight(54) }}
       />
       <ScrollView style={{ marginBottom: scaleHeight(20) }}>
@@ -758,7 +830,9 @@ export const ProductCreateScreen: FC = (item) => {
               arrData={imagesNote}
               useCamera={() => handleCameraUse()}
               useLibrary={() => handleLibraryUse()}
-              deleteImage={(index, item) => { handleRemoveImage(index, item) }}
+              deleteImage={(index, item) => {
+                handleRemoveImage(index, item);
+              }}
             />
             <Controller
               control={control}
@@ -778,19 +852,19 @@ export const ProductCreateScreen: FC = (item) => {
                   error={errorSku}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => {
-                    onChange(value.toUpperCase())
+                    onChange(value.toUpperCase());
                     if (parternValidateSku.test(value.toUpperCase()) === true) {
-                      setSku(value.toUpperCase())
-                      setErrorSku('')
+                      setSku(value.toUpperCase());
+                      setErrorSku("");
                     } else {
-                      setErrorSku('Mã SKU gồm chữ và số')
+                      setErrorSku("Mã SKU gồm chữ và số");
                     }
                   }}
                   placeholderTx="productScreen.placeholderSKU"
                   RightIcon={Images.ic_QR}
                 />
               )}
-              defaultValue={''}
+              defaultValue={""}
               name="SKU"
             />
             <Controller
@@ -818,7 +892,7 @@ export const ProductCreateScreen: FC = (item) => {
                   isImportant
                 />
               )}
-              defaultValue={''}
+              defaultValue={""}
               name="productName"
               rules={{
                 required: "Vui lòng nhập thông tin",
@@ -830,7 +904,8 @@ export const ProductCreateScreen: FC = (item) => {
                 style={{
                   fontSize: fontSize.size13,
                   marginRight: scaleWidth(10),
-                }} />
+                }}
+              />
               <Switch
                 value={valuePurchase}
                 onToggle={() => {
@@ -838,22 +913,38 @@ export const ProductCreateScreen: FC = (item) => {
                 }}
               />
             </View>
-            <View
-              style={styles.viewLinePriceProduct}>
-              <TouchableOpacity style={styles.viewBtnPriceProduct}
-                onPress={() => { setModalRetailPrice(true), setDataModal(retailPriceProduct) }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.viewLinePriceProduct}>
+              <TouchableOpacity
+                style={styles.viewBtnPriceProduct}
+                onPress={() => {
+                  setModalRetailPrice(true), setDataModal(retailPriceProduct);
+                }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View style={{ flex: 1 }}>
-                    <Text tx={"productScreen.priceRetail"} style={styles.textTitleViewPrice} />
-                    {retailPriceProduct.length > 0 && retailPriceProduct.length !== 1 ?
-                      <Text text={convertRetailPrice(retailPriceProduct)}
+                    <Text
+                      tx={"productScreen.priceRetail"}
+                      style={styles.textTitleViewPrice}
+                    />
+                    {retailPriceProduct.length > 0 &&
+                    retailPriceProduct.length !== 1 ? (
+                      <Text
+                        text={convertRetailPrice(retailPriceProduct)}
                         numberOfLines={1}
-                        style={styles.textTextField} />
-                      : retailPriceProduct.length > 0 && retailPriceProduct.length === 1 ?
-                        <Text text={retailPriceProduct[0]?.price}
-                          numberOfLines={1}
-                          style={styles.textTextField} />
-                        : <Text text='0.000 - 0.000' style={styles.textTextFieldNoData} />}
+                        style={styles.textTextField}
+                      />
+                    ) : retailPriceProduct.length > 0 &&
+                      retailPriceProduct.length === 1 ? (
+                      <Text
+                        text={retailPriceProduct[0]?.price}
+                        numberOfLines={1}
+                        style={styles.textTextField}
+                      />
+                    ) : (
+                      <Text
+                        text="0.000 - 0.000"
+                        style={styles.textTextFieldNoData}
+                      />
+                    )}
                   </View>
                   <Images.icon_caretRightDown />
                 </View>
@@ -867,25 +958,29 @@ export const ProductCreateScreen: FC = (item) => {
                     labelTx={"productScreen.priceCapital"}
                     labelDolphin
                     style={{
-                      width: scaleWidth(164), flex: 1
+                      width: scaleWidth(164),
+                      flex: 1,
                     }}
                     inputStyle={styles.textTextField}
                     value={value}
                     onBlur={onBlur}
                     showRightIcon={false}
                     onChangeText={(value) => {
-                      onChange(vendorStore.checkSeparator === 'DOTS' ? formatCurrency(removeNonNumeric(value)) : addCommas(removeNonNumeric(value)))
-                      setCostPriceProduct(value)
+                      onChange(
+                        vendorStore.checkSeparator === "DOTS"
+                          ? formatCurrency(removeNonNumeric(value))
+                          : addCommas(removeNonNumeric(value))
+                      );
+                      setCostPriceProduct(value);
                     }}
                     placeholderTx="productScreen.placeholderPrice"
                   />
                 )}
-                defaultValue={''}
+                defaultValue={""}
                 name="costPrice"
               />
             </View>
-            <View
-              style={styles.viewLinePriceProduct}>
+            <View style={styles.viewLinePriceProduct}>
               <Controller
                 control={control}
                 render={({ field: { onChange, value, onBlur } }) => (
@@ -903,31 +998,51 @@ export const ProductCreateScreen: FC = (item) => {
                     onBlur={onBlur}
                     showRightIcon={false}
                     onChangeText={(value) => {
-                      onChange(vendorStore.checkSeparator === 'DOTS' ? formatCurrency(removeNonNumeric(value)) : addCommas(removeNonNumeric(value)))
-                      setListPriceProduct(value)
+                      onChange(
+                        vendorStore.checkSeparator === "DOTS"
+                          ? formatCurrency(removeNonNumeric(value))
+                          : addCommas(removeNonNumeric(value))
+                      );
+                      setListPriceProduct(value);
                     }}
                     placeholderTx="productScreen.placeholderPrice"
                   />
                 )}
-                defaultValue={''}
+                defaultValue={""}
                 name="listPrice"
               />
-              <TouchableOpacity style={styles.viewBtnPriceProduct}
+              <TouchableOpacity
+                style={styles.viewBtnPriceProduct}
                 onPress={() => {
-                  setModalWholesalePrice(true)
-                  setDataModal(wholesalePriceProduct)
+                  setModalWholesalePrice(true);
+                  setDataModal(wholesalePriceProduct);
                 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View style={{ flex: 1 }}>
-                    <Text tx={"productScreen.priceWholesale"} style={styles.textTitleViewPrice} />
-                    {wholesalePriceProduct.length > 0 && wholesalePriceProduct.length !== 1 ?
-                      <Text text={convertWholesalePrice(wholesalePriceProduct)}
+                    <Text
+                      tx={"productScreen.priceWholesale"}
+                      style={styles.textTitleViewPrice}
+                    />
+                    {wholesalePriceProduct.length > 0 &&
+                    wholesalePriceProduct.length !== 1 ? (
+                      <Text
+                        text={convertWholesalePrice(wholesalePriceProduct)}
                         numberOfLines={1}
-                        style={styles.textTextField} />
-                      : wholesalePriceProduct.length > 0 && wholesalePriceProduct.length === 1 ?
-                        <Text text={wholesalePriceProduct[0]?.price}
-                          numberOfLines={1}
-                          style={styles.textTextField} /> : <Text text='0.000 - 0.000' style={styles.textTextFieldNoData} />}
+                        style={styles.textTextField}
+                      />
+                    ) : wholesalePriceProduct.length > 0 &&
+                      wholesalePriceProduct.length === 1 ? (
+                      <Text
+                        text={wholesalePriceProduct[0]?.price}
+                        numberOfLines={1}
+                        style={styles.textTextField}
+                      />
+                    ) : (
+                      <Text
+                        text="0.000 - 0.000"
+                        style={styles.textTextFieldNoData}
+                      />
+                    )}
                   </View>
                   <Images.icon_caretRightDown />
                 </View>
@@ -935,22 +1050,26 @@ export const ProductCreateScreen: FC = (item) => {
             </View>
           </View>
         </View>
-        {valuePurchase === true ?
-          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+        {valuePurchase === true ? (
+          <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
             <View style={styles.viewViewDetail}>
-              <Text tx={"createProductScreen.infoSupplier"} style={styles.textTitleView}/>
+              <Text
+                tx={"createProductScreen.infoSupplier"}
+                style={styles.textTitleView}
+              />
               <TouchableOpacity
-                onPress={() =>
-                  goToChooseSupplierScreen()
-                }
+                onPress={() => goToChooseSupplierScreen()}
                 style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}>
                 {selectedIds?.length > 0 ? (
                   <Text style={styles.textWeight400Black}>
                     {selectedIds.length} nhà cung cấp
                   </Text>
                 ) : (
-                  <Text tx={"createProductScreen.noSelectSupplier"}
-                    style={styles.textWeight400Dolphin}/>
+                  <Text
+                    tx={"createProductScreen.noSelectSupplier"}
+                    style={styles.textWeight400Dolphin}
+                  />
                 )}
                 <Images.icon_caretRight
                   width={scaleWidth(16)}
@@ -958,10 +1077,14 @@ export const ProductCreateScreen: FC = (item) => {
                 />
               </TouchableOpacity>
             </View>
-          </View> : null}
+          </View>
+        ) : null}
         <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
           <View style={styles.viewViewDetail}>
-            <Text tx={'createProductScreen.inventory_management'} style={styles.textTitleView}/>
+            <Text
+              tx={"createProductScreen.inventory_management"}
+              style={styles.textTitleView}
+            />
             <InputSelect
               titleTx={"createProductScreen.form_of_management"}
               // hintText="Mặc định"
@@ -972,7 +1095,7 @@ export const ProductCreateScreen: FC = (item) => {
               onPressChoice={(item: any) => {
                 setBrands(item);
               }}
-            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
+              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
             />
           </View>
         </View>
@@ -980,7 +1103,10 @@ export const ProductCreateScreen: FC = (item) => {
         {/* View Thông tin thêm */}
         <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
           <View style={styles.viewViewDetail}>
-            <Text tx={"createProductScreen.infoMore"} style={styles.textTitleView}/>
+            <Text
+              tx={"createProductScreen.infoMore"}
+              style={styles.textTitleView}
+            />
             <InputSelect
               titleTx={"inforMerchant.Category"}
               hintTx={"productScreen.select_catgory"}
@@ -1007,13 +1133,13 @@ export const ProductCreateScreen: FC = (item) => {
                 setBrand(item);
               }}
               styleView={{ marginBottom: scaleHeight(15) }}
-            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
+              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
             />
             <DropdownModal
               required={false}
               arrData={dataTagConvert}
               onPressChoice={(item: any) => {
-                const items = item.map((item: { value: any; }) => item.value);
+                const items = item.map((item: { value: any }) => item.value);
                 handleSelect(items);
               }}
               dataEdit={defaultTags}
@@ -1025,9 +1151,19 @@ export const ProductCreateScreen: FC = (item) => {
         </View>
         <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
           <View style={styles.viewViewDetail}>
-            <Text tx={valueSwitchUnit ? "productScreen.unit_group" : "productScreen.unit"} style={styles.textTitleView}/>
+            <Text
+              tx={
+                valueSwitchUnit
+                  ? "productScreen.unit_group"
+                  : "productScreen.unit"
+              }
+              style={styles.textTitleView}
+            />
             <View style={styles.viewLineSwitchUnit}>
-              <Text tx={"productScreen.manage_multiple_units"} style={styles.textWeight400Dolphin}/>
+              <Text
+                tx={"productScreen.manage_multiple_units"}
+                style={styles.textWeight400Dolphin}
+              />
               <Switch
                 value={valueSwitchUnit}
                 onToggle={() => {
@@ -1038,8 +1174,16 @@ export const ProductCreateScreen: FC = (item) => {
               />
             </View>
             <InputSelect
-              titleTx={valueSwitchUnit ? "productScreen.unit_group" : "productScreen.unit"}
-              hintTx={valueSwitchUnit ? "productScreen.select_unit_group" : "productScreen.select_unit"}
+              titleTx={
+                valueSwitchUnit
+                  ? "productScreen.unit_group"
+                  : "productScreen.unit"
+              }
+              hintTx={
+                valueSwitchUnit
+                  ? "productScreen.select_unit_group"
+                  : "productScreen.select_unit"
+              }
               isSearch
               required={true}
               arrData={arrUnitGroupData}
@@ -1059,23 +1203,33 @@ export const ProductCreateScreen: FC = (item) => {
                 style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {
                   if (valueSwitchUnit) {
-                    navigation.navigate("createConversionGroup" as any)
+                    navigation.navigate("createConversionGroup" as any);
                   } else {
-                    setModalcreateUnit(true)
+                    setModalcreateUnit(true);
                   }
-                }
-                }>
+                }}>
                 <Images.ic_plusCircleBlue
                   width={scaleWidth(14)}
                   height={scaleHeight(14)}
                 />
-                <Text tx={valueSwitchUnit ? "productScreen.create_unit_group" : "productScreen.create_unit"} style={styles.textWeight400Blue}/>
+                <Text
+                  tx={
+                    valueSwitchUnit
+                      ? "productScreen.create_unit_group"
+                      : "productScreen.create_unit"
+                  }
+                  style={styles.textWeight400Blue}
+                />
               </TouchableOpacity>
             </View>
+            <ItemWeight />
             {valueSwitchUnit ? (
               <>
                 <View style={styles.viewLineSwitchUnit}>
-                  <Text  tx={"createProductScreen.originalUnit"} style={{ fontSize: fontSize.size14 }}/>
+                  <Text
+                    tx={"createProductScreen.originalUnit"}
+                    style={{ fontSize: fontSize.size14 }}
+                  />
                   {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
                   {detailUnitGroupData ? (
                     <Text style={styles.textWeight600}>
@@ -1084,13 +1238,17 @@ export const ProductCreateScreen: FC = (item) => {
                   ) : null}
                 </View>
                 <View style={styles.viewLineSwitchUnit}>
-                  <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size14 }}/>
-                  <Text tx={"createProductScreen.conversionRate"} style={styles.textWeight600}/>
+                  <Text
+                    tx={"createProductScreen.conversion"}
+                    style={{ fontSize: fontSize.size14 }}
+                  />
+                  <Text
+                    tx={"createProductScreen.conversionRate"}
+                    style={styles.textWeight600}
+                  />
                 </View>
                 {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
-                  <View
-                    key={index}
-                    style={styles.viewLineSwitchUnit}>
+                  <View key={index} style={styles.viewLineSwitchUnit}>
                     <View
                       style={{ flexDirection: "row", alignItems: "center" }}>
                       <Images.ic_arrowDownRight
@@ -1106,7 +1264,8 @@ export const ProductCreateScreen: FC = (item) => {
                       </Text>
                     </View>
                     <Text style={styles.textWeight600}>
-                    {item.conversionRate} {detailUnitGroupData?.originalUnit?.name}
+                      {item.conversionRate}{" "}
+                      {detailUnitGroupData?.originalUnit?.name}
                     </Text>
                   </View>
                 ))}
@@ -1114,10 +1273,10 @@ export const ProductCreateScreen: FC = (item) => {
             ) : null}
           </View>
         </View>
-        {addVariant ?
-          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-            <View
-              style={styles.viewViewDetail}>
+        {addVariant ? (
+          <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+            <View style={styles.viewViewDetail}>
               <Text
                 tx="createProductScreen.classify"
                 style={{ fontSize: fontSize.size14, fontWeight: "700" }}
@@ -1131,15 +1290,20 @@ export const ProductCreateScreen: FC = (item) => {
                     return (
                       <ScrollView horizontal={true}>
                         <View style={{ marginTop: scaleHeight(15) }}>
-                          <Text>{nameProduct + ' - ' + item.name}</Text>
+                          <Text>{nameProduct + " - " + item.name}</Text>
                           <View
                             style={{
                               flexDirection: "row",
                               marginTop: scaleHeight(6),
                               // paddingVertical : 5,
-                              alignItems: 'center',
+                              alignItems: "center",
                             }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: scaleHeight(8) }}>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                marginBottom: scaleHeight(8),
+                              }}>
                               <TouchableOpacity
                                 style={{ marginRight: scaleWidth(6) }}
                                 onPress={() => handleDeleteProduct(index)}>
@@ -1151,25 +1315,34 @@ export const ProductCreateScreen: FC = (item) => {
                               <ImagesGroup
                                 arrData={item.imageUrls || []}
                                 onchangeData={(data) => {
-                                  console.log('---------------#######---------', data)
+                                  console.log(
+                                    "---------------#######---------",
+                                    data
+                                  );
                                 }}
                                 onPressOpenLibrary={() => {
                                   if (item.imageUrls.length < 6) {
-                                    handleLibraryUseProduct(item.imageUrls, index)
-                                    productStore.setImagesLimit(item.imageUrls.length)
+                                    handleLibraryUseProduct(
+                                      item.imageUrls,
+                                      index
+                                    );
+                                    productStore.setImagesLimit(
+                                      item.imageUrls.length
+                                    );
                                   } else {
                                     Toast.show({
                                       type: ALERT_TYPE.DANGER,
-                                      title: '',
-                                      textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                  
-                                  })
-                                    
+                                      title: "",
+                                      textBody: translate(
+                                        "txtToats.required_maximum_number_of_photos"
+                                      ),
+                                    });
                                   }
-                                }
-                                }
+                                }}
                                 onPressDelete={() => handleDeleteImage(index)}
-                                onPressDelete1={() => handleDeleteImageItem(index)}
+                                onPressDelete1={() =>
+                                  handleDeleteImageItem(index)
+                                }
                               />
                             </View>
                             <View
@@ -1178,23 +1351,45 @@ export const ProductCreateScreen: FC = (item) => {
                                 marginLeft: scaleWidth(10),
                                 // alignItems: 'center'
                               }}>
-                              <TouchableOpacity style={styles.viewBtnPriceVariants}
+                              <TouchableOpacity
+                                style={styles.viewBtnPriceVariants}
                                 onPress={() => {
-                                  setModalRetailPrice1(true)
-                                  setDataModal(item.retailPrice)
-                                  setIndexVariant(index)
+                                  setModalRetailPrice1(true);
+                                  setDataModal(item.retailPrice);
+                                  setIndexVariant(index);
                                 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                  }}>
                                   <View style={{ flex: 1 }}>
-                                    <Text tx={"productScreen.priceRetail"} style={styles.textTitleViewPrice} />
-                                    {item.retailPrice.length > 0 && item.retailPrice.length !== 1 ?
-                                      <Text text={convertAttributeRetailPrice(dataCreateProduct, index)}
+                                    <Text
+                                      tx={"productScreen.priceRetail"}
+                                      style={styles.textTitleViewPrice}
+                                    />
+                                    {item.retailPrice.length > 0 &&
+                                    item.retailPrice.length !== 1 ? (
+                                      <Text
+                                        text={convertAttributeRetailPrice(
+                                          dataCreateProduct,
+                                          index
+                                        )}
                                         numberOfLines={1}
-                                        style={styles.textTextField} />
-                                      : item.retailPrice.length > 0 && item.retailPrice.length === 1 ?
-                                        <Text text={item.retailPrice[0]?.price}
-                                          style={styles.textTextField} />
-                                        : <Text text='0.000 - 0.000' style={styles.textTextFieldNoData} />}
+                                        style={styles.textTextField}
+                                      />
+                                    ) : item.retailPrice.length > 0 &&
+                                      item.retailPrice.length === 1 ? (
+                                      <Text
+                                        text={item.retailPrice[0]?.price}
+                                        style={styles.textTextField}
+                                      />
+                                    ) : (
+                                      <Text
+                                        text="0.000 - 0.000"
+                                        style={styles.textTextFieldNoData}
+                                      />
+                                    )}
                                   </View>
                                   <Images.icon_caretRightDown />
                                 </View>
@@ -1219,8 +1414,14 @@ export const ProductCreateScreen: FC = (item) => {
                                     // error={errors?.priceRetail?.message}
                                     onClearText={() => onChange("")}
                                     onChangeText={(value) => {
-                                      onChange(vendorStore.checkSeparator === 'DOTS' ? formatCurrency(removeNonNumeric(value)) : addCommas(removeNonNumeric(value)))
-                                      item.costPrice = value
+                                      onChange(
+                                        vendorStore.checkSeparator === "DOTS"
+                                          ? formatCurrency(
+                                              removeNonNumeric(value)
+                                            )
+                                          : addCommas(removeNonNumeric(value))
+                                      );
+                                      item.costPrice = value;
                                     }}
                                     placeholder="0.000"
                                     labelDolphin
@@ -1249,8 +1450,14 @@ export const ProductCreateScreen: FC = (item) => {
                                     error={errors?.priceRetail?.message}
                                     onClearText={() => onChange("")}
                                     onChangeText={(value) => {
-                                      onChange(vendorStore.checkSeparator === 'DOTS' ? formatCurrency(removeNonNumeric(value)) : addCommas(removeNonNumeric(value)))
-                                      item.listPrice = value
+                                      onChange(
+                                        vendorStore.checkSeparator === "DOTS"
+                                          ? formatCurrency(
+                                              removeNonNumeric(value)
+                                            )
+                                          : addCommas(removeNonNumeric(value))
+                                      );
+                                      item.listPrice = value;
                                     }}
                                     placeholder="0.000"
                                     labelDolphin
@@ -1260,23 +1467,45 @@ export const ProductCreateScreen: FC = (item) => {
                                 name={`listPrice-${index}`}
                               />
                             </View>
-                            <TouchableOpacity style={styles.viewBtnPriceVariants}
+                            <TouchableOpacity
+                              style={styles.viewBtnPriceVariants}
                               onPress={() => {
-                                setModalWholesalePrice1(true)
-                                setDataModal(item.wholesalePrice)
-                                setIndexVariant(index)
+                                setModalWholesalePrice1(true);
+                                setDataModal(item.wholesalePrice);
+                                setIndexVariant(index);
                               }}>
-                              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                }}>
                                 <View style={{ flex: 1 }}>
-                                  <Text tx={"productScreen.priceWholesale"} style={styles.textTitleViewPrice} />
-                                  {item.wholesalePrice.length > 0 && item.wholesalePrice.length !== 1 ?
-                                    <Text text={convertAttributeWholesalePrice(dataCreateProduct, index)}
+                                  <Text
+                                    tx={"productScreen.priceWholesale"}
+                                    style={styles.textTitleViewPrice}
+                                  />
+                                  {item.wholesalePrice.length > 0 &&
+                                  item.wholesalePrice.length !== 1 ? (
+                                    <Text
+                                      text={convertAttributeWholesalePrice(
+                                        dataCreateProduct,
+                                        index
+                                      )}
                                       numberOfLines={1}
-                                      style={styles.textTextField} />
-                                    : item.wholesalePrice.length > 0 && item.wholesalePrice.length === 1 ?
-                                      <Text text={item.wholesalePrice[0]?.price}
-                                        style={styles.textTextField} />
-                                      : <Text text='0.000 - 0.000' style={styles.textTextFieldNoData} />}
+                                      style={styles.textTextField}
+                                    />
+                                  ) : item.wholesalePrice.length > 0 &&
+                                    item.wholesalePrice.length === 1 ? (
+                                    <Text
+                                      text={item.wholesalePrice[0]?.price}
+                                      style={styles.textTextField}
+                                    />
+                                  ) : (
+                                    <Text
+                                      text="0.000 - 0.000"
+                                      style={styles.textTextFieldNoData}
+                                    />
+                                  )}
                                 </View>
                                 <Images.icon_caretRightDown />
                               </View>
@@ -1291,31 +1520,47 @@ export const ProductCreateScreen: FC = (item) => {
                 <View style={{ marginTop: scaleHeight(15) }}>
                   <Text
                     tx="createProductScreen.details"
-                    style={[styles.textWeight400Black, { marginBottom: scaleHeight(12) }]}
+                    style={[
+                      styles.textWeight400Black,
+                      { marginBottom: scaleHeight(12) },
+                    ]}
                   />
                   <TouchableOpacity
                     style={styles.btnAddProperties}
-                    onPress={() => navigation.navigate("addAttribute" as never)}>
+                    onPress={() =>
+                      navigation.navigate("addAttribute" as never)
+                    }>
                     <Images.ic_plusBlue
                       width={scaleWidth(16)}
                       height={scaleHeight(16)}
                     />
                     <Text
                       tx="createProductScreen.addProperties"
-                      style={[styles.textWeight600, {
-                        color: colors.palette.navyBlue,
-                        marginLeft: scaleWidth(4),
-                      }]}
+                      style={[
+                        styles.textWeight600,
+                        {
+                          color: colors.palette.navyBlue,
+                          marginLeft: scaleWidth(4),
+                        },
+                      ]}
                     />
                   </TouchableOpacity>
                 </View>
               )}
               <View
-                style={{ position: "absolute", right: 0, flexDirection: "row" }}>
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  flexDirection: "row",
+                }}>
                 {dataCreateProduct.length > 0 ? (
-                  <TouchableOpacity onPress={() => {
-                    navigation.navigate('editAttribute' as never, { dataAttribute: attributeArr, dropdownSelected: dropdownSelected })
-                  }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("editAttribute" as never, {
+                        dataAttribute: attributeArr,
+                        dropdownSelected: dropdownSelected,
+                      });
+                    }}>
                     <Images.icon_edit
                       // style={{ marginRight: scaleWidth(8) }}
                       width={scaleWidth(14)}
@@ -1323,56 +1568,77 @@ export const ProductCreateScreen: FC = (item) => {
                     />
                   </TouchableOpacity>
                 ) : null}
-                {dataCreateProduct.length > 0 ? null :
-                  <TouchableOpacity onPress={() => setAddVariant(false)} >
+                {dataCreateProduct.length > 0 ? null : (
+                  <TouchableOpacity onPress={() => setAddVariant(false)}>
                     <Images.ic_close
                       width={scaleWidth(14)}
                       height={scaleHeight(14)}
                     />
-                  </TouchableOpacity>}
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
-          </View> : null}
+          </View>
+        ) : null}
         {addDescribe ? (
-          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+          <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
             <View style={styles.viewViewDetail}>
               <View>
-                <View style={{ flexDirection: 'row', alignContent: 'center' }}>
-                  <Text tx={"createProductScreen.description"} style={styles.textTitleView}/>
-                  {description ? <TouchableOpacity onPress={() => { setModalDescribe(true) }}>
-                    <Images.icon_edit
-                      style={{ marginLeft: scaleWidth(8) }}
-                      width={scaleWidth(14)}
-                      height={scaleHeight(14)}
-                    />
-                  </TouchableOpacity> : null}
+                <View style={{ flexDirection: "row", alignContent: "center" }}>
+                  <Text
+                    tx={"createProductScreen.description"}
+                    style={styles.textTitleView}
+                  />
+                  {description ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setModalDescribe(true);
+                      }}>
+                      <Images.icon_edit
+                        style={{ marginLeft: scaleWidth(8) }}
+                        width={scaleWidth(14)}
+                        height={scaleHeight(14)}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
                 </View>
                 <TouchableOpacity
                   onPress={handleCloseDescribe}
-                  style={{ position: "absolute", right: 0, flexDirection: "row", }}>
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    flexDirection: "row",
+                  }}>
                   <Images.ic_close
                     width={scaleWidth(14)}
                     height={scaleHeight(14)}
                   />
                 </TouchableOpacity>
               </View>
-              {description === '' ? <View style={{}}>
-                <TouchableOpacity
-                  style={{ flexDirection: "row", alignItems: "center" }}
-                  onPress={() => setModalDescribe(true)}>
-                  <Images.ic_plusCircleBlue
-                    width={scaleWidth(14)}
-                    height={scaleHeight(14)}
-                  />
-                  <Text tx={"createProductScreen.addDescription"} style={styles.textWeight400Blue}/>
-                </TouchableOpacity>
-              </View> : <Text text={description} />}
+              {description === "" ? (
+                <View style={{}}>
+                  <TouchableOpacity
+                    style={{ flexDirection: "row", alignItems: "center" }}
+                    onPress={() => setModalDescribe(true)}>
+                    <Images.ic_plusCircleBlue
+                      width={scaleWidth(14)}
+                      height={scaleHeight(14)}
+                    />
+                    <Text
+                      tx={"createProductScreen.addDescription"}
+                      style={styles.textWeight400Blue}
+                    />
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <Text text={description} />
+              )}
             </View>
           </View>
         ) : null}
         <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-          <View
-            style={styles.viewViewDetail}>
+          <View style={styles.viewViewDetail}>
             <Text
               tx="createProductScreen.information"
               style={styles.textTitleView}
@@ -1387,36 +1653,51 @@ export const ProductCreateScreen: FC = (item) => {
                   <TouchableOpacity
                     onPress={handleDescribe}
                     style={styles.viewBtnInMorInfo}>
-                    <Text tx={"createProductScreen.description"} style={styles.textBtnMorInfo}/>
+                    <Text
+                      tx={"createProductScreen.description"}
+                      style={styles.textBtnMorInfo}
+                    />
                   </TouchableOpacity>
                 ) : null}
                 {addVariant === false ? (
                   <TouchableOpacity
                     onPress={() => setAddVariant(true)}
                     style={styles.viewBtnInMorInfo}>
-                    <Text tx={"createProductScreen.productClassification"} style={styles.textBtnMorInfo}/>
+                    <Text
+                      tx={"createProductScreen.productClassification"}
+                      style={styles.textBtnMorInfo}
+                    />
                   </TouchableOpacity>
                 ) : null}
                 {addDescribe === true && addVariant === true ? (
-                  <Text tx={"createProductScreen.notificationAddAllInfoProduct"} style={[styles.textWeight400Dolphin, { marginLeft: scaleWidth(8), }]}/>
+                  <Text
+                    tx={"createProductScreen.notificationAddAllInfoProduct"}
+                    style={[
+                      styles.textWeight400Dolphin,
+                      { marginLeft: scaleWidth(8) },
+                    ]}
+                  />
                 ) : null}
               </View>
             </View>
           </View>
         </View>
       </ScrollView>
-      
-      <PriceModal isVisible={modalRetailPrice}
+
+      <PriceModal
+        isVisible={modalRetailPrice}
         setIsVisible={() => setModalRetailPrice(false)}
-        title={'productDetail.retailPrice'}
+        title={"productDetail.retailPrice"}
         onCancel={() => {
-          setModalRetailPrice(false)
-          dataModal.length !== 0 ? setDataModal([]) : setDataModal([{ min: '', price: '' }])
+          setModalRetailPrice(false);
+          dataModal.length !== 0
+            ? setDataModal([])
+            : setDataModal([{ min: "", price: "" }]);
         }}
         onConfirm={(data) => {
-          setRetailPriceProduct(data.price)
-          setModalRetailPrice(false)
-          setDataModal([{ min: '', price: '' }])
+          setRetailPriceProduct(data.price);
+          setModalRetailPrice(false);
+          setDataModal([{ min: "", price: "" }]);
         }}
         dataAdd={dataModal}
       />
@@ -1425,28 +1706,33 @@ export const ProductCreateScreen: FC = (item) => {
         setIsVisible={() => setModalWholesalePrice(false)}
         title={"productDetail.wholesalePrice"}
         onCancel={() => {
-          setModalWholesalePrice(false)
-          dataModal.length !== 0 ? setDataModal([]) : setDataModal([{ min: '', price: '' }])
+          setModalWholesalePrice(false);
+          dataModal.length !== 0
+            ? setDataModal([])
+            : setDataModal([{ min: "", price: "" }]);
         }}
         onConfirm={(data) => {
           setWholesalePriceProduct(data.price);
-          setModalWholesalePrice(false)
-          setDataModal([])
+          setModalWholesalePrice(false);
+          setDataModal([]);
         }}
         dataAdd={dataModal}
       />
-      <PriceModal isVisible={modalRetailPrice1}
+      <PriceModal
+        isVisible={modalRetailPrice1}
         setIsVisible={() => setModalRetailPrice1(false)}
-        title={'productDetail.retailPrice'}
+        title={"productDetail.retailPrice"}
         onCancel={() => {
-          setModalRetailPrice1(false)
-          dataModal.length !== 0 ? setDataModal([]) : setDataModal([{ min: '', price: '' }])
+          setModalRetailPrice1(false);
+          dataModal.length !== 0
+            ? setDataModal([])
+            : setDataModal([{ min: "", price: "" }]);
         }}
         onConfirm={(data) => {
           // setRetailPriceProduct(data.price)
-          dataCreateProduct[indexVariant].retailPrice = data.price
-          setModalRetailPrice1(false)
-          setDataModal([])
+          dataCreateProduct[indexVariant].retailPrice = data.price;
+          setModalRetailPrice1(false);
+          setDataModal([]);
         }}
         dataAdd={dataModal}
       />
@@ -1455,14 +1741,16 @@ export const ProductCreateScreen: FC = (item) => {
         setIsVisible={() => setModalWholesalePrice1(false)}
         title={"productDetail.wholesalePrice"}
         onCancel={() => {
-          setModalWholesalePrice1(false)
-          dataModal.length !== 0 ? setDataModal([]) : setDataModal([{ min: '', price: '' }])
+          setModalWholesalePrice1(false);
+          dataModal.length !== 0
+            ? setDataModal([])
+            : setDataModal([{ min: "", price: "" }]);
         }}
         onConfirm={(data) => {
           // setWholesalePriceProduct(data.price);
-          dataCreateProduct[indexVariant].wholesalePrice = data.price
-          setModalWholesalePrice1(false)
-          setDataModal([])
+          dataCreateProduct[indexVariant].wholesalePrice = data.price;
+          setModalWholesalePrice1(false);
+          setDataModal([]);
         }}
         dataAdd={dataModal}
       />
@@ -1473,8 +1761,8 @@ export const ProductCreateScreen: FC = (item) => {
         setIsVisible={() => setModalDescribe(false)}
         onCancel={() => setModalDescribe(false)}
         onConfirm={(data) => {
-          setDescription(data.Describe)
-          setModalDescribe(false)
+          setDescription(data.Describe);
+          setModalDescribe(false);
         }}
       />
       <UnitModal
@@ -1482,28 +1770,27 @@ export const ProductCreateScreen: FC = (item) => {
         isVisible={modalcreateUnit}
         setIsVisible={() => setModalcreateUnit(false)}
         onSave={(data) => {
-          setModalcreateUnit(false)
-          getListUnitGroup(false)
+          setModalcreateUnit(false);
+          getListUnitGroup(false);
         }}
         onSaveAndChange={(data) => {
-          setModalcreateUnit(false)
+          setModalcreateUnit(false);
           setUomId(data);
-          getListUnitGroup(false)
+          getListUnitGroup(false);
         }}
       />
-      <View
-        style={styles.viewGroupBtn}>
+      <View style={styles.viewGroupBtn}>
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack()
+            navigation.goBack();
           }}
           style={styles.viewBtnCancel}>
-          <Text tx={"common.cancel"} style={styles.textBtnCancel}/>
+          <Text tx={"common.cancel"} style={styles.textBtnCancel} />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={handleSubmit(submitAdd)}
           style={styles.viewBtnConfirm}>
-          <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm}/>
+          <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm} />
         </TouchableOpacity>
       </View>
     </View>

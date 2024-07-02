@@ -384,7 +384,7 @@ export const OrderDetails: FC = observer(
                     </View>
                     {dataPayment?.paymentResponses?.length > 0 || data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' ? (
                         <View style={styles.viewCash}>
-                            {dataPayment?.paymentResponses?.length > 0 ? ( 
+                            {dataPayment?.paymentResponses?.length > 0 ? (
                                 <View>
                                     {dataPayment.paymentResponses?.map((item: any) => (
                                         <View>
