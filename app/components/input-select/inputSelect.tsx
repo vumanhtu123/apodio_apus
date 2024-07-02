@@ -102,6 +102,7 @@ export function InputSelect(props: InputSelectProps) {
     onLoadMore,
     checkUse,
     onPressNotUse,
+    textStyle,
     handleOnSubmitSearch,
     onChangeText,
   } = props;
@@ -143,12 +144,12 @@ export function InputSelect(props: InputSelectProps) {
       dataDefault !== null &&
       dataDefault !== ""
     ) {
-    //   console.log("dataDefault---------------------------", dataDefault);
-    //   const dataChoiceItem = arrData.filter(
-    //     (item) => item.label !== dataDefault
-    //   );
-    //   setFilteredData(dataChoiceItem);
-    // } else {
+      //   console.log("dataDefault---------------------------", dataDefault);
+      //   const dataChoiceItem = arrData.filter(
+      //     (item) => item.label !== dataDefault
+      //   );
+      //   setFilteredData(dataChoiceItem);
+      // } else {
       setFilteredData(arrData);
     }
   }, [arrData]);
@@ -177,14 +178,19 @@ export function InputSelect(props: InputSelectProps) {
           <View>
             {dataDefault !== "" && dataDefault !== null ? (
               // <Text text={data || dataDefault} style={TEXTDATA} />
-              <Text text={dataDefault} style={TEXTDATA} />
+              <Text text={dataDefault} style={textStyle ?? TEXTDATA} />
             ) : (
               <Text text={hint} style={TEXTHINT} />
             )}
           </View>
         </View>
         {disabled === true ? null : (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20,
+            }}>
             <Images.dropDown />
           </View>
         )}

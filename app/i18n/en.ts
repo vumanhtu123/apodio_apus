@@ -664,6 +664,9 @@ const en = {
     addBank: "Thêm ngân hàng",
     weight: "Tải trọng",
     weightOriginal: "Tải trọng theo đơn vị gốc",
+    weightSpecified: "Trọng lượng",
+    weightConversion: "Tải trọng theo đơn vị quy đổi",
+    addLine: "Thêm dòng",
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
