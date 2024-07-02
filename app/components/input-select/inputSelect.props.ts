@@ -23,4 +23,5 @@ export interface InputSelectProps {
   handleOnSubmitSearch?: any;
   onChangeText?: any;
   textStyle?: TextStyle;
+  styleViewDropdown?: ViewStyle;
 }
