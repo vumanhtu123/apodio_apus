@@ -103,6 +103,7 @@ export function InputSelect(props: InputSelectProps) {
     checkUse,
     onPressNotUse,
     textStyle,
+    styleViewDropdown,
     handleOnSubmitSearch,
     onChangeText,
   } = props;
@@ -186,11 +187,13 @@ export function InputSelect(props: InputSelectProps) {
         </View>
         {disabled === true ? null : (
           <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 20,
-            }}>
+            style={
+              styleViewDropdown ?? {
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 15,
+              }
+            }>
             <Images.dropDown />
           </View>
         )}
