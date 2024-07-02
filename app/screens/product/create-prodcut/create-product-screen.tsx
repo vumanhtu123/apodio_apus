@@ -438,7 +438,7 @@ export const ProductCreateScreen: FC = (item) => {
           Dialog.show({
             type: ALERT_TYPE.DANGER,
             title: translate("txtDialog.txt_title_dialog"),
-            textBody: translate("imageUploadExceedLimitedSize"),
+            textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
             button: translate("common.ok"),
             closeOnOverlayTap: false
         })
@@ -712,7 +712,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const goToChooseSupplierScreen = () => {
     const listIds = selectedIds;
-    navigation.navigate("ChooseVendorScreen", { listIds, mode: 'create' });
+    navigation.navigate({name: "ChooseVendorScreen", params: { listIds, mode: 'create' }}as never);
   }
 
   const arrBrand = dataBrand.map((item) => {
@@ -1059,7 +1059,7 @@ export const ProductCreateScreen: FC = (item) => {
                 style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {
                   if (valueSwitchUnit) {
-                    navigation.navigate("createConversionGroup" as any)
+                    navigation.navigate("createConversionGroup" as never)
                   } else {
                     setModalcreateUnit(true)
                   }
@@ -1314,7 +1314,7 @@ export const ProductCreateScreen: FC = (item) => {
                 style={{ position: "absolute", right: 0, flexDirection: "row" }}>
                 {dataCreateProduct.length > 0 ? (
                   <TouchableOpacity onPress={() => {
-                    navigation.navigate('editAttribute' as never, { dataAttribute: attributeArr, dropdownSelected: dropdownSelected })
+                    navigation.navigate({name: 'editAttribute', params: { dataAttribute: attributeArr, dropdownSelected: dropdownSelected }}as never)
                   }}>
                     <Images.icon_edit
                       // style={{ marginRight: scaleWidth(8) }}
