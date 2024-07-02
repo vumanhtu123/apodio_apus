@@ -139,7 +139,7 @@ export interface Sort2 {
 export interface Response {
   message: string;
   traceId: string;
-  data: Root[];
+  data: Root;
   errorCodes: ErrorCode[];
 }
 export type OrderVariantResult =

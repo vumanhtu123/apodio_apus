@@ -72,6 +72,7 @@ export const OrderStoreModel = types
     checkRenderList: types.optional(types.boolean, false),
     isLoadMoreSelectClient: types.optional(types.boolean, false),
     clearingDebt: types.optional(types.boolean, false),
+    isReload : types.optional(types.boolean,false),
     dataAddress: types.optional(types.frozen<Root1>(), {
       id: 0,
       partnerId: 0,
@@ -190,7 +191,9 @@ export const OrderStoreModel = types
     setSortPriceList(sort: any) {
       self.sortPriceList = sort;
     },
-
+    setIsReload(reload : any) {
+      self.isReload = reload;
+    },
     // chú ý phải clear khi xong
     setDataPriceListSelect(value: any) {
       console.log("doanlog", value);
@@ -347,23 +350,23 @@ export const OrderStoreModel = types
       }
     }),
 
-    getListTagClient: flow(function * (
+    getListTagClient: flow(function* (
       activated: boolean
     ) {
       try {
         "TagClientResult-------------"
         const tagAPI = new SelectClientAPI(self.environment.apiErp)
-        const result : BaseResponse<TagList, ErrorCode> =
-        yield tagAPI.getListTagClient(
-          activated
-        );
+        const result: BaseResponse<TagList, ErrorCode> =
+          yield tagAPI.getListTagClient(
+            activated
+          );
         console.log(
           "TagClientResult-------------",
           JSON.stringify(result.data)
         );
         return result.data;
 
-      }catch(error){
+      } catch (error) {
         console.log("Get list Tag client Error", error);
       }
 
@@ -765,6 +768,23 @@ export const OrderStoreModel = types
         return result;
       }
     }),
+    printInvoice: flow(function* (id: number) {
+      console.log("check id", id);
+      const orderApi = new OrderApi(
+        self.environment.apiOrder,
+        self.environment.apiAccount
+      );
+      const result: OrderResult = yield orderApi.printInvoice(id);
+      // console.log('-----------dsa', result.response.errorCodes)
+
+      if (result.kind === "ok") {
+        console.log("order", result);
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
     createInvoice: flow(function* (invoiceAdd: any) {
       console.log("dataaaaaa", JSON.stringify(invoiceAdd));
       const orderApi = new OrderApi(
@@ -793,7 +813,7 @@ export const OrderStoreModel = types
       );
       try {
         const result: BaseResponse<TaxModel, ErrorCode> =
-          yield orderApi.getTaxList(type, scopeType, page , size);
+          yield orderApi.getTaxList(type, scopeType, page, size);
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
           console.log("tuvm getTax success");

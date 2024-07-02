@@ -37,7 +37,7 @@ import CustomCalendar from '../../../components/calendar';
 import ItemOrder from '../components/item-order';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useStores } from '../../../models';
-import { commasToDots, formatCurrency } from '../../../utils/validate';
+import { formatCurrency } from '../../../utils/validate';
 import { formatDateTime } from '../../../utils/formatDate';
 
 export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
@@ -105,29 +105,33 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     useEffect(() => {
       console.log("---------useEffect---------reload------------------");
       const unsubscribe = navigation.addListener('focus', () => {
-        if (isReload) {
+        if (orderStore.isReload === true) {
+          console.log("---------useEffect---------reload--------------xcxcx----");
           getListOrder()
+          orderStore.setIsReload(false)
         }
       });
       return unsubscribe;
     }, [navigation]);
     useEffect(() => {
       getListOrder(searchValue)
-    }, [selectedStatus, markedDatesS, markedDatesE , page])
+    }, [selectedStatus, page, markedDatesS, markedDatesE])
     // useEffect (()=>{
     //   console.log('firstzzz' , page)
     // },[page])
     const getListOrder = async (searchValue?: any,) => {
       try {
+        console.log('markedDatesSsssss', markedDatesS)
+        console.log('markedDatesEzzzssss', markedDatesE)
         const formattedMarkedDatesS = markedDatesS
-          ? moment(markedDatesS).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toISOString()
+          ? moment.utc(markedDatesS).set({ hour: 0, minute: 1, second: 0, millisecond: 0 }).toISOString()
           : null;
         const formattedMarkedDatesE = markedDatesE
-          ? moment(markedDatesE).set({ hour: 23, minute: 59, second: 59, millisecond: 0 }).toISOString()
+          ? moment.utc(markedDatesE).set({ hour: 23, minute: 59, second: 59, millisecond: 0 }).toISOString()
           : null;
         const response = await orderStore.getListOrder(
           page,
-          10,
+          20,
           selectedStatus,
           searchValue,
           formattedMarkedDatesS,
@@ -174,16 +178,16 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       }
     }
     function getInvoiceStateText(state: string) {
-      if (state === "NO") {
-        return "orderDetailScreen.no";
-      } else if (state === "TO_INVOICE") {
-        return "orderDetailScreen.toInvoice";
-      } else if (state === "PARTIAL_INVOICE") {
-        return "orderDetailScreen.partialInvoice";
-      } else if (state === "INVOICED") {
-        return "orderDetailScreen.invoiced";
+      if (state === 'NOT_PAYMENT') {
+        return 'orderDetailScreen.no';
+      } else if (state === 'REVERSE') {
+        return 'orderDetailScreen.toInvoice';
+      } else if (state === 'PARTIAL_PAYMENT') {
+        return 'orderDetailScreen.partialInvoice';
+      } else if (state === 'PAID') {
+        return 'orderDetailScreen.invoiced';
       } else {
-        return "";
+        return '';
       }
     }
     const onSelectStatus = (index: any) => {
@@ -197,7 +201,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       if (flatListRef.current) {
         flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
       }
-    }, [selectStatus])
+    }, [selectedStatus , markedDatesS ])
     const handleEndReached = () => {
       if (!isRefreshing && page < totalPages - 1) {
         setPage((prevPage) => prevPage + 1);
@@ -223,7 +227,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     return (
       <View style={styles.ROOT}>
         <Header
-          headerTx={"dashboard.orders"}
+          headerTx={"detailScreen.orders"}
           type={"AntDesign"}
           style={styles.header}
           titleStyle={styles.textHeader}
@@ -237,7 +241,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           searchValue={searchValue}
           handleOnSubmitSearch={handleSubmitSearch}
           onSearchValueChange={handleSearchValueChange}
-          rightText1={moment(markedDatesS === "" ? firstDayOfMonth : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? new Date() : markedDatesE).format("DD/MM/YYYY")}
+          rightText1={moment(markedDatesS === "" ? firstDayOfMonth : markedDatesS).format("DD/MM/YYYY") + " - " + moment(markedDatesE === "" ? '' : markedDatesE).format("DD/MM/YYYY")}
         />
         <View style={styles.viewSelect}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -292,7 +296,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
               title="ok"
             />
           }
-          renderItem={({ item , index }) => (
+          renderItem={({ item, index }) => (
             <ItemOrder
               onPress={() => handleDetailOrder(item.id)}
               name={item.partner?.name}
@@ -300,24 +304,24 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
               code={item.code}
               status={getOrderStateText(item.state)}
               amount={item.quantity}
-              discount={formatCurrency(commasToDots(item.amountDiscount))}
-              payStatus={getInvoiceStateText(item.invoiceStatus)}
+              discount={item.amountDiscount}
+              payStatus={getInvoiceStateText(item.paymentStatus)}
               // weight={item.weight}
-              totalAmount={formatCurrency(commasToDots(item.amountTotal))}
-              totalTax={formatCurrency(commasToDots(item.amountTax))}
+              totalAmount={item.amountTotal}
+              totalTax={item.amountTax}
               // money={formatCurrency(calculateTotalPrice(item))}
-              money={formatCurrency(commasToDots(item.amountTotalUnDiscount))}
+              money={item.amountTotalUnDiscount}
               styleViewStatus={{
                 backgroundColor:
                   item.state === "SALE"
                     ? colors.palette.solitude
                     : item.state === "SENT"
-                    ? colors.palette.floralWhite
-                    : item.state === "CANCEL"
-                    ? colors.palette.amour
-                    : item.state === "DONE"
-                    ? colors.palette.mintCream
-                    : "",
+                      ? colors.palette.floralWhite
+                      : item.state === "CANCEL"
+                        ? colors.palette.amour
+                        : item.state === "DONE"
+                          ? colors.palette.mintCream
+                          : "",
                 justifyContent: "center",
               }}
               styleTextStatus={{
@@ -325,22 +329,18 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
                   item.state === "SALE"
                     ? colors.palette.metallicBlue
                     : item.state === "SENT"
-                    ? colors.palette.yellow
-                    : item.state === "CANCEL"
-                    ? colors.palette.radicalRed
-                    : item.state === "DONE"
-                    ? colors.palette.malachite
-                    : "",
+                      ? colors.palette.yellow
+                      : item.state === "CANCEL"
+                        ? colors.palette.radicalRed
+                        : item.state === "DONE"
+                          ? colors.palette.malachite
+                          : "",
               }}
               styleTextPayStatus={{
-                color:
-                  item.invoiceStatus === "NO"
-                    ? colors.palette.darkTangerine
-                    : item.invoiceStatus === "PARTIAL_INVOICE"
-                    ? colors.palette.darkTangerine
-                    : item.invoiceStatus === "TO_INVOICE"
-                    ? colors.palette.darkTangerine
-                    : colors.palette.malachite,
+                color: item.paymentStatus === 'NOT_PAYMENT' ? colors.palette.darkTangerine :
+                  item.paymentStatus === 'PARTIAL_PAYMENT' ? colors.palette.malachite :
+                    item.paymentStatus === 'PAID' ? colors.palette.malachite :
+                      ''
               }}
             />
           )}
@@ -351,9 +351,15 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           handleReset={() => setIReset(!isReset)}
           handleShort={() => {
             // handleOrderMerchant()
-            setMarkedDatesE(timeEnd);
+            if (timeEnd == '') {
+              setMarkedDatesE(timeStart);
+            } else {
+              setMarkedDatesE(timeEnd);
+            }
             setMarkedDatesS(timeStart);
+            setArrData([])
             toggleModalDate();
+            // getListOrder(searchValue);
           }}
           onMarkedDatesChangeS={(
             markedDatesS: React.SetStateAction<string>
@@ -365,7 +371,12 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
             markedDatesE: React.SetStateAction<string>
           ) => {
             console.log("markedDatesE------", markedDatesE);
+            console.log("markedDatesSSSS------", markedDatesS);
+            // if (markedDatesE === '') {
+            //   setTimeEnd(markedDatesS);
+            // } else {
             setTimeEnd(markedDatesE);
+            // }
           }}
           isShowTabs={true}
           isSortByDate={isSortByDate}

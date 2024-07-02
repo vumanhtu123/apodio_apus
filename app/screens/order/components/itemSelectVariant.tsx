@@ -22,14 +22,12 @@ interface ItemSelectVariant {
     handleAddToCart: ({ }: any) => void,
     handleAddToCartPrice: ({ }: any) => void,
     uomGroupLine?: {},
-    selectUomPrice?: ({ }, { }) => void,
-    selectUom: ({ }, { }) => void,
     changeText: ({ }, { }) => void,
 }
 
 export function ItemSelectVariant(props: ItemSelectVariant) {
-    const { item, handleMinus, handleMinusPrice, handlePlusPrice, selectUomPrice, handlePlus, handleAddToCart, selectUom, changeText, handleAddToCartPrice } = props
-    const { orderStore } = useStores()
+    const { item, handleMinus, handleMinusPrice, handlePlusPrice, handlePlus, handleAddToCart, changeText, handleAddToCartPrice } = props
+    const { orderStore, vendorStore } = useStores()
     const [check, setCheck] = useState(false)
     const [isModal, setIsModal] = useState(false)
     const [arrData, setArrData] = useState([])
@@ -328,7 +326,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                 <PriceModal
                     isVisible={modalPrice}
                     setIsVisible={() => setModalPrice(false)}
-                    title={"productDetail.retailPrice"}
+                    // title={"productDetail.retailPrice"}
                     onCancel={() => {
                         setModalPrice(false);
                     }}
@@ -341,6 +339,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     titleTx={'selectPriceListApply.inputPrice'}
                     placeholder='Nhập giá'
                     titleInputTx={'productScreen.priceProduct'}
+                    rightText={vendorStore.companyInfo.symbol}
                 />
             </TouchableOpacity>
         )

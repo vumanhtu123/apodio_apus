@@ -139,19 +139,19 @@ export function InputSelect(props: InputSelectProps) {
     }
   };
   useEffect(() => {
-    if (
-      dataDefault !== undefined &&
-      dataDefault !== null &&
-      dataDefault !== ""
-    ) {
-      //   console.log("dataDefault---------------------------", dataDefault);
-      //   const dataChoiceItem = arrData.filter(
-      //     (item) => item.label !== dataDefault
-      //   );
-      //   setFilteredData(dataChoiceItem);
-      // } else {
-      setFilteredData(arrData);
-    }
+    // if (
+    //   dataDefault !== undefined &&
+    //   dataDefault !== null &&
+    //   dataDefault !== ""
+    // ) {
+    //   console.log("dataDefault---------------------------", dataDefault);
+    //   const dataChoiceItem = arrData.filter(
+    //     (item) => item.label !== dataDefault
+    //   );
+    //   setFilteredData(dataChoiceItem);
+    // } else {
+    setFilteredData(arrData);
+    // }
   }, [arrData]);
 
   return (
@@ -213,7 +213,11 @@ export function InputSelect(props: InputSelectProps) {
               {/* <Text text="chon ly do" /> */}
               {isSearch ? (
                 <TextInput
-                  style={{ fontSize: 16, fontWeight: "400" }}
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "400",
+                    paddingVertical: 0,
+                  }}
                   onChangeText={(text) => handleSearch(text)}
                   value={search}
                   placeholder="Tìm kiếm..."

@@ -30,7 +30,7 @@ import {
 import { useStores } from "../../../models";
 import { translate } from "../../../i18n";
 import { OrderCityResult } from "../../../models/order-store/order-address-model";
-import { formatPhoneNumber, phoneNumberPattern } from "../../../utils/validate";
+import { checkPhoneNumber, formatPhoneNumber, phoneNumberPattern } from "../../../utils/validate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
 
@@ -59,8 +59,8 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   const [searchDistrict, setSearchDistrict] = useState("");
   const [searchWards, setSearchWards] = useState("");
 
-  const dataEdit: Root1 = route?.params?.dataEdit
-  const screen = route?.params?.screen
+  // const dataEdit: Root1 = route?.params?.dataEdit 
+  const { screen, dataEdit }: any = route?.params
 
   const { control, reset, handleSubmit, setValue, formState: { errors }, setError } = useForm({
     defaultValues: { phone: '', address: '' },
@@ -243,44 +243,57 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   };
 
   const submitAdd = async (data: any) => {
-    if (
-      data.address === "" ||
-      data.phone === "" ||
-      city.id === 0 ||
-      district.id === 0 ||
-      wards.id === 0
-    ) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        textBody: translate('txtToats.required_information'),
+    let hasError = false
+    if (checkPhoneNumber(data.phone) !== true) {
+      setError("phone", {
+        type: "validate",
+        message: checkPhoneNumber(data.phone),
       });
+      hasError = true
+    }
+    if (hasError == true) {
     } else {
-      Keyboard.dismiss()
-      const newCountry = { id: 366, name: "Việt Nam" };
-      const newCity = { id: city.id, name: city.label };
-      const newDistrict = { id: district.id, name: district.label };
-      const newWard = { id: wards.id, name: wards.label };
-      const dataCreate = {
-        id: dataEdit !== undefined ? dataEdit.id : null,
-        partnerId: Number(orderStore.dataClientSelect.id),
-        phoneNumber: data.phone,
-        addressType: "DELIVERY_ADDRESS",
-        country: newCountry,
-        city: newCity,
-        district: newDistrict,
-        ward: newWard,
-        address: data.address,
-        isDefault: valueSwitch,
-      };
-      try {
-        const response = await orderStore.createAddress(dataCreate);
-        console.log(response)
+      if (
+        data.address === "" ||
+        data.phone === "" ||
+        city.id === 0 ||
+        district.id === 0 ||
+        wards.id === 0
+      ) {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          textBody: translate('txtToats.required_information'),
+        });
+      } else {
+        Keyboard.dismiss()
+        const newCountry = { id: 366, name: "Việt Nam" };
+        const newCity = { id: city.id, name: city.label };
+        const newDistrict = { id: district.id, name: district.label };
+        const newWard = { id: wards.id, name: wards.label };
+        const dataCreate = {
+          id: dataEdit !== undefined ? dataEdit.id : null,
+          partnerId: Number(orderStore.dataClientSelect.id),
+          phoneNumber: data.phone,
+          addressType: "DELIVERY_ADDRESS",
+          country: newCountry,
+          city: newCity,
+          district: newDistrict,
+          ward: newWard,
+          address: data.address,
+          isDefault: valueSwitch,
+        };
+        try {
+          const response = await orderStore.createAddress(dataCreate);
+          console.log(response)
 
-        if (response && response.kind === "ok") {
-          Toast.show({ type: ALERT_TYPE.SUCCESS, 
-            textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"), })
-            if(valueSwitch === true){
-              orderStore.setDataAddress({id: response.response.data.id, partnerId: Number(orderStore.dataClientSelect.id),
+          if (response && response.kind === "ok") {
+            Toast.show({
+              type: ALERT_TYPE.SUCCESS,
+              textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"),
+            })
+            if (valueSwitch === true) {
+              orderStore.setDataAddress({
+                id: response.response.data.id, partnerId: Number(orderStore.dataClientSelect.id),
                 phoneNumber: data.phone,
                 addressType: "DELIVERY_ADDRESS",
                 country: newCountry,
@@ -289,37 +302,41 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 district: newDistrict,
                 ward: newWard,
                 address: data.address,
-                isDefault: valueSwitch,})
+                isDefault: valueSwitch,
+              })
             }
             setTimeout(() => navigation.goBack(), 1000)
-          // Dialog.show({
-          //   type: ALERT_TYPE.INFO,
-          //   title: translate("productScreen.Notification"),
-          //   textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"),
-          //   button2: translate("productScreen.BtnNotificationAccept"),
-          //   closeOnOverlayTap: false,
-          //   onPressButton: () => {
-          //     navigation.goBack();
-          //     Dialog.hide();
-          //   },
-          // });
-        } else {
-          Toast.show({ type: ALERT_TYPE.SUCCESS, 
-            textBody: response.response.errorCodes[0].message })
-          // Dialog.show({
-          //   type: ALERT_TYPE.DANGER,
-          //   title: translate("txtDialog.txt_title_dialog"),
-          //   textBody: response.response.errorCodes[0].message,
-          //   button: translate("common.ok"),
-          //   closeOnOverlayTap: false,
-          // });
-          console.error(
-            "Failed to fetch categories:",
-            response.response.message
-          );
+            // Dialog.show({
+            //   type: ALERT_TYPE.INFO,
+            //   title: translate("productScreen.Notification"),
+            //   textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"),
+            //   button2: translate("productScreen.BtnNotificationAccept"),
+            //   closeOnOverlayTap: false,
+            //   onPressButton: () => {
+            //     navigation.goBack();
+            //     Dialog.hide();
+            //   },
+            // });
+          } else {
+            Toast.show({
+              type: ALERT_TYPE.SUCCESS,
+              textBody: response.response.errorCodes[0].message
+            })
+            // Dialog.show({
+            //   type: ALERT_TYPE.DANGER,
+            //   title: translate("txtDialog.txt_title_dialog"),
+            //   textBody: response.response.errorCodes[0].message,
+            //   button: translate("common.ok"),
+            //   closeOnOverlayTap: false,
+            // });
+            console.error(
+              "Failed to fetch categories:",
+              response.response.message
+            );
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
         }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
       }
     }
   };
@@ -350,8 +367,8 @@ export const NewDelivery: FC = observer(function NewDelivery() {
             render={({ field: { onChange, value, onBlur }, fieldState }) => (
               <TextField
                 keyboardType="numeric"
-                maxLength={10}
                 labelTx={"order.phone"}
+                maxLength={11}
                 style={styles.viewTextField}
                 inputStyle={{
                   marginBottom:
@@ -360,21 +377,13 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(value) => {
-                  onChange(value);
-                  if (phoneNumberPattern.test(value) === false) {
-                    setError("phone", {
-                      type: "validate",
-                      message: "Số điện thoại gồm 10 chữ số bắt đầu bằng số 0",
-                    });
-                  } else {
-                    setError("phone", null);
-                  }
+                  const filteredValue = value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+                  onChange(filteredValue)
                 }}
                 onClearText={() => onChange("")}
                 RightIconClear={Images.icon_delete2}
                 isImportant={true}
                 error={errors?.phone?.message}
-              // defaultValue={dataEdit !== undefined ? dataEdit.phoneNumber : ''}
               />
             )}
             name="phone"

@@ -5,6 +5,7 @@ import {
     FlatList,
     ImageBackground,
     NativeModules,
+    PermissionsAndroid,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -18,7 +19,7 @@ import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStores } from '../../../models';
-import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency } from '../../../utils/validate';
+import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency, formatVND } from '../../../utils/validate';
 import ProductAttribute from '../../product/component/productAttribute';
 import FastImage from 'react-native-fast-image';
 import RNFS from 'react-native-fs';
@@ -30,11 +31,12 @@ export const PrintInvoiceScreen: FC = observer(
         const navigation = useNavigation();
         const { orderStore, vendorStore } = useStores();
         const [data, setData] = useState<any>([]);
+        const [dataPrintInvoice, setDataPrintInvoice] = useState<any>([]);
         const [dataInfoCompany, setDataInfoCompany] = useState<any>([]);
         const route = useRoute()
         const invoiceId = route?.params?.invoiceId
         const { PrintManager } = NativeModules;
-
+        console.log('firstzzzzádfasf', invoiceId)
         const handleGetDetailInvoice = async () => {
             try {
                 const response = await orderStore.getDetailInvoice(invoiceId);
@@ -43,91 +45,98 @@ export const PrintInvoiceScreen: FC = observer(
                     console.log('dataDetailInvoice', JSON.stringify(data))
                     setData(data);
                 } else {
-                    console.error("Failed to fetch detail:", response);
+                    console.error("Failed to fetch detail Invoice:", response);
                 }
             } catch (error) {
-                console.error("Error fetching detail:", error);
+                console.error("Error fetching detail=== Invoice:", error);
             }
         };
-        const handleGetInfoCompany = async () => {
+        const handleGetPrintInvoice = async () => {
             try {
-                const response = await vendorStore.getInfoCompany();
-                console.log('INFO COMPANY', response)
+                const response = await orderStore.printInvoice(invoiceId);
                 if (response && response.kind === "ok") {
-                    // vendorStore.setCheckSeparator(response.result.data.thousandSeparator)
-                    setDataInfoCompany(response.result.data)
+                    const data = response.response.data;
+                    console.log('dataPrintInvoice', JSON.stringify(data))
+                    setDataPrintInvoice(data);
                 } else {
-                    console.error("Failed to fetch categories:", response.result.errorCodes);
+                    console.error("Failed to fetch print:", response);
                 }
             } catch (error) {
-                console.error("Error fetching categories:", error);
+                console.error("Error fetching print:", error);
             }
-
         };
-        const downloadAndPrintImage = async (imageUrl: any) => {
+
+
+          const downloadAndPrintFile = async (url: any, fileType: any) => {      
+            const extension = fileType === 'pdf' ? 'pdf' : 'jpg'; // Adjust this based on the expected file type
+            const localFilePath = `${RNFS.DocumentDirectoryPath}/downloaded_file.${extension}`;    
+            
             try {
-                // Đường dẫn tạm thời trên thiết bị
-                const localFilePath = `${RNFS.DocumentDirectoryPath}/tempimage.jpg`;
-
-                // Tải file ảnh từ URL về thiết bị
-                const downloadResult = await RNFS.downloadFile({
-                    fromUrl: imageUrl,
-                    toFile: localFilePath,
-                }).promise;
-
-                if (downloadResult.statusCode === 200) {
-                    console.log('Image downloaded to:', localFilePath);
-                    // Gọi hàm in với đường dẫn file cục bộ
-                    PrintManager.print(localFilePath);
-                } else {
-                    console.error('Image download failed:', downloadResult);
-                }
+              const downloadResult = await RNFS.downloadFile({
+                fromUrl: url,
+                toFile: localFilePath,
+              }).promise;
+          
+              if (downloadResult.statusCode === 200) {
+                console.log(`${fileType} downloaded to:`, localFilePath);
+                PrintManager.print(localFilePath, fileType);
+              } else {
+                console.error(`${fileType} download failed:`, downloadResult);
+              }
             } catch (error) {
-                console.error('Error downloading image:', error);
+              console.error(`Error downloading ${fileType}:`, error);
             }
-        };
+          };
+
         function groupTaxValues(dataTax: any[] | undefined) {
             if (dataTax === undefined) {
-              return [];
+                return [];
             }
-            
+
             const groupedTaxValues = dataTax.reduce((acc: { [x: string]: { taxName: any; taxId: any; amount: any; }; }, curr: { items: any[]; }) => {
-              curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
-                const key = item.taxId;
-                if (acc[key]) {
-                  acc[key].amount += item.amount;
-                } else {
-                  acc[key] = {
-                    taxName: item.taxName,
-                    taxId: key,
-                    amount: item.amount
-                  };
-                }
-              });
-              return acc;
+                curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
+                    const key = item.taxId;
+                    if (acc[key]) {
+                        acc[key].amount += item.amount;
+                    } else {
+                        acc[key] = {
+                            taxName: item.taxName,
+                            taxId: key,
+                            amount: item.amount
+                        };
+                    }
+                });
+                return acc;
             }, {});
-            
+
             return Object.values(groupedTaxValues);
-          }
-          
+        }
+
         useEffect(() => {
             handleGetDetailInvoice()
-            handleGetInfoCompany()
+            handleGetPrintInvoice()
+            // handleGetInfoCompany()
         }, []);
-        const renderItem = ({ item }: any) => (
-            <View style={styles.row}>
-                <View style={{ flexDirection: 'row', marginVertical: scaleHeight(15) }}>
-                    <View style={styles.cell}>
-                        <Text style={styles.sanPhamText}>{item.product.name}</Text>
+        function RenderItem({ item }: any) {
+            return (
+                <View style={styles.row}>
+                    <View style={{ flexDirection: 'row', marginVertical: scaleHeight(15) }}>
+                        <View style={styles.cell}>
+                            <Text style={styles.sanPhamText}>{item.item?.product?.name}</Text>
+                        </View>
+                        <Text style={styles.cellUnitPrice}>{formatVND(formatCurrency(commasToDots(item.item?.unitPrice)))}</Text>
+                        <Text style={styles.cellAmount}>
+                            {item.item?.quantity} <Text style={{ fontSize: fontSize.size12 }}>{item?.item?.uom?.name}</Text>
+                        </Text>
+                        <Text style={styles.cellMoney}>
+                            {formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.item?.unitPrice, item.item?.quantity))))}
+                        </Text>
                     </View>
-                    <Text style={styles.cellUnitPrice}>{formatCurrency(commasToDots(item.unitPrice))}</Text>
-                    <Text style={styles.cellAmount}>
-                        {item.quantity} <Text style={{ fontSize: fontSize.size12 }}>
-                            {item.uom.name}</Text></Text>
-                    <Text style={styles.cellMoney}>{formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity)))}</Text>
                 </View>
-            </View>
-        );
+            );
+        }
+
+        // );
         const HeaderList = () => (
             <View style={styles.headerRow}>
                 <View style={{ flexDirection: 'row', marginBottom: scaleHeight(15) }}>
@@ -152,34 +161,38 @@ export const PrintInvoiceScreen: FC = observer(
                     <View style={{ marginHorizontal: scaleWidth(16) }}>
                         <View style={{ marginTop: 20, flexDirection: 'row' }}>
                             {/* <Images.icon_QRCode width={80} height={80} /> */}
-                            <ImageBackground
-                                style={{ width: scaleWidth(80), height: scaleHeight(80) }}
-                                imageStyle={{
-                                    borderRadius: 20,
-                                }}
-                                source={require("../../../../assets/Images/no_images.png")}>
+                            {vendorStore?.companyInfo?.logo == '' ? (
+                                <ImageBackground
+                                    style={{ width: scaleWidth(80), height: scaleHeight(80) }}
+                                    imageStyle={{
+                                        borderRadius: 20,
+                                    }}
+                                    source={require("../../../../assets/Images/no_images.png")}>
+                                </ImageBackground>
+
+                            ) : (
                                 <FastImage
                                     style={{
                                         width: scaleWidth(80),
                                         height: scaleHeight(80),
                                     }}
-                                    // resizeMode='cover'
+                                    resizeMode='contain'
                                     source={{
-                                        uri: dataInfoCompany.logo,
+                                        uri: vendorStore?.companyInfo?.logo,
                                         cache: FastImage.cacheControl.immutable,
                                     }}
                                     defaultSource={require("../../../../assets/Images/no_images.png")}
                                 />
-                            </ImageBackground>
+                            )}
                             <View style={styles.infoContainer}>
-                                <Text style={styles.companyName}>{dataInfoCompany.name}</Text>
+                                <Text style={styles.companyName}>{vendorStore?.companyInfo?.name}</Text>
                                 {/* <Text style={styles.textInfo} >www.apodio.com.vn</Text> */}
-                                <Text style={styles.textInfo}>{dataInfoCompany.phone}</Text>
+                                <Text style={styles.textInfo}>{vendorStore?.companyInfo?.phone}</Text>
                                 <Text style={styles.textInfo}>
-                                    {dataInfoCompany?.address ? dataInfoCompany?.address + " " : ""}
-                                    {dataInfoCompany?.ward ? dataInfoCompany.ward + ", " : ""}
-                                    {dataInfoCompany.district ? dataInfoCompany.district + ", " : ""}
-                                    {dataInfoCompany.city ? dataInfoCompany.city : ""}
+                                    {vendorStore?.companyInfo?.address ? vendorStore?.companyInfo?.address + " " : ""}
+                                    {vendorStore?.companyInfo?.ward ? vendorStore?.companyInfo?.ward + ", " : ""}
+                                    {vendorStore?.companyInfo?.district ? vendorStore?.companyInfo?.district + ", " : ""}
+                                    {vendorStore?.companyInfo?.city ? vendorStore?.companyInfo?.city : ""}
                                 </Text>
                             </View>
                         </View>
@@ -216,8 +229,9 @@ export const PrintInvoiceScreen: FC = observer(
                             <HeaderList />
                             <FlatList
                                 data={data.invoiceLines}
-                                renderItem={renderItem}
+                                renderItem={item => <RenderItem item={item} />}
                                 scrollEnabled={false}
+                                // extraData={data.invoiceLines}
                                 keyExtractor={(item, index) => index.toString()}
                             />
                         </View>
@@ -232,27 +246,27 @@ export const PrintInvoiceScreen: FC = observer(
                             ))} */}
                             <ProductAttribute
                                 labelTx="printInvoiceScreen.amountUntaxed"
-                                value={formatCurrency(commasToDots(calculateTotalPrice(data.invoiceLines)))}
+                                value={formatVND(formatCurrency(commasToDots(calculateTotalPrice(data.invoiceLines))))}
                             />
                             <ProductAttribute
                                 labelTx="dashboard.promotions"
-                                value={formatCurrency(commasToDots(calculateTotalDiscount(data.invoiceLines)))}
+                                value={formatVND(formatCurrency(commasToDots(calculateTotalDiscount(data.invoiceLines))))}
                             />
-                            { groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
-                                
+                            {groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
+
                                 <ProductAttribute
                                     label={item.taxName}
-                                    value={formatCurrency(commasToDots(item.amount))}
+                                    value={formatVND(formatCurrency(commasToDots(item.amount)))}
                                 />
-                          
-                        ))}
+
+                            ))}
                             {/* <ProductAttribute
                                 labelTx="printInvoiceScreen.amountUntaxed"
                                 value={formatCurrency(data.amountUntaxed)}
                             /> */}
                             <ProductAttribute
                                 labelTx="printInvoiceScreen.totalPrice"
-                                value={formatCurrency(commasToDots(data.amountTotal))}
+                                value={formatVND(formatCurrency(commasToDots(data.amountTotal)))}
                             />
                         </View>
                     </View>
@@ -261,10 +275,16 @@ export const PrintInvoiceScreen: FC = observer(
                     tx={"printInvoiceScreen.printInvoice"}
                     style={styles.viewButton}
                     textStyle={styles.textButton}
-                    onPress={() =>
-                        downloadAndPrintImage(
-                            'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
-                        )
+                    
+                    onPress={() => {
+                        console.log('firstzzz', dataPrintInvoice?.url)
+                        
+                        downloadAndPrintFile(dataPrintInvoice?.url, 'pdf')
+                        // downloadAndPrintFile(
+                        //     'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
+                        //     'image',
+                        //   )
+                    }
                     }
                 />
             </View>

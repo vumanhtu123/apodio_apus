@@ -718,9 +718,9 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   };
   const handleProductDetail = (idProduct: number) => {
     productStore.setSelectedProductId(idProduct);
-    navigation.navigate("selectVariant" as never, {
+    navigation.navigate({name: "selectVariant" as never, params:{
       productTemplateId: idProduct,
-    });
+    }} as never);
   };
   const handleClassifyDetail = (idProduct: number) => {
     productStore.setSelectedProductId(idProduct);

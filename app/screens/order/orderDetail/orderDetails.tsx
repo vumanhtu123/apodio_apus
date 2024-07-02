@@ -11,9 +11,10 @@ import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import { formatDateTime } from "../../../utils/formatDate";
-import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency } from "../../../utils/validate";
+import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 import ItemOrder from "../components/item-order";
 import { styles } from "./styles";
+import ProductAttribute from "../../product/component/productAttribute";
 export const OrderDetails: FC = observer(
     function OrderDetails(props) {
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
@@ -25,10 +26,6 @@ export const OrderDetails: FC = observer(
         const [stateAllow, setStateAllow] = useState<any>(false);
         const [invoiceId, setInvoiceId] = useState<any>(null);
 
-        useEffect(() => {
-            console.log('id', orderId)
-            // console.log('first' , stateAllow)
-        })
         const handleGetDetailInvoice = async (id: any) => {
             try {
                 const response = await orderStore.getDetailInvoice(id);
@@ -37,7 +34,7 @@ export const OrderDetails: FC = observer(
                     console.log('dataDetailInvoice', JSON.stringify(data))
                     setDataPayment(data);
                 } else {
-                    console.error("Failed to fetch Invoice:", response);
+                    console.error("Failed to fetch Detail Invoice:", response);
                 }
             } catch (error) {
                 console.error("Error fetching detail:", error);
@@ -52,6 +49,7 @@ export const OrderDetails: FC = observer(
                     console.log('dataDetail', JSON.stringify(data))
                     setData(data);
                     setInvoiceId(data.invoiceIds[0])
+                    handleGetDetailInvoice(data.invoiceIds[0])
                     console.log('zzzzzzzzzzzzzzz', data.invoiceIds[0])
                 } else {
                     console.error("Failed to fetch detail:", response);
@@ -60,7 +58,6 @@ export const OrderDetails: FC = observer(
                 console.error("Error fetching detail:", error);
             }
         };
-
         const handleGetStateAllow = async () => {
             try {
                 const response = await orderStore.stateAllow(orderId);
@@ -113,15 +110,15 @@ export const OrderDetails: FC = observer(
             handleGetDetailOrder()
             handleGetStateAllow()
         }, [orderId]);
-        useEffect(() => {
-            handleGetDetailInvoice(invoiceId)
-        }, [invoiceId]);
+        // useEffect(() => {
+        //     handleGetDetailInvoice(invoiceId)
+        // }, [invoiceId]);
         useEffect(() => {
             console.log("---------useEffect---------reload------------------");
             const unsubscribe = navigation.addListener('focus', () => {
                 handleGetDetailOrder()
+                // handleGetDetailInvoice(invoiceId)
             });
-
             return unsubscribe;
         }, [navigation]);
         const dataStatus = [
@@ -130,7 +127,6 @@ export const OrderDetails: FC = observer(
             { status: 'Đang vận chuyển', complete: true },
             { status: 'Đã giao thành công', complete: false },
         ];
-
         const OrderStatusItem = ({ item, isLastStep }: any) => {
             return (
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: scaleHeight(12) }}>
@@ -178,11 +174,11 @@ export const OrderDetails: FC = observer(
                     // onRightPress2={() => navigation.navigate('printInvoiceScreen' as never, { invoiceId: invoiceId })}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
                     onRightPress1={() => {
-                        navigation.navigate('newAndEditOrder', { newData: data, screen: 'copy' })
+                        navigation.navigate({name: 'newAndEditOrder',params: { newData: data, screen: 'copy' }}as never)
                         orderStore.setCheckRenderList(true)
                     }}
                     onRightPress={() => {
-                        navigation.navigate('newAndEditOrder', { newData: data, screen: 'edit' })
+                        navigation.navigate({name: 'newAndEditOrder',params: { newData: data, screen: 'edit' }}as never)
                         orderStore.setCheckRenderList(true)
                     }}
                     titleMiddleStyle={styles.titleHeader}
@@ -233,24 +229,28 @@ export const OrderDetails: FC = observer(
                         }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <View style={{ flex: 1 }} >
-                                    <Text text={formatCurrency(commasToDots(data?.totalPrice))} />
+                                    <Text text={formatVND(formatCurrency(commasToDots(data?.totalPrice)))} />
                                 </View>
-                                <Button
-                                    tx={invoiceId ? 'order.showInvoiceDetail' : 'order.sendInvoice'} // Conditional text
-                                    onPress={() => {
-                                        if (invoiceId) {
-                                            navigation.navigate('printInvoiceScreen', { invoiceId: invoiceId })// Pass the first invoice ID
-                                        } else {
-                                            navigation.navigate('newInvoice' as never);
-                                        }
-                                    }}
-                                    style={styles.buttonSend}
-                                />
+                                {data.state !== 'CANCEL' ?
+                                    <Button
+                                        tx={dataPayment.isWithInvoice ? 'order.showInvoiceDetail' : 'order.sendInvoice'} // Conditional text
+                                        // tx='order.sendInvoice' // Conditional text
+                                        onPress={() => {
+                                            if (dataPayment.isWithInvoice) {
+                                                navigation.navigate({name: 'printInvoiceScreen', params: { invoiceId: invoiceId }}as never)// Pass the first invoice ID
+                                            } else {
+                                                navigation.navigate('newInvoice' as never);
+                                            }
+                                        }}
+                                        style={styles.buttonSend}
+                                    />
+                                    : null
+                                }
                             </View>
                             <Text tx={getInvoiceStateText(data.paymentStatus)} style={[styles.textPayStatus2, {
-                                color: data.invoiceStatus === 'NO' ? colors.palette.darkTangerine :
-                                    data.invoiceStatus === 'PARTIAL_INVOICE' ? colors.palette.darkTangerine :
-                                        data.invoiceStatus === 'TO_INVOICE' ? colors.palette.darkTangerine :
+                                color: data.paymentStatus === 'NOT_PAYMENT' ? colors.palette.darkTangerine :
+                                    data.paymentStatus === 'PARTIAL_PAYMENT' ? colors.palette.malachite :
+                                        data.paymentStatus === 'PAID' ? colors.palette.malachite :
                                             colors.palette.malachite
                             }]} />
                         </View>
@@ -289,7 +289,7 @@ export const OrderDetails: FC = observer(
                             <View style={{ marginTop: scaleHeight(margin.margin_15) }}>
                                 <Text text={data?.partner?.name} style={[styles.textMoney2, {
                                     lineHeight: scaleHeight(14.52),
-                                    marginBottom: scaleHeight(margin.margin_8)
+                                    marginBottom: scaleHeight(margin.margin_8),
                                 }]} />
                                 <Text text={data.deliveryAddress?.phoneNumber} style={[styles.textMoney2, {
                                     lineHeight: scaleHeight(14.52),
@@ -342,20 +342,26 @@ export const OrderDetails: FC = observer(
                                                 <Text text={item.quantity} style={styles.textListProduct} />
                                             </View>
                                         </View>
-                                        <View>
-                                            <Text text={formatCurrency(commasToDots(item.amountUntaxed))} style={styles.textListProduct} />
-                                            <Text text={formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity)))} style={styles.priceOriginal} />
-                                        </View>
+                                        {item.discount !== 0 ? (
+                                            <View>
+                                                <Text text={formatVND(formatCurrency(commasToDots(item.amountUntaxed)))} style={styles.textListProduct} />
+                                                <Text text={formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity))))} style={styles.priceOriginal} />
+                                            </View>
+                                        ) : (
+                                            <View>
+                                                <Text text={formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity))))} style={[styles.priceOriginal, { textDecorationLine: 'none', color: colors.palette.nero , fontWeight :'600' }]} />
+                                            </View>
+                                        )}
                                     </TouchableOpacity>
                                 )
                             })
                         }
                     </View>
                     <ItemOrder
-                        money={formatCurrency(commasToDots(calculateTotalPrice(data.saleOrderLines)))}
+                        money={calculateTotalPrice(data.saleOrderLines)}
                         // totalTax={formatCurrency(data.computeTaxInfo?.taxLines?.[0]?.amount)}
-                        discount={formatCurrency(commasToDots(calculateTotalDiscount(data.saleOrderLines)))}
-                        totalAmount={formatCurrency(commasToDots(data?.totalPrice))}
+                        discount={calculateTotalDiscount(data.saleOrderLines)}
+                        totalAmount={data?.totalPrice}
                         // weight={data?.weight}
                         // payStatus={data?.payStatus}
                         dataTax={data.computeTaxInfo?.taxLines}
@@ -368,33 +374,81 @@ export const OrderDetails: FC = observer(
                     <View style={styles.viewDateMoney}>
                         <Text tx={'order.sellerConfirm'} style={[styles.textDateMoney, { flex: 1 }]} />
                         <Text tx={getInvoiceStateText(data.paymentStatus)} style={[styles.textPayStatus2, {
-                            color: data.invoiceStatus === 'NO' ? colors.palette.darkTangerine :
-                                data.invoiceStatus === 'PARTIAL_INVOICE' ? colors.palette.darkTangerine :
-                                    data.invoiceStatus === 'TO_INVOICE' ? colors.palette.darkTangerine :
+                            color: data.paymentStatus === 'NOT_PAYMENT' ? colors.palette.darkTangerine :
+                                data.paymentStatus === 'PARTIAL_PAYMENT' ? colors.palette.malachite :
+                                    data.paymentStatus === 'PAID' ? colors.palette.malachite :
                                         colors.palette.malachite
                         }]} />
                     </View>
-                    {/* {dataPayment?.paymentResponses?.lengh > 0 ? ( */}
+                    {dataPayment?.paymentResponses?.length > 0 ? (
                         <View style={styles.viewCash}>
                             {dataPayment.paymentResponses?.map((item: any) => (
-                                <View style={{
-                                    flexDirection: 'row', alignItems: 'center',
-                                    marginBottom: scaleHeight(margin.margin_15)
-                                }}>
-                                    <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                        <Text text={item.timePayment} style={styles.textContent} />
+                                <View>
+                                    <View style={[styles.viewStatus,
+                                    {
+                                        backgroundColor: colors.palette.mintCream,
+                                        width: scaleWidth(75),
+                                        alignItems: 'center',
+                                        paddingVertical: scaleHeight(2),
+                                        // paddingHorizontal : scaleHeight(6),
+
+                                    }]}>
+                                        <Text style={
+                                            [styles.textStatus, {
+                                                color: colors.palette.malachite
+                                            }]
+                                        } tx={'orderDetailScreen.invoiced'} />
                                     </View>
-                                    <View style={styles.viewLineCash}>
-                                        <Images.icon_ellipse />
-                                    </View>
-                                    <View style={styles.viewTextCash}>
-                                        <Text text={item.paymentPopUpResponse?.paymentMethod} style={[styles.textContent, { flex: 1 }]} />
-                                        <Text text={formatCurrency(commasToDots(item.amount))} />
+                                    <View style={{
+                                        flexDirection: 'row', alignItems: 'center',
+                                        marginBottom: scaleHeight(margin.margin_15)
+                                    }}>
+                                        <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                            <Text text={item.timePayment} style={styles.textContent} />
+                                        </View>
+                                        <View style={styles.viewLineCash}>
+                                            <Images.icon_ellipse />
+                                        </View>
+                                        <View style={styles.viewTextCash}>
+                                            <Text tx={item.paymentPopUpResponse?.paymentMethod === 'CASH' ? 'orderDetailScreen.cash' : ''} style={[styles.textContent, { flex: 1 }]} />
+                                            <Text text={formatVND(formatCurrency(commasToDots(item.amount)))} />
+                                        </View>
                                     </View>
                                 </View>
                             ))}
+                            {dataPayment.moneyPaid > 0 ? (
+                                <View >
+                                    <View style={{ margin: 0 }}>
+                                        <Text style={
+                                            [styles.textStatus, {
+                                                color: colors.palette.yellow,
+                                                width: scaleWidth(50),
+                                                // padding : 0,
+                                                paddingVertical: scaleHeight(2),
+                                                textAlign: 'center',
+                                                backgroundColor: colors.palette.yallowExDG,
+                                            }]
+                                        } tx={'orderDetailScreen.outstanding'} />
+                                    </View>
+                                    <View style={{
+                                        flexDirection: 'row', alignItems: 'center',
+                                        marginBottom: scaleHeight(margin.margin_15)
+                                    }}>
+                                        <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                            <Text text={dataPayment.paymentResponses[dataPayment.paymentResponses.length - 1].timePayment} style={styles.textContent} />
+                                        </View>
+                                        <View style={styles.viewLineCash}>
+                                            <Images.icon_ellipse />
+                                        </View>
+                                        <View style={[styles.viewTextCash, { flexDirection: 'row-reverse' }]}>
+                                            <Text text={formatVND(formatCurrency(commasToDots(dataPayment.moneyPaid)))} />
+                                        </View>
+                                    </View>
+                                </View>
+                            ) : null}
+                            {/* <ProductAttribute textStyle={{color : 'red'}} label="Còn phải trả" value={} /> */}
                         </View>
-                    {/* ) : null} */}
+                    ) : null}
                     <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)} style={{
                         paddingHorizontal: scaleWidth(padding.padding_16),
                         backgroundColor: colors.palette.neutral100,
