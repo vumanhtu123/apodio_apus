@@ -1222,6 +1222,7 @@ export const ProductCreateScreen: FC = (item) => {
                 />
               </TouchableOpacity>
             </View>
+            <ItemWeight />
             {valueSwitchUnit ? (
               <>
                 <View style={styles.viewLineSwitchUnit}>

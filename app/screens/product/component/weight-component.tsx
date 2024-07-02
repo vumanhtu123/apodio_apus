@@ -21,13 +21,13 @@ export default function ItemWeight(props: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      users: [{ firstName: "", lastName: "" }],
+      weight: [{ weight1: "", volume: "" }],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "users",
+    name: "weight",
   });
 
   console.log("data -0-", fields);
@@ -48,7 +48,6 @@ export default function ItemWeight(props: any) {
             color: "#242424",
             fontWeight: "700",
             fontSize: 14,
-            paddingHorizontal: 20,
           }}></Text>
         <Text
           tx="productScreen.weightOriginal"
@@ -57,7 +56,6 @@ export default function ItemWeight(props: any) {
             fontWeight: "400",
             color: "#242424",
             marginVertical: 15,
-            paddingHorizontal: 20,
           }}></Text>
         <ItemOriginal />
         <View
@@ -65,7 +63,6 @@ export default function ItemWeight(props: any) {
             justifyContent: "space-between",
             flexDirection: "row",
             marginVertical: 10,
-            marginHorizontal: 20,
           }}>
           <Text
             style={{
@@ -76,7 +73,7 @@ export default function ItemWeight(props: any) {
             tx="productScreen.weightConversion"></Text>
           <TouchableOpacity
             onPress={() => {
-              append({ firstName: "", lastName: "" });
+              append({ weight1: "", volume: "" });
             }}>
             <Text
               style={{
@@ -95,7 +92,7 @@ export default function ItemWeight(props: any) {
           return (
             <ItemConversion
               control={control}
-              index={null}
+              index={index}
               data={null}
               description={"(3 thùng)"}
               remove={() => {
@@ -123,13 +120,12 @@ const ItemOriginal = (item: any) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginLeft: 25,
         marginRight: 6,
       }}>
       <Text style={{ color: "#000000", fontSize: 12, fontWeight: "400" }}>
         {item.name ?? "Hộp"}
       </Text>
-      <View style={{ marginLeft: 50 }}>
+      <View style={{ marginLeft: scaleWidth(50) }}>
         <Controller
           control={control}
           render={({ field: { onChange, value, onBlur } }) => (
@@ -152,7 +148,7 @@ const ItemOriginal = (item: any) => {
                 color: "#747475",
                 fontSize: 12,
                 fontWeight: "500",
-                marginTop: 20,
+                marginTop: scaleHeight(20),
               }}
               error={""}
               onClearText={() => {
@@ -167,8 +163,8 @@ const ItemOriginal = (item: any) => {
           defaultValue={""}
           // Account test
           // defaultValue={"67076743544"}
-          name="valueEmailPhone"
-          rules={{ required: "Username is required" }}
+          name="weightOriginal"
+          // rules={{ required: "Username is required" }}
         />
       </View>
       <Controller
@@ -193,7 +189,7 @@ const ItemOriginal = (item: any) => {
               color: "#747475",
               fontSize: 12,
               fontWeight: "500",
-              marginTop: 20,
+              marginTop: scaleHeight(20),
             }}
             error={""}
             onClearText={() => {
@@ -208,8 +204,8 @@ const ItemOriginal = (item: any) => {
         defaultValue={""}
         // Account test
         // defaultValue={"67076743544"}
-        name="valueEmailPhone"
-        rules={{ required: "Username is required" }}
+        name="volumeOriginal"
+        // rules={{ required: "Username is required" }}
       />
     </View>
   );
@@ -223,7 +219,7 @@ const ItemConversion = (item: InputSelectProps) => {
         flexDirection: "row",
         justifyContent: "space-between",
         backgroundColor: "#FFFFFF",
-        marginHorizontal: 6,
+        // marginHorizontal: 6,
       }}>
       {item.fields?.length >= 0 ? (
         <View
@@ -232,7 +228,7 @@ const ItemConversion = (item: InputSelectProps) => {
             alignItems: "flex-end",
           }}>
           <TouchableOpacity
-            style={{ marginBottom: 20 }}
+            style={{ marginBottom: scaleHeight(20) }}
             onPress={() => {
               item.remove();
             }}>
@@ -243,12 +239,16 @@ const ItemConversion = (item: InputSelectProps) => {
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {}}>
-            <View style={{ flexDirection: "column", marginBottom: 10 }}>
+            <View
+              style={{
+                flexDirection: "column",
+                marginBottom: scaleHeight(10),
+              }}>
               <InputSelect
-                textStyle={{ fontSize: 12, marginTop: 10 }}
+                textStyle={{ fontSize: 12, marginTop: scaleHeight(10) }}
                 styleView={{
                   backgroundColor: "transparent",
-                  width: 80,
+                  width: scaleHeight(60),
                   paddingHorizontal: 4,
                   paddingVertical: 2,
                 }}
@@ -269,84 +269,87 @@ const ItemConversion = (item: InputSelectProps) => {
           </TouchableOpacity>
         </View>
       ) : null}
-      <Controller
-        control={item.control}
-        render={({ field: { onChange, value, onBlur } }) => (
-          <TextField
-            styleTextLabel={true}
-            keyboardType={null}
-            labelTx={"productScreen.weightSpecified"}
-            style={{
-              marginBottom: scaleHeight(10),
-              width: scaleWidth(122),
-            }}
-            value={value}
-            onBlur={onBlur}
-            RightIconClear={null}
-            RightIconShow={null}
-            valueTextRight="Kg"
-            styleTextRight={{
-              color: "#747475",
-              fontSize: 12,
-              fontWeight: "500",
-              marginTop: 20,
-            }}
-            error={""}
-            onClearText={() => {
-              onChange("");
-            }}
-            onChangeText={(value) => {
-              onChange(value);
-            }}
-          />
-        )}
-        // Account test setup new pin
-        defaultValue={""}
-        // Account test
-        // defaultValue={"67076743544"}
-        name={`users.${item.index}.firstName`}
-        rules={{ required: "Username is required" }}
-      />
-      <Controller
-        control={item.control}
-        render={({ field: { onChange, value, onBlur } }) => (
-          <TextField
-            styleTextLabel={true}
-            keyboardType={null}
-            labelTx={"productScreen.weightSpecified"}
-            style={{
-              marginBottom: scaleHeight(10),
-              // marginTop: scaleHeight(20),
-              width: scaleWidth(122),
-            }}
-            value={value}
-            onBlur={onBlur}
-            // RightIconClear={Images.icon_delete2}
-            RightIconClear={null}
-            RightIconShow={null}
-            valueTextRight="m3"
-            styleTextRight={{
-              color: "#747475",
-              fontSize: 12,
-              fontWeight: "500",
-              marginTop: 20,
-            }}
-            error={""}
-            onClearText={() => {
-              onChange("");
-            }}
-            onChangeText={(value) => {
-              onChange(value);
-            }}
-          />
-        )}
-        // Account test setup new pin
-        defaultValue={""}
-        // Account test
-        // defaultValue={"67076743544"}
-        name={`users.${item.index}.lastName`}
-        rules={{ required: "Username is required" }}
-      />
+      <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
+        <Controller
+          control={item.control}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextField
+              styleTextLabel={true}
+              keyboardType={null}
+              labelTx={"productScreen.weightSpecified"}
+              style={{
+                marginBottom: scaleHeight(10),
+                width: scaleWidth(122),
+              }}
+              value={value}
+              onBlur={onBlur}
+              RightIconClear={null}
+              RightIconShow={null}
+              valueTextRight="Kg"
+              styleTextRight={{
+                color: "#747475",
+                fontSize: 12,
+                fontWeight: "500",
+                marginTop: scaleHeight(20),
+              }}
+              error={""}
+              onClearText={() => {
+                onChange("");
+              }}
+              onChangeText={(value) => {
+                onChange(value);
+              }}
+            />
+          )}
+          // Account test setup new pin
+          defaultValue={""}
+          // Account test
+          // defaultValue={"67076743544"}
+          name={`weight.${item.index}.weight1`}
+          rules={{ required: "Username is required" }}
+        />
+        <View style={{ width: scaleWidth(15) }}></View>
+        <Controller
+          control={item.control}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <TextField
+              styleTextLabel={true}
+              keyboardType={null}
+              labelTx={"productScreen.weightSpecified"}
+              style={{
+                marginBottom: scaleHeight(10),
+                // marginTop: scaleHeight(20),
+                width: scaleWidth(122),
+              }}
+              value={value}
+              onBlur={onBlur}
+              // RightIconClear={Images.icon_delete2}
+              RightIconClear={null}
+              RightIconShow={null}
+              valueTextRight="m3"
+              styleTextRight={{
+                color: "#747475",
+                fontSize: 12,
+                fontWeight: "500",
+                marginTop: scaleHeight(20),
+              }}
+              error={""}
+              onClearText={() => {
+                onChange("");
+              }}
+              onChangeText={(value) => {
+                onChange(value);
+              }}
+            />
+          )}
+          // Account test setup new pin
+          defaultValue={""}
+          // Account test
+          // defaultValue={"67076743544"}
+          name={`weight.${item.index}.volume`}
+          // rules={{ required: "Username is required" }}
+        />
+      </View>
     </View>
   );
 };
