@@ -19,6 +19,8 @@ import { Text } from "../../../components";
 import { TurboModuleRegistry } from "react-native-windows";
 import { useStores } from "../../../models";
 import AutoHeightImage from "react-native-auto-height-image";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
+import { translate } from "../../../i18n";
 
 const RenderOrderItem = ({
   item,
@@ -194,7 +196,24 @@ const RenderOrderItem = ({
                   borderRadius: 8,
                 }}>
                 <TouchableOpacity
-                  onPress={() => handleMinus(item)}
+                  onPress={() => {
+                    if(item.amount == item.minQuantity){
+                      Dialog.show({
+                        type: ALERT_TYPE.INFO,
+                        title: translate("productScreen.Notification"),
+                        textBody: "SL tối thiểu cần bán là " + item.minQuantity + " " + item.saleUom.name + ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
+                        button: translate("productScreen.cancel"),
+                        button2: translate("productScreen.BtnNotificationAccept"),
+                        closeOnOverlayTap: false,
+                        onPressButton: () => {
+                          handleMinus(item)
+                          Dialog.hide();
+                        },
+                      });
+                    }else{
+                      handleMinus(item)
+                    }
+                  }}
                   // disabled={
                   //   orderStore.checkPriceList === true
                   //     ? item.amount === item.minQuantity ||
@@ -405,7 +424,24 @@ const RenderOrderItem = ({
                   borderRadius: 8,
                 }}>
                 <TouchableOpacity
-                  onPress={() => handleMinus(item)}
+                  onPress={() => {
+                    if(item.amount == item.minQuantity){
+                      Dialog.show({
+                        type: ALERT_TYPE.INFO,
+                        title: translate("productScreen.Notification"),
+                        textBody: "SL tối thiểu cần bán là " + item.minQuantity + " " + item.saleUom.name + ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
+                        button: translate("productScreen.cancel"),
+                        button2: translate("productScreen.BtnNotificationAccept"),
+                        closeOnOverlayTap: false,
+                        onPressButton: () => {
+                          handleMinus(item)
+                          Dialog.hide();
+                        },
+                      });
+                    }else{
+                      handleMinus(item)
+                    }
+                  }}
                   // disabled={
                   //   orderStore.checkPriceList === true
                   //     ? item.amount === item.minQuantity ||
