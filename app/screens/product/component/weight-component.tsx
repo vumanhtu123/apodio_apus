@@ -25,6 +25,12 @@ export default function ItemWeight(props: any) {
     },
   });
 
+  const data = [
+    { label: "name", id: 1 },
+    { label: "name2", id: 2 },
+    { label: "name3", id: 3 },
+  ];
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "weight",
@@ -87,15 +93,16 @@ export default function ItemWeight(props: any) {
       </View>
       <FlatList
         data={fields}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => item.id}
         renderItem={({ item, index }) => {
           return (
             <ItemConversion
               control={control}
               index={index}
-              data={null}
+              data={data}
               description={"(3 thùng)"}
               remove={() => {
+                console.log("indẽ", index);
                 remove(index);
               }}
               fields={fields}
@@ -212,7 +219,7 @@ const ItemOriginal = (item: any) => {
 };
 
 const ItemConversion = (item: InputSelectProps) => {
-  const [name, valueName] = useState();
+  const [name, valueName] = useState({ label: "" });
   return (
     <View
       style={{
@@ -230,7 +237,7 @@ const ItemConversion = (item: InputSelectProps) => {
           <TouchableOpacity
             style={{ marginBottom: scaleHeight(20) }}
             onPress={() => {
-              item.remove();
+              item.remove(item.index);
             }}>
             <Images.minus_ic
               style={{
@@ -252,9 +259,16 @@ const ItemConversion = (item: InputSelectProps) => {
                   paddingHorizontal: 4,
                   paddingVertical: 2,
                 }}
-                arrData={item.data ?? [{ label: "name", id: 1 }]}
-                dataDefault={"name"}
-                onPressChoice={() => {}}></InputSelect>
+                styleViewDropdown={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 25,
+                }}
+                arrData={item.data ?? []}
+                dataDefault={name.label}
+                onPressChoice={(item: any) => {
+                  valueName(item);
+                }}></InputSelect>
               <View
                 style={{
                   height: 1,
@@ -306,7 +320,7 @@ const ItemConversion = (item: InputSelectProps) => {
           // Account test
           // defaultValue={"67076743544"}
           name={`weight.${item.index}.weight1`}
-          rules={{ required: "Username is required" }}
+          // rules={{ required: "Username is required" }}
         />
         <View style={{ width: scaleWidth(15) }}></View>
         <Controller
