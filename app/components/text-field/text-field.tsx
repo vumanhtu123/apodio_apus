@@ -128,10 +128,13 @@ export interface TextFieldProps extends TextInputProps {
   pressRightIcon?: () => void;
   showRightIcon?: boolean;
   styleTextError?: StyleProp<TextStyle>;
+  styleTextRight?: StyleProp<TextStyle>;
+  styleTextLabel?: boolean;
+  valueTextRight?: string;
   isMultiline?: boolean;
   value?: any;
   valueInput?: any;
-  valueCurrency?: any
+  valueCurrency?: any;
 }
 
 /**
@@ -170,6 +173,9 @@ export function TextField(props: TextFieldProps) {
     isMultiline,
     valueInput,
     valueCurrency,
+    valueTextRight,
+    styleTextRight,
+    styleTextLabel,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
@@ -222,31 +228,58 @@ export function TextField(props: TextFieldProps) {
               <Text
                 preset="fieldLabel"
                 tx={labelTx}
-                style={{
-                  // position: "absolute",
-                  left: isTL38
-                    ? scaleWidth(Platform.OS === "android" ? 50 : 55)
-                    : 0,
-                  top:
-                    !isFocused && !actualPlaceholder && value === ""
-                      ? scaleHeight(19)
-                      : scaleHeight(8),
-                  fontSize:
-                    !isFocused && !actualPlaceholder && value === ""
-                      ? fontSize.size16
-                      : fontSize.size12,
-                  fontWeight: "500",
-                  color: labelDolphin
-                    ? colors.palette.dolphin
-                    : !isFocused
-                      ? txColor
-                      : colors.palette.dolphin,
-                  paddingLeft: scaleWidth(16),
-                  marginTop:
-                    isFocused && !actualPlaceholder && value === ""
-                      ? scaleHeight(0)
-                      : scaleHeight(0),
-                }}
+                style={
+                  styleTextLabel == false
+                    ? {
+                        // position: "absolute",
+                        left: isTL38
+                          ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                          : 0,
+                        top:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(19)
+                            : scaleHeight(8),
+                        fontSize:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? fontSize.size16
+                            : fontSize.size12,
+                        fontWeight: "500",
+                        color: labelDolphin
+                          ? colors.palette.dolphin
+                          : !isFocused
+                          ? txColor
+                          : colors.palette.dolphin,
+                        paddingLeft: scaleWidth(16),
+                        marginTop:
+                          isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(0)
+                            : scaleHeight(0),
+                      }
+                    : {
+                        left: isTL38
+                          ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                          : 0,
+                        top:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(19)
+                            : scaleHeight(8),
+                        fontSize:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? fontSize.size13
+                            : fontSize.size12,
+                        fontWeight: "500",
+                        color: labelDolphin
+                          ? colors.palette.dolphin
+                          : !isFocused
+                          ? txColor
+                          : colors.palette.dolphin,
+                        paddingLeft: scaleWidth(16),
+                        marginTop:
+                          isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(0)
+                            : scaleHeight(0),
+                      }
+                }
               />
             ) : null}
             {isImportant ? (
@@ -301,23 +334,26 @@ export function TextField(props: TextFieldProps) {
         </View>
         <View style={{ flexDirection: "row", paddingRight: scaleWidth(16) }}>
           {valueCurrency ? (
-            <Text style={{
-              fontSize: fontSize.size16,
-              marginTop: Platform.OS === "android" ? 8 : 8,
-            }}>{valueCurrency}</Text>
+            <Text
+              style={{
+                fontSize: fontSize.size16,
+                marginTop: Platform.OS === "android" ? 8 : 8,
+              }}>
+              {valueCurrency}
+            </Text>
           ) : null}
           {isShowPassword && value ? (
             <TouchableOpacity
               style={{ marginTop: scaleHeight(4) }}
               onPress={onShowPassword}>
-              <RightIconShow />
+              {RightIconShow !== null ? <RightIconShow /> : null}
             </TouchableOpacity>
           ) : null}
           <View style={{ width: scaleWidth(10) }} />
 
           {value && showRightIcon ? (
             <TouchableOpacity
-            style ={{ justifyContent : 'center'}}
+              style={{ justifyContent: "center" }}
               onPress={() => {
                 onClearText();
                 focus.current.focus();
@@ -328,6 +364,9 @@ export function TextField(props: TextFieldProps) {
             <TouchableOpacity onPress={pressRightIcon} style={{}}>
               <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} />
             </TouchableOpacity>
+          ) : null}
+          {valueTextRight !== "" ? (
+            <Text style={styleTextRight}>{valueTextRight}</Text>
           ) : null}
         </View>
       </View>
