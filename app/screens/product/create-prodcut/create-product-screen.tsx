@@ -1222,7 +1222,6 @@ export const ProductCreateScreen: FC = (item) => {
                 />
               </TouchableOpacity>
             </View>
-            <ItemWeight />
             {valueSwitchUnit ? (
               <>
                 <View style={styles.viewLineSwitchUnit}>
@@ -1272,6 +1271,12 @@ export const ProductCreateScreen: FC = (item) => {
               </>
             ) : null}
           </View>
+        </View>
+        <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+        <ItemWeight
+        checkList={valueSwitchUnit}
+        data={valueSwitchUnit == false ? uomId : uomGroupId}
+        />
         </View>
         {addVariant ? (
           <View
