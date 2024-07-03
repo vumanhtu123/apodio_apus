@@ -44,18 +44,24 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                 <View style={{ paddingVertical: scaleHeight(12), paddingHorizontal: scaleWidth(16) }}>
                     <Text tx={'inforMerchant.Category'} style={{
                         fontWeight: '700', fontSize: fontSize.size14,
-                        lineHeight: scaleHeight(24),
+                        // lineHeight: scaleHeight(24),
                         color: colors.palette.nero,
                     }} />
                 </View>
+                <View style = {{ height : scaleHeight(1), backgroundColor :'#E7EFFF'}}></View>
                 <TextInput
                     ref={inputRef}
                     style={{
-                        fontSize: fontSize.size16,
+                        fontSize: fontSize.size14,
                         fontWeight: "400",
-                        paddingVertical: 0,
-                        marginVertical: scaleHeight(10)
+                        paddingVertical: scaleHeight(3),
+                        marginVertical: scaleHeight(10),
+                        marginHorizontal : scaleWidth(10),
+                        borderWidth : 0.3,
+                        borderRadius : 5,
+                        paddingHorizontal : scaleWidth(10),
                     }}
+                    textAlign='left'
                     onChangeText={(text) => handleSearch(text)}
                     value={search}
                     placeholder="Tìm kiếm..."
@@ -63,10 +69,7 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                     onSubmitEditing={handleOnSubmitSearch}
                     enablesReturnKeyAutomatically
                 />
-                <ScrollView style={{
-                    borderTopLeftRadius: 16,
-                    borderTopRightRadius: 16,
-                }}>
+                <ScrollView>
                     {dataCategory.map((item: any, index: any) => {
                         return (
                             <TouchableOpacity
