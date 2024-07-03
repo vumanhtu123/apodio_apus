@@ -32,6 +32,7 @@ interface InputNote {
   note: boolean;
   setNoteData: (note: string, arr: []) => void;
   dataNote?: string;
+  imageNote?: any[];
 }
 
 export const ShowNote = (props: InputNote) => {
@@ -43,6 +44,12 @@ export const ShowNote = (props: InputNote) => {
     formState: { errors },
     getValues,
   } = useForm();
+
+  useEffect(()=>{
+    if(props.imageNote !== undefined){
+      setImagesNote(props.imageNote)
+    }
+  }, [props.imageNote])
 
   const handleDeleteImage = () => {
     setImagesNote([]);

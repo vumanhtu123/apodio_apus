@@ -91,7 +91,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     }
   };
   const handleGetProduct = async (searchValue?: any) => {
-    try {
       const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderProduct(
         page,
@@ -129,12 +128,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       } else {
         console.error("Failed to fetch product:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
   const handleGetVariant = async (searchValue?: any) => {
-    try {
       const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderVariant(
         page,
@@ -249,12 +244,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       } else {
         console.error("Failed to fetch product:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
   const handleGetProductPrice = async (searchValue?: any) => {
-    try {
       const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderProductPrice(
         page,
@@ -293,12 +284,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       } else {
         console.error("Failed to fetch product:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
   const handleGetVariantPrice = async (searchValue?: any) => {
-    try {
       const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
       const response: any = await orderStore.getListOrderVariantPrice(
         page,
@@ -421,12 +408,8 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       } else {
         console.error("Failed to fetch product:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
   const getPriceVariant = async (value: any) => {
-    try {
       const response = await orderStore.getPriceOrderVariant(value);
       if (response && response.kind === "ok") {
         const data = response.response.data;
@@ -434,9 +417,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       } else {
         console.error("Failed to fetch detail:", response);
       }
-    } catch (error) {
-      console.error("Error fetching detail:", error);
-    }
   };
   const handleAddProduct = async (data: any) => {
     const arrProduct = dataProduct.map((items: any) => {
@@ -508,7 +488,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       const arrProduct1 = arrProduct.map((items: any) => {
         if (items.id === data.id) {
           const amounts = items.amount - 1;
-          if (amounts === items.minQuantity) {
+          if (items.amount === items.minQuantity) {
             return { ...items, amount: 0, isSelect: false };
           } else {
             return { ...items, amount: amounts };
@@ -522,7 +502,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       const newArr2 = newArr1.map((items: any) => {
         if (items.id === data.id) {
           const amounts = items.amount - 1;
-          if (amounts === items.minQuantity) {
+          if (items.amount === items.minQuantity) {
             return;
           } else {
             return { ...items, amount: amounts };
