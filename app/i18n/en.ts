@@ -673,6 +673,7 @@ const en = {
     weightConversion: "Tải trọng theo đơn vị quy đổi",
     addLine: "Thêm dòng",
     weightExchange: "Tải trọng theo đơn vị quy đổi",
+
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -689,6 +690,8 @@ const en = {
     properties: "Thuộc tính chung",
     detailProperty: "Xem chi tiết thuộc tính",
     orders: "Đơn hàng",
+    weight : 'Trọng lượng',
+    volume : 'Thể tích'
   },
   createProductScreen: {
     classify: "Phân loại",

@@ -450,36 +450,6 @@ export const OrderDetails: FC = observer(
                                             </View>
                                         </View>
                                     )}
-                                    {/* {dataPayment.moneyPaid > 0 ? (
-                                        <View >
-                                            <View style={{ margin: 0 }}>
-                                                <Text style={
-                                                    [styles.textStatus, {
-                                                        color: colors.palette.yellow,
-                                                        width: scaleWidth(50),
-                                                        // padding : 0,
-                                                        paddingVertical: scaleHeight(2),
-                                                        textAlign: 'center',
-                                                        backgroundColor: colors.palette.yallowExDG,
-                                                    }]
-                                                } tx={'orderDetailScreen.outstanding'} />
-                                            </View>
-                                            <View style={{
-                                                flexDirection: 'row', alignItems: 'center',
-                                                marginBottom: scaleHeight(margin.margin_15)
-                                            }}>
-                                                <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                                    <Text text={dataPayment.paymentResponses[dataPayment.paymentResponses.length - 1]?.timePayment} style={styles.textContent} />
-                                                </View>
-                                                <View style={styles.viewLineCash}>
-                                                    <Images.icon_ellipse />
-                                                </View>
-                                                <View style={[styles.viewTextCash, { flexDirection: 'row-reverse' }]}>
-                                                    <Text text={formatVND(formatCurrency(commasToDots(dataPayment.moneyPaid)))} />
-                                                </View>
-                                            </View>
-                                        </View>
-                                    ) : null} */}
                                 </View>
                             ) : null}
                             {data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' ? (
@@ -559,89 +529,6 @@ export const OrderDetails: FC = observer(
                     // onPress={}
                     />
                 </ScrollView>
-
-                {/* {data.status === 'Đang xử lý' ?
-                    <View style={styles.viewButtonCancel}>
-                        <Button tx={'order.requestCancellation'}
-                            onPress={() => setShowCancelOrder(true)}
-                            style={styles.buttonCancel}
-                            textStyle={styles.textButtonCancel} />
-                    </View>
-                    : data.status === 'Đã gửi YC' ?
-                        <View style={styles.viewButtonCancel}>
-                            <Button tx={'order.cancelOrder'}
-                                onPress={() => setShowCancelOrder(true)}
-                                style={[styles.buttonCancel, {
-                                    marginBottom: scaleHeight(margin.margin_8),
-                                }]}
-                                textStyle={styles.textButtonCancel} />
-                        </View> : null
-                } */}
-                {/* <Modal isVisible={true}
-                    onBackdropPress={() => setShowCancelOrder(false)}>
-                    <View style={styles.viewModal}>
-                        <View style={{ marginBottom: scaleHeight(margin.margin_30) }}>
-                            <Text tx={'order.textOrderCancel'}
-                                style={styles.textTitleModal} />
-                        </View>
-                        <InputSelect
-                            titleTx={'order.reasonForCancellation'}
-                            hintTx={'order.selectReason'}
-                            required={true}
-                            arrData={arrData}
-                            dataDefault={reason.label}
-                            onPressChoice={(item) => {
-                                setReason(item)
-                            }}
-                        />
-                        {reason.id === 4 ?
-                            <KeyboardAvoidingView
-                                behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
-                                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
-                                <Controller
-                                    control={control}
-                                    render={({ field: { onChange, value, onBlur } }) => (
-                                        <TextField
-                                            keyboardType={null}
-                                            labelTx={"order.reason"}
-                                            // label={"order.reason"}
-                                            style={[styles.viewTextField, {
-                                                height: scaleHeight(120)
-                                            }]}
-                                            inputStyle={{ marginVertical: scaleHeight(padding.padding_8) }}
-                                            value={value}
-                                            onBlur={onBlur}
-                                            onChangeText={(value) => onChange(value)}
-                                            onClearText={() => onChange('')}
-                                            RightIconClear={Images.icon_delete2}
-                                            multiline={true}
-                                            isImportant={true}
-                                            placeholderTx={'order.placeholderReason'}
-                                            error={errors?.reasonText?.message}
-                                        />)}
-                                    defaultValue={''}
-                                    name="reasonText"
-                                    rules={{ required: "Reason is required" }}
-                                />
-                            </KeyboardAvoidingView> : null}
-                        <View style={{
-                            flexDirection: 'row',
-                            marginTop: scaleHeight(margin.margin_30),
-                            justifyContent: 'space-between'
-                        }}>
-                            <Button style={styles.buttonCancelModal}
-                                tx={'common.cancel'}
-                                textStyle={{ color: colors.palette.navyBlue }}
-                                onPress={() => setShowCancelOrder(false)}
-                            />
-                            <Button
-                                onPress={handleSubmit(handleConfirm)}
-                                style={styles.buttonConfirmModal}
-                                tx={'order.confirm'}
-                            />
-                        </View>
-                    </View>
-                </Modal> */}
             </View>
         )
     }
