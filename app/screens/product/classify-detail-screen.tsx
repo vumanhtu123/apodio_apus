@@ -19,6 +19,7 @@ import {
   fontSize,
   margin,
   padding,
+  palette,
   scaleHeight,
   scaleWidth,
 } from "../../theme";
@@ -59,15 +60,16 @@ export const ClassifyDetailScreen: FC = () => {
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [nameValue, setNameValue] = useState<any>([]);
   const [isChecking, setIsChecking] = useState(true);
+  const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
   const handleGetDetailClassify = async () => {
     try {
       const response = await productStore.getDetailClassify(productId);
       console.log("handleGetDetailClassify----------", response);
       if (response && response.kind === "ok") {
         const data = response.response.data;
-        console.log("response", response.response.data);
+        console.log("response detail classify", JSON.stringify(response.response.data));
 
-        setDetailProduct(response.response.data);
+        setDetailProduct(data.baseProductPackingLine);
         setDataClassification(data);
         setArrImagesProduct(data.imageUrls);
         setArrClassification(data.productVariants);
@@ -130,6 +132,33 @@ export const ClassifyDetailScreen: FC = () => {
     getNameAndValue();
     // selectDataClassification()
   };
+
+  const dataWeightOriginal = [
+    {
+      id: 1,
+      name: "Hộp",
+      weight: 1,
+      volume: 3
+    }
+  ]
+
+  const dataWeightExchange = [
+    {
+      id: 1,
+      kind: "Thùng",
+      boxQuantity: 2,
+      weight: 1,
+      volume: 3
+    },
+    {
+      id: 2,
+      kind: "Pallet",
+      boxQuantity: 3,
+      weight: 1,
+      volume: 3
+    }
+  ]
+
   return (
     <View style={styles.ROOT}>
       <Header
@@ -228,15 +257,15 @@ export const ClassifyDetailScreen: FC = () => {
                 labelTx="detailScreen.status"
                 value={
                   dataClassification.saleOk === true &&
-                  dataClassification.purchaseOk === false
+                    dataClassification.purchaseOk === false
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true &&
                       dataClassification.saleOk === false
-                    ? "Có thể mua"
-                    : dataClassification.saleOk === true &&
-                      dataClassification.purchaseOk === true
-                    ? "Có thể bán/ Có thể mua"
-                    : null
+                      ? "Có thể mua"
+                      : dataClassification.saleOk === true &&
+                        dataClassification.purchaseOk === true
+                        ? "Có thể bán/ Có thể mua"
+                        : null
                 }
               />
             </View>
@@ -392,6 +421,86 @@ export const ClassifyDetailScreen: FC = () => {
           </View>
           <View style={styles.viewLine} />
 
+
+          <TouchableOpacity
+            style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
+
+            onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
+          >
+            <Text tx="productScreen.weight"
+              style={{ fontSize: fontSize.size14, color: colors.navyBlue, marginRight: scaleWidth(5) }}
+            />
+            <Images.icon_caretDownBlue style={{ transform: [{ rotate: showOrHiddenWeight ? '0deg' : '180deg' }], }} />
+          </TouchableOpacity>
+
+          {
+            showOrHiddenWeight ?
+              <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
+
+                <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14 }} />
+                <FlatList
+                  data={detailProduct.baseProductPackingLine}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: scaleWidth(9) }}>
+                        <Text style={[styles.fontSizeWeight, { flex: 2, textAlign: 'center', marginRight: scaleWidth(10) }]}>
+                          {detailProduct.uom?.name}
+                        </Text>
+                        <Text style={[styles.fontSizeWeight, { flex: 3, textAlign: 'center', marginRight: scaleWidth(20) }]}>
+                          Trọng lượng {item.weight} kg
+                        </Text>
+                        <Text style={[styles.fontSizeWeight, { flex: 3, textAlign: 'right' }]}>
+                          Thể tích {item.volume} m3
+                        </Text>
+                      </View>
+                    )
+                  }}
+                  keyExtractor={(item) => item.id.toString()}
+                />
+                <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
+                <FlatList
+                  data={dataWeightExchange}
+                  renderItem={({ item }) => {
+                    return (
+                      <View style={{ flexDirection: 'row', margin: scaleWidth(9), justifyContent: 'space-between' }}>
+                        <View style={{ flex: 2, marginRight: scaleWidth(10) }}>
+                          <Text style={[styles.fontSizeWeight, { textAlign: 'center' }]}>
+                            {item.kind}
+                          </Text>
+                          <View
+                            style={{ backgroundColor: colors.palette.dolphin, height: 1 }}
+                          />
+                          <Text style={[styles.fontSizeWeight, { textAlign: 'center' }]}>
+                            {`(${item.boxQuantity} hộp)`}
+                          </Text>
+                        </View>
+
+                        <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', marginRight: scaleWidth(20) }}>
+                          <Text style={[styles.fontSizeWeight,]}>
+                            Trọng lượng {item.weight} kg
+                          </Text>
+                        </View>
+
+                        <View style={{ flex: 3, justifyContent: 'center', alignItems: 'flex-end' }}>
+                          <Text style={[styles.fontSizeWeight,]}>
+                            Thể tích {item.volume} m3
+                          </Text>
+                        </View>
+
+                      </View>
+                    )
+                  }}
+                  keyExtractor={(item) => item.id.toString()}
+
+                />
+
+              </View>
+              : null
+          }
+
+
+          <View style={styles.viewLine} />
+
           <TouchableOpacity
             style={{
               flexDirection: "row",
@@ -400,7 +509,7 @@ export const ClassifyDetailScreen: FC = () => {
               marginHorizontal: scaleWidth(margin.margin_16),
             }}
             onPress={toggleDetails}>
-            <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue , marginRight : scaleWidth(5) }}/>
+            <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5) }} />
             <Images.iconDownBlue
               width={scaleWidth(16)}
               height={scaleHeight(16)}
@@ -731,4 +840,11 @@ const styles = StyleSheet.create({
     borderWidth: scaleHeight(1),
     borderColor: colors.palette.ghostWhite,
   },
+  viewWeight: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  fontSizeWeight: {
+    color: palette.dolphin, fontSize: fontSize.size12,
+  }
 });

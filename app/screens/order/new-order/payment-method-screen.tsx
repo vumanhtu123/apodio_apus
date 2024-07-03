@@ -74,15 +74,15 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   }, [])
 
   const Sum = () => {
-    if (type === true) {
+    // if (type === true) {
       return Number(price)
-    } else {
-      if ((Number(price) - Number(debtAmount)) >= Number(0)) {
-        return Number(price) - Number(debtAmount)
-      } else {
-        return 0
-      }
-    }
+    // } else {
+    //   if ((Number(price) - Number(debtAmount)) >= Number(0)) {
+    //     return Number(price) - Number(debtAmount)
+    //   } else {
+    //     return 0
+    //   }
+    // }
   };
   const Sum1 = () => {
     if (type === true) {
@@ -224,16 +224,11 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   backgroundColor: "white",
                   borderRadius: 8,
                 }}
-                // forwardedRef={countRef}
                 value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
                 error={errors?.price?.message}
-                // onChangeValue={(value) => {
-                //   onChange(value)
-                //   console.log(value)
-                // }}
                 styleError={{ marginLeft: scaleHeight(16) }}
                 //valueCurrency={vendorStore.companyInfo.symbol}
                 onChangeText={(value) => {
@@ -374,9 +369,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           countRef.current = name;
           setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
-            if (Number(Sum()) <= credit) {
-              setText(formatCurrency(commasToDots(Sum().toString())))
-              setValue('price', formatCurrency(commasToDots(Sum().toString())))
+            if (Number(Sum1()) <= credit) {
+              setText(formatCurrency(commasToDots(Sum1().toString())))
+              setValue('price', formatCurrency(commasToDots(Sum1().toString())))
               setError('price', {})
             } else {
               setText(formatCurrency(commasToDots(credit.toString())))

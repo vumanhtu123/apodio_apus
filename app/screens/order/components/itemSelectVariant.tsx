@@ -326,7 +326,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                 <PriceModal
                     isVisible={modalPrice}
                     setIsVisible={() => setModalPrice(false)}
-                    title={"productDetail.retailPrice"}
+                    // title={"productDetail.retailPrice"}
                     onCancel={() => {
                         setModalPrice(false);
                     }}

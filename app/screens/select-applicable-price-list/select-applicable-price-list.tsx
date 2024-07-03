@@ -184,7 +184,15 @@ export const SelectApplicablePriceList: FC<
           onPress={() => {
             setWatching(false);
             // setPriceListNoApply()
-            // setIdIndexSelect('noApply')
+            // setNoApply()
+            console.log("dataNoApply", dataPriceListSelected);
+            setDataPriceListSelected({
+              id: "",
+              name: "Không áp dụng",
+              priceListCategory: "",
+              currencyId: "",
+              pricelistId: "",
+            });
           }}>
           {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
           <View

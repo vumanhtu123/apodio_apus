@@ -21,6 +21,7 @@ import { Images } from "../../../../assets";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
+  fontSize,
   margin,
   padding,
   scaleHeight,
@@ -69,7 +70,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   console.log("props", orderStore.dataDebtPayment.sumAll);
   const newData = route?.params?.newData;
   const screen = route?.params?.screen;
-  console.log('asigdoiuashd', newData)
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
@@ -100,6 +100,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   const idItemOrder = useRef(0);
   const store = useStores();
   const discount = useRef(0);
+  const imageNote = useRef([])
   const { goBackPayment }: any = route?.params || {};
   const valueNote = useRef("");
 
@@ -251,13 +252,13 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
         Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
     ) {
-      orderStore.setMethodPayment({
-        sumAll: 0,
-        methodPayment: 0,
-        debt: 0,
-        inputPrice: 0,
-        apply: false,
-      });
+      // orderStore.setMethodPayment({
+      //   sumAll: 0,
+      //   methodPayment: 0,
+      //   debt: 0,
+      //   inputPrice: 0,
+      //   apply: false,
+      // });
       return navigation.navigate({name: "paymentBuy", params: {
         params: {
           type: false,
@@ -369,7 +370,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return item.productId;
     });
     const newArr3 = newArr2.filter((item) => !newArr1.includes(item));
-    const formattedDate = moment.utc(markedDatesS).endOf("day").toISOString();
+    const formattedDate = moment(markedDatesS).endOf("day").toISOString();
 
     console.log("data new", JSON.stringify(newArr));
     const order: any = {
@@ -380,7 +381,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       // invoiceAddressId: 0,
       deliveryAddressId: address.id,
       // quotationDate: "",
-      orderDate: formattedDate,
+      commitmentDate: formattedDate,
       // quoteCreationDate: "",
       // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
@@ -400,6 +401,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       // discount: 0, //chiet khau
       discountComputeType: "FIXED",
       note: valueNote.current,
+      noteImages: imageNote.current,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
@@ -445,10 +447,11 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         // });
         navigation.navigate({name: "orderSuccess", params: {
           idOrder: values.id,
-          code: values.code,
+          code: screen == 'edit' ? newData.code : values.code,
           screen: screen === "copy" ? "create" : "edit",
           price: price,
           inputPrice: orderStore.dataDebtPayment.inputPrice,
+          paymentMethod: handleNamMethod() === "DEDUCTION_OF_LIABILITIES"  ? true : false
         }} as never);
         orderStore.setDataProductAddOrder([]);
         setArrProduct([]);
@@ -883,9 +886,11 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           name: newData.partner.name,
           phoneNumber: newData.partner.phoneNumber,
         });
-        if (newData.orderDate !== "") {
+        if (newData.commitmentDate !== "") {
           setDesiredDate(true);
-          setMarkedDatesS(moment.utc(newData.orderDate).format("YYYY-MM-DD"));
+          const appTimeZone = moment.tz.guess()
+          const date1 = moment(newData.commitmentDate).subtract(1, 'seconds').set({ millisecond: 999 })
+          setMarkedDatesS(moment(date1).tz(appTimeZone).format("YYYY-MM-DD"));
         }
         getDebtLimit(newData.partner.id);
         setPayment({
@@ -894,10 +899,11 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               ? translate("order.DOMESTICALLY")
               : translate("order.EXPORTED"),
         });
-        if (newData.note !== '') {
+        if (newData.note !== '' || newData.noteImages?.length !== 0) {
           setNote(true);
-          valueNote.current = newData.note;
         }
+        valueNote.current = newData.note;
+        imageNote.current = newData.noteImages
         orderStore.setCheckRenderList(false);
 
         if (newData.isClearingDebts === true && screen === 'edit') {
@@ -1233,10 +1239,12 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           </TouchableOpacity>
 
           <ShowNote
+            imageNote={imageNote.current}
             dataNote={valueNote.current}
             note={note}
             setNoteData={function (note: string, arr: []): void {
               valueNote.current = note
+              imageNote.current = arr
               console.log("note---------", note);
               console.log("arr---------", arr);
             }}
@@ -1321,15 +1329,15 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                           },
                         });
                       }
-                      orderStore.setMethodPayment({
-                        sumAll: 0,
-                        methodPayment: 0,
-                        debt: 0,
-                        inputPrice: 0,
-                        apply: false,
-                      });
+                      // orderStore.setMethodPayment({
+                      //   sumAll: 0,
+                      //   methodPayment: 0,
+                      //   debt: 0,
+                      //   inputPrice: 0,
+                      //   apply: false,
+                      // });
                       handleDebt();
-                      navigation.navigate("paymentBuy", {
+                      navigation.navigate({name: "paymentBuy", params: {
                         params: {
                           type:
                             handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1347,7 +1355,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                                 ))))
                               : 0,
                         },
-                      });
+                      }} as never);
                     }}
                     style={styles.buttonFeature}
                     textStyle={[
@@ -1445,27 +1453,24 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                 text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
                   color: "#747475",
-                  fontSize: 12,
+                  fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}>
                 {formatVND(formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.sumAll))))}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textTotal}>
-                {formatVND(formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.inputPrice))))}
-              </Text>
               {screen === 'edit' ? null :
                 <TouchableOpacity
                   onPress={() => {
-                    orderStore.setMethodPayment({
-                      sumAll: 0,
-                      methodPayment: 0,
-                      debt: 0,
-                      inputPrice: 0,
-                      apply: false,
-                    });
-                    return navigation.navigate("paymentBuy", {
+                    // orderStore.setMethodPayment({
+                    //   sumAll: 0,
+                    //   methodPayment: 0,
+                    //   debt: 0,
+                    //   inputPrice: 0,
+                    //   apply: false,
+                    // });
+                    return navigation.navigate({name: "paymentBuy", params: {
                       params: {
                         type:
                           handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -1481,12 +1486,15 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                               ))))
                             : null,
                       },
-                    });
+                    }} as never);
                   }}>
                   <Images.icon_edit
-                    style={{ marginLeft: scaleWidth(margin.margin_6) }}
+                    style={{ marginRight: scaleWidth(margin.margin_6) }}
                   />
                 </TouchableOpacity>}
+                <Text style={styles.textTotal}>
+                {formatVND(formatCurrency(commasToDots(Number(orderStore.dataDebtPayment.inputPrice))))}
+              </Text>
             </View>
           </View>
         ) : null}
@@ -1498,10 +1506,18 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             }}>
             <Text
               tx={"order.usedDebt"}
-              style={[styles.textTotal, { flex: 1 }]}
+              style={[styles.textTotal,]}
             />
             <Text
-              style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                tx={'order.debtLimit'}
+                style={{
+                  color: "#747475",
+                  fontSize: fontSize.size12,
+                  fontWeight: "400",
+                  flex: 1,
+                }}></Text>
+            <Text
+              style={[styles.textTotal]}>
               {formatVND(formatCurrency(
                 commasToDots(
                   Number(price ?? 0) -
@@ -1531,7 +1547,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       (Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)) - 
                       (Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0))
                     ))
-                  ): 0
+                  ): formatVND(0)
                   }
               </Text>
             </View>

@@ -102,6 +102,8 @@ export function InputSelect(props: InputSelectProps) {
     onLoadMore,
     checkUse,
     onPressNotUse,
+    textStyle,
+    styleViewDropdown,
     handleOnSubmitSearch,
     onChangeText,
   } = props;
@@ -149,7 +151,7 @@ export function InputSelect(props: InputSelectProps) {
     //   );
     //   setFilteredData(dataChoiceItem);
     // } else {
-      setFilteredData(arrData);
+    setFilteredData(arrData);
     // }
   }, [arrData]);
 
@@ -177,14 +179,21 @@ export function InputSelect(props: InputSelectProps) {
           <View>
             {dataDefault !== "" && dataDefault !== null ? (
               // <Text text={data || dataDefault} style={TEXTDATA} />
-              <Text text={dataDefault} style={TEXTDATA} />
+              <Text text={dataDefault} style={textStyle ?? TEXTDATA} />
             ) : (
               <Text text={hint} style={TEXTHINT} />
             )}
           </View>
         </View>
         {disabled === true ? null : (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View
+            style={
+              styleViewDropdown ?? {
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 15,
+              }
+            }>
             <Images.dropDown />
           </View>
         )}
@@ -207,7 +216,11 @@ export function InputSelect(props: InputSelectProps) {
               {/* <Text text="chon ly do" /> */}
               {isSearch ? (
                 <TextInput
-                  style={{ fontSize: 16, fontWeight: "400" }}
+                  style={{
+                    fontSize: 16,
+                    fontWeight: "400",
+                    paddingVertical: 0,
+                  }}
                   onChangeText={(text) => handleSearch(text)}
                   value={search}
                   placeholder="Tìm kiếm..."

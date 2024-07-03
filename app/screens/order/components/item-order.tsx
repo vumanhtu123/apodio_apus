@@ -188,13 +188,13 @@ const VIEWSTATUS: ViewStyle = {
 
 const TEXTSTATUS: TextStyle = {
   fontWeight: "400",
-  fontSize: 8,
+  fontSize: fontSize.size8,
   lineHeight: 9.68,
 };
 
 const TEXTNAME: TextStyle = {
   fontWeight: "600",
-  fontSize: 12,
+  fontSize: fontSize.size12,
   color: colors.palette.nero,
   lineHeight: 14.52,
   marginBottom: scaleHeight(margin.margin_2),
@@ -203,18 +203,21 @@ const TEXTNAME: TextStyle = {
 const TEXTMONEY: TextStyle = {
   color: colors.palette.nero,
   fontWeight: "400",
-  fontSize: 10,
+  fontSize: fontSize.size10,
 };
 // const TEXTLISTTAX: TextStyle = {
 //   fontWeight: "600",
 //   fontSize: fontSize.size10,
-//   color: colors.palette.dolphin,
+//   color: colors.palette.dolp
+// const TEXTLISTTAX: TextStyle = {
+//   fontWeight: "600",
+//   fontSize: fontSize.size10,hin,
 //   marginBottom: scaleHeight(margin.margin_8),
 //   marginLeft: scaleWidth(5)
 // }
 const TEXTCONTENT: TextStyle = {
   fontWeight: "600",
-  fontSize: 12,
+  fontSize: fontSize.size12,
   color: colors.palette.dolphin,
   marginBottom: scaleHeight(margin.margin_8),
 };
@@ -222,7 +225,7 @@ const TEXTCONTENT: TextStyle = {
 const TEXTTOTALAMOUNT: TextStyle = {
   color: colors.palette.radicalRed,
   fontWeight: "600",
-  fontSize: 12,
+  fontSize: fontSize.size12,
 };
 
 const VIEWLINE: TextStyle = {

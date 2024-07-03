@@ -28,6 +28,7 @@ import FastImage from "react-native-fast-image";
 import { commasToDots, formatCurrency, formatNumberByString, formatStringToFloat, formatVND } from "../../../utils/validate";
 import PriceModal from "./modal-price";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
+import { useStores } from "../../../models";
 
 interface AddProduct {
   onPress: ({ }) => void;
@@ -41,7 +42,7 @@ interface AddProduct {
   images?: string;
   name?: string;
   unit?: string;
-  cost?: string;
+  cost?: any;
   qty?: string;
   VAT?: string;
   taxesInput?: string;
@@ -97,8 +98,11 @@ export default function ItemListProduct(props: AddProduct) {
     mode: "all",
   });
   const [modalPrice, setModalPrice] = useState(false)
+  const [modalPriceUnit, setModalPriceUnit] = useState(false)
+  const { vendorStore } = useStores()
   const [dataModal, setDataModal] = useState('')
   const [taxesId, setTaxesId] = useState(0)
+  const [priceId, setPriceId] = useState(0)
   console.log("taxes VAT", props.cost);
   const Price = () => {
     return Number((props.cost) ?? 0) * Number(props.qty);
@@ -163,64 +167,25 @@ export default function ItemListProduct(props: AddProduct) {
             }}
           />
           <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
-            {selectUpdate ? (
-              <Controller
-                control={control}
-                defaultValue={""}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <View style={{ flex: 1, alignContent: "center" }}>
-                    <TextInput
-                      style={{
-                        fontWeight: "400",
-                        height: scaleHeight(16),
-                        alignContent: "center",
-                        borderColor: "#F6F7FB",
-                        padding: 0,
-                        paddingBottom: 2,
-                        paddingLeft: 4,
-                        fontSize: 10,
-                        color: "black",
-                        borderBottomWidth: 1,
-                        textAlignVertical: "bottom",
-                      }}
-
-                      keyboardType="numeric"
-                      placeholder={translate("order.input_price")}
-                      placeholderTextColor={"#747475"}
-                      onChangeText={(newText) => {
-                        // inputPrice(newText);
-                        onChange(newText)
-                      }}
-                      value={formatCurrency(value)}
-
-                      // onSubmitEditing={() => inputPrice(formatNumberByString(value).replace(/,/g, '.'))}
-                      onSubmitEditing={() => inputPrice(formatStringToFloat(value))}
-                    />
-                  </View>
-                )}
-                name="input_price"
-              />
-            ) : (
-              <Text
-                text={formatVND(formatCurrency(commasToDots(cost)))}
-                style={{
-                  fontWeight: "400",
-                  fontSize: fontSize.size12,
-                  lineHeight: scaleHeight(14.52),
-                  color: colors.palette.torchRed,
-                  fontStyle: "italic",
-                }}
-              />
-            )}
+            <Text
+              text={cost !== undefined ? formatVND(formatCurrency(commasToDots(cost))) : formatVND(0)}
+              style={{
+                fontWeight: "400",
+                fontSize: fontSize.size12,
+                lineHeight: scaleHeight(14.52),
+                color: colors.palette.torchRed,
+                fontStyle: "italic",
+              }}
+            />
             {priceList ? (
-              !selectUpdate ? (props.disabled === true ? null :
-                <TouchableOpacity
-                  onPress={(item) => {
-                    handleUpdatePrice(item);
-                  }}>
-                  <Images.icon_edit />
-                </TouchableOpacity>
-              ) : null
+              <TouchableOpacity
+                onPress={(item) => {
+                  handleUpdatePrice(item);
+                  setPriceId(props.id)
+                  setModalPriceUnit(true)
+                }}>
+                <Images.icon_edit />
+              </TouchableOpacity>
             ) : null}
             <Text
               text={" " + unit}
@@ -447,18 +412,39 @@ export default function ItemListProduct(props: AddProduct) {
         }}
         id={taxesId}
         onConfirm={(data) => {
-          if(Number(data)< 100){
+          if (Number(data) < 100) {
             inputDiscount(data)
             setModalPrice(false)
-          }else{
-            Toast.show({ type: ALERT_TYPE.DANGER, 
-              textBody: 'Chiết khấu không thể lớn hơn 100' })
+          } else {
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              textBody: 'Chiết khấu không thể lớn hơn 100'
+            })
           }
         }}
         rightText={'%'}
         titleTx={'ImprotGoodsBook.discount'}
         placeholderTx={'order.input_texas'}
         titleInputTx={'ImprotGoodsBook.discount'}
+      />
+      <PriceModal
+        isVisible={modalPriceUnit}
+        setIsVisible={() => setModalPriceUnit(false)}
+        // title={"productDetail.retailPrice"}
+        onCancel={() => {
+          setModalPriceUnit(false);
+        }}
+        id={priceId}
+        onConfirm={(item) => {
+          // changeText(item, data)
+          inputPrice(formatStringToFloat(item))
+          setModalPriceUnit(false)
+          // setCheck(false)
+        }}
+        titleTx={'selectPriceListApply.inputPrice'}
+        placeholder='Nhập giá'
+        titleInputTx={'productScreen.priceProduct'}
+        rightText={vendorStore.companyInfo.symbol}
       />
     </View>
   );

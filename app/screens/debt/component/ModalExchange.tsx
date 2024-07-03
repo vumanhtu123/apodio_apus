@@ -12,10 +12,10 @@ import {
 } from "../../../theme";
 import { View, FlatList, Touchable, TouchableOpacity } from "react-native";
 import { Text, TextField } from "../../../components";
-import ItemListExChange from "./ItemListExChange";
 import { Controller, useForm } from "react-hook-form";
 import { Images } from "../../../../assets";
 import { Row } from "../../../components/Row";
+import ItemListExChange from "./itemListExChange";
 
 interface propModal {
   isVisible?: boolean;
