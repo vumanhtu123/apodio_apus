@@ -12,6 +12,8 @@ import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
 import { commasToDots, formatCurrency, formatStringToFloat, formatVND } from "../../../utils/validate";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
+import { TextFieldCurrency } from "../../../components/text-field-currency/text-field-currency";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
@@ -213,7 +215,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           <Controller
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
+              <TextFieldCurrency
                 keyboardType='numeric'
                 labelTx={"order.customer_paid"}
                 style={{
@@ -228,11 +230,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 showRightIcon={false}
                 RightIconClear={Images.icon_delete2}
                 error={errors?.price?.message}
-                // onChangeValue={(value) => {
-                //   console.log(value)
-                // }}
+                onChangeValue={(value) => {
+                  onChange(value)
+                  console.log(value)
+                }}
                 styleError={{ marginLeft: scaleHeight(16) }}
-                valueCurrency={vendorStore.companyInfo.symbol}
+                //valueCurrency={vendorStore.companyInfo.symbol}
                 onChangeText={(value) => {
                   if (countRef.current === '') {
                     Toast.show({
@@ -291,6 +294,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 fontWeight: "400",
                 color: "#242424",
               }}></Text>
+            
             <TouchableOpacity
               onPress={() => {
                 setButtonPayment(true);
