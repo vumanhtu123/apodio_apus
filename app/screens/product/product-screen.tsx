@@ -51,6 +51,7 @@ export const ProductScreen: FC = () => {
   const [nameDirectory, setNameDirectory] = useState('')
   const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
   const [index, setIndex] = useState<any>()
+  const [valueSearchCategory, setValueSearchCategory] = useState('');
   useFocusEffect(
     useCallback(() => {
       setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
@@ -116,6 +117,7 @@ export const ProductScreen: FC = () => {
       const response = await categoryStore.getListCategoriesFilter(
         0,
         100,
+        valueSearchCategory
       );
       if (response && response.kind === "ok") {
         const data = response.response.data.content
@@ -191,6 +193,10 @@ export const ProductScreen: FC = () => {
     setSelectedEditCategory(category);
     setIsVisible(true);
   };
+  const getValueSearchCategoryFilter = (value: any) => {
+    console.log('first------------' , value)
+    setValueSearchCategory(value)
+  }
   const handleDeleteItem = async () => {
     const result = await categoryStore.getDeleteCategories(selectedCategoryId);
     console.log("mmm", selectedCategoryId);
@@ -263,6 +269,9 @@ export const ProductScreen: FC = () => {
     handleGetCategory();
     handleGetCategoryFilter();
   }, []);
+  useEffect(() => {
+    handleGetCategoryFilter();
+  }, [valueSearchCategory])
   useEffect(() => {
     const fetchData = async () => {
       setPage(0)
@@ -396,7 +405,7 @@ export const ProductScreen: FC = () => {
             ? handleSubmitSearch
             : handleSubmitSearchCategory
         }
-     
+
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
       />
@@ -465,6 +474,7 @@ export const ProductScreen: FC = () => {
             nameDirectory={nameDirectory}
             isLoadingMore={false}
             renderFooter={renderFooter}
+            searchCategory={getValueSearchCategoryFilter}
           />
         ) : (
           <CategoryList

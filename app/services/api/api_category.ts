@@ -68,16 +68,18 @@ export class CategoryApi {
   async getListCategoriesFilter(
     page: any,
     size: any,
+    search: any
   ): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.LIST_CATEGORY ,
+        ApiEndpoint.LIST_CATEGORY,
         {
           page: page,
           size: size,
+          search: search
         }
       );
       console.log("page", page);
@@ -172,9 +174,8 @@ export class CategoryApi {
       text: 'Loading...',
     });
     try {
-      const url = `${
-        ApiEndpoint.UPDATE_CATEGORY
-      }?productCategoryId=${encodeURIComponent(productCategoryId)}`;
+      const url = `${ApiEndpoint.UPDATE_CATEGORY
+        }?productCategoryId=${encodeURIComponent(productCategoryId)}`;
       const body = { name, imageUrl };
       const response: ApiResponse<any> = await this.api.apisauce.put(url, body);
       console.log("mmm", url);
