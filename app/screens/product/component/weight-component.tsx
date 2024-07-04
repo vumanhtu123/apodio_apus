@@ -142,10 +142,10 @@ const ItemOriginal = (item: ItemOriginal) => {
         justifyContent: "space-between",
         marginRight: 6,
       }}>
-      <Text style={{ color: "#000000", fontSize: 12, fontWeight: "400" }}>
+      <Text style={{ color: "#000000", fontSize: 12, fontWeight: "400", width: scaleWidth(80) }}>
         {item.data.label}
       </Text>
-      <View style={{ marginLeft: scaleWidth(50) }}>
+      <View style={{ marginLeft: scaleWidth(10) }}>
         <Controller
           control={control}
           render={({ field: { onChange, value, onBlur } }) => (
@@ -196,6 +196,7 @@ const ItemOriginal = (item: ItemOriginal) => {
             labelTx={"productScreen.weightSpecified"}
             style={{
               marginBottom: scaleHeight(10),
+              marginLeft: scaleWidth(10),
               // marginTop: scaleHeight(20),
               width: scaleWidth(122),
             }}

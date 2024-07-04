@@ -10,10 +10,10 @@ import { MotiView } from "moti";
 const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProductDetail, handleClassifyDetail }: any) => {
   if (isGridView) {
     return (
-      <MotiView
-        from={{ opacity: 0, translateY: 50 }}
-        animate={{ opacity: 1, translateY: 0 }}
-        transition={{ delay: 1000 + index * 200 }}>
+      // <MotiView
+      //   from={{ opacity: 0, translateY: 50 }}
+      //   animate={{ opacity: 1, translateY: 0 }}
+      //   transition={{ delay: 1000 + index * 200 }}>
         <TouchableOpacity
           key={index}
           onPress={() => {
@@ -90,14 +90,14 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
             </View>
           </View>
         </TouchableOpacity>
-      </MotiView>
+      // </MotiView>
     );
   } else {
     return (
-      <MotiView
-        from={{ opacity: 0, translateY: 50 }}
-        animate={{ opacity: 1, translateY: 0 }}
-        transition={{ delay: 1000 + index * 200 }}>
+      // <MotiView
+      //   from={{ opacity: 0, translateY: 50 }}
+      //   animate={{ opacity: 1, translateY: 0 }}
+      //   transition={{ delay: 1000 + index * 200 }}>
         <TouchableOpacity
           key={index}
           onPress={() => viewProduct === 'VIEW_PRODUCT' ? handleProductDetail(item.id) : handleClassifyDetail(item.id)}
@@ -164,7 +164,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
             </View>
           </View>
         </TouchableOpacity>
-      </MotiView>
+      // </MotiView>
     );
   }
 };
