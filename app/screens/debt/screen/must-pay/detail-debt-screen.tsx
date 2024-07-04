@@ -1,21 +1,20 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { FC, useState } from "react";
-import { NavigatorParamList } from "../../../navigators";
+import { NavigatorParamList } from "../../../../navigators";
 import { observer } from "mobx-react-lite";
-import { TouchableOpacity, View, FlatList } from "react-native";
-import { Header, Text } from "../../../components";
-import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../assets";
-import en from "../../../i18n/en";
+import { TouchableOpacity, View, FlatList, RefreshControl, ActivityIndicator } from "react-native";
+import { Header, Text } from "../../../../components";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../theme";
+import { Images } from "../../../../../assets";
+import en from "../../../../i18n/en";
 import React from "react";
 import LinearGradient from "react-native-linear-gradient";
-import { Styles } from "./styles";
-import data from "../../../components/svg-icon/data";
-import { styles } from "../../login/styles";
-import { ModalExchange } from "../component/ModalExchange";
-import CustomCalendar from "../../../components/calendar";
+import { Styles } from "../styles";
+import data from "../../../../components/svg-icon/data";
+import { ModalExchange } from "../../component/ModalExchange";
+import CustomCalendar from "../../../../components/calendar";
 import moment from "moment";
-import { ModalPay } from "../component/ModalPay";
+import { ModalPay } from "../../component/ModalPay";
 
 export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDebt">> = observer(
     function detailDebtScreen(props) {
@@ -141,6 +140,7 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
         console.log('====================================');
         console.log("data groupBy", groupBy(fakeData, 'createDateTransaction'));
         console.log('====================================');
+
         const handleRefresh = () => {
             setRefreshing(true)
 
@@ -164,7 +164,7 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                 <Header
                     style={{ height: scaleHeight(52) }}
                     LeftIcon={Images.back}
-                    headerTx="debtScreen.detailDebt"
+                    headerTx="debtScreen.detailDebtSupplier"
                     onLeftPress={() => {
                         props.navigation.goBack()
                     }}
@@ -297,7 +297,12 @@ export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDe
                         )
 
                     }}
-
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+                    }
+                    onEndReached={handleLoadMore}
+                    onEndReachedThreshold={0.2}
+                    ListFooterComponent={() => isLoadingMore && <ActivityIndicator />}
 
                 />
 
