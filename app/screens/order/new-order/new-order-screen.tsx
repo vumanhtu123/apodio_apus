@@ -21,6 +21,7 @@ import { Images } from "../../../../assets";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
+  fontSize,
   margin,
   padding,
   scaleHeight,
@@ -96,6 +97,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const valueNote = useRef("");
   const store = useStores();
   const discount = useRef(0);
+  const imageNote = useRef([])
   const { goBackPayment }: any = route?.params || {};
 
   const getListAddress = async () => {
@@ -246,13 +248,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       Number(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
         Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))))
     ) {
-      // orderStore.setMethodPayment({
-      //   sumAll: 0,
-      //   methodPayment: 0,
-      //   debt: 0,
-      //   inputPrice: 0,
-      //   apply: false,
-      // });
       return navigation.navigate({name: "paymentBuy", params: {
         params: {
           type: handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
@@ -360,14 +355,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       };
     });
     console.log("data new", JSON.stringify(newArr));
-    const formattedDate = moment.utc(markedDatesS).endOf("day").toISOString();
+    const formattedDate = moment(markedDatesS).endOf("day").toISOString();
     const order: any = {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
       // invoiceAddressId: 0,
       deliveryAddressId: address.id,
       // quotationDate: "",
-      orderDate: formattedDate,
+      commitmentDate: formattedDate,
       // quoteCreationDate: "",
       // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
@@ -387,6 +382,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       // discount: 0, //chiet khau
       discountComputeType: "FIXED",
       note: valueNote.current,
+      noteImages: imageNote.current,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
       // totalPrice: 0,
@@ -436,6 +432,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           screen: "create",
           price: price,
           inputPrice: Number(orderStore.dataDebtPayment.inputPrice),
+          paymentMethod: handleNamMethod() === "DEDUCTION_OF_LIABILITIES"  ? true : false
         }}as never);
         orderStore.setDataProductAddOrder([]);
         setArrProduct([]);
@@ -519,7 +516,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return item;
     });
     setArrProduct(newArr);
-    // discountAll(newArr);
     postTaxLines(newArr);
     // setEditTaxes(false)
     if (isDeposit === true) {
@@ -782,7 +778,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
   };
 
-  console.log("---------arrProduct--------", JSON.stringify(arrProduct));
   const selectProduct = () => {
     orderStore.setDataProductAddOrder(arrProduct.slice());
   };
@@ -805,27 +800,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     setPriceNoVat(allNoVat);
     console.log("sum all: ", all);
   };
-
-  const discountAll = (data: any) => {
-    console.log("test discount", data);
-    const all = data.reduce((sum: any, item: any) => {
-      if (item.taxesInput !== undefined) {
-        return sum + Number(item.taxesInput ?? 0);
-      }
-      return sum;
-    }, 0);
-    discount.current = all;
-    console.log("discount all: ", discount.current);
-  };
-
-  // console.log("post add tuvm", JSON.stringify(orderStore.dataProductAddOrder));
-  // console.log("post add tuvm 2", JSON.stringify(arrProduct));
-  // console.log(
-  //   "post add tuvm 3",
-  //   JSON.stringify(store.orderStore.dataDebtLimit)
-  // );
-  // console.log("price scr", Number(price));
-  // console.log("price scr 2", orderStore.dataDebtPayment);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -889,9 +863,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             styles.viewScrollVertical,
             {
               height:
-                isDeposit === true
-                  ? heightScroll - scaleHeight(64)
-                  : heightScroll,
+                isDeposit === false
+                  ? heightScroll 
+                  : handleNamMethod() === "DEDUCTION_OF_LIABILITIES"
+                  ? heightScroll - scaleHeight(96)
+                  : heightScroll - scaleHeight(64),
             },
           ]}>
           <HeaderOrder
@@ -967,7 +943,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                             ),
                             closeOnOverlayTap: false,
                             onPressButton: () => {
-                              // navigation.goBack();
                               Dialog.hide();
                             },
                           })
@@ -1108,13 +1083,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               </View>
             </View>
           </TouchableOpacity>
-
           <ShowNote
             note={note}
             setNoteData={function (note: string, arr: []): void {
               valueNote.current = note;
-              console.log("note---------", note);
-              console.log("arr---------", arr);
+              imageNote.current = arr
+              console.log(arr, 'day la anh')
             }}
           />
           {desiredDate === true ? (
@@ -1197,13 +1171,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           },
                         });
                       }
-                      // orderStore.setMethodPayment({
-                      //   sumAll: 0,
-                      //   methodPayment: 0,
-                      //   debt: 0,
-                      //   inputPrice: 0,
-                      //   apply: false,
-                      // });
                       handleDebt();
                       navigation.navigate({ name: "paymentBuy", params: {
                         params: {
@@ -1248,40 +1215,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               <Text tx={"order.noMoreInformation"} style={styles.textVoucher} />
             )}
           </View>
-          {/* <View style={styles.viewVoucher}>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={[styles.textVoucher, { flex: 1 }]}>
-                {translate("order.total") +
-                  " " +
-                  arrProduct.length +
-                  " " +
-                  translate("order.product")}
-              </Text>
-              <Text
-                style={[styles.textVoucher, { color: colors.palette.nero }]}>
-                84000000
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("promotion" as any)}
-              style={{
-                flexDirection: "row",
-                marginTop: scaleHeight(margin.margin_20),
-              }}>
-              <Images.icon_tag height={16} width={16} />
-              <Text
-                style={[
-                  styles.textVoucher,
-                  {
-                    flex: 1,
-                    marginLeft: scaleWidth(margin.margin_6),
-                  },
-                ]}
-                tx={"order.applyPromoHint"}
-              />
-              <Images.icon_caretRight2 height={16} width={16} />
-            </TouchableOpacity>
-          </View> */}
         </ScrollView>
       </KeyboardAvoidingView>
       <View
@@ -1289,9 +1222,11 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           styles.viewButtonOrder,
           {
             top:
-              isDeposit === true
-                ? Dimensions.get("window").height - scaleHeight(184)
-                : Dimensions.get("window").height - scaleHeight(120),
+              isDeposit === false
+                ? Dimensions.get("window").height - scaleHeight(120)
+                : handleNamMethod() == "DEDUCTION_OF_LIABILITIES" 
+                ? Dimensions.get("window").height - scaleHeight(216)
+                : Dimensions.get("window").height - scaleHeight(184),
           },
         ]}>
         <View
@@ -1302,9 +1237,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           }}>
           <Text tx={"order.sum"} style={[styles.textTotal, { flex: 1 }]} />
           <Text style={isDeposit === true ? styles.textTotal : styles.textCost}>
-            {/* {isNaN(priceSumVAT.current)
-              ? Number(priceSumVAT.current)
-              : price.current} */}
             {formatVND(formatCurrency(commasToDots(Number(price))))}
           </Text>
         </View>
@@ -1321,7 +1253,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
                   color: "#747475",
-                  fontSize: 12,
+                  fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}>
                 {formatVND(formatCurrency(
@@ -1330,20 +1262,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textTotal}>
-                {formatVND(formatCurrency(
-                  commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
-                ))}
-              </Text>
               <TouchableOpacity
                 onPress={() => {
-                  // orderStore.setMethodPayment({
-                  //   sumAll: 0,
-                  //   methodPayment: 0,
-                  //   debt: 0,
-                  //   inputPrice: 0,
-                  //   apply: false,
-                  // });
                   return navigation.navigate({name: "paymentBuy", params: {
                     params: {
                       type:
@@ -1363,9 +1283,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   }} as never);
                 }}>
                 <Images.icon_edit
-                  style={{ marginLeft: scaleWidth(margin.margin_6) }}
+                  style={{ marginRight: scaleWidth(margin.margin_6) }}
                 />
               </TouchableOpacity>
+              <Text style={styles.textTotal}>
+                {formatVND(formatCurrency(
+                  commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
+                ))}
+              </Text>
             </View>
           </View>
         ) : null}
@@ -1377,10 +1302,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             }}>
             <Text
               tx={"order.usedDebt"}
-              style={[styles.textTotal, { flex: 1 }]}
+              style={[styles.textTotal,]}
             />
             <Text
-              style={[styles.textCost, { color: colors.palette.radicalRed }]}>
+                tx={'order.debtLimit'}
+                style={{
+                  color: "#747475",
+                  fontSize: fontSize.size12,
+                  fontWeight: "400",
+                  flex: 1,
+                }}></Text>
+            <Text
+              style={[styles.textTotal, ]}>
               {formatVND(formatCurrency(
                 commasToDots(
                   Number(price ?? 0) -
@@ -1410,7 +1343,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       (Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)) - 
                       (Number(store.orderStore.dataDebtLimit.debtAmount) - Number( store.orderStore.dataDebtLimit.amountOwed ?? 0))
                     ))
-                  ): 0
+                  ): formatVND(0)
                   }
               </Text>
             </View>
@@ -1470,8 +1403,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           setButtonPayment(false);
         }}
         onSave={() => {
-          // if (countRef.current !== translate("order.DEDUCTION_OF_LIABILITIES")) {
-          //   console.log('12312312312312')
           orderStore.setMethodPayment({
             sumAll: 0,
             methodPayment: '',
@@ -1480,7 +1411,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             apply: false,
           });
           setIsDeposit(false)
-          // }
         }}
         arrData={methodData}
         method={method}

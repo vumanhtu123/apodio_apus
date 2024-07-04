@@ -731,6 +731,9 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       </View>
       <TouchableOpacity
         onPress={() => addVariantToCart()}
+        disabled={dataVariant
+          .filter((items: any) => items.isSelect === true)
+          .length === 0 ? true : false}
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -740,6 +743,9 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           marginBottom: scaleHeight(20),
           borderRadius: 8,
           justifyContent: "center",
+          opacity: dataVariant
+          .filter((items: any) => items.isSelect === true)
+          .length === 0 ? 0.6 : 1
         }}>
         <Images.ic_ShoopingCar />
         <Text

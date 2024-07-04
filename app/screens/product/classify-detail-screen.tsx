@@ -30,7 +30,7 @@ import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
-import { formatNumber } from "../../utils/validate";
+import { commasToDots, formatCurrency, formatNumber } from "../../utils/validate";
 import ProductAttribute from "./component/productAttribute";
 // import ProductAttribute from "./componet/productAttribute";
 
@@ -67,9 +67,9 @@ export const ClassifyDetailScreen: FC = () => {
       console.log("handleGetDetailClassify----------", response);
       if (response && response.kind === "ok") {
         const data = response.response.data;
-        console.log("response", response.response.data);
+        console.log("response detail classify", JSON.stringify(response.response.data));
 
-        setDetailProduct(response.response.data);
+        setDetailProduct(data.baseProductPackingLine);
         setDataClassification(data);
         setArrImagesProduct(data.imageUrls);
         setArrClassification(data.productVariants);
@@ -438,60 +438,60 @@ export const ClassifyDetailScreen: FC = () => {
               <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
 
                 <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14 }} />
-                <FlatList
-                  data={dataWeightOriginal}
+                {/* <FlatList
+                  data={detailProduct}
                   renderItem={({ item }) => {
-                    return (
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: scaleWidth(9) }}>
-                        <Text style={[styles.fontSizeWeight, { flex: 2, textAlign: 'center', marginRight: scaleWidth(10) }]}>
-                          {item.name}
-                        </Text>
-                        <Text style={[styles.fontSizeWeight, { flex: 3, textAlign: 'center', marginRight: scaleWidth(20) }]}>
-                          Trọng lượng {item.weight} kg
-                        </Text>
-                        <Text style={[styles.fontSizeWeight, { flex: 3, textAlign: 'right' }]}>
-                          Thể tích {item.volume} m3
-                        </Text>
-                      </View>
-                    )
+                    return ( */}
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
+                  <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
+                    {dataClassification.uom?.name}
+                  </Text>
+                  <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
+                    <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
+                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.weight} kg</Text>
+                  </View>
+                  <View style={{ flex: 3, flexDirection: 'row' }}>
+                    <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
+                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.volume} m3</Text>
+                  </View>
+                </View>
+                {/* )
                   }}
                   keyExtractor={(item) => item.id.toString()}
-                />
+                /> */}
                 <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
                 <FlatList
-                  data={dataWeightExchange}
+                  data={dataClassification.productPackingLines}
                   renderItem={({ item }) => {
                     return (
-                      <View style={{ flexDirection: 'row', margin: scaleWidth(9), justifyContent: 'space-between' }}>
-                        <View style={{ flex: 2, marginRight: scaleWidth(10) }}>
-                          <Text style={[styles.fontSizeWeight, { textAlign: 'center' }]}>
-                            {item.kind}
+                      <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
+                        <View style={{ flex: 2 }}>
+                          <Text style={[styles.fontSizeWeight, {}]}>
+                            {item.uomGroupLineOutput?.unitName}
                           </Text>
                           <View
-                            style={{ backgroundColor: colors.palette.dolphin, height: 1 }}
+                            style={{ backgroundColor: '#E7EFFF', height: 1 }}
                           />
-                          <Text style={[styles.fontSizeWeight, { textAlign: 'center' }]}>
-                            {`(${item.boxQuantity} hộp)`}
+                          <Text style={[styles.fontSizeWeight, {}]}>
+                            {`${commasToDots(item.amount)} ${dataClassification.uom?.name}`}
                           </Text>
                         </View>
 
-                        <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', marginRight: scaleWidth(20) }}>
-                          <Text style={[styles.fontSizeWeight,]}>
-                            Trọng lượng {item.weight} kg
-                          </Text>
+                        <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                          <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
                         </View>
 
-                        <View style={{ flex: 3, justifyContent: 'center', alignItems: 'flex-end' }}>
-                          <Text style={[styles.fontSizeWeight,]}>
-                            Thể tích {item.volume} m3
-                          </Text>
+                        <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                          <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
                         </View>
 
                       </View>
                     )
                   }}
                   keyExtractor={(item) => item.id.toString()}
-
+                  style={{ marginTop: scaleHeight(12) }}
                 />
 
               </View>

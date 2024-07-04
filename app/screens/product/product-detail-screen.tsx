@@ -20,6 +20,7 @@ import {
   fontSize,
   margin,
   padding,
+  palette,
   scaleHeight,
   scaleWidth,
 } from "../../theme";
@@ -30,7 +31,7 @@ import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
-import { formatNumber } from "../../utils/validate";
+import { commasToDots, formatNumber } from "../../utils/validate";
 import ProductAttribute from "./component/productAttribute";
 import { translate } from "../../i18n/translate";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
@@ -63,6 +64,7 @@ export const ProductDetailScreen: FC = (item) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false);
+  const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
 
   const handleGetDetailProduct = async () => {
     try {
@@ -70,7 +72,7 @@ export const ProductDetailScreen: FC = (item) => {
       console.log("productId", productId);
       if (response && response.kind === "ok") {
         const data = response.response.data;
-        setDetailProduct(response.response.data);
+        setDetailProduct(data.baseTemplatePackingLine);
         setDataClassification(data);
         setDataClassificationToEdit(data);
         console.log("response---getDetailProduct-------", data);
@@ -408,6 +410,7 @@ export const ProductDetailScreen: FC = (item) => {
               })}
             </ScrollView>
           ) : null}
+
           {detailsClassification.imageUrls?.length !== 0 ? (
             <ScrollView
               style={{
@@ -742,6 +745,86 @@ export const ProductDetailScreen: FC = (item) => {
               ))}
             </View>
           )}
+          <View>
+            <View style={styles.viewLine} />
+
+            <TouchableOpacity
+              style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
+
+              onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
+            >
+              <Text tx="productScreen.weight"
+                style={{ fontSize: fontSize.size14, color: colors.navyBlue, marginRight: scaleWidth(5) }}
+              />
+              <Images.icon_caretDownBlue style={{ transform: [{ rotate: showOrHiddenWeight ? '0deg' : '180deg' }], }} />
+            </TouchableOpacity>
+            {
+              showOrHiddenWeight ?
+                <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
+
+                  <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14 }} />
+                  {/* <FlatList
+                  data={detailProduct}
+                  renderItem={({ item }) => {
+                    return ( */}
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
+                    <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
+                      {dataClassification.uom?.name}
+                    </Text>
+                    <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
+                      <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.weight} kg</Text>
+                    </View>
+                    <View style={{ flex: 3, flexDirection: 'row' }}>
+                      <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.volume} m3</Text>
+                    </View>
+                  </View>
+                  {/* )
+                  }}
+                  keyExtractor={(item) => item.id.toString()}
+                /> */}
+                  {dataClassification.templatePackingLines !== null ? (
+                    <View>
+                      <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
+                      <FlatList
+                        data={dataClassification.templatePackingLines}
+                        renderItem={({ item }) => {
+                          return (
+                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
+                              <View style={{ flex: 2 }}>
+                                <Text style={[styles.fontSizeWeight, {}]}>
+                                  {item.uomGroupLineOutput?.unitName}
+                                </Text>
+                                <View
+                                  style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                                />
+                                <Text style={[styles.fontSizeWeight, {}]}>
+                                  {`${commasToDots(item.amount)} ${dataClassification.uom?.name}`}
+                                </Text>
+                              </View>
+                              <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                                <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                                <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
+                              </View>
+
+                              <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                                <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                                <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
+                              </View>
+                            </View>
+                          )
+                        }}
+                        keyExtractor={(item) => item.id.toString()}
+                        style={{ marginTop: scaleHeight(12) }}
+                      />
+                    </View>
+                  ) : null}
+
+                </View>
+                : null
+            }
+          </View>
           {arrNCC?.length > 0 ? (
             <View>
               <View style={styles.viewLine} />
@@ -1038,4 +1121,11 @@ const styles = StyleSheet.create({
     borderWidth: scaleHeight(1),
     borderColor: colors.palette.ghostWhite,
   },
+  viewWeight: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  fontSizeWeight: {
+    color: palette.dolphin, fontSize: fontSize.size12,
+  }
 });

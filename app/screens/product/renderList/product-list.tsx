@@ -34,6 +34,7 @@ interface ProductListProps {
     nameDirectory: string;
     isLoadingMore: boolean;
     renderFooter: any;
+    searchCategory?: any;
 }
 
 export const ProductList: React.FC<ProductListProps> = ({
@@ -61,7 +62,8 @@ export const ProductList: React.FC<ProductListProps> = ({
     handleClassifyDetail,
     nameDirectory,
     isLoadingMore,
-    renderFooter
+    renderFooter,
+    searchCategory,
 }) => {
     const Loading = () => (
         <View style={{
@@ -72,6 +74,9 @@ export const ProductList: React.FC<ProductListProps> = ({
             <ActivityIndicator size="large" color="#0000ff" />
         </View>
     );
+    const fetchCategories = async (searchText : any) => {
+        console.log('kkkkkk', searchText)
+    };
     return (
         <>
             <TouchableOpacity
@@ -153,6 +158,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                 setNameDirectory={setNameDirectory}
                 isSearchBarVisible={openSearch}
                 setIndex={setIndex}
+                onSearchChange={searchCategory}
             />
             <View style={styles.containerProduct}>
                 <FlatList
