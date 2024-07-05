@@ -784,7 +784,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const goToChooseSupplierScreen = () => {
     const listIds = selectedIds;
-    navigation.navigate({name: "ChooseVendorScreen", params: { listIds, mode: 'create' }}as never);
+    navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: 'create' } } as never);
   }
 
   const arrBrand = dataBrand.map((item) => {
@@ -926,7 +926,7 @@ export const ProductCreateScreen: FC = (item) => {
                       style={styles.textTitleViewPrice}
                     />
                     {retailPriceProduct.length > 0 &&
-                    retailPriceProduct.length !== 1 ? (
+                      retailPriceProduct.length !== 1 ? (
                       <Text
                         text={convertRetailPrice(retailPriceProduct)}
                         numberOfLines={1}
@@ -1024,7 +1024,7 @@ export const ProductCreateScreen: FC = (item) => {
                       style={styles.textTitleViewPrice}
                     />
                     {wholesalePriceProduct.length > 0 &&
-                    wholesalePriceProduct.length !== 1 ? (
+                      wholesalePriceProduct.length !== 1 ? (
                       <Text
                         text={convertWholesalePrice(wholesalePriceProduct)}
                         numberOfLines={1}
@@ -1095,7 +1095,7 @@ export const ProductCreateScreen: FC = (item) => {
               onPressChoice={(item: any) => {
                 setBrands(item);
               }}
-              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
+            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
             />
           </View>
         </View>
@@ -1133,7 +1133,7 @@ export const ProductCreateScreen: FC = (item) => {
                 setBrand(item);
               }}
               styleView={{ marginBottom: scaleHeight(15) }}
-              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
+            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
             />
             <DropdownModal
               required={false}
@@ -1272,12 +1272,17 @@ export const ProductCreateScreen: FC = (item) => {
             ) : null}
           </View>
         </View>
-        <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-        <ItemWeight
-        checkList={valueSwitchUnit}
-        data={valueSwitchUnit == false ? uomId : uomGroupId}
-        />
-        </View>
+        {uomId ? (
+          <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+            <View style={[styles.viewViewDetail]}>
+              <ItemWeight
+                checkList={valueSwitchUnit}
+                data={valueSwitchUnit == false ? uomId : uomGroupId}
+              />
+            </View>
+          </View>
+        ): null}
         {addVariant ? (
           <View
             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
@@ -1374,7 +1379,7 @@ export const ProductCreateScreen: FC = (item) => {
                                       style={styles.textTitleViewPrice}
                                     />
                                     {item.retailPrice.length > 0 &&
-                                    item.retailPrice.length !== 1 ? (
+                                      item.retailPrice.length !== 1 ? (
                                       <Text
                                         text={convertAttributeRetailPrice(
                                           dataCreateProduct,
@@ -1422,8 +1427,8 @@ export const ProductCreateScreen: FC = (item) => {
                                       onChange(
                                         vendorStore.checkSeparator === "DOTS"
                                           ? formatCurrency(
-                                              removeNonNumeric(value)
-                                            )
+                                            removeNonNumeric(value)
+                                          )
                                           : addCommas(removeNonNumeric(value))
                                       );
                                       item.costPrice = value;
@@ -1458,8 +1463,8 @@ export const ProductCreateScreen: FC = (item) => {
                                       onChange(
                                         vendorStore.checkSeparator === "DOTS"
                                           ? formatCurrency(
-                                              removeNonNumeric(value)
-                                            )
+                                            removeNonNumeric(value)
+                                          )
                                           : addCommas(removeNonNumeric(value))
                                       );
                                       item.listPrice = value;
@@ -1490,7 +1495,7 @@ export const ProductCreateScreen: FC = (item) => {
                                     style={styles.textTitleViewPrice}
                                   />
                                   {item.wholesalePrice.length > 0 &&
-                                  item.wholesalePrice.length !== 1 ? (
+                                    item.wholesalePrice.length !== 1 ? (
                                     <Text
                                       text={convertAttributeWholesalePrice(
                                         dataCreateProduct,
@@ -1560,7 +1565,7 @@ export const ProductCreateScreen: FC = (item) => {
                 }}>
                 {dataCreateProduct.length > 0 ? (
                   <TouchableOpacity onPress={() => {
-                    navigation.navigate({name: 'editAttribute', params: { dataAttribute: attributeArr, dropdownSelected: dropdownSelected }}as never)
+                    navigation.navigate({ name: 'editAttribute', params: { dataAttribute: attributeArr, dropdownSelected: dropdownSelected } } as never)
                   }}>
                     <Images.icon_edit
                       // style={{ marginRight: scaleWidth(8) }}

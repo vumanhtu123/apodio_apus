@@ -34,7 +34,7 @@ export const DebtScreen: FC<StackScreenProps<NavigatorParamList, "debt">> = obse
                         style={{ flexDirection: "row", marginTop: scaleWidth(16), justifyContent: 'space-between' }}
                     >
                         <TouchableOpacity style={Styles.bodyItem}
-
+                            onPress={() => props.navigation.navigate('receivable')}
                         >
                             <Images.ic_receivables />
                             <Text tx="debtScreen.receivables" style={Styles.upcase}></Text>

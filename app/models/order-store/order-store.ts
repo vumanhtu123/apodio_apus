@@ -91,6 +91,7 @@ export const OrderStoreModel = types
       name: "",
       code: "",
       phoneNumber: "",
+      isHaveDeliveryAddress: false,
     }),
     sortPriceList: types.optional(types.string, ""),
     dataPriceListSelected: types.optional(types.frozen<PriceListSelect>(), {

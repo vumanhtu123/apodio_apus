@@ -17,6 +17,7 @@ import en from "../../../../i18n/en";
 import { clientData } from "../../../../models/add-client-props";
 import { values } from "mobx";
 import { checkPhoneNumber } from "../../../../utils/validate";
+import { CustomModal } from "../../../../components/custom-modal";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;
@@ -30,6 +31,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     const [selectCustomerType, setSelectCustomerType] = useState({ label: "" })
     // const [checkError, setCheckError] = useState(false)
     const [checkHind, setCheckHind] = useState(false)
+    const [showLoading, setShowLoading] = useState(false)
 
     const { control, handleSubmit, setError, formState: { errors }, reset, clearErrors, trigger } = useForm({
         defaultValues: {
@@ -69,7 +71,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
         } else {
             setCheckHind(true)
-
+            setShowLoading(true)
             // console.log('====================================');
             // console.log("value hind", checkHind);
             // console.log('====================================');
@@ -117,7 +119,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                     textBody: en.ClientScreen.createClientSuccess,
                     closeOnOverlayTap: false,
                     onPressButton: () => {
-
+                        setShowLoading(false)
                         Dialog.hide();
                         props.handleRefresh()
                     }
@@ -183,166 +185,152 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     })
 
     return (
-        <Modal
-            animationIn="slideInUp"
-            animationOut="slideOutDown"
-            animationInTiming={500}
-            animationOutTiming={750}
+        <CustomModal
             isVisible={props.isVisible}
-            style={{ margin: 0 }}
-            avoidKeyboard={true}
+            setIsVisible={() => props.setIsVisible}
+            isVisibleLoading={showLoading}
         >
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', margin: 0 }}
-            >
+            <Text style={styles.modalText} />
+            <View style={styles.header}>
+                <Text style={styles.headerTitle} tx="selectClient.createClient"></Text>
+            </View>
 
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText} />
-                    <View style={styles.header}>
-                        <Text style={styles.headerTitle} tx="selectClient.createClient"></Text>
-                    </View>
+            <View style={styles.horizontalLine} />
 
-                    <View style={styles.horizontalLine} />
+            <InputSelect
+                titleTx="selectClient.customerType"
+                hintTx="selectClient.selectCustomerType"
+                required
+                arrData={arrGroupCustomerType}
+                dataDefault={selectCustomerType.label}
+                onPressChoice={(item: any) => {
+                    setSelectCustomerType(item)
+                }}
+                styleView={{}}
 
-                    <InputSelect
-                        titleTx="selectClient.customerType"
-                        hintTx="selectClient.selectCustomerType"
-                        required
-                        arrData={arrGroupCustomerType}
-                        dataDefault={selectCustomerType.label}
-                        onPressChoice={(item: any) => {
-                            setSelectCustomerType(item)
+
+            />
+            <View style={{ marginVertical: 5 }}>
+                <CheckErrorClient checkValue={checkHind} />
+
+            </View>
+
+            <Controller
+
+                control={control}
+                name="phoneNumber"
+
+                render={({ field: { onBlur, onChange, value } }) => (
+
+                    <TextField
+                        keyboardType="numeric"
+                        labelTx={"NCCScreen.enterPhone"}
+                        maxLength={11}
+                        style={{
+                            // marginBottom: scaleHeight(10),
+                            marginBottom: scaleHeight(5),
+                            justifyContent: "center",
                         }}
-                        styleView={{}}
-
-
-                    />
-                    <View style={{ marginVertical: 5 }}>
-                        <CheckErrorClient checkValue={checkHind} />
-
-                    </View>
-
-                    <Controller
-
-                        control={control}
-                        name="phoneNumber"
-
-                        render={({ field: { onBlur, onChange, value } }) => (
-
-                            <TextField
-                                keyboardType="numeric"
-                                labelTx={"NCCScreen.enterPhone"}
-                                maxLength={11}
-                                style={{
-                                    // marginBottom: scaleHeight(10),
-                                    marginBottom: scaleHeight(5),
-                                    justifyContent: "center",
-                                }}
-                                inputStyle={{
-                                    fontSize: fontSize.size16,
-                                    fontWeight: "500",
-                                }}
-                                value={value}
-                                onBlur={onBlur}
-                                onClearText={() => {
-                                    onChange("");
-
-                                    clearErrors("phoneNumber")
-
-                                    console.log('Clear Errors called', errors.phoneNumber);
-                                }}
-                                onChangeText={(value) => {
-                                    const filteredValue = value.replace(/\s/g, '').replace(/[^0-9]/g, '');
-
-                                    onChange(filteredValue)
-
-                                }}
-                                isImportant
-                                placeholder="VD 01231254"
-                                RightIconClear={Images.icon_delete2}
-                                error={errors?.phoneNumber?.message} // Thay đổi chỗ này
-                            />
-                        )}
-                        rules={{
-
-                            // validate: {
-                            //     checkLength: (value) => checkPhoneNumber(value)
-                            // }
-                            // ,
-
-
-                            // pattern: {
-                            //     value: /^\S+$/,
-                            //     message: en.ClientScreen.checkSpace
-                            // },
-                            required: en.ClientScreen.pleaseInputPhoneNumber
+                        inputStyle={{
+                            fontSize: fontSize.size16,
+                            fontWeight: "500",
                         }}
-                    />
+                        value={value}
+                        onBlur={onBlur}
+                        onClearText={() => {
+                            onChange("");
 
+                            clearErrors("phoneNumber")
 
-                    <Controller
-                        control={control}
-                        name="NameClient"
-                        render={({ field: { onBlur, onChange, value } }) => (
-                            <TextField
-                                keyboardType="ascii-capable"
-                                labelTx={"selectClient.nameClient"}
-                                style={{
-                                    // marginBottom: scaleHeight(10),
-                                    marginBottom: scaleHeight(5),
-                                    justifyContent: "center",
-                                }}
-                                inputStyle={{
-                                    fontSize: fontSize.size16,
-                                    fontWeight: "500",
-                                }}
-                                value={value}
-                                onBlur={onBlur}
-                                onClearText={() => {
-                                    onChange("")
-                                    // reset({
-                                    //     NameClient: ""
-                                    // })
-                                }}
-                                onChangeText={(txt) => {
-
-                                    onChange(txt)
-                                    // setNameClient(txt)
-
-                                }}
-                                isImportant
-                                placeholder="VD Nguyễn Phương Linh"
-                                RightIconClear={Images.icon_delete2}
-                                error={errors?.NameClient?.message}
-                            />
-                        )}
-                        rules={{
-                            required: en.ClientScreen.pleaseInputName
+                            console.log('Clear Errors called', errors.phoneNumber);
                         }}
+                        onChangeText={(value) => {
+                            const filteredValue = value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+
+                            onChange(filteredValue)
+
+                        }}
+                        isImportant
+                        placeholder="VD 01231254"
+                        RightIconClear={Images.icon_delete2}
+                        error={errors?.phoneNumber?.message} // Thay đổi chỗ này
                     />
+                )}
+                rules={{
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
-                        <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}
-                            onPress={() => resetForm()}
-                        >
-                            <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
-                            onPress={() => {
-                                setCheckHind(true)
-                                handleSubmit(onSubmit)()
-                            }
-                            }
-                        >
-                            <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectClient.add"></Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                    // validate: {
+                    //     checkLength: (value) => checkPhoneNumber(value)
+                    // }
+                    // ,
 
-            </KeyboardAvoidingView>
-        </Modal>
+
+                    // pattern: {
+                    //     value: /^\S+$/,
+                    //     message: en.ClientScreen.checkSpace
+                    // },
+                    required: en.ClientScreen.pleaseInputPhoneNumber
+                }}
+            />
+
+
+            <Controller
+                control={control}
+                name="NameClient"
+                render={({ field: { onBlur, onChange, value } }) => (
+                    <TextField
+                        keyboardType="ascii-capable"
+                        labelTx={"selectClient.nameClient"}
+                        style={{
+                            // marginBottom: scaleHeight(10),
+                            marginBottom: scaleHeight(5),
+                            justifyContent: "center",
+                        }}
+                        inputStyle={{
+                            fontSize: fontSize.size16,
+                            fontWeight: "500",
+                        }}
+                        value={value}
+                        onBlur={onBlur}
+                        onClearText={() => {
+                            onChange("")
+                            // reset({
+                            //     NameClient: ""
+                            // })
+                        }}
+                        onChangeText={(txt) => {
+
+                            onChange(txt)
+                            // setNameClient(txt)
+
+                        }}
+                        isImportant
+                        placeholder="VD Nguyễn Phương Linh"
+                        RightIconClear={Images.icon_delete2}
+                        error={errors?.NameClient?.message}
+                    />
+                )}
+                rules={{
+                    required: en.ClientScreen.pleaseInputName
+                }}
+            />
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
+                <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}
+                    onPress={() => resetForm()}
+                >
+                    <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
+                    onPress={() => {
+                        setCheckHind(true)
+                        handleSubmit(onSubmit)()
+                    }
+                    }
+                >
+                    <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectClient.add"></Text>
+                </TouchableOpacity>
+            </View>
+        </CustomModal>
     );
 };
 
