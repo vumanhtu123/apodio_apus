@@ -1007,6 +1007,12 @@ const en = {
     reset: "Đặt lại",
     done: "Xác nhận",
   },
+  revenueAndExpenditure: {
+    moneyManagement: "Quản lý nguồn tiền",
+    transferMoney: "Chuyển tiền",
+    addFunds: "Thêm nguồn tiền" 
+
+  }
 
   // @demo remove-block-end
 };

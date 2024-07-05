@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../../theme";
 import { Images } from "../../../../../assets";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
@@ -65,6 +65,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
             });
             hasError = true
         }
+
         if (hasError) {
 
         } else {
@@ -219,9 +220,8 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
 
                     />
-                    <View style={{ marginVertical: 5 }}>
+                    <View style={{ marginVertical: margin.margin_5 }}>
                         <CheckErrorClient checkValue={checkHind} />
-
                     </View>
 
                     <Controller
@@ -232,12 +232,13 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         render={({ field: { onBlur, onChange, value } }) => (
 
                             <TextField
+                                multiline={false}
                                 keyboardType="numeric"
                                 labelTx={"NCCScreen.enterPhone"}
                                 maxLength={11}
                                 style={{
                                     // marginBottom: scaleHeight(10),
-                                    marginBottom: scaleHeight(5),
+                                    marginBottom: margin.margin_10,
                                     justifyContent: "center",
                                 }}
                                 inputStyle={{
@@ -263,6 +264,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                                 placeholder="VD 01231254"
                                 RightIconClear={Images.icon_delete2}
                                 error={errors?.phoneNumber?.message} // Thay đổi chỗ này
+
                             />
                         )}
                         rules={{
@@ -287,6 +289,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         name="NameClient"
                         render={({ field: { onBlur, onChange, value } }) => (
                             <TextField
+                                // multiline={false}
                                 keyboardType="ascii-capable"
                                 labelTx={"selectClient.nameClient"}
                                 style={{

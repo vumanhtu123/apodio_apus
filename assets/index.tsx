@@ -226,7 +226,10 @@ import ic_comment from "./Images/ic_comment.svg";
 import ic_Frame from "./Images/ic_Frame.svg";
 import ic_s from "./Images/ic_s.svg";
 import ic_smile from "./Images/ic_smile.svg";
-import ic_pay_hand from "./Images/ic_pay_hand.svg"
+import ic_pay_hand from "./Images/ic_pay_hand.svg";
+import ic_MinusCircleGray from "./Images/ic_MinusCircleGray"
+import ic_MinusCircleRed from "./Images/ic_MinusCirleRed.svg"
+import ic_ArrowsLeftRight from "./Images/ic_ArrowsLeftRight.svg"
 export const Images = {
   icon_test: _test,
   icon_English: _test2,
@@ -449,4 +452,7 @@ export const Images = {
   ic_S: ic_s,
   ic_smile: ic_smile,
   ic_pay_hand: ic_pay_hand,
+  ic_MinusCircleGray: ic_MinusCircleGray,
+  ic_MinusCircleRed: ic_MinusCircleRed,
+  ic_ArrowsLeftRight: ic_ArrowsLeftRight
 };

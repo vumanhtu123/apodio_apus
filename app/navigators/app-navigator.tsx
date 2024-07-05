@@ -137,6 +137,7 @@ export type NavigatorParamList = {
   orderScreen: undefined;
   receivable: undefined;
   detailReceivable: undefined;
+  moneyManagement: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -255,6 +256,7 @@ export const AppStack = () => {
       <Stack.Screen name="detailDebt" component={Screens.DetailDebtScreen} />
       <Stack.Screen name="receivable" component={Screens.ReceivableScreen} />
       <Stack.Screen name="detailReceivable" component={Screens.DetailReceivable} />
+      <Stack.Screen name="moneyManagement" component={Screens.MoneyManagementScreen} />
 
       <Stack.Screen
         name="selectClient"
