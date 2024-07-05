@@ -17,10 +17,12 @@ export const CustomModal = (props: ModalProps) => {
   const { children, style, isVisible, isVisibleLoading, setIsVisible, isHideKeyBoards, ...rest } = props
   return (
     <Modal
-      animationIn={'fadeIn'}
-      animationOut={'fadeOut'}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
+      animationInTiming={500}
+      animationOutTiming={500}
       isVisible={isVisible}
-      {...rest}
+      useNativeDriver={true}
       avoidKeyboard={true}
       onBackdropPress={setIsVisible}
       onBackButtonPress={setIsVisible}
@@ -34,10 +36,9 @@ export const CustomModal = (props: ModalProps) => {
         >
           <TouchableWithoutFeedback onPress={() => { }}>
 
-
             <View style={{
               maxHeight: Dimensions.get('screen').height * 0.6,
-              width: '100%', 
+              width: '100%',
               backgroundColor: colors.palette.neutral100,
               borderTopLeftRadius: margin.border_top_left_radius,
               borderTopRightRadius: margin.border_top_right_radius,
@@ -46,7 +47,7 @@ export const CustomModal = (props: ModalProps) => {
               position: 'absolute', bottom: 0,
             }}>
               {children}
-              {isVisibleLoading ? (<View style={{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%',position: 'absolute'}}>
+              {isVisibleLoading ? (<View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute' }}>
                 <ActivityIndicator size={'large'} color="#2A6FA8" />
               </View>) : null}
             </View>
