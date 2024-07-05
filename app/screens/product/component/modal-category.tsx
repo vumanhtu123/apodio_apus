@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal/dist/modal';
 import { Text } from '../../../components';
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from '../../../theme';
+import { Images } from '../../../../assets';
 
-const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory, isSearchBarVisible, setIndex, setPage, onSearchChange }: any) => {
+const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory, isSearchBarVisible, setIndex, setPage, onSearchChange, isRefreshing, onRefresh }: any) => {
 
     const inputRef = useRef<TextInput | null>(null);
     const [search, setSearch] = useState("");
@@ -17,6 +18,38 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
             onSearchChange(search); // Gọi hàm callback để cập nhật state ở component cha và gọi API
         }
     };
+    const refresh = () => {
+        setSearch('')
+        onRefresh();
+    }
+    const renderItem = ({ item, index }: any) => (
+        <TouchableOpacity
+            key={index}
+            onPress={() => {
+                setSelectedCategory(item.id);
+                setNameDirectory(item.name);
+                setShowCategory(false);
+                setIndex(index);
+            }}
+            style={{
+                paddingVertical: scaleHeight(padding.padding_12),
+                paddingHorizontal: scaleWidth(padding.padding_16),
+                backgroundColor: selectedCategory === item.id
+                    ? colors.palette.navyBlue
+                    : colors.palette.neutral100,
+            }}>
+            <Text
+                style={{
+                    fontWeight: "500",
+                    fontSize: 10,
+                    color: selectedCategory === item.id
+                        ? colors.palette.neutral100
+                        : colors.palette.nero,
+                }}>
+                {item.name}
+            </Text>
+        </TouchableOpacity>
+    );
     return (
         <Modal
             isVisible={showCategory}
@@ -35,7 +68,7 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                 style={{
                     borderWidth: 1,
                     borderColor: colors.palette.veryLightGrey,
-                    maxHeight: '40%',
+                    height: '40%',
                     width: '100%',
                     backgroundColor: colors.palette.neutral100,
                     borderTopLeftRadius: 16, borderTopRightRadius: 16
@@ -49,59 +82,42 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                     }} />
                 </View>
                 <View style = {{ height : scaleHeight(1), backgroundColor :'#E7EFFF'}}></View>
-                <TextInput
-                    ref={inputRef}
-                    style={{
-                        fontSize: fontSize.size14,
-                        fontWeight: "400",
-                        paddingVertical: scaleHeight(3),
-                        marginVertical: scaleHeight(10),
-                        marginHorizontal : scaleWidth(10),
-                        borderWidth : 0.3,
-                        borderRadius : 5,
-                        paddingHorizontal : scaleWidth(10),
-                    }}
-                    textAlign='left'
-                    onChangeText={(text) => handleSearch(text)}
-                    value={search}
-                    placeholder="Tìm kiếm..."
-                    enterKeyHint="search"
-                    onSubmitEditing={handleOnSubmitSearch}
-                    enablesReturnKeyAutomatically
+                <View>
+                    <View style= {{ position : 'absolute' , bottom : scaleHeight(20) , left : scaleWidth(20)}}>
+                        <Images.icon_searchBlack />
+                    </View>
+                    <TextInput
+                        ref={inputRef}
+                        style={{
+                            fontSize: fontSize.size14,
+                            fontWeight: "400",
+                            paddingVertical: scaleHeight(3),
+                            marginVertical: scaleHeight(10),
+                            marginHorizontal: scaleWidth(10),
+                            borderWidth: 0.3,
+                            borderRadius: 5,
+                            paddingLeft: scaleWidth(30),
+                        }}
+                        textAlign='left'
+                        onChangeText={(text) => handleSearch(text)}
+                        value={search}
+                        placeholder="Tìm kiếm danh mục"
+                        enterKeyHint="search"
+                        onSubmitEditing={handleOnSubmitSearch}
+                        enablesReturnKeyAutomatically
+                    />
+                </View>
+                <FlatList
+                    data={dataCategory}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={refresh}
+                        />
+                    }
                 />
-                <ScrollView>
-                    {dataCategory.map((item: any, index: any) => {
-                        return (
-                            <TouchableOpacity
-                                key={index}
-                                onPress={() => {
-                                    setSelectedCategory(item.id);
-                                    setNameDirectory(item.name);
-                                    setShowCategory(false);
-                                    setIndex(index);
-                                    // setPage(0)
-                                }}
-                                style={{
-                                    paddingVertical: scaleHeight(padding.padding_12),
-                                    paddingHorizontal: scaleWidth(padding.padding_16),
-                                    backgroundColor: selectedCategory === item.id
-                                        ? colors.palette.navyBlue
-                                        : colors.palette.neutral100,
-                                }}>
-                                <Text
-                                    style={{
-                                        fontWeight: "500",
-                                        fontSize: 10, // Adjust font size accordingly
-                                        color: selectedCategory === item.id
-                                            ? colors.palette.neutral100
-                                            : colors.palette.nero,
-                                    }}>
-                                    {item.name}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </ScrollView>
             </View>
         </Modal>
     )

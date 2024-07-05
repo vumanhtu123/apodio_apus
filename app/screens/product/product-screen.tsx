@@ -30,6 +30,7 @@ export const ProductScreen: FC = () => {
   const [indexItem, setIndexItem] = useState(0);
   const [page, setPage] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRefreshingCategoryFilter, setIsRefreshingCategoryFilter] = useState(false);
   const [isRefreshingCategory, setIsRefreshingCategory] = useState(false);
   const [isDirectoryModalVisible, setIsDirectoryModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<any>();
@@ -347,6 +348,16 @@ export const ProductScreen: FC = () => {
     await handleGetCategory();
     setIsRefreshingCategory(false);
   };
+  const refreshCategoryFilter = async () => {
+    setIsRefreshingCategory(true);
+    // setPageCategories(0);
+    setValueSearchCategory("");
+    // setOpenSearch(false)
+    setDataCategoryFilter([]);
+    // productStore.setSortCategory([]);
+    await handleGetCategoryFilter();
+    setIsRefreshingCategory(false);
+  };
   const renderFooter = () => {
     if (totalPagesProduct > 1 && page < totalPagesProduct) {
       return <ActivityIndicator size="large" color="#F6961C" />
@@ -465,6 +476,8 @@ export const ProductScreen: FC = () => {
             dataProduct={dataProduct}
             isRefreshing={isRefreshing}
             refreshProduct={refreshProduct}
+            refreshCategory={refreshCategoryFilter}
+            isRefreshingCategory = {isRefreshingCategoryFilter}
             flatListRef={flatListRef}
             handleEndReached={handleEndReached}
             isGridView={isGridView}
@@ -490,6 +503,7 @@ export const ProductScreen: FC = () => {
             isDeleteModalVisible={isDeleteModalVisible}
             setIsDeleteModalVisible={setIsDeleteModalVisible}
             handleDeleteItem={handleDeleteItem}
+            
           />
         )}
       </View>

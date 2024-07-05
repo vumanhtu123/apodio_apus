@@ -188,8 +188,8 @@ export const PrintInvoiceScreen: FC = observer(
                                 <Text style={styles.companyName}>{vendorStore?.companyInfo?.name}</Text>
                                 {/* <Text style={styles.textInfo} >www.apodio.com.vn</Text> */}
                                 <Text style={styles.textInfo}>{vendorStore?.companyInfo?.phone}</Text>
-                                <Text style={styles.textInfo}>
-                                    {vendorStore?.companyInfo?.address ? vendorStore?.companyInfo?.address + " " : ""}
+                                <Text style={[styles.textInfo, {}]} numberOfLines={2}>
+                                    {vendorStore?.companyInfo?.address ? vendorStore?.companyInfo?.address + ", " : ""}
                                     {vendorStore?.companyInfo?.ward ? vendorStore?.companyInfo?.ward + ", " : ""}
                                     {vendorStore?.companyInfo?.district ? vendorStore?.companyInfo?.district + ", " : ""}
                                     {vendorStore?.companyInfo?.city ? vendorStore?.companyInfo?.city : ""}
@@ -209,14 +209,13 @@ export const PrintInvoiceScreen: FC = observer(
                                 <Text tx='printInvoiceScreen.name' style={styles.companyName} />
                                 <Text style={styles.textInfo}> {data.partner?.name}</Text>
                             </View>
-                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12) }}>
+                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12) , maxWidth : scaleWidth(300) }}>
                                 <Text tx='printInvoiceScreen.address' style={styles.companyName} />
                                 <Text style={styles.textInfo}>
-                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + " " : ""}
+                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + ", " : ""}
                                     {data.deliveryAddress?.ward ? data.deliveryAddress.ward + ", " : ""}
                                     {data.deliveryAddress?.district ? data.deliveryAddress.district + ", " : ""}
                                     {data.deliveryAddress?.city ? data.deliveryAddress.city : ""}
-                                    {/* { ` ${data.deliveryAddress?.address}, ${data.deliveryAddress?.wardName}, ${data.deliveryAddress?.districtName}, ${data.deliveryAddress?.cityName}`} */}
                                 </Text>
                             </View>
                             <View style={{ flexDirection: 'row' }}>

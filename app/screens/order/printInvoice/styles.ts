@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
   textInfo: {
     color: '#242424',
     fontSize: fontSize.size12,
+    // maxWidth : scaleWidth(250)
     // textDecorationLine: 'underline',
     // textAlign: 'center',/
   },

@@ -4,6 +4,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
   TextBase,
   TextInput,
   TextStyle,
@@ -214,21 +215,31 @@ export function InputSelect(props: InputSelectProps) {
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <View style={VIEWMODAL}>
               {/* <Text text="chon ly do" /> */}
-              {isSearch ? (
-                <TextInput
-                  style={{
-                    fontSize: 16,
-                    fontWeight: "400",
-                    paddingVertical: 0,
-                  }}
-                  onChangeText={(text) => handleSearch(text)}
-                  value={search}
-                  placeholder="Tìm kiếm..."
+              <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
+                    <Images.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
+                  </TouchableOpacity>
+                  {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
+                </View>
+                {isSearch ? (
+                  <TextInput
+                    style={{
+                      fontSize: fontSize.size16,
+                      fontWeight: "400",
+                      paddingVertical: 0,
+                      flex: 1
+                    }}
+                    onChangeText={(text) => handleSearch(text)}
+                    value={search}
+                    placeholder="Tìm kiếm..."
                   // enterKeyHint="search"
                   // onSubmitEditing={handleOnSubmitSearch}
                   // enablesReturnKeyAutomatically
-                />
-              ) : null}
+                  />
+                ) : null}
+
+              </View>
               <FlatList
                 data={filteredData}
                 style={{
@@ -238,10 +249,11 @@ export function InputSelect(props: InputSelectProps) {
                 }}
                 onEndReached={loadMore}
                 onEndReachedThreshold={0.5}
-                renderItem={({ item }) => {
+                renderItem={({ item }: any) => {
                   return (
                     <View>
                       <TouchableOpacity
+                        style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: scaleWidth(5) }}
                         onPress={() => {
                           setData(item.label);
                           onPressChoice(item);
@@ -250,7 +262,12 @@ export function InputSelect(props: InputSelectProps) {
                             (i) => i.label !== item.label
                           );
                           setFilteredData(dataChoiceItem);
+                          // console.log(data , 'dsadasd')
                         }}>
+                        <View style={styles.radioButton}>
+                          {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
+                          {data === item.label && <Images.icon_checkBox />}
+                        </View>
                         <Text text={item.label} style={TEXTLABELFLATLIST} />
                       </TouchableOpacity>
                       <View style={VIEWLINE}></View>
@@ -258,10 +275,22 @@ export function InputSelect(props: InputSelectProps) {
                   );
                 }}
               />
-            </View>
+            </View>   
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  radioButton: {
+    width: scaleWidth(17),
+    height: scaleHeight(18),
+    borderRadius: 3   ,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: scaleWidth(6),
+  },
+})

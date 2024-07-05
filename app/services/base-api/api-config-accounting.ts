@@ -37,7 +37,7 @@ export class ApiAccounting {
     this.apisauce.axiosInstance.interceptors.response.use(
       async (response) => {
         Loading.hide();
-        console.log("RESPONSE accounting :", response);
+        console.log("RESPONSE accounting :", JSON.stringify(response));
         return response;
       },
       async (error) => {
@@ -84,7 +84,7 @@ export class ApiAccounting {
         const tenantId = await getTenantId();
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
-          "Accept-Language": "en",
+          "Accept-Language": "vi",
           "X-TenantId": tenantId,
         };
         const token = await getAccessToken();
