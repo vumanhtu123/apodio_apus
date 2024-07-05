@@ -3,6 +3,7 @@
     name:string,
     code: string,
     phoneNumber: string
+    isHaveDeliveryAddress: boolean
     }
   
   export interface OderListResponse {
@@ -54,7 +55,8 @@
     paymentActivated?: boolean
     merchantActivated?: boolean
     b2bActivated?: boolean
-    reason: any
+    reason: any,
+    isHaveDeliveryAddress: boolean,
   }
   
   export interface PartnerTag {
