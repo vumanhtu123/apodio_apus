@@ -1,20 +1,20 @@
 
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
-import { TabScreenProps } from "../../../navigators/bottom-navigation";
-import { NavigatorParamList } from "../../../navigators";
+import { TabScreenProps } from "../../../../navigators/bottom-navigation";
+import { NavigatorParamList } from "../../../../navigators";
 import React from "react";
 import { ActivityIndicator, Alert, FlatList, RefreshControl, TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { Header, Text } from "../../../components";
-import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../assets";
+import { Header, Text } from "../../../../components";
+import { colors, scaleHeight, scaleWidth } from "../../../../theme";
+import { Images } from "../../../../../assets";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Styles } from "./styles";
-import { ItemListMustPay } from "../component/itemListMustPay";
-import { ModalFilter } from "../component/ModalFilter";
-import en from "../../../i18n/en";
+import { Styles } from "../styles";
+import { ItemListMustPay } from "../../component/itemListMustPay";
+import { ModalFilter } from "../../component/ModalFilter";
+import en from "../../../../i18n/en";
 
 export const MustPayScreen: FC<StackScreenProps<NavigatorParamList, "mustPay">> = observer(
     function mustPayScreen(props) {
