@@ -218,7 +218,9 @@ export class VendorApi {
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_ADDRESS,
-        { partnerId }
+        { partnerId,
+          addressType: "DELIVERY_ADDRESS",
+        }
       );
       Loading.hide();
       const data = response.data;

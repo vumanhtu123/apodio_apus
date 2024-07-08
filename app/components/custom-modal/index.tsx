@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
-import { colors, margin, scaleHeight } from "../../theme"
+import { colors, margin, scaleHeight, scaleWidth } from "../../theme"
 import Modal from 'react-native-modal'
 
 
@@ -15,18 +15,27 @@ export type ModalProps = {
 
 export const CustomModal = (props: ModalProps) => {
   const { children, style, isVisible, isVisibleLoading, setIsVisible, isHideKeyBoards, ...rest } = props
+
+  const handleBackdropPress = useCallback(() => {
+    if (isHideKeyBoards) {
+      setIsVisible();
+    }
+  }, [isHideKeyBoards, setIsVisible]);
+  
   return (
     <Modal
-      animationIn={'fadeIn'}
-      animationOut={'fadeOut'}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
+      animationInTiming={500}
+      animationOutTiming={500}
       isVisible={isVisible}
-      {...rest}
+      useNativeDriver={true}
       avoidKeyboard={true}
       onBackdropPress={setIsVisible}
       onBackButtonPress={setIsVisible}
       style={{ margin: 0 }}
     >
-      <TouchableWithoutFeedback onPress={() => { isHideKeyBoards ? setIsVisible : {} }}>
+      <TouchableWithoutFeedback onPress={handleBackdropPress}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
@@ -34,19 +43,18 @@ export const CustomModal = (props: ModalProps) => {
         >
           <TouchableWithoutFeedback onPress={() => { }}>
 
-
             <View style={{
               maxHeight: Dimensions.get('screen').height * 0.6,
-              width: '100%', 
+              width: '100%',
               backgroundColor: colors.palette.neutral100,
               borderTopLeftRadius: margin.border_top_left_radius,
               borderTopRightRadius: margin.border_top_right_radius,
-              paddingVertical: margin.margin_16,
-              paddingHorizontal: margin.margin_16,
+              paddingVertical: scaleWidth(margin.margin_16),
+              paddingHorizontal: scaleHeight(margin.margin_16),
               position: 'absolute', bottom: 0,
             }}>
               {children}
-              {isVisibleLoading ? (<View style={{justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%',position: 'absolute'}}>
+              {isVisibleLoading ? (<View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%', position: 'absolute' }}>
                 <ActivityIndicator size={'large'} color="#2A6FA8" />
               </View>) : null}
             </View>

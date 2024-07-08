@@ -1,9 +1,8 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, Linking, Platform, StyleSheet, Text, Text as TextRN, TouchableOpacity, View } from 'react-native';
+import { Linking, StyleSheet, Text, Text as TextRN, TouchableOpacity, View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import Modal from 'react-native-modal';
 import { RESULTS } from 'react-native-permissions';
 import { Images } from '../../../../assets';
 import { AutoImage, TextField } from '../../../components';
@@ -11,33 +10,32 @@ import { translate } from '../../../i18n/translate';
 import { useStores } from '../../../models';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from '../../../utils/requesPermissions';
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Loading } from "../../../components/dialog-notification";
 import { validateFileSize } from '../../../utils/validate';
+import { CustomModal } from '../../../components/custom-modal';
 
 const CreateDirectoryModal = (props: any) => {
     const { isVisible, setType, setIsVisible, onCreateDirectory } = props;
 
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        mode: 'all',
-    });
+    const { control, reset, setValue, getValues, handleSubmit, formState: { errors }, clearErrors } = useForm();
+
     const { productStore } = useStores();
     const [imagesNote, setImagesNote] = useState('')
-    const [modalImage, setModalImage] = useState(false)
-    const [name, setName] = useState('')
+    const [showLoading, setShowLoading] = useState(false)
 
 
     const handleCreateButtonPress = async () => {
-        onCreateDirectory(name, imagesNote);
-        // setIsVisible(false)
-        // setIsVisible(false);
+        setShowLoading(true);
+        onCreateDirectory(getValues('nameCategory'), imagesNote)
+        .then((result: any) => {
+            setShowLoading(false);
+        })
+        .catch((error: any) => {
+            setShowLoading(false);
+        });
     };
     const uploadImages = async (imageNote: any) => {
         try {
-            console.log('đâsads', imageNote)
             const { fileSize, uri, type, fileName } = imageNote;
             const checkFileSize = validateFileSize(fileSize);
 
@@ -59,23 +57,18 @@ const CreateDirectoryModal = (props: any) => {
                 type,
                 name: fileName,
             });
-
+            setShowLoading(true);
             // Upload ảnh
-            const result = await productStore.uploadImages(formData);
+            const result = await productStore.uploadImages(formData, false);
 
             console.log(`successfully----------`, result);
             if (result) {
                 console.log(`imageNote---------------`, imageNote);
                 setImagesNote(result);
             }
-
-            // Xử lý kết quả upload
-            if (result) {
-                console.log(`Upload image ${imageNote} successfully`);
-            } else {
-                console.log(`Failed to upload image ${imageNote}`);
-            }
+            setShowLoading(false);
         } catch (error) {
+            setShowLoading(false);
             console.error('Error uploading image:', error);
         }
     };
@@ -109,7 +102,6 @@ const CreateDirectoryModal = (props: any) => {
                     const result = { fileSize, uri, type, fileName }
                     console.log('testtt', result);
                     uploadImages(result)
-                    setModalImage(false)
                 }
             })
         } else if (permissionStatus === RESULTS.DENIED) {
@@ -164,7 +156,6 @@ const CreateDirectoryModal = (props: any) => {
                     const result = { fileSize, uri, type, fileName }
                     console.log('testtt', result);
                     uploadImages(result)
-                    setModalImage(false)
                 }
             })
         } else if (permissionStatus === RESULTS.DENIED) {
@@ -212,14 +203,12 @@ const CreateDirectoryModal = (props: any) => {
                     const result = { fileSize, uri, type, fileName }
                     console.log('testtt', result);
                     uploadImages(result)
-                    setModalImage(false)
                 }
             });
         };
     }
     const handleCloseModal = () => {
-        // setImagesNote('')
-        // setName('')
+        setShowLoading(false);
         setIsVisible(false);
     };
     const handleRemoveImage = () => {
@@ -228,145 +217,134 @@ const CreateDirectoryModal = (props: any) => {
     useFocusEffect(
         useCallback(() => {
             setImagesNote('');
-            setName('');
+            setShowLoading(false);
+            reset();
+            clearErrors();
         }, [isVisible])
     )
     return (
-        <Modal
-            animationIn="slideInUp"
-            animationOut="slideOutDown"
-            animationInTiming={500}
-            animationOutTiming={750}
+        <CustomModal
             isVisible={isVisible}
-            onBackdropPress={handleCloseModal}
-            style={styles.container}
+            setIsVisible={handleCloseModal}
+            isHideKeyBoards={isVisible}
+            isVisibleLoading={showLoading}
         >
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-            >
-                <View>
-                    <View style={styles.modalView}>
-                        <TextRN style={styles.modalText} />
-                        <View style={styles.header}>
-                            <Text style={styles.headerTitle}>Tạo danh mục</Text>
-                        </View>
-                        <View style={styles.horizontalLine} />
-                        {imagesNote !== '' ? (
-                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
-                                <View style={{ flexDirection: 'column', marginRight: scaleHeight(20) }}>
-                                    <TouchableOpacity onPress={handleLibraryUse}
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            borderWidth: 1,
-                                            borderColor: '#0078d4',
-                                            borderRadius: 8,
-                                            paddingHorizontal: scaleWidth(10),
-                                            paddingVertical: scaleHeight(7),
-                                            marginBottom: scaleHeight(10)
-                                        }}>
-                                        <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={handleCameraUse}
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            borderWidth: 1,
-                                            borderColor: '#0078d4',
-                                            borderRadius: 8,
-                                            paddingHorizontal: scaleWidth(10),
-                                            paddingVertical: scaleHeight(7),
-                                        }}
-                                    >
-                                        <Images.ic_camera width={scaleWidth(16)} height={scaleHeight(16)} />
-                                    </TouchableOpacity>
-                                </View>
-                                <View >
-                                    <AutoImage
-                                        style={{
-                                            width: scaleWidth(107),
-                                            height: scaleHeight(70),
-                                            borderRadius: 8
-                                        }}
-                                        source={{ uri: imagesNote }}
-                                    />
-                                    <TouchableOpacity
-                                        style={{ position: 'absolute', right: scaleWidth(5), top: scaleHeight(5) }}
-                                        onPress={() => handleRemoveImage()}
-                                    >
-                                        <Images.circle_close width={scaleWidth(16)} height={scaleHeight(16)} />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        ) : (
-                            <>
-                                <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
-                                    <TouchableOpacity onPress={handleLibraryUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', marginRight: scaleWidth(10), borderRadius: 8 }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
-                                            <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
-                                            <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>Tải ảnh lên</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={handleCameraUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', borderRadius: 8 }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
-                                            <Images.ic_camera width={scaleWidth(16)} height={scaleHeight(16)} />
-                                            <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>Chụp ảnh</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            </>
-                        )}
-                        <View>
-                            <Controller
-                                control={control}
-                                render={({ field: { onChange, value, onBlur } }) => (
-                                    <TextField
-                                        // maxLength={maxLenngthPhoneNumber}
-                                        keyboardType={null}
-                                        labelTx={"productScreen.directoryName"}
-                                        style={{
-                                            // marginBottom: scaleHeight(10),
-                                            marginBottom: scaleHeight(5),
-                                            justifyContent: 'center',
-                                        }}
-                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
-                                        isImportant={true}
-                                        value={name}
-                                        onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
-                                        error={errors?.nameCategory?.message}
-                                        onClearText={() => {
-                                            onChange('')
-                                            setName('')
-                                        }}
-                                        onChangeText={value => {
-                                            onChange(value)
-                                            setName(value)
-                                        }}
-                                        placeholderTx={"productScreen.placeholderDirectoryName"}
-                                    />
-                                )}
-                                // defaultValue={''}
-                                name="nameCategory"
-                                rules={{
-                                    required: 'Please input data',
-                                }}
-                            />
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
-                            <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
-                                <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleSubmit(handleCreateButtonPress)} style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}>
-                                <Text style={{ fontSize: fontSize.size14, color: 'white' }}>Tạo</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
+            <View style={styles.modalView}>
+                <TextRN style={styles.modalText} />
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>{translate("productScreen.create_directory")}</Text>
                 </View>
-            </KeyboardAvoidingView>
-        </Modal>
+                <View style={styles.horizontalLine} />
+                {imagesNote !== '' ? (
+                    <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
+                        <View style={{ flexDirection: 'column', marginRight: scaleHeight(20) }}>
+                            <TouchableOpacity onPress={handleLibraryUse}
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    borderWidth: 1,
+                                    borderColor: '#0078d4',
+                                    borderRadius: 8,
+                                    paddingHorizontal: scaleWidth(10),
+                                    paddingVertical: scaleHeight(7),
+                                    marginBottom: scaleHeight(10)
+                                }}>
+                                <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleCameraUse}
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    borderWidth: 1,
+                                    borderColor: '#0078d4',
+                                    borderRadius: 8,
+                                    paddingHorizontal: scaleWidth(10),
+                                    paddingVertical: scaleHeight(7),
+                                }}
+                            >
+                                <Images.ic_camera width={scaleWidth(16)} height={scaleHeight(16)} />
+                            </TouchableOpacity>
+                        </View>
+                        <View >
+                            <AutoImage
+                                style={{
+                                    width: scaleWidth(107),
+                                    height: scaleHeight(70),
+                                    borderRadius: 8
+                                }}
+                                source={{ uri: imagesNote }}
+                            />
+                            <TouchableOpacity
+                                style={{ position: 'absolute', right: scaleWidth(5), top: scaleHeight(5) }}
+                                onPress={() => handleRemoveImage()}
+                            >
+                                <Images.circle_close width={scaleWidth(16)} height={scaleHeight(16)} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                ) : (
+                    <>
+                        <View style={{ flexDirection: 'row', marginBottom: scaleHeight(20) }}>
+                            <TouchableOpacity onPress={handleLibraryUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', marginRight: scaleWidth(10), borderRadius: 8 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
+                                    <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
+                                    <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>{translate("createProductScreen.uploadImage")}</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleCameraUse} style={{ flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#0078d4', borderRadius: 8 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(7) }}>
+                                    <Images.ic_camera width={scaleWidth(16)} height={scaleHeight(16)} />
+                                    <Text style={{ fontSize: fontSize.size14, color: '#0078d4' }}>{translate("createProductScreen.openCamera")}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                )}
+                <View>
+                    <Controller
+                        control={control}
+                        render={({ field: { onChange, value, onBlur } }) => (
+                            <TextField
+                                // maxLength={maxLenngthPhoneNumber}
+                                keyboardType={null}
+                                labelTx={"productScreen.directoryName"}
+                                style={{
+                                    // marginBottom: scaleHeight(10),
+                                    marginBottom: scaleHeight(5),
+                                    justifyContent: 'center',
+                                }}
+                                inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
+                                isImportant={true}
+                                value={value}
+                                onBlur={onBlur}
+                                RightIconClear={Images.icon_delete2}
+                                error={errors?.nameCategory?.message}
+                                onClearText={() => {
+                                    onChange('')
+                                }}
+                                onChangeText={value => {
+                                    onChange(value)
+                                }}
+                                placeholderTx={"productScreen.placeholderDirectoryName"}
+                            />
+                        )}
+                        name="nameCategory"
+                        rules={{
+                            required: translate("messageError.required_value_null"),
+                        }}
+                    />
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
+                    <TouchableOpacity onPress={handleCloseModal} style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
+                        <Text style={{ fontSize: fontSize.size14 }}>{translate("common.cancel")}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleSubmit(handleCreateButtonPress)} style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}>
+                        <Text style={{ fontSize: fontSize.size14, color: 'white' }}>{translate("common.create")}</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        </CustomModal>
     );
 };
 
@@ -380,8 +358,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 8,
         borderTopLeftRadius: 8,
         paddingTop: scaleHeight(8),
-        paddingHorizontal: scaleWidth(16),
-
     },
     modalText: {
         textAlign: 'center',
