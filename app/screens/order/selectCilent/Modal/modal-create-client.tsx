@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../../theme";
 import { Images } from "../../../../../assets";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
@@ -67,17 +67,12 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
             });
             hasError = true
         }
+
         if (hasError) {
 
         } else {
             setCheckHind(true)
             setShowLoading(true)
-            // console.log('====================================');
-            // console.log("value hind", checkHind);
-            // console.log('====================================');
-            // console.log('====================================');
-            // console.log('data test', nameClient, phoneNumber, selectCustomerType);
-            // console.log('====================================');
 
             const result = await getAPIcreateClient.orderStore.postClient({
                 "name": nameClient,
@@ -90,13 +85,6 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 "partnerTagIds": [],
                 "b2cActivated": true,
             })
-            // .then((value) => {
-
-            //     console.log("value create", props.sendIdCreate(value.result.data.id));
-            // })
-            // console.log('====================================');
-            // console.log('test', result);
-            // console.log('====================================');
 
             if (result.kind === "ok") {
                 console.log("result create ", result.result.data);
@@ -139,12 +127,6 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     }
 
 
-
-    // console.log('====================================');
-    // console.log("checkk ", checkStatusCompany());
-    // console.log('====================================');
-
-
     const resetForm = () => {
         reset({
             phoneNumber: '',
@@ -161,7 +143,6 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
     ]
 
-    // console.log('doandev', phoneNumber, nameClient, selectCustomerType);
     interface CheckErrorClientProps {
         checkValue: boolean;
     }
@@ -210,9 +191,8 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
 
             />
-            <View style={{ marginVertical: 5 }}>
+            <View style={{ marginVertical: margin.margin_5 }}>
                 <CheckErrorClient checkValue={checkHind} />
-
             </View>
 
             <Controller
@@ -227,8 +207,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         labelTx={"NCCScreen.enterPhone"}
                         maxLength={11}
                         style={{
-                            // marginBottom: scaleHeight(10),
-                            marginBottom: scaleHeight(5),
+                            marginBottom: margin.margin_10,
                             justifyContent: "center",
                         }}
                         inputStyle={{
@@ -257,17 +236,6 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                     />
                 )}
                 rules={{
-
-                    // validate: {
-                    //     checkLength: (value) => checkPhoneNumber(value)
-                    // }
-                    // ,
-
-
-                    // pattern: {
-                    //     value: /^\S+$/,
-                    //     message: en.ClientScreen.checkSpace
-                    // },
                     required: en.ClientScreen.pleaseInputPhoneNumber
                 }}
             />
@@ -293,9 +261,6 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         onBlur={onBlur}
                         onClearText={() => {
                             onChange("")
-                            // reset({
-                            //     NameClient: ""
-                            // })
                         }}
                         onChangeText={(txt) => {
 
