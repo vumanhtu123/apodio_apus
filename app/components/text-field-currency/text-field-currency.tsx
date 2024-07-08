@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Platform,
@@ -28,6 +28,7 @@ import { SvgIcon } from "../svg-icon";
 import { Images } from "../../../assets";
 import CurrencyInput from 'react-native-currency-input';
 import CustomKeyboard from "./custom-keyboard";
+import ModernKeyboard from "../keypad/ModernKeyboard";
 
 
 const CONTAINER: ViewStyle = {
@@ -165,86 +166,85 @@ export function TextFieldCurrency(props: TextFieldProps) {
     : placeholder;
 
   const handleFocus = () => {
+    console.log('-------handleFocus--------')
     setisFocused(true);
-    forwardedRef.current?.blur();
+    forwardedRef.current?.focus();
   };
+
   const handleBlur = () => {
+    console.log('-------handleBlur--------')
     setisFocused(false);
     onBlur();
   };
 
   useEffect(() => {
     if (isFocused) {
-      // Do something when the keyboard is visible
       forwardedRef.current?.focus();
-    forwardedRef.current?.blur();
     }
   }, [isFocused]);
-  
+
   const handleInputPress = () => {
-    console.log('forwardedRef.current?.focus()')
-    forwardedRef.current?.focus();
-    forwardedRef.current?.blur();
+    console.log('-------handleInputPress--------')
     setisFocused(true);
   };
 
-  console.log('-----isFocused--------', isFocused);
-  // Hàm định dạng tiền tệ
-  function formatCurrency(value: string | null, options = {}) {
-    if (value == null || value === '') {
-      return '';
-    }
 
-    const { separator = '.', prefix = '', suffix = '' } = options;
+  const formatCurrency = useMemo(
+    () => (value: string | null) => {
+      if (!value) return '';
+      value = value.replace(/[^0-9,]/g, '');
 
-    // Loại bỏ ký tự không phải số và không phải dấu phẩy
-    value = value.toString().replace(/[^0-9,]/g, '');
+      let [integerPart, decimalPart] = value.split(',');
 
-    // Thay dấu phẩy bằng dấu chấm để định dạng
-    let [integerPart, decimalPart] = value.split(',');
+      if (decimalPart) {
+        decimalPart = decimalPart.substring(0, 2);
+      }
 
-    // Giới hạn số ký tự sau dấu phẩy
-    if (decimalPart) {
-      decimalPart = decimalPart.substring(0, 2);
-    }
+      integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      const textValue =
+        decimalPart !== undefined
+          ? `${integerPart},${decimalPart}`
+          : `${integerPart}`;
 
-    // Thêm dấu phân cách hàng ngàn cho phần nguyên
-    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
-    const textValue = decimalPart !== undefined ? `${prefix}${integerPart},${decimalPart}${suffix}` : `${prefix}${integerPart}${suffix}`;
-    onChangeValue(textValue);
-    // Ghép phần nguyên và phần thập phân (nếu có)
-    return textValue;
-
-  }
+      onChangeValue(textValue);
+      return textValue;
+    },
+    [onChangeValue],
+  );
 
   const handleTextChange = (value: string) => {
-    // Chỉ giữ lại các ký tự số và dấu phẩy
     const numericValue = value.replace(/[^0-9,]/g, '');
     setRawValue(numericValue);
   };
 
   const handleKeyPress = (key) => {
-    console.log('-----key-----', key)
+    console.log('-----', key)
     if (key === 'Del') {
       setRawValue((prev) => prev.slice(0, -1));
-    } else if (key === '✓') {
-      setisFocused(false)
+    } else if (key === 'Enter') {
+      setisFocused(false);
     } else {
-      setRawValue((prev) => prev + key);
+       // Loại bỏ dấu phẩy nếu nó là ký tự đầu tiên
+      if (key == ',' && rawValue.length == 0) {
+      }else {
+        // Kiểm tra số ký tự sau dấu phẩy
+        const [integerPart, decimalPart] = rawValue.split(',');
+        console.log('decimalPart---', decimalPart)
+        if (decimalPart == undefined || decimalPart.length < 2) {
+        setRawValue((prev) => prev + key);
+      }
     }
+  }
   };
-
-  
 
   return (
     <View style={{}}>
       <View
         style={[
           containerStyles,
-          { borderColor: colors.palette.aliceBlue, flexDirection: 'row', justifyContent: 'space-between', alignItems: isMultiline === true ? 'flex-start' : 'center' },
-
-          //  { borderColor: isFocused ? color.yellow : color.gray }
-        ]}>
+          { borderColor: isFocused ? colors.palette.navyBlue: colors.palette.aliceBlue ,borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: isMultiline === true ? 'flex-start' : 'center' }
+        ]}
+      >
         <View style={{ flex: 1, paddingTop: Platform.OS === 'android' ? scaleHeight(8) : scaleHeight(0) }}>
           <View style={{ flexDirection: "row" }}>
             {labelTx ? (
@@ -252,7 +252,6 @@ export function TextFieldCurrency(props: TextFieldProps) {
                 preset="fieldLabel"
                 tx={labelTx}
                 style={{
-                  // position: "absolute",
                   left: isTL38
                     ? scaleWidth(Platform.OS === "android" ? 50 : 55)
                     : 0,
@@ -273,15 +272,14 @@ export function TextFieldCurrency(props: TextFieldProps) {
                   paddingLeft: scaleWidth(16),
                   marginTop:
                     isFocused && !actualPlaceholder && value === ""
-                      ? scaleHeight(0)
-                      : scaleHeight(0),
+                      ? scaleHeight(10)
+                      : scaleHeight(10),
                 }}
               />
             ) : null}
             {isImportant ? (
               <Text
                 style={{
-                  // position: "absolute",
                   left: isTL38
                     ? scaleWidth(Platform.OS === "android" ? 50 : 55)
                     : 0,
@@ -299,50 +297,38 @@ export function TextFieldCurrency(props: TextFieldProps) {
                     isFocused && !actualPlaceholder && value === ""
                       ? scaleHeight(0)
                       : scaleHeight(0),
-                }}>
+                }}
+              >
                 {" "}
                 *
               </Text>
             ) : null}
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-
-            }}>
-
-        <Pressable onPress={handleInputPress} style={styles.inputContainer}>
-          <View pointerEvents="none" >
-            <TextInput
-              {...props}
-              editable={false}
-              placeholder={actualPlaceholder}
-              // underlineColorAndroid={colors.palette.neutral900}
-              placeholderTextColor={colors.palette.dolphin}
-              value={formatCurrency(rawValue)}
-              //value={formatCurrency(rawValue, { suffix: ' VND' })}
-              onChangeText={handleTextChange}
-              style={[
-                inputStyles,
-                { paddingRight: showRightIcon === true ? scaleWidth(16) : 0,  
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  opacity: 0, },
-              ]}
-              ref={forwardedRef ? forwardedRef : focus}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              blurOnSubmit
-              keyboardType={keyboardType}
-            />
-            <CustomKeyboard 
-              isVisible={isFocused}
-              setIsVisible={handleBlur}
-              onKeyPress={handleKeyPress} />
-            </View>
+          <View style={{ flexDirection: "row" }}>
+            <Pressable onPress={handleInputPress} style={styles.inputContainer}>
+              <TextInput
+                {...props}
+                editable={false}
+                placeholder={actualPlaceholder}
+                placeholderTextColor={colors.palette.dolphin}
+                value={formatCurrency(rawValue)}
+                onChangeText={handleTextChange}
+                style={[
+                  inputStyles,
+                  { paddingRight: showRightIcon === true ? scaleWidth(16) : 0, backgroundColor: 'transparent', color: 'black', },
+                ]}
+                ref={forwardedRef ? forwardedRef : focus}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                blurOnSubmit
+                keyboardType="decimal-pad"
+              />
+              <CustomKeyboard 
+                isVisible={isFocused}
+                setIsVisible={handleBlur}
+                onKeyPress={handleKeyPress} 
+              />
+              
             </Pressable>
           </View>
         </View>
@@ -350,7 +336,8 @@ export function TextFieldCurrency(props: TextFieldProps) {
           {isShowPassword && value ? (
             <TouchableOpacity
               style={{ marginTop: scaleHeight(4) }}
-              onPress={onShowPassword}>
+              onPress={onShowPassword}
+            >
               <RightIconShow />
             </TouchableOpacity>
           ) : null}
@@ -359,7 +346,8 @@ export function TextFieldCurrency(props: TextFieldProps) {
             <TouchableOpacity
               onPress={() => {
                 forwardedRef.current.focus();
-              }}>
+              }}
+            >
               <RightIconClear />
             </TouchableOpacity>
           ) : RightIcon ? (
@@ -386,6 +374,7 @@ export function TextFieldCurrency(props: TextFieldProps) {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -396,6 +385,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '100%',
+    backgroundColor:'red',
     height: scaleHeight(50),
     marginBottom: 20,
   },
@@ -420,4 +410,4 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
   },
-});
+}); 
