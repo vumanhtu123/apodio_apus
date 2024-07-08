@@ -124,14 +124,14 @@ export class CategoryApi {
       return { kind: "bad-data" };
     }
   }
-  async getDeleteCategories(productCategoryId: number): Promise<any> {
+  async getDeleteCategories(id: number): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.delete(
         ApiEndpoint.DELETE_CATEGORY,
-        { productCategoryId }
+        { id }
       );
       console.log('------------------------------response delete category', response)
       const data = response.data;

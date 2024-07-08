@@ -39,6 +39,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useStores } from '../../../models';
 import { formatCurrency } from '../../../utils/validate';
 import { formatDateTime } from '../../../utils/formatDate';
+import { Calendar } from "react-native-calendars";
 
 export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
   function OrderScreen(props) {
@@ -392,6 +393,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           isOneDate={false}
           toggleModalDate={toggleModalDate}
         />
+        
         <TouchableOpacity
           onPress={() => {
             orderStore.reset();
