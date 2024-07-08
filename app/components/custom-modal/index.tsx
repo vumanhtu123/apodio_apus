@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { colors, margin, scaleHeight } from "../../theme"
 import Modal from 'react-native-modal'
@@ -15,6 +15,13 @@ export type ModalProps = {
 
 export const CustomModal = (props: ModalProps) => {
   const { children, style, isVisible, isVisibleLoading, setIsVisible, isHideKeyBoards, ...rest } = props
+
+  const handleBackdropPress = useCallback(() => {
+    if (isHideKeyBoards) {
+      setIsVisible();
+    }
+  }, [isHideKeyBoards, setIsVisible]);
+  
   return (
     <Modal
       animationIn="slideInUp"
@@ -28,7 +35,7 @@ export const CustomModal = (props: ModalProps) => {
       onBackButtonPress={setIsVisible}
       style={{ margin: 0 }}
     >
-      <TouchableWithoutFeedback onPress={() => { isHideKeyBoards ? setIsVisible : {} }}>
+      <TouchableWithoutFeedback onPress={handleBackdropPress}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
