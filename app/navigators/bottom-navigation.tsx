@@ -46,10 +46,10 @@ export function MainBottomTab() {
 function MyTabBar({ state, descriptors, navigation }) {
   return (
     <View style={viewTabbar}>
-      {state.routes.map((route, index) => {
+      {state.routes.map((route: { key: string | number; name: string }, index: React.Key | null | undefined) => {
         const { options } = descriptors[route.key]
         const isFocused = state.index === index
-        const onPress = (routeKey, routeName) => {
+        const onPress = (routeKey: any, routeName: any) => {
           const event = navigation.emit({
             type: "tabPress",
             target: routeKey || route.key,

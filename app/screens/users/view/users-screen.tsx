@@ -483,7 +483,11 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               onPress={() => {
                 console.log("log out app");
                 authenticationStore.logout();
-                navigation.navigate("SplashScreen" as never);
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'SplashScreen' }],
+                });
+               // navigation.navigate("SplashScreen" as never);
               }}>
               <Text
                 tx="inforMerchant.logout"

@@ -467,7 +467,15 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         textBody: translate("txtToats.noClient"),
       });
     } else {
-      navigation.navigate("deliveryAddress" as never);
+      console.log('orderStore.dataClientSelect.isHaveDeliveryAddress----', orderStore.dataClientSelect.isHaveDeliveryAddress)
+      if(orderStore.dataClientSelect.isHaveDeliveryAddress){
+        navigation.navigate("deliveryAddress" as never);
+      }else {
+        navigation.navigate({name: "newDelivery" as never, params: {
+          dataEdit: undefined, screen: 'new', toScreen: 'new-order'
+        }} as never)
+      }
+      
     }
   };
 

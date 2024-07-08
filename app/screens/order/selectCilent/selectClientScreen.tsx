@@ -73,6 +73,7 @@ export const SelectClientScreen: FC<
             name: item.name,
             code: item.code,
             phoneNumber: item.phoneNumber,
+            isHaveDeliveryAddress: item.isHaveDeliveryAddress
           };
         });
         setMyDataSelectClient(dataSelectClient);
@@ -121,6 +122,7 @@ export const SelectClientScreen: FC<
     } else {
       getAPi.orderStore.setCheckIdPartner(true)
     }
+    console.log('-------dataItemSelect------', JSON.stringify(dataItemSelect))
     getAPi.orderStore.setDataClientSelect(dataItemSelect);
     getAPi.orderStore.setIsLoadMoreSelectClient(false);
     props.navigation.goBack();
@@ -324,8 +326,7 @@ export const SelectClientScreen: FC<
           onPress={() => {
             // set = false de co animation loading full man hinh
             getAPi.orderStore.setIsLoadMoreSelectClient(false)
-
-            setdataItemSelect({ id: "", name: "", code: "", phoneNumber: "" })
+            setdataItemSelect({ id: "", name: "", code: "", phoneNumber: "", isHaveDeliveryAddress: false })
             getAPi.orderStore.setDataClientSelect(dataItemSelect)
             props.navigation.goBack()
           }}>

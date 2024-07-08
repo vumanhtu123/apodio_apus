@@ -77,7 +77,7 @@ export * from "../screens/users/inforAccount/inforAccount";
 export * from "../screens/suppliers/screens/details-suppliers-screen";
 export * from "../screens/suppliers/screens/details-order-screen";
 export * from "../screens/debt/screen/debt-screen";
-export * from "../screens/debt/screen/mustPayScreen";
+export * from "./debt/screen/must-pay/mustPayScreen";
 export * from "../screens/suppliers/screens/order-details-screen";
 export * from "../screens/order/selectCilent/selectClientScreen"
 export * from "../screens/order/selectCilent/filter-selected-client";
@@ -86,4 +86,6 @@ export * from "../screens/order/newInvoice/newInvoice";
 export * from "./order/new-order/payment-method-screen";
 export * from "../screens/select-applicable-price-list/select-applicable-price-list"
 export * from "../screens/select-applicable-price-list/filter-select-applicable-price-list";
-export * from "../screens/debt/screen/detail-debt-screen";
+export * from "./debt/screen/must-pay/detail-debt-screen";
+export * from "./debt/screen/receivable/receivableScreen";
+export * from "../screens/debt/screen/receivable/detail-debt-screen";

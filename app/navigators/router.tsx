@@ -47,7 +47,6 @@ export const Router = (props: any) => {
       {...props}>
       <ButtonProvider>
         {getStack()}
-        {/* <FloatingButton /> */}
       </ButtonProvider>
     </NavigationContainer>
   );

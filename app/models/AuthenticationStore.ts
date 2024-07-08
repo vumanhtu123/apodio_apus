@@ -109,6 +109,7 @@ export const AuthenticationStoreModel = types
       console.log("tuvm logout", result);
       if (result.kind === "ok") {
         setAccessToken("");
+        //clear();
         store.setUserID();
         store.setJTI("");
         console.log("token set", store.accessToken);

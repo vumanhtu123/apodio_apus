@@ -22,7 +22,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // const AuthProvider: React.FC = ({ children }) => {
   const [redirect, setRedirect] = useState<number>();
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     loadStorageData();
   }, []);
