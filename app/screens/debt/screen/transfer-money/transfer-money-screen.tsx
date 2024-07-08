@@ -69,6 +69,7 @@ export const TransferMoneyScreen: FC<StackScreenProps<NavigatorParamList, 'trans
                         </TouchableOpacity>
                     </View>
 
+
                     <InputSelect
                         titleTx="revenueAndExpenditure.sourceOfMoneyReceived"
                         hintTx="revenueAndExpenditure.selectSourceOfMoneyReceived"
