@@ -88,3 +88,5 @@ export * from "../screens/select-applicable-price-list/filter-select-applicable-
 export * from "./debt/screen/must-pay/detail-debt-screen";
 export * from "./debt/screen/receivable/receivableScreen";
 export * from "../screens/debt/screen/receivable/detail-debt-screen";
+export * from "../screens/debt/screen/money-management/money-management-screen";
+export * from "../screens/debt/screen/transfer-money/transfer-money-screen";

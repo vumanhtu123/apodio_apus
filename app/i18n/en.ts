@@ -803,7 +803,7 @@ const en = {
     timeCreateOderSuccess: "Thời gian tạo đơn hàng thành công",
     timeEditOderSuccess: "Thời gian sửa đơn hàng thành công",
     orderHasBeenPaid: "Đơn hàng đã thanh toán ",
-    theRemainingAmount: "Số tiền còn phải thu của đơn hàng",
+    theRemainingAmount: "Số tiền còn phải thu hộ của đơn hàng",
     value: " trị giá ",
   },
 
@@ -1013,6 +1013,18 @@ const en = {
     reset: "Đặt lại",
     done: "Xác nhận",
   },
+  revenueAndExpenditure: {
+    moneyManagement: "Quản lý nguồn tiền",
+    transferMoney: "Chuyển tiền",
+    addFunds: "Thêm nguồn tiền",
+    depositSource: "Nguồn tiền gửi",
+    selectDepositSource: "Chọn nguồn tiền gửi",
+    cash: "Tiền mặt",
+    electronicWallet: "Ví điện tử",
+    bank: "Ngân hàng",
+    sourceOfMoneyReceived: "Nguồn tiền nhận",
+    selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
+  }
 
   // @demo remove-block-end
 };
