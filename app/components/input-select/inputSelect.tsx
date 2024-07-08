@@ -31,7 +31,7 @@ import Modal from "react-native-modal";
 const ROOT: ViewStyle = {
   borderRadius: 8,
   backgroundColor: colors.palette.aliceBlue,
-  // backgroundColor : 'yellow',
+  // backgroundColor: 'yellow',
 
   paddingVertical: scaleHeight(margin.margin_8),
   paddingHorizontal: scaleWidth(margin.margin_16),
@@ -192,7 +192,7 @@ export function InputSelect(props: InputSelectProps) {
               styleViewDropdown ?? {
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: 15,
+                // marginTop: 5,  để cho item mũi tên đi xuống ra giữa khi comment lại
               }
             }>
             <Images.dropDown />

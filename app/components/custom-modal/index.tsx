@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
-import { colors, margin, scaleHeight } from "../../theme"
+import { colors, margin, scaleHeight, scaleWidth } from "../../theme"
 import Modal from 'react-native-modal'
 
 
@@ -49,8 +49,8 @@ export const CustomModal = (props: ModalProps) => {
               backgroundColor: colors.palette.neutral100,
               borderTopLeftRadius: margin.border_top_left_radius,
               borderTopRightRadius: margin.border_top_right_radius,
-              paddingVertical: margin.margin_16,
-              paddingHorizontal: margin.margin_16,
+              paddingVertical: scaleWidth(margin.margin_16),
+              paddingHorizontal: scaleHeight(margin.margin_16),
               position: 'absolute', bottom: 0,
             }}>
               {children}

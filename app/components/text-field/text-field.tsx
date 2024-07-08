@@ -17,6 +17,7 @@ import {
 import {
   colors,
   fontSize,
+  margin,
   scaleHeight,
   scaleWidth,
   spacing,
@@ -314,6 +315,8 @@ export function TextField(props: TextFieldProps) {
           </View>
           <View
             style={{
+
+              marginTop: (Platform.OS === 'ios' ? margin.margin_10 : null),
               flexDirection: "row",
             }}>
             {/* <View style={{}}> */}

@@ -4,6 +4,7 @@
 export const margin = {
   margin_2: 2,
   margin_4: 4,
+  margin_5: 5,
   margin_6: 6,
   margin_7: 7,
   margin_8: 8,
