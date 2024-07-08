@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, margin, padding, scaleHeight, scaleWidth } from "../../../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../theme";
 
 export const Styles = StyleSheet.create({
     btnAddFunds: { 
@@ -26,5 +26,15 @@ export const Styles = StyleSheet.create({
         flexDirection: 'row', 
         alignItems: 'center', 
         justifyContent: 'center'
-    }
+    },
+    ItemMoneyManagement: { 
+        flexDirection: 'row', 
+        backgroundColor: 'white', 
+        padding: padding.padding_16, 
+        alignItems: 'center', 
+    },
+    textSize12: { 
+        fontSize: fontSize.size12, 
+        fontWeight: '600' 
+    },
 })
