@@ -227,14 +227,15 @@ export const ProductStoreModel = types
       }
     }),
 
-    uploadImages: flow(function* (formData) {
+    uploadImages: flow(function* (formData, isLoading: boolean =  true) {
       try {
         const productApi = new UploadApi(self.environment.apiUpload);
         const result: any = yield productApi.uploadImages(
           formData,
           (results) => {
             console.log("results-------------------------", results);
-          }
+          },
+          isLoading
         );
         if (result && result.result && result.result.data) {
           const { data, traceId, errorCodes } = result.result.data;

@@ -145,23 +145,26 @@ export class CategoryApi {
       return { kind: "bad-data" };
     }
   }
-  async getCreateCategories(name: string, imageUrl: string): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+  async createCategories(name: string, imageUrl: string): Promise<any> {
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         ApiEndpoint.CREATE_CATEGORY,
-        { name, imageUrl }
+        { name, 
+          imageUrl,
+          activated: true
+         }
       );
-      Loading.hide();
+      // Loading.hide();
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide();
+      // Loading.hide();
       return { kind: "bad-data" };
     }
   }

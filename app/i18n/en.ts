@@ -10,12 +10,16 @@ const en = {
     filter: " Bộ lọc",
     saveChange: "Lưu thay đổi",
     edit: "Sửa",
-
+    create: "Tạo",
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     selected: "Đã chọn",
     // @demo remove-current-line
   },
+  messageError: {
+    required_value_null: "Vui lòng nhập thông tin",
+  },
+
   txtToats: {
     please_select_attribute: "Vui lòng chọn thuộc tính",
     required_information: "Vui lòng nhập đủ thông tin bắt buộc",
@@ -631,6 +635,7 @@ const en = {
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
+    create_directory: "Tạo danh mục",
     directory: "Tất cả danh mục",
     select_catgory: "Chọn danh mục",
     trademark: "Thương hiệu",
@@ -642,6 +647,7 @@ const en = {
     create_unit_group: "Tạo nhóm đơn vị tính",
     manage_multiple_units: "Quản lý nhiều đơn vị tính của sản phẩm",
     unit: "Chọn đơn vị tính",
+    input_unit: "Nhập tên đơn vị tính",
     select_unit: "Chọn đơn vị tính",
     create_unit: "Tạo đơn vị tính",
     filter: "Sắp xếp",
