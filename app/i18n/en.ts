@@ -232,10 +232,12 @@ const en = {
     sum: "Tổng cộng",
     amount_paid: "Số tiền còn lại cần phải trả: ",
     warning_payment: "Thanh toán trước",
-    text_money_limit: "Số tiền tối thiểu cần thanh toán trước:",
+    text_money_limit: "Số tiền tối thiểu cần thanh toán trước: ",
+    debt_limit : 'Hạn mức công nợ tối đa được trừ cho đơn hàng: ',
     tittle_warning:
       " Vui lòng chọn một phương thức thanh toán trước để kết hợp với hạn mức công nợ khả dụng",
     customer_paid: "Khách muốn trả",
+    customer_needPaid: "Khách cần trả",
     method_payment: "Phương thức thanh toán",
     money_face: "Tiền mặt",
     taxes_vat: "Thuế VAT ",
