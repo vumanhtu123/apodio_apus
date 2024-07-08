@@ -11,6 +11,7 @@ import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../them
 import { addCommas, formatCurrency, formatNumberByString, removeNonNumeric } from '../../../utils/validate';
 import { TextFieldCurrency } from '../../../components/text-field-currency/text-field-currency';
 import { Images } from '../../../../assets';
+import { CustomModal } from '../../../components/custom-modal';
 const { width, height } = Dimensions.get('screen');
 
 interface PriceModalProps {
@@ -51,140 +52,108 @@ const PriceModal = (props: PriceModalProps) => {
     const [modalNotify, setModalNotify] = useState(false)
     const [modalClose, setModalClose] = useState(false)
     const [modalError, setModalError] = useState(false)
-    
+    const [showLoading, setShowLoading] = useState(false)
+
     const titleModal = titleTx ? titleTx : title;
     const titleInputText = titleInputTx ? titleInputTx : titleInput;
     const placeholderInputText = placeholderTx ? placeholderTx : placeholder;
-    
+
     return (
-        <Modal
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
+        // <Modal
+        //     animationIn={'fadeIn'}
+        //     animationOut={'fadeOut'}
+        //     isVisible={isVisible}
+        //     style={VIEWMODAL}
+        //     avoidKeyboard={true}
+        // >
+        <CustomModal
             isVisible={isVisible}
-            style={VIEWMODAL}
-            avoidKeyboard={true}
+            setIsVisible={() => setIsVisible}
+            isVisibleLoading={showLoading}
         >
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-                style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}
-            >
+            <View style={{
+                // maxHeight: Dimensions.get('screen').height * 0.6,
+                // width: '100%',
+                backgroundColor: colors.palette.neutral100,
+                bottom: 0
+            }}>
+                <Text style={{
+                    fontWeight: '700', fontSize: fontSize.size14,
+                    lineHeight: scaleHeight(24),
+                    color: colors.palette.nero,
+                    // marginLeft: scaleWidth(margin.margin_24),
+                    marginVertical: scaleHeight(margin.margin_16)
+                }} tx={titleModal} />
+                <View style={{ height: scaleHeight(1), backgroundColor: colors.palette.ghostWhite }} />
                 <View style={{
-                    maxHeight: Dimensions.get('screen').height * 0.6,
-                    width: '100%',
-                    backgroundColor: colors.palette.neutral100,
-                    borderTopRightRadius: 8,
-                    borderTopLeftRadius: 8,
-                    position: 'absolute',
-                    bottom: 0
+                    // paddingHorizontal: scaleWidth(16),
+                    marginVertical: scaleHeight(margin.margin_16),
                 }}>
-                    <Text style={{
-                        fontWeight: '700', fontSize: fontSize.size14,
-                        lineHeight: scaleHeight(24),
-                        color: colors.palette.nero,
-                        marginLeft: scaleWidth(margin.margin_24),
-                        marginVertical: scaleHeight(margin.margin_16)
-                    }} tx={titleModal} />
-                    <View style={{ height: scaleHeight(1), backgroundColor: colors.palette.ghostWhite }} />
-                    <View style={{
-                        paddingHorizontal: scaleWidth(16), marginVertical: scaleHeight(margin.margin_16),
-                    }}>
-                        <Controller
-                            control={control}
-                            // defaultValue={0}
-                            name={`price.${id}.price`}
-                            render={({ field: { onChange, value, onBlur } }) => (
-                                <TextField
-                                    // keyboardType={'numeric'}
-                                    labelTx={titleInputText}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    value={value}
-                                    onBlur={onBlur}
-                                    // RightIconClear={Images.icon_delete2}
-                                    // onClearText={() => onChange('')}
-                                    valueCurrency={rightText}
-                                    onChangeText={(value) => {
-                                        onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
-                                        setValueCheck(value !== '' ? formatCurrency(value) : 0)
-                                    }}
-                                    // isImportant={true}
-                                    showRightIcon={false}
-                                    maxLength={15}
-                                    placeholder={placeholder}
-                                />)}
-                            rules={{ required: "Nhập giá sản phẩm" }}
-                        />
-                    </View>
-                    <View style={{
-                        marginHorizontal: scaleWidth(margin.margin_16), flexDirection: 'row',
-                        justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_15)
-                    }}>
-                        <Button onPress={() => {
-                            onCancel()
-                            // setModalClose(true)
-                        }}
-                            tx={'productScreen.cancel'} style={{
-                                height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
-                                borderWidth: 1, borderColor: colors.palette.veryLightGrey,
-                                width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
-                                borderRadius: 8
-                            }} textStyle={{
-                                color: colors.palette.dolphin, fontWeight: '700',
-                                fontSize: fontSize.size14, lineHeight: scaleHeight(24)
-                            }} />
-                        <Button tx={'productScreen.BtnNotificationAccept'} style={{
-                            height: scaleHeight(48),
-                            backgroundColor: colors.palette.navyBlue,
+                    <Controller
+                        control={control}
+                        // defaultValue={0}
+                        name={`price.${id}.price`}
+                        render={({ field: { onChange, value, onBlur } }) => (
+                            <TextField
+                                // keyboardType={'numeric'}
+                                labelTx={titleInputText}
+                                style={{
+                                    width: '100%'
+                                }}
+                                value={value}
+                                onBlur={onBlur}
+                                // RightIconClear={Images.icon_delete2}
+                                // onClearText={() => onChange('')}
+                                valueCurrency={rightText}
+                                onChangeText={(value) => {
+                                    onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
+                                    setValueCheck(value !== '' ? formatCurrency(value) : 0)
+                                }}
+                                // isImportant={true}
+                                showRightIcon={false}
+                                maxLength={15}
+                                placeholder={placeholder}
+                            />)}
+                        rules={{ required: "Nhập giá sản phẩm" }}
+                    />
+                </View>
+                <View style={{
+                    // marginHorizontal: scaleWidth(margin.margin_16),
+                    flexDirection: 'row',
+                    justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_15)
+                }}>
+                    <Button onPress={() => {
+                        onCancel()
+                        // setModalClose(true)
+                    }}
+                        tx={'productScreen.cancel'} style={{
+                            height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
+                            borderWidth: 1, borderColor: colors.palette.veryLightGrey,
                             width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
                             borderRadius: 8
+                        }} textStyle={{
+                            color: colors.palette.dolphin, fontWeight: '700',
+                            fontSize: fontSize.size14, lineHeight: scaleHeight(24)
+                        }} />
+                    <Button tx={'productScreen.BtnNotificationAccept'} style={{
+                        height: scaleHeight(48),
+                        backgroundColor: colors.palette.navyBlue,
+                        width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
+                        borderRadius: 8
+                    }}
+                        textStyle={{
+                            color: colors.palette.neutral100, fontWeight: '700',
+                            fontSize: fontSize.size14, lineHeight: scaleHeight(24)
                         }}
-                            textStyle={{
-                                color: colors.palette.neutral100, fontWeight: '700',
-                                fontSize: fontSize.size14, lineHeight: scaleHeight(24)
-                            }}
-                            onPress={handleSubmit(onSubmit)}
-                        />
-                    </View>
+                        onPress={handleSubmit(onSubmit)}
+                    />
                 </View>
-                <Dialog
-                    onPressCancel={() => setModalClose(false)}
-                    onPressAccept={() => {
-                        onCancel()
-                        setModalClose(false)
-                    }}
-                    isVisible={modalClose}
-                    title={"productScreen.Notification"}
-                    content={"productScreen.NotifyCloseModal"}
-                    titleBTN1="productScreen.cancel"
-                    titleBTN2="productScreen.BtnNotificationAccept"
-                    styleBTN1={{
-                        backgroundColor: "white",
-                        borderWidth: 1,
-                        borderColor: "#d5d5d5",
-                        borderRadius: 8,
-                    }}
-                    styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-                />
-                <Dialog
-                    isVisible={modalNotify}
-                    title={"productScreen.Notification"}
-                    content={"productScreen.NotifyModal"}
-                    titleBTN2="productScreen.BtnNotificationAccept"
-                    styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-                    onPressAccept={() => setModalNotify(false)}
-                />
-                <Dialog
-                    isVisible={modalError}
-                    title={"productScreen.Notification"}
-                    content={"productScreen.validateMin"}
-                    titleBTN2="productScreen.BtnNotificationAccept"
-                    styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
-                    onPressAccept={() => setModalError(false)}
-                />
-            </KeyboardAvoidingView>
-        </Modal>
+            </View>
+        </CustomModal>
+
+
+
+        // </Modal>
     );
 };
 

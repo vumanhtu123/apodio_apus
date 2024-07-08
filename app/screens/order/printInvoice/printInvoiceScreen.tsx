@@ -67,26 +67,26 @@ export const PrintInvoiceScreen: FC = observer(
         };
 
 
-          const downloadAndPrintFile = async (url: any, fileType: any) => {      
+        const downloadAndPrintFile = async (url: any, fileType: any) => {
             const extension = fileType === 'pdf' ? 'pdf' : 'jpg'; // Adjust this based on the expected file type
-            const localFilePath = `${RNFS.DocumentDirectoryPath}/downloaded_file.${extension}`;    
-            
+            const localFilePath = `${RNFS.DocumentDirectoryPath}/downloaded_file.${extension}`;
+
             try {
-              const downloadResult = await RNFS.downloadFile({
-                fromUrl: url,
-                toFile: localFilePath,
-              }).promise;
-          
-              if (downloadResult.statusCode === 200) {
-                console.log(`${fileType} downloaded to:`, localFilePath);
-                PrintManager.print(localFilePath, fileType);
-              } else {
-                console.error(`${fileType} download failed:`, downloadResult);
-              }
+                const downloadResult = await RNFS.downloadFile({
+                    fromUrl: url,
+                    toFile: localFilePath,
+                }).promise;
+
+                if (downloadResult.statusCode === 200) {
+                    console.log(`${fileType} downloaded to:`, localFilePath);
+                    PrintManager.print(localFilePath, fileType);
+                } else {
+                    console.error(`${fileType} download failed:`, downloadResult);
+                }
             } catch (error) {
-              console.error(`Error downloading ${fileType}:`, error);
+                console.error(`Error downloading ${fileType}:`, error);
             }
-          };
+        };
 
         function groupTaxValues(dataTax: any[] | undefined) {
             if (dataTax === undefined) {
@@ -209,7 +209,7 @@ export const PrintInvoiceScreen: FC = observer(
                                 <Text tx='printInvoiceScreen.name' style={styles.companyName} />
                                 <Text style={styles.textInfo}> {data.partner?.name}</Text>
                             </View>
-                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12) , maxWidth : scaleWidth(300) }}>
+                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), maxWidth: scaleWidth(300) }}>
                                 <Text tx='printInvoiceScreen.address' style={styles.companyName} />
                                 <Text style={styles.textInfo}>
                                     {data.deliveryAddress?.address ? data.deliveryAddress.address + ", " : ""}
@@ -274,10 +274,10 @@ export const PrintInvoiceScreen: FC = observer(
                     tx={"printInvoiceScreen.printInvoice"}
                     style={styles.viewButton}
                     textStyle={styles.textButton}
-                    
+
                     onPress={() => {
                         console.log('firstzzz', dataPrintInvoice?.url)
-                        
+
                         downloadAndPrintFile(dataPrintInvoice?.url, 'pdf')
                         // downloadAndPrintFile(
                         //     'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',
