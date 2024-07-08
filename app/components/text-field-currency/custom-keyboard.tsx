@@ -1,24 +1,23 @@
 import React from 'react';
 import {
-  Modal,
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from 'react-native';
+  colors,
+  fontSize,
+  scaleHeight,
+  scaleWidth,
+  spacing,
+} from "../../theme";
+import { Modal, View, TouchableOpacity, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 interface CustomKeyboardModalProps {
   isVisible: boolean;
   setIsVisible: () => void;
+  title?: string;
   onKeyPress: (key: string) => void;
 }
 
-const CustomKeyboard: React.FC<CustomKeyboardModalProps> = ({
-  isVisible,
-  setIsVisible,
-  onKeyPress,
-}) => {
+const CustomKeyboard = (props: CustomKeyboardModalProps) => {
+  const { isVisible, setIsVisible, title, onKeyPress } = props;
+
   const keys = [
     { label: '1', value: '1', customStyle: { backgroundColor: '#383838', color: 'white' } },
     { label: '2', value: '2', customStyle: { backgroundColor: '#383838', color: 'white' } },
@@ -31,17 +30,14 @@ const CustomKeyboard: React.FC<CustomKeyboardModalProps> = ({
     { label: '7', value: '7', customStyle: { backgroundColor: '#383838', color: 'white' } },
     { label: '8', value: '8', customStyle: { backgroundColor: '#383838', color: 'white' } },
     { label: '9', value: '9', customStyle: { backgroundColor: '#383838', color: 'white' } },
-    { label: '\u232B', value: 'Del', customStyle: { backgroundColor: '#383838', color: 'blue' } },
+    { label: '\u232B', value: 'Del', customStyle: { backgroundColor: '#383838', color: colors.palette.malibu } },
     { label: '.', value: '.', customStyle: { backgroundColor: '#383838', color: 'white' } },
     { label: '0', value: '0', customStyle: { backgroundColor: '#383838', color: 'white' } },
     { label: ',', value: ',', customStyle: { backgroundColor: '#383838', color: 'white' } },
-    { label: '\u2713', value: 'Enter', customStyle: { backgroundColor: '#383838', color: 'green' } },
+    { label: '\u2713', value: 'Enter', customStyle: { backgroundColor: '#383838', color: colors.palette.malachite } },
   ];
 
-  const handleKeyPress = (key: string) => {
-    onKeyPress(key);
-  };
-
+  
   return (
     <Modal
       visible={isVisible}
@@ -49,20 +45,20 @@ const CustomKeyboard: React.FC<CustomKeyboardModalProps> = ({
       onRequestClose={setIsVisible}
       style={{ margin: 0 }}
     >
-      <TouchableWithoutFeedback onPress={setIsVisible}>
+      <TouchableWithoutFeedback onPress={() => {}}>
         <View style={styles.overlay}>
-          <TouchableWithoutFeedback>
-            <View style={styles.keyboardContainer}>
-              {keys.map((key, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => handleKeyPress(key.value)}
-                  style={[styles.key, key.customStyle]}
-                >
-                  <Text style={[styles.keyText, key.customStyle]}>{key.label}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
+        <TouchableWithoutFeedback onPress={() => {}}>
+          <View style={styles.keyboardContainer}>
+            {keys.map((key, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => onKeyPress(key.value)}
+                style={[styles.key, key.customStyle]}
+              >
+                <Text style={[styles.keyText,  key.customStyle]}>{key.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
           </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
@@ -74,7 +70,6 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   keyboardContainer: {
     backgroundColor: '#1b1b1b',
@@ -87,11 +82,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   key: {
-    height: 40,
-    width: '23%',
+    height: scaleHeight(40),
+    width: '23.5%',
+    //aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 5,
+    margin: scaleHeight(2),
     borderRadius: 10,
   },
   keyText: {
