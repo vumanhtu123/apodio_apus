@@ -11,10 +11,10 @@ import React from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { Styles } from "../styles";
 import data from "../../../../components/svg-icon/data";
-import { ModalExchange } from "../../component/modalExchange";
+import { ModalExchange } from "../../component/ModalExchange";
 import CustomCalendar from "../../../../components/calendar";
 import moment from "moment";
-import { ModalPay } from "../../component/modalPay";
+import { ModalPay } from "../../component/ModalPay";
 
 export const DetailDebtScreen: FC<StackScreenProps<NavigatorParamList, "detailDebt">> = observer(
     function detailDebtScreen(props) {

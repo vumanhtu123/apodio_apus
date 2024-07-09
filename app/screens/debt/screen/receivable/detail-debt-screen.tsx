@@ -10,7 +10,7 @@ import { Images } from "../../../../../assets";
 import { Styles } from "../styles";
 import { commasToDots, formatCurrency, formatVND } from "../../../../utils/validate";
 import ItemDetailDebt from "./item-detail-debt";
-import { ModalPayReceivable } from "../../component/modalPayReceivable";
+import { ModalPayReceivable } from "../../component/ModalPayReceivable";
 
 
 export const DetailReceivable: FC<StackScreenProps<NavigatorParamList, 'detailReceivable'>> = observer(
