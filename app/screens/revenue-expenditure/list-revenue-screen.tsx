@@ -191,18 +191,18 @@ export const ListRevenueScreen: FC<
             }}></Text>
         </View>
       </View>
-      {/* <RefactorMoneyModal
-        onVisible={isVisible}
-        onClose={(item: any) => {
-          setIsVisible(false);
-        }}
-      /> */}
-      <ClassifyModal
+      <RefactorMoneyModal
         onVisible={isVisible}
         onClose={(item: any) => {
           setIsVisible(false);
         }}
       />
+      {/* <ClassifyModal
+        onVisible={isVisible}
+        onClose={(item: any) => {
+          setIsVisible(false);
+        }}
+      /> */}
     </View>
   );
 });
