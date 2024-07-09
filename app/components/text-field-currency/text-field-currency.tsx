@@ -1,6 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
   Platform,
@@ -190,32 +188,29 @@ export function TextFieldCurrency(props: TextFieldProps) {
     setisFocused(true);
   };
 
-  // Hàm định dạng tiền tệ
-  function formatCurrency(value: string | null, options = {}) {
-    if (value == null || value === '') {
-      return '';
-    }
 
-    const { separator = '.', prefix = '', suffix = '' } = options;
+  const formatCurrency = useMemo(
+    () => (value: string | null) => {
+      if (!value) return '';
+      value = value.replace(/[^0-9,]/g, '');
 
-    // Loại bỏ ký tự không phải số và không phải dấu phẩy
-    value = value.toString().replace(/[^0-9,]/g, '');
+      let [integerPart, decimalPart] = value.split(',');
 
-    // Thay dấu phẩy bằng dấu chấm để định dạng
-    let [integerPart, decimalPart] = value.split(',');
+      if (decimalPart) {
+        decimalPart = decimalPart.substring(0, 2);
+      }
 
-    // Giới hạn số ký tự sau dấu phẩy
-    if (decimalPart) {
-      decimalPart = decimalPart.substring(0, 2);
-    }
+      integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      const textValue =
+        decimalPart !== undefined
+          ? `${integerPart},${decimalPart}`
+          : `${integerPart}`;
 
-    // Thêm dấu phân cách hàng ngàn cho phần nguyên
-    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
-    const textValue = decimalPart !== undefined ? `${prefix}${integerPart},${decimalPart}${suffix}` : `${prefix}${integerPart}${suffix}`;
-    onChangeValue(textValue);
-    // Ghép phần nguyên và phần thập phân (nếu có)
-    return textValue;
-  }
+      onChangeValue(textValue);
+      return textValue;
+    },
+    [onChangeValue],
+  );
 
   const handleTextChange = (value: string) => {
     const numericValue = value.replace(/[^0-9,]/g, '');
@@ -350,8 +345,7 @@ export function TextFieldCurrency(props: TextFieldProps) {
           {value && showRightIcon ? (
             <TouchableOpacity
               onPress={() => {
-                onClearText();
-                focus.current.focus();
+                forwardedRef.current.focus();
               }}
             >
               <RightIconClear />
@@ -391,6 +385,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '100%',
+    backgroundColor:'red',
     height: scaleHeight(50),
     marginBottom: 20,
   },
@@ -415,4 +410,4 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
   },
-});
+}); 

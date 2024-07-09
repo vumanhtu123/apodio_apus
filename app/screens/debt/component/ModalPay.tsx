@@ -30,6 +30,7 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
 
     const dataInputSelect = [
         {
+
             id: 1,
             label: en.debtScreen.amount
         },

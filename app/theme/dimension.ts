@@ -44,6 +44,7 @@ const fontSize = {
   size26: scaleText(26),
   size32: scaleText(32),
   size35: scaleText(35),
+  
 };
 
 export {scaleWidth, scaleHeight, scaleText, fontSize, statusBarHeight};

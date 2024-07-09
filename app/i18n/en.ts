@@ -10,12 +10,16 @@ const en = {
     filter: " Bộ lọc",
     saveChange: "Lưu thay đổi",
     edit: "Sửa",
-
+    create: "Tạo",
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     selected: "Đã chọn",
     // @demo remove-current-line
   },
+  messageError: {
+    required_value_null: "Vui lòng nhập thông tin",
+  },
+
   txtToats: {
     please_select_attribute: "Vui lòng chọn thuộc tính",
     required_information: "Vui lòng nhập đủ thông tin bắt buộc",
@@ -632,6 +636,7 @@ const en = {
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
+    create_directory: "Tạo danh mục",
     directory: "Tất cả danh mục",
     select_catgory: "Chọn danh mục",
     trademark: "Thương hiệu",
@@ -643,6 +648,7 @@ const en = {
     create_unit_group: "Tạo nhóm đơn vị tính",
     manage_multiple_units: "Quản lý nhiều đơn vị tính của sản phẩm",
     unit: "Chọn đơn vị tính",
+    input_unit: "Nhập tên đơn vị tính",
     select_unit: "Chọn đơn vị tính",
     create_unit: "Tạo đơn vị tính",
     filter: "Sắp xếp",
@@ -800,7 +806,7 @@ const en = {
     timeCreateOderSuccess: "Thời gian tạo đơn hàng thành công",
     timeEditOderSuccess: "Thời gian sửa đơn hàng thành công",
     orderHasBeenPaid: "Đơn hàng đã thanh toán ",
-    theRemainingAmount: "Số tiền còn phải thu của đơn hàng",
+    theRemainingAmount: "Số tiền còn phải thu hộ của đơn hàng",
     value: " trị giá ",
   },
 
@@ -1009,7 +1015,40 @@ const en = {
     thisMonth: "Tháng này",
     reset: "Đặt lại",
     done: "Xác nhận",
+    thisWeek: "Tuần này",
   },
+  analysis: {
+    balance: "Số dư",
+    report: "Báo cáo",
+    totalExpenditure: "Tổng chi",
+    totalRevenue: "Tổng thu",
+    expenditure: "Chi",
+    revenue: "Thu",
+    importGoods: "Nhập hàng",
+    amountRevenue: "Khoản thu",
+    amountExpenditure: "Khoản chi",
+    refactorMoney: "Chỉnh sửa",
+    cancel: "Hủy",
+    nameMoney: "Tên nguồn tiền",
+    initBalance: "Số dư ban đầu",
+    back: "Quay lại",
+    confirm: "Xác nhận",
+    update: "Chỉnh sửa",
+    classify: "Phân loại",
+    listClassify: "Danh sách phân loại",
+  },
+  revenueAndExpenditure: {
+    moneyManagement: "Quản lý nguồn tiền",
+    transferMoney: "Chuyển tiền",
+    addFunds: "Thêm nguồn tiền",
+    depositSource: "Nguồn tiền gửi",
+    selectDepositSource: "Chọn nguồn tiền gửi",
+    cash: "Tiền mặt",
+    electronicWallet: "Ví điện tử",
+    bank: "Ngân hàng",
+    sourceOfMoneyReceived: "Nguồn tiền nhận",
+    selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
+  }
 
   // @demo remove-block-end
 };

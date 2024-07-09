@@ -12,11 +12,14 @@ export class UploadApi {
 
   async uploadImages(
     formData: any,
-    callBack: (arg0: number) => void
+    callBack: (arg0: number) => void,
+    isLoading: boolean
   ): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+    if(isLoading){
+      Loading.show({
+        text: 'Loading...',
+      });
+    }
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         `${ApiEndpoint.UPLOAD_IMAGES}?feature_alias=upload-product`,

@@ -31,7 +31,6 @@ import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
 
-
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
@@ -136,8 +135,11 @@ export type NavigatorParamList = {
   orderSuccess: undefined;
   orderScreen: undefined;
   editWeight: undefined;
+  RevenueScreen: undefined;
   receivable: undefined;
   detailReceivable: undefined;
+  moneyManagement: undefined;
+  transferMoneyScreen: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -255,7 +257,19 @@ export const AppStack = () => {
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
       <Stack.Screen name="detailDebt" component={Screens.DetailDebtScreen} />
       <Stack.Screen name="receivable" component={Screens.ReceivableScreen} />
-      <Stack.Screen name="detailReceivable" component={Screens.DetailReceivable} />
+      <Stack.Screen
+        name="detailReceivable"
+        component={Screens.DetailReceivable}
+      />
+      <Stack.Screen
+        name="moneyManagement"
+        component={Screens.MoneyManagementScreen}
+      />
+
+      <Stack.Screen
+        name="transferMoneyScreen"
+        component={Screens.TransferMoneyScreen}
+      />
 
       <Stack.Screen
         name="selectClient"
@@ -478,12 +492,17 @@ export const AppStack = () => {
         options={{ gestureEnabled: false }}
         component={Screens.OrderDetailsScreen}
       />
+      <Stack.Screen
+        name="RevenueScreen"
+        options={{ gestureEnabled: false }}
+        component={Screens.ListRevenueScreen}
+      />
     </Stack.Navigator>
   );
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()

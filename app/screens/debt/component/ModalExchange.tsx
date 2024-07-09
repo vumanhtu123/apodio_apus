@@ -16,6 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Images } from "../../../../assets";
 import { Row } from "../../../components/Row";
 import ItemListExChange from "./itemListExChange";
+import { useNavigation } from "@react-navigation/native";
 
 interface propModal {
   isVisible?: boolean;
@@ -52,7 +53,7 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
         "That's a fantastic new app feature. You and your team did an excellent job of incorporating user testing feedback.",
     },
   ];
-
+  const navigation = useNavigation();
   const {
     control,
     handleSubmit,
@@ -163,7 +164,8 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
                   backgroundColor: "#BDBDBD",
                   borderRadius: 8,
                   marginLeft: 8,
-                }}>
+                }}
+                onPress={() => navigation.navigate("moneyManagement" as never)}>
                 <Text tx="dashboard.send" style={{ color: palette.white }} />
               </TouchableOpacity>
             </View>

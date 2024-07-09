@@ -1,13 +1,13 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity, View, FlatList, TextInput, Platform, KeyboardAvoidingView, ScrollView, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Dimensions, View, Platform } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
-import Modal from 'react-native-modal'
 import { Button, Text, TextField } from '../../../components';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { TxKeyPath, translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { useFocusEffect } from '@react-navigation/native';
 import { Loading } from '../../../components/dialog-notification';
+import { CustomModal } from '../../../components/custom-modal';
 
 interface UnitModalProps {
     isVisible: boolean;
@@ -24,13 +24,14 @@ const UnitModal = (props: UnitModalProps) => {
         ? translate(titleTx)
         : title;
 
-    const { control, reset, setValue, handleSubmit, watch, formState: { errors }, clearErrors } = useForm();
+    const { control, reset, setValue, getValues, handleSubmit, formState: { errors }, clearErrors } = useForm();
     const { unitStore } = useStores()
-    const [name, setName] = useState("");
     const [textError, setTextError] = useState('');
+    const [showLoading, setShowLoading] = useState(false)
 
-    const createUnitName = async (name: string, onclickSave: boolean) => {
-        Loading.show({});
+    const createUnitName = async (onclickSave: boolean) => {
+        setShowLoading(true)
+        const name = getValues('unit');
         const unitResult = await unitStore.createUnitName(name)
         if (unitResult && unitResult.kind === 'ok') {
             const data = unitResult.result.data;
@@ -45,132 +46,116 @@ const UnitModal = (props: UnitModalProps) => {
                 console.log('--------onSaveAndChange---111----', dataModified),
                     onSaveAndChange(dataModified)
             }
-            Loading.hide();
+            setShowLoading(false)
         } else {
-            Loading.hide();
+            setShowLoading(false)
             setTextError(unitResult.result.errorCodes[0].message)
             console.error('Failed to fetch list unit:', unitResult);
         }
     }
 
     const saveData = async () => {
-        createUnitName(name, true)
+        createUnitName(true)
+        console.log('------saveData----')
     }
 
     const saveAndChange = async () => {
-        createUnitName(name, false)
+        createUnitName(false)
+        console.log('------saveAndChange----')
     }
 
     useFocusEffect(
         useCallback(() => {
-            setName('');
             reset();
             clearErrors();
         }, [isVisible])
     )
 
+    const onError = (errors) => {
+        if (errors.unit) {
+            setTextError(errors.unit.message);
+            console.log('------setTextError----')
+        }
+    };
+
     return (
-        <Modal
-            animationIn={'fadeIn'}
-            animationOut={'fadeOut'}
+        <CustomModal
             isVisible={isVisible}
-            avoidKeyboard={true}
-            onBackdropPress={setIsVisible}
-            onBackButtonPress={setIsVisible}
-            style={{margin: 0}}
+            setIsVisible={setIsVisible}
+            isHideKeyBoards={isVisible}
+            isVisibleLoading={showLoading}
         >
-            <TouchableWithoutFeedback onPress={setIsVisible}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-            >
-                <TouchableWithoutFeedback onPress={() => {}}>
-
-                
-                <View style={{
-                    maxHeight: Dimensions.get('screen').height * 0.6,
-                    width: '100%', backgroundColor: colors.palette.neutral100,
-                    borderTopLeftRadius: margin.border_top_left_radius, 
-                    borderTopRightRadius: margin.border_top_right_radius,
-                    position: 'absolute', bottom: 0,
-                }}>
-                    <Text style={{
-                        fontWeight: '700', fontSize: fontSize.size14,
-                        lineHeight: scaleHeight(24),
-                        color: colors.palette.nero,
-                        marginLeft: scaleWidth(margin.margin_24),
-                        marginVertical: scaleHeight(margin.margin_16)
-                    }} tx={actualTitle} />
-                    <View style={{
-                        flexDirection: 'row', alignItems: 'center',
-                        paddingHorizontal: scaleWidth(16),
-                    }}>
-                        <Controller
-                            control={control}
-                            render={({ field: { onChange, value, onBlur } }) => (
-                                <TextField
-                                    keyboardType={'default'}
-                                    placeholder={'Nhập tên đơn vị tính'}
-                                    style={{
-                                        width: (Dimensions.get('screen').width - scaleWidth(32)),
-                                        marginBottom: scaleHeight(10),
-                                    }}
-                                    inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0 }}
-                                    value={name}
-                                    onBlur={onBlur}
-                                    onChangeText={(value) => {
-                                        setName(value)
-                                        onChange(value)
-                                        setTextError('')
-                                    }}
-                                    // onClearText={() => onChange('')}
-                                    // RightIconClear={Images.icon_delete2}
-                                    showRightIcon={false}
-                                    multiline={true}
-                                    error={textError}
-                                />)}
-                            defaultValue={''}
-                            name='Describe'
-                            rules={{
-                                required: "Vui lòng nhập thông tin",
+            <Text style={{
+                fontWeight: '700', fontSize: fontSize.size14,
+                lineHeight: scaleHeight(24),
+                color: colors.palette.nero,
+                marginVertical: scaleHeight(margin.margin_16)
+            }} tx={actualTitle} />
+            <View style={{
+                flexDirection: 'row', alignItems: 'center',
+            }}>
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                        <TextField
+                            keyboardType={'default'}
+                            placeholder={translate('productScreen.input_unit')}
+                            style={{
+                                width: '100%',
+                                marginBottom: scaleHeight(10),
                             }}
-                        />
-                    </View>
-                    <View style={{
-                        marginHorizontal: scaleWidth(margin.margin_16), flexDirection: 'row',
-                        justifyContent: 'space-between', marginBottom: scaleHeight(margin.margin_15)
-                    }}>
-                        <Button
-                            onPress={handleSubmit(saveData)}
-                            tx={'productScreen.save'} style={{
-                                height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
-                                borderWidth: 1, borderColor: colors.palette.veryLightGrey,
-                                width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
-                                borderRadius: 8
-                            }} textStyle={{
-                                color: colors.palette.dolphin, fontWeight: '700',
-                                fontSize: fontSize.size14, lineHeight: scaleHeight(24)
-                            }} />
-                        <Button tx={'productScreen.saveAndChange'} style={{
-                            height: scaleHeight(48),
-                            backgroundColor: colors.palette.navyBlue,
-                            width: (Dimensions.get('screen').width - scaleWidth(32)) * 0.48,
-                            borderRadius: 8
-                        }}
-                            textStyle={{
-                                color: colors.palette.neutral100, fontWeight: '700',
-                                fontSize: fontSize.size14, lineHeight: scaleHeight(24)
+                            inputStyle={{ marginBottom: Platform.OS === 'ios' ? scaleHeight(padding.padding_8) : 0 }}
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={(value) => {
+                                onChange(value)
+                                setTextError('')
                             }}
-                            onPress={handleSubmit(saveAndChange)}
-                        />
+                            showRightIcon={false}
+                            multiline={true}
+                            error={textError}
+                        />)}
+                    defaultValue={''}
+                    name='unit'
+                    rules={{
+                        required: translate("messageError.required_value_null"),
+                    }}
+                />
+            </View>
+            <View style={{
+                marginTop: scaleWidth(margin.margin_10),
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: scaleHeight(margin.margin_15)
+            }}>
+                <Button
+                    onPress={handleSubmit(saveData, onError)}
+                    tx={'productScreen.save'} style={{
+                        marginRight: scaleHeight(8),
+                        height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
+                        borderWidth: 1, borderColor: colors.palette.veryLightGrey,
+                        width: (Dimensions.get('screen').width - scaleWidth(44)) * 0.48,
+                        borderRadius: 8
+                    }} textStyle={{
+                        color: colors.palette.dolphin, fontWeight: '700',
+                        fontSize: fontSize.size14, lineHeight: scaleHeight(24)
+                    }} />
+                <Button tx={'productScreen.saveAndChange'} style={{
+                    marginLeft: scaleHeight(8),
+                    height: scaleHeight(48),
+                    backgroundColor: colors.palette.navyBlue,
+                    width: (Dimensions.get('screen').width - scaleWidth(44)) * 0.48,
+                    borderRadius: 8
+                }}
+                    textStyle={{
+                        color: colors.palette.neutral100, fontWeight: '700',
+                        fontSize: fontSize.size14, lineHeight: scaleHeight(24)
+                    }}
+                    onPress={handleSubmit(saveAndChange, onError)}
+                />
 
-                    </View>
-                </View>
-                </TouchableWithoutFeedback>
-            </KeyboardAvoidingView>
-            </TouchableWithoutFeedback>
-        </Modal>
+            </View>
+        </CustomModal>
     );
 };
 
