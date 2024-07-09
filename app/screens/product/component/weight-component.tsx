@@ -7,6 +7,8 @@ import { fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
+import { commasToDots, formatCurrency, formatNumberFloat, formatStringToFloat } from "../../../utils/validate";
+import { useStores } from "../../../models";
 
 interface InputSelectProps {
   control: any;
@@ -17,6 +19,7 @@ interface InputSelectProps {
   originUit: any;
   onRemove: any;
   onRestore: any;
+  onChange: any;
 }
 
 interface ItemWeight {
@@ -34,15 +37,16 @@ interface ItemOriginal {
 }
 
 export default function ItemWeight(props: ItemWeight) {
-  const { control, setValue, setError } = useFormContext()
+  const {vendorStore} = useStores()
+  const { control, setValue, setError, getFieldState, getValues } = useFormContext()
   const {
     handleSubmit,
     watch,
-    getValues,
+    // getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      weight: [{ weight1: "", volume: "", unit: { id: '', label: 'qwe' } }],
+      weight: [{ weight1: "", volume: "", unit: { id: '', label: '' } }],
     },
   });
   const dataUomGroup = props.dataUnitGroup?.map((item: any) => {
@@ -52,26 +56,21 @@ export default function ItemWeight(props: ItemWeight) {
     return { ...item, label: item.unitName }
   }))
   useEffect(() => {
-    setData(props.dataUnitGroup?.map((item: any) => {
+    const newArr = props.dataUnitGroup?.filter((item1: any) => !props.dataDefault?.weight?.some((item2: any) => item2.unit.id === item1.id));
+    setData(newArr.map((item: any) => {
       return { ...item, label: item.unitName }
     }))
   }, [props.dataUnitGroup])
 
-  const handleRemove = (item: any) => {
-    setData(data.filter((i) => i !== item));
-  };
-
-  const handleRestore = (item: any) => {
-    console.log([...data, item], 'data')
-    setData([...data, item]);
-  };
   const deepEqual = (obj1, obj2) => {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
   };
 
   const resetData1 = (data1: any, index: any) => {
-    const newArr3 = data.concat(data1[index].unit)
-    setData(newArr3)
+    if(Object.keys(data1[index].unit).length !== 0){
+      const newArr3 = data.concat(data1[index].unit)
+      setData(newArr3)
+    }
   }
   const resetData = (data: any, itemValue: any) => {
     const newArr = data.map((item: any) => {
@@ -92,11 +91,11 @@ export default function ItemWeight(props: ItemWeight) {
     name: "weight",
   });
 
-  // console.log("data -0-", fields);
+  const onChange = (index: any, conversionRate: any) => {
+    setValue(`weight.${index}.weight1`, formatCurrency(commasToDots((Number(formatStringToFloat(getValues('weightOriginal')))* Number(conversionRate)))).toString())
+    setValue(`weight.${index}.volume`, formatCurrency(commasToDots(Number(formatStringToFloat(getValues('volumeOriginal')))* Number(conversionRate))).toString())
+  }
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
   return (
     <View>
       <View
@@ -180,7 +179,7 @@ export default function ItemWeight(props: ItemWeight) {
               }}
               fields={fields}
               originUit={props.data}
-
+              onChange={onChange}
             />
           );
         }}
@@ -190,6 +189,7 @@ export default function ItemWeight(props: ItemWeight) {
 }
 
 const ItemOriginal = (item: ItemOriginal) => {
+  const {vendorStore} = useStores()
   return (
     <View
       style={{
@@ -211,12 +211,10 @@ const ItemOriginal = (item: ItemOriginal) => {
               labelTx={"productScreen.weightSpecified"}
               style={{
                 marginBottom: scaleHeight(10),
-                // marginTop: scaleHeight(20),
                 width: scaleWidth(122),
               }}
               value={value}
               onBlur={onBlur}
-              // RightIconClear={Images.icon_delete2}
               RightIconClear={null}
               RightIconShow={null}
               valueTextRight="Kg"
@@ -231,16 +229,12 @@ const ItemOriginal = (item: ItemOriginal) => {
                 onChange("");
               }}
               onChangeText={(value) => {
-                onChange(value);
+                onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value));
               }}
             />
           )}
-          // Account test setup new pin
           defaultValue={""}
-          // Account test
-          // defaultValue={"67076743544"}
           name="weightOriginal"
-        // rules={{ required: "Username is required" }}
         />
       </View>
       <Controller
@@ -253,12 +247,10 @@ const ItemOriginal = (item: ItemOriginal) => {
             style={{
               marginBottom: scaleHeight(10),
               marginLeft: scaleWidth(10),
-              // marginTop: scaleHeight(20),
               width: scaleWidth(122),
             }}
             value={value}
             onBlur={onBlur}
-            // RightIconClear={Images.icon_delete2}
             RightIconClear={null}
             RightIconShow={null}
             valueTextRight="m3"
@@ -273,23 +265,20 @@ const ItemOriginal = (item: ItemOriginal) => {
               onChange("");
             }}
             onChangeText={(value) => {
-              onChange(value);
+              onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
             }}
           />
         )}
-        // Account test setup new pin
         defaultValue={""}
-        // Account test
-        // defaultValue={"67076743544"}
         name="volumeOriginal"
-      // rules={{ required: "Username is required" }}
       />
     </View>
   );
 };
 
 const ItemConversion = (item: InputSelectProps) => {
-  const [name, valueName] = useState({});
+  const {vendorStore} = useStores()
+  const {setValue, getValues} = useForm()
 
   return (
     <View
@@ -345,9 +334,9 @@ const ItemConversion = (item: InputSelectProps) => {
                     arrData={item.data ?? []}
                     dataDefault={value?.label}
                     onPressChoice={(items: any) => {
-                      // valueName(items);
                       onChange(items)
                       item.onRemove(item.fields, items)
+                      item.onChange(item.index, items.conversionRate)
                     }}></InputSelect>
                   <View
                     style={{
@@ -357,7 +346,7 @@ const ItemConversion = (item: InputSelectProps) => {
                     }}></View>
                   <Text
                     style={{ color: "#747475A6", fontSize: 10, fontWeight: "500", width: '90%' }} numberOfLines={1}>
-                    {item.originUit?.name == undefined || value?.conversionRate == undefined ? '' : value?.conversionRate + " " + item.originUit?.name}
+                    {item.originUit?.name == undefined || value?.conversionRate == undefined ? '' : formatCurrency(commasToDots(value?.conversionRate)) + " " + item.originUit?.name}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -393,16 +382,12 @@ const ItemConversion = (item: InputSelectProps) => {
                 onChange("");
               }}
               onChangeText={(value) => {
-                onChange(value);
+                onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value));
               }}
             />
           )}
-          // Account test setup new pin
           defaultValue={""}
-          // Account test
-          // defaultValue={"67076743544"}
           name={`weight.${item.index}.weight1`}
-        // rules={{ required: "Username is required" }}
         />
         <View style={{ width: scaleWidth(15) }}></View>
         <Controller
@@ -414,12 +399,10 @@ const ItemConversion = (item: InputSelectProps) => {
               labelTx={"createProductScreen.volume"}
               style={{
                 marginBottom: scaleHeight(10),
-                // marginTop: scaleHeight(20),
                 width: scaleWidth(122),
               }}
               value={value}
               onBlur={onBlur}
-              // RightIconClear={Images.icon_delete2}
               RightIconClear={null}
               RightIconShow={null}
               valueTextRight="m3"
@@ -434,16 +417,12 @@ const ItemConversion = (item: InputSelectProps) => {
                 onChange("");
               }}
               onChangeText={(value) => {
-                onChange(value);
+                onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value));
               }}
             />
           )}
-          // Account test setup new pin
           defaultValue={""}
-          // Account test
-          // defaultValue={"67076743544"}
           name={`weight.${item.index}.volume`}
-        // rules={{ required: "Username is required" }}
         />
       </View>
     </View>

@@ -7,6 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { Header, Text } from '../../components';
 import { Images } from '../../../assets';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../theme';
+import { formatNumberFloat } from '../../utils/validate';
 export const EditWeight: FC = observer(
     function EditWeight() {
         const route = useRoute()
@@ -15,9 +16,10 @@ export const EditWeight: FC = observer(
         const methods = useForm()
 
         useEffect(() => {
-            methods.setValue(`weight`, data?.weight)
-            methods.setValue(`weightOriginal`, data?.weightOriginal)
-            methods.setValue(`volumeOriginal`, data?.volumeOriginal)
+            console.log(JSON.stringify(data))
+            methods.setValue(`weight`, (data?.weight))
+            methods.setValue(`weightOriginal`, (data?.weightOriginal))
+            methods.setValue(`volumeOriginal`, (data?.volumeOriginal))
         }, [])
 
         const submitAdd = (data: any) => {
@@ -25,7 +27,11 @@ export const EditWeight: FC = observer(
             console.log(dataCreateProduct)
             console.log(dataCreateProduct[0].weight)
             console.log(index)
-            // const newDataCreateProduct = dataCreateProduct[index].
+            dataCreateProduct[index].weight.volumeOriginal = data.volumeOriginal
+            dataCreateProduct[index].weight.weightOriginal = data.weightOriginal
+            dataCreateProduct[index].weight.weight = data.weight
+            console.log(dataCreateProduct[0].weight)
+            navigation.navigate({name: 'ProductCreateScreen', params: {newDataCreateProduct: dataCreateProduct}} as never)
         }
 
         return (
@@ -39,9 +45,9 @@ export const EditWeight: FC = observer(
                     />
                     <View style={{ paddingHorizontal: scaleWidth(16) }}>
                         <TouchableOpacity style={{ marginTop: scaleHeight(20) }} onPress={() => {
-                            methods.setValue(`weight`, data.weight)
-                            methods.setValue(`weightOriginal`, data.weightOriginal)
-                            methods.setValue(`volumeOriginal`, data.volumeOriginal)
+                            methods.setValue(`weight`, (data.weight))
+                            methods.setValue(`weightOriginal`, (data.weightOriginal))
+                            methods.setValue(`volumeOriginal`, (data.volumeOriginal))
                         }}>
                             <Text tx='productScreen.resetDefault'
                                 style={{
