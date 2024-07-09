@@ -40,6 +40,7 @@ const en = {
     change_city: "Vui lòng chọn Tỉnh/Thành phố",
     change_district: "Vui lòng chọn Quận/Huyện",
     change_payment: "Vui lòng chọn phuơng thức thanh toán trước",
+    change_weight: "Vui lòng nhập đủ thông tin trước khi thêm dòng" 
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -691,7 +692,8 @@ const en = {
     weightConversion: "Tải trọng theo đơn vị quy đổi",
     addLine: "Thêm dòng",
     weightExchange: "Tải trọng theo đơn vị quy đổi",
-
+    editWeight: 'Chỉnh sửa tải trọng',
+    resetDefault: "Reset về mặc định",
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -736,6 +738,7 @@ const en = {
     description: "Mô tả",
     addDescription: "Thêm mô tả",
     productClassification: "Phân loại sản phẩm",
+    volume : 'Thể tích',
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
@@ -1012,6 +1015,27 @@ const en = {
     thisMonth: "Tháng này",
     reset: "Đặt lại",
     done: "Xác nhận",
+    thisWeek: "Tuần này",
+  },
+  analysis: {
+    balance: "Số dư",
+    report: "Báo cáo",
+    totalExpenditure: "Tổng chi",
+    totalRevenue: "Tổng thu",
+    expenditure: "Chi",
+    revenue: "Thu",
+    importGoods: "Nhập hàng",
+    amountRevenue: "Khoản thu",
+    amountExpenditure: "Khoản chi",
+    refactorMoney: "Chỉnh sửa",
+    cancel: "Hủy",
+    nameMoney: "Tên nguồn tiền",
+    initBalance: "Số dư ban đầu",
+    back: "Quay lại",
+    confirm: "Xác nhận",
+    update: "Chỉnh sửa",
+    classify: "Phân loại",
+    listClassify: "Danh sách phân loại",
   },
   revenueAndExpenditure: {
     moneyManagement: "Quản lý nguồn tiền",

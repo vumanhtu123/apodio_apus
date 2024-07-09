@@ -134,7 +134,7 @@ const DropdownModal = (props: InputSelectProps) => {
     toggleModal();
   };
 
-  console.log("--------newData--------", newData);
+  // console.log("--------newData--------", newData);
 
   const renderItem = ({ item }: any) => {
     const isSelected = selectedItem.some(
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.size12,
   },
   modalContainer: {
-    // height: Dimensions.get("screen").height * 0.4,
+    height: '50%',
     backgroundColor: colors.palette.neutral100,
     borderRadius: 8,
     paddingVertical: scaleHeight(padding.padding_12),
