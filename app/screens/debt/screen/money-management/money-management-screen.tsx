@@ -43,7 +43,7 @@ export const MoneyManagementScreen: FC<StackScreenProps<NavigatorParamList, "mon
                     LeftIcon={Images.back}
                     headerTx='revenueAndExpenditure.moneyManagement'
                     style={{ height: scaleHeight(52) }}
-
+                    onLeftPress={() => props.navigation.goBack()}
                 />
                 <View
                     style={Styles.boxHeader}

@@ -1024,7 +1024,11 @@ const en = {
     bank: "Ngân hàng",
     sourceOfMoneyReceived: "Nguồn tiền nhận",
     selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
-  }
+    chooseTheSourceOfMoney: "Chọn nguồn tiền",
+    listOfFundingSources: 'Danh sách nguồn tiền',
+    storeWallet: 'Ví cửa hàng'
+  },
+
 
   // @demo remove-block-end
 };

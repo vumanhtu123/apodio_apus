@@ -76,7 +76,8 @@ export  const Styles = StyleSheet.create({
         backgroundColor: '#FFF',
         paddingHorizontal: scaleWidth(15),
         paddingVertical: scaleWidth(10),
-        borderRadius:margin.margin_8
+        borderTopLeftRadius: margin.border_top_left_radius,
+              borderTopRightRadius: margin.border_top_right_radius,
 
     },
     horizontalLine: {
