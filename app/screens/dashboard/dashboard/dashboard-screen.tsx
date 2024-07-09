@@ -53,7 +53,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     const [revenue, setRevenue] = useState("");
     const [order, setOrder] = useState("");
     const getAPI = useStores();
-    const { orderStore ,companyStore } = useStores();
+    const { orderStore, companyStore } = useStores();
     const [arrData, setArrData] = useState<any>([]);
     // Lấy ngày hiện tại theo giờ Việt Nam
     const today = moment().tz("Asia/Ho_Chi_Minh");
@@ -119,7 +119,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
           console.log(response.result.data, "log infocompany");
           vendorStore.setCompanyInfo(response.result.data);
           // setCompanyInfo(response.result.data)
-          companyStore.setCompanyInfo(response.result.data)
+          companyStore.setCompanyInfo(response.result.data);
           // setDataInfoCompany(response.result.data)
           // console.log('firstmmmmmmm' , await getCompanyInfo())S
         } else {
@@ -135,7 +135,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     useEffect(() => {
       handleGetInfoCompany();
     }, []);
-    
+
     const getDataRevenueThisMonth = () => {
       console.log("====================================");
       console.log(
@@ -187,6 +187,10 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
       orderStore.setOrderId(id);
       console.log("first", orderStore.orderId);
       navigation.navigate("orderDetails" as never);
+    };
+
+    const nextPage = () => {
+      navigation.navigate("RevenueScreen" as never);
     };
 
     useEffect(() => {
@@ -582,6 +586,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
             // kind={KIND_SCREEN.HOME}
             kind={1}
             onChangeAVT={() => {
+              nextPage();
               // navigation.dispatch(DrawerActions.openDrawer);
               // testDebug();
             }}
