@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { Images } from "../../../assets";
 import Modal from "react-native-modal";
+import { Numpad } from "./component/num-pad-component";
 
 interface Input {
   onVisible?: any;
@@ -13,16 +14,6 @@ interface Input {
 
 export const RefactorMoneyModal = (props: Input) => {
   const list = ["100.000", "200.000", "300.000"];
-  const line1 = [
-    "C",
-    <Images.ic_divide />,
-    "X",
-    <Images.ic_delete_calculator />,
-  ];
-  const line2 = ["1", "2", "3", "+"];
-  const line3 = ["4", "5", "6", "-"];
-  const line4 = ["7", "8", "9", "="];
-  const line5 = ["0", "00", "000", "OK"];
   const [selectedValue, setSelectedValue] = useState<any>([]);
   const [closeValue, setCloseValue] = useState<any>(props.onVisible);
   const {
@@ -40,6 +31,7 @@ export const RefactorMoneyModal = (props: Input) => {
   const addItem = (item: any) => {
     setSelectedValue([...selectedValue, item]);
   };
+
   const deleteItem = () => {
     const updatedItems = selectedValue.slice(0, selectedValue.length - 1);
     setSelectedValue(updatedItems);
@@ -223,236 +215,14 @@ export const RefactorMoneyModal = (props: Input) => {
             );
           })}
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
-            justifyContent: "space-between",
-            marginVertical: 7,
-          }}>
-          {line1.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  if (index === 0) {
-                    setSelectedValue([]);
-                  }
-                  if (index == 3) {
-                    deleteItem();
-                  } else {
-                    addItem(item !== item.toString() ? "÷" : item.toString());
-                  }
-                  console.log("tuvm", item.toString());
-                }}>
-                <View
-                  style={{
-                    borderRadius: 8,
-                    backgroundColor: "#E7EAED",
-                    width: scaleWidth(80),
-                    // height: scaleHeight(42),
-                    paddingVertical: 12,
-                    alignItems: "center",
-                  }}>
-                  {item.toString() ? (
-                    <Text
-                      style={{
-                        // paddingHorizontal: scaleWidth(34),
-                        // paddingVertical: scaleHeight(12),
-                        color: "#242424",
-                        textAlign: "center",
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    item
-                  )}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
-            justifyContent: "space-between",
-          }}>
-          {line2.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  if (index === 0) {
-                    setSelectedValue([]);
-                  }
-                  if (index == 3) {
-                    deleteItem();
-                  } else {
-                    addItem(item !== item.toString() ? "÷" : item.toString());
-                  }
-                  console.log("tuvm", item.toString());
-                }}>
-                <View
-                  style={{
-                    borderRadius: 8,
-                    backgroundColor: item == "+" ? "#E7EAED" : "#FFFFFF",
-                    width: scaleWidth(80),
-                    // height: scaleHeight(42),
-                    paddingVertical: 12,
-                    alignItems: "center",
-                    borderWidth: item == "+" ? 0 : 0.2,
-                  }}>
-                  {item.toString() ? (
-                    <Text
-                      style={{
-                        color: "#242424",
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    item
-                  )}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
-            justifyContent: "space-between",
-            marginVertical: 10,
-          }}>
-          {line3.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  if (index === 0) {
-                    setSelectedValue([]);
-                  }
-                  if (index == 3) {
-                    deleteItem();
-                  } else {
-                    addItem(item !== item.toString() ? "÷" : item.toString());
-                  }
-                  console.log("tuvm", item.toString());
-                }}>
-                <View
-                  style={{
-                    borderRadius: 8,
-                    backgroundColor: item == "-" ? "#E7EAED" : "#FFFFFF",
-                    width: scaleWidth(80),
-                    // height: scaleHeight(42),
-                    paddingVertical: 12,
-                    alignItems: "center",
-                    borderWidth: item == "-" ? 0 : 0.2,
-                  }}>
-                  {item.toString() ? (
-                    <Text
-                      style={{
-                        color: "#242424",
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    item
-                  )}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
-            justifyContent: "space-between",
-          }}>
-          {line4.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  if (index === 0) {
-                    setSelectedValue([]);
-                  }
-                  if (index == 3) {
-                    deleteItem();
-                  } else {
-                    addItem(item !== item.toString() ? "÷" : item.toString());
-                  }
-                  console.log("tuvm", item.toString());
-                }}>
-                <View
-                  style={{
-                    borderRadius: 8,
-                    backgroundColor: item == "=" ? "#E7EAED" : "#FFFFFF",
-                    width: scaleWidth(80),
-                    // height: scaleHeight(42),
-                    paddingVertical: 12,
-                    alignItems: "center",
-                    borderWidth: item == "=" ? 0 : 0.2,
-                  }}>
-                  {item.toString() ? (
-                    <Text
-                      style={{
-                        color: "#242424",
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    item
-                  )}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            marginHorizontal: 16,
-            justifyContent: "space-between",
-            marginVertical: 10,
-          }}>
-          {line5.map((item, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  if (index === 0) {
-                    setSelectedValue([]);
-                  }
-                  if (index == 3) {
-                    deleteItem();
-                  } else {
-                    addItem(item !== item.toString() ? "÷" : item.toString());
-                  }
-                  console.log("tuvm", item.toString());
-                }}>
-                <View
-                  style={{
-                    borderRadius: 8,
-                    backgroundColor: item == "OK" ? "#0078D4" : "#FFFFFF",
-                    width: scaleWidth(80),
-                    // height: scaleHeight(42),
-                    paddingVertical: 12,
-                    alignItems: "center",
-                    borderWidth: item == "+" ? 0 : 0.2,
-                  }}>
-                  {item.toString() ? (
-                    <Text
-                      style={{
-                        color: item == "OK" ? "white" : "#242424",
-                      }}>
-                      {item}
-                    </Text>
-                  ) : (
-                    item
-                  )}
-                </View>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
+        <Numpad
+          addItem={(item: any) => {
+            addItem(item);
+          }}
+          deleteItem={() => {
+            deleteItem();
+          }}
+        />
       </View>
     </Modal>
   );
