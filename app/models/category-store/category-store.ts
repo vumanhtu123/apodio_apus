@@ -59,11 +59,13 @@ export const CategoryStoreModel = types
     getListCategoriesFilter: flow(function* (
       page: number,
       size: number,
+      search: any
     ) {
       const categoryApi = new CategoryApi(self.environment.api);
       const result: any = yield categoryApi.getListCategoriesFilter(
         page,
         size,
+        search
       );
       if (result.kind === "ok") {
         return result;
@@ -105,7 +107,7 @@ export const CategoryStoreModel = types
     }),
     getCreateCategories: flow(function* (name: string, imageUrl: string) {
       const categoryApi = new CategoryApi(self.environment.api);
-      const result: any = yield categoryApi.getCreateCategories(name, imageUrl);
+      const result: any = yield categoryApi.createCategories(name, imageUrl);
       if (result.kind === "ok") {
         return result;
       } else {

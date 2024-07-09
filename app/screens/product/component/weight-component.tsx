@@ -14,7 +14,17 @@ interface InputSelectProps {
   remove: any;
   fields: any;
 }
-export default function ItemWeight(props: any) {
+
+interface ItemWeight {
+checkList: boolean;
+data: {};
+}
+
+interface ItemOriginal {
+  data: any;
+}
+
+export default function ItemWeight(props: ItemWeight) {
   const {
     control,
     handleSubmit,
@@ -63,8 +73,10 @@ export default function ItemWeight(props: any) {
             color: "#242424",
             marginVertical: 15,
           }}></Text>
-        <ItemOriginal />
-        <View
+        <ItemOriginal 
+        data={props.data}
+        />
+        {props.checkList ?<View
           style={{
             justifyContent: "space-between",
             flexDirection: "row",
@@ -89,10 +101,11 @@ export default function ItemWeight(props: any) {
               }}
               tx="productScreen.addLine"></Text>
           </TouchableOpacity>
-        </View>
+        </View>: null}
       </View>
-      <FlatList
+      {props.checkList ? <FlatList
         data={fields}
+        scrollEnabled={false}
         keyExtractor={(item, index) => item.id}
         renderItem={({ item, index }) => {
           return (
@@ -102,19 +115,19 @@ export default function ItemWeight(props: any) {
               data={data}
               description={"(3 thùng)"}
               remove={() => {
-                console.log("indẽ", index);
+                console.log("index", index);
                 remove(index);
               }}
               fields={fields}
             />
           );
         }}
-      />
+      /> : null}
     </View>
   );
 }
 
-const ItemOriginal = (item: any) => {
+const ItemOriginal = (item: ItemOriginal) => {
   const {
     control,
     formState: { errors },
@@ -129,16 +142,16 @@ const ItemOriginal = (item: any) => {
         justifyContent: "space-between",
         marginRight: 6,
       }}>
-      <Text style={{ color: "#000000", fontSize: 12, fontWeight: "400" }}>
-        {item.name ?? "Hộp"}
+      <Text style={{ color: "#000000", fontSize: 12, fontWeight: "400", width: scaleWidth(80) }}>
+        {item.data.label}
       </Text>
-      <View style={{ marginLeft: scaleWidth(50) }}>
+      <View style={{ marginLeft: scaleWidth(10) }}>
         <Controller
           control={control}
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
               styleTextLabel={true}
-              keyboardType={null}
+              keyboardType={'numeric'}
               labelTx={"productScreen.weightSpecified"}
               style={{
                 marginBottom: scaleHeight(10),
@@ -179,10 +192,11 @@ const ItemOriginal = (item: any) => {
         render={({ field: { onChange, value, onBlur } }) => (
           <TextField
             styleTextLabel={true}
-            keyboardType={null}
+            keyboardType={'numeric'}
             labelTx={"productScreen.weightSpecified"}
             style={{
               marginBottom: scaleHeight(10),
+              marginLeft: scaleWidth(10),
               // marginTop: scaleHeight(20),
               width: scaleWidth(122),
             }}
@@ -289,7 +303,7 @@ const ItemConversion = (item: InputSelectProps) => {
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
               styleTextLabel={true}
-              keyboardType={null}
+              keyboardType={'numeric'}
               labelTx={"productScreen.weightSpecified"}
               style={{
                 marginBottom: scaleHeight(10),
@@ -328,7 +342,7 @@ const ItemConversion = (item: InputSelectProps) => {
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
               styleTextLabel={true}
-              keyboardType={null}
+              keyboardType={'numeric'}
               labelTx={"productScreen.weightSpecified"}
               style={{
                 marginBottom: scaleHeight(10),

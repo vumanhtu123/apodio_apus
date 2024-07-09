@@ -1,4 +1,3 @@
-import { createClient } from "reactotron-core-client";
 
 const en = {
   common: {
@@ -11,12 +10,16 @@ const en = {
     filter: " Bộ lọc",
     saveChange: "Lưu thay đổi",
     edit: "Sửa",
-
+    create: "Tạo",
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     selected: "Đã chọn",
     // @demo remove-current-line
   },
+  messageError: {
+    required_value_null: "Vui lòng nhập thông tin",
+  },
+
   txtToats: {
     please_select_attribute: "Vui lòng chọn thuộc tính",
     required_information: "Vui lòng nhập đủ thông tin bắt buộc",
@@ -236,7 +239,7 @@ const en = {
     text_money_limit: "Số tiền tối thiểu cần thanh toán trước:",
     tittle_warning:
       " Vui lòng chọn một phương thức thanh toán trước để kết hợp với hạn mức công nợ khả dụng",
-    customer_paid: "Khách đã trả",
+    customer_paid: "Khách muốn trả",
     method_payment: "Phương thức thanh toán",
     money_face: "Tiền mặt",
     taxes_vat: "Thuế VAT ",
@@ -608,18 +611,31 @@ const en = {
     totalRemainingDebt: "Tổng nợ còn lại",
     paymentTerm2: "Hạn thanh toán",
     exChange: "Trao đổi",
-    detailDebt: "Chi tiết công nợ NCC",
+    detailDebtSupplier: "Chi tiết công nợ NCC",
+    detailDebt: 'Chi tiết công nợ',
     like: "Thích",
     comment: "Bình luận",
     writeCommentHere: "Viết bình luận của bạn tại đây",
     pay: "Thanh toán nợ",
+    pay2: 'Thanh toán',
     paymentAmount: "Số tiền thanh toán",
     amount: "Tiền mặt",
     payments: "Hình thức thanh toán",
     payTotal: "Thanh toán tổng nợ",
+    accordingToTransaction: "Theo giao dịch",
+    accordingToSupplier: "Theo NCC",
+    nameClient: "Tên khách hàng",
+    setAutomaticCalender: "Đặt lịch nhắc tự động",
+    change: "Thay đổi",
+    transaction: "Giao dịch",
+    debtIncurred: "Phát sinh nợ",
+    ariseYes: "Phát sinh có",
+    generateDebtForOrders :"Phát sinh công nợ \ncho đơn hàng",
+    payDebt: 'Thanh toán công nợ',
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
+    create_directory: "Tạo danh mục",
     directory: "Tất cả danh mục",
     select_catgory: "Chọn danh mục",
     trademark: "Thương hiệu",
@@ -631,6 +647,7 @@ const en = {
     create_unit_group: "Tạo nhóm đơn vị tính",
     manage_multiple_units: "Quản lý nhiều đơn vị tính của sản phẩm",
     unit: "Chọn đơn vị tính",
+    input_unit: "Nhập tên đơn vị tính",
     select_unit: "Chọn đơn vị tính",
     create_unit: "Tạo đơn vị tính",
     filter: "Sắp xếp",
@@ -674,6 +691,7 @@ const en = {
     weightConversion: "Tải trọng theo đơn vị quy đổi",
     addLine: "Thêm dòng",
     weightExchange: "Tải trọng theo đơn vị quy đổi",
+
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -690,6 +708,8 @@ const en = {
     properties: "Thuộc tính chung",
     detailProperty: "Xem chi tiết thuộc tính",
     orders: "Đơn hàng",
+    weight : 'Trọng lượng',
+    volume : 'Thể tích'
   },
   createProductScreen: {
     classify: "Phân loại",
@@ -783,7 +803,7 @@ const en = {
     timeCreateOderSuccess: "Thời gian tạo đơn hàng thành công",
     timeEditOderSuccess: "Thời gian sửa đơn hàng thành công",
     orderHasBeenPaid: "Đơn hàng đã thanh toán ",
-    theRemainingAmount: "Số tiền còn phải thu của đơn hàng",
+    theRemainingAmount: "Số tiền còn phải thu hộ của đơn hàng",
     value: " trị giá ",
   },
 
@@ -954,8 +974,9 @@ const en = {
     toInvoice: "Chờ thanh toán",
     partialInvoice: "Thanh toán một phần",
     invoiced: "Đã thanh toán",
-    outstanding: "Còn nợ",
-    cash: "Tiền mặt",
+    outstanding : 'Còn nợ',
+    cash : 'Tiền mặt',
+    debt : 'Công nợ'
   },
   selectClient: {
     selectClient: "Chọn khách hàng",
@@ -1013,6 +1034,18 @@ const en = {
     classify: "Phân loại",
     listClassify: "Danh sách phân loại",
   },
+  revenueAndExpenditure: {
+    moneyManagement: "Quản lý nguồn tiền",
+    transferMoney: "Chuyển tiền",
+    addFunds: "Thêm nguồn tiền",
+    depositSource: "Nguồn tiền gửi",
+    selectDepositSource: "Chọn nguồn tiền gửi",
+    cash: "Tiền mặt",
+    electronicWallet: "Ví điện tử",
+    bank: "Ngân hàng",
+    sourceOfMoneyReceived: "Nguồn tiền nhận",
+    selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
+  }
 
   // @demo remove-block-end
 };

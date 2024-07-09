@@ -4,6 +4,7 @@
 export const margin = {
   margin_2: 2,
   margin_4: 4,
+  margin_5: 5,
   margin_6: 6,
   margin_7: 7,
   margin_8: 8,
@@ -18,8 +19,8 @@ export const margin = {
   margin_32: 32,
   margin_48: 48,
   margin_64: 64,
-  border_top_left_radius: 20,
-  border_top_right_radius: 20,
+  border_top_left_radius: 16,
+  border_top_right_radius: 16,
   margin_bottom_modal: 20,
 } as const;
 

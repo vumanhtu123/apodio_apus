@@ -1,77 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   StyleSheet,
   View,
-  Text as TextRn,
-  Alert,
   TouchableOpacity,
-  Modal,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import CustomTabs from "./custom-tab";
 import moment from "moment";
-import {
-  getDateLast7days,
-  getDateToday,
-  getDateTodayOneDate,
-  getOfMonthdays,
-} from "../../utils/validate";
+import CustomTabs from "./custom-tab";
+import { getDateLast7days, getDateToday, getDateTodayOneDate, getOfMonthdays } from "../../utils/validate";
 import { Text } from "../text/text";
 import { colors, padding, scaleHeight } from "../../theme";
-import { el } from "date-fns/locale";
+import { CustomModal } from "../custom-modal";
+
 LocaleConfig.locales['vi'] = {
-  monthNames: [
-    'Tháng 1',
-    'Tháng 2',
-    'Tháng 3',
-    'Tháng 4',
-    'Tháng 5',
-    'Tháng 6',
-    'Tháng 7',
-    'Tháng 8',
-    'Tháng 9',
-    'Tháng 10',
-    'Tháng 11',
-    'Tháng 12'
-  ],
-  monthNamesShort: [
-    'Thg 1',
-    'Thg 2',
-    'Thg 3',
-    'Thg 4',
-    'Thg 5',
-    'Thg 6',
-    'Thg 7',
-    'Thg 8',
-    'Thg 9',
-    'Thg 10',
-    'Thg 11',
-    'Thg 12'
-  ],
-  dayNames: [
-    'Chủ Nhật',
-    'Thứ Hai',
-    'Thứ Ba',
-    'Thứ Tư',
-    'Thứ Năm',
-    'Thứ Sáu',
-    'Thứ Bảy'
-  ],
-  dayNamesShort: [
-    'CN',
-    'T2',
-    'T3',
-    'T4',
-    'T5',
-    'T6',
-    'T7'
-  ],
+  monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+  monthNamesShort: ['Thg 1', 'Thg 2', 'Thg 3', 'Thg 4', 'Thg 5', 'Thg 6', 'Thg 7', 'Thg 8', 'Thg 9', 'Thg 10', 'Thg 11', 'Thg 12'],
+  dayNames: ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'],
+  dayNamesShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
   today: "Hôm nay"
 };
 
 LocaleConfig.defaultLocale = 'vi';
-const CustomCalendar = (props: any) => {
+interface MarkedDate {
+  color?: string;
+  textColor?: string;
+  startingDay?: boolean;
+  endingDay?: boolean;
+  selected?: boolean;
+  selectedColor?: string;
+  selectedTextColor?: string;
+  fontWeight?: string;
+}
+
+const CustomCalendar = React.memo((props: any) => {
   const titles = ["calendar.today", "calendar.last7days", "calendar.thisMonth"];
 
   const [markedDates, setMarkedDates] = useState({});
@@ -82,149 +43,131 @@ const CustomCalendar = (props: any) => {
 
   const handleChangeS = props.onMarkedDatesChangeS;
   const handleChangeE = props.onMarkedDatesChangeE;
-  const maxDate = props.maxDate;
 
-  useEffect(() => {
-    setInitialState();
-  }, []);
-
-  const setInitialState = () => {
+  const setInitialState = useCallback(() => {
     if (props.isOneDate) {
-      //setSelectedIndex(0);
-      console.log("tuvm");
-      setMarkedDates(getDateTodayOneDate());
+      const todayDate = getDateTodayOneDate();
+      setMarkedDates(todayDate);
       const dayStart = Object.keys(getDateToday())[0];
       handleChangeS(dayStart);
       handleChangeE(dayStart);
     } else {
       setSelectedIndex(1);
-      setMarkedDates(getDateLast7days());
-      const dayStart = Object.keys(getDateLast7days())[0];
-      const dayEnd = Object.keys(getDateLast7days())[
-        Object.keys(getDateLast7days()).length - 1
-      ];
+      const last7Days = getDateLast7days();
+      setMarkedDates(last7Days);
+      const dayStart = Object.keys(last7Days)[0];
+      const dayEnd = Object.keys(last7Days).pop();
       handleChangeS(dayStart);
       handleChangeE(dayEnd);
     }
-  };
+  }, [handleChangeS, handleChangeE, props.isOneDate]);
 
-  const onReset = (index) => {
+  useEffect(() => {
+    setInitialState();
+  }, []);
+
+  const onReset = useCallback((index: number) => {
     if (props.isOneDate) {
-      setSelectedIndex(index);
-      setMarkedDates(getDateTodayOneDate());
+      const todayDate = getDateTodayOneDate();
+      setMarkedDates(todayDate);
       const dayStart = Object.keys(getDateToday())[0];
       handleChangeS(dayStart);
       handleChangeE(dayStart);
     } else {
-      if (index == 0) {
-        setSelectedIndex(index);
-        setMarkedDates(getDateToday());
-        const dayStart = Object.keys(getDateToday())[0];
+      if (index === 0) {
+        const todayDate = getDateToday();
+        setMarkedDates(todayDate);
+        const dayStart = Object.keys(todayDate)[0];
         handleChangeS(dayStart);
         handleChangeE(dayStart);
-      }
-      if (index === 1) {
-        setSelectedIndex(1);
-        setMarkedDates(getDateLast7days());
-        const dayStart = Object.keys(getDateLast7days())[0];
-        const dayEnd = Object.keys(getDateLast7days())[
-          Object.keys(getDateLast7days()).length - 1
-        ];
+      } else if (index === 1) {
+        const last7Days = getDateLast7days();
+        setMarkedDates(last7Days);
+        const dayStart = Object.keys(last7Days)[0];
+        const dayEnd = Object.keys(last7Days).pop();
         handleChangeS(dayStart);
         handleChangeE(dayEnd);
-      }
-      if (index == 2) {
-        setSelectedIndex(index);
-        setMarkedDates(getOfMonthdays());
-        const dayStart = Object.keys(getOfMonthdays())[0];
-        const dayEnd = Object.keys(getOfMonthdays())[
-          Object.keys(getOfMonthdays()).length - 1
-        ];
+      } else if (index === 2) {
+        const ofMonthDays = getOfMonthdays();
+        setMarkedDates(ofMonthDays);
+        const dayStart = Object.keys(ofMonthDays)[0];
+        const dayEnd = Object.keys(ofMonthDays).pop();
         handleChangeS(dayStart);
         handleChangeE(dayEnd);
       }
     }
-  };
+  }, [handleChangeS, handleChangeE, props.isOneDate]);
 
-  const onPressTab = (index) => {
+  const onPressTab = useCallback((index: React.SetStateAction<number>) => {
     if (index === 0 && index !== selectedIndex) {
       setSelectedIndex(index);
-      setMarkedDates(getDateToday());
-      const dayStart = Object.keys(getDateToday())[0];
+      const todayDate = getDateToday();
+      setMarkedDates(todayDate);
+      const dayStart = Object.keys(todayDate)[0];
       handleChangeS(dayStart);
     } else if (index === 1 && index !== selectedIndex) {
       setSelectedIndex(index);
-      setMarkedDates(getDateLast7days());
-      const dayStart = Object.keys(getDateLast7days())[0];
-      const dayEnd = Object.keys(getDateLast7days())[
-        Object.keys(getDateLast7days()).length - 1
-      ];
+      const last7Days = getDateLast7days();
+      setMarkedDates(last7Days);
+      const dayStart = Object.keys(last7Days)[0];
+      const dayEnd = Object.keys(last7Days).pop();
       handleChangeS(dayStart);
       handleChangeE(dayEnd);
     } else if (index === 2 && index !== selectedIndex) {
       setSelectedIndex(index);
-      setMarkedDates(getOfMonthdays());
-      const dayStart = Object.keys(getOfMonthdays())[0];
-      const dayEnd = Object.keys(getOfMonthdays())[
-        Object.keys(getOfMonthdays()).length - 1
-      ];
+      const ofMonthDays = getOfMonthdays();
+      setMarkedDates(ofMonthDays);
+      const dayStart = Object.keys(ofMonthDays)[0];
+      const dayEnd = Object.keys(ofMonthDays).pop();
       handleChangeS(dayStart);
       handleChangeE(dayEnd);
     }
-  };
+  }, [selectedIndex, handleChangeS, handleChangeE]);
 
-  const onDayPress = (day) => {
+  const onDayPress = useCallback((day: { dateString: string }) => {
     if (props.isOneDate) {
-      let newMarkedDates = {};
-      console.log("-----state.isStartDatePicked1==", day.day);
-      handleChangeE("");
       handleChangeS(day.dateString);
-      newMarkedDates[day.dateString] = {
-        selected: true,
-        selectedColor: colors.palette.navyBlue,
-        selectedTextColor: "#FFFFFF",
-      };
-      setMarkedDates(newMarkedDates);
+      handleChangeE("");
+      setMarkedDates({
+        [day.dateString]: {
+          selected: true,
+          selectedColor: colors.palette.navyBlue,
+          selectedTextColor: "#FFFFFF",
+        }
+      });
       setIsStartDatePicked(true);
       setIsEndDatePicked(false);
       setStartDate(day.dateString);
     } else {
       if (!isStartDatePicked) {
-        let newMarkedDates = {};
-        console.log("-----state.isStartDatePicked1==", day.day);
-        handleChangeE("");
         handleChangeS(day.dateString);
-        newMarkedDates[day.dateString] = {
-          startingDay: true,
-          color: colors.palette.navyBlue,
-          textColor: "#FFFFFF",
-        };
-        setMarkedDates(newMarkedDates);
+        handleChangeE("");
+        setMarkedDates({
+          [day.dateString]: {
+            startingDay: true,
+            color: colors.palette.navyBlue,
+            textColor: "#FFFFFF",
+          }
+        });
         setIsStartDatePicked(true);
         setIsEndDatePicked(false);
         setStartDate(day.dateString);
       } else {
-        console.log("-----state.isEndDatePicked1", day.dateString);
         handleChangeE(day.dateString);
-        let newMarkedDates = { ...markedDates };
-        let tempStartDate = moment(startDate);
-        let tempEndDate = moment(day.dateString);
-        let range = tempEndDate.diff(tempStartDate, "days");
-        console.log("-----state.endDate", tempEndDate);
-        console.log("-----state.startDate", tempStartDate);
+        const newMarkedDates: { [key: string]: MarkedDate } = { ...markedDates };
+        const tempStartDate = moment(startDate);
+        const tempEndDate = moment(day.dateString);
+        const range = tempEndDate.diff(tempStartDate, "days");
         if (range > 0) {
           for (let i = 1; i <= range; i++) {
-            let tempDate = tempStartDate.add(1, "day");
-            //@ts-ignore
-            tempDate = moment(tempDate).format("YYYY-MM-DD");
+            const tempDate = moment(startDate).add(i, "days").format("YYYY-MM-DD");
+            
             if (i < range) {
-              //@ts-ignore
               newMarkedDates[tempDate] = {
                 color: colors.palette.gray,
                 textColor: "#000000",
               };
             } else {
-              //@ts-ignore
               newMarkedDates[tempDate] = {
                 endingDay: true,
                 color: colors.palette.navyBlue,
@@ -238,129 +181,82 @@ const CustomCalendar = (props: any) => {
           setIsEndDatePicked(true);
           setStartDate("");
         } else {
-          let newMarkedDates = {};
-          console.log("-----state.isStartDatePicked1==", day.day);
-          handleChangeE("");
           handleChangeS(day.dateString);
-          newMarkedDates[day.dateString] = {
-            startingDay: true,
-            color: colors.palette.navyBlue,
-            textColor: "#FFFFFF",
-          };
-          setMarkedDates(newMarkedDates);
+          handleChangeE("");
+          setMarkedDates({
+            [day.dateString]: {
+              startingDay: true,
+              color: colors.palette.navyBlue,
+              textColor: "#FFFFFF",
+            }
+          });
           setIsStartDatePicked(true);
           setIsEndDatePicked(false);
           setStartDate(day.dateString);
         }
       }
     }
-  };
-  const today = new Date();
-  today.setDate(today.getDate() - 1);
-  console.log('----------maxDate', props.maxDate)
+  }, [props.isOneDate, handleChangeS, handleChangeE, isStartDatePicked, startDate, markedDates]);
+
+  const today = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 1);
+    return date;
+  }, []);
+
   return (
-    <Modal
-      animationType="none"
-      transparent={true}
-      visible={props.isSortByDate}
-      onRequestClose={props.toggleModalDate}>
-      <TouchableWithoutFeedback onPress={props.toggleModalDate}>
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: "rgba(0,0,0,0.7)",
-          }}
-        />
-      </TouchableWithoutFeedback>
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          // borderRadius: 15,
-          alignSelf: 'center',
-        }}>
-        <View style={styles.main}>
-          <View style={styles.content}>
-            <View style={styles.modalText} />
-            {props.isShowTabs && (
-              <View style={styles.selectType}>
-                <CustomTabs
-                  titles={titles}
-                  onPress={(index) => onPressTab(index)}
-                  selectedIndex={selectedIndex}
-                />
-              </View>
-            )}
-            <View style={styles.modalView}>
-              <Calendar
-                minDate={props.minDate ? props.minDate : ''}
-                maxDate={props.maxDate ? props.maxDate : ''}
-                monthFormat={"MMMM yyyy"}
-                markedDates={
-                  (console.log("calender", markedDates), markedDates)
-                }
-                markingType={props.isOneDate === true ? "custom" : "period"}
-                // hideExtraDays={false}
-                onDayPress={onDayPress}
-                theme={{ todayTextColor: colors.palette.nero }}
-              />
-            </View>
+    <CustomModal
+      isVisible={props.isSortByDate}
+      isHideKeyBoards={props.isSortByDate}
+      setIsVisible={props.toggleModalDate}>
+      <View style={styles.content}>
+        {props.isShowTabs && (
+          <View style={styles.selectType}>
+            <CustomTabs
+              titles={titles}
+              onPress={onPressTab}
+              selectedIndex={selectedIndex}
+            />
           </View>
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              style={styles.button2}
-              onPress={() => {
-                onReset(selectedIndex);
-              }}>
-              <Text
-                tx="calendar.reset"
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  alignSelf: "center",
-                  fontSize: 14,
-                  color: colors.palette.nero,
-                  fontWeight: "700",
-                }}>
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={props.handleShort}>
-              <Text
-                tx="calendar.done"
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={{
-                  alignSelf: "center",
-                  fontSize: 14,
-                  color: "#FFFFFF",
-                  fontWeight: "700",
-                }}>
-              </Text>
-            </TouchableOpacity>
-          </View>
+        )}
+        <View style={styles.modalView}>
+          <Calendar
+            minDate={props.minDate || ''}
+            maxDate={props.maxDate || ''}
+            monthFormat={"MMMM yyyy"}
+            markedDates={markedDates}
+            markingType={props.isOneDate ? "custom" : "period"}
+            onDayPress={onDayPress}
+            theme={{ todayTextColor: colors.palette.nero }}
+          />
         </View>
       </View>
-    </Modal>
+      <View style={styles.buttonGroup}>
+        <TouchableOpacity
+          style={styles.button2}
+          onPress={() => onReset(selectedIndex)}>
+          <Text
+            tx="calendar.reset"
+            style={styles.resetButtonText}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={props.handleShort}>
+          <Text
+            tx="calendar.done"
+            style={styles.doneButtonText}
+          />
+        </TouchableOpacity>
+      </View>
+    </CustomModal>
   );
-};
+});
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    backgroundColor: 'white',
-    // borderRadius: 8,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8
-  },
   content: {
     flex: 1,
     padding: scaleHeight(padding.padding_16),
-  },
-  modalText: {
-    marginBottom: 16,
   },
   selectType: {
     marginBottom: 16,
@@ -386,14 +282,18 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     marginLeft: 8,
-    // shadowColor: '#007AFF',
-    // shadowOffset: {
-    //     width: 0,
-    //     height: 20,
-    // },
-    // shadowOpacity: 1,
-    // shadowRadius: 20,
-    // elevation: 5,
+  },
+  resetButtonText: {
+    alignSelf: "center",
+    fontSize: 14,
+    color: colors.palette.nero,
+    fontWeight: "700",
+  },
+  doneButtonText: {
+    alignSelf: "center",
+    fontSize: 14,
+    color: "#FFFFFF",
+    fontWeight: "700",
   },
 });
 

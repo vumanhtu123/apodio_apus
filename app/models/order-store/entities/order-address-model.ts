@@ -58,6 +58,7 @@ export type OrderCityResult =
   | { kind: "bad-data"; response: Response };
 
 export interface Root1 {
+  [x: string]: number;
   id: number;
   partnerId: number;
   phoneNumber: string;

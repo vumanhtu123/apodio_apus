@@ -174,11 +174,11 @@ export const OrderDetails: FC = observer(
                     // onRightPress2={() => navigation.navigate('printInvoiceScreen' as never, { invoiceId: invoiceId })}
                     btnRightStyle={{ marginRight: scaleWidth(3), width: scaleWidth(40) }}
                     onRightPress1={() => {
-                        navigation.navigate({name: 'newAndEditOrder',params: { newData: data, screen: 'copy' }}as never)
+                        navigation.navigate({ name: 'newAndEditOrder', params: { newData: data, screen: 'copy' } } as never)
                         orderStore.setCheckRenderList(true)
                     }}
                     onRightPress={() => {
-                        navigation.navigate({name: 'newAndEditOrder',params: { newData: data, screen: 'edit' }}as never)
+                        navigation.navigate({ name: 'newAndEditOrder', params: { newData: data, screen: 'edit' } } as never)
                         orderStore.setCheckRenderList(true)
                     }}
                     titleMiddleStyle={styles.titleHeader}
@@ -237,7 +237,7 @@ export const OrderDetails: FC = observer(
                                         // tx='order.sendInvoice' // Conditional text
                                         onPress={() => {
                                             if (dataPayment.isWithInvoice) {
-                                                navigation.navigate({name: 'printInvoiceScreen', params: { invoiceId: invoiceId }}as never)// Pass the first invoice ID
+                                                navigation.navigate({ name: 'printInvoiceScreen', params: { invoiceId: invoiceId } } as never)// Pass the first invoice ID
                                             } else {
                                                 navigation.navigate('newInvoice' as never);
                                             }
@@ -336,10 +336,12 @@ export const OrderDetails: FC = observer(
                                         <View style={{ flex: 1 }}>
                                             <View style={{ width: (Dimensions.get('screen').width - 64) * 0.45 }}>
                                                 <Text text={item.productInfo?.name} style={styles.textListProduct} />
+
                                             </View>
                                             <View style={{ flexDirection: 'row' }}>
                                                 <Text text="SL: " style={[styles.textContent, { fontSize: fontSize.size12 }]} />
                                                 <Text text={item.quantity} style={styles.textListProduct} />
+                                                <Text text={item.productInfo?.uomName} style={[styles.textListProduct, { marginLeft: 2 }]} />
                                             </View>
                                         </View>
                                         {item.discount !== 0 ? (
@@ -349,7 +351,7 @@ export const OrderDetails: FC = observer(
                                             </View>
                                         ) : (
                                             <View>
-                                                <Text text={formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity))))} style={[styles.priceOriginal, { textDecorationLine: 'none', color: colors.palette.nero , fontWeight :'600' }]} />
+                                                <Text text={formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.unitPrice, item.quantity))))} style={[styles.priceOriginal, { textDecorationLine: 'none', color: colors.palette.nero, fontWeight: '600' }]} />
                                             </View>
                                         )}
                                     </TouchableOpacity>
@@ -380,10 +382,78 @@ export const OrderDetails: FC = observer(
                                         colors.palette.malachite
                         }]} />
                     </View>
-                    {dataPayment?.paymentResponses?.length > 0 ? (
+                    {dataPayment?.paymentResponses?.length > 0 || data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' ? (
                         <View style={styles.viewCash}>
-                            {dataPayment.paymentResponses?.map((item: any) => (
+                            {dataPayment?.paymentResponses?.length > 0 ? (
                                 <View>
+                                    {dataPayment.paymentResponses?.map((item: any) => (
+                                        <View>
+                                            <View style={[styles.viewStatus,
+                                            {
+                                                backgroundColor: colors.palette.mintCream,
+                                                width: scaleWidth(75),
+                                                alignItems: 'center',
+                                                paddingVertical: scaleHeight(2),
+                                                // paddingHorizontal : scaleHeight(6),
+
+                                            }]}>
+                                                <Text style={
+                                                    [styles.textStatus, {
+                                                        color: colors.palette.malachite
+                                                    }]
+                                                } tx={'orderDetailScreen.invoiced'} />
+                                            </View>
+                                            <View style={{
+                                                flexDirection: 'row', alignItems: 'center',
+                                                marginBottom: scaleHeight(margin.margin_15)
+                                            }}>
+                                                <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                                    <Text text={item.timePayment} style={styles.textContent} />
+                                                </View>
+                                                <View style={styles.viewLineCash}>
+                                                    <Images.icon_ellipse />
+                                                </View>
+                                                <View style={styles.viewTextCash}>
+                                                    <Text tx={item.paymentPopUpResponse?.paymentMethod === 'CASH' ? 'orderDetailScreen.cash' : ''} style={[styles.textContent, { flex: 1 }]} />
+                                                    <Text text={formatVND(formatCurrency(commasToDots(item.amount)))} />
+                                                </View>
+                                            </View>
+                                        </View>
+                                    ))}
+                                    {data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' ? null : (
+                                        <View >
+                                            <View style={{ margin: 0 }}>
+                                                <Text style={
+                                                    [styles.textStatus, {
+                                                        color: colors.palette.yellow,
+                                                        width: scaleWidth(50),
+                                                        // padding : 0,
+                                                        paddingVertical: scaleHeight(2),
+                                                        textAlign: 'center',
+                                                        backgroundColor: colors.palette.yallowExDG,
+                                                    }]
+                                                } tx={'orderDetailScreen.outstanding'} />
+                                            </View>
+                                            <View style={{
+                                                flexDirection: 'row', alignItems: 'center',
+                                                marginBottom: scaleHeight(margin.margin_15)
+                                            }}>
+                                                <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
+                                                    <Text text={dataPayment.paymentResponses[dataPayment.paymentResponses.length - 1]?.timePayment} style={styles.textContent} />
+                                                </View>
+                                                <View style={styles.viewLineCash}>
+                                                    <Images.icon_ellipse />
+                                                </View>
+                                                <View style={[styles.viewTextCash, { flexDirection: 'row-reverse' }]}>
+                                                    <Text text={formatVND(formatCurrency(commasToDots(dataPayment.moneyPaid)))} />
+                                                </View>
+                                            </View>
+                                        </View>
+                                    )}
+                                </View>
+                            ) : null}
+                            {data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' ? (
+                                <View >
                                     <View style={[styles.viewStatus,
                                     {
                                         backgroundColor: colors.palette.mintCream,
@@ -404,49 +474,20 @@ export const OrderDetails: FC = observer(
                                         marginBottom: scaleHeight(margin.margin_15)
                                     }}>
                                         <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                            <Text text={item.timePayment} style={styles.textContent} />
+                                            <Text text={formatDateTime(data?.orderDate)}
+                                                style={styles.textContent}
+                                            />
                                         </View>
                                         <View style={styles.viewLineCash}>
                                             <Images.icon_ellipse />
                                         </View>
                                         <View style={styles.viewTextCash}>
-                                            <Text tx={item.paymentPopUpResponse?.paymentMethod === 'CASH' ? 'orderDetailScreen.cash' : ''} style={[styles.textContent, { flex: 1 }]} />
-                                            <Text text={formatVND(formatCurrency(commasToDots(item.amount)))} />
-                                        </View>
-                                    </View>
-                                </View>
-                            ))}
-                            {dataPayment.moneyPaid > 0 ? (
-                                <View >
-                                    <View style={{ margin: 0 }}>
-                                        <Text style={
-                                            [styles.textStatus, {
-                                                color: colors.palette.yellow,
-                                                width: scaleWidth(50),
-                                                // padding : 0,
-                                                paddingVertical: scaleHeight(2),
-                                                textAlign: 'center',
-                                                backgroundColor: colors.palette.yallowExDG,
-                                            }]
-                                        } tx={'orderDetailScreen.outstanding'} />
-                                    </View>
-                                    <View style={{
-                                        flexDirection: 'row', alignItems: 'center',
-                                        marginBottom: scaleHeight(margin.margin_15)
-                                    }}>
-                                        <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                            <Text text={dataPayment.paymentResponses[dataPayment.paymentResponses.length - 1].timePayment} style={styles.textContent} />
-                                        </View>
-                                        <View style={styles.viewLineCash}>
-                                            <Images.icon_ellipse />
-                                        </View>
-                                        <View style={[styles.viewTextCash, { flexDirection: 'row-reverse' }]}>
-                                            <Text text={formatVND(formatCurrency(commasToDots(dataPayment.moneyPaid)))} />
+                                            <Text tx={'orderDetailScreen.debt'} style={[styles.textContent, { flex: 1 }]} />
+                                            <Text text={formatVND(formatCurrency(commasToDots(data.debtAmount)))} />
                                         </View>
                                     </View>
                                 </View>
                             ) : null}
-                            {/* <ProductAttribute textStyle={{color : 'red'}} label="Còn phải trả" value={} /> */}
                         </View>
                     ) : null}
                     <TouchableOpacity onPress={() => navigation.navigate('orderTracking' as never)} style={{
@@ -488,89 +529,6 @@ export const OrderDetails: FC = observer(
                     // onPress={}
                     />
                 </ScrollView>
-
-                {/* {data.status === 'Đang xử lý' ?
-                    <View style={styles.viewButtonCancel}>
-                        <Button tx={'order.requestCancellation'}
-                            onPress={() => setShowCancelOrder(true)}
-                            style={styles.buttonCancel}
-                            textStyle={styles.textButtonCancel} />
-                    </View>
-                    : data.status === 'Đã gửi YC' ?
-                        <View style={styles.viewButtonCancel}>
-                            <Button tx={'order.cancelOrder'}
-                                onPress={() => setShowCancelOrder(true)}
-                                style={[styles.buttonCancel, {
-                                    marginBottom: scaleHeight(margin.margin_8),
-                                }]}
-                                textStyle={styles.textButtonCancel} />
-                        </View> : null
-                } */}
-                {/* <Modal isVisible={true}
-                    onBackdropPress={() => setShowCancelOrder(false)}>
-                    <View style={styles.viewModal}>
-                        <View style={{ marginBottom: scaleHeight(margin.margin_30) }}>
-                            <Text tx={'order.textOrderCancel'}
-                                style={styles.textTitleModal} />
-                        </View>
-                        <InputSelect
-                            titleTx={'order.reasonForCancellation'}
-                            hintTx={'order.selectReason'}
-                            required={true}
-                            arrData={arrData}
-                            dataDefault={reason.label}
-                            onPressChoice={(item) => {
-                                setReason(item)
-                            }}
-                        />
-                        {reason.id === 4 ?
-                            <KeyboardAvoidingView
-                                behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
-                                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
-                                <Controller
-                                    control={control}
-                                    render={({ field: { onChange, value, onBlur } }) => (
-                                        <TextField
-                                            keyboardType={null}
-                                            labelTx={"order.reason"}
-                                            // label={"order.reason"}
-                                            style={[styles.viewTextField, {
-                                                height: scaleHeight(120)
-                                            }]}
-                                            inputStyle={{ marginVertical: scaleHeight(padding.padding_8) }}
-                                            value={value}
-                                            onBlur={onBlur}
-                                            onChangeText={(value) => onChange(value)}
-                                            onClearText={() => onChange('')}
-                                            RightIconClear={Images.icon_delete2}
-                                            multiline={true}
-                                            isImportant={true}
-                                            placeholderTx={'order.placeholderReason'}
-                                            error={errors?.reasonText?.message}
-                                        />)}
-                                    defaultValue={''}
-                                    name="reasonText"
-                                    rules={{ required: "Reason is required" }}
-                                />
-                            </KeyboardAvoidingView> : null}
-                        <View style={{
-                            flexDirection: 'row',
-                            marginTop: scaleHeight(margin.margin_30),
-                            justifyContent: 'space-between'
-                        }}>
-                            <Button style={styles.buttonCancelModal}
-                                tx={'common.cancel'}
-                                textStyle={{ color: colors.palette.navyBlue }}
-                                onPress={() => setShowCancelOrder(false)}
-                            />
-                            <Button
-                                onPress={handleSubmit(handleConfirm)}
-                                style={styles.buttonConfirmModal}
-                                tx={'order.confirm'}
-                            />
-                        </View>
-                    </View>
-                </Modal> */}
             </View>
         )
     }

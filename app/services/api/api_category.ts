@@ -68,16 +68,18 @@ export class CategoryApi {
   async getListCategoriesFilter(
     page: any,
     size: any,
+    search: any
   ): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.LIST_CATEGORY ,
+        ApiEndpoint.LIST_CATEGORY,
         {
           page: page,
           size: size,
+          search: search
         }
       );
       console.log("page", page);
@@ -143,23 +145,26 @@ export class CategoryApi {
       return { kind: "bad-data" };
     }
   }
-  async getCreateCategories(name: string, imageUrl: string): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+  async createCategories(name: string, imageUrl: string): Promise<any> {
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         ApiEndpoint.CREATE_CATEGORY,
-        { name, imageUrl }
+        { name, 
+          imageUrl,
+          activated: true
+         }
       );
-      Loading.hide();
+      // Loading.hide();
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide();
+      // Loading.hide();
       return { kind: "bad-data" };
     }
   }
@@ -172,9 +177,8 @@ export class CategoryApi {
       text: 'Loading...',
     });
     try {
-      const url = `${
-        ApiEndpoint.UPDATE_CATEGORY
-      }?productCategoryId=${encodeURIComponent(productCategoryId)}`;
+      const url = `${ApiEndpoint.UPDATE_CATEGORY
+        }?productCategoryId=${encodeURIComponent(productCategoryId)}`;
       const body = { name, imageUrl };
       const response: ApiResponse<any> = await this.api.apisauce.put(url, body);
       console.log("mmm", url);

@@ -8,7 +8,20 @@ import {
 } from 'react-native';
 import { Text } from '../../text/text';
 
-const CustomTabs = ({
+interface CustomTabsProps {
+  titles: string[];
+  selectedIndex?: number;
+  activeColor?: string;
+  inactiveColor?: string;
+  tintColor?: string;
+  inactiveTintColor?: string;
+  seperatorColor?: string;
+  style?: ViewStyle;
+  textStyle?: TextStyle;
+  onPress: (index: number) => void;
+}
+
+const CustomTabs: React.FC<CustomTabsProps> = ({
   titles,
   selectedIndex,
   activeColor,
@@ -20,7 +33,7 @@ const CustomTabs = ({
   textStyle,
   onPress,
 }) => {
-  const renderTabItem = (item, index) => {
+  const renderTabItem = (item: string, index: number) => {
     const onPressTab = () => onPress(index);
 
     const seperatorShouldHide =
@@ -31,7 +44,6 @@ const CustomTabs = ({
         <View
           style={[
             styles.seperator,
-            // eslint-disable-next-line react-native/no-inline-styles
             {
               backgroundColor: seperatorShouldHide
                 ? 'transparent'
@@ -57,8 +69,8 @@ const CustomTabs = ({
               },
             ]}
             tx={item}
-            numberOfLines={1}>
-          </Text>
+            numberOfLines={1}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -66,7 +78,7 @@ const CustomTabs = ({
 
   return (
     <View
-      style={[styles.tabContainer, {backgroundColor: inactiveColor}, style]}>
+      style={[styles.tabContainer, { backgroundColor: inactiveColor }, style]}>
       {titles.map(renderTabItem)}
     </View>
   );

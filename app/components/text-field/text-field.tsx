@@ -17,6 +17,7 @@ import {
 import {
   colors,
   fontSize,
+  margin,
   scaleHeight,
   scaleWidth,
   spacing,
@@ -234,54 +235,54 @@ export function TextField(props: TextFieldProps) {
                 style={
                   styleTextLabel == false
                     ? {
-                        // position: "absolute",
-                        left: isTL38
-                          ? scaleWidth(Platform.OS === "android" ? 50 : 55)
-                          : 0,
-                        top:
-                          !isFocused && !actualPlaceholder && value === ""
-                            ? scaleHeight(19)
-                            : scaleHeight(8),
-                        fontSize:
-                          !isFocused && !actualPlaceholder && value === ""
-                            ? fontSize.size16
-                            : fontSize.size12,
-                        fontWeight: "500",
-                        color: labelDolphin
-                          ? colors.palette.dolphin
-                          : !isFocused
+                      // position: "absolute",
+                      left: isTL38
+                        ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                        : 0,
+                      top:
+                        !isFocused && !actualPlaceholder && value === ""
+                          ? scaleHeight(19)
+                          : scaleHeight(8),
+                      fontSize:
+                        !isFocused && !actualPlaceholder && value === ""
+                          ? fontSize.size16
+                          : fontSize.size12,
+                      fontWeight: "500",
+                      color: labelDolphin
+                        ? colors.palette.dolphin
+                        : !isFocused
                           ? txColor
                           : colors.palette.dolphin,
-                        paddingLeft: scaleWidth(16),
-                        marginTop:
-                          isFocused && !actualPlaceholder && value === ""
-                            ? scaleHeight(0)
-                            : scaleHeight(0),
-                      }
+                      paddingLeft: scaleWidth(16),
+                      marginTop:
+                        isFocused && !actualPlaceholder && value === ""
+                          ? scaleHeight(0)
+                          : scaleHeight(0),
+                    }
                     : {
-                        left: isTL38
-                          ? scaleWidth(Platform.OS === "android" ? 50 : 55)
-                          : 0,
-                        top:
-                          !isFocused && !actualPlaceholder && value === ""
-                            ? scaleHeight(19)
-                            : scaleHeight(8),
-                        fontSize:
-                          !isFocused && !actualPlaceholder && value === ""
-                            ? fontSize.size13
-                            : fontSize.size12,
-                        fontWeight: "500",
-                        color: labelDolphin
-                          ? colors.palette.dolphin
-                          : !isFocused
+                      left: isTL38
+                        ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                        : 0,
+                      top:
+                        !isFocused && !actualPlaceholder && value === ""
+                          ? scaleHeight(19)
+                          : scaleHeight(8),
+                      fontSize:
+                        !isFocused && !actualPlaceholder && value === ""
+                          ? fontSize.size13
+                          : fontSize.size12,
+                      fontWeight: "500",
+                      color: labelDolphin
+                        ? colors.palette.dolphin
+                        : !isFocused
                           ? txColor
                           : colors.palette.dolphin,
-                        paddingLeft: scaleWidth(16),
-                        marginTop:
-                          isFocused && !actualPlaceholder && value === ""
-                            ? scaleHeight(0)
-                            : scaleHeight(0),
-                      }
+                      paddingLeft: scaleWidth(16),
+                      marginTop:
+                        isFocused && !actualPlaceholder && value === ""
+                          ? scaleHeight(0)
+                          : scaleHeight(0),
+                    }
                 }
               />
             ) : null}
@@ -314,6 +315,8 @@ export function TextField(props: TextFieldProps) {
           </View>
           <View
             style={{
+
+              marginTop: (Platform.OS === 'ios' ? margin.margin_10 : null),
               flexDirection: "row",
             }}>
             <TextInput

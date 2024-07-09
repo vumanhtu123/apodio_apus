@@ -155,4 +155,43 @@ export  const Styles = StyleSheet.create({
         justifyContent:'center',
         flexDirection:'row' 
     },
+    taskBar: {
+        flex: 1,
+        alignItems: 'center',
+        borderRadius: scaleWidth(8),
+        padding: scaleWidth(4),
+    },
+    styleBody: {
+        paddingHorizontal: scaleWidth(16),
+        paddingVertical:scaleHeight(20)
+    },
+    styleHeaderCard: {
+    
+        paddingHorizontal: scaleWidth(16),
+        paddingVertical:scaleHeight(10),
+        borderRadius: scaleWidth(8), 
+        backgroundColor:'#FFF'
+    }, 
+    styleBtnPay: {
+        paddingHorizontal: scaleWidth(8),
+        paddingVertical:scaleWidth(6),
+        borderRadius: scaleWidth(8),
+        backgroundColor: colors.palette.navyBlue
+    },
+    styleLine: { 
+        height: 1, 
+        backgroundColor: '#F6F7FB', 
+        marginVertical: scaleWidth(10) 
+    }, 
+    fontSize10:{ 
+        fontSize: fontSize.size10, 
+        color: colors.palette.dolphin 
+    },
+    bodyItemNCC: {
+        borderRadius: scaleWidth(8),
+        marginVertical: scaleWidth(5),
+        backgroundColor: '#FFF',
+        paddingVertical: scaleWidth(11),
+    }
+    
 })

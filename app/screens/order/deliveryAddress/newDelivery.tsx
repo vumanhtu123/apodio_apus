@@ -29,12 +29,12 @@ import {
 } from "../../../components/dialog-notification";
 import { useStores } from "../../../models";
 import { translate } from "../../../i18n";
-import { OrderCityResult } from "../../../models/order-store/order-address-model";
-import { checkPhoneNumber, formatPhoneNumber, phoneNumberPattern } from "../../../utils/validate";
+import { checkPhoneNumber, phoneNumberPattern } from "../../../utils/validate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
 
 export const NewDelivery: FC = observer(function NewDelivery() {
+  
   const navigation = useNavigation();
   const paddingTop = useSafeAreaInsets().top;
   const heightScroll =
@@ -50,7 +50,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   const [city, setCity] = useState({ id: 0, label: "" });
   const [district, setDistrict] = useState({ id: 0, label: "" });
   const [wards, setWards] = useState({ id: 0, label: "" });
-  const [valueSwitch, setValueSwitch] = useState(false);
   const [page, setPage] = useState(0);
   const [pageDistrict, setPageDistrict] = useState(0);
   const [pageWards, setPageWards] = useState(0);
@@ -58,9 +57,8 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   const [searchCity, setSearchCity] = useState("");
   const [searchDistrict, setSearchDistrict] = useState("");
   const [searchWards, setSearchWards] = useState("");
-
-  // const dataEdit: Root1 = route?.params?.dataEdit 
-  const { screen, dataEdit }: any = route?.params
+  const { screen, dataEdit, toScreen }: any = route?.params
+  const [valueSwitch, setValueSwitch] = useState(toScreen == 'new-order' ? true : false);
 
   const { control, reset, handleSubmit, setValue, formState: { errors }, setError } = useForm({
     defaultValues: { phone: '', address: '' },

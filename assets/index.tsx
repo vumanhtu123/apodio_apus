@@ -234,6 +234,9 @@ import ic_arrow_down from "./Images/ArrowDown.svg";
 import ic_delete_calculator from "./Images/ic_delete_calculator.svg";
 import ic_divide from "./Images/Divide.svg";
 
+import ic_MinusCircleGray from "./Images/ic_MinusCircleGray";
+import ic_MinusCircleRed from "./Images/ic_MinusCirleRed.svg";
+import ic_ArrowsLeftRight from "./Images/ic_ArrowsLeftRight.svg";
 export const Images = {
   icon_test: _test,
   icon_English: _test2,
@@ -462,4 +465,7 @@ export const Images = {
   ic_arrow_down: ic_arrow_down,
   ic_delete_calculator: ic_delete_calculator,
   ic_divide: ic_divide,
+  ic_MinusCircleGray: ic_MinusCircleGray,
+  ic_MinusCircleRed: ic_MinusCircleRed,
+  ic_ArrowsLeftRight: ic_ArrowsLeftRight,
 };

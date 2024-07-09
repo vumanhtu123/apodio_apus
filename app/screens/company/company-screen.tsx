@@ -54,7 +54,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
     const getTokenCompany = async (refreshToken: string) => {
       console.log("doan dccc ", refreshToken);
       await authenticationStore.getRefreshToken(refreshToken).then((result) => {
-        console.log("getRefreshToken", result);
+        console.log("getRefreshToken--------", result);
         // setData(result.data);
       });
     };
@@ -82,8 +82,6 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
         const refreshToken = await getRefreshToken();
         await getTokenCompany(refreshToken);
         auth.changeLoginStatus();
-
-        // props.navigation.navigate("mainBottom");
       } catch (error) {
         console.error("Error getting new token:", error);
       }
