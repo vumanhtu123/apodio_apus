@@ -80,8 +80,8 @@ const RenderOrderItem = ({
             <ImageBackground
               style={{ width: scaleWidth(107), height: scaleHeight(50) }}
               imageStyle={{
-                borderTopLeftRadius: 12,
-                borderTopRightRadius: 12,
+                borderTopLeftRadius: 8,
+                borderTopRightRadius: 8,
               }}
               source={require("../../../../assets/Images/no_images.png")}>
               {viewProduct === "VIEW_PRODUCT" ? null : (
@@ -107,7 +107,7 @@ const RenderOrderItem = ({
           <View
             style={{
               alignItems:
-                viewProduct === "VIEW_PRODUCT" ? "center" : "flex-start",
+                viewProduct === "VIEW_PRODUCT" ? "flex-start" : "flex-start",
               paddingHorizontal: scaleWidth(8),
               marginBottom: scaleHeight(8),
               width: scaleWidth(107),
@@ -511,7 +511,7 @@ const stylesItem = StyleSheet.create({
   },
   item: {
     backgroundColor: "white",
-    borderRadius: 10,
+    borderRadius: 8,
     marginBottom: scaleHeight(10),
   },
   title: {

@@ -19,7 +19,7 @@ import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStores } from '../../../models';
-import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency, formatVND } from '../../../utils/validate';
+import { calculateTotalDiscount, calculateTotalDiscountPrice, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency, formatVND } from '../../../utils/validate';
 import ProductAttribute from '../../product/component/productAttribute';
 import FastImage from 'react-native-fast-image';
 import RNFS from 'react-native-fs';
@@ -67,26 +67,26 @@ export const PrintInvoiceScreen: FC = observer(
         };
 
 
-          const downloadAndPrintFile = async (url: any, fileType: any) => {      
+        const downloadAndPrintFile = async (url: any, fileType: any) => {
             const extension = fileType === 'pdf' ? 'pdf' : 'jpg'; // Adjust this based on the expected file type
-            const localFilePath = `${RNFS.DocumentDirectoryPath}/downloaded_file.${extension}`;    
-            
+            const localFilePath = `${RNFS.DocumentDirectoryPath}/downloaded_file.${extension}`;
+
             try {
-              const downloadResult = await RNFS.downloadFile({
-                fromUrl: url,
-                toFile: localFilePath,
-              }).promise;
-          
-              if (downloadResult.statusCode === 200) {
-                console.log(`${fileType} downloaded to:`, localFilePath);
-                PrintManager.print(localFilePath, fileType);
-              } else {
-                console.error(`${fileType} download failed:`, downloadResult);
-              }
+                const downloadResult = await RNFS.downloadFile({
+                    fromUrl: url,
+                    toFile: localFilePath,
+                }).promise;
+
+                if (downloadResult.statusCode === 200) {
+                    console.log(`${fileType} downloaded to:`, localFilePath);
+                    PrintManager.print(localFilePath, fileType);
+                } else {
+                    console.error(`${fileType} download failed:`, downloadResult);
+                }
             } catch (error) {
-              console.error(`Error downloading ${fileType}:`, error);
+                console.error(`Error downloading ${fileType}:`, error);
             }
-          };
+        };
 
         function groupTaxValues(dataTax: any[] | undefined) {
             if (dataTax === undefined) {
@@ -117,24 +117,28 @@ export const PrintInvoiceScreen: FC = observer(
             handleGetPrintInvoice()
             // handleGetInfoCompany()
         }, []);
-        function RenderItem({ item }: any) {
-            return (
-                <View style={styles.row}>
-                    <View style={{ flexDirection: 'row', marginVertical: scaleHeight(15) }}>
-                        <View style={styles.cell}>
-                            <Text style={styles.sanPhamText}>{item.item?.product?.name}</Text>
-                        </View>
-                        <Text style={styles.cellUnitPrice}>{formatVND(formatCurrency(commasToDots(item.item?.unitPrice)))}</Text>
-                        <Text style={styles.cellAmount}>
-                            {item.item?.quantity} <Text style={{ fontSize: fontSize.size12 }}>{item?.item?.uom?.name}</Text>
-                        </Text>
-                        <Text style={styles.cellMoney}>
-                            {formatVND(formatCurrency(commasToDots(calculateTotalUnitPrice(item.item?.unitPrice, item.item?.quantity))))}
-                        </Text>
-                    </View>
-                </View>
-            );
-        }
+        // function RenderItem({ item }: any) {
+        //     return (
+        //         <View style={styles.row}>
+        //             <View style={{ flexDirection: 'row', marginVertical: scaleHeight(15) }}>
+        //                 <View style={styles.cell}>
+        //                     <Text style={styles.cellName}>{item.item?.product?.name}</Text>
+        //                 </View>
+        //                 <Text style={styles.cellUnitPrice}>{formatCurrency(commasToDots(item.item?.unitPrice))}</Text>
+        //                 <Text style={styles.cellAmount}>
+        //                     {item.item?.quantity} <Text style={{ fontSize: fontSize.size12 }}>{item?.item?.uom?.name}</Text>
+        //                 </Text>
+        //                 <Text style={styles.cellDiscount}>
+        //                     {formatCurrency(commasToDots(calculateTotalDiscountPrice(calculateTotalUnitPrice(item.item?.unitPrice, item.item?.quantity), item.item?.discount)))}
+        //                 </Text>
+        //                 <Text style={styles.cellMoney}>
+        //                     {formatCurrency(commasToDots(item.item?.amountUntaxed))}
+        //                     {/* {formatCurrency(10000000000000)} */}
+        //                 </Text>
+        //             </View>
+        //         </View>
+        //     );
+        // }
 
         // );
         const HeaderList = () => (
@@ -143,6 +147,7 @@ export const PrintInvoiceScreen: FC = observer(
                     <Text tx='printInvoiceScreen.product' style={styles.cellProductHeader} />
                     <Text tx='printInvoiceScreen.unitPrice' style={styles.cellUnitPriceHeader} />
                     <Text tx='printInvoiceScreen.quality' style={styles.cellAmountHeader} />
+                    <Text tx='printInvoiceScreen.discount' style={styles.cellDiscountPriceHeader} />
                     <Text tx='printInvoiceScreen.amountPrice' style={styles.cellMoneyHeader} />
                 </View>
             </View>
@@ -188,8 +193,8 @@ export const PrintInvoiceScreen: FC = observer(
                                 <Text style={styles.companyName}>{vendorStore?.companyInfo?.name}</Text>
                                 {/* <Text style={styles.textInfo} >www.apodio.com.vn</Text> */}
                                 <Text style={styles.textInfo}>{vendorStore?.companyInfo?.phone}</Text>
-                                <Text style={styles.textInfo}>
-                                    {vendorStore?.companyInfo?.address ? vendorStore?.companyInfo?.address + " " : ""}
+                                <Text style={[styles.textInfo, {}]} numberOfLines={2}>
+                                    {vendorStore?.companyInfo?.address ? vendorStore?.companyInfo?.address + ", " : ""}
                                     {vendorStore?.companyInfo?.ward ? vendorStore?.companyInfo?.ward + ", " : ""}
                                     {vendorStore?.companyInfo?.district ? vendorStore?.companyInfo?.district + ", " : ""}
                                     {vendorStore?.companyInfo?.city ? vendorStore?.companyInfo?.city : ""}
@@ -209,14 +214,13 @@ export const PrintInvoiceScreen: FC = observer(
                                 <Text tx='printInvoiceScreen.name' style={styles.companyName} />
                                 <Text style={styles.textInfo}> {data.partner?.name}</Text>
                             </View>
-                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12) }}>
+                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), maxWidth: scaleWidth(300) }}>
                                 <Text tx='printInvoiceScreen.address' style={styles.companyName} />
                                 <Text style={styles.textInfo}>
-                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + " " : ""}
+                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + ", " : ""}
                                     {data.deliveryAddress?.ward ? data.deliveryAddress.ward + ", " : ""}
                                     {data.deliveryAddress?.district ? data.deliveryAddress.district + ", " : ""}
                                     {data.deliveryAddress?.city ? data.deliveryAddress.city : ""}
-                                    {/* { ` ${data.deliveryAddress?.address}, ${data.deliveryAddress?.wardName}, ${data.deliveryAddress?.districtName}, ${data.deliveryAddress?.cityName}`} */}
                                 </Text>
                             </View>
                             <View style={{ flexDirection: 'row' }}>
@@ -225,32 +229,99 @@ export const PrintInvoiceScreen: FC = observer(
                             </View>
                         </View>
                         <View style={styles.viewLine} />
-                        <View>
-                            <HeaderList />
-                            <FlatList
-                                data={data.invoiceLines}
-                                renderItem={item => <RenderItem item={item} />}
-                                scrollEnabled={false}
-                                // extraData={data.invoiceLines}
-                                keyExtractor={(item, index) => index.toString()}
-                            />
-                        </View>
-                        <View style={{ marginTop: scaleHeight(15) }}>
-                            {/* {dataPrice.map((item, index) => (
-                                <View key={index} style={styles.rowPrice}>
-                                    <Text style={styles.label}>{item.label}</Text>
-                                    <Text style={[styles.value, item.highlight && styles.highlight]}>
-                                        {item.value.toLocaleString()}
-                                    </Text>
+                        {/* <ScrollView horizontal>
+                            <View>
+                                <HeaderList />
+                                <FlatList
+                                    data={data.invoiceLines}
+                                    renderItem={item => <RenderItem item={item} />}
+                                    scrollEnabled={false}
+                                    // extraData={data.invoiceLines}
+                                    keyExtractor={(item, index) => index.toString()}
+                                />
+
+                            </View>
+                        </ScrollView> */}
+                        <ScrollView horizontal>
+                            <View style={styles.row}>
+                                <View style={styles.headerRow}>
+                                    <View style={{ marginBottom: scaleHeight(15) }}>
+                                        <Text tx='printInvoiceScreen.product' style={styles.cellProductHeader} />
+                                    </View>
                                 </View>
-                            ))} */}
+                                <View style={styles.cell}>
+                                    {data.invoiceLines?.map((item: any) => (
+                                        <Text style={styles.cellName}>{item.product?.name}</Text>
+                                    ))}
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.headerRow}>
+                                    <View style={{ marginBottom: scaleHeight(15) }}>
+                                        <Text tx='printInvoiceScreen.unitPrice' style={styles.cellUnitPriceHeader} />
+                                    </View>
+                                </View>
+                                <View style={styles.cell}>
+                                    {data.invoiceLines?.map((item: any) => (
+                                        <Text style={styles.cellUnitPrice}>{formatCurrency(commasToDots(item.unitPrice))}</Text>
+                                    ))}
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.headerRow}>
+
+                                    <View style={{ marginBottom: scaleHeight(15) }}>
+                                        <Text tx='printInvoiceScreen.quality' style={styles.cellAmountHeader} />
+                                    </View>
+                                </View>
+                                <View style={styles.cell}>
+
+                                    {data.invoiceLines?.map((item: any) => (
+                                        <Text style={styles.cellAmount}>
+                                            {item.quantity} <Text style={{ fontSize: fontSize.size12 }}>{item?.uom?.name}</Text>
+                                        </Text>
+                                    ))}
+                                </View>
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.headerRow}>
+
+                                    <View style={{ marginBottom: scaleHeight(15) }}>
+                                        <Text tx='printInvoiceScreen.discount' style={styles.cellDiscountPriceHeader} />
+                                    </View>
+                                </View>
+                                <View style={styles.cell}>
+
+                                    {data.invoiceLines?.map((item: any) => (
+                                        <Text style={styles.cellDiscount}>
+                                            {formatCurrency(commasToDots(calculateTotalDiscountPrice(calculateTotalUnitPrice(item.unitPrice, item.quantity), item.discount)))}
+                                        </Text>
+                                    ))}
+                                </View>
+
+                            </View>
+                            <View style={styles.row}>
+                                <View style={styles.headerRow}>
+
+                                    <View style={{ marginBottom: scaleHeight(15) }}>
+                                        <Text tx='printInvoiceScreen.amountPrice' style={styles.cellMoneyHeader} />
+                                    </View>
+                                </View>
+                                <View style={styles.cell}>
+                                    {data.invoiceLines?.map((item: any) => (
+                                        <Text style={styles.cellMoney} >
+                                            {formatCurrency(commasToDots(item.amountUntaxed))}
+                                            {/* {formatCurrency(10000000000000000000)} */}
+                                        </Text>
+                                    ))}
+                                </View>
+
+                            </View>
+                        </ScrollView>
+                        <View style={{ marginTop: scaleHeight(15) }}>
                             <ProductAttribute
                                 labelTx="printInvoiceScreen.amountUntaxed"
-                                value={formatVND(formatCurrency(commasToDots(calculateTotalPrice(data.invoiceLines))))}
-                            />
-                            <ProductAttribute
-                                labelTx="dashboard.promotions"
-                                value={formatVND(formatCurrency(commasToDots(calculateTotalDiscount(data.invoiceLines))))}
+                                value={formatVND(formatCurrency(commasToDots(data.amountUntaxed)))}
                             />
                             {groupTaxValues(data.computeTaxInfo?.taxLines).map((item: any) => (
 
@@ -260,10 +331,6 @@ export const PrintInvoiceScreen: FC = observer(
                                 />
 
                             ))}
-                            {/* <ProductAttribute
-                                labelTx="printInvoiceScreen.amountUntaxed"
-                                value={formatCurrency(data.amountUntaxed)}
-                            /> */}
                             <ProductAttribute
                                 labelTx="printInvoiceScreen.totalPrice"
                                 value={formatVND(formatCurrency(commasToDots(data.amountTotal)))}
@@ -275,10 +342,10 @@ export const PrintInvoiceScreen: FC = observer(
                     tx={"printInvoiceScreen.printInvoice"}
                     style={styles.viewButton}
                     textStyle={styles.textButton}
-                    
+
                     onPress={() => {
                         console.log('firstzzz', dataPrintInvoice?.url)
-                        
+
                         downloadAndPrintFile(dataPrintInvoice?.url, 'pdf')
                         // downloadAndPrintFile(
                         //     'https://static.remove.bg/sample-gallery/graphics/bird-thumbnail.jpg',

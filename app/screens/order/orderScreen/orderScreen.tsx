@@ -39,6 +39,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useStores } from '../../../models';
 import { formatCurrency } from '../../../utils/validate';
 import { formatDateTime } from '../../../utils/formatDate';
+import { Calendar } from "react-native-calendars";
 
 export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
   function OrderScreen(props) {
@@ -75,6 +76,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       setOpenSearch(!openSearch);
     };
     const [searchValue, setSearchValue] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const handleSearchValueChange = (text: string) => {
       const newValue = text !== null ? text.toString() : "";
       setSearchValue(newValue);
@@ -98,6 +100,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     { status: 'DONE', textStatus: 'Hoàn thành' },
     { status: 'CANCEL', textStatus: 'Hủy đơn' },
     ]
+    const flatListRef = useRef(null);
     const [page, setPage] = useState(0);
     useEffect(() => {
       getListOrder()
@@ -106,7 +109,11 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       console.log("---------useEffect---------reload------------------");
       const unsubscribe = navigation.addListener('focus', () => {
         if (orderStore.isReload === true) {
+          if (flatListRef.current) {
+            flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+          }
           console.log("---------useEffect---------reload--------------xcxcx----");
+          // setArrData([])
           getListOrder()
           orderStore.setIsReload(false)
         }
@@ -114,12 +121,18 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       return unsubscribe;
     }, [navigation]);
     useEffect(() => {
+      if (flatListRef.current) {
+        flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+      }
+    }, [selectedStatus, markedDatesS, navigation])
+    useEffect(() => {
       getListOrder(searchValue)
     }, [selectedStatus, page, markedDatesS, markedDatesE])
     // useEffect (()=>{
     //   console.log('firstzzz' , page)
     // },[page])
     const getListOrder = async (searchValue?: any,) => {
+      setIsLoading(true);
       try {
         console.log('markedDatesSsssss', markedDatesS)
         console.log('markedDatesEzzzssss', markedDatesE)
@@ -154,6 +167,8 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
         }
       } catch (error) {
         console.error("Error fetching order:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     const toggleModalDate = () => {
@@ -196,12 +211,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       setSelectedStatus(status);
       setPage(0)
     };
-    const flatListRef = useRef(null);
-    useEffect(() => {
-      if (flatListRef.current) {
-        flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
-      }
-    }, [selectedStatus , markedDatesS ])
+
     const handleEndReached = () => {
       if (!isRefreshing && page < totalPages - 1) {
         setPage((prevPage) => prevPage + 1);
@@ -323,6 +333,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
                           ? colors.palette.mintCream
                           : "",
                 justifyContent: "center",
+                
               }}
               styleTextStatus={{
                 color:
@@ -383,6 +394,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           isOneDate={false}
           toggleModalDate={toggleModalDate}
         />
+        
         <TouchableOpacity
           onPress={() => {
             orderStore.reset();
