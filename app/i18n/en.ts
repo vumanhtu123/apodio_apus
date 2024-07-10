@@ -776,6 +776,7 @@ const en = {
     header: "Chọn thuộc tính",
     addAttribute: "Tạo nhóm thuộc tính mới",
     selectedValue: "Chọn giá trị",
+    allowsCreatingAttribute : "Cho phép tạo phân loại"
   },
   editAttribute: {
     headerText: "Sửa thuộc tính",

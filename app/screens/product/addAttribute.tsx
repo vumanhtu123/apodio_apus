@@ -11,7 +11,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { Button, Header, Text } from "../../components";
+import { Button, Header, Switch, Text } from "../../components";
 import { Images } from "../../../assets";
 import {
     useFocusEffect,
@@ -34,6 +34,7 @@ import { translate } from "../../i18n/";
 import { AttributeResult } from "../../models/attribute-store/list-attribute-model";
 import { AttributeDataResult } from "../../models/attribute-store/data-attribute-model";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import { el } from "date-fns/locale";
 
 export const AddAttribute: FC = observer(function AddAttribute(props) {
     const navigation = useNavigation();
@@ -41,7 +42,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
     const route = useRoute();
     const idNewAttribute = route?.params;
     const editScreen = route?.params;
-
+    const [attrDataSelected, setAttrDataSelected] = useState<{}>();
     const [attributeData, setAttributeData] = useState<{}[]>([]);
     const [selectedGroup, setSelectedGroup] = useState<{}[]>([]);
     const [selectedItems, setSelectedItems] = useState([]);
@@ -56,6 +57,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
     const [page, setPage] = useState(0);
     const [dataEditDropdown, setDataEditDropdown] = useState([]);
     const [dropdownSelected, setDropdownSelected] = useState([]);
+    const [valueSwitch, setValueSwitch] = useState(true);
     const { attributeStore } = useStores();
 
     const getListAttribute = async () => {
@@ -107,6 +109,8 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                     "getListDataAttribute---------------------",
                     JSON.stringify(response.response.data)
                 );
+                
+                //setAttrDataSelected(response.response.data)
                 const newArr = response.response.data.map((items) => {
                     items.attributeOutputList?.map((item) => {
                         if (item.displayType === "TEXTFIELD") {
@@ -124,6 +128,8 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
             console.error("Error fetching categories:", error);
         }
     };
+
+    
 
     useEffect(() => {
         getListAttribute();
@@ -265,11 +271,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         return a;
                     });
                     const newArr3 = newArr2.flat();
-                    navigation.navigate("ProductEditScreen" as never, {
-                        check: true,
-                        attributeArr: selectedItems,
-                        dropdownSelected: newArr3,
-                    });
+                    navigation.navigate("ProductEditScreen" as never, {check: true,attributeArr: selectedItems,dropdownSelected: newArr3,});
                 } else {
                     const newArr = selectedItems.map((item) => {
                         return item.idGroup;
@@ -280,12 +282,23 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         return a;
                     });
                     const newArr3 = newArr2.flat();
-                    navigation.navigate("ProductCreateScreen" as never, {
-                        check: true,
-                        attributeArr: selectedItems,
-                        dropdownSelected: newArr3,
-                        resetData: false,
-                    });
+                   
+                    if(!valueSwitch){
+                        // Tạo một tập hợp các cặp id và productAttributeId trong mảng con để dễ dàng kiểm tra
+                        let childSet = new Set(selectedItems.map(item => `${item.id}-${item.productAttributeId}`));
+                        // Duyệt qua từng mục trong mảng cha và xóa các mục không có trong mảng con
+                        const newArrSelectedGroup = selectedGroup.slice();
+                        newArrSelectedGroup.forEach(parent => {
+                        parent.attributeOutputList.forEach(attributeOutput => {
+                            attributeOutput.productAttributeValue = attributeOutput.productAttributeValue.filter(attributeValue => childSet.has(`${attributeValue.id}-${attributeValue.productAttributeId}`));
+                        });
+                        });
+                        console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
+                        navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch});
+                    }else {
+                        navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false,});
+                    }
+                    
                 }
             }
         }
@@ -319,9 +332,11 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
         const a = selectedItems.filter(
             (item) => item.productAttributeId !== idAttributeModal
         );
+        
         setSelectedItems(a.concat(arrSelect));
         setShowModal(false);
         setArrSelect([]);
+        console.log('----a-----', JSON.stringify(selectedItems))
     };
 
     const renderItem = ({ item }: any) => {
@@ -622,6 +637,19 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                             }}
                         />
                     </TouchableOpacity>
+                    <View style={styles.viewLineSwitchUnit}>
+                        <Switch
+                            value={valueSwitch}
+                            onToggle={() => {
+                                setValueSwitch(!valueSwitch);
+                            }}
+                            />
+                            <Text
+                            tx={"addAttribute.allowsCreatingAttribute"}
+                            style={styles.textWeight400Dolphin}
+                        />
+                        
+                    </View>
                 </ScrollView>
             </View>
             <View style={styles.viewGroupButton}>
@@ -781,4 +809,17 @@ const styles = StyleSheet.create({
         fontSize: fontSize.size10,
         color: colors.palette.dolphin,
     },
+    viewLineSwitchUnit: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: scaleHeight(8),
+        marginBottom: scaleHeight(15),
+      },
+      textWeight400Dolphin: {
+        fontSize: fontSize.size13,
+        fontWeight: "400",
+        marginLeft: scaleWidth(8),
+        
+        color: 'black',
+      },
 });
