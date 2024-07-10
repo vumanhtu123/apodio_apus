@@ -423,6 +423,9 @@ export function getDateToday() {
 }
 
 export function formatStringToFloat(input: string) {
+  if(input == undefined){
+    return
+  }else{
   // Loại bỏ dấu chấm
   let withoutDots = input.replace(/\./g, '');
 
@@ -433,6 +436,7 @@ export function formatStringToFloat(input: string) {
   let result = parseFloat(formattedString);
 
   return result;
+  }
 }
 
 export function getDateTodayOneDate() {

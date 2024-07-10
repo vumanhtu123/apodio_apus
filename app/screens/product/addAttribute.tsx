@@ -1,5 +1,5 @@
 import { observer, useLocalStore } from "mobx-react-lite";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import {
     Alert,
     Dimensions,
@@ -54,11 +54,13 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
     const [arrSelect, setArrSelect] = useState([]);
     const [idAttributeModal, setIdAttributeModal] = useState("");
     const [inputText, setInputText] = useState<{}[]>([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [dataEditDropdown, setDataEditDropdown] = useState([]);
     const [dropdownSelected, setDropdownSelected] = useState([]);
     const [valueSwitch, setValueSwitch] = useState(true);
     const { attributeStore } = useStores();
+    const render = useRef(0)
+    console.log('re-render', render.current++)
 
     const getListAttribute = async () => {
         try {
