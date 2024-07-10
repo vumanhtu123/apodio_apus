@@ -1,4 +1,3 @@
-
 const en = {
   common: {
     ok: "OK",
@@ -40,7 +39,7 @@ const en = {
     change_city: "Vui lòng chọn Tỉnh/Thành phố",
     change_district: "Vui lòng chọn Quận/Huyện",
     change_payment: "Vui lòng chọn phuơng thức thanh toán trước",
-    change_weight: "Vui lòng nhập đủ thông tin trước khi thêm dòng" 
+    change_weight: "Vui lòng nhập đủ thông tin trước khi thêm dòng",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -615,12 +614,12 @@ const en = {
     paymentTerm2: "Hạn thanh toán",
     exChange: "Trao đổi",
     detailDebtSupplier: "Chi tiết công nợ NCC",
-    detailDebt: 'Chi tiết công nợ',
+    detailDebt: "Chi tiết công nợ",
     like: "Thích",
     comment: "Bình luận",
     writeCommentHere: "Viết bình luận của bạn tại đây",
     pay: "Thanh toán nợ",
-    pay2: 'Thanh toán',
+    pay2: "Thanh toán",
     paymentAmount: "Số tiền thanh toán",
     amount: "Tiền mặt",
     payments: "Hình thức thanh toán",
@@ -633,8 +632,8 @@ const en = {
     transaction: "Giao dịch",
     debtIncurred: "Phát sinh nợ",
     ariseYes: "Phát sinh có",
-    generateDebtForOrders :"Phát sinh công nợ \ncho đơn hàng",
-    payDebt: 'Thanh toán công nợ',
+    generateDebtForOrders: "Phát sinh công nợ \ncho đơn hàng",
+    payDebt: "Thanh toán công nợ",
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -694,7 +693,7 @@ const en = {
     weightConversion: "Tải trọng theo đơn vị quy đổi",
     addLine: "Thêm dòng",
     weightExchange: "Tải trọng theo đơn vị quy đổi",
-    editWeight: 'Chỉnh sửa tải trọng',
+    editWeight: "Chỉnh sửa tải trọng",
     resetDefault: "Reset về mặc định",
   },
   detailScreen: {
@@ -712,8 +711,8 @@ const en = {
     properties: "Thuộc tính chung",
     detailProperty: "Xem chi tiết thuộc tính",
     orders: "Đơn hàng",
-    weight : 'Trọng lượng',
-    volume : 'Thể tích'
+    weight: "Trọng lượng",
+    volume: "Thể tích",
   },
   createProductScreen: {
     classify: "Phân loại",
@@ -740,7 +739,7 @@ const en = {
     description: "Mô tả",
     addDescription: "Thêm mô tả",
     productClassification: "Phân loại sản phẩm",
-    volume : 'Thể tích',
+    volume: "Thể tích",
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
@@ -778,7 +777,7 @@ const en = {
     header: "Chọn thuộc tính",
     addAttribute: "Tạo nhóm thuộc tính mới",
     selectedValue: "Chọn giá trị",
-    allowsCreatingAttribute : "Cho phép tạo phân loại"
+    allowsCreatingAttribute: "Cho phép tạo phân loại",
   },
   editAttribute: {
     headerText: "Sửa thuộc tính",
@@ -981,9 +980,9 @@ const en = {
     toInvoice: "Chờ thanh toán",
     partialInvoice: "Thanh toán một phần",
     invoiced: "Đã thanh toán",
-    outstanding : 'Còn nợ',
-    cash : 'Tiền mặt',
-    debt : 'Công nợ'
+    outstanding: "Còn nợ",
+    cash: "Tiền mặt",
+    debt: "Công nợ",
   },
   selectClient: {
     selectClient: "Chọn khách hàng",
@@ -1052,7 +1051,8 @@ const en = {
     bank: "Ngân hàng",
     sourceOfMoneyReceived: "Nguồn tiền nhận",
     selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
-  }
+    funds: "Nguồn tiền",
+  },
 
   // @demo remove-block-end
 };

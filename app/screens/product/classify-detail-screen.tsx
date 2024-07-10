@@ -448,11 +448,11 @@ export const ClassifyDetailScreen: FC = () => {
                   </Text>
                   <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
                     <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
-                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.weight} kg</Text>
+                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.weight} kg</Text>
                   </View>
                   <View style={{ flex: 3, flexDirection: 'row' }}>
                     <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
-                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.volume} m3</Text>
+                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.volume} m3</Text>
                   </View>
                 </View>
                 {/* )
@@ -479,12 +479,12 @@ export const ClassifyDetailScreen: FC = () => {
 
                         <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
                           <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
+                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.weight} kg</Text>
                         </View>
 
                         <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
                           <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
+                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
                         </View>
 
                       </View>

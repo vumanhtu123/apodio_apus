@@ -197,7 +197,7 @@ export const ProductStoreModel = types
       const product = new ProductApi(self.environment.api);
       const result = yield product.usingProductCheck(id);
 
-      console.log("tuvm product");
+      console.log("tuvm product=====", result);
       if (result.kind === "ok") {
         console.log("post-product-Success : ", result);
         return result;

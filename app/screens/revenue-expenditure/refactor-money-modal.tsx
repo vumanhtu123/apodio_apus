@@ -143,7 +143,7 @@ export const RefactorMoneyModal = (props: Input) => {
                 borderColor: colors.palette.navyBlue,
               }}
               RightIconClear={null}
-              value={selectedValue.join(" ")}
+              value={selectedValue.join("")}
               onBlur={() => onBlur()}
               error={""}
               onClearText={() => onChange("")}
@@ -221,6 +221,9 @@ export const RefactorMoneyModal = (props: Input) => {
           }}
           deleteItem={() => {
             deleteItem();
+          }}
+          selectedOK={() => {
+            console.log("OKK");
           }}
         />
       </View>

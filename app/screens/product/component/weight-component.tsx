@@ -38,10 +38,10 @@ interface ItemOriginal {
 
 export default function ItemWeight(props: ItemWeight) {
   const {vendorStore} = useStores()
-  const { control, setValue, setError, getFieldState, getValues } = useFormContext()
+  const { control, setValue, setError, getFieldState, getValues, watch } = useFormContext()
   const {
     handleSubmit,
-    watch,
+    // watch,
     // getValues,
     formState: { errors },
   } = useForm({
@@ -56,11 +56,22 @@ export default function ItemWeight(props: ItemWeight) {
     return { ...item, label: item.unitName }
   }))
   useEffect(() => {
-    const newArr = props.dataUnitGroup?.filter((item1: any) => !props.dataDefault?.weight?.some((item2: any) => item2.unit.id === item1.id));
-    setData(newArr.map((item: any) => {
-      return { ...item, label: item.unitName }
-    }))
+    if (props.dataDefault !== undefined) {
+      const newArr = props.dataUnitGroup?.filter((item1: any) => !props.dataDefault?.weight?.some((item2: any) => item2.unit.id === item1.id));
+      setData(newArr?.map((item: any) => {
+        return { ...item, label: item.unitName }
+      }))
+    } else {
+      const newArr = props.dataUnitGroup?.filter((item1: any) => !fields.some((item2: any) => item2.unit.id === item1.id));
+      setData(newArr?.map((item: any) => {
+        return { ...item, label: item.unitName }
+      }))
+    }
   }, [props.dataUnitGroup])
+
+  // useEffect(()=>{
+  //   if{}
+  // }, [watch('volumeOriginal'), watch('weightOriginal')])
 
   const deepEqual = (obj1, obj2) => {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
@@ -76,11 +87,12 @@ export default function ItemWeight(props: ItemWeight) {
     const newArr = data.map((item: any) => {
       return item.unit
     })
-    const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
+     const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
     const newArr2 = filteredData.concat(itemValue)
     const unitGroupData = props.dataUnitGroup?.map((item: any) => {
       return { ...item, label: item.unitName }
     })
+    console.log(unitGroupData)
     const newArr3 = unitGroupData.filter(
       (itemA) => !newArr2.some((itemB: any) => deepEqual(itemA, itemB))
     );
@@ -136,7 +148,8 @@ export default function ItemWeight(props: ItemWeight) {
               fontWeight: "400",
             }}
             tx="productScreen.weightConversion"></Text>
-          {data ? (data.length !== 0 ? <TouchableOpacity
+          {watch('weightOriginal') === "" && watch('volumeOriginal') === "" ? null : (data ? (data.length !== 0 ? 
+          <TouchableOpacity
             onPress={() => {
               if (props.setAdd.length === 0) {
                 append({ weight1: "", volume: "", unit: {} });
@@ -150,7 +163,7 @@ export default function ItemWeight(props: ItemWeight) {
                 } else {
                   append({ weight1: "", volume: "", unit: {} });
                 }
-              }     
+              }    
             }}>
             <Text
               style={{
@@ -159,7 +172,7 @@ export default function ItemWeight(props: ItemWeight) {
                 fontWeight: "400",
               }}
               tx="productScreen.addLine"></Text>
-          </TouchableOpacity> : null) : null}
+          </TouchableOpacity> : null) : null)}
         </View> : null}
       </View>
       {props.checkList ? <FlatList
