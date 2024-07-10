@@ -408,7 +408,7 @@ export const ProductCreateScreen: FC = (item) => {
           listPrice: formatStringToFloat(item.listPrice),
           wholesalePrice: item.wholesalePrice,
           attributeValues: item.attributeValues,
-          baseProductPackingLine: item.weight?.weightOriginal.trim() === "" && item.weight?.volumeOriginal.trim() === "" ? {} : (valueSwitchUnit === false ? {
+          baseProductPackingLine: item.weight?.weightOriginal.trim() === "" || item.weight?.volumeOriginal.trim() === "" ? {} : (valueSwitchUnit === false ? {
             uomGroupLineId: null,
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
@@ -419,7 +419,7 @@ export const ProductCreateScreen: FC = (item) => {
             volume: formatStringToFloat(item.weight?.volumeOriginal),
             weight: formatStringToFloat(item.weight?.weightOriginal),
           }),
-          productPackingLines: item.weight?.weightOriginal.trim() === "" && item.weight?.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item?.productPackingLines)
+          productPackingLines: item.weight?.weightOriginal.trim() === "" || item.weight?.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item?.productPackingLines)
         };
       });
       const dataPrice2 = retailPriceProduct.map((item: any) => {
@@ -492,13 +492,13 @@ export const ProductCreateScreen: FC = (item) => {
         listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
         wholesalePrice: dataPrice,
         deleteVariantIds: [],
-        baseTemplatePackingLine: data.weightOriginal === "" && data.volumeOriginal === "" ? {} : {
+        baseTemplatePackingLine: data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "" ? {} : {
           uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
           amount: 1,
           volume: formatStringToFloat(data.volumeOriginal),
           weight: formatStringToFloat(data.weightOriginal)
         },
-        productTemplatePackingLines:data.weightOriginal === "" && data.volumeOriginal === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
+        productTemplatePackingLines: data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
         activated: true,
       }
       console.log('Done data create: ', JSON.stringify(doneData))
