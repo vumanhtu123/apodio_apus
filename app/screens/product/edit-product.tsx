@@ -274,15 +274,15 @@ export const ProductEditScreen: FC = (item) => {
       // setCostPriceProduct(dataEdit?.costPrice);
       // setListPriceProduct(dataEdit?.listPrice);
       // setSku(dataEdit?.sku);
-      methods.setValue('costPrice', newDataEdit?.costPrice.toString())
-      methods.setValue('listPrice', newDataEdit?.listPrice.toString())
+      methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
+      methods.setValue('listPrice', newDataEdit?.listPrice?.toString())
       methods.setValue('SKU', newDataEdit?.sku)
       methods.setValue('productName', newDataEdit?.name)
-      methods.setValue('volumeOriginal', newDataEdit?.baseTemplatePackingLine?.volume.toString())
-      methods.setValue('weightOriginal', newDataEdit?.baseTemplatePackingLine?.weight.toString())
+      methods.setValue('volumeOriginal', newDataEdit?.baseTemplatePackingLine?.volume?.toString())
+      methods.setValue('weightOriginal', newDataEdit?.baseTemplatePackingLine?.weight?.toString())
       methods.setValue('weight', newDataEdit?.templatePackingLines?.map((item: any) => {
         return {
-          weight1: formatCurrency(commasToDots(item.weight.toString())), volume: formatCurrency(commasToDots(item.volume.toString())),
+          weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
           unit: {
             ...item.uomGroupLineOutput,
             label: item.uomGroupLineOutput.unitName
