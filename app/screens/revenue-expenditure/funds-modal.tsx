@@ -17,20 +17,11 @@ interface Input {
   onClose?: any;
 }
 
-export const ClassifyModal = (props: Input) => {
+export const FundsModal = (props: Input) => {
   const [selectedValue, setSelectedValue] = useState<any>([]);
   const [closeValue, setCloseValue] = useState<any>(props.onVisible);
   const [selectedItem, setSelectedItem] = useState<any>();
 
-  const list = [
-    { id: 0, value: "Đơn hàng" },
-    { id: 1, value: "Đơn hàng 1" },
-    { id: 2, value: "Đơn hàng 2" },
-    { id: 3, value: "Đơn hàng 3" },
-    { id: 4, value: "Đơn hàng 4" },
-    { id: 5, value: "Đơn hàng 5" },
-    { id: 6, value: "Đơn hàng 6" },
-  ];
   const {
     control,
     watch,
@@ -49,21 +40,29 @@ export const ClassifyModal = (props: Input) => {
 
   return (
     <CustomModal isVisible={props.onVisible} setIsVisible={props.onClose}>
-      <View>
+      <View
+        style={
+          {
+            //   flex: 1,
+            //   backgroundColor: "white",
+            //   width: "100%",
+            //   bottom: 0,
+            //   position: "absolute",
+          }
+        }>
         <View
           style={{
             height: 5,
             backgroundColor: "#C7C7C7",
             borderRadius: 100,
             marginHorizontal: 142,
-            marginTop: 8,
           }}></View>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            marginVertical: 18,
+            marginVertical: 16,
           }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Images.ic_pen />
@@ -76,13 +75,13 @@ export const ClassifyModal = (props: Input) => {
               }}></Text>
           </View>
           <Text
-            tx={"analysis.classify"}
+            tx={"revenueAndExpenditure.funds"}
             style={{
               color: "#242424",
               fontSize: 14,
               fontWeight: "700",
-              marginHorizontal: scaleWidth(120),
-              marginLeft: scaleWidth(85),
+              marginHorizontal: scaleWidth(110),
+              marginLeft: scaleWidth(75),
             }}></Text>
           <TouchableOpacity
             onPress={() => {
@@ -160,7 +159,14 @@ export const ClassifyModal = (props: Input) => {
           }}></Text>
         <FlatList
           numColumns={3}
-          data={list}
+          data={[
+            { id: 0, value: "Chưa phân loại" },
+            { id: 1, value: "Tiền mặt" },
+            { id: 2, value: "Ví điện tử" },
+            { id: 3, value: "Ngân hàng" },
+            { id: 4, value: "Ví cửa hàng" },
+            { id: 4, value: "Ví cửa hàng" },
+          ]}
           style={{
             // flex: 1,
             marginTop: scaleHeight(margin.margin_10),
