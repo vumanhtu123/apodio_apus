@@ -139,10 +139,9 @@ export const ProductDetailScreen: FC = (item) => {
   // }, [dataClassification]);
   function extractAttributeInfo(data: any) {
     if (!data.attributeCategory || data.attributeCategory.length === 0) {
-      return JSON.stringify([]);
+      return [];
     }
-
-    const groupedData = data.attributeCategory.map(category => ({
+    const groupedData = data.attributeCategory?.map(category => ({
       name: category.name,
       items: category.attributeOutputList?.flatMap(attr =>
         attr.productAttributeValue.map(val => ({
@@ -160,6 +159,7 @@ export const ProductDetailScreen: FC = (item) => {
   }
   useEffect(() => {
     const extractedAttributes = extractAttributeInfo(dataClassification);
+    console.log('---------extractedAttributes------', extractedAttributes)
     setAttributes(extractedAttributes);
   }, [dataClassification])
   const arrBrands = [
@@ -786,6 +786,7 @@ export const ProductDetailScreen: FC = (item) => {
                   ))}
                 </View>
               ) : (
+                
                 <View>
                   {attributes?.map((item: any, index: any) => (
                     <View key={index}>
@@ -824,6 +825,7 @@ export const ProductDetailScreen: FC = (item) => {
                     </View>
                   ))}
                 </View>
+                
               )}
             </View>
           )}
