@@ -1,10 +1,31 @@
 import { StyleSheet } from "react-native";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 
 export const styles = StyleSheet.create({
   ROOT: {
     backgroundColor: colors.palette.ghostWhite2,
     flex: 1,
+  },
+  viewLine: { height: scaleHeight(12), backgroundColor: "#F3F4F9" },
+  viewDetails: {
+    marginVertical: scaleHeight(margin.margin_10),
+    marginHorizontal: scaleWidth(margin.margin_16),
+    borderRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    shadowColor: "#3A43E5",
+    shadowOpacity: 0.25,
+    backgroundColor: colors.palette.neutral100,
+  },
+  viewTitleDetail: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: scaleHeight(margin.margin_12),
+    marginBottom: scaleHeight(padding.padding_12),
+    paddingHorizontal: scaleWidth(padding.padding_12),
+  },
+  viewLine2: {
+    borderWidth: scaleHeight(1),
+    borderColor: colors.palette.ghostWhite,
   },
   btnLibrary: {
     flexDirection: "row",

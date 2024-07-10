@@ -27,7 +27,7 @@ import ProductAttribute from "./component/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
 import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { TextField } from "../../components/text-field/text-field";
 import { Switch } from "../../components";
 import { InputSelect } from "../../components/input-select/inputSelect";
@@ -56,6 +56,7 @@ import UnitModal from "./component/modal-unit";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import Modal from "react-native-modal/dist/modal";
 import ImagesGroup from "./component/imageGroup";
+import ItemWeight from "./component/weight-component";
 
 export const ProductEditScreen: FC = (item) => {
   const route = useRoute();
@@ -115,6 +116,7 @@ export const ProductEditScreen: FC = (item) => {
   } = useForm({
     mode: "all",
   });
+  const methods = useForm()
   const [uomId, setUomId] = useState({ id: "", label: "" });
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
   const [modalImages, setModalImages] = useState(false);
@@ -130,7 +132,7 @@ export const ProductEditScreen: FC = (item) => {
   }: any = route?.params || {};
 
   useEffect(() => {
-    console.log("-----------------dataEdit-------------------", dataEdit);
+    console.log("-----------------dataEdit-------------------", JSON.stringify(dataEdit));
   }, [dataEdit]);
 
   useEffect(() => {
@@ -265,10 +267,24 @@ export const ProductEditScreen: FC = (item) => {
 
       setRetailPriceProduct(dataEdit?.retailPrice);
       setWholesalePriceProduct(dataEdit?.wholesalePrice);
-      setCostPriceProduct(dataEdit?.costPrice);
-      setListPriceProduct(dataEdit?.listPrice);
-      setSku(dataEdit?.sku);
-      setNameProduct(dataEdit?.name);
+      // setCostPriceProduct(dataEdit?.costPrice);
+      // setListPriceProduct(dataEdit?.listPrice);
+      // setSku(dataEdit?.sku);
+      methods.setValue('costPrice', newDataEdit?.costPrice.toString())
+      methods.setValue('listPrice', newDataEdit?.listPrice.toString())
+      methods.setValue('SKU', newDataEdit?.sku)
+      methods.setValue('productName', newDataEdit?.name)
+      methods.setValue('volumeOriginal', newDataEdit?.baseTemplatePackingLine?.volume.toString())
+      methods.setValue('weightOriginal', newDataEdit?.baseTemplatePackingLine?.weight.toString())
+      methods.setValue('weight', newDataEdit?.templatePackingLines?.map((item: any)=> {
+        return {weight1: item.weight.toString(), volume: item.volume.toString(), 
+          unit: {
+            ...item.uomGroupLineOutput,
+            label: item.uomGroupLineOutput.unitName
+          }
+        }
+      }) )
+      // setNameProduct(dataEdit?.name);
       if (dataEdit?.description !== "") {
         setAddDescribe(true);
         setDescription(newDataEdit?.description);
@@ -294,9 +310,27 @@ export const ProductEditScreen: FC = (item) => {
         id: 0,
         label: getLabelByList(dataEdit?.managementForm),
       });
-      if (dataEdit?.productVariants) {
+      if (newDataEdit?.productVariants) {
         setAddVariant(true);
-        setDataCreateProduct(newDataEdit?.productVariants);
+        const newArr = newDataEdit?.productVariants.map((items: any)=>{
+          return {...items, weight: {
+            weight: items.productPackingLines.map((item: any)=>{
+              return {unit: {...newDataEdit?.uomGroup.uomGroupLines.filter((item1: any)=> item1.id === item.uomGroupLineId)[0],
+                label: newDataEdit?.uomGroup.uomGroupLines.filter((item1: any)=> item1.id === item.uomGroupLineId)[0].unitName
+              },
+                weight1: item.weight.toString(),
+                volume: item.volume.toString(),
+              }
+            }),
+            weightOriginal: items.baseProductPackingLine.weight.toString(),
+            volumeOriginal: items.baseProductPackingLine.volume.toString(),
+            // uom: {
+
+            // }
+          }}
+        })
+        setDataCreateProduct(newArr);
+        // setDataCreateProduct(newDataEdit?.productVariants);
         setDataOldCreateProduct(newDataEdit?.productVariants);
       }
       setCategory({
@@ -547,112 +581,113 @@ export const ProductEditScreen: FC = (item) => {
     );
   };
 
-  const submitAdd = async () => {
-    if (uomId.id === "") {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.required_information'),
+  const submitAdd = async (data: any) => {
+    console.log('dataInput------------',data)
+    // if (uomId.id === "") {
+    //   Toast.show({
+    //     type: ALERT_TYPE.DANGER,
+    //     title: '',
+    //     textBody: translate('txtToats.required_information'),
 
-      })
+    //   })
 
-    } else {
-      const newArr1: never[] = [];
-      const newArr = dataCreateProduct?.map((item) => {
-        return { ...item, name: nameProduct + " -" + item.name };
-      });
-      arrIdOrigin?.forEach((item) => {
-        let isUnique = true;
-        newArr?.forEach((obj) => {
-          if (obj.id === item) {
-            isUnique = false;
-          }
-        });
+    // } else {
+    //   const newArr1: never[] = [];
+    //   const newArr = dataCreateProduct?.map((item) => {
+    //     return { ...item, name: nameProduct + " -" + item.name };
+    //   });
+    //   arrIdOrigin?.forEach((item) => {
+    //     let isUnique = true;
+    //     newArr?.forEach((obj) => {
+    //       if (obj.id === item) {
+    //         isUnique = false;
+    //       }
+    //     });
 
-        if (isUnique) {
-          newArr1.push(item);
-        }
-      });
-      const dataPrice2 = retailPriceProduct?.map((item) => {
-        return {
-          min: item.min,
-          price: Number(formatNumberByString(item.price.toString())),
-        };
-      });
-      const dataPrice = wholesalePriceProduct?.map((item) => {
-        return {
-          min: item.min,
-          price: Number(formatNumberByString(item.price.toString())),
-        };
-      });
+    //     if (isUnique) {
+    //       newArr1.push(item);
+    //     }
+    //   });
+    //   const dataPrice2 = retailPriceProduct?.map((item) => {
+    //     return {
+    //       min: item.min,
+    //       price: Number(formatNumberByString(item.price.toString())),
+    //     };
+    //   });
+    //   const dataPrice = wholesalePriceProduct?.map((item) => {
+    //     return {
+    //       min: item.min,
+    //       price: Number(formatNumberByString(item.price.toString())),
+    //     };
+    //   });
 
-      const newArr2 = newArr?.map((item) => {
-        return {
-          ...item,
-          retailPrice: item.retailPrice?.map((items: any) => {
-            return {
-              ...items,
-              price: Number(formatNumberByString(items.price)),
-            };
-          }),
-          wholesalePrice: item.wholesalePrice?.map((items: any) => {
-            return {
-              ...items,
-              price: Number(formatNumberByString(items.price)),
-            };
-          }),
-          costPrice: Number(formatNumberByString(item.costPrice)),
-          listPrice: Number(formatNumberByString(item.listPrice)),
-        };
-      });
-      const data = await productStore?.putProduct(productStore.productId, {
-        sku: sku,
-        name: nameProduct,
-        purchaseOk: valuePurchase,
-        imageUrls: imagesNote,
-        saleOk: true,
-        vendorIds: vendor,
-        managementForm: brands.label2,
-        productCategoryId: category.id || null,
-        brandId: brand.id || null,
-        tagIds: selectedItems,
-        hasUomGroupInConfig: valueSwitchUnit,
-        uomId: valueSwitchUnit === false ? uomId.id : null,
-        uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
-        hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
-        attributeValues: attributeValues,
-        textAttributes: textAttributes,
-        description: description,
-        productVariants: newArr2,
-        retailPrice: dataPrice2,
-        costPrice: Number(formatNumberByString(costPriceProduct)),
-        listPrice: Number(formatNumberByString(listPriceProduct)),
-        wholesalePrice: dataPrice,
-        deleteVariantIds: newArr1,
-      });
-      if (data.kind === "ok") {
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("txtDialog.txt_title_dialog"),
-          textBody: translate("txtDialog.product_repair_successful"),
-          button2: translate("common.ok"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            navigation.navigate("productDetailScreen" as never, { reload: true });
-            Dialog.hide();
-          }
-        })
-      } else {
-        console.log("data------------------------------", JSON.stringify(data));
-        Dialog.show({
-          type: ALERT_TYPE.DANGER,
-          title: translate("txtDialog.txt_title_dialog"),
-          textBody: data.result.errorCodes[0].message,
-          button: translate("common.ok"),
-          closeOnOverlayTap: false
-        })
-      }
-    }
+    //   const newArr2 = newArr?.map((item) => {
+    //     return {
+    //       ...item,
+    //       retailPrice: item.retailPrice?.map((items: any) => {
+    //         return {
+    //           ...items,
+    //           price: Number(formatNumberByString(items.price)),
+    //         };
+    //       }),
+    //       wholesalePrice: item.wholesalePrice?.map((items: any) => {
+    //         return {
+    //           ...items,
+    //           price: Number(formatNumberByString(items.price)),
+    //         };
+    //       }),
+    //       costPrice: Number(formatNumberByString(item.costPrice)),
+    //       listPrice: Number(formatNumberByString(item.listPrice)),
+    //     };
+    //   });
+    //   const result = await productStore?.putProduct(productStore.productId, {
+    //     sku: sku,
+    //     name: nameProduct,
+    //     purchaseOk: valuePurchase,
+    //     imageUrls: imagesNote,
+    //     saleOk: true,
+    //     vendorIds: vendor,
+    //     managementForm: brands.label2,
+    //     productCategoryId: category.id || null,
+    //     brandId: brand.id || null,
+    //     tagIds: selectedItems,
+    //     hasUomGroupInConfig: valueSwitchUnit,
+    //     uomId: valueSwitchUnit === false ? uomId.id : null,
+    //     uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
+    //     hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
+    //     attributeValues: attributeValues,
+    //     textAttributes: textAttributes,
+    //     description: description,
+    //     productVariants: newArr2,
+    //     retailPrice: dataPrice2,
+    //     costPrice: Number(formatNumberByString(costPriceProduct)),
+    //     listPrice: Number(formatNumberByString(listPriceProduct)),
+    //     wholesalePrice: dataPrice,
+    //     deleteVariantIds: newArr1,
+    //   });
+    //   if (result.kind === "ok") {
+    //     Dialog.show({
+    //       type: ALERT_TYPE.INFO,
+    //       title: translate("txtDialog.txt_title_dialog"),
+    //       textBody: translate("txtDialog.product_repair_successful"),
+    //       button2: translate("common.ok"),
+    //       closeOnOverlayTap: false,
+    //       onPressButton: () => {
+    //         navigation.navigate({name: "productDetailScreen",params: { reload: true }}as never);
+    //         Dialog.hide();
+    //       }
+    //     })
+    //   } else {
+    //     console.log("data------------------------------", JSON.stringify(result));
+    //     Dialog.show({
+    //       type: ALERT_TYPE.DANGER,
+    //       title: translate("txtDialog.txt_title_dialog"),
+    //       textBody: result.result.errorCodes[0].message,
+    //       button: translate("common.ok"),
+    //       closeOnOverlayTap: false
+    //     })
+    //   }
+    // }
   };
 
   console.log("dataCreateProduct----------------------", dataCreateProduct);
@@ -1137,9 +1172,10 @@ export const ProductEditScreen: FC = (item) => {
   const goToChooseSupplierScreen = () => {
     const listIds = vendor;
     // console.log('mômmo' , listIds)
-    navigation.navigate("ChooseVendorScreen", { listIds, mode: "edit" });
+    navigation.navigate({name: "ChooseVendorScreen", params: { listIds, mode: "edit" }}as never);
   };
   return (
+    <FormProvider {...methods}>
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
@@ -1194,9 +1230,7 @@ export const ProductEditScreen: FC = (item) => {
                           type: ALERT_TYPE.DANGER,
                           title: '',
                           textBody: translate('txtToats.required_maximum_number_of_photos'),
-
                         })
-
                       }
                     }}
                     style={styles.btnCamera}>
@@ -1328,7 +1362,7 @@ export const ProductEditScreen: FC = (item) => {
               </>
             )}
             <Controller
-              control={control}
+              control={methods.control}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
                   // maxLength={maxLenngthPhoneNumber}
@@ -1341,12 +1375,12 @@ export const ProductEditScreen: FC = (item) => {
                   inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                   value={value}
                   onBlur={onBlur}
-                  defaultValue={sku}
+                  defaultValue={methods.watch('SKU')}
                   RightIconClear={Images.icon_delete2}
                   error={errors?.SKU?.message}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => {
-                    onChange(value), setSku(value);
+                    onChange(value)
                   }}
                   placeholderTx="productScreen.placeholderSKU"
                   RightIcon={Images.ic_QR}
@@ -1361,7 +1395,7 @@ export const ProductEditScreen: FC = (item) => {
             // }}
             />
             <Controller
-              control={control}
+              control={methods.control}
               render={({ field: { onChange, value, onBlur } }) => (
                 <TextField
                   // maxLength={maxLenngthPhoneNumber}
@@ -1374,12 +1408,12 @@ export const ProductEditScreen: FC = (item) => {
                   inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                   value={value}
                   onBlur={onBlur}
-                  defaultValue={nameProduct}
+                  // defaultValue={nameProduct}
                   RightIconClear={Images.icon_delete2}
                   error={errors?.productName?.message}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => {
-                    setNameProduct(value), onChange(value);
+                    onChange(value);
                   }}
                   placeholderTx="productScreen.placeholderProductName"
                   // RightIcon={Images.ic_QR}
@@ -1388,9 +1422,9 @@ export const ProductEditScreen: FC = (item) => {
               )}
               // defaultValue={''}
               name="productName"
-              rules={{
-                required: "Vui lòng nhập dữ liệu",
-              }}
+              // rules={{
+              //   required: "Vui lòng nhập dữ liệu",
+              // }}
             />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx="createProductScreen.canBuy"
@@ -1482,7 +1516,7 @@ export const ProductEditScreen: FC = (item) => {
                 </View>
               </TouchableOpacity>
               <Controller
-                control={control}
+                control={methods.control}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
                     maxLength={20}
@@ -1501,14 +1535,14 @@ export const ProductEditScreen: FC = (item) => {
                     value={value}
                     onBlur={onBlur}
                     showRightIcon={false}
-                    defaultValue={costPriceProduct?.toString()}
+                    // defaultValue={costPriceProduct?.toString()}
                     onChangeText={(value) => {
                       onChange(
                         vendorStore.checkSeparator === "DOTS"
                           ? formatCurrency(removeNonNumeric(value))
                           : addCommas(removeNonNumeric(value))
                       );
-                      setCostPriceProduct(Number(value));
+                      // setCostPriceProduct(Number(value));
                     }}
                     placeholderTx="productScreen.placeholderPrice"
                   />
@@ -1524,7 +1558,7 @@ export const ProductEditScreen: FC = (item) => {
                 justifyContent: "space-between",
               }}>
               <Controller
-                control={control}
+                control={methods.control}
                 render={({ field: { onChange, value, onBlur } }) => (
                   <TextField
                     maxLength={20}
@@ -1542,7 +1576,7 @@ export const ProductEditScreen: FC = (item) => {
                     }}
                     value={value}
                     onBlur={onBlur}
-                    defaultValue={listPriceProduct?.toString()}
+                    // defaultValue={listPriceProduct?.toString()}
                     showRightIcon={false}
                     onChangeText={(value) => {
                       onChange(
@@ -1550,7 +1584,7 @@ export const ProductEditScreen: FC = (item) => {
                           ? formatCurrency(removeNonNumeric(value))
                           : addCommas(removeNonNumeric(value))
                       );
-                      setListPriceProduct(Number(value));
+                      // setListPriceProduct(Number(value));
                     }}
                     placeholderTx="productScreen.placeholderPrice"
                   />
@@ -1838,9 +1872,9 @@ export const ProductEditScreen: FC = (item) => {
                     })
                   } else {
                     if (valueSwitchUnit) {
-                      navigation.navigate("createConversionGroup" as any, {
+                      navigation.navigate({name:"createConversionGroup", params:{
                         editScreen: true,
-                      });
+                      }} as never);
                     } else {
                       setModalcreateUnit(true);
                     }
@@ -1923,6 +1957,19 @@ export const ProductEditScreen: FC = (item) => {
             ) : null}
           </View>
         </View>
+        {uomId ? (
+            <View
+              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+              <View style={[styles.viewViewDetail]}>
+                <ItemWeight
+                  dataUnitGroup={valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines}
+                  checkList={valueSwitchUnit}
+                  data={valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit}
+                  setAdd={methods.watch(`weight`)}
+                />
+              </View>
+            </View>
+          ) : null}
         {addVariant ? (
           <View
             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
@@ -1997,6 +2044,11 @@ export const ProductEditScreen: FC = (item) => {
                                 )
                               }
                             />
+                            <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct } } as never)}
+                                style={{ marginHorizontal: scaleWidth(2), alignItems: 'center', justifyContent: 'center' }}>
+                                <Text tx={'productScreen.weight'} style={[styles.textTitleViewPrice, { color: colors.nero }]} />
+                                <Images.icon_edit />
+                              </TouchableOpacity>
                             <View
                               style={{
                                 flexDirection: "row",
@@ -2268,9 +2320,9 @@ export const ProductEditScreen: FC = (item) => {
                   <TouchableOpacity
                     style={styles.btnAddProperties}
                     onPress={() =>
-                      navigation.navigate("addAttribute" as never, {
+                      navigation.navigate({name: "addAttribute", params: {
                         editScreen: true,
-                      })
+                      }}as never)
                     }>
                     <Images.ic_plusBlue
                       width={scaleWidth(16)}
@@ -2298,17 +2350,17 @@ export const ProductEditScreen: FC = (item) => {
                   <TouchableOpacity
                     onPress={() => {
                       if (productUsing === true || priceUsing === true) {
-                        navigation.navigate("editAttributeByEdit" as never, {
+                        navigation.navigate({name: "editAttributeByEdit" , params: {
                           dataAttribute: attributeToEdit,
                           constDataAttribute: constAttributeToEdit,
                           dropdownSelected: dropdownToEdit,
-                        });
+                        }}as never);
                       } else {
-                        navigation.navigate("editAttribute" as any, {
+                        navigation.navigate({name: "editAttribute", params:{
                           dataAttribute: attributeToEdit,
                           dropdownSelected: dropdownToEdit,
                           editScreen: true,
-                        });
+                        }} as never);
                       }
                     }}>
                     <Images.icon_edit
@@ -2640,9 +2692,7 @@ export const ProductEditScreen: FC = (item) => {
           <Text tx={"common.cancel"} style={{ fontSize: fontSize.size14 }} />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {
-            submitAdd();
-          }}
+          onPress={methods.handleSubmit(submitAdd)}
           style={{
             width: scaleWidth(150),
             height: scaleHeight(48),
@@ -2655,6 +2705,7 @@ export const ProductEditScreen: FC = (item) => {
         </TouchableOpacity>
       </View>
     </View>
+    </FormProvider>
   );
 };
 const styles = StyleSheet.create({
@@ -2672,6 +2723,10 @@ const styles = StyleSheet.create({
     paddingVertical: scaleHeight(7),
     marginBottom: scaleHeight(10),
   },
+  viewViewDetail: {
+    marginHorizontal: scaleWidth(16),
+    marginVertical: scaleHeight(20),
+  },
   btnCamera: {
     flexDirection: "row",
     alignItems: "center",
@@ -2680,6 +2735,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: scaleWidth(10),
     paddingVertical: scaleHeight(7),
+  },
+  textTitleViewPrice: {
+    fontWeight: "500",
+    fontSize: fontSize.size12,
+    color: colors.palette.dolphin,
+    lineHeight: scaleHeight(14),
   },
   btnAddProperties: {
     flexDirection: "row",

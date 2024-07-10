@@ -39,6 +39,7 @@ const en = {
     change_city: "Vui lòng chọn Tỉnh/Thành phố",
     change_district: "Vui lòng chọn Quận/Huyện",
     change_payment: "Vui lòng chọn phuơng thức thanh toán trước",
+    change_weight: "Vui lòng nhập đủ thông tin trước khi thêm dòng",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -690,6 +691,8 @@ const en = {
     weightConversion: "Tải trọng theo đơn vị quy đổi",
     addLine: "Thêm dòng",
     weightExchange: "Tải trọng theo đơn vị quy đổi",
+    editWeight: "Chỉnh sửa tải trọng",
+    resetDefault: "Reset về mặc định",
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -734,6 +737,7 @@ const en = {
     description: "Mô tả",
     addDescription: "Thêm mô tả",
     productClassification: "Phân loại sản phẩm",
+    volume: "Thể tích",
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
@@ -771,6 +775,7 @@ const en = {
     header: "Chọn thuộc tính",
     addAttribute: "Tạo nhóm thuộc tính mới",
     selectedValue: "Chọn giá trị",
+    allowsCreatingAttribute: "Cho phép tạo phân loại",
   },
   editAttribute: {
     headerText: "Sửa thuộc tính",
