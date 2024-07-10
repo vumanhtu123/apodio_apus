@@ -194,6 +194,7 @@ export const ProductCreateScreen: FC = (item) => {
     return unsubscribe;
   }, [selectedGroupAttribute, isVariantInConfig]);
 
+
   const getDetailUnitGroup = async (id: number) => {
     // call nhieu lan
     if (id) {
@@ -1413,27 +1414,6 @@ export const ProductCreateScreen: FC = (item) => {
                 />
                 
                 {dataGroupAttribute.length > 0 ? (
-                  <View>
-                    <TouchableOpacity
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        marginVertical: scaleHeight(16),
-                        marginHorizontal: scaleWidth(margin.margin_16),
-                      }}
-                      onPress={toggleDetails}>
-                      <Text style={{ color: colors.palette.navyBlue }}>
-                        Xem chi tiết thuộc tính{" "}
-                      </Text>
-                      <Images.iconDownBlue
-                        width={16}
-                        height={16}
-                        style={{
-                          transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
-                        }}
-                      />
-                    </TouchableOpacity>
-                    {showDetails && (
                     <View style={styles.viewDetails}>
                       <View style={styles.viewTitleDetail}>
                         <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
@@ -1481,8 +1461,6 @@ export const ProductCreateScreen: FC = (item) => {
                           ))}
                         </View>
                       ))}
-                    </View>
-                    )}
                     </View>
                 ) : <View>
                   {dataCreateProduct.length > 0 ? (
@@ -1771,7 +1749,7 @@ export const ProductCreateScreen: FC = (item) => {
                   }}>
                   {dataCreateProduct.length > 0 ? (
                     <TouchableOpacity onPress={() => {
-                      navigation.navigate({ name: 'editAttribute', params: { dataAttribute: attributeArr, dropdownSelected: dropdownSelected } } as never)
+                      navigation.navigate({ name: 'editAttribute', params: { dataAttribute: attributeArr, dropdownSelected: dropdownSelected, hasVariantInConfig: hasVariantInConfig } } as never)
                     }}>
                       <Images.icon_edit
                         // style={{ marginRight: scaleWidth(8) }}

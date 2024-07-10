@@ -271,7 +271,22 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         return a;
                     });
                     const newArr3 = newArr2.flat();
-                    navigation.navigate("ProductEditScreen" as never, {check: true,attributeArr: selectedItems,dropdownSelected: newArr3,});
+                    if(!valueSwitch){
+                        // Tạo một tập hợp các cặp id và productAttributeId trong mảng con để dễ dàng kiểm tra
+                        let childSet = new Set(selectedItems.map(item => `${item.id}-${item.productAttributeId}`));
+                        // Duyệt qua từng mục trong mảng cha và xóa các mục không có trong mảng con
+                        const newArrSelectedGroup = selectedGroup.slice();
+                        newArrSelectedGroup.forEach(parent => {
+                        parent.attributeOutputList.forEach(attributeOutput => {
+                            attributeOutput.productAttributeValue = attributeOutput.productAttributeValue.filter(attributeValue => childSet.has(`${attributeValue.id}-${attributeValue.productAttributeId}`));
+                        });
+                        });
+                        console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
+                        navigation.navigate("ProductEditScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch});
+                    }else {
+                        navigation.navigate("ProductEditScreen" as never, {check: true,attributeArr: selectedItems,dropdownSelected: newArr3,});
+                    }
+                    
                 } else {
                     const newArr = selectedItems.map((item) => {
                         return item.idGroup;
