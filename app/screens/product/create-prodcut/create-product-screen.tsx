@@ -137,7 +137,7 @@ export const ProductCreateScreen: FC = (item) => {
     mode: "all",
   });
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
-  const [uomId, setUomId] = useState({ id: "", label: "" });
+  const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: '' });
   const route = useRoute();
   const {
     selectedIds,
@@ -203,6 +203,7 @@ export const ProductCreateScreen: FC = (item) => {
         const uomId = {
           id: data.originalUnit.id,
           label: data.originalUnit.name,
+          uomGroupLineId: data.originalUnit.uomGroupLineId
         };
         setUomId(uomId);
       } else {
@@ -218,7 +219,7 @@ export const ProductCreateScreen: FC = (item) => {
       console.log("getListUnitGroup---------------------:", unitResult);
     } else {
       unitResult = await unitStore.getListUnit();
-      console.log("getListUnit---------------------:", unitResult);
+      console.log("getListUnit---------------------:", JSON.stringify(unitResult));
     }
     if (unitResult && unitResult.kind === "ok") {
       const data = unitResult.result.data.content;
@@ -382,7 +383,7 @@ export const ProductCreateScreen: FC = (item) => {
         "post-product-data---retailPriceProduct---- : ",
         JSON.stringify(retailPriceProduct)
       );
-      const arrDataNew = dataCreateProduct.map((items: any) => {
+      const arrDataNew = dataCreateProduct?.map((items: any) => {
         return {
           ...items,
           productPackingLines: items.weight?.weight.map((item: any) => {
@@ -395,8 +396,8 @@ export const ProductCreateScreen: FC = (item) => {
           })
         };
       })
-      console.log(arrDataNew[0].productPackingLines)
-      const newArr = arrDataNew.map((item) => {
+      // console.log(arrDataNew[0]?.productPackingLines)
+      const newArr = arrDataNew?.map((item) => {
         return {
           name: methods.getValues("productName") + " - " + item.name,
           imageUrls: item.imageUrls,
@@ -406,17 +407,17 @@ export const ProductCreateScreen: FC = (item) => {
           wholesalePrice: item.wholesalePrice,
           attributeValues: item.attributeValues,
           baseProductPackingLine: valueSwitchUnit === false ? {
-            uomGroupLineId: uomId.id,
+            uomGroupLineId: null,
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
             weight: formatStringToFloat(item.weight?.weightOriginal),
           } : {
-            uomGroupLineId: detailUnitGroupData?.originalUnit?.id ,
+            uomGroupLineId: detailUnitGroupData?.originalUnit?.uomGroupLineId ,
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
             weight: formatStringToFloat(item.weight?.weightOriginal),
           },
-          productPackingLines: valueSwitchUnit == false ? [] : item.productPackingLines
+          productPackingLines: valueSwitchUnit == false ? [] : item?.productPackingLines
         };
       });
       const dataPrice2 = retailPriceProduct.map((item: any) => {
@@ -490,7 +491,7 @@ export const ProductCreateScreen: FC = (item) => {
         wholesalePrice: dataPrice,
         deleteVariantIds: [],
         baseTemplatePackingLine: data.weightOriginal === "" && data.volumeOriginal === "" ? {} : {
-          uomGroupLineId: valueSwitchUnit == false ? uomId.id : detailUnitGroupData?.originalUnit?.id,
+          uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
           amount: 1,
           volume: formatStringToFloat(data.volumeOriginal),
           weight: formatStringToFloat(data.weightOriginal)
@@ -1383,7 +1384,7 @@ export const ProductCreateScreen: FC = (item) => {
               ) : null}
             </View>
           </View>
-          {uomId ? (
+          {uomId?.label?.trim() !== "" ? (
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
               <View style={[styles.viewViewDetail]}>
@@ -1468,7 +1469,7 @@ export const ProductCreateScreen: FC = (item) => {
                                   }
                                 />
                               </View>
-                              <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct } } as never)}
+                              <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'create' } } as never)}
                                 style={{ marginHorizontal: scaleWidth(2), alignItems: 'center', justifyContent: 'center' }}>
                                 <Text tx={'productScreen.weight'} style={[styles.textTitleViewPrice, { color: colors.nero }]} />
                                 <Images.icon_edit />
