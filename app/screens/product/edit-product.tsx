@@ -19,7 +19,7 @@ import {
 import { Images } from "../../../assets/index";
 import { Header } from "../../components/header/header";
 import { Text } from "../../components/text/text";
-import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers, detailProduct, listCreateProduct } from "./data";
 // import { styles } from "./styles"
 import { AutoImage } from "../../../app/components/auto-image/auto-image";
@@ -113,6 +113,8 @@ export const ProductEditScreen: FC = (item) => {
   const [productUsing, setProductUsing] = useState(false);
   const [priceUsing, setPriceUsing] = useState(false);
   const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
+  const [hasVariantInConfig, setVariantInConfig] = useState(false);
+  const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
   const {
     control,
     formState: { errors },
@@ -132,12 +134,34 @@ export const ProductEditScreen: FC = (item) => {
     attributeArr,
     dropdownSelected,
     dataEdit,
+    isVariantInConfig,
+    selectedGroupAttribute,
     newDataCreateProduct
   }: any = route?.params || {};
 
+
   useEffect(() => {
-    console.log("-----------------dataEdit-------------------", JSON.stringify(dataEdit));
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (dataEdit !== undefined) {
+        setAddVariant(true)
+        setDataGroupAttribute(dataEdit.attributeCategory);
+        setVariantInConfig(dataEdit.hasVariantInConfig);
+      }
+    });
+    return unsubscribe;
   }, [dataEdit]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (selectedGroupAttribute !== undefined && isVariantInConfig !== undefined) {
+        setAddVariant(true)
+        setDataGroupAttribute(selectedGroupAttribute);
+        setVariantInConfig(isVariantInConfig);
+      }
+    });
+    return unsubscribe;
+  }, [selectedGroupAttribute, isVariantInConfig]);
+
 
   useEffect(() => {
     console.log("----nameUnitGroup-----", nameUnitGroup);
@@ -307,7 +331,7 @@ export const ProductEditScreen: FC = (item) => {
           return { text: items.name, value: items.id };
         }
       );
-      const abc = [...new Set(newDataEdit?.attributeCategory?.flatMap((item: any)=> item.id))]
+      const abc = [...new Set(newDataEdit?.attributeCategory?.flatMap((item: any) => item.id))]
       setAttributeIds(abc)
       const newArr1 = newArr?.map((item: { value: any }) => item.value);
       setSelectedItems(newArr1);
@@ -512,7 +536,7 @@ export const ProductEditScreen: FC = (item) => {
 
       setAttributeValues(attributeValueArr);
       setTextAttributes(textAttributeValueArr);
-      const abc = [...new Set(attributeArr?.flatMap((item: any)=> item.idGroup))]
+      const abc = [...new Set(attributeArr?.flatMap((item: any) => item.idGroup))]
       setAttributeIds(abc)
 
       const newArr = mapDataDistribute(resultArray);
@@ -669,7 +693,8 @@ export const ProductEditScreen: FC = (item) => {
       });
       console.log(newArr, '12345')
       const newArr3 = newArr.map((item: any) => {
-        return {...item,
+        return {
+          ...item,
           name: methods.getValues("productName") + " - " + item.name,
           imageUrls: item.imageUrls,
           costPrice: (item?.costPrice),
@@ -687,7 +712,7 @@ export const ProductEditScreen: FC = (item) => {
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
             weight: formatStringToFloat(item.weight?.weightOriginal),
-          }): {},
+          }) : {},
           productPackingLines: item.weight?.volumeOriginal !== undefined && item.weight?.weightOriginal !== undefined ? (valueSwitchUnit == false ? [] : item.productPackingLines) : []
         };
       });
@@ -734,7 +759,8 @@ export const ProductEditScreen: FC = (item) => {
         hasUomGroupInConfig: valueSwitchUnit,
         uomId: valueSwitchUnit === false ? uomId.id : null,
         uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
-        hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
+        // hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
+        hasVariantInConfig: hasVariantInConfig === false ? hasVariantInConfig : !checkArrayIsEmptyOrNull(dataCreateProduct),
         attributeValues: attributeValues,
         attributeCategoryIds: attributeIds,
         textAttributes: textAttributes,
@@ -2074,409 +2100,520 @@ export const ProductEditScreen: FC = (item) => {
                   tx="createProductScreen.classify"
                   style={{ fontSize: fontSize.size14, fontWeight: "700" }}
                 />
-                {dataCreateProduct?.length > 0 ? (
-                  <FlatList
-                    data={dataCreateProduct}
-                    keyExtractor={(item, index) => index.toString()}
-                    scrollEnabled={false}
-                    renderItem={({ item, index }: any) => {
-                      return (
-                        <ScrollView horizontal={true}>
-                          <View style={{ marginTop: scaleHeight(15) }}>
-                            <Text>{methods.getValues('productName') + " - " + item.name}</Text>
+                {dataGroupAttribute.length > 0 ? (
+                  <View>
+                    <View style={styles.viewDetails}>
+                      <View style={styles.viewTitleDetail}>
+                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                          Thuộc tính
+                        </Text>
+                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                          Giá trị
+                        </Text>
+                      </View>
+                      <View style={styles.viewLine2} />
+                      {dataGroupAttribute?.map((item, index) => (
+                        <View key={index}>
+                          <View
+                            style={{
+                              marginVertical: scaleHeight(margin.margin_12),
+                              paddingHorizontal: scaleWidth(padding.padding_12),
+                            }}>
+                            <Text
+                              style={{
+                                fontWeight: "600",
+                                fontSize: fontSize.size12,
+                                color: colors.palette.navyBlue,
+                              }}>
+                              {item.name}
+                            </Text>
+                          </View>
+                          <View style={styles.viewLine2} />
+
+                          {item.attributeOutputDtos?.map((dto) => (
                             <View
                               style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                marginTop: scaleHeight(6),
+                                marginTop: scaleHeight(margin.margin_12),
                               }}>
-                              <TouchableOpacity
-                                style={{ marginRight: scaleWidth(6) }}
-                                onPress={() =>
-                                  handleDeleteProduct(index, item.id)
-                                }>
-                                <Images.ic_minusCircle
-                                  width={scaleWidth(14)}
-                                  height={scaleHeight(14)}
-                                />
-                              </TouchableOpacity>
-                              <ImagesGroup
-                                arrData={item.imageUrls || []}
-                                onPressOpenLibrary={() => {
-                                  if (item.imageUrls !== undefined) {
-                                    if (item.imageUrls?.length < 6) {
+                              <ProductAttribute
+                                label={dto.name}
+                                value={dto.productAttributeValue.map(value => value.value).join('/')}
+                                styleAttribute={{
+                                  paddingHorizontal: scaleWidth(padding.padding_12),
+                                }}
+                              />
+                              {index !== dataGroupAttribute?.length - 1 ? (
+                                <View style={styles.viewLine2} />
+                              ) : null}
+                            </View>
+                          ))}
+                        </View>
+                      ))}
+                    </View>
+                    <View
+                      style={{
+                        position: "absolute",
+                        right: 0,
+                        flexDirection: "row",
+                      }}>
+                      {dataGroupAttribute?.length > 0 ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            if (productUsing === true || priceUsing === true) {
+                              navigation.navigate({
+                                name: "editAttributeByEdit", params: {
+                                  dataAttribute: attributeToEdit,
+                                  constDataAttribute: constAttributeToEdit,
+                                  dropdownSelected: dropdownToEdit,
+                                }
+                              } as never);
+                            } else {
+                              navigation.navigate({
+                                name: "editAttribute", params: {
+                                  dataAttribute: attributeToEdit,
+                                  dropdownSelected: dropdownToEdit,
+                                  editScreen: true,
+                                  hasVariantInConfig: hasVariantInConfig
+                                }
+                              } as never);
+                            }
+                          }}>
+                          <Images.icon_edit
+                            // style={{ marginRight: scaleWidth(8) }}
+                            width={scaleWidth(14)}
+                            height={scaleHeight(14)}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+
+
+                      {dataGroupAttribute.length > 0 ? (
+                        <TouchableOpacity onPress={() => {
+                          setAddVariant(false)
+                          setDataGroupAttribute([])
+                          setDataCreateProduct([])
+                          setVariantInConfig(false)
+                        }}>
+                          <Images.ic_close
+                            width={scaleWidth(14)}
+                            height={scaleHeight(14)}
+                            style={{ marginLeft: 10 }}
+                          />
+                        </TouchableOpacity>
+                      ) : null}
+                    </View>
+                  </View>
+                ) : <View>
+                  {dataCreateProduct?.length > 0 ? (
+                    <FlatList
+                      data={dataCreateProduct}
+                      keyExtractor={(item, index) => index.toString()}
+                      scrollEnabled={false}
+                      renderItem={({ item, index }: any) => {
+                        return (
+                          <ScrollView horizontal={true}>
+                            <View style={{ marginTop: scaleHeight(15) }}>
+                              <Text>{methods.getValues('productName') + " - " + item.name}</Text>
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  marginTop: scaleHeight(6),
+                                }}>
+                                <TouchableOpacity
+                                  style={{ marginRight: scaleWidth(6) }}
+                                  onPress={() =>
+                                    handleDeleteProduct(index, item.id)
+                                  }>
+                                  <Images.ic_minusCircle
+                                    width={scaleWidth(14)}
+                                    height={scaleHeight(14)}
+                                  />
+                                </TouchableOpacity>
+                                <ImagesGroup
+                                  arrData={item.imageUrls || []}
+                                  onPressOpenLibrary={() => {
+                                    if (item.imageUrls !== undefined) {
+                                      if (item.imageUrls?.length < 6) {
+                                        handleLibraryUseProduct(
+                                          item.imageUrls,
+                                          index
+                                        );
+                                        productStore.setImagesLimit(
+                                          item.imageUrls?.length
+                                        );
+                                      } else {
+                                        Toast.show({
+                                          type: ALERT_TYPE.DANGER,
+                                          title: '',
+                                          textBody: translate('txtToats.required_maximum_number_of_photos'),
+
+                                        })
+
+                                      }
+                                    } else {
                                       handleLibraryUseProduct(
                                         item.imageUrls,
                                         index
                                       );
-                                      productStore.setImagesLimit(
-                                        item.imageUrls?.length
-                                      );
-                                    } else {
-                                      Toast.show({
-                                        type: ALERT_TYPE.DANGER,
-                                        title: '',
-                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                                      })
-
                                     }
-                                  } else {
-                                    handleLibraryUseProduct(
-                                      item.imageUrls,
-                                      index
-                                    );
+                                  }}
+                                  onPressDelete={() => handleDeleteImage(index)}
+                                  onPressDelete1={() =>
+                                    handleDeleteImageItem(
+                                      index,
+                                      item.imageUrls[index]
+                                    )
                                   }
-                                }}
-                                onPressDelete={() => handleDeleteImage(index)}
-                                onPressDelete1={() =>
-                                  handleDeleteImageItem(
-                                    index,
-                                    item.imageUrls[index]
-                                  )
-                                }
-                              />
-                              <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'edit' } } as never)}
-                                style={{ marginHorizontal: scaleWidth(2), alignItems: 'center', justifyContent: 'center' }}>
-                                <Text tx={'productScreen.weight'} style={[styles.textTitleViewPrice, { color: colors.nero }]} />
-                                <Images.icon_edit />
-                              </TouchableOpacity>
-                              <View
-                                style={{
-                                  flexDirection: "row",
-                                  marginLeft: scaleWidth(10),
-                                }}>
-                                <TouchableOpacity
-                                  style={{
-                                    borderRadius: 8,
-                                    backgroundColor: colors.palette.aliceBlue,
-                                    height: scaleHeight(56),
-                                    paddingVertical: scaleHeight(8),
-                                    paddingHorizontal: scaleWidth(16),
-                                    width: scaleWidth(180),
-                                    marginRight: scaleWidth(10),
-                                  }}
-                                  onPress={() => {
-                                    setModalRetailPrice1(true);
-                                    const arr = item.retailPrice?.map(
-                                      (item: {
-                                        min: { toString: () => any };
-                                        price: { toString: () => any };
-                                      }) => {
-                                        return {
-                                          min: item.min.toString(),
-                                          price: item.price.toString(),
-                                        };
-                                      }
-                                    );
-                                    setDataModal(arr);
-                                    setIndexVariant(index);
-                                  }}>
-                                  <View
-                                    style={{
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                    }}>
-                                    <View style={{ flex: 1 }}>
-                                      <Text
-                                        tx={"productScreen.priceRetail"}
-                                        style={{
-                                          fontWeight: "500",
-                                          fontSize: fontSize.size12,
-                                          color: colors.palette.dolphin,
-                                          lineHeight: scaleHeight(14),
-                                        }}
-                                      />
-                                      {item.retailPrice?.length > 0 &&
-                                        item.retailPrice?.length !== 1 ? (
-                                        <Text
-                                          text={convertAttributeRetailPrice(
-                                            dataCreateProduct,
-                                            index
-                                          )}
-                                          numberOfLines={1}
-                                          style={{
-                                            fontWeight: "500",
-                                            fontSize: fontSize.size16,
-                                            color: colors.palette.nero,
-                                            lineHeight: scaleHeight(24),
-                                          }}
-                                        />
-                                      ) : item.retailPrice?.length > 0 &&
-                                        item.retailPrice?.length === 1 ? (
-                                        <Text
-                                          text={item.retailPrice[0]?.price}
-                                          style={{
-                                            fontWeight: "500",
-                                            fontSize: fontSize.size16,
-                                            color: colors.palette.nero,
-                                            lineHeight: scaleHeight(24),
-                                          }}
-                                        />
-                                      ) : (
-                                        <Text
-                                          text="0.000 - 0.000"
-                                          style={{
-                                            fontWeight: "500",
-                                            fontSize: fontSize.size16,
-                                            color: colors.palette.dolphin,
-                                            lineHeight: scaleHeight(24),
-                                          }}
-                                        />
-                                      )}
-                                    </View>
-                                    <Images.icon_caretRightDown />
-                                  </View>
-                                </TouchableOpacity>
-                                <Controller
-                                  control={control}
-                                  render={({
-                                    field: { onChange, value, onBlur },
-                                  }) => (
-                                    <TextField
-                                      maxLength={20}
-                                      keyboardType={"number-pad"}
-                                      labelTx={"productScreen.priceCapital"}
-                                      style={{
-                                        marginRight: scaleWidth(10),
-                                        width: scaleWidth(180),
-                                        height: scaleHeight(56),
-                                      }}
-                                      inputStyle={{
-                                        fontSize: fontSize.size16,
-                                        fontWeight: "500",
-                                      }}
-                                      value={value}
-                                      onBlur={onBlur}
-                                      RightIconClear={Images.icon_delete2}
-                                      // error={errors?.priceRetail?.message}
-                                      onClearText={() => onChange("")}
-                                      onChangeText={(value) => {
-                                        onChange(
-                                          vendorStore.checkSeparator === "DOTS"
-                                            ? formatCurrency(
-                                              removeNonNumeric(value)
-                                            )
-                                            : addCommas(removeNonNumeric(value))
-                                        );
-                                        item.costPrice = value;
-                                      }}
-                                      placeholder="0.000"
-                                      labelDolphin
-                                    />
-                                  )}
-                                  defaultValue={item.costPrice?.toString()}
-                                  name={`costPrice-${index}`}
                                 />
-                                <Controller
-                                  control={control}
-                                  render={({
-                                    field: { onChange, value, onBlur },
-                                  }) => (
-                                    <TextField
-                                      maxLength={20}
-                                      keyboardType={"number-pad"}
-                                      labelTx={"productScreen.priceList"}
-                                      style={{
-                                        marginRight: scaleWidth(10),
-                                        width: scaleWidth(180),
-                                        height: scaleHeight(56),
-                                        // justifyContent : 'center'
-                                      }}
-                                      inputStyle={{
-                                        fontSize: fontSize.size16,
-                                        fontWeight: "500",
-                                      }}
-                                      value={value}
-                                      onBlur={onBlur}
-                                      RightIconClear={Images.icon_delete2}
-                                      error={errors?.priceRetail?.message}
-                                      onClearText={() => onChange("")}
-                                      onChangeText={(value) => {
-                                        onChange(
-                                          vendorStore.checkSeparator === "DOTS"
-                                            ? formatCurrency(
-                                              removeNonNumeric(value)
-                                            )
-                                            : addCommas(removeNonNumeric(value))
-                                        );
-                                        item.listPrice = value;
-                                      }}
-                                      placeholder="0.000"
-                                      labelDolphin
-                                    />
-                                  )}
-                                  defaultValue={item.listPrice?.toString()}
-                                  name={`listPrice-${index}`}
-                                />
-                                <TouchableOpacity
-                                  style={{
-                                    borderRadius: 8,
-                                    backgroundColor: colors.palette.aliceBlue,
-                                    height: scaleHeight(56),
-                                    paddingVertical: scaleHeight(8),
-                                    paddingHorizontal: scaleWidth(16),
-                                    width: scaleWidth(180),
-                                    marginRight: scaleWidth(10),
-                                  }}
-                                  onPress={() => {
-                                    setModalWholesalePrice1(true);
-                                    const arr = item.wholesalePrice?.map(
-                                      (item: {
-                                        min: { toString: () => any };
-                                        price: { toString: () => any };
-                                      }) => {
-                                        return {
-                                          min: item.min.toString(),
-                                          price: item.price.toString(),
-                                        };
-                                      }
-                                    );
-                                    setDataModal(arr);
-                                    setIndexVariant(index);
-                                  }}>
-                                  <View
-                                    style={{
-                                      flexDirection: "row",
-                                      alignItems: "center",
-                                    }}>
-                                    <View style={{ flex: 1 }}>
-                                      <Text
-                                        tx={"productScreen.priceWholesale"}
-                                        style={{
-                                          fontWeight: "500",
-                                          fontSize: fontSize.size12,
-                                          color: colors.palette.dolphin,
-                                          lineHeight: scaleHeight(14),
-                                        }}
-                                      />
-                                      {item.wholesalePrice?.length > 0 &&
-                                        item.wholesalePrice?.length !== 1 ? (
-                                        <Text
-                                          text={convertAttributeWholesalePrice(
-                                            dataCreateProduct,
-                                            index
-                                          )}
-                                          numberOfLines={1}
-                                          style={{
-                                            fontWeight: "500",
-                                            fontSize: fontSize.size16,
-                                            color: colors.palette.nero,
-                                            lineHeight: scaleHeight(24),
-                                          }}
-                                        />
-                                      ) : item.wholesalePrice?.length > 0 &&
-                                        item.wholesalePrice?.length === 1 ? (
-                                        <Text
-                                          text={item.wholesalePrice[0]?.price}
-                                          style={{
-                                            fontWeight: "500",
-                                            fontSize: fontSize.size16,
-                                            color: colors.palette.nero,
-                                            lineHeight: scaleHeight(24),
-                                          }}
-                                        />
-                                      ) : (
-                                        <Text
-                                          text="0.000 - 0.000"
-                                          style={{
-                                            fontWeight: "500",
-                                            fontSize: fontSize.size16,
-                                            color: colors.palette.dolphin,
-                                            lineHeight: scaleHeight(24),
-                                          }}
-                                        />
-                                      )}
-                                    </View>
-                                    <Images.icon_caretRightDown />
-                                  </View>
+                                <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'edit' } } as never)}
+                                  style={{ marginHorizontal: scaleWidth(2), alignItems: 'center', justifyContent: 'center' }}>
+                                  <Text tx={'productScreen.weight'} style={[styles.textTitleViewPrice, { color: colors.nero }]} />
+                                  <Images.icon_edit />
                                 </TouchableOpacity>
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    marginLeft: scaleWidth(10),
+                                  }}>
+                                  <TouchableOpacity
+                                    style={{
+                                      borderRadius: 8,
+                                      backgroundColor: colors.palette.aliceBlue,
+                                      height: scaleHeight(56),
+                                      paddingVertical: scaleHeight(8),
+                                      paddingHorizontal: scaleWidth(16),
+                                      width: scaleWidth(180),
+                                      marginRight: scaleWidth(10),
+                                    }}
+                                    onPress={() => {
+                                      setModalRetailPrice1(true);
+                                      const arr = item.retailPrice?.map(
+                                        (item: {
+                                          min: { toString: () => any };
+                                          price: { toString: () => any };
+                                        }) => {
+                                          return {
+                                            min: item.min.toString(),
+                                            price: item.price.toString(),
+                                          };
+                                        }
+                                      );
+                                      setDataModal(arr);
+                                      setIndexVariant(index);
+                                    }}>
+                                    <View
+                                      style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                      }}>
+                                      <View style={{ flex: 1 }}>
+                                        <Text
+                                          tx={"productScreen.priceRetail"}
+                                          style={{
+                                            fontWeight: "500",
+                                            fontSize: fontSize.size12,
+                                            color: colors.palette.dolphin,
+                                            lineHeight: scaleHeight(14),
+                                          }}
+                                        />
+                                        {item.retailPrice?.length > 0 &&
+                                          item.retailPrice?.length !== 1 ? (
+                                          <Text
+                                            text={convertAttributeRetailPrice(
+                                              dataCreateProduct,
+                                              index
+                                            )}
+                                            numberOfLines={1}
+                                            style={{
+                                              fontWeight: "500",
+                                              fontSize: fontSize.size16,
+                                              color: colors.palette.nero,
+                                              lineHeight: scaleHeight(24),
+                                            }}
+                                          />
+                                        ) : item.retailPrice?.length > 0 &&
+                                          item.retailPrice?.length === 1 ? (
+                                          <Text
+                                            text={item.retailPrice[0]?.price}
+                                            style={{
+                                              fontWeight: "500",
+                                              fontSize: fontSize.size16,
+                                              color: colors.palette.nero,
+                                              lineHeight: scaleHeight(24),
+                                            }}
+                                          />
+                                        ) : (
+                                          <Text
+                                            text="0.000 - 0.000"
+                                            style={{
+                                              fontWeight: "500",
+                                              fontSize: fontSize.size16,
+                                              color: colors.palette.dolphin,
+                                              lineHeight: scaleHeight(24),
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Images.icon_caretRightDown />
+                                    </View>
+                                  </TouchableOpacity>
+                                  <Controller
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, onBlur },
+                                    }) => (
+                                      <TextField
+                                        maxLength={20}
+                                        keyboardType={"number-pad"}
+                                        labelTx={"productScreen.priceCapital"}
+                                        style={{
+                                          marginRight: scaleWidth(10),
+                                          width: scaleWidth(180),
+                                          height: scaleHeight(56),
+                                        }}
+                                        inputStyle={{
+                                          fontSize: fontSize.size16,
+                                          fontWeight: "500",
+                                        }}
+                                        value={value}
+                                        onBlur={onBlur}
+                                        RightIconClear={Images.icon_delete2}
+                                        // error={errors?.priceRetail?.message}
+                                        onClearText={() => onChange("")}
+                                        onChangeText={(value) => {
+                                          onChange(
+                                            vendorStore.checkSeparator === "DOTS"
+                                              ? formatCurrency(
+                                                removeNonNumeric(value)
+                                              )
+                                              : addCommas(removeNonNumeric(value))
+                                          );
+                                          item.costPrice = value;
+                                        }}
+                                        placeholder="0.000"
+                                        labelDolphin
+                                      />
+                                    )}
+                                    defaultValue={item.costPrice?.toString()}
+                                    name={`costPrice-${index}`}
+                                  />
+                                  <Controller
+                                    control={control}
+                                    render={({
+                                      field: { onChange, value, onBlur },
+                                    }) => (
+                                      <TextField
+                                        maxLength={20}
+                                        keyboardType={"number-pad"}
+                                        labelTx={"productScreen.priceList"}
+                                        style={{
+                                          marginRight: scaleWidth(10),
+                                          width: scaleWidth(180),
+                                          height: scaleHeight(56),
+                                          // justifyContent : 'center'
+                                        }}
+                                        inputStyle={{
+                                          fontSize: fontSize.size16,
+                                          fontWeight: "500",
+                                        }}
+                                        value={value}
+                                        onBlur={onBlur}
+                                        RightIconClear={Images.icon_delete2}
+                                        error={errors?.priceRetail?.message}
+                                        onClearText={() => onChange("")}
+                                        onChangeText={(value) => {
+                                          onChange(
+                                            vendorStore.checkSeparator === "DOTS"
+                                              ? formatCurrency(
+                                                removeNonNumeric(value)
+                                              )
+                                              : addCommas(removeNonNumeric(value))
+                                          );
+                                          item.listPrice = value;
+                                        }}
+                                        placeholder="0.000"
+                                        labelDolphin
+                                      />
+                                    )}
+                                    defaultValue={item.listPrice?.toString()}
+                                    name={`listPrice-${index}`}
+                                  />
+                                  <TouchableOpacity
+                                    style={{
+                                      borderRadius: 8,
+                                      backgroundColor: colors.palette.aliceBlue,
+                                      height: scaleHeight(56),
+                                      paddingVertical: scaleHeight(8),
+                                      paddingHorizontal: scaleWidth(16),
+                                      width: scaleWidth(180),
+                                      marginRight: scaleWidth(10),
+                                    }}
+                                    onPress={() => {
+                                      setModalWholesalePrice1(true);
+                                      const arr = item.wholesalePrice?.map(
+                                        (item: {
+                                          min: { toString: () => any };
+                                          price: { toString: () => any };
+                                        }) => {
+                                          return {
+                                            min: item.min.toString(),
+                                            price: item.price.toString(),
+                                          };
+                                        }
+                                      );
+                                      setDataModal(arr);
+                                      setIndexVariant(index);
+                                    }}>
+                                    <View
+                                      style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                      }}>
+                                      <View style={{ flex: 1 }}>
+                                        <Text
+                                          tx={"productScreen.priceWholesale"}
+                                          style={{
+                                            fontWeight: "500",
+                                            fontSize: fontSize.size12,
+                                            color: colors.palette.dolphin,
+                                            lineHeight: scaleHeight(14),
+                                          }}
+                                        />
+                                        {item.wholesalePrice?.length > 0 &&
+                                          item.wholesalePrice?.length !== 1 ? (
+                                          <Text
+                                            text={convertAttributeWholesalePrice(
+                                              dataCreateProduct,
+                                              index
+                                            )}
+                                            numberOfLines={1}
+                                            style={{
+                                              fontWeight: "500",
+                                              fontSize: fontSize.size16,
+                                              color: colors.palette.nero,
+                                              lineHeight: scaleHeight(24),
+                                            }}
+                                          />
+                                        ) : item.wholesalePrice?.length > 0 &&
+                                          item.wholesalePrice?.length === 1 ? (
+                                          <Text
+                                            text={item.wholesalePrice[0]?.price}
+                                            style={{
+                                              fontWeight: "500",
+                                              fontSize: fontSize.size16,
+                                              color: colors.palette.nero,
+                                              lineHeight: scaleHeight(24),
+                                            }}
+                                          />
+                                        ) : (
+                                          <Text
+                                            text="0.000 - 0.000"
+                                            style={{
+                                              fontWeight: "500",
+                                              fontSize: fontSize.size16,
+                                              color: colors.palette.dolphin,
+                                              lineHeight: scaleHeight(24),
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Images.icon_caretRightDown />
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
                               </View>
                             </View>
-                          </View>
-                        </ScrollView>
-                      );
-                    }}
-                  />
-                ) : (
-                  <View style={{ marginTop: scaleHeight(15) }}>
-                    <Text
-                      tx="createProductScreen.details"
-                      style={{
-                        fontSize: fontSize.size13,
-                        fontWeight: "400",
-                        color: colors.palette.dolphin,
-                        marginBottom: scaleHeight(12),
+                          </ScrollView>
+                        );
                       }}
                     />
-                    <TouchableOpacity
-                      style={styles.btnAddProperties}
-                      onPress={() =>
-                        navigation.navigate({
-                          name: "addAttribute", params: {
-                            editScreen: true,
-                          }
-                        } as never)
-                      }>
-                      <Images.ic_plusBlue
-                        width={scaleWidth(16)}
-                        height={scaleHeight(16)}
-                      />
+                  ) : (
+                    <View style={{ marginTop: scaleHeight(15) }}>
                       <Text
-                        tx="createProductScreen.addProperties"
+                        tx="createProductScreen.details"
                         style={{
-                          color: "#0078d4",
-                          fontSize: fontSize.size14,
-                          marginLeft: scaleWidth(4),
-                          fontWeight: "600",
+                          fontSize: fontSize.size13,
+                          fontWeight: "400",
+                          color: colors.palette.dolphin,
+                          marginBottom: scaleHeight(12),
                         }}
                       />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                <View
-                  style={{
-                    position: "absolute",
-                    right: 0,
-                    flexDirection: "row",
-                  }}>
-                  {dataCreateProduct?.length > 0 ? (
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (productUsing === true || priceUsing === true) {
+                      <TouchableOpacity
+                        style={styles.btnAddProperties}
+                        onPress={() =>
                           navigation.navigate({
-                            name: "editAttributeByEdit", params: {
-                              dataAttribute: attributeToEdit,
-                              constDataAttribute: constAttributeToEdit,
-                              dropdownSelected: dropdownToEdit,
-                            }
-                          } as never);
-                        } else {
-                          navigation.navigate({
-                            name: "editAttribute", params: {
-                              dataAttribute: attributeToEdit,
-                              dropdownSelected: dropdownToEdit,
+                            name: "addAttribute", params: {
                               editScreen: true,
                             }
-                          } as never);
-                        }
-                      }}>
-                      <Images.icon_edit
-                        // style={{ marginRight: scaleWidth(8) }}
-                        width={scaleWidth(14)}
-                        height={scaleHeight(14)}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                  {dataCreateProduct?.length > 0 ? null : (
-                    <TouchableOpacity onPress={() => setAddVariant(false)}>
-                      <Images.ic_close
-                        width={scaleWidth(14)}
-                        height={scaleHeight(14)}
-                      />
-                    </TouchableOpacity>
+                          } as never)
+                        }>
+                        <Images.ic_plusBlue
+                          width={scaleWidth(16)}
+                          height={scaleHeight(16)}
+                        />
+                        <Text
+                          tx="createProductScreen.addProperties"
+                          style={{
+                            color: "#0078d4",
+                            fontSize: fontSize.size14,
+                            marginLeft: scaleWidth(4),
+                            fontWeight: "600",
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   )}
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      flexDirection: "row",
+                    }}>
+                    {dataCreateProduct?.length > 0 ? (
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (productUsing === true || priceUsing === true) {
+                            navigation.navigate({
+                              name: "editAttributeByEdit", params: {
+                                dataAttribute: attributeToEdit,
+                                constDataAttribute: constAttributeToEdit,
+                                dropdownSelected: dropdownToEdit,
+                              }
+                            } as never);
+                          } else {
+                            navigation.navigate({
+                              name: "editAttribute", params: {
+                                dataAttribute: attributeToEdit,
+                                dropdownSelected: dropdownToEdit,
+                                editScreen: true,
+                                hasVariantInConfig: hasVariantInConfig
+                              }
+                            } as never);
+                          }
+                        }}>
+                        <Images.icon_edit
+                          // style={{ marginRight: scaleWidth(8) }}
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                      </TouchableOpacity>
+                    ) : null}
+                    {dataCreateProduct?.length > 0 ? null : (
+                      <TouchableOpacity onPress={() => setAddVariant(false)}>
+                        <Images.ic_close
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+
+
                 </View>
+
+                }
+
               </View>
             </View>
           ) : null}
@@ -2848,5 +2985,26 @@ const styles = StyleSheet.create({
     paddingVertical: scaleHeight(7),
     borderRadius: 8,
     borderColor: "#0078d4",
+  },
+  viewDetails: {
+    marginVertical: scaleHeight(margin.margin_10),
+    borderWidth: scaleHeight(1),
+    borderColor: colors.palette.ghostWhite,
+    borderRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    shadowColor: "#3A43E5",
+    shadowOpacity: 0.25,
+    backgroundColor: colors.palette.neutral100,
+  },
+  viewTitleDetail: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: scaleHeight(margin.margin_12),
+    marginBottom: scaleHeight(padding.padding_12),
+    paddingHorizontal: scaleWidth(padding.padding_12),
+  },
+  viewLine2: {
+    borderWidth: scaleHeight(0.5),
+    borderColor: colors.palette.ghostWhite,
   },
 });

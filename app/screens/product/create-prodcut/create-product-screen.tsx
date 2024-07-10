@@ -113,7 +113,6 @@ export const ProductCreateScreen: FC = (item) => {
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
   const [selectedItems, setSelectedItems] = useState([]);
   const [dataCreateProduct, setDataCreateProduct] = useState([]);
-  const [showDetails, setShowDetails] = useState(false);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const {
     control,
@@ -877,10 +876,6 @@ export const ProductCreateScreen: FC = (item) => {
     const listIds = selectedIds;
     navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: 'create' } } as never);
   }
-
-  const toggleDetails = () => {
-    setShowDetails(!showDetails);
-  };
 
   const arrBrand = dataBrand.map((item) => {
     return { label: item.name, id: item.id };
@@ -1735,8 +1730,7 @@ export const ProductCreateScreen: FC = (item) => {
                   </View>
                 )}
                 
-                </View>
-                
+                </View>   
                 }
 
 

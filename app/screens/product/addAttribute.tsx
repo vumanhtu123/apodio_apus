@@ -284,7 +284,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
                         navigation.navigate("ProductEditScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch});
                     }else {
-                        navigation.navigate("ProductEditScreen" as never, {check: true,attributeArr: selectedItems,dropdownSelected: newArr3,});
+                        navigation.navigate("ProductEditScreen" as never, {check: true,attributeArr: selectedItems,dropdownSelected: newArr3, selectedGroupAttribute: [], isVariantInConfig: valueSwitch});
                     }
                     
                 } else {
@@ -311,7 +311,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
                         navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch});
                     }else {
-                        navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false,});
+                        navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false, selectedGroupAttribute: [],isVariantInConfig: valueSwitch});
                     }
                     
                 }
