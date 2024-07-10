@@ -1,19 +1,11 @@
 import {
   useNavigation,
   useRoute,
-  useFocusEffect,
 } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  Dimensions,
   FlatList,
-  Image,
   Linking,
-  Platform,
-  RefreshControl,
-  StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -24,17 +16,16 @@ import {
   colors,
   fontSize,
   margin,
+  padding,
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { products, suppliers, detailProduct, listCreateProduct } from "../data";
 // import { styles } from "./styles"
-import { AutoImage } from "../../../components/auto-image/auto-image";
 import ProductAttribute from "../component/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
-import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
+import { RESULTS } from "react-native-permissions";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { Controller, FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { TextField } from "../../../components/text-field/text-field";
 import { Switch } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
@@ -51,16 +42,13 @@ import {
   convertRetailPrice,
   convertWholesalePrice,
   formatCurrency,
-  formatNumber,
   formatNumberByString,
   formatStringToFloat,
-  isFormValid,
   mapDataDistribute,
   parternValidateSku,
   removeNonNumeric,
   validateFileSize,
 } from "../../../utils/validate";
-import { G } from "react-native-svg";
 import UnitModal from "../component/modal-unit";
 import {
   ALERT_TYPE,
@@ -68,8 +56,6 @@ import {
   Toast,
   Loading,
 } from "../../../components/dialog-notification";
-import Carousel, { Pagination } from "react-native-snap-carousel";
-import Modal from "react-native-modal/dist/modal";
 import { translate } from "../../../i18n/translate";
 // import { styles } from "./styles";
 import {
@@ -110,7 +96,7 @@ export const ProductCreateScreen: FC = (item) => {
     label2: "DEFAULT",
   });
   const [dataTagConvert, setDataTagConvert] = useState<{}[]>([]);
-  const [tags, setTags] = useState([]);
+  const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
   const [detailUnitGroupData, setDetailUnitGroupData] = useState();
   const [retailPriceProduct, setRetailPriceProduct] = useState([]);
@@ -127,6 +113,8 @@ export const ProductCreateScreen: FC = (item) => {
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
   const [selectedItems, setSelectedItems] = useState([]);
   const [dataCreateProduct, setDataCreateProduct] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
+  const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const {
     control,
     handleSubmit,
@@ -146,6 +134,8 @@ export const ProductCreateScreen: FC = (item) => {
     attributeArr,
     dropdownSelected,
     newDataCreateProduct,
+    isVariantInConfig,
+    selectedGroupAttribute,
     resetData,
     goBackConversionGroup,
   }: any = route?.params || {};
@@ -170,6 +160,7 @@ export const ProductCreateScreen: FC = (item) => {
     getListUnitGroup(false);
   }, []);
 
+  console.log('--N----attributeValueSwitch------', isVariantInConfig)
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (idUnitGroup !== undefined) {
@@ -183,6 +174,7 @@ export const ProductCreateScreen: FC = (item) => {
     });
     return unsubscribe;
   }, [idUnitGroup]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (newDataCreateProduct !== undefined) {
@@ -191,6 +183,16 @@ export const ProductCreateScreen: FC = (item) => {
     });
     return unsubscribe;
   }, [newDataCreateProduct]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (selectedGroupAttribute !== undefined && isVariantInConfig !== undefined) {
+        setDataGroupAttribute(selectedGroupAttribute);
+        setVariantInConfig(isVariantInConfig);
+      }
+    });
+    return unsubscribe;
+  }, [selectedGroupAttribute, isVariantInConfig]);
 
   const getDetailUnitGroup = async (id: number) => {
     // call nhieu lan
@@ -479,12 +481,12 @@ export const ProductCreateScreen: FC = (item) => {
         hasUomGroupInConfig: valueSwitchUnit,
         uomId: valueSwitchUnit === false ? uomId.id : null,
         uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
-        hasVariantInConfig: !checkArrayIsEmptyOrNull(newArr2),
+        hasVariantInConfig: hasVariantInConfig  === false?  hasVariantInConfig : !checkArrayIsEmptyOrNull(newArr2),
         attributeValues: attributeValues,
         textAttributes: textAttributes,
         attributeCategoryIds: attributeIds,
         description: description,
-        productVariants: newArr2,
+        productVariants: hasVariantInConfig ? newArr2 : [],
         retailPrice: dataPrice2,
         costPrice: Number(formatNumberByString(methods.watch("costPrice"))),
         listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
@@ -874,6 +876,10 @@ export const ProductCreateScreen: FC = (item) => {
     const listIds = selectedIds;
     navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: 'create' } } as never);
   }
+
+  const toggleDetails = () => {
+    setShowDetails(!showDetails);
+  };
 
   const arrBrand = dataBrand.map((item) => {
     return { label: item.name, id: item.id };
@@ -1405,7 +1411,81 @@ export const ProductCreateScreen: FC = (item) => {
                   tx="createProductScreen.classify"
                   style={{ fontSize: fontSize.size14, fontWeight: "700" }}
                 />
-                {dataCreateProduct.length > 0 ? (
+                
+                {dataGroupAttribute.length > 0 ? (
+                  <View>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginVertical: scaleHeight(16),
+                        marginHorizontal: scaleWidth(margin.margin_16),
+                      }}
+                      onPress={toggleDetails}>
+                      <Text style={{ color: colors.palette.navyBlue }}>
+                        Xem chi tiết thuộc tính{" "}
+                      </Text>
+                      <Images.iconDownBlue
+                        width={16}
+                        height={16}
+                        style={{
+                          transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                        }}
+                      />
+                    </TouchableOpacity>
+                    {showDetails && (
+                    <View style={styles.viewDetails}>
+                      <View style={styles.viewTitleDetail}>
+                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                          Thuộc tính
+                        </Text>
+                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                          Giá trị
+                        </Text>
+                      </View>
+                      <View style={styles.viewLine2} />
+                      {dataGroupAttribute?.map((item, index) => (
+                        <View key={index}>
+                          <View
+                            style={{
+                              marginVertical: scaleHeight(margin.margin_12),
+                              paddingHorizontal: scaleWidth(padding.padding_12),
+                            }}>
+                            <Text
+                              style={{
+                                fontWeight: "600",
+                                fontSize: fontSize.size12,
+                                color: colors.palette.navyBlue,
+                              }}>
+                              {item.name}
+                            </Text>
+                          </View>
+                          <View style={styles.viewLine2} />
+
+                          {item.attributeOutputList?.map((dto) => (
+                            <View
+                              style={{
+                                marginTop: scaleHeight(margin.margin_12),
+                              }}>
+                              <ProductAttribute
+                                label={dto.name}
+                                value={dto.productAttributeValue.map(value => value.value).join('/')}
+                                styleAttribute={{
+                                  paddingHorizontal: scaleWidth(padding.padding_12),
+                                }}
+                              />
+                              {index !== dataGroupAttribute?.length - 1 ? (
+                                <View style={styles.viewLine2} />
+                              ) : null}
+                            </View>
+                          ))}
+                        </View>
+                      ))}
+                    </View>
+                    )}
+                    </View>
+                ) : <View>
+                  {dataCreateProduct.length > 0 ? (
                   <FlatList
                     data={dataCreateProduct}
                     keyExtractor={(item, index) => index.toString()}
@@ -1676,6 +1756,13 @@ export const ProductCreateScreen: FC = (item) => {
                     </TouchableOpacity>
                   </View>
                 )}
+                
+                </View>
+                
+                }
+
+
+
                 <View
                   style={{
                     position: "absolute",
@@ -1701,6 +1788,20 @@ export const ProductCreateScreen: FC = (item) => {
                       />
                     </TouchableOpacity>
                   )}
+                  {dataGroupAttribute.length > 0 ?(
+                    <TouchableOpacity onPress={() => {
+                      setAddVariant(false)
+                      setDataGroupAttribute([])
+                      setDataCreateProduct([])
+                      setVariantInConfig(false)
+                    }}>
+                      <Images.ic_close
+                        width={scaleWidth(14)}
+                        height={scaleHeight(14)}
+                        style={{marginLeft: 10}}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
                 </View>
               </View>
             </View>
