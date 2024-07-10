@@ -69,9 +69,11 @@ export default function ItemWeight(props: ItemWeight) {
     }
   }, [props.dataUnitGroup])
 
-  // useEffect(()=>{
-  //   if{}
-  // }, [watch('volumeOriginal'), watch('weightOriginal')])
+  useEffect(()=>{
+    if(watch('volumeOriginal')?.trim() === ""  && watch('weightOriginal')?.trim() === ""){
+      setValue('weight', [])
+    }
+  }, [watch('volumeOriginal'), watch('weightOriginal')])
 
   const deepEqual = (obj1, obj2) => {
     return JSON.stringify(obj1) === JSON.stringify(obj2);

@@ -722,6 +722,7 @@ const en = {
     edit_product: "Sửa sản phẩm",
     cancel: "Hủy",
     done: "Hoàn tất",
+    weight: "Tải trọng",
     openCamera: "Chụp ảnh",
     uploadImage: "Tải ảnh lên",
     infoSupplier: "Thông tin nhà cung cấp",

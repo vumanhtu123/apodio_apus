@@ -84,6 +84,7 @@ export const ProductCreateScreen: FC = (item) => {
   const [modalcreateUnit, setModalcreateUnit] = useState(false);
   const [addDescribe, setAddDescribe] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
+  const [addWeight, setAddWeight] = useState(false);
   const [dataBrand, setDataBrand] = useState([]);
   const [dataCategory, setDataCategory] = useState<any>([]);
   const [sku, setSku] = useState("");
@@ -141,7 +142,7 @@ export const ProductCreateScreen: FC = (item) => {
   const [modalImages, setModalImages] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const refCarousel = useRef(null);
-  const methods = useForm({ defaultValues: { productName: '', costPrice: '', listPrice: '', SKU: '', weight: '', weightOriginal: '', volumeOriginal: '' } })
+  const methods = useForm({ defaultValues: { productName: '', costPrice: '', listPrice: '', SKU: '', weight: [], weightOriginal: '', volumeOriginal: '' } })
   const a = useRef(1)
   console.log('re-render', a.current++)
 
@@ -408,7 +409,7 @@ export const ProductCreateScreen: FC = (item) => {
           listPrice: formatStringToFloat(item.listPrice),
           wholesalePrice: item.wholesalePrice,
           attributeValues: item.attributeValues,
-          baseProductPackingLine: item.weight?.weightOriginal.trim() === "" || item.weight?.volumeOriginal.trim() === "" ? {} : (valueSwitchUnit === false ? {
+          baseProductPackingLine: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? {} : (valueSwitchUnit === false ? {
             uomGroupLineId: null,
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
@@ -419,7 +420,7 @@ export const ProductCreateScreen: FC = (item) => {
             volume: formatStringToFloat(item.weight?.volumeOriginal),
             weight: formatStringToFloat(item.weight?.weightOriginal),
           }),
-          productPackingLines: item.weight?.weightOriginal.trim() === "" || item.weight?.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item?.productPackingLines)
+          productPackingLines: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item?.productPackingLines)
         };
       });
       const dataPrice2 = retailPriceProduct.map((item: any) => {
@@ -492,13 +493,13 @@ export const ProductCreateScreen: FC = (item) => {
         listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
         wholesalePrice: dataPrice,
         deleteVariantIds: [],
-        baseTemplatePackingLine: data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "" ? {} : {
+        baseTemplatePackingLine: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? {} : {
           uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
           amount: 1,
           volume: formatStringToFloat(data.volumeOriginal),
           weight: formatStringToFloat(data.weightOriginal)
         },
-        productTemplatePackingLines: data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
+        productTemplatePackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
         activated: true,
       }
       console.log('Done data create: ', JSON.stringify(doneData))
@@ -1386,10 +1387,18 @@ export const ProductCreateScreen: FC = (item) => {
               ) : null}
             </View>
           </View>
-          {uomId?.label?.trim() !== "" ? (
+          {addWeight ? (
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
               <View style={[styles.viewViewDetail]}>
+                <TouchableOpacity style={{position: 'absolute', top: 0, right: 0, zIndex: 1}}
+                onPress={()=> {setAddWeight(false)
+                  methods.setValue('weightOriginal', '')
+                  methods.setValue('volumeOriginal', '')
+                  methods.setValue('weight', [])
+                }}>
+                  <Images.icon_deleteDolphin/>
+                  </TouchableOpacity>
                 <ItemWeight
                   dataUnitGroup={valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines}
                   checkList={valueSwitchUnit}
@@ -1867,7 +1876,17 @@ export const ProductCreateScreen: FC = (item) => {
                       />
                     </TouchableOpacity>
                   ) : null}
-                  {addDescribe === true && addVariant === true ? (
+                  {addWeight === false ? (
+                    <TouchableOpacity
+                      onPress={() => setAddWeight(true)}
+                      style={styles.viewBtnInMorInfo}>
+                      <Text
+                        tx={"createProductScreen.weight"}
+                        style={styles.textBtnMorInfo}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {addDescribe === true && addVariant === true && addWeight === true ? (
                     <Text
                       tx={"createProductScreen.notificationAddAllInfoProduct"}
                       style={[
