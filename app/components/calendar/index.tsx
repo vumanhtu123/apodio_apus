@@ -258,7 +258,7 @@ const CustomCalendar = React.memo((props: any) => {
 const styles = StyleSheet.create({
   content: {
     flex: 1,
-    padding: scaleHeight(padding.padding_16),
+    //padding: scaleHeight(padding.padding_16),
   },
   selectType: {
     marginBottom: 16,

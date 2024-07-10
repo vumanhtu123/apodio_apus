@@ -137,6 +137,7 @@ export interface TextFieldProps extends TextInputProps {
   value?: any;
   valueInput?: any;
   valueCurrency?: any;
+  iconRight?: any;
 }
 
 /**
@@ -180,6 +181,7 @@ export function TextField(props: TextFieldProps) {
     valueTextRight,
     styleTextRight,
     styleTextLabel,
+    iconRight,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
@@ -228,6 +230,7 @@ export function TextField(props: TextFieldProps) {
               Platform.OS === "android" ? scaleHeight(8) : scaleHeight(0),
           }}>
           <View style={{ flexDirection: "row" }}>
+            {iconRight ? iconRight : null}
             {labelTx ? (
               <Text
                 preset="fieldLabel"
