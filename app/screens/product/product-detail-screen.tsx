@@ -139,28 +139,23 @@ export const ProductDetailScreen: FC = (item) => {
   // }, [dataClassification]);
   function extractAttributeInfo(data: any) {
     if (!data.attributeCategory || data.attributeCategory.length === 0) {
-      return JSON.stringify([]);
+      return [];
     }
 
     const groupedData = data.attributeCategory.map(category => ({
       name: category.name,
-      items: category.attributeOutputList?.flatMap(attr =>
-        attr.productAttributeValue.map(val => ({
-          productAttributeId: attr.id,
-          productAttributeValueId: val.id,
-          value: val.value,
-          attributeName: category.name,
-          name: attr.name,
-          id: val.id,
-        }))
+      items: category.attributeOutputList?.map(attr => ({
+        value: attr.productAttributeValue.map(val => val.value),
+        name: attr.name,
+      })
       ) || []
     }));
-
+    setAttributes(groupedData)
     return groupedData;
   }
   useEffect(() => {
-    const extractedAttributes = extractAttributeInfo(dataClassification);
-    setAttributes(extractedAttributes);
+    extractAttributeInfo(dataClassification);
+    // setAttributes(extractedAttributes);
   }, [dataClassification])
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -296,6 +291,8 @@ export const ProductDetailScreen: FC = (item) => {
   };
   const toggleDetails = () => {
     setShowDetails(!showDetails);
+    extractAttributeInfo(dataClassification)
+    console.log('first', JSON.stringify(attributes))
     selectDataClassification();
   };
   return (
@@ -811,12 +808,12 @@ export const ProductDetailScreen: FC = (item) => {
                           }}>
                           <ProductAttribute
                             label={dto.name}
-                            value={dto.value}
+                            value={dto.value.join('/')}
                             styleAttribute={{
                               paddingHorizontal: scaleWidth(padding.padding_12),
                             }}
                           />
-                          {index !== attributeDetailsClassification?.length - 1 ? (
+                          {index !== attributes?.length - 1 ? (
                             <View style={styles.viewLine2} />
                           ) : null}
                         </View>
@@ -1184,6 +1181,7 @@ const styles = StyleSheet.create({
   },
   viewLine: { height: scaleHeight(12), backgroundColor: "#F3F4F9" },
   viewDetails: {
+    borderWidth: scaleHeight(1),
     marginVertical: scaleHeight(margin.margin_10),
     marginHorizontal: scaleWidth(margin.margin_16),
     borderRadius: 8,
@@ -1191,6 +1189,7 @@ const styles = StyleSheet.create({
     shadowColor: "#3A43E5",
     shadowOpacity: 0.25,
     backgroundColor: colors.palette.neutral100,
+    borderColor: colors.palette.ghostWhite,
   },
   viewTitleDetail: {
     flexDirection: "row",
