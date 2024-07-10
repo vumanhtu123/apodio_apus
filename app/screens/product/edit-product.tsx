@@ -143,9 +143,11 @@ export const ProductEditScreen: FC = (item) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (dataEdit !== undefined) {
-        setAddVariant(true)
-        setDataGroupAttribute(dataEdit.attributeCategory);
-        setVariantInConfig(dataEdit.hasVariantInConfig);
+        if(dataEdit.hasVariantInConfig == false){
+          setAddVariant(true)
+          setDataGroupAttribute(dataEdit.attributeCategory);
+          setVariantInConfig(dataEdit.hasVariantInConfig);
+        }
       }
     });
     return unsubscribe;
@@ -228,6 +230,7 @@ export const ProductEditScreen: FC = (item) => {
       );
       setAttributeValues(valueAttributeArr);
       setTextAttributes(textAttributeArr);
+      setVariantInConfig(dataEdit.newDataEdit);
 
       const dropdownEdit:
         | ((prevState: never[]) => never[])
@@ -2154,6 +2157,7 @@ export const ProductEditScreen: FC = (item) => {
                       style={{
                         position: "absolute",
                         right: 0,
+                        top: -10,
                         flexDirection: "row",
                       }}>
                       {dataGroupAttribute?.length > 0 ? (
@@ -2529,7 +2533,7 @@ export const ProductEditScreen: FC = (item) => {
                       }}
                     />
                   ) : (
-                    <View style={{ marginTop: scaleHeight(15) }}>
+                    <View style={{ marginTop: scaleHeight(10) }}>
                       <Text
                         tx="createProductScreen.details"
                         style={{
@@ -2568,6 +2572,7 @@ export const ProductEditScreen: FC = (item) => {
                     style={{
                       position: "absolute",
                       right: 0,
+                      top: -15,
                       flexDirection: "row",
                     }}>
                     {dataCreateProduct?.length > 0 ? (
