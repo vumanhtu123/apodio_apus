@@ -136,7 +136,7 @@ export const ProductDetailScreen: FC = (item) => {
     const arrTextfieldAttribute = [];
 
     attributeCategory.forEach((items) => {
-      items.attributeOutputDtos.forEach((item) => {
+      items.attributeOutputList.forEach((item) => {
         if (item.displayType === "TEXTFIELD") {
           const newItem = {
             ...item.productAttributeValue[0],
@@ -150,7 +150,7 @@ export const ProductDetailScreen: FC = (item) => {
 
     const matchingElements = [];
     attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputDtos.forEach((dto) => {
+      itemA.attributeOutputList.forEach((dto) => {
         dto.productAttributeValue.forEach((attrValueA) => {
           detailsClassification?.attributeValues?.forEach((itemB) => {
             if (
@@ -182,7 +182,7 @@ export const ProductDetailScreen: FC = (item) => {
 
     const matchingElements1 = [];
     attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputDtos.forEach((dto) => {
+      itemA.attributeOutputList.forEach((dto) => {
         detailsClassification?.attributeValues?.forEach((itemB) => {
           if (dto.id === itemB.productAttributeId) {
             matchingElements1.push({ name: dto.name, id: dto.id });

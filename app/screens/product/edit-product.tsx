@@ -199,8 +199,8 @@ export const ProductEditScreen: FC = (item) => {
         | ((prevState: never[]) => never[])
         | { productAttributeId: any; value: any }[] = [];
       newDataEdit?.attributeCategory?.forEach(
-        (item: { attributeOutputDtos: any[] }) => {
-          item.attributeOutputDtos.forEach(
+        (item: { attributeOutputList: any[] }) => {
+          item.attributeOutputList.forEach(
             (items: { displayType: string; productAttributeValue: any[] }) => {
               if (items.displayType === "TEXTFIELD") {
                 items.productAttributeValue.forEach(
@@ -251,8 +251,8 @@ export const ProductEditScreen: FC = (item) => {
         }[] = [];
 
       newDataEdit?.attributeCategory?.forEach(
-        (item: { attributeOutputDtos: any[]; id?: any }) => {
-          item.attributeOutputDtos.forEach(
+        (item: { attributeOutputList: any[]; id?: any }) => {
+          item.attributeOutputList.forEach(
             (items: { displayType: string; productAttributeValue: any[] }) => {
               // if (items.displayType === 'SELECT_BOX') {
               if (items.displayType === "CHECKBOX") {
@@ -2130,7 +2130,7 @@ export const ProductEditScreen: FC = (item) => {
                           </View>
                           <View style={styles.viewLine2} />
 
-                          {item.attributeOutputDtos?.map((dto) => (
+                          {item.attributeOutputList?.map((dto) => (
                             <View
                               style={{
                                 marginTop: scaleHeight(margin.margin_12),
