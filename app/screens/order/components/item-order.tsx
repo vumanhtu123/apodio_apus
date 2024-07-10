@@ -56,7 +56,7 @@ export default function ItemOrder(props: ItemOrder) {
     if (dataTax === undefined) {
       return [];
     }
-    
+
     const groupedTaxValues = dataTax.reduce((acc: { [x: string]: { taxName: any; taxId: any; amount: any; }; }, curr: { items: any[]; }) => {
       curr.items.forEach((item: { taxId: any; amount: any; taxName: any; }) => {
         const key = item.taxId;
@@ -72,7 +72,7 @@ export default function ItemOrder(props: ItemOrder) {
       });
       return acc;
     }, {});
-    
+
     return Object.values(groupedTaxValues);
   }
 
@@ -85,10 +85,12 @@ export default function ItemOrder(props: ItemOrder) {
         <View>
           <View style={{ flexDirection: "row", marginBottom: -2 }}>
             <View style={{ flex: 1 }}>
-              <Text style={TEXTNAME} text={name} />
+              <Text style={[TEXTNAME, { maxWidth: scaleWidth(200) }]} text={name} />
             </View>
-            <View style={[VIEWSTATUS, styleViewStatus]}>
-              <Text style={[TEXTSTATUS, styleTextStatus]} tx={status} />
+            <View style={{ justifyContent: 'center' }}>
+              <View style={[VIEWSTATUS, styleViewStatus]}>
+                <Text style={[TEXTSTATUS, styleTextStatus]} tx={status} />
+              </View>
             </View>
           </View>
           <View style={{ flex: 1 }}>
@@ -131,7 +133,7 @@ export default function ItemOrder(props: ItemOrder) {
           <Text style={TEXTMONEY} text={formatVND(formatCurrency(commasToDots(totalTax)))} />
         </View>
       ) : null}
-                        
+
       {groupTaxValues(dataTax).map((item: any) => (
         <View style={{ flexDirection: "row" }}>
           <View style={{ flex: 1 }}>
@@ -182,14 +184,16 @@ const ROOT: ViewStyle = {
 };
 
 const VIEWSTATUS: ViewStyle = {
-  paddingHorizontal: padding.padding_8,
-  paddingVertical: padding.padding_2,
+  paddingHorizontal: scaleWidth(8),
+  paddingVertical: scaleHeight(4),
+  // flex : 2
 };
 
 const TEXTSTATUS: TextStyle = {
   fontWeight: "400",
   fontSize: fontSize.size8,
   lineHeight: 9.68,
+  // textAlign : 'right'
 };
 
 const TEXTNAME: TextStyle = {

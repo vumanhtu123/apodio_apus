@@ -75,7 +75,7 @@ export const ProductDetailScreen: FC = (item) => {
         setDetailProduct(data.baseTemplatePackingLine);
         setDataClassification(data);
         setDataClassificationToEdit(data);
-        console.log("response---getDetailProduct-------", data);
+        console.log("response---getDetailProduct-------", JSON.stringify(data));
         console.log(
           "attributeValues: ",
           data?.productVariants?.map((item) => item.attributeValues)
@@ -773,11 +773,11 @@ export const ProductDetailScreen: FC = (item) => {
                     </Text>
                     <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
                       <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.weight} kg</Text>
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.weight} kg</Text>
                     </View>
                     <View style={{ flex: 3, flexDirection: 'row' }}>
                       <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.volume} m3</Text>
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.volume} m3</Text>
                     </View>
                   </View>
                   {/* )

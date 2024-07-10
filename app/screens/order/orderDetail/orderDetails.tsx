@@ -43,7 +43,7 @@ export const OrderDetails: FC = observer(
         };
         const handleGetDetailOrder = async () => {
             try {
-                const response = await orderStore.getDetailOrder(orderId);
+                const response = await orderStore.getDetailOrder(orderId, false);
                 console.log("productId", orderId);
                 if (response && response.kind === "ok") {
                     const data = response.response.data;
@@ -303,7 +303,7 @@ export const OrderDetails: FC = observer(
                                     lineHeight: scaleHeight(14.52),
                                     marginBottom: scaleHeight(margin.margin_8)
                                 }]} >
-                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + " " : ""}
+                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + ", " : ""}
                                     {data.deliveryAddress?.ward?.name ? data.deliveryAddress.ward.name + ", " : ""}
                                     {data.deliveryAddress?.district?.name ? data.deliveryAddress.district.name + ", " : ""}
                                     {data.deliveryAddress?.city?.name ? data.deliveryAddress.city.name : ""}

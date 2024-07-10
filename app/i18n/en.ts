@@ -966,6 +966,7 @@ const en = {
     amountUntaxed: "Cộng tiền hàng",
     totalPrice: "Tổng tiền thanh toán",
     invoice: "Hoá đơn",
+    discount : 'Chiết khấu'
   },
   orderDetailScreen: {
     sent: "Chờ xác nhận",

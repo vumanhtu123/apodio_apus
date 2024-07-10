@@ -70,9 +70,9 @@ export class CategoryApi {
     size: any,
     search: any
   ): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_CATEGORY,
@@ -83,7 +83,7 @@ export class CategoryApi {
         }
       );
       console.log("page", page);
-      Loading.hide();
+      // Loading.hide();
       console.log(response)
       const data = response.data;
       if (response.data.data) {
@@ -91,7 +91,7 @@ export class CategoryApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide();
+      // Loading.hide();
       return { kind: "bad-data" };
     }
   }

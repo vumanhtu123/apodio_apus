@@ -388,7 +388,7 @@ export class OrderApi {
     }
   }
 
-  async getDetailOrder(id: number): Promise<any> {
+  async getDetailOrder(id: number, isLoading?: boolean): Promise<any> {
     Loading.show({
       text: "Loading...",
     });
@@ -396,10 +396,12 @@ export class OrderApi {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_DETAIL_ORDER,
         {
-          id,
+          id, isLoading
         }
       );
-      Loading.hide();
+      if (isLoading) {
+        Loading.hide();
+      }
       console.log("-----------------respone", response);
       const data = response.data;
       console.log("-----------------data", data.message);
@@ -408,7 +410,9 @@ export class OrderApi {
       }
       return { kind: "bad-data", response: data };
     } catch (e) {
-      Loading.hide();
+      if (isLoading) {
+        Loading.hide();
+      }
       return { kind: "bad-data" };
     }
   }

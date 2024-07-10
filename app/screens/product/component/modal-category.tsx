@@ -1,27 +1,40 @@
 import React, { useRef, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, RefreshControl, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Platform, RefreshControl, Text as TextRN, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal/dist/modal';
 import { Text } from '../../../components';
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Images } from '../../../../assets';
+import { CustomModal } from '../../../components/custom-modal';
 
 const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, selectedCategory, setSelectedCategory, setNameDirectory, isSearchBarVisible, setIndex, setPage, onSearchChange, isRefreshing, onRefresh }: any) => {
 
     const inputRef = useRef<TextInput | null>(null);
     const [search, setSearch] = useState("");
+    const [showLoading, setShowLoading] = useState(false)
     const handleSearch = (text) => {
         setSearch(text);
         // onSearchChange(text); // Gọi hàm callback để cập nhật state ở component cha
     };
     const handleOnSubmitSearch = () => {
+        // setShowLoading(true);
         if (onSearchChange) {
-            onSearchChange(search); // Gọi hàm callback để cập nhật state ở component cha và gọi API
+            onSearchChange(search)
         }
+        // setShowLoading(false);
     };
     const refresh = () => {
+        setShowLoading(true);
         setSearch('')
-        onRefresh();
+        // setShowLoading(true)
+        onRefresh()
+            .then((result: any) => {
+                setShowLoading(false);
+            })
+            .catch((error: any) => {
+                setShowLoading(false);
+            });
     }
+
     const renderItem = ({ item, index }: any) => (
         <TouchableOpacity
             key={index}
@@ -51,29 +64,30 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
         </TouchableOpacity>
     );
     return (
-        <Modal
+        // <Modal
+        <CustomModal
             isVisible={showCategory}
-            onBackdropPress={() => setShowCategory(false)}
-            backdropColor=""
-            animationIn="slideInUp"
-            animationOut="slideOutDown"
-            animationInTiming={500}
-            animationOutTiming={750}
-            style={{
-                // flex : 1,
-                justifyContent: 'flex-end',
-                margin: 0,
-            }}>
+            setIsVisible={setShowCategory}
+            isHideKeyBoards={showCategory}
+            isVisibleLoading={showLoading}
+        // style={{ height: '40%' }}
+        >
             <View
                 style={{
-                    borderWidth: 1,
                     borderColor: colors.palette.veryLightGrey,
-                    height: '40%',
-                    width: '100%',
-                    backgroundColor: colors.palette.neutral100,
-                    borderTopLeftRadius: 16, borderTopRightRadius: 16
+                    // backgroundColor: colors.palette.neutral100,
+                    height: scaleHeight(350)
                 }}
             >
+                <TextRN style={{
+                    textAlign: 'center',
+                    width: scaleWidth(68),
+                    height: scaleHeight(5),
+                    backgroundColor: '#C7C7C7',
+                    borderRadius: 8,
+                    // marginTop: scaleHeight(8),
+                    alignSelf: 'center',
+                }} />
                 <View style={{ paddingVertical: scaleHeight(12), paddingHorizontal: scaleWidth(16) }}>
                     <Text tx={'inforMerchant.Category'} style={{
                         fontWeight: '700', fontSize: fontSize.size14,
@@ -81,9 +95,9 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                         color: colors.palette.nero,
                     }} />
                 </View>
-                <View style = {{ height : scaleHeight(1), backgroundColor :'#E7EFFF'}}></View>
+                <View style={{ height: scaleHeight(1), backgroundColor: '#E7EFFF' }}></View>
                 <View>
-                    <View style= {{ position : 'absolute' , bottom : scaleHeight(20) , left : scaleWidth(20)}}>
+                    <View style={{ position: 'absolute', bottom: scaleHeight(20), left: scaleWidth(20) }}>
                         <Images.icon_searchBlack />
                     </View>
                     <TextInput
@@ -107,19 +121,23 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
                         enablesReturnKeyAutomatically
                     />
                 </View>
-                <FlatList
-                    data={dataCategory}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={isRefreshing}
-                            onRefresh={refresh}
-                        />
-                    }
-                />
+                <View
+                // style={{ height: '40%' }}
+                >
+                    <FlatList
+                        data={dataCategory}
+                        renderItem={renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={isRefreshing}
+                                onRefresh={refresh}
+                            />
+                        }
+                    />
+                </View>
             </View>
-        </Modal>
+        </CustomModal>
     )
 };
 

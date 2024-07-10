@@ -351,7 +351,7 @@ export const ProductScreen: FC = () => {
   const refreshCategoryFilter = async () => {
     setIsRefreshingCategory(true);
     // setPageCategories(0);
-    setValueSearchCategory("");
+    setValueSearchCategory('');
     // setOpenSearch(false)
     setDataCategoryFilter([]);
     // productStore.setSortCategory([]);

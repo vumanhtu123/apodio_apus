@@ -333,6 +333,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
                           ? colors.palette.mintCream
                           : "",
                 justifyContent: "center",
+                
               }}
               styleTextStatus={{
                 color:

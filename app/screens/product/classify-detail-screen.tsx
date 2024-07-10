@@ -188,7 +188,7 @@ export const ClassifyDetailScreen: FC = () => {
               tx="detailScreen.information"
               style={{ fontSize: fontSize.size14, fontWeight: "500", flex: 1 }} />
           </View>
-          {arrImagesProduct.length > 0 ? (
+          {arrImagesProduct?.length > 0 ? (
             <ScrollView
               style={{
                 marginVertical: scaleHeight(margin.margin_12),
