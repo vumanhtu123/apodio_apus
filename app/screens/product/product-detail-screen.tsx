@@ -141,8 +141,7 @@ export const ProductDetailScreen: FC = (item) => {
     if (!data.attributeCategory || data.attributeCategory.length === 0) {
       return [];
     }
-
-    const groupedData = data.attributeCategory.map(category => ({
+    const groupedData = data.attributeCategory?.map(category => ({
       name: category.name,
       items: category.attributeOutputList?.map(attr => ({
         value: attr.productAttributeValue.map(val => val.value),
@@ -783,6 +782,7 @@ export const ProductDetailScreen: FC = (item) => {
                   ))}
                 </View>
               ) : (
+                
                 <View>
                   {attributes?.map((item: any, index: any) => (
                     <View key={index}>
@@ -821,6 +821,7 @@ export const ProductDetailScreen: FC = (item) => {
                     </View>
                   ))}
                 </View>
+                
               )}
             </View>
           )}
