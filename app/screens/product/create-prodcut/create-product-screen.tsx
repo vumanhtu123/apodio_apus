@@ -388,14 +388,14 @@ export const ProductCreateScreen: FC = (item) => {
       const arrDataNew = dataCreateProduct?.map((items: any) => {
         return {
           ...items,
-          productPackingLines: items.weight?.weight?.map((item: any) => {
+          productPackingLines: items.weight?.weight.length  !== 0 ? items.weight?.weight?.map((item: any) => {
             return {
               uomGroupLineId: item.unit.id,
               amount: item.unit.conversionRate,
               volume: formatStringToFloat(item.volume),
               weight: formatStringToFloat(item.weight1)
             }
-          })
+          }): []
         };
       })
 
