@@ -773,13 +773,13 @@ export const ProductEditScreen: FC = (item) => {
         costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
         listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
         wholesalePrice: dataPrice,
-        baseTemplatePackingLine: data.weightOriginal.trim() === "" && data.volumeOriginal.trim() === "" ? {} : {
+        baseTemplatePackingLine: data.weightOriginal?.trim() === "" && data.volumeOriginal?.trim() === "" ? {} : {
           uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
           amount: 1,
           volume: formatStringToFloat(data.volumeOriginal),
           weight: formatStringToFloat(data.weightOriginal)
         },
-        productTemplatePackingLines: data.weightOriginal.trim() === "" && data.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
+        productTemplatePackingLines: data.weightOriginal?.trim() === "" && data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
         deleteVariantIds: newArr1,
       }
       console.log('dataCreate===========', JSON.stringify(doneData))
