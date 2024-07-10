@@ -1,7 +1,7 @@
 import { TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { Images } from "../../../../assets";
-import { scaleWidth } from "../../../theme";
+import { scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../components";
 
 interface InputNumpad {
@@ -11,7 +11,7 @@ interface InputNumpad {
 export const Numpad = (props: InputNumpad) => {
   const line1 = [
     "C",
-    <Images.ic_divide />,
+    <Images.ic_divide width={scaleWidth(20)} height={scaleHeight(20)} />,
     "X",
     <Images.ic_delete_calculator />,
   ];
@@ -43,7 +43,7 @@ export const Numpad = (props: InputNumpad) => {
               }}>
               <View
                 style={{
-                  borderRadius: 8,
+                  borderRadius: scaleWidth(8),
                   backgroundColor: "#E7EAED",
                   width: scaleWidth(80),
                   // height: scaleHeight(42),

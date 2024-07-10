@@ -1047,7 +1047,23 @@ const en = {
     selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
     chooseTheSourceOfMoney: "Chọn nguồn tiền",
     listOfFundingSources: 'Danh sách nguồn tiền',
-    storeWallet: 'Ví cửa hàng'
+    storeWallet: 'Ví cửa hàng',
+    enterTheAmount: 'Nhập số tiền',
+    unpaid:"Chưa trả",
+    paid:"Đã trả",
+    unclassified: "Chưa phân loại",
+    funds:"Nguồn tiền",
+    expense: "Phân loại",
+    importProduct:"Nhập hàng",
+    classifySourcesOfMoney: "Chọn để phân loại nguồn tiền",
+    trader: "Người giao dịch",
+    selectTrader: "Chọn người giao dịch",
+    note: "Ghi chú",
+    ex: "Ví dụ: Hóa đơn điện nước",
+    orderReference:"Tham chiếu đơn hàng",
+    selectOrder: "Chọn đơn hàng", 
+
+
   },
 
 

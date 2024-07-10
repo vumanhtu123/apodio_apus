@@ -1,9 +1,9 @@
 import { View, Text } from 'react-native'
 import React, { FC } from 'react'
-import { Styles } from './styles'
-import { Images } from '../../../../../assets'
-import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../../theme'
-import { commasToDots, formatCurrency, formatVND } from '../../../../utils/validate'
+import { Styles } from '../money-management/styles'
+import { Images } from '../../../../assets'
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme'
+import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 
 interface PropsItem {
     id: number,
