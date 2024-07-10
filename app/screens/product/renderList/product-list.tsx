@@ -35,6 +35,8 @@ interface ProductListProps {
     isLoadingMore: boolean;
     renderFooter: any;
     searchCategory?: any;
+    isRefreshingCategory?: boolean;
+    refreshCategory?: () => void;
 }
 
 export const ProductList: React.FC<ProductListProps> = ({
@@ -64,6 +66,8 @@ export const ProductList: React.FC<ProductListProps> = ({
     isLoadingMore,
     renderFooter,
     searchCategory,
+    isRefreshingCategory,
+    refreshCategory,
 }) => {
     const Loading = () => (
         <View style={{
@@ -159,6 +163,8 @@ export const ProductList: React.FC<ProductListProps> = ({
                 isSearchBarVisible={openSearch}
                 setIndex={setIndex}
                 onSearchChange={searchCategory}
+                isRefreshing = {isRefreshingCategory}
+                onRefresh = {refreshCategory}
             />
             <View style={styles.containerProduct}>
                 <FlatList

@@ -6,11 +6,13 @@ import {
 } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import moment from "moment";
-import CustomTabs from "./custom-tab";
+// import CustomTabs from "./custom-tab";
 import { getDateLast7days, getDateToday, getDateTodayOneDate, getOfMonthdays } from "../../utils/validate";
 import { Text } from "../text/text";
 import { colors, padding, scaleHeight } from "../../theme";
 import { CustomModal } from "../custom-modal";
+import CustomTabs from "./custom-tab/index";
+// import { CustomModal } from "../custom-modal/index";
 
 LocaleConfig.locales['vi'] = {
   monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],

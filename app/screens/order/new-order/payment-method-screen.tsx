@@ -3,7 +3,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header, Screen, Text, TextField } from "../../../components";
 import { Images } from "../../../../assets";
-import { colors, fontSize, scaleHeight } from "../../../theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { ModalPayment } from "../components/modal-payment-method";
@@ -28,7 +28,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const [isCredit, setIsCredit] = useState(false)
 
   const { orderStore, vendorStore } = useStores();
-
+  // console.log('zxcxzmmlmllm', credit)
   const getBalanceLimit = async () => {
     if (orderStore.dataClientSelect !== null) {
       const response = await orderStore.getBalanceLimit(Number(orderStore.dataClientSelect.id))
@@ -75,7 +75,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
 
   const Sum = () => {
     // if (type === true) {
-      return Number(price)
+    return Number(price)
     // } else {
     //   if ((Number(price) - Number(debtAmount)) >= Number(0)) {
     //     return Number(price) - Number(debtAmount)
@@ -192,7 +192,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           {/* ) : null)} */}
           <Text
             style={{
-              fontSize: 20,
+              fontSize: fontSize.size20,
               fontWeight: "600",
               color: "#FF4956",
               textAlign: "center",
@@ -200,27 +200,90 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             }}>
             {formatVND(formatCurrency(commasToDots(Sum())))}
           </Text>
-          <View style={{ flexDirection: "row", marginHorizontal: 16 }}>
+          {type === false  ? (
+            <View style={{ flexDirection: "row", marginHorizontal: scaleWidth(16) }}>
+              <Text
+                style={{
+                  fontSize: fontSize.size12,
+                  fontWeight: "400",
+                  color: "#747475",
+                }}
+                tx="order.debt_limit"></Text>
+              <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
+                {formatVND(formatCurrency(commasToDots(debtAmount)))}
+              </Text>
+            </View>
+          ) : null}
+          <View style={{ flexDirection: "row", marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(8) }}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "400",
                 color: "#747475",
               }}
               tx="order.text_money_limit"></Text>
-            <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
+            <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
               {formatVND(formatCurrency(commasToDots(Sum1())))}
             </Text>
           </View>
+          <TouchableOpacity
+            onPress={() => {
+              setButtonPayment(true);
+              // console.log('sakdas', method)
+            }}
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: 'center',
+              marginHorizontal: scaleWidth(16),
+              marginVertical: scaleHeight(8)
+            }}>
+            <Text
+              tx="order.method_payment"
+              style={{
+                fontSize: 12,
+                fontWeight: "400",
+                color: "#242424",
+              }}></Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View>
+                <Text
+                  style={{
+                    fontSize: fontSize.size12,
+                    fontWeight: "400",
+                    color: "#242424",
+                    marginRight: scaleWidth(6),
+                    textAlign: 'right'
+
+                  }}>
+                  {countRef.current}
+                  {/* {credit} */}
+                </Text>
+                {method === 1 ? (
+                  <Text
+                    style={{
+                      fontSize: fontSize.size12,
+                      fontWeight: "400",
+                      marginRight: scaleWidth(6),
+                      textAlign: 'right',
+                      color: "#FF4956"
+                    }}>
+                    {`(${formatVND(formatCurrency(commasToDots(credit)))})`}
+                  </Text>
+                ) : null}
+              </View>
+              <Images.icon_caretRight2 />
+            </View>
+          </TouchableOpacity>
           <Controller
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 keyboardType='numeric'
-                labelTx={"order.customer_paid"}
+                labelTx={type === false && price > debtAmount ? "order.customer_needPaid" : "order.customer_paid" }
                 style={{
-                  marginHorizontal: 16,
-                  marginVertical: 8,
+                  marginHorizontal: scaleWidth(16),
+                  marginVertical: scaleHeight(8),
                   backgroundColor: "white",
                   borderRadius: 8,
                 }}
@@ -261,7 +324,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       type: "validate",
                       message: "Không thể trả trước quá giá trị đối trừ công nợ",
                     })
-                    return 
+                    return
                   }
                   if (Number(formatStringToFloat(value)) >= Number(Sum1()) && Number(formatStringToFloat(value)) <= Number(price)) {
                     setValue('price', value.toString())
@@ -276,39 +339,16 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             name="price"
             rules={{ required: "Số tiền là bắt buộc" }}
           />
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               marginHorizontal: 16,
-            }}>
-            <Text
-              tx="order.method_payment"
-              style={{
-                fontSize: 12,
-                fontWeight: "400",
-                color: "#242424",
-              }}></Text>
-            
-            <TouchableOpacity
-              onPress={() => {
-                setButtonPayment(true);
-              }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    color: "#242424",
-                    marginRight: 6,
-                  }}>
-                  {countRef.current}
-                </Text>
-                <Images.icon_caretRight2 />
-              </View>
-            </TouchableOpacity>
-          </View>
-          {warning === true? null: <View
+            }}> */}
+
+
+          {/* </View> */}
+          {warning === true ? null : <View
             style={{
               flexDirection: "row",
               marginHorizontal: 16,
@@ -367,6 +407,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         setMethod={function (item: number, name: string): void {
           setMethod(item);
           countRef.current = name;
+          console.log('/////////////', item)
           setCheck(true)
           if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
             if (Number(Sum1()) <= credit) {

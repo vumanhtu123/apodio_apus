@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
   textInfo: {
     color: '#242424',
     fontSize: fontSize.size12,
+    // maxWidth : scaleWidth(250)
     // textDecorationLine: 'underline',
     // textAlign: 'center',/
   },
@@ -56,35 +57,48 @@ export const styles = StyleSheet.create({
   row: {
     borderBottomWidth: 1,
     borderBottomColor: '#f6f7fb',
-
+    paddingBottom : scaleHeight(15)
   },
   cell: {
     // flex: 1,
     // backgroundColor : 'red',
-    marginRight: scaleWidth(12),
-    width: scaleWidth(90)
+    // marginRight: scaleWidth(9),
+    // width: scaleWidth(80)
+    marginTop : 15
   },
   cellUnitPrice: {
     fontSize : fontSize.size12,
     marginRight: scaleWidth(12),
-    width: scaleWidth(80)
-
+    width: scaleWidth(80),
+    textAlign : 'right'
   },
   cellAmount: {
     fontSize : fontSize.size12,
     flex: 1,
     marginRight: scaleWidth(12),
-    width: scaleWidth(52)
+    width: scaleWidth(80),
+    textAlign : 'right'
+
+  },
+  cellDiscount: {
+    fontSize : fontSize.size12,
+    flex: 1,
+    marginRight: scaleWidth(12),
+    width: scaleWidth(80),
+    textAlign : 'right'
+
   },
   cellMoney: {
     fontSize : fontSize.size12,
     flex: 1,
-    width: scaleWidth(72),
+    // maxWidth: scaleWidth(80),
+    minWidth :scaleWidth(80),
     fontWeight: '600',
     textAlign : 'right'
   },
-  sanPhamText: {
-    fontSize: fontSize.size12
+  cellName: {
+    fontSize: fontSize.size12,
+    maxWidth : scaleWidth(80)
   },
   sizeText: {
     fontSize: fontSize.size12
@@ -97,28 +111,40 @@ export const styles = StyleSheet.create({
   cellProductHeader: {
     fontSize: fontSize.size12,
     fontWeight: '600',
-    marginRight: scaleWidth(12),
-    width: scaleWidth(90)
+    marginRight: scaleWidth(9),
+    width: scaleWidth(80)
   },
   cellUnitPriceHeader: {
     fontSize: fontSize.size12,
     fontWeight: '600',
     marginRight: scaleWidth(12),
-    width: scaleWidth(80)
+    width: scaleWidth(80),
+    textAlign : 'right'
+
+  },
+  cellDiscountPriceHeader: {
+    fontSize: fontSize.size12,
+    fontWeight: '600',
+    marginRight: scaleWidth(12),
+    width: scaleWidth(80),
+    textAlign : 'right',
+
+    // backgroundColor : 'red'
   },
   cellAmountHeader: {
     fontSize: fontSize.size12,
     fontWeight: '600',
     flex: 1,
     marginRight: scaleWidth(12),
-    width: scaleWidth(52)
+    width: scaleWidth(80),
+    textAlign : 'right'
   },
   cellMoneyHeader: {
     fontSize: fontSize.size12,
     flex: 1,
     fontWeight: '600',
     textAlign : 'right',
-    width : scaleWidth(72),
+    // width : scaleWidth(80),
     // backgroundColor : 'red'
   },
   rowPrice: {

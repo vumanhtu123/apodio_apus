@@ -50,21 +50,24 @@ export const ModalPayment = (data: InputSelect) => {
             fontSize: fontSize.size14,
             marginHorizontal: scaleWidth(24),
             marginTop: scaleHeight(25),
+            marginBottom : scaleHeight(15)
           }}></Text>
-        {data.arrData?.map((payment: any, index) => {
-          return (
-            <Item_Payment
-              setData={function (value: any, name: any): void {
-                data.setMethod(value, name)
-              }}
-              debt={data.debt}
-              name={payment.label}
-              id={data.method}
-              index={index}
-              length={data.arrData.length}
-            />
-          );
-        })}
+        <View style={{ marginBottom: scaleHeight(20) }}>
+          {data.arrData?.map((payment: any, index) => {
+            return (
+              <Item_Payment
+                setData={function (value: any, name: any): void {
+                  data.setMethod(value, name)
+                }}
+                debt={data.debt}
+                name={payment.label}
+                id={data.method}
+                index={index}
+                length={data.arrData.length}
+              />
+            );
+          })}
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -123,8 +126,6 @@ export const ModalPayment = (data: InputSelect) => {
                 fontWeight: "600",
                 textAlign: 'center',
                 width: scaleWidth(55)
-                // marginHorizontal: scaleWidth(50),
-                // marginVertical: scaleHeight(12),
               }}></Text>
           </TouchableOpacity>
         </View>
@@ -148,22 +149,21 @@ const Item_Payment = (data: InputItem) => {
     <View
       style={{
         flexDirection: "column",
-        marginHorizontal: 15,
-        marginBottom: 20,
+        marginHorizontal: scaleWidth(15),
       }}>
       <View
         style={{
           height: 1,
           backgroundColor: "#E7EFFF",
-          marginVertical: 16,
+          marginVertical: scaleHeight(16),
         }}
       />
       <TouchableOpacity
         onPress={() => {
           {
-            data.index === data.length - 1 && data.debt.isHaveDebtLimit === false 
-              ? null : data.index === data.length - 1 && data.debt.debtAmount ===0 ? null
-              : data.setData(data.index, data.name);
+            data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
+              ? null : data.index === data.length - 1 && data.debt.debtAmount === 0 ? null
+                : data.setData(data.index, data.name);
           }
           console.log("0", data.name);
         }}>
@@ -171,7 +171,7 @@ const Item_Payment = (data: InputItem) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginHorizontal: 11,
+            marginHorizontal: scaleWidth(10),
           }}>
           <View
             style={{
@@ -188,56 +188,56 @@ const Item_Payment = (data: InputItem) => {
                 height: 16,
                 backgroundColor:
                   data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
-                    ? "white" : data.index === data.length - 1 && data.debt.debtAmount === 0 ?  "white"
-                    : data.id == data.index
-                      ? "#0078D4"
-                      : "white",
+                    ? "white" : data.index === data.length - 1 && data.debt.debtAmount === 0 ? "white"
+                      : data.id == data.index
+                        ? "#0078D4"
+                        : "white",
                 alignSelf: "center",
               }}></View>
           </View>
-          <Text
-            text={data.name}
-            style={{
-              fontSize: 14,
-              fontWeight: "500",
-              color:
-                data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
-                  ? "#DFE0EB" : data.index === data.length - 1 && data.debt.debtAmount === 0 ?  "#DFE0EB"
-                  : data.index !== data.length - 1 && data.debt.isHaveDebtLimit === true
-                    ? "#242424"
-                    : "#242424",
-              paddingHorizontal: 8,
-            }}></Text>
-          {data.index === data.length - 1 && data.debt.isHaveDebtLimit === true && data.debt.debtAmount !== 0 ? (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text
-                tx="order.available_limit"
-                style={{
-                  fontWeight: "400",
-                  fontSize: 12,
-                  color: "#747475",
-                  alignContent: "center",
-                }}></Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  color: "#FF0000",
-                }}>
-                {formatVND(formatCurrency(commasToDots(data.debt.debtAmount))) ?? 0}
+          <View style={{ flexDirection: 'column', justifyContent: 'center', paddingHorizontal: scaleWidth(8) }}>
+            <Text
+              text={data.name}
+              style={{
+                fontSize: fontSize.size14,
+                fontWeight: "500",
+                color:
+                  data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
+                    ? "#DFE0EB" : data.index === data.length - 1 && data.debt.debtAmount === 0 ? "#DFE0EB"
+                      : data.index !== data.length - 1 && data.debt.isHaveDebtLimit === true
+                        ? "#242424"
+                        : "#242424",
+              }}></Text>
+            {data.index === data.length - 1 && data.debt.isHaveDebtLimit === true && data.debt.debtAmount !== 0 ? (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text
-                  text=")"
+                  tx="order.available_limit"
                   style={{
                     fontWeight: "400",
-                    fontSize: 12,
+                    fontSize: fontSize.size12,
                     color: "#747475",
                     alignContent: "center",
+                  }}></Text>
+                <Text
+                  style={{
+                    fontSize: fontSize.size12,
+                    fontWeight: "400",
+                    color: "#FF0000",
                   }}>
-
+                  {formatVND(formatCurrency(commasToDots(data.debt.debtAmount))) ?? 0}
+                  <Text
+                    text=")"
+                    style={{
+                      fontWeight: "400",
+                      fontSize: fontSize.size12,
+                      color: "#747475",
+                      alignContent: "center",
+                    }}>
+                  </Text>
                 </Text>
-              </Text>
-            </View>
-          ) : null}
+              </View>
+            ) : null}
+          </View>
         </View>
       </TouchableOpacity>
     </View>

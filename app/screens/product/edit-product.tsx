@@ -2174,7 +2174,7 @@ export const ProductEditScreen: FC = (item) => {
                       style={{
                         position: "absolute",
                         right: 0,
-                        top: -10,
+                        top: scaleHeight(-15),
                         flexDirection: "row",
                       }}>
                       {dataGroupAttribute?.length > 0 ? (
@@ -2589,7 +2589,7 @@ export const ProductEditScreen: FC = (item) => {
                     style={{
                       position: "absolute",
                       right: 0,
-                      top: -15,
+                      top: scaleHeight(-15),
                       flexDirection: "row",
                     }}>
                     {dataCreateProduct?.length > 0 ? (
