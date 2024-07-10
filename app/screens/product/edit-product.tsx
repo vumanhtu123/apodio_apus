@@ -721,8 +721,8 @@ export const ProductEditScreen: FC = (item) => {
       })
       console.log('3')
       const doneData = {
-        sku: methods.watch('SKU'),
-        name: methods.watch('productName'),
+        sku: data.SKU === "" ? null: data.SKU,
+        name: data.productName,
         purchaseOk: valuePurchase,
         imageUrls: imagesNote,
         saleOk: true,
@@ -744,13 +744,13 @@ export const ProductEditScreen: FC = (item) => {
         costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
         listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
         wholesalePrice: dataPrice,
-        baseTemplatePackingLine: data.weightOriginal === "" && data.volumeOriginal === "" ? {} : {
+        baseTemplatePackingLine: data.weightOriginal.trim() === "" && data.volumeOriginal.trim() === "" ? {} : {
           uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
           amount: 1,
           volume: formatStringToFloat(data.volumeOriginal),
           weight: formatStringToFloat(data.weightOriginal)
         },
-        productTemplatePackingLines: valueSwitchUnit == false ? [] : packingLine,
+        productTemplatePackingLines: data.weightOriginal.trim() === "" && data.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
         deleteVariantIds: newArr1,
       }
       console.log('dataCreate===========', JSON.stringify(doneData))

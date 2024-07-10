@@ -388,7 +388,7 @@ export const ProductCreateScreen: FC = (item) => {
       const arrDataNew = dataCreateProduct?.map((items: any) => {
         return {
           ...items,
-          productPackingLines: items.weight?.weight.map((item: any) => {
+          productPackingLines: items.weight?.weight?.map((item: any) => {
             return {
               uomGroupLineId: item.unit.id,
               amount: item.unit.conversionRate,
@@ -398,7 +398,7 @@ export const ProductCreateScreen: FC = (item) => {
           })
         };
       })
-      // console.log(arrDataNew[0]?.productPackingLines)
+
       const newArr = arrDataNew?.map((item) => {
         return {
           name: methods.getValues("productName") + " - " + item.name,
@@ -408,7 +408,7 @@ export const ProductCreateScreen: FC = (item) => {
           listPrice: formatStringToFloat(item.listPrice),
           wholesalePrice: item.wholesalePrice,
           attributeValues: item.attributeValues,
-          baseProductPackingLine: valueSwitchUnit === false ? {
+          baseProductPackingLine: item.weight?.weightOriginal.trim() === "" && item.weight?.volumeOriginal.trim() === "" ? {} : (valueSwitchUnit === false ? {
             uomGroupLineId: null,
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
@@ -418,8 +418,8 @@ export const ProductCreateScreen: FC = (item) => {
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
             weight: formatStringToFloat(item.weight?.weightOriginal),
-          },
-          productPackingLines: valueSwitchUnit == false ? [] : item?.productPackingLines
+          }),
+          productPackingLines: item.weight?.weightOriginal.trim() === "" && item.weight?.volumeOriginal.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item?.productPackingLines)
         };
       });
       const dataPrice2 = retailPriceProduct.map((item: any) => {
@@ -468,7 +468,7 @@ export const ProductCreateScreen: FC = (item) => {
         }
       })
       const doneData = {
-        sku: data.SKU,
+        sku: data.SKU === "" ? null: data.SKU,
         name: data.productName,
         purchaseOk: valuePurchase,
         imageUrls: imagesNote,
@@ -498,7 +498,7 @@ export const ProductCreateScreen: FC = (item) => {
           volume: formatStringToFloat(data.volumeOriginal),
           weight: formatStringToFloat(data.weightOriginal)
         },
-        productTemplatePackingLines: valueSwitchUnit == false ? [] : packingLine,
+        productTemplatePackingLines:data.weightOriginal === "" && data.volumeOriginal === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
         activated: true,
       }
       console.log('Done data create: ', JSON.stringify(doneData))
