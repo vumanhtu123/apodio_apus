@@ -7,9 +7,11 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   viewLine: { height: scaleHeight(12), backgroundColor: "#F3F4F9" },
+  
   viewDetails: {
     marginVertical: scaleHeight(margin.margin_10),
-    marginHorizontal: scaleWidth(margin.margin_16),
+    borderWidth: scaleHeight(1),
+    borderColor: colors.palette.ghostWhite,
     borderRadius: 8,
     shadowOffset: { width: 0, height: 4 },
     shadowColor: "#3A43E5",
@@ -24,7 +26,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: scaleWidth(padding.padding_12),
   },
   viewLine2: {
-    borderWidth: scaleHeight(1),
+    borderWidth: scaleHeight(0.5),
     borderColor: colors.palette.ghostWhite,
   },
   btnLibrary: {
