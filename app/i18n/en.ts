@@ -1,4 +1,3 @@
-
 const en = {
   common: {
     ok: "OK",
@@ -612,12 +611,12 @@ const en = {
     paymentTerm2: "Hạn thanh toán",
     exChange: "Trao đổi",
     detailDebtSupplier: "Chi tiết công nợ NCC",
-    detailDebt: 'Chi tiết công nợ',
+    detailDebt: "Chi tiết công nợ",
     like: "Thích",
     comment: "Bình luận",
     writeCommentHere: "Viết bình luận của bạn tại đây",
     pay: "Thanh toán nợ",
-    pay2: 'Thanh toán',
+    pay2: "Thanh toán",
     paymentAmount: "Số tiền thanh toán",
     amount: "Tiền mặt",
     payments: "Hình thức thanh toán",
@@ -630,8 +629,8 @@ const en = {
     transaction: "Giao dịch",
     debtIncurred: "Phát sinh nợ",
     ariseYes: "Phát sinh có",
-    generateDebtForOrders :"Phát sinh công nợ \ncho đơn hàng",
-    payDebt: 'Thanh toán công nợ',
+    generateDebtForOrders: "Phát sinh công nợ \ncho đơn hàng",
+    payDebt: "Thanh toán công nợ",
   },
   productScreen: {
     create_product: "Tạo sản phẩm",
@@ -691,7 +690,6 @@ const en = {
     weightConversion: "Tải trọng theo đơn vị quy đổi",
     addLine: "Thêm dòng",
     weightExchange: "Tải trọng theo đơn vị quy đổi",
-
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -708,8 +706,8 @@ const en = {
     properties: "Thuộc tính chung",
     detailProperty: "Xem chi tiết thuộc tính",
     orders: "Đơn hàng",
-    weight : 'Trọng lượng',
-    volume : 'Thể tích'
+    weight: "Trọng lượng",
+    volume: "Thể tích",
   },
   createProductScreen: {
     classify: "Phân loại",
@@ -974,9 +972,9 @@ const en = {
     toInvoice: "Chờ thanh toán",
     partialInvoice: "Thanh toán một phần",
     invoiced: "Đã thanh toán",
-    outstanding : 'Còn nợ',
-    cash : 'Tiền mặt',
-    debt : 'Công nợ'
+    outstanding: "Còn nợ",
+    cash: "Tiền mặt",
+    debt: "Công nợ",
   },
   selectClient: {
     selectClient: "Chọn khách hàng",
@@ -1045,7 +1043,8 @@ const en = {
     bank: "Ngân hàng",
     sourceOfMoneyReceived: "Nguồn tiền nhận",
     selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
-  }
+    funds: "Nguồn tiền",
+  },
 
   // @demo remove-block-end
 };

@@ -23,8 +23,6 @@ export const ItemRevenue = (props: InputItem) => {
         flexDirection: "row",
         backgroundColor: "#E7E9ED",
         alignItems: "center",
-        alignContent: "center",
-        justifyContent: "space-between",
       }}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View
@@ -59,6 +57,8 @@ export const ItemRevenue = (props: InputItem) => {
           color: "#FF4956",
           fontSize: 12,
           fontWeight: "600",
+          textAlign: "center",
+          marginHorizontal: props.revenueValue == "0" ? 80 : 70,
         }}>
         {props.revenueValue}
       </Text>
@@ -67,7 +67,8 @@ export const ItemRevenue = (props: InputItem) => {
           color: "#00CC6A",
           fontSize: 12,
           fontWeight: "600",
-          marginRight: 25,
+          textAlign: "center",
+          marginLeft: props.expenditureValue !== "0" || undefined ? 10 : 15,
         }}>
         {props.expenditureValue}
       </Text>
@@ -82,6 +83,7 @@ const ItemRevenueNoDate = (props: any) => {
         marginHorizontal: 16,
         marginVertical: 12,
         flexDirection: "row",
+        alignItems: "center",
         justifyContent: "space-between",
       }}>
       <Text
@@ -90,16 +92,21 @@ const ItemRevenueNoDate = (props: any) => {
       <View
         style={{
           flexDirection: "column",
-          marginHorizontal: 140,
           alignItems: "center",
         }}>
         <Text style={{ fontSize: 12, fontWeight: "600", color: "#FF4956" }}>
           {props.revenueValue}
         </Text>
-        <Text style={{ fontSize: 12, fontWeight: "600", color: "#747475" }}>
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: "600",
+            color: "#747475",
+          }}>
           {props.paymentMethod}
         </Text>
       </View>
+      <View />
     </View>
   );
 };
