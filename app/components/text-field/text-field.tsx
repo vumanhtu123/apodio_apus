@@ -63,7 +63,6 @@ const INPUT: TextStyle = {
   // minHeight: 50,
   fontSize: fontSize.size16,
   paddingTop: Platform.OS === "android" ? 8 : 8,
-  paddingLeft: scaleWidth(16),
   flex: 1,
 };
 const LABEL: TextStyle = {};
@@ -127,6 +126,8 @@ export interface TextFieldProps extends TextInputProps {
   editable?: boolean;
   RightIcon?: any;
   pressRightIcon?: () => void;
+  LeftIcon?: any;
+  pressLeftIcon?: () => void;
   showRightIcon?: boolean;
   styleTextError?: StyleProp<TextStyle>;
   styleTextRight?: StyleProp<TextStyle>;
@@ -167,6 +168,8 @@ export function TextField(props: TextFieldProps) {
     txColor,
     editable,
     RightIcon,
+    LeftIcon,
+    pressLeftIcon,
     pressRightIcon,
     showRightIcon = true,
     labelDolphin,
@@ -319,6 +322,16 @@ export function TextField(props: TextFieldProps) {
               marginTop: (Platform.OS === 'ios' ? margin.margin_10 : null),
               flexDirection: "row",
             }}>
+            {/* <View style={{}}> */}
+            {/* {LeftIcon ? (
+              <View>
+                <TouchableOpacity onPress={pressLeftIcon} style={{ marginLeft: scaleWidth(10), justifyContent: 'center' }}>
+                  <LeftIcon width={scaleWidth(18)} height={scaleHeight(18)} />
+                </TouchableOpacity>
+                {/* <View style= ></View> */}
+              {/* </View>
+            ) : null} */}
+            {/* </View> */}
             <TextInput
               {...props}
               editable={editable}
@@ -328,7 +341,11 @@ export function TextField(props: TextFieldProps) {
               value={valueInput ? valueInput : value}
               style={[
                 inputStyles,
-                { paddingRight: showRightIcon === true ? scaleWidth(16) : 0 },
+                {
+                  paddingRight: showRightIcon === true ? scaleWidth(16) : 0,
+                  paddingLeft: LeftIcon ? scaleWidth(5) : scaleWidth(16),
+
+                },
               ]}
               ref={forwardedRef ? forwardedRef : focus}
               onFocus={handleFocus}

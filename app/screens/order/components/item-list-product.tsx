@@ -57,6 +57,7 @@ interface AddProduct {
   id: number;
   inputDiscount: (textInput: any) => void;
   inputPrice: (textInput: any) => void;
+  isEdit?: any
 }
 
 export default function ItemListProduct(props: AddProduct) {
@@ -86,6 +87,7 @@ export default function ItemListProduct(props: AddProduct) {
     handleUpdatePrice,
     selectUpdate,
     inputPrice,
+    isEdit,
   } = props;
 
   const {
@@ -184,7 +186,7 @@ export default function ItemListProduct(props: AddProduct) {
                   setPriceId(props.id)
                   setModalPriceUnit(true)
                 }}>
-                <Images.icon_edit />
+                {isEdit === 'edit' ? null : <Images.icon_edit />}
               </TouchableOpacity>
             ) : null}
             <Text
