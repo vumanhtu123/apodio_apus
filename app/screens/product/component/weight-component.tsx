@@ -56,10 +56,17 @@ export default function ItemWeight(props: ItemWeight) {
     return { ...item, label: item.unitName }
   }))
   useEffect(() => {
-    const newArr = props.dataUnitGroup?.filter((item1: any) => !props.dataDefault?.weight?.some((item2: any) => item2.unit.id === item1.id));
-    setData(newArr.map((item: any) => {
-      return { ...item, label: item.unitName }
-    }))
+    if (props.dataDefault !== undefined) {
+      const newArr = props.dataUnitGroup?.filter((item1: any) => !props.dataDefault?.weight?.some((item2: any) => item2.unit.id === item1.id));
+      setData(newArr?.map((item: any) => {
+        return { ...item, label: item.unitName }
+      }))
+    } else {
+      const newArr = props.dataUnitGroup?.filter((item1: any) => !fields.some((item2: any) => item2.unit.id === item1.id));
+      setData(newArr?.map((item: any) => {
+        return { ...item, label: item.unitName }
+      }))
+    }
   }, [props.dataUnitGroup])
 
   const deepEqual = (obj1, obj2) => {
@@ -76,11 +83,12 @@ export default function ItemWeight(props: ItemWeight) {
     const newArr = data.map((item: any) => {
       return item.unit
     })
-    const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
+     const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
     const newArr2 = filteredData.concat(itemValue)
     const unitGroupData = props.dataUnitGroup?.map((item: any) => {
       return { ...item, label: item.unitName }
     })
+    console.log(unitGroupData)
     const newArr3 = unitGroupData.filter(
       (itemA) => !newArr2.some((itemB: any) => deepEqual(itemA, itemB))
     );
