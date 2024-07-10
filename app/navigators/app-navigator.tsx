@@ -135,6 +135,7 @@ export type NavigatorParamList = {
   detailDebt: undefined;
   orderSuccess: undefined;
   orderScreen: undefined;
+  editWeight: undefined;
   RevenueScreen: undefined;
   receivable: undefined;
   detailReceivable: undefined;
@@ -472,6 +473,11 @@ export const AppStack = () => {
         name="SplashScreen"
         options={{ gestureEnabled: false }}
         component={Screens.SplashScreen1}
+      />
+      <Stack.Screen
+        name="editWeight"
+        options={{ gestureEnabled: false }}
+        component={Screens.EditWeight}
       />
       <Stack.Screen
         name="detailsSupplier"

@@ -63,7 +63,8 @@ export class AttributeApi {
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_ATTRIBUTE_GROUP, {
-        name
+        name,
+        activated: true
       }
       )
       Loading.hide();
@@ -83,6 +84,7 @@ export class AttributeApi {
       text: 'Loading...',
     });
     try {
+      console.log('----arr----', JSON.stringify(DataAttribute))
       const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_DATA_ATTRIBUTE_GROUP+ "?attributeCategoryId=" + attributeCategoryId,
         DataAttribute,
       )

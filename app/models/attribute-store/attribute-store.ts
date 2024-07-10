@@ -95,7 +95,7 @@ export const AttributeStoreModel = types
       const attributeApi = new AttributeApi(self.environment.api);
       const result: AttributeDataGroupResult =
         yield attributeApi.createAttributeDataGroup(dataAttribute, id);
-      // console.log('resulttt' , result)
+       console.log('resulttt2' , result)
       if (result.kind === "ok") {
         return result;
       } else {

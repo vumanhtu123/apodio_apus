@@ -1,19 +1,11 @@
 import {
   useNavigation,
   useRoute,
-  useFocusEffect,
 } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  Dimensions,
   FlatList,
-  Image,
   Linking,
-  Platform,
-  RefreshControl,
-  StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -24,17 +16,16 @@ import {
   colors,
   fontSize,
   margin,
+  padding,
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { products, suppliers, detailProduct, listCreateProduct } from "../data";
 // import { styles } from "./styles"
-import { AutoImage } from "../../../components/auto-image/auto-image";
 import ProductAttribute from "../component/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
-import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
+import { RESULTS } from "react-native-permissions";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { TextField } from "../../../components/text-field/text-field";
 import { Switch } from "../../../components";
 import { InputSelect } from "../../../components/input-select/inputSelect";
@@ -51,15 +42,13 @@ import {
   convertRetailPrice,
   convertWholesalePrice,
   formatCurrency,
-  formatNumber,
   formatNumberByString,
-  isFormValid,
+  formatStringToFloat,
   mapDataDistribute,
   parternValidateSku,
   removeNonNumeric,
   validateFileSize,
 } from "../../../utils/validate";
-import { G } from "react-native-svg";
 import UnitModal from "../component/modal-unit";
 import {
   ALERT_TYPE,
@@ -67,8 +56,6 @@ import {
   Toast,
   Loading,
 } from "../../../components/dialog-notification";
-import Carousel, { Pagination } from "react-native-snap-carousel";
-import Modal from "react-native-modal/dist/modal";
 import { translate } from "../../../i18n/translate";
 // import { styles } from "./styles";
 import {
@@ -109,7 +96,7 @@ export const ProductCreateScreen: FC = (item) => {
     label2: "DEFAULT",
   });
   const [dataTagConvert, setDataTagConvert] = useState<{}[]>([]);
-  const [tags, setTags] = useState([]);
+  const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
   const [detailUnitGroupData, setDetailUnitGroupData] = useState();
   const [retailPriceProduct, setRetailPriceProduct] = useState([]);
@@ -119,23 +106,26 @@ export const ProductCreateScreen: FC = (item) => {
   const [indexVariant, setIndexVariant] = useState(0);
   const [defaultTags, setDefaultTags] = useState([]);
   const [attributeValues, setAttributeValues] = useState([]);
+  const [attributeIds, setAttributeIds] = useState([]);
   const [textAttributes, setTextAttributes] = useState([]);
   const [errorSku, setErrorSku] = useState("");
   const [dataModal, setDataModal] = useState<{}[]>([]);
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
   const [selectedItems, setSelectedItems] = useState([]);
   const [dataCreateProduct, setDataCreateProduct] = useState([]);
+  const [showDetails, setShowDetails] = useState(false);
+  const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     watch,
     reset,
   } = useForm({
     mode: "all",
   });
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
-  const [uomId, setUomId] = useState({ id: "", label: "" });
+  const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: '' });
   const route = useRoute();
   const {
     selectedIds,
@@ -143,12 +133,18 @@ export const ProductCreateScreen: FC = (item) => {
     nameUnitGroup,
     attributeArr,
     dropdownSelected,
+    newDataCreateProduct,
+    isVariantInConfig,
+    selectedGroupAttribute,
     resetData,
     goBackConversionGroup,
   }: any = route?.params || {};
   const [modalImages, setModalImages] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const refCarousel = useRef(null);
+  const methods = useForm({ defaultValues: { productName: '', costPrice: '', listPrice: '', SKU: '', weight: '', weightOriginal: '', volumeOriginal: '' } })
+  const a = useRef(1)
+  console.log('re-render', a.current++)
 
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -164,6 +160,7 @@ export const ProductCreateScreen: FC = (item) => {
     getListUnitGroup(false);
   }, []);
 
+  console.log('--N----attributeValueSwitch------', isVariantInConfig)
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (idUnitGroup !== undefined) {
@@ -178,6 +175,25 @@ export const ProductCreateScreen: FC = (item) => {
     return unsubscribe;
   }, [idUnitGroup]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (newDataCreateProduct !== undefined) {
+        setDataCreateProduct(newDataCreateProduct);
+      }
+    });
+    return unsubscribe;
+  }, [newDataCreateProduct]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (selectedGroupAttribute !== undefined && isVariantInConfig !== undefined) {
+        setDataGroupAttribute(selectedGroupAttribute);
+        setVariantInConfig(isVariantInConfig);
+      }
+    });
+    return unsubscribe;
+  }, [selectedGroupAttribute, isVariantInConfig]);
+
   const getDetailUnitGroup = async (id: number) => {
     // call nhieu lan
     if (id) {
@@ -189,6 +205,7 @@ export const ProductCreateScreen: FC = (item) => {
         const uomId = {
           id: data.originalUnit.id,
           label: data.originalUnit.name,
+          uomGroupLineId: data.originalUnit.uomGroupLineId
         };
         setUomId(uomId);
       } else {
@@ -204,7 +221,7 @@ export const ProductCreateScreen: FC = (item) => {
       console.log("getListUnitGroup---------------------:", unitResult);
     } else {
       unitResult = await unitStore.getListUnit();
-      console.log("getListUnit---------------------:", unitResult);
+      console.log("getListUnit---------------------:", JSON.stringify(unitResult));
     }
     if (unitResult && unitResult.kind === "ok") {
       const data = unitResult.result.data.content;
@@ -255,6 +272,8 @@ export const ProductCreateScreen: FC = (item) => {
 
       setAttributeValues(attributeValueArr);
       setTextAttributes(textAttributeValueArr);
+      const abc = [...new Set(attributeArr?.flatMap((item: any)=> item.idGroup))]
+      setAttributeIds(abc)
 
       const newArr = mapDataDistribute(resultArray);
       const newArr2 = newArr.map((item) => {
@@ -290,11 +309,15 @@ export const ProductCreateScreen: FC = (item) => {
           // id: null,
           name: item,
           imageUrls: imagesNote,
-          costPrice: costPriceProduct,
+          costPrice: methods.getValues("costPrice"),
           retailPrice: retailPriceProduct,
-          listPrice: listPriceProduct,
+          listPrice: methods.getValues("listPrice"),
           wholesalePrice: wholesalePriceProduct,
           attributeValues: [],
+          weight: {
+            weight: methods.watch(`weight`), weightOriginal: methods.watch(`weightOriginal`),
+            volumeOriginal: methods.watch(`volumeOriginal`), uom: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit
+          }
         };
       });
 
@@ -327,38 +350,87 @@ export const ProductCreateScreen: FC = (item) => {
     );
   };
 
-  const submitAdd = async () => {
+  const onSubmit = (data: any) => {
+    console.log(JSON.stringify(data), 'asdjghas')
+    console.log(dataCreateProduct)
+  }
+
+  const submitAdd = async (data: any) => {
+    console.log(data, '1268359812')
+    console.log(JSON.stringify(dataCreateProduct))
+    let hasError = false
+    if (parternValidateSku.test(data.SKU) === true) {
+      hasError = false
+    } else {
+      methods.setError("SKU", { type: 'validate', message: "Mã SKU gồm chữ và số" })
+      hasError = true
+    }
+    if (data.productName.trim() !== "" ) {
+      hasError = false
+    } else {
+      methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
+      hasError = true
+    }
     if (uomId.id === "") {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
         textBody: translate("txtToats.required_information"),
       });
+      hasError = true
+    }
+    if (hasError == true) {
     } else {
       console.log(
         "post-product-data---retailPriceProduct---- : ",
         JSON.stringify(retailPriceProduct)
       );
-      const newArr = dataCreateProduct.map((item) => {
+      const arrDataNew = dataCreateProduct?.map((items: any) => {
         return {
-          name: nameProduct + " - " + item.name,
+          ...items,
+          productPackingLines: items.weight?.weight.map((item: any) => {
+            return {
+              uomGroupLineId: item.unit.id,
+              amount: item.unit.conversionRate,
+              volume: formatStringToFloat(item.volume),
+              weight: formatStringToFloat(item.weight1)
+            }
+          })
+        };
+      })
+      // console.log(arrDataNew[0]?.productPackingLines)
+      const newArr = arrDataNew?.map((item) => {
+        return {
+          name: methods.getValues("productName") + " - " + item.name,
           imageUrls: item.imageUrls,
-          costPrice: item.costPrice,
+          costPrice: formatStringToFloat(item.costPrice),
           retailPrice: item.retailPrice,
-          listPrice: item.listPrice,
+          listPrice: formatStringToFloat(item.listPrice),
           wholesalePrice: item.wholesalePrice,
           attributeValues: item.attributeValues,
+          baseProductPackingLine: valueSwitchUnit === false ? {
+            uomGroupLineId: null,
+            amount: 1,
+            volume: formatStringToFloat(item.weight?.volumeOriginal),
+            weight: formatStringToFloat(item.weight?.weightOriginal),
+          } : {
+            uomGroupLineId: detailUnitGroupData?.originalUnit?.uomGroupLineId ,
+            amount: 1,
+            volume: formatStringToFloat(item.weight?.volumeOriginal),
+            weight: formatStringToFloat(item.weight?.weightOriginal),
+          },
+          productPackingLines: valueSwitchUnit == false ? [] : item?.productPackingLines
         };
       });
-      const dataPrice2 = retailPriceProduct.map((item) => {
+      const dataPrice2 = retailPriceProduct.map((item: any) => {
         return {
-          min: item.min,
+          min: formatStringToFloat(item.min),
           price: Number(formatNumberByString(item.price.toString())),
         };
       });
-      const dataPrice = wholesalePriceProduct.map((item) => {
+      const dataPrice = wholesalePriceProduct.map((item: any) => {
         return {
-          min: item.min,
+          min: formatStringToFloat(item.min),
           price: Number(formatNumberByString(item.price.toString())),
         };
       });
@@ -387,9 +459,17 @@ export const ProductCreateScreen: FC = (item) => {
         JSON.stringify(newArr)
       );
       console.log("submitAdd---------------------:", imagesURLSlider);
-      const data = await productStore.postProduct({
-        sku: sku,
-        name: nameProduct,
+      const packingLine = data.weight?.map((item: any)=>{
+        return {
+          uomGroupLineId: item.unit.id,
+          amount: item.unit.conversionRate,
+          volume: formatStringToFloat(item.volume),
+          weight: formatStringToFloat(item.weight1),
+        }
+      })
+      const doneData = {
+        sku: data.SKU,
+        name: data.productName,
         purchaseOk: valuePurchase,
         imageUrls: imagesNote,
         saleOk: true,
@@ -401,28 +481,38 @@ export const ProductCreateScreen: FC = (item) => {
         hasUomGroupInConfig: valueSwitchUnit,
         uomId: valueSwitchUnit === false ? uomId.id : null,
         uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
-        hasVariantInConfig: !checkArrayIsEmptyOrNull(newArr2),
+        hasVariantInConfig: hasVariantInConfig  === false?  hasVariantInConfig : !checkArrayIsEmptyOrNull(newArr2),
         attributeValues: attributeValues,
         textAttributes: textAttributes,
+        attributeCategoryIds: attributeIds,
         description: description,
-        productVariants: newArr2,
+        productVariants: hasVariantInConfig ? newArr2 : [],
         retailPrice: dataPrice2,
-        costPrice: Number(formatNumberByString(costPriceProduct)),
-        listPrice: Number(formatNumberByString(listPriceProduct)),
+        costPrice: Number(formatNumberByString(methods.watch("costPrice"))),
+        listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
         wholesalePrice: dataPrice,
         deleteVariantIds: [],
+        baseTemplatePackingLine: data.weightOriginal === "" && data.volumeOriginal === "" ? {} : {
+          uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
+          amount: 1,
+          volume: formatStringToFloat(data.volumeOriginal),
+          weight: formatStringToFloat(data.weightOriginal)
+        },
+        productTemplatePackingLines: valueSwitchUnit == false ? [] : packingLine,
         activated: true,
-      });
-      console.log("data test---------", JSON.stringify(data));
-      if (data.kind === "ok") {
-        navigation.navigate("successScreen" as any, {
-          idProduct: data.result.data.id,
-        });
+      }
+      console.log('Done data create: ', JSON.stringify(doneData))
+      const result = await productStore.postProduct(doneData);
+      console.log("data test---------", JSON.stringify(result));
+      if (result.kind === "ok") {
+        navigation.navigate({name: "successScreen", params: {
+          idProduct: result.result.data.id,
+        }}as never);
       } else {
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: translate("txtDialog.txt_title_dialog"),
-          textBody: data.result.errorCodes[0].message,
+          textBody: result.result.errorCodes[0].message,
           button: translate("common.ok"),
           closeOnOverlayTap: false,
         });
@@ -787,6 +877,10 @@ export const ProductCreateScreen: FC = (item) => {
     navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: 'create' } } as never);
   }
 
+  const toggleDetails = () => {
+    setShowDetails(!showDetails);
+  };
+
   const arrBrand = dataBrand.map((item) => {
     return { label: item.name, id: item.id };
   });
@@ -811,561 +905,782 @@ export const ProductCreateScreen: FC = (item) => {
   const handleCloseDescribe = () => {
     setAddDescribe(false);
   };
-  const isValid = isFormValid(errors, watch("productName"));
+  // const isValid = isFormValid(errors, watch("productName"));
+
 
   return (
-    <View style={styles.ROOT}>
-      <Header
-        type={"AntDesign"}
-        LeftIcon={Images.back}
-        onLeftPress={() => navigation.goBack()}
-        colorIcon={colors.text}
-        headerTx={"productScreen.create_product"}
-        style={{ height: scaleHeight(54) }}
-      />
-      <ScrollView style={{ marginBottom: scaleHeight(20) }}>
-        <View style={{ backgroundColor: "white" }}>
-          <View style={styles.viewViewDetail}>
-            <ImageProduct
-              arrData={imagesNote}
-              useCamera={() => handleCameraUse()}
-              useLibrary={() => handleLibraryUse()}
-              deleteImage={(index, item) => {
-                handleRemoveImage(index, item);
-              }}
-            />
-            <Controller
-              control={control}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  maxLength={50}
-                  keyboardType={null}
-                  labelTx={"productScreen.SKU"}
-                  style={{
-                    marginBottom: scaleHeight(15),
-                    justifyContent: "center",
-                  }}
-                  inputStyle={styles.textTextField}
-                  value={value}
-                  onBlur={onBlur}
-                  RightIconClear={Images.icon_delete2}
-                  error={errorSku}
-                  onClearText={() => onChange("")}
-                  onChangeText={(value) => {
-                    onChange(value.toUpperCase());
-                    if (parternValidateSku.test(value.toUpperCase()) === true) {
-                      setSku(value.toUpperCase());
-                      setErrorSku("");
-                    } else {
-                      setErrorSku("Mã SKU gồm chữ và số");
-                    }
-                  }}
-                  placeholderTx="productScreen.placeholderSKU"
-                  RightIcon={Images.ic_QR}
-                />
-              )}
-              defaultValue={""}
-              name="SKU"
-            />
-            <Controller
-              control={control}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <TextField
-                  // maxLength={maxLenngthPhoneNumber}
-                  keyboardType={null}
-                  labelTx={"productScreen.productName"}
-                  style={{
-                    marginBottom: scaleHeight(15),
-                    justifyContent: "center",
-                  }}
-                  inputStyle={styles.textTextField}
-                  value={value}
-                  onBlur={onBlur}
-                  RightIconClear={Images.icon_delete2}
-                  error={errors?.productName?.message}
-                  onClearText={() => onChange("")}
-                  onChangeText={(value) => {
-                    setNameProduct(value), onChange(value);
-                  }}
-                  placeholderTx="productScreen.placeholderProductName"
+    <FormProvider {...methods}>
+      <View style={styles.ROOT}>
+        <Header
+          type={"AntDesign"}
+          LeftIcon={Images.back}
+          onLeftPress={() => navigation.goBack()}
+          colorIcon={colors.text}
+          headerTx={"productScreen.create_product"}
+          style={{ height: scaleHeight(54) }}
+        />
+        <ScrollView style={{ marginBottom: scaleHeight(20) }}>
+          <View style={{ backgroundColor: "white" }}>
+            <View style={styles.viewViewDetail}>
+              <ImageProduct
+                arrData={imagesNote}
+                useCamera={() => handleCameraUse()}
+                useLibrary={() => handleLibraryUse()}
+                deleteImage={(index, item) => {
+                  handleRemoveImage(index, item);
+                }}
+              />
+              <Controller
+                control={methods.control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    maxLength={50}
+                    keyboardType={null}
+                    labelTx={"productScreen.SKU"}
+                    style={{
+                      marginBottom: scaleHeight(15),
+                      justifyContent: "center",
+                    }}
+                    inputStyle={styles.textTextField}
+                    value={value}
+                    onBlur={onBlur}
+                    RightIconClear={Images.icon_delete2}
+                    error={methods.formState.errors.SKU?.message}
+                    onClearText={() => onChange("")}
+                    onChangeText={(value) => {
+                      onChange(value.toUpperCase());
+                      // methods.setValue("SKU", value.toUpperCase())
+                      // if (parternValidateSku.test(value.toUpperCase()) === true) {
+                      //   // setSku(value.toUpperCase());
+                      // methods.clearErrors()
+                      //   // setErrorSku("");
+                      // } else {
+                      //   methods.setError("SKU", {type: 'validate', message: "Mã SKU gồm chữ và số" })
+                      //   // setErrorSku("Mã SKU gồm chữ và số");
+                      // }
+                    }}
+                    placeholderTx="productScreen.placeholderSKU"
                   // RightIcon={Images.ic_QR}
-                  isImportant
+                  />
+                )}
+                defaultValue={""}
+                name="SKU"
+                // rules={{
+                //   pattern: {
+                //     value: parternValidateSku,
+                //     message: "Mã SKU gồm chữ và số"
+                //   },
+                // }}
+              />
+              <Controller
+                control={methods.control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextField
+                    // maxLength={100}
+                    keyboardType={null}
+                    labelTx={"productScreen.productName"}
+                    style={{
+                      marginBottom: scaleHeight(15),
+                      justifyContent: "center",
+                    }}
+                    inputStyle={styles.textTextField}
+                    value={value}
+                    onBlur={onBlur}
+                    RightIconClear={Images.icon_delete2}
+                    error={methods.formState.errors.productName?.message}
+                    onClearText={() => {onChange("")
+                      // methods.setValue("productName", value)
+                    }}
+                    onChangeText={(value) => {
+                      // setNameProduct(value), 
+                      onChange(value)
+                      // methods.setValue("productName", value)
+                    }}
+                    placeholderTx="productScreen.placeholderProductName"
+                    // RightIcon={Images.ic_QR}
+                    isImportant
+                  />
+                )}
+                defaultValue={""}
+                name="productName"
+                // rules={{
+                //   required: "Vui lòng nhập thông tin",
+                // }}
+              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text
+                  tx="createProductScreen.canBuy"
+                  style={{
+                    fontSize: fontSize.size13,
+                    marginRight: scaleWidth(10),
+                  }}
                 />
-              )}
-              defaultValue={""}
-              name="productName"
-              rules={{
-                required: "Vui lòng nhập thông tin",
-              }}
-            />
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text
-                tx="createProductScreen.canBuy"
-                style={{
-                  fontSize: fontSize.size13,
-                  marginRight: scaleWidth(10),
-                }}
-              />
-              <Switch
-                value={valuePurchase}
-                onToggle={() => {
-                  setValuePurchase(!valuePurchase);
-                }}
-              />
-            </View>
-            <View style={styles.viewLinePriceProduct}>
-              <TouchableOpacity
-                style={styles.viewBtnPriceProduct}
-                onPress={() => {
-                  setModalRetailPrice(true), setDataModal(retailPriceProduct);
-                }}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <View style={{ flex: 1 }}>
-                    <Text
-                      tx={"productScreen.priceRetail"}
-                      style={styles.textTitleViewPrice}
-                    />
-                    {retailPriceProduct.length > 0 &&
-                      retailPriceProduct.length !== 1 ? (
+                <Switch
+                  value={valuePurchase}
+                  onToggle={() => {
+                    setValuePurchase(!valuePurchase);
+                  }}
+                />
+              </View>
+              <View style={styles.viewLinePriceProduct}>
+                <TouchableOpacity
+                  style={styles.viewBtnPriceProduct}
+                  onPress={() => {
+                    setModalRetailPrice(true), setDataModal(retailPriceProduct);
+                  }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={{ flex: 1 }}>
                       <Text
-                        text={convertRetailPrice(retailPriceProduct)}
-                        numberOfLines={1}
-                        style={styles.textTextField}
+                        tx={"productScreen.priceRetail"}
+                        style={styles.textTitleViewPrice}
                       />
-                    ) : retailPriceProduct.length > 0 &&
-                      retailPriceProduct.length === 1 ? (
-                      <Text
-                        text={retailPriceProduct[0]?.price}
-                        numberOfLines={1}
-                        style={styles.textTextField}
-                      />
-                    ) : (
-                      <Text
-                        text="0.000 - 0.000"
-                        style={styles.textTextFieldNoData}
-                      />
-                    )}
+                      {retailPriceProduct.length > 0 &&
+                        retailPriceProduct.length !== 1 ? (
+                        <Text
+                          text={convertRetailPrice(retailPriceProduct)}
+                          numberOfLines={1}
+                          style={styles.textTextField}
+                        />
+                      ) : retailPriceProduct.length > 0 &&
+                        retailPriceProduct.length === 1 ? (
+                        <Text
+                          text={retailPriceProduct[0]?.price}
+                          numberOfLines={1}
+                          style={styles.textTextField}
+                        />
+                      ) : (
+                        <Text
+                          text="0.000 - 0.000"
+                          style={styles.textTextFieldNoData}
+                        />
+                      )}
+                    </View>
+                    <Images.icon_caretRightDown />
                   </View>
-                  <Images.icon_caretRightDown />
-                </View>
-              </TouchableOpacity>
-              <Controller
-                control={control}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <TextField
-                    maxLength={20}
-                    keyboardType={"number-pad"}
-                    labelTx={"productScreen.priceCapital"}
-                    labelDolphin
-                    style={{
-                      width: scaleWidth(164),
-                      flex: 1,
-                    }}
-                    inputStyle={styles.textTextField}
-                    value={value}
-                    onBlur={onBlur}
-                    showRightIcon={false}
-                    onChangeText={(value) => {
-                      onChange(
-                        vendorStore.checkSeparator === "DOTS"
-                          ? formatCurrency(removeNonNumeric(value))
-                          : addCommas(removeNonNumeric(value))
-                      );
-                      setCostPriceProduct(value);
-                    }}
-                    placeholderTx="productScreen.placeholderPrice"
-                  />
-                )}
-                defaultValue={""}
-                name="costPrice"
-              />
-            </View>
-            <View style={styles.viewLinePriceProduct}>
-              <Controller
-                control={control}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <TextField
-                    maxLength={20}
-                    keyboardType={"number-pad"}
-                    labelTx={"productScreen.priceList"}
-                    labelDolphin
-                    style={{
-                      // justifyContent: "center",
-                      width: scaleWidth(164),
-                    }}
-                    inputStyle={styles.textTextField}
-                    value={value}
-                    onBlur={onBlur}
-                    showRightIcon={false}
-                    onChangeText={(value) => {
-                      onChange(
-                        vendorStore.checkSeparator === "DOTS"
-                          ? formatCurrency(removeNonNumeric(value))
-                          : addCommas(removeNonNumeric(value))
-                      );
-                      setListPriceProduct(value);
-                    }}
-                    placeholderTx="productScreen.placeholderPrice"
-                  />
-                )}
-                defaultValue={""}
-                name="listPrice"
-              />
-              <TouchableOpacity
-                style={styles.viewBtnPriceProduct}
-                onPress={() => {
-                  setModalWholesalePrice(true);
-                  setDataModal(wholesalePriceProduct);
-                }}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <View style={{ flex: 1 }}>
-                    <Text
-                      tx={"productScreen.priceWholesale"}
-                      style={styles.textTitleViewPrice}
+                </TouchableOpacity>
+                <Controller
+                  control={methods.control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      maxLength={20}
+                      keyboardType={"number-pad"}
+                      labelTx={"productScreen.priceCapital"}
+                      labelDolphin
+                      style={{
+                        width: scaleWidth(164),
+                        flex: 1,
+                      }}
+                      inputStyle={styles.textTextField}
+                      value={value}
+                      onBlur={onBlur}
+                      showRightIcon={false}
+                      onChangeText={(value) => {
+                        onChange(
+                          vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(removeNonNumeric(value))
+                            : addCommas(removeNonNumeric(value))
+                        );
+                        // setCostPriceProduct(value);
+                        // methods.setValue('costPrice', value)
+                      }}
+                      placeholderTx="productScreen.placeholderPrice"
                     />
-                    {wholesalePriceProduct.length > 0 &&
-                      wholesalePriceProduct.length !== 1 ? (
+                  )}
+                  defaultValue={""}
+                  name="costPrice"
+                />
+              </View>
+              <View style={styles.viewLinePriceProduct}>
+                <Controller
+                  control={methods.control}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      maxLength={20}
+                      keyboardType={"number-pad"}
+                      labelTx={"productScreen.priceList"}
+                      labelDolphin
+                      style={{
+                        // justifyContent: "center",
+                        width: scaleWidth(164),
+                      }}
+                      inputStyle={styles.textTextField}
+                      value={value}
+                      onBlur={onBlur}
+                      showRightIcon={false}
+                      onChangeText={(value) => {
+                        onChange(
+                          vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(removeNonNumeric(value))
+                            : addCommas(removeNonNumeric(value))
+                        );
+                        // setListPriceProduct(value);
+                        // methods.setValue('listPrice', value)
+                      }}
+                      placeholderTx="productScreen.placeholderPrice"
+                    />
+                  )}
+                  defaultValue={""}
+                  name="listPrice"
+                />
+                <TouchableOpacity
+                  style={styles.viewBtnPriceProduct}
+                  onPress={() => {
+                    setModalWholesalePrice(true);
+                    setDataModal(wholesalePriceProduct);
+                  }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <View style={{ flex: 1 }}>
                       <Text
-                        text={convertWholesalePrice(wholesalePriceProduct)}
-                        numberOfLines={1}
-                        style={styles.textTextField}
+                        tx={"productScreen.priceWholesale"}
+                        style={styles.textTitleViewPrice}
                       />
-                    ) : wholesalePriceProduct.length > 0 &&
-                      wholesalePriceProduct.length === 1 ? (
-                      <Text
-                        text={wholesalePriceProduct[0]?.price}
-                        numberOfLines={1}
-                        style={styles.textTextField}
-                      />
-                    ) : (
-                      <Text
-                        text="0.000 - 0.000"
-                        style={styles.textTextFieldNoData}
-                      />
-                    )}
+                      {wholesalePriceProduct.length > 0 &&
+                        wholesalePriceProduct.length !== 1 ? (
+                        <Text
+                          text={convertWholesalePrice(wholesalePriceProduct)}
+                          numberOfLines={1}
+                          style={styles.textTextField}
+                        />
+                      ) : wholesalePriceProduct.length > 0 &&
+                        wholesalePriceProduct.length === 1 ? (
+                        <Text
+                          text={wholesalePriceProduct[0]?.price}
+                          numberOfLines={1}
+                          style={styles.textTextField}
+                        />
+                      ) : (
+                        <Text
+                          text="0.000 - 0.000"
+                          style={styles.textTextFieldNoData}
+                        />
+                      )}
+                    </View>
+                    <Images.icon_caretRightDown />
                   </View>
-                  <Images.icon_caretRightDown />
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-        {valuePurchase === true ? (
-          <View
-            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+          {valuePurchase === true ? (
+            <View
+              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+              <View style={styles.viewViewDetail}>
+                <Text
+                  tx={"createProductScreen.infoSupplier"}
+                  style={styles.textTitleView}
+                />
+                <TouchableOpacity
+                  onPress={() => goToChooseSupplierScreen()}
+                  style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}>
+                  {selectedIds?.length > 0 ? (
+                    <Text style={styles.textWeight400Black}>
+                      {selectedIds.length} nhà cung cấp
+                    </Text>
+                  ) : (
+                    <Text
+                      tx={"createProductScreen.noSelectSupplier"}
+                      style={styles.textWeight400Dolphin}
+                    />
+                  )}
+                  <Images.icon_caretRight
+                    width={scaleWidth(16)}
+                    height={scaleHeight(16)}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : null}
+          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
             <View style={styles.viewViewDetail}>
               <Text
-                tx={"createProductScreen.infoSupplier"}
+                tx={"createProductScreen.inventory_management"}
                 style={styles.textTitleView}
               />
-              <TouchableOpacity
-                onPress={() => goToChooseSupplierScreen()}
-                style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}>
-                {selectedIds?.length > 0 ? (
-                  <Text style={styles.textWeight400Black}>
-                    {selectedIds.length} nhà cung cấp
-                  </Text>
-                ) : (
-                  <Text
-                    tx={"createProductScreen.noSelectSupplier"}
-                    style={styles.textWeight400Dolphin}
-                  />
-                )}
-                <Images.icon_caretRight
-                  width={scaleWidth(16)}
-                  height={scaleHeight(16)}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ) : null}
-        <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-          <View style={styles.viewViewDetail}>
-            <Text
-              tx={"createProductScreen.inventory_management"}
-              style={styles.textTitleView}
-            />
-            <InputSelect
-              titleTx={"createProductScreen.form_of_management"}
-              // hintText="Mặc định"
-              isSearch={false}
-              required={true}
-              arrData={arrBrands}
-              dataDefault={brands.label}
-              onPressChoice={(item: any) => {
-                setBrands(item);
-              }}
-            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
-            />
-          </View>
-        </View>
-
-        {/* View Thông tin thêm */}
-        <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-          <View style={styles.viewViewDetail}>
-            <Text
-              tx={"createProductScreen.infoMore"}
-              style={styles.textTitleView}
-            />
-            <InputSelect
-              titleTx={"inforMerchant.Category"}
-              hintTx={"productScreen.select_catgory"}
-              isSearch
-              required={false}
-              arrData={arrCategory}
-              dataDefault={category.label}
-              // onLoadMore={loadMoreCategories}
-              // handleOnSubmitSearch={handleSubmitSearchCategory}
-              // onChangeText={handleSearchCategoryChange}
-              onPressChoice={(item: any) => {
-                setCategory(item);
-              }}
-              styleView={{ marginBottom: scaleHeight(15) }}
-            />
-            <InputSelect
-              titleTx={"productScreen.trademark"}
-              hintTx={"productScreen.select_trademark"}
-              isSearch
-              required={false}
-              arrData={arrBrand}
-              dataDefault={brand.label}
-              onPressChoice={(item: any) => {
-                setBrand(item);
-              }}
-              styleView={{ marginBottom: scaleHeight(15) }}
-            // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
-            />
-            <DropdownModal
-              required={false}
-              arrData={dataTagConvert}
-              onPressChoice={(item: any) => {
-                const items = item.map((item: { value: any }) => item.value);
-                handleSelect(items);
-              }}
-              dataEdit={defaultTags}
-              titleTx={"productScreen.tag"}
-              hintTx={"productScreen.select_tag"}
-              styleView={{ marginBottom: scaleHeight(15) }}
-            />
-          </View>
-        </View>
-        <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-          <View style={styles.viewViewDetail}>
-            <Text
-              tx={
-                valueSwitchUnit
-                  ? "productScreen.unit_group"
-                  : "productScreen.unit"
-              }
-              style={styles.textTitleView}
-            />
-            <View style={styles.viewLineSwitchUnit}>
-              <Text
-                tx={"productScreen.manage_multiple_units"}
-                style={styles.textWeight400Dolphin}
-              />
-              <Switch
-                value={valueSwitchUnit}
-                onToggle={() => {
-                  // setUomGroupId({ id: "", label: "" })
-                  setValueSwitchUnit(!valueSwitchUnit);
-                  getListUnitGroup(!valueSwitchUnit);
+              <InputSelect
+                titleTx={"createProductScreen.form_of_management"}
+                // hintText="Mặc định"
+                isSearch={false}
+                required={true}
+                arrData={arrBrands}
+                dataDefault={brands.label}
+                onPressChoice={(item: any) => {
+                  setBrands(item);
                 }}
-              />
-            </View>
-            <InputSelect
-              titleTx={
-                valueSwitchUnit
-                  ? "productScreen.unit_group"
-                  : "productScreen.unit"
-              }
-              hintTx={
-                valueSwitchUnit
-                  ? "productScreen.select_unit_group"
-                  : "productScreen.select_unit"
-              }
-              isSearch
-              required={true}
-              arrData={arrUnitGroupData}
-              dataDefault={valueSwitchUnit ? uomGroupId.label : uomId.label}
-              onPressChoice={(item: any) => {
-                if (valueSwitchUnit) {
-                  setUomGroupId(item);
-                  getDetailUnitGroup(item.id);
-                } else {
-                  setUomId(item);
-                }
-              }}
-              styleView={{ marginBottom: scaleHeight(6) }}
-            />
-            <View style={{ marginBottom: scaleHeight(15) }}>
-              <TouchableOpacity
-                style={{ flexDirection: "row", alignItems: "center" }}
-                onPress={() => {
-                  if (valueSwitchUnit) {
-                    navigation.navigate("createConversionGroup" as never)
-                  } else {
-                    setModalcreateUnit(true);
-                  }
-                }}>
-                <Images.ic_plusCircleBlue
-                  width={scaleWidth(14)}
-                  height={scaleHeight(14)}
-                />
-                <Text
-                  tx={
-                    valueSwitchUnit
-                      ? "productScreen.create_unit_group"
-                      : "productScreen.create_unit"
-                  }
-                  style={styles.textWeight400Blue}
-                />
-              </TouchableOpacity>
-            </View>
-            {valueSwitchUnit ? (
-              <>
-                <View style={styles.viewLineSwitchUnit}>
-                  <Text
-                    tx={"createProductScreen.originalUnit"}
-                    style={{ fontSize: fontSize.size14 }}
-                  />
-                  {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
-                  {detailUnitGroupData ? (
-                    <Text style={styles.textWeight600}>
-                      {detailUnitGroupData.originalUnit.name}
-                    </Text>
-                  ) : null}
-                </View>
-                <View style={styles.viewLineSwitchUnit}>
-                  <Text
-                    tx={"createProductScreen.conversion"}
-                    style={{ fontSize: fontSize.size14 }}
-                  />
-                  <Text
-                    tx={"createProductScreen.conversionRate"}
-                    style={styles.textWeight600}
-                  />
-                </View>
-                {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
-                  <View key={index} style={styles.viewLineSwitchUnit}>
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}>
-                      <Images.ic_arrowDownRight
-                        width={scaleWidth(14)}
-                        height={scaleHeight(14)}
-                      />
-                      <Text
-                        style={{
-                          fontSize: fontSize.size14,
-                          marginHorizontal: scaleWidth(6),
-                        }}>
-                        {item.unitName}
-                      </Text>
-                    </View>
-                    <Text style={styles.textWeight600}>
-                      {item.conversionRate}{" "}
-                      {detailUnitGroupData?.originalUnit?.name}
-                    </Text>
-                  </View>
-                ))}
-              </>
-            ) : null}
-          </View>
-        </View>
-        {uomId ? (
-          <View
-            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-            <View style={[styles.viewViewDetail]}>
-              <ItemWeight
-                checkList={valueSwitchUnit}
-                data={valueSwitchUnit == false ? uomId : uomGroupId}
+              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
               />
             </View>
           </View>
-        ): null}
-        {addVariant ? (
-          <View
-            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+
+          {/* View Thông tin thêm */}
+          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
             <View style={styles.viewViewDetail}>
               <Text
-                tx="createProductScreen.classify"
-                style={{ fontSize: fontSize.size14, fontWeight: "700" }}
+                tx={"createProductScreen.infoMore"}
+                style={styles.textTitleView}
               />
-              {dataCreateProduct.length > 0 ? (
-                <FlatList
-                  data={dataCreateProduct}
-                  keyExtractor={(item, index) => index.toString()}
-                  scrollEnabled={false}
-                  renderItem={({ item, index }: any) => {
-                    return (
-                      <ScrollView horizontal={true}>
-                        <View style={{ marginTop: scaleHeight(15) }}>
-                          <Text>{nameProduct + " - " + item.name}</Text>
+              <InputSelect
+                titleTx={"inforMerchant.Category"}
+                hintTx={"productScreen.select_catgory"}
+                isSearch
+                required={false}
+                arrData={arrCategory}
+                dataDefault={category.label}
+                // onLoadMore={loadMoreCategories}
+                // handleOnSubmitSearch={handleSubmitSearchCategory}
+                // onChangeText={handleSearchCategoryChange}
+                onPressChoice={(item: any) => {
+                  setCategory(item);
+                }}
+                styleView={{ marginBottom: scaleHeight(15) }}
+              />
+              <InputSelect
+                titleTx={"productScreen.trademark"}
+                hintTx={"productScreen.select_trademark"}
+                isSearch
+                required={false}
+                arrData={arrBrand}
+                dataDefault={brand.label}
+                onPressChoice={(item: any) => {
+                  setBrand(item);
+                }}
+                styleView={{ marginBottom: scaleHeight(15) }}
+              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
+              />
+              <DropdownModal
+                required={false}
+                arrData={dataTagConvert}
+                onPressChoice={(item: any) => {
+                  const items = item.map((item: { value: any }) => item.value);
+                  handleSelect(items);
+                }}
+                dataEdit={defaultTags}
+                titleTx={"productScreen.tag"}
+                hintTx={"productScreen.select_tag"}
+                styleView={{ marginBottom: scaleHeight(15) }}
+              />
+            </View>
+          </View>
+          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+            <View style={styles.viewViewDetail}>
+              <Text
+                tx={
+                  valueSwitchUnit
+                    ? "productScreen.unit_group"
+                    : "productScreen.unit"
+                }
+                style={styles.textTitleView}
+              />
+              <View style={styles.viewLineSwitchUnit}>
+                <Text
+                  tx={"productScreen.manage_multiple_units"}
+                  style={styles.textWeight400Dolphin}
+                />
+                <Switch
+                  value={valueSwitchUnit}
+                  onToggle={() => {
+                    // setUomGroupId({ id: "", label: "" })
+                    setValueSwitchUnit(!valueSwitchUnit);
+                    getListUnitGroup(!valueSwitchUnit);
+                    methods.setValue('weightOriginal', '')
+                    methods.setValue('volumeOriginal', '')
+                  }}
+                />
+              </View>
+              <InputSelect
+                titleTx={
+                  valueSwitchUnit
+                    ? "productScreen.unit_group"
+                    : "productScreen.unit"
+                }
+                hintTx={
+                  valueSwitchUnit
+                    ? "productScreen.select_unit_group"
+                    : "productScreen.select_unit"
+                }
+                isSearch
+                required={true}
+                arrData={arrUnitGroupData}
+                dataDefault={valueSwitchUnit ? uomGroupId.label : uomId.label}
+                onPressChoice={(item: any) => {
+                  if (valueSwitchUnit) {
+                    setUomGroupId(item);
+                    getDetailUnitGroup(item.id);
+                    methods.setValue('weight', [])
+                    methods.setValue('weightOriginal', '')
+                    methods.setValue('volumeOriginal', '')
+                  } else {
+                    setUomId(item);
+                    methods.setValue('weightOriginal', '')
+                    methods.setValue('volumeOriginal', '')
+                  }
+                }}
+                styleView={{ marginBottom: scaleHeight(6) }}
+              />
+              <View style={{ marginBottom: scaleHeight(15) }}>
+                <TouchableOpacity
+                  style={{ flexDirection: "row", alignItems: "center" }}
+                  onPress={() => {
+                    if (valueSwitchUnit) {
+                      navigation.navigate("createConversionGroup" as never)
+                    } else {
+                      setModalcreateUnit(true);
+                    }
+                  }}>
+                  <Images.ic_plusCircleBlue
+                    width={scaleWidth(14)}
+                    height={scaleHeight(14)}
+                  />
+                  <Text
+                    tx={
+                      valueSwitchUnit
+                        ? "productScreen.create_unit_group"
+                        : "productScreen.create_unit"
+                    }
+                    style={styles.textWeight400Blue}
+                  />
+                </TouchableOpacity>
+              </View>
+              {valueSwitchUnit ? (
+                <>
+                  <View style={styles.viewLineSwitchUnit}>
+                    <Text
+                      tx={"createProductScreen.originalUnit"}
+                      style={{ fontSize: fontSize.size14 }}
+                    />
+                    {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
+                    {detailUnitGroupData ? (
+                      <Text style={styles.textWeight600}>
+                        {detailUnitGroupData.originalUnit.name}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <View style={styles.viewLineSwitchUnit}>
+                    <Text
+                      tx={"createProductScreen.conversion"}
+                      style={{ fontSize: fontSize.size14 }}
+                    />
+                    <Text
+                      tx={"createProductScreen.conversionRate"}
+                      style={styles.textWeight600}
+                    />
+                  </View>
+                  {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
+                    <View key={index} style={styles.viewLineSwitchUnit}>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Images.ic_arrowDownRight
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                        <Text
+                          style={{
+                            fontSize: fontSize.size14,
+                            marginHorizontal: scaleWidth(6),
+                          }}>
+                          {item.unitName}
+                        </Text>
+                      </View>
+                      <Text style={styles.textWeight600}>
+                        {item.conversionRate}{" "}
+                        {detailUnitGroupData?.originalUnit?.name}
+                      </Text>
+                    </View>
+                  ))}
+                </>
+              ) : null}
+            </View>
+          </View>
+          {uomId?.label?.trim() !== "" ? (
+            <View
+              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+              <View style={[styles.viewViewDetail]}>
+                <ItemWeight
+                  dataUnitGroup={valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines}
+                  checkList={valueSwitchUnit}
+                  data={valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit}
+                  setAdd={methods.watch(`weight`)}
+                />
+              </View>
+            </View>
+          ) : null}
+          {addVariant ? (
+            <View
+              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+              <View style={styles.viewViewDetail}>
+                <Text
+                  tx="createProductScreen.classify"
+                  style={{ fontSize: fontSize.size14, fontWeight: "700" }}
+                />
+                
+                {dataGroupAttribute.length > 0 ? (
+                  <View>
+                    <TouchableOpacity
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginVertical: scaleHeight(16),
+                        marginHorizontal: scaleWidth(margin.margin_16),
+                      }}
+                      onPress={toggleDetails}>
+                      <Text style={{ color: colors.palette.navyBlue }}>
+                        Xem chi tiết thuộc tính{" "}
+                      </Text>
+                      <Images.iconDownBlue
+                        width={16}
+                        height={16}
+                        style={{
+                          transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                        }}
+                      />
+                    </TouchableOpacity>
+                    {showDetails && (
+                    <View style={styles.viewDetails}>
+                      <View style={styles.viewTitleDetail}>
+                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                          Thuộc tính
+                        </Text>
+                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                          Giá trị
+                        </Text>
+                      </View>
+                      <View style={styles.viewLine2} />
+                      {dataGroupAttribute?.map((item, index) => (
+                        <View key={index}>
                           <View
                             style={{
-                              flexDirection: "row",
-                              marginTop: scaleHeight(6),
-                              // paddingVertical : 5,
-                              alignItems: "center",
+                              marginVertical: scaleHeight(margin.margin_12),
+                              paddingHorizontal: scaleWidth(padding.padding_12),
                             }}>
+                            <Text
+                              style={{
+                                fontWeight: "600",
+                                fontSize: fontSize.size12,
+                                color: colors.palette.navyBlue,
+                              }}>
+                              {item.name}
+                            </Text>
+                          </View>
+                          <View style={styles.viewLine2} />
+
+                          {item.attributeOutputList?.map((dto) => (
                             <View
                               style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                marginBottom: scaleHeight(8),
+                                marginTop: scaleHeight(margin.margin_12),
                               }}>
-                              <TouchableOpacity
-                                style={{ marginRight: scaleWidth(6) }}
-                                onPress={() => handleDeleteProduct(index)}>
-                                <Images.ic_minusCircle
-                                  width={scaleWidth(14)}
-                                  height={scaleHeight(14)}
-                                />
-                              </TouchableOpacity>
-                              <ImagesGroup
-                                arrData={item.imageUrls || []}
-                                onchangeData={(data) => {
-                                  console.log(
-                                    "---------------#######---------",
-                                    data
-                                  );
+                              <ProductAttribute
+                                label={dto.name}
+                                value={dto.productAttributeValue.map(value => value.value).join('/')}
+                                styleAttribute={{
+                                  paddingHorizontal: scaleWidth(padding.padding_12),
                                 }}
-                                onPressOpenLibrary={() => {
-                                  if (item.imageUrls.length < 6) {
-                                    handleLibraryUseProduct(
-                                      item.imageUrls,
-                                      index
-                                    );
-                                    productStore.setImagesLimit(
-                                      item.imageUrls.length
-                                    );
-                                  } else {
-                                    Toast.show({
-                                      type: ALERT_TYPE.DANGER,
-                                      title: "",
-                                      textBody: translate(
-                                        "txtToats.required_maximum_number_of_photos"
-                                      ),
-                                    });
-                                  }
-                                }}
-                                onPressDelete={() => handleDeleteImage(index)}
-                                onPressDelete1={() =>
-                                  handleDeleteImageItem(index)
-                                }
                               />
+                              {index !== dataGroupAttribute?.length - 1 ? (
+                                <View style={styles.viewLine2} />
+                              ) : null}
                             </View>
+                          ))}
+                        </View>
+                      ))}
+                    </View>
+                    )}
+                    </View>
+                ) : <View>
+                  {dataCreateProduct.length > 0 ? (
+                  <FlatList
+                    data={dataCreateProduct}
+                    keyExtractor={(item, index) => index.toString()}
+                    scrollEnabled={false}
+                    renderItem={({ item, index }: any) => {
+                      return (
+                        <ScrollView horizontal={true}>
+                          <View style={{ marginTop: scaleHeight(15) }}>
+                            <Text>{methods.watch('productName') + " - " + item.name}</Text>
                             <View
                               style={{
                                 flexDirection: "row",
-                                marginLeft: scaleWidth(10),
-                                // alignItems: 'center'
+                                marginTop: scaleHeight(6),
+                                // paddingVertical : 5,
+                                alignItems: "center",
                               }}>
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                  marginBottom: scaleHeight(8),
+                                }}>
+                                <TouchableOpacity
+                                  style={{ marginRight: scaleWidth(6) }}
+                                  onPress={() => handleDeleteProduct(index)}>
+                                  <Images.ic_minusCircle
+                                    width={scaleWidth(14)}
+                                    height={scaleHeight(14)}
+                                  />
+                                </TouchableOpacity>
+                                <ImagesGroup
+                                  arrData={item.imageUrls || []}
+                                  onchangeData={(data) => {
+                                    console.log(
+                                      "---------------#######---------",
+                                      data
+                                    );
+                                  }}
+                                  onPressOpenLibrary={() => {
+                                    if (item.imageUrls.length < 6) {
+                                      handleLibraryUseProduct(
+                                        item.imageUrls,
+                                        index
+                                      );
+                                      productStore.setImagesLimit(
+                                        item.imageUrls.length
+                                      );
+                                    } else {
+                                      Toast.show({
+                                        type: ALERT_TYPE.DANGER,
+                                        title: "",
+                                        textBody: translate(
+                                          "txtToats.required_maximum_number_of_photos"
+                                        ),
+                                      });
+                                    }
+                                  }}
+                                  onPressDelete={() => handleDeleteImage(index)}
+                                  onPressDelete1={() =>
+                                    handleDeleteImageItem(index)
+                                  }
+                                />
+                              </View>
+                              <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'create' } } as never)}
+                                style={{ marginHorizontal: scaleWidth(2), alignItems: 'center', justifyContent: 'center' }}>
+                                <Text tx={'productScreen.weight'} style={[styles.textTitleViewPrice, { color: colors.nero }]} />
+                                <Images.icon_edit />
+                              </TouchableOpacity>
+                              <View
+                                style={{
+                                  flexDirection: "row",
+                                  marginLeft: scaleWidth(10),
+                                  // alignItems: 'center'
+                                }}>
+                                <TouchableOpacity
+                                  style={styles.viewBtnPriceVariants}
+                                  onPress={() => {
+                                    setModalRetailPrice1(true);
+                                    setDataModal(item.retailPrice);
+                                    setIndexVariant(index);
+                                  }}>
+                                  <View
+                                    style={{
+                                      flexDirection: "row",
+                                      alignItems: "center",
+                                    }}>
+                                    <View style={{ flex: 1 }}>
+                                      <Text
+                                        tx={"productScreen.priceRetail"}
+                                        style={styles.textTitleViewPrice}
+                                      />
+                                      {item.retailPrice.length > 0 &&
+                                        item.retailPrice.length !== 1 ? (
+                                        <Text
+                                          text={convertAttributeRetailPrice(
+                                            dataCreateProduct,
+                                            index
+                                          )}
+                                          numberOfLines={1}
+                                          style={styles.textTextField}
+                                        />
+                                      ) : item.retailPrice.length > 0 &&
+                                        item.retailPrice.length === 1 ? (
+                                        <Text
+                                          text={item.retailPrice[0]?.price}
+                                          style={styles.textTextField}
+                                        />
+                                      ) : (
+                                        <Text
+                                          text="0.000 - 0.000"
+                                          style={styles.textTextFieldNoData}
+                                        />
+                                      )}
+                                    </View>
+                                    <Images.icon_caretRightDown />
+                                  </View>
+                                </TouchableOpacity>
+                                <Controller
+                                  control={control}
+                                  render={({
+                                    field: { onChange, value, onBlur },
+                                  }) => (
+                                    <TextField
+                                      maxLength={20}
+                                      keyboardType={"number-pad"}
+                                      labelTx={"productScreen.priceCapital"}
+                                      style={styles.viewTextFieldVariants}
+                                      inputStyle={{
+                                        fontSize: fontSize.size16,
+                                        fontWeight: "500",
+                                      }}
+                                      value={value}
+                                      onBlur={onBlur}
+                                      RightIconClear={Images.icon_delete2}
+                                      // error={errors?.priceRetail?.message}
+                                      onClearText={() => onChange("")}
+                                      onChangeText={(value) => {
+                                        onChange(
+                                          vendorStore.checkSeparator === "DOTS"
+                                            ? formatCurrency(
+                                              removeNonNumeric(value)
+                                            )
+                                            : addCommas(removeNonNumeric(value))
+                                        );
+                                        item.costPrice = value;
+                                      }}
+                                      placeholder="0.000"
+                                      labelDolphin
+                                    />
+                                  )}
+                                  defaultValue={item.costPrice?.toString()}
+                                  name={`costPrice-${index}`}
+                                />
+                                <Controller
+                                  control={control}
+                                  render={({
+                                    field: { onChange, value, onBlur },
+                                  }) => (
+                                    <TextField
+                                      maxLength={20}
+                                      keyboardType={"number-pad"}
+                                      labelTx={"productScreen.priceList"}
+                                      style={styles.viewTextFieldVariants}
+                                      inputStyle={{
+                                        fontSize: fontSize.size16,
+                                        fontWeight: "500",
+                                      }}
+                                      value={value}
+                                      onBlur={onBlur}
+                                      RightIconClear={Images.icon_delete2}
+                                      // error={errors?.priceRetail?.message}
+                                      onClearText={() => onChange("")}
+                                      onChangeText={(value) => {
+                                        onChange(
+                                          vendorStore.checkSeparator === "DOTS"
+                                            ? formatCurrency(
+                                              removeNonNumeric(value)
+                                            )
+                                            : addCommas(removeNonNumeric(value))
+                                        );
+                                        item.listPrice = value;
+                                      }}
+                                      placeholder="0.000"
+                                      labelDolphin
+                                    />
+                                  )}
+                                  defaultValue={item.listPrice?.toString()}
+                                  name={`listPrice-${index}`}
+                                />
+                              </View>
                               <TouchableOpacity
                                 style={styles.viewBtnPriceVariants}
                                 onPress={() => {
-                                  setModalRetailPrice1(true);
-                                  setDataModal(item.retailPrice);
+                                  setModalWholesalePrice1(true);
+                                  setDataModal(item.wholesalePrice);
                                   setIndexVariant(index);
                                 }}>
                                 <View
@@ -1375,23 +1690,23 @@ export const ProductCreateScreen: FC = (item) => {
                                   }}>
                                   <View style={{ flex: 1 }}>
                                     <Text
-                                      tx={"productScreen.priceRetail"}
+                                      tx={"productScreen.priceWholesale"}
                                       style={styles.textTitleViewPrice}
                                     />
-                                    {item.retailPrice.length > 0 &&
-                                      item.retailPrice.length !== 1 ? (
+                                    {item.wholesalePrice.length > 0 &&
+                                      item.wholesalePrice.length !== 1 ? (
                                       <Text
-                                        text={convertAttributeRetailPrice(
+                                        text={convertAttributeWholesalePrice(
                                           dataCreateProduct,
                                           index
                                         )}
                                         numberOfLines={1}
                                         style={styles.textTextField}
                                       />
-                                    ) : item.retailPrice.length > 0 &&
-                                      item.retailPrice.length === 1 ? (
+                                    ) : item.wholesalePrice.length > 0 &&
+                                      item.wholesalePrice.length === 1 ? (
                                       <Text
-                                        text={item.retailPrice[0]?.price}
+                                        text={item.wholesalePrice[0]?.price}
                                         style={styles.textTextField}
                                       />
                                     ) : (
@@ -1404,401 +1719,307 @@ export const ProductCreateScreen: FC = (item) => {
                                   <Images.icon_caretRightDown />
                                 </View>
                               </TouchableOpacity>
-                              <Controller
-                                control={control}
-                                render={({
-                                  field: { onChange, value, onBlur },
-                                }) => (
-                                  <TextField
-                                    maxLength={20}
-                                    keyboardType={"number-pad"}
-                                    labelTx={"productScreen.priceCapital"}
-                                    style={styles.viewTextFieldVariants}
-                                    inputStyle={{
-                                      fontSize: fontSize.size16,
-                                      fontWeight: "500",
-                                    }}
-                                    value={value}
-                                    onBlur={onBlur}
-                                    RightIconClear={Images.icon_delete2}
-                                    // error={errors?.priceRetail?.message}
-                                    onClearText={() => onChange("")}
-                                    onChangeText={(value) => {
-                                      onChange(
-                                        vendorStore.checkSeparator === "DOTS"
-                                          ? formatCurrency(
-                                            removeNonNumeric(value)
-                                          )
-                                          : addCommas(removeNonNumeric(value))
-                                      );
-                                      item.costPrice = value;
-                                    }}
-                                    placeholder="0.000"
-                                    labelDolphin
-                                  />
-                                )}
-                                defaultValue={item.costPrice.toString()}
-                                name={`costPrice-${index}`}
-                              />
-                              <Controller
-                                control={control}
-                                render={({
-                                  field: { onChange, value, onBlur },
-                                }) => (
-                                  <TextField
-                                    maxLength={20}
-                                    keyboardType={"number-pad"}
-                                    labelTx={"productScreen.priceList"}
-                                    style={styles.viewTextFieldVariants}
-                                    inputStyle={{
-                                      fontSize: fontSize.size16,
-                                      fontWeight: "500",
-                                    }}
-                                    value={value}
-                                    onBlur={onBlur}
-                                    RightIconClear={Images.icon_delete2}
-                                    error={errors?.priceRetail?.message}
-                                    onClearText={() => onChange("")}
-                                    onChangeText={(value) => {
-                                      onChange(
-                                        vendorStore.checkSeparator === "DOTS"
-                                          ? formatCurrency(
-                                            removeNonNumeric(value)
-                                          )
-                                          : addCommas(removeNonNumeric(value))
-                                      );
-                                      item.listPrice = value;
-                                    }}
-                                    placeholder="0.000"
-                                    labelDolphin
-                                  />
-                                )}
-                                defaultValue={item.listPrice.toString()}
-                                name={`listPrice-${index}`}
-                              />
                             </View>
-                            <TouchableOpacity
-                              style={styles.viewBtnPriceVariants}
-                              onPress={() => {
-                                setModalWholesalePrice1(true);
-                                setDataModal(item.wholesalePrice);
-                                setIndexVariant(index);
-                              }}>
-                              <View
-                                style={{
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                }}>
-                                <View style={{ flex: 1 }}>
-                                  <Text
-                                    tx={"productScreen.priceWholesale"}
-                                    style={styles.textTitleViewPrice}
-                                  />
-                                  {item.wholesalePrice.length > 0 &&
-                                    item.wholesalePrice.length !== 1 ? (
-                                    <Text
-                                      text={convertAttributeWholesalePrice(
-                                        dataCreateProduct,
-                                        index
-                                      )}
-                                      numberOfLines={1}
-                                      style={styles.textTextField}
-                                    />
-                                  ) : item.wholesalePrice.length > 0 &&
-                                    item.wholesalePrice.length === 1 ? (
-                                    <Text
-                                      text={item.wholesalePrice[0]?.price}
-                                      style={styles.textTextField}
-                                    />
-                                  ) : (
-                                    <Text
-                                      text="0.000 - 0.000"
-                                      style={styles.textTextFieldNoData}
-                                    />
-                                  )}
-                                </View>
-                                <Images.icon_caretRightDown />
-                              </View>
-                            </TouchableOpacity>
                           </View>
-                        </View>
-                      </ScrollView>
-                    );
-                  }}
-                />
-              ) : (
-                <View style={{ marginTop: scaleHeight(15) }}>
-                  <Text
-                    tx="createProductScreen.details"
-                    style={[
-                      styles.textWeight400Black,
-                      { marginBottom: scaleHeight(12) },
-                    ]}
+                        </ScrollView>
+                      );
+                    }}
                   />
-                  <TouchableOpacity
-                    style={styles.btnAddProperties}
-                    onPress={() =>
-                      navigation.navigate("addAttribute" as never)
-                    }>
-                    <Images.ic_plusBlue
-                      width={scaleWidth(16)}
-                      height={scaleHeight(16)}
-                    />
+                ) : (
+                  <View style={{ marginTop: scaleHeight(15) }}>
                     <Text
-                      tx="createProductScreen.addProperties"
+                      tx="createProductScreen.details"
                       style={[
-                        styles.textWeight600,
-                        {
-                          color: colors.palette.navyBlue,
-                          marginLeft: scaleWidth(4),
-                        },
+                        styles.textWeight400Black,
+                        { marginBottom: scaleHeight(12) },
                       ]}
                     />
-                  </TouchableOpacity>
-                </View>
-              )}
-              <View
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  flexDirection: "row",
-                }}>
-                {dataCreateProduct.length > 0 ? (
-                  <TouchableOpacity onPress={() => {
-                    navigation.navigate({ name: 'editAttribute', params: { dataAttribute: attributeArr, dropdownSelected: dropdownSelected } } as never)
-                  }}>
-                    <Images.icon_edit
-                      // style={{ marginRight: scaleWidth(8) }}
-                      width={scaleWidth(14)}
-                      height={scaleHeight(14)}
-                    />
-                  </TouchableOpacity>
-                ) : null}
-                {dataCreateProduct.length > 0 ? null : (
-                  <TouchableOpacity onPress={() => setAddVariant(false)}>
-                    <Images.ic_close
-                      width={scaleWidth(14)}
-                      height={scaleHeight(14)}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-          </View>
-        ) : null}
-        {addDescribe ? (
-          <View
-            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-            <View style={styles.viewViewDetail}>
-              <View>
-                <View style={{ flexDirection: "row", alignContent: "center" }}>
-                  <Text
-                    tx={"createProductScreen.description"}
-                    style={styles.textTitleView}
-                  />
-                  {description ? (
                     <TouchableOpacity
-                      onPress={() => {
-                        setModalDescribe(true);
-                      }}>
-                      <Images.icon_edit
-                        style={{ marginLeft: scaleWidth(8) }}
-                        width={scaleWidth(14)}
-                        height={scaleHeight(14)}
+                      style={styles.btnAddProperties}
+                      onPress={() =>
+                        navigation.navigate("addAttribute" as never)
+                      }>
+                      <Images.ic_plusBlue
+                        width={scaleWidth(16)}
+                        height={scaleHeight(16)}
+                      />
+                      <Text
+                        tx="createProductScreen.addProperties"
+                        style={[
+                          styles.textWeight600,
+                          {
+                            color: colors.palette.navyBlue,
+                            marginLeft: scaleWidth(4),
+                          },
+                        ]}
                       />
                     </TouchableOpacity>
-                  ) : null}
+                  </View>
+                )}
+                
                 </View>
-                <TouchableOpacity
-                  onPress={handleCloseDescribe}
+                
+                }
+
+
+
+                <View
                   style={{
                     position: "absolute",
                     right: 0,
                     flexDirection: "row",
                   }}>
-                  <Images.ic_close
-                    width={scaleWidth(14)}
-                    height={scaleHeight(14)}
-                  />
-                </TouchableOpacity>
+                  {dataCreateProduct.length > 0 ? (
+                    <TouchableOpacity onPress={() => {
+                      navigation.navigate({ name: 'editAttribute', params: { dataAttribute: attributeArr, dropdownSelected: dropdownSelected } } as never)
+                    }}>
+                      <Images.icon_edit
+                        // style={{ marginRight: scaleWidth(8) }}
+                        width={scaleWidth(14)}
+                        height={scaleHeight(14)}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {dataCreateProduct.length > 0 ? null : (
+                    <TouchableOpacity onPress={() => setAddVariant(false)}>
+                      <Images.ic_close
+                        width={scaleWidth(14)}
+                        height={scaleHeight(14)}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  {dataGroupAttribute.length > 0 ?(
+                    <TouchableOpacity onPress={() => {
+                      setAddVariant(false)
+                      setDataGroupAttribute([])
+                      setDataCreateProduct([])
+                      setVariantInConfig(false)
+                    }}>
+                      <Images.ic_close
+                        width={scaleWidth(14)}
+                        height={scaleHeight(14)}
+                        style={{marginLeft: 10}}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
               </View>
-              {description === "" ? (
-                <View style={{}}>
+            </View>
+          ) : null}
+          {addDescribe ? (
+            <View
+              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+              <View style={styles.viewViewDetail}>
+                <View>
+                  <View style={{ flexDirection: "row", alignContent: "center" }}>
+                    <Text
+                      tx={"createProductScreen.description"}
+                      style={styles.textTitleView}
+                    />
+                    {description ? (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setModalDescribe(true);
+                        }}>
+                        <Images.icon_edit
+                          style={{ marginLeft: scaleWidth(8) }}
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
                   <TouchableOpacity
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                    onPress={() => setModalDescribe(true)}>
-                    <Images.ic_plusCircleBlue
+                    onPress={handleCloseDescribe}
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      flexDirection: "row",
+                    }}>
+                    <Images.ic_close
                       width={scaleWidth(14)}
                       height={scaleHeight(14)}
                     />
-                    <Text
-                      tx={"createProductScreen.addDescription"}
-                      style={styles.textWeight400Blue}
-                    />
                   </TouchableOpacity>
                 </View>
-              ) : (
-                <Text text={description} />
-              )}
+                {description === "" ? (
+                  <View style={{}}>
+                    <TouchableOpacity
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                      onPress={() => setModalDescribe(true)}>
+                      <Images.ic_plusCircleBlue
+                        width={scaleWidth(14)}
+                        height={scaleHeight(14)}
+                      />
+                      <Text
+                        tx={"createProductScreen.addDescription"}
+                        style={styles.textWeight400Blue}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <Text text={description} />
+                )}
+              </View>
             </View>
-          </View>
-        ) : null}
-        <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-          <View style={styles.viewViewDetail}>
-            <Text
-              tx="createProductScreen.information"
-              style={styles.textTitleView}
-            />
-            <View>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Images.icon_gear
-                  width={scaleWidth(20)}
-                  height={scaleHeight(20)}
-                />
-                {addDescribe === false ? (
-                  <TouchableOpacity
-                    onPress={handleDescribe}
-                    style={styles.viewBtnInMorInfo}>
-                    <Text
-                      tx={"createProductScreen.description"}
-                      style={styles.textBtnMorInfo}
-                    />
-                  </TouchableOpacity>
-                ) : null}
-                {addVariant === false ? (
-                  <TouchableOpacity
-                    onPress={() => setAddVariant(true)}
-                    style={styles.viewBtnInMorInfo}>
-                    <Text
-                      tx={"createProductScreen.productClassification"}
-                      style={styles.textBtnMorInfo}
-                    />
-                  </TouchableOpacity>
-                ) : null}
-                {addDescribe === true && addVariant === true ? (
-                  <Text
-                    tx={"createProductScreen.notificationAddAllInfoProduct"}
-                    style={[
-                      styles.textWeight400Dolphin,
-                      { marginLeft: scaleWidth(8) },
-                    ]}
+          ) : null}
+          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
+            <View style={styles.viewViewDetail}>
+              <Text
+                tx="createProductScreen.information"
+                style={styles.textTitleView}
+              />
+              <View>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Images.icon_gear
+                    width={scaleWidth(20)}
+                    height={scaleHeight(20)}
                   />
-                ) : null}
+                  {addDescribe === false ? (
+                    <TouchableOpacity
+                      onPress={handleDescribe}
+                      style={styles.viewBtnInMorInfo}>
+                      <Text
+                        tx={"createProductScreen.description"}
+                        style={styles.textBtnMorInfo}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {addVariant === false ? (
+                    <TouchableOpacity
+                      onPress={() => setAddVariant(true)}
+                      style={styles.viewBtnInMorInfo}>
+                      <Text
+                        tx={"createProductScreen.productClassification"}
+                        style={styles.textBtnMorInfo}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {addDescribe === true && addVariant === true ? (
+                    <Text
+                      tx={"createProductScreen.notificationAddAllInfoProduct"}
+                      style={[
+                        styles.textWeight400Dolphin,
+                        { marginLeft: scaleWidth(8) },
+                      ]}
+                    />
+                  ) : null}
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
 
-      <PriceModal
-        isVisible={modalRetailPrice}
-        setIsVisible={() => setModalRetailPrice(false)}
-        title={"productDetail.retailPrice"}
-        onCancel={() => {
-          setModalRetailPrice(false);
-          dataModal.length !== 0
-            ? setDataModal([])
-            : setDataModal([{ min: "", price: "" }]);
-        }}
-        onConfirm={(data) => {
-          setRetailPriceProduct(data.price);
-          setModalRetailPrice(false);
-          setDataModal([{ min: "", price: "" }]);
-        }}
-        dataAdd={dataModal}
-      />
-      <PriceModal
-        isVisible={modalWholesalePrice}
-        setIsVisible={() => setModalWholesalePrice(false)}
-        title={"productDetail.wholesalePrice"}
-        onCancel={() => {
-          setModalWholesalePrice(false);
-          dataModal.length !== 0
-            ? setDataModal([])
-            : setDataModal([{ min: "", price: "" }]);
-        }}
-        onConfirm={(data) => {
-          setWholesalePriceProduct(data.price);
-          setModalWholesalePrice(false);
-          setDataModal([]);
-        }}
-        dataAdd={dataModal}
-      />
-      <PriceModal
-        isVisible={modalRetailPrice1}
-        setIsVisible={() => setModalRetailPrice1(false)}
-        title={"productDetail.retailPrice"}
-        onCancel={() => {
-          setModalRetailPrice1(false);
-          dataModal.length !== 0
-            ? setDataModal([])
-            : setDataModal([{ min: "", price: "" }]);
-        }}
-        onConfirm={(data) => {
-          // setRetailPriceProduct(data.price)
-          dataCreateProduct[indexVariant].retailPrice = data.price;
-          setModalRetailPrice1(false);
-          setDataModal([]);
-        }}
-        dataAdd={dataModal}
-      />
-      <PriceModal
-        isVisible={modalWholesalePrice1}
-        setIsVisible={() => setModalWholesalePrice1(false)}
-        title={"productDetail.wholesalePrice"}
-        onCancel={() => {
-          setModalWholesalePrice1(false);
-          dataModal.length !== 0
-            ? setDataModal([])
-            : setDataModal([{ min: "", price: "" }]);
-        }}
-        onConfirm={(data) => {
-          // setWholesalePriceProduct(data.price);
-          dataCreateProduct[indexVariant].wholesalePrice = data.price;
-          setModalWholesalePrice1(false);
-          setDataModal([]);
-        }}
-        dataAdd={dataModal}
-      />
-      <DescribeModal
-        title={"productScreen.describe"}
-        isVisible={modalDescribe}
-        dataDescribe={description}
-        setIsVisible={() => setModalDescribe(false)}
-        onCancel={() => setModalDescribe(false)}
-        onConfirm={(data) => {
-          setDescription(data.Describe);
-          setModalDescribe(false);
-        }}
-      />
-      <UnitModal
-        title={"productScreen.createUnit"}
-        isVisible={modalcreateUnit}
-        setIsVisible={() => setModalcreateUnit(false)}
-        onSave={(data) => {
-          setModalcreateUnit(false);
-          getListUnitGroup(false);
-        }}
-        onSaveAndChange={(data) => {
-          setModalcreateUnit(false);
-          setUomId(data);
-          getListUnitGroup(false);
-        }}
-      />
-      <View style={styles.viewGroupBtn}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
+        <PriceModal
+          isVisible={modalRetailPrice}
+          setIsVisible={() => setModalRetailPrice(false)}
+          title={"productDetail.retailPrice"}
+          onCancel={() => {
+            setModalRetailPrice(false);
+            dataModal.length !== 0
+              ? setDataModal([])
+              : setDataModal([{ min: "", price: "" }]);
           }}
-          style={styles.viewBtnCancel}>
-          <Text tx={"common.cancel"} style={styles.textBtnCancel} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleSubmit(submitAdd)}
-          style={styles.viewBtnConfirm}>
-          <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm} />
-        </TouchableOpacity>
+          onConfirm={(data) => {
+            setRetailPriceProduct(data.price);
+            setModalRetailPrice(false);
+            setDataModal([{ min: "", price: "" }]);
+          }}
+          dataAdd={dataModal}
+        />
+        <PriceModal
+          isVisible={modalWholesalePrice}
+          setIsVisible={() => setModalWholesalePrice(false)}
+          title={"productDetail.wholesalePrice"}
+          onCancel={() => {
+            setModalWholesalePrice(false);
+            dataModal.length !== 0
+              ? setDataModal([])
+              : setDataModal([{ min: "", price: "" }]);
+          }}
+          onConfirm={(data) => {
+            setWholesalePriceProduct(data.price);
+            setModalWholesalePrice(false);
+            setDataModal([]);
+          }}
+          dataAdd={dataModal}
+        />
+        <PriceModal
+          isVisible={modalRetailPrice1}
+          setIsVisible={() => setModalRetailPrice1(false)}
+          title={"productDetail.retailPrice"}
+          onCancel={() => {
+            setModalRetailPrice1(false);
+            dataModal.length !== 0
+              ? setDataModal([])
+              : setDataModal([{ min: "", price: "" }]);
+          }}
+          onConfirm={(data) => {
+            // setRetailPriceProduct(data.price)
+            dataCreateProduct[indexVariant].retailPrice = data.price;
+            setModalRetailPrice1(false);
+            setDataModal([]);
+          }}
+          dataAdd={dataModal}
+        />
+        <PriceModal
+          isVisible={modalWholesalePrice1}
+          setIsVisible={() => setModalWholesalePrice1(false)}
+          title={"productDetail.wholesalePrice"}
+          onCancel={() => {
+            setModalWholesalePrice1(false);
+            dataModal.length !== 0
+              ? setDataModal([])
+              : setDataModal([{ min: "", price: "" }]);
+          }}
+          onConfirm={(data) => {
+            // setWholesalePriceProduct(data.price);
+            dataCreateProduct[indexVariant].wholesalePrice = data.price;
+            setModalWholesalePrice1(false);
+            setDataModal([]);
+          }}
+          dataAdd={dataModal}
+        />
+        <DescribeModal
+          title={"productScreen.describe"}
+          isVisible={modalDescribe}
+          dataDescribe={description}
+          setIsVisible={() => setModalDescribe(false)}
+          onCancel={() => setModalDescribe(false)}
+          onConfirm={(data) => {
+            setDescription(data.Describe);
+            setModalDescribe(false);
+          }}
+        />
+        <UnitModal
+          title={"productScreen.createUnit"}
+          isVisible={modalcreateUnit}
+          setIsVisible={() => setModalcreateUnit(false)}
+          onSave={(data) => {
+            setModalcreateUnit(false);
+            getListUnitGroup(false);
+          }}
+          onSaveAndChange={(data) => {
+            setModalcreateUnit(false);
+            setUomId(data);
+            getListUnitGroup(false);
+          }}
+        />
+        <View style={styles.viewGroupBtn}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.viewBtnCancel}>
+            <Text tx={"common.cancel"} style={styles.textBtnCancel} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={methods.handleSubmit(submitAdd)}
+            style={styles.viewBtnConfirm}>
+            <Text tx={"createProductScreen.done"} style={styles.textBtnConfirm} />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </FormProvider>
   );
 };

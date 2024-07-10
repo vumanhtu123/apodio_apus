@@ -7,6 +7,7 @@ import { Text } from "../../../components";
 interface InputNumpad {
   addItem: (value: string) => void;
   deleteItem: () => void;
+  selectedOK: () => void;
 }
 export const Numpad = (props: InputNumpad) => {
   const line1 = [
@@ -212,8 +213,9 @@ export const Numpad = (props: InputNumpad) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                if (index == 3) {
-                  props.deleteItem();
+                if (item.toString() == "OK") {
+                  console.log("ok");
+                  props.selectedOK();
                 } else {
                   props.addItem(
                     item !== item.toString() ? "÷" : item.toString()

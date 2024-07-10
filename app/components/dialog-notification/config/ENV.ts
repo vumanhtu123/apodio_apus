@@ -44,8 +44,8 @@ const ENV = {
       default: ['#000000', '#000000'],
     },
     success: {
-      ios: '#0078D4',
-      android: ['#0078D4', '#0078D4'],
+      ios: 'systemBlue',
+      android: ['@android:color/holo_blue_light', '@android:color/holo_blue_dark'],
       default: ['rgb(229,229,231)', 'rgba(0, 120, 212, 1)'],
     },
     danger: {

@@ -12,6 +12,7 @@ import { scaleWidth } from "../../theme";
 import { ItemRevenue } from "./component/item-list-renvenue";
 import { RefactorMoneyModal } from "./refactor-money-modal";
 import { ClassifyModal } from "./classify-modal";
+import { FundsModal } from "./funds-modal";
 
 export const ListRevenueScreen: FC<
   StackScreenProps<AppStackParamList, "RevenueScreen">
@@ -22,7 +23,7 @@ export const ListRevenueScreen: FC<
       status: "05",
       toDay: "Thứ tư",
       monthDay: "Tháng 3/05",
-      expenditureValue: "40.000",
+      expenditureValue: "0",
       revenueValue: "40.000",
       paymentMethod: "",
     },
@@ -31,15 +32,15 @@ export const ListRevenueScreen: FC<
       toDay: "Thứ tư",
       monthDay: "Tháng 4/07",
       expenditureValue: "40.000",
-      revenueValue: "40.000",
+      revenueValue: "0",
       paymentMethod: "ATM",
     },
     {
       status: "09",
       toDay: "Thứ tư",
       monthDay: "Tháng 3/12",
-      expenditureValue: "40.000",
-      revenueValue: "40.000",
+      expenditureValue: "10.000",
+      revenueValue: "5.000",
       paymentMethod: "",
     },
     {
@@ -204,6 +205,12 @@ export const ListRevenueScreen: FC<
         }}
       />
       {/* <ClassifyModal
+        onVisible={isVisible}
+        onClose={(item: any) => {
+          setIsVisible(false);
+        }}
+      /> */}
+      {/* <FundsModal
         onVisible={isVisible}
         onClose={(item: any) => {
           setIsVisible(false);

@@ -75,7 +75,7 @@ export const ProductDetailScreen: FC = (item) => {
         setDetailProduct(data.baseTemplatePackingLine);
         setDataClassification(data);
         setDataClassificationToEdit(data);
-        console.log("response---getDetailProduct-------", data);
+        console.log("response---getDetailProduct-------", JSON.stringify(data));
         console.log(
           "attributeValues: ",
           data?.productVariants?.map((item) => item.attributeValues)
@@ -99,7 +99,7 @@ export const ProductDetailScreen: FC = (item) => {
   useEffect(() => {
     console.log(
       "---------useEffect---------arrClassification------------------",
-      arrClassification
+      JSON.stringify(arrClassification)
     );
     if (detailsClassification?.length !== 0) {
       selectDataClassification();
