@@ -178,7 +178,7 @@ export const ListRevenueScreen: FC<
               }}></Text>
           </View>
         </TouchableOpacity>
-        <View
+        <TouchableOpacity
           style={{
             backgroundColor: "#00CC6A",
             flexDirection: "row",
@@ -186,7 +186,11 @@ export const ListRevenueScreen: FC<
             paddingVertical: 12,
             alignContent: "center",
             borderRadius: 8,
-          }}>
+          }}
+          onPress={() => {
+            props.navigation.navigate('addRevenueScreen')
+          }}
+        >
           <Images.ic_arrow_down />
           <Text
             tx={"analysis.amountRevenue"}
@@ -196,7 +200,7 @@ export const ListRevenueScreen: FC<
               color: "#FFFFFF",
               marginLeft: 5,
             }}></Text>
-        </View>
+        </TouchableOpacity>
       </View>
       <RefactorMoneyModal
         onVisible={isVisible}

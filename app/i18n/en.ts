@@ -1037,6 +1037,7 @@ const en = {
     update: "Chỉnh sửa",
     classify: "Phân loại",
     listClassify: "Danh sách phân loại",
+    revenue2: 'Khoản thu'
   },
   revenueAndExpenditure: {
     moneyManagement: "Quản lý nguồn tiền",
