@@ -80,10 +80,29 @@ export default function ItemWeight(props: ItemWeight) {
   };
 
   const resetData1 = (data1: any, index: any) => {
-    if(Object.keys(data1[index].unit).length !== 0){
-      const newArr3 = data.concat(data1[index].unit)
-      setData(newArr3)
-    }
+    console.log(data1.length)
+    console.log(index)
+    // if(Object.keys(data1[index].unit).length !== 0){
+      if(index === props.dataUnitGroup?.length-1){
+        const newArr = data1.map((item: any) => {
+          return item.unit
+        })
+         const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
+         console.log(filteredData)
+        const unitGroupData = props.dataUnitGroup?.map((item: any) => {
+          return { ...item, label: item.unitName }
+        })
+        console.log(unitGroupData)
+        const newArr3 = unitGroupData.filter(
+          (itemA) => !filteredData.some((itemB: any) => deepEqual(itemA, itemB))
+        );
+        console.log(newArr3, 'ahsdfkjas')
+        setData(newArr3)
+      }else{
+        const newArr3 = data.concat(data1[index].unit)
+        setData(newArr3)
+      }
+    // }
   }
   const resetData = (data: any, itemValue: any) => {
     const newArr = data.map((item: any) => {
@@ -346,8 +365,9 @@ const ItemConversion = (item: InputSelectProps) => {
                       alignItems: "center",
                       marginTop: 25,
                     }}
+                    hintTx={'createProductScreen.select_unit'}
                     arrData={item.data ?? []}
-                    dataDefault={value?.label}
+                    dataDefault={value?.label ?? "Chọn đơn vị"}
                     onPressChoice={(items: any) => {
                       onChange(items)
                       item.onRemove(item.fields, items)

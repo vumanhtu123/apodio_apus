@@ -741,6 +741,7 @@ const en = {
     addDescription: "Thêm mô tả",
     productClassification: "Phân loại sản phẩm",
     volume: "Thể tích",
+    select_unit: "Chọn đơn vị",
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
