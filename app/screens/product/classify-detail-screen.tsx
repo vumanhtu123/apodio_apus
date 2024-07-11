@@ -105,7 +105,7 @@ export const ClassifyDetailScreen: FC = () => {
   const getNameAndValue = () => {
     const nameAndValue: { name: any; value: any }[] = [];
 
-    attributeCategory.forEach((category) => {
+    attributeCategory?.forEach((category) => {
       category.attributeOutputList.forEach((dto) => {
         dto.productAttributeValue.forEach((attrValue) => {
           nameAndValue.push({

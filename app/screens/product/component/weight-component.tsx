@@ -141,12 +141,12 @@ export default function ItemWeight(props: ItemWeight) {
           style={{
             color: "#242424",
             fontWeight: "700",
-            fontSize: 14,
+            fontSize: fontSize.size14,
           }}></Text>
         <Text
           tx="productScreen.weightOriginal"
           style={{
-            fontSize: 14,
+            fontSize: fontSize.size14,
             fontWeight: "400",
             color: "#242424",
             marginVertical: 15,
@@ -165,7 +165,7 @@ export default function ItemWeight(props: ItemWeight) {
           <Text
             style={{
               color: "#242424",
-              fontSize: 12,
+              fontSize: fontSize.size14,
               fontWeight: "400",
             }}
             tx="productScreen.weightConversion"></Text>
@@ -189,7 +189,7 @@ export default function ItemWeight(props: ItemWeight) {
             <Text
               style={{
                 color: "#0078D4",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "400",
               }}
               tx="productScreen.addLine"></Text>
@@ -232,7 +232,7 @@ const ItemOriginal = (item: ItemOriginal) => {
         justifyContent: "space-between",
         marginRight: 6,
       }}>
-      <Text style={{ color: "#000000", fontSize: 12, fontWeight: "400", width: scaleWidth(80) }}>
+      <Text style={{ color: "#000000", fontSize: fontSize.size12, fontWeight: "400", width: scaleWidth(80) }}>
         {item.data?.id !== 0 ? (item.checkList === false ? item.data?.label : item.data?.name) : 'Đơn vị gốc'}
       </Text>
       <View style={{ marginLeft: scaleWidth(10) }}>
@@ -254,7 +254,7 @@ const ItemOriginal = (item: ItemOriginal) => {
               valueTextRight="Kg"
               styleTextRight={{
                 color: "#747475",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "500",
                 marginTop: scaleHeight(20),
               }}
@@ -290,7 +290,7 @@ const ItemOriginal = (item: ItemOriginal) => {
             valueTextRight="m3"
             styleTextRight={{
               color: "#747475",
-              fontSize: 12,
+              fontSize: fontSize.size12,
               fontWeight: "500",
               marginTop: scaleHeight(20),
             }}
@@ -353,7 +353,7 @@ const ItemConversion = (item: InputSelectProps) => {
                     marginBottom: scaleHeight(10),
                   }}>
                   <InputSelect
-                    textStyle={{ fontSize: 12, marginTop: scaleHeight(10) }}
+                    textStyle={{ fontSize: fontSize.size12, marginTop: scaleHeight(10) }}
                     styleView={{
                       backgroundColor: "transparent",
                       width: scaleHeight(60),
@@ -380,7 +380,7 @@ const ItemConversion = (item: InputSelectProps) => {
                       marginBottom: 3,
                     }}></View>
                   <Text
-                    style={{ color: "#747475A6", fontSize: 10, fontWeight: "500", width: '90%' }} numberOfLines={1}>
+                    style={{ color: "#747475A6", fontSize: fontSize.size10, fontWeight: "500", width: '90%' }} numberOfLines={1}>
                     {item.originUit?.name == undefined || value?.conversionRate == undefined ? '' : formatCurrency(commasToDots(value?.conversionRate)) + " " + item.originUit?.name}
                   </Text>
                 </View>
@@ -408,7 +408,7 @@ const ItemConversion = (item: InputSelectProps) => {
               valueTextRight="Kg"
               styleTextRight={{
                 color: "#747475",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "500",
                 marginTop: scaleHeight(20),
               }}
@@ -443,7 +443,7 @@ const ItemConversion = (item: InputSelectProps) => {
               valueTextRight="m3"
               styleTextRight={{
                 color: "#747475",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "500",
                 marginTop: scaleHeight(20),
               }}

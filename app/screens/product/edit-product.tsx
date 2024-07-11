@@ -145,9 +145,11 @@ export const ProductEditScreen: FC = (item) => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (dataEdit !== undefined) {
         if(dataEdit.hasVariantInConfig == false){
-          setAddVariant(true)
           setDataGroupAttribute(dataEdit.attributeCategory);
           setVariantInConfig(dataEdit.hasVariantInConfig);
+          if(dataEdit.attributeCategory.length > 0){
+            setAddVariant(true)
+          }
         }
       }
     });
@@ -772,7 +774,7 @@ export const ProductEditScreen: FC = (item) => {
         attributeCategoryIds: attributeIds,
         textAttributes: textAttributes,
         description: description,
-        productVariants: newArr2,
+        productVariants: hasVariantInConfig ? newArr2 : [],
         retailPrice: dataPrice2,
         costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
         listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
