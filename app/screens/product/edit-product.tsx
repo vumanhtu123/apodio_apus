@@ -89,6 +89,7 @@ export const ProductEditScreen: FC = (item) => {
   const [retailPriceProduct, setRetailPriceProduct] = useState([]);
   const [costPriceProduct, setCostPriceProduct] = useState(0);
   const [listPriceProduct, setListPriceProduct] = useState(0);
+  const [addWeight, setAddWeight] = useState(false);
   const [attributeIds, setAttributeIds] = useState([]);
   const [description, setDescription] = useState("");
   const [indexVariant, setIndexVariant] = useState(0);
@@ -121,7 +122,7 @@ export const ProductEditScreen: FC = (item) => {
   } = useForm({
     mode: "all",
   });
-  const methods = useForm({ defaultValues: { productName: '', costPrice: '', listPrice: '', SKU: '', weight: '', weightOriginal: '', volumeOriginal: '' } })
+  const methods = useForm({ defaultValues: { productName: '', costPrice: '', listPrice: '', SKU: '', weight: [], weightOriginal: '', volumeOriginal: '' } })
   const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: "" });
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
   const [modalImages, setModalImages] = useState(false);
@@ -144,9 +145,11 @@ export const ProductEditScreen: FC = (item) => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (dataEdit !== undefined) {
         if(dataEdit.hasVariantInConfig == false){
-          setAddVariant(true)
           setDataGroupAttribute(dataEdit.attributeCategory);
           setVariantInConfig(dataEdit.hasVariantInConfig);
+          if(dataEdit.attributeCategory.length > 0){
+            setAddVariant(true)
+          }
         }
       }
     });
@@ -301,6 +304,9 @@ export const ProductEditScreen: FC = (item) => {
       // setCostPriceProduct(dataEdit?.costPrice);
       // setListPriceProduct(dataEdit?.listPrice);
       // setSku(dataEdit?.sku);
+      if(newDataEdit?.baseTemplatePackingLine !== null){
+        setAddWeight(true)
+      }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
       methods.setValue('listPrice', newDataEdit?.listPrice?.toString())
       methods.setValue('SKU', newDataEdit?.sku)
@@ -705,7 +711,7 @@ export const ProductEditScreen: FC = (item) => {
           listPrice: (item?.listPrice),
           wholesalePrice: item.wholesalePrice,
           attributeValues: item.attributeValues,
-          baseProductPackingLine: item.weight?.volumeOriginal !== undefined && item.weight?.weightOriginal !== undefined ? (valueSwitchUnit === false ? {
+          baseProductPackingLine: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? {} : (valueSwitchUnit === false ? {
             uomGroupLineId: null,
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
@@ -715,8 +721,8 @@ export const ProductEditScreen: FC = (item) => {
             amount: 1,
             volume: formatStringToFloat(item.weight?.volumeOriginal),
             weight: formatStringToFloat(item.weight?.weightOriginal),
-          }) : {},
-          productPackingLines: item.weight?.volumeOriginal !== undefined && item.weight?.weightOriginal !== undefined ? (valueSwitchUnit == false ? [] : item.productPackingLines) : []
+          }),
+          productPackingLines: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item.productPackingLines)
         };
       });
       console.log('2')
@@ -768,18 +774,18 @@ export const ProductEditScreen: FC = (item) => {
         attributeCategoryIds: attributeIds,
         textAttributes: textAttributes,
         description: description,
-        productVariants: newArr2,
+        productVariants: hasVariantInConfig ? newArr2 : [],
         retailPrice: dataPrice2,
         costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
         listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
         wholesalePrice: dataPrice,
-        baseTemplatePackingLine: data.weightOriginal?.trim() === "" && data.volumeOriginal?.trim() === "" ? {} : {
+        baseTemplatePackingLine: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? {} : {
           uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
           amount: 1,
           volume: formatStringToFloat(data.volumeOriginal),
           weight: formatStringToFloat(data.weightOriginal)
         },
-        productTemplatePackingLines: data.weightOriginal?.trim() === "" && data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
+        productTemplatePackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
         deleteVariantIds: newArr1,
       }
       console.log('dataCreate===========', JSON.stringify(doneData))
@@ -1962,8 +1968,13 @@ export const ProductEditScreen: FC = (item) => {
                   if (valueSwitchUnit) {
                     setUomGroupId(item);
                     getDetailUnitGroup(item.id);
+                    methods.setValue('weight', [])
+                    methods.setValue('weightOriginal', '')
+                    methods.setValue('volumeOriginal', '')
                   } else {
                     setUomId(item);
+                    methods.setValue('weightOriginal', '')
+                    methods.setValue('volumeOriginal', '')
                   }
                 }}
                 styleView={{ marginBottom: scaleHeight(6) }}
@@ -2078,10 +2089,18 @@ export const ProductEditScreen: FC = (item) => {
               ) : null}
             </View>
           </View>
-          {uomId ? (
+          {addWeight ? (
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
               <View style={[styles.viewViewDetail]}>
+              <TouchableOpacity style={{position: 'absolute', top: 0, right: 0, zIndex: 1}}
+                onPress={()=> {setAddWeight(false)
+                  methods.setValue('weightOriginal', '')
+                  methods.setValue('volumeOriginal', '')
+                  methods.setValue('weight', [])
+                }}>
+                  <Images.icon_deleteDolphin/>
+                  </TouchableOpacity>
                 <ItemWeight
                   dataUnitGroup={valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines}
                   checkList={valueSwitchUnit}
@@ -2739,7 +2758,25 @@ export const ProductEditScreen: FC = (item) => {
                         style={{ color: "#0078d4", fontSize: fontSize.size10 }} />
                     </TouchableOpacity>
                   ) : null}
-                  {addDescribe === true && addVariant === true ? (
+                  {addWeight === false ? (
+                    <TouchableOpacity
+                      onPress={() => setAddWeight(true)}
+                      style={{
+                        borderWidth: 1,
+                        alignItems: "center",
+                        paddingVertical: scaleHeight(6),
+                        paddingHorizontal: scaleWidth(8),
+                        borderColor: "#0078d4",
+                        borderRadius: 4,
+                        marginLeft: scaleWidth(8),
+                      }}>
+                      <Text
+                        tx={"createProductScreen.weight"}
+                        style={{ color: "#0078d4", fontSize: fontSize.size10 }}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+                  {addDescribe === true && addVariant === true && addWeight === true ? (
                     <Text tx={"createProductScreen.notificationAddAllInfoProduct"}
                       style={{
                         marginLeft: scaleWidth(8),

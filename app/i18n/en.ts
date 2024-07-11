@@ -724,6 +724,7 @@ const en = {
     edit_product: "Sửa sản phẩm",
     cancel: "Hủy",
     done: "Hoàn tất",
+    weight: "Tải trọng",
     openCamera: "Chụp ảnh",
     uploadImage: "Tải ảnh lên",
     infoSupplier: "Thông tin nhà cung cấp",
@@ -740,6 +741,7 @@ const en = {
     addDescription: "Thêm mô tả",
     productClassification: "Phân loại sản phẩm",
     volume: "Thể tích",
+    select_unit: "Chọn đơn vị",
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
@@ -1031,6 +1033,7 @@ const en = {
     amountRevenue: "Khoản thu",
     amountExpenditure: "Khoản chi",
     refactorMoney: "Chỉnh sửa",
+    createFunds: 'Tạo nguồn tiền',
     cancel: "Hủy",
     nameMoney: "Tên nguồn tiền",
     initBalance: "Số dư ban đầu",
@@ -1039,6 +1042,7 @@ const en = {
     update: "Chỉnh sửa",
     classify: "Phân loại",
     listClassify: "Danh sách phân loại",
+    revenue2: 'Khoản thu'
   },
   revenueAndExpenditure: {
     moneyManagement: "Quản lý nguồn tiền",
@@ -1051,8 +1055,27 @@ const en = {
     bank: "Ngân hàng",
     sourceOfMoneyReceived: "Nguồn tiền nhận",
     selectSourceOfMoneyReceived: "Chọn nguồn tiền nhận",
-    funds: "Nguồn tiền",
+    chooseTheSourceOfMoney: "Chọn nguồn tiền",
+    listOfFundingSources: 'Danh sách nguồn tiền',
+    storeWallet: 'Ví cửa hàng',
+    enterTheAmount: 'Nhập số tiền',
+    unpaid:"Chưa trả",
+    paid:"Đã trả",
+    unclassified: "Chưa phân loại",
+    funds:"Nguồn tiền",
+    expense: "Phân loại",
+    importProduct:"Nhập hàng",
+    classifySourcesOfMoney: "Chọn để phân loại nguồn tiền",
+    trader: "Người giao dịch",
+    selectTrader: "Chọn người giao dịch",
+    note: "Ghi chú",
+    ex: "Ví dụ: Hóa đơn điện nước",
+    orderReference:"Tham chiếu đơn hàng",
+    selectOrder: "Chọn đơn hàng", 
+
+
   },
+
 
   // @demo remove-block-end
 };

@@ -28,7 +28,7 @@ import { DrawerToggleButton } from "@react-navigation/drawer";
 import moment from "moment";
 import ItemListTransaction from "../../component/itemListTransaction";
 import ItemListNCC from "../../component/itemListNCC";
-import { ModalPayReceivable } from "../../component/ModalPayReceivable";
+import { ModalPayReceivable } from "../../component/modalPayReceivable";
 
 export const ReceivableScreen: FC<
   StackScreenProps<NavigatorParamList, "receivable">

@@ -69,19 +69,40 @@ export default function ItemWeight(props: ItemWeight) {
     }
   }, [props.dataUnitGroup])
 
-  // useEffect(()=>{
-  //   if{}
-  // }, [watch('volumeOriginal'), watch('weightOriginal')])
+  useEffect(()=>{
+    if(watch('volumeOriginal')?.trim() === ""  && watch('weightOriginal')?.trim() === ""){
+      setValue('weight', [])
+    }
+  }, [watch('volumeOriginal'), watch('weightOriginal')])
 
   const deepEqual = (obj1, obj2) => {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
   };
 
   const resetData1 = (data1: any, index: any) => {
-    if(Object.keys(data1[index].unit).length !== 0){
-      const newArr3 = data.concat(data1[index].unit)
-      setData(newArr3)
-    }
+    console.log(data1.length)
+    console.log(index)
+    // if(Object.keys(data1[index].unit).length !== 0){
+      if(index === props.dataUnitGroup?.length-1){
+        const newArr = data1.map((item: any) => {
+          return item.unit
+        })
+         const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
+         console.log(filteredData)
+        const unitGroupData = props.dataUnitGroup?.map((item: any) => {
+          return { ...item, label: item.unitName }
+        })
+        console.log(unitGroupData)
+        const newArr3 = unitGroupData.filter(
+          (itemA) => !filteredData.some((itemB: any) => deepEqual(itemA, itemB))
+        );
+        console.log(newArr3, 'ahsdfkjas')
+        setData(newArr3)
+      }else{
+        const newArr3 = data.concat(data1[index].unit)
+        setData(newArr3)
+      }
+    // }
   }
   const resetData = (data: any, itemValue: any) => {
     const newArr = data.map((item: any) => {
@@ -120,12 +141,12 @@ export default function ItemWeight(props: ItemWeight) {
           style={{
             color: "#242424",
             fontWeight: "700",
-            fontSize: 14,
+            fontSize: fontSize.size14,
           }}></Text>
         <Text
           tx="productScreen.weightOriginal"
           style={{
-            fontSize: 14,
+            fontSize: fontSize.size14,
             fontWeight: "400",
             color: "#242424",
             marginVertical: 15,
@@ -144,7 +165,7 @@ export default function ItemWeight(props: ItemWeight) {
           <Text
             style={{
               color: "#242424",
-              fontSize: 12,
+              fontSize: fontSize.size14,
               fontWeight: "400",
             }}
             tx="productScreen.weightConversion"></Text>
@@ -168,7 +189,7 @@ export default function ItemWeight(props: ItemWeight) {
             <Text
               style={{
                 color: "#0078D4",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "400",
               }}
               tx="productScreen.addLine"></Text>
@@ -211,7 +232,7 @@ const ItemOriginal = (item: ItemOriginal) => {
         justifyContent: "space-between",
         marginRight: 6,
       }}>
-      <Text style={{ color: "#000000", fontSize: 12, fontWeight: "400", width: scaleWidth(80) }}>
+      <Text style={{ color: "#000000", fontSize: fontSize.size12, fontWeight: "400", width: scaleWidth(80) }}>
         {item.data?.id !== 0 ? (item.checkList === false ? item.data?.label : item.data?.name) : 'Đơn vị gốc'}
       </Text>
       <View style={{ marginLeft: scaleWidth(10) }}>
@@ -233,7 +254,7 @@ const ItemOriginal = (item: ItemOriginal) => {
               valueTextRight="Kg"
               styleTextRight={{
                 color: "#747475",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "500",
                 marginTop: scaleHeight(20),
               }}
@@ -269,7 +290,7 @@ const ItemOriginal = (item: ItemOriginal) => {
             valueTextRight="m3"
             styleTextRight={{
               color: "#747475",
-              fontSize: 12,
+              fontSize: fontSize.size12,
               fontWeight: "500",
               marginTop: scaleHeight(20),
             }}
@@ -332,7 +353,7 @@ const ItemConversion = (item: InputSelectProps) => {
                     marginBottom: scaleHeight(10),
                   }}>
                   <InputSelect
-                    textStyle={{ fontSize: 12, marginTop: scaleHeight(10) }}
+                    textStyle={{ fontSize: fontSize.size12, marginTop: scaleHeight(10) }}
                     styleView={{
                       backgroundColor: "transparent",
                       width: scaleHeight(60),
@@ -344,8 +365,9 @@ const ItemConversion = (item: InputSelectProps) => {
                       alignItems: "center",
                       marginTop: 25,
                     }}
+                    hintTx={'createProductScreen.select_unit'}
                     arrData={item.data ?? []}
-                    dataDefault={value?.label}
+                    dataDefault={value?.label ?? "Chọn đơn vị"}
                     onPressChoice={(items: any) => {
                       onChange(items)
                       item.onRemove(item.fields, items)
@@ -358,7 +380,7 @@ const ItemConversion = (item: InputSelectProps) => {
                       marginBottom: 3,
                     }}></View>
                   <Text
-                    style={{ color: "#747475A6", fontSize: 10, fontWeight: "500", width: '90%' }} numberOfLines={1}>
+                    style={{ color: "#747475A6", fontSize: fontSize.size10, fontWeight: "500", width: '90%' }} numberOfLines={1}>
                     {item.originUit?.name == undefined || value?.conversionRate == undefined ? '' : formatCurrency(commasToDots(value?.conversionRate)) + " " + item.originUit?.name}
                   </Text>
                 </View>
@@ -386,7 +408,7 @@ const ItemConversion = (item: InputSelectProps) => {
               valueTextRight="Kg"
               styleTextRight={{
                 color: "#747475",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "500",
                 marginTop: scaleHeight(20),
               }}
@@ -421,7 +443,7 @@ const ItemConversion = (item: InputSelectProps) => {
               valueTextRight="m3"
               styleTextRight={{
                 color: "#747475",
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "500",
                 marginTop: scaleHeight(20),
               }}
