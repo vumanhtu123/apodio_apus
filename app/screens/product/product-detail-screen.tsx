@@ -65,6 +65,7 @@ export const ProductDetailScreen: FC = (item) => {
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false);
   const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
+  const [attributes, setAttributes] = useState<any>([]);
 
   const handleGetDetailProduct = async () => {
     try {
@@ -121,7 +122,40 @@ export const ProductDetailScreen: FC = (item) => {
 
     return unsubscribe;
   }, [navigation, reload]);
+  // useEffect(() => {
+  //   function processAttributes(data: any) {
+  //     const processedAttributes = data.attributeCategory?.flatMap(category =>
+  //       category.attributeOutputDtos.flatMap(attr =>
+  //         attr.productAttributeValue.map(val => ({
+  //           name: attr.name,
+  //           value: val.value
+  //         }))
+  //       )
+  //     );
+  //     setAttributes(processedAttributes);
+  //   }
 
+  //   processAttributes(dataClassification);
+  // }, [dataClassification]);
+  function extractAttributeInfo(data: any) {
+    if (!data.attributeCategory || data.attributeCategory.length === 0) {
+      return [];
+    }
+    const groupedData = data.attributeCategory?.map(category => ({
+      name: category.name,
+      items: category.attributeOutputList?.map(attr => ({
+        value: attr.productAttributeValue.map(val => val.value),
+        name: attr.name,
+      })
+      ) || []
+    }));
+    setAttributes(groupedData)
+    return groupedData;
+  }
+  useEffect(() => {
+    extractAttributeInfo(dataClassification);
+    // setAttributes(extractedAttributes);
+  }, [dataClassification])
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
     { id: 4638, label: "Lô", label2: "LOTS" },
@@ -136,7 +170,7 @@ export const ProductDetailScreen: FC = (item) => {
     const arrTextfieldAttribute = [];
 
     attributeCategory.forEach((items) => {
-      items.attributeOutputDtos.forEach((item) => {
+      items.attributeOutputList?.forEach((item) => {
         if (item.displayType === "TEXTFIELD") {
           const newItem = {
             ...item.productAttributeValue[0],
@@ -150,7 +184,7 @@ export const ProductDetailScreen: FC = (item) => {
 
     const matchingElements = [];
     attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputDtos.forEach((dto) => {
+      itemA.attributeOutputList?.forEach((dto) => {
         dto.productAttributeValue.forEach((attrValueA) => {
           detailsClassification?.attributeValues?.forEach((itemB) => {
             if (
@@ -182,7 +216,7 @@ export const ProductDetailScreen: FC = (item) => {
 
     const matchingElements1 = [];
     attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputDtos.forEach((dto) => {
+      itemA.attributeOutputList?.forEach((dto) => {
         detailsClassification?.attributeValues?.forEach((itemB) => {
           if (dto.id === itemB.productAttributeId) {
             matchingElements1.push({ name: dto.name, id: dto.id });
@@ -200,9 +234,9 @@ export const ProductDetailScreen: FC = (item) => {
       return { ...item, name: a[0]?.name };
     });
 
-    const arrTextAndCheck = newArr1.concat(arrTextfieldAttribute);
+    const arrTextAndCheck = newArr1?.concat(arrTextfieldAttribute);
 
-    const newArr2 = arrTextAndCheck.reduce((acc: any, obj: any) => {
+    const newArr2 = arrTextAndCheck?.reduce((acc: any, obj: any) => {
       if (!acc[obj.attributeName]) {
         acc[obj.attributeName] = [];
       }
@@ -210,12 +244,12 @@ export const ProductDetailScreen: FC = (item) => {
       return acc;
     }, {});
 
-    const newArr3 = Object.keys(newArr2).map((attributeName) => {
+    const newArr3 = newArr2 ? Object.keys(newArr2).map((attributeName) => {
       return {
-        name: attributeName, // Chuyển khóa 'number' từ string sang number nếu cần
-        items: newArr2[attributeName],
+        name: attributeName,
+        items: newArr2[attributeName] || [],
       };
-    });
+    }) : [];
     console.log(
       "---setAttributeDetailsClassification--------------",
       JSON.stringify(newArr3)
@@ -256,6 +290,8 @@ export const ProductDetailScreen: FC = (item) => {
   };
   const toggleDetails = () => {
     setShowDetails(!showDetails);
+    extractAttributeInfo(dataClassification)
+    console.log('first', JSON.stringify(attributes))
     selectDataClassification();
   };
   return (
@@ -671,7 +707,7 @@ export const ProductDetailScreen: FC = (item) => {
             </View>
           ) : null}
 
-          {attributeDetailsClassification?.length !== 0 ? (
+          {attributeDetailsClassification?.length !== 0 || attributes?.length !== 0 ? (
             <View>
               <View style={styles.viewLine} />
               <TouchableOpacity
@@ -695,7 +731,6 @@ export const ProductDetailScreen: FC = (item) => {
               </TouchableOpacity>
             </View>
           ) : null}
-
           {showDetails && (
             <View style={styles.viewDetails}>
               <View style={styles.viewTitleDetail}>
@@ -707,42 +742,87 @@ export const ProductDetailScreen: FC = (item) => {
                 </Text>
               </View>
               <View style={styles.viewLine2} />
-              {attributeDetailsClassification?.map((item, index) => (
-                <View key={index}>
-                  <View
-                    style={{
-                      marginVertical: scaleHeight(margin.margin_12),
-                      paddingHorizontal: scaleWidth(padding.padding_12),
-                    }}>
-                    <Text
-                      style={{
-                        fontWeight: "600",
-                        fontSize: fontSize.size12,
-                        color: colors.palette.navyBlue,
-                      }}>
-                      {item.name}
-                    </Text>
-                  </View>
-                  <View style={styles.viewLine2} />
-                  {item.items?.map((dto) => (
-                    <View
-                      style={{
-                        marginTop: scaleHeight(margin.margin_12),
-                      }}>
-                      <ProductAttribute
-                        label={dto.name}
-                        value={dto.value}
-                        styleAttribute={{
+              {attributeDetailsClassification.length !== 0 ? (
+                <View>
+                  {attributeDetailsClassification?.map((item, index) => (
+                    <View key={index}>
+                      <View
+                        style={{
+                          marginVertical: scaleHeight(margin.margin_12),
                           paddingHorizontal: scaleWidth(padding.padding_12),
-                        }}
-                      />
-                      {index !== attributeDetailsClassification?.length - 1 ? (
-                        <View style={styles.viewLine2} />
-                      ) : null}
+                        }}>
+                        <Text
+                          style={{
+                            fontWeight: "600",
+                            fontSize: fontSize.size12,
+                            color: colors.palette.navyBlue,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </View>
+                      <View style={styles.viewLine2} />
+                      {item.items?.map((dto) => (
+                        <View
+                          style={{
+                            marginTop: scaleHeight(margin.margin_12),
+                          }}>
+                          <ProductAttribute
+                            label={dto.name}
+                            value={dto.value}
+                            styleAttribute={{
+                              paddingHorizontal: scaleWidth(padding.padding_12),
+                            }}
+                          />
+                          {index !== attributeDetailsClassification?.length - 1 ? (
+                            <View style={styles.viewLine2} />
+                          ) : null}
+                        </View>
+                      ))}
                     </View>
                   ))}
                 </View>
-              ))}
+              ) : (
+                
+                <View>
+                  {attributes?.map((item: any, index: any) => (
+                    <View key={index}>
+                      <View
+                        style={{
+                          marginVertical: scaleHeight(margin.margin_12),
+                          paddingHorizontal: scaleWidth(padding.padding_12),
+                        }}>
+                        <Text
+                          style={{
+                            fontWeight: "600",
+                            fontSize: fontSize.size12,
+                            color: colors.palette.navyBlue,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </View>
+                      <View style={styles.viewLine2} />
+                      {item.items?.map((dto: any) => (
+                        <View
+                          style={{
+                            marginTop: scaleHeight(margin.margin_12),
+                          }}>
+                          <ProductAttribute
+                            label={dto.name}
+                            value={dto.value.join('/')}
+                            styleAttribute={{
+                              paddingHorizontal: scaleWidth(padding.padding_12),
+                            }}
+                          />
+                          {index !== attributes?.length - 1 ? (
+                            <View style={styles.viewLine2} />
+                          ) : null}
+                        </View>
+                      ))}
+                    </View>
+                  ))}
+                </View>
+                
+              )}
             </View>
           )}
           <View>
@@ -773,11 +853,11 @@ export const ProductDetailScreen: FC = (item) => {
                     </Text>
                     <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
                       <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.weight} kg</Text>
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.weight} kg</Text>
                     </View>
                     <View style={{ flex: 3, flexDirection: 'row' }}>
                       <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.volume} m3</Text>
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.volume} m3</Text>
                     </View>
                   </View>
                   {/* )
@@ -1102,6 +1182,7 @@ const styles = StyleSheet.create({
   },
   viewLine: { height: scaleHeight(12), backgroundColor: "#F3F4F9" },
   viewDetails: {
+    borderWidth: scaleHeight(1),
     marginVertical: scaleHeight(margin.margin_10),
     marginHorizontal: scaleWidth(margin.margin_16),
     borderRadius: 8,
@@ -1109,6 +1190,7 @@ const styles = StyleSheet.create({
     shadowColor: "#3A43E5",
     shadowOpacity: 0.25,
     backgroundColor: colors.palette.neutral100,
+    borderColor: colors.palette.ghostWhite,
   },
   viewTitleDetail: {
     flexDirection: "row",

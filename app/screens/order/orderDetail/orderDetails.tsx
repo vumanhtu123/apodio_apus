@@ -15,6 +15,7 @@ import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, c
 import ItemOrder from "../components/item-order";
 import { styles } from "./styles";
 import ProductAttribute from "../../product/component/productAttribute";
+import moment from "moment";
 export const OrderDetails: FC = observer(
     function OrderDetails(props) {
         const { control, reset, handleSubmit, formState: { errors } } = useForm();
@@ -42,7 +43,7 @@ export const OrderDetails: FC = observer(
         };
         const handleGetDetailOrder = async () => {
             try {
-                const response = await orderStore.getDetailOrder(orderId);
+                const response = await orderStore.getDetailOrder(orderId, false);
                 console.log("productId", orderId);
                 if (response && response.kind === "ok") {
                     const data = response.response.data;
@@ -84,7 +85,10 @@ export const OrderDetails: FC = observer(
                     textBody: result.result.message,
                     button2: translate("common.ok"),
                     onPressButton: () => {
-                        navigation.goBack();
+                        // navigation.goBack();
+                        orderStore.setIsReload(true)
+                        navigation.goBack()
+                        Dialog.hide();
                     },
                     closeOnOverlayTap: false
                 })
@@ -300,7 +304,7 @@ export const OrderDetails: FC = observer(
                                     lineHeight: scaleHeight(14.52),
                                     marginBottom: scaleHeight(margin.margin_8)
                                 }]} >
-                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + " " : ""}
+                                    {data.deliveryAddress?.address ? data.deliveryAddress.address + ", " : ""}
                                     {data.deliveryAddress?.ward?.name ? data.deliveryAddress.ward.name + ", " : ""}
                                     {data.deliveryAddress?.district?.name ? data.deliveryAddress.district.name + ", " : ""}
                                     {data.deliveryAddress?.city?.name ? data.deliveryAddress.city.name : ""}
@@ -421,7 +425,7 @@ export const OrderDetails: FC = observer(
                                             </View>
                                         </View>
                                     ))}
-                                    {data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' ? null : (
+                                    {data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' && data.debtAmount > 0 || dataPayment.moneyPaid == 0 ? null : (
                                         <View >
                                             <View style={{ margin: 0 }}>
                                                 <Text style={
@@ -445,7 +449,8 @@ export const OrderDetails: FC = observer(
                                                 <View style={styles.viewLineCash}>
                                                     <Images.icon_ellipse />
                                                 </View>
-                                                <View style={[styles.viewTextCash, { flexDirection: 'row-reverse' }]}>
+                                                <View style={[styles.viewTextCash]}>
+                                                    <Text tx={dataPayment.paymentMethod === 'CASH' ? 'orderDetailScreen.cash' : ''} style={[styles.textContent, { flex: 1 }]} />
                                                     <Text text={formatVND(formatCurrency(commasToDots(dataPayment.moneyPaid)))} />
                                                 </View>
                                             </View>
@@ -453,29 +458,25 @@ export const OrderDetails: FC = observer(
                                     )}
                                 </View>
                             ) : null}
-                            {data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' ? (
+                            {data.paymentMethod == 'DEDUCTION_OF_LIABILITIES' && data.debtAmount > 0 ? (
                                 <View >
-                                    <View style={[styles.viewStatus,
-                                    {
-                                        backgroundColor: colors.palette.mintCream,
-                                        width: scaleWidth(75),
-                                        alignItems: 'center',
-                                        paddingVertical: scaleHeight(2),
-                                        // paddingHorizontal : scaleHeight(6),
-
-                                    }]}>
+                                    <View style={[styles.viewStatus]}>
                                         <Text style={
                                             [styles.textStatus, {
-                                                color: colors.palette.malachite
+                                                color: colors.palette.yellow,
+                                                width: scaleWidth(50),
+                                                paddingVertical: scaleHeight(2),
+                                                textAlign: 'center',
+                                                backgroundColor: colors.palette.yallowExDG,
                                             }]
-                                        } tx={'orderDetailScreen.invoiced'} />
+                                        } tx={'orderDetailScreen.outstanding'} />
                                     </View>
                                     <View style={{
                                         flexDirection: 'row', alignItems: 'center',
                                         marginBottom: scaleHeight(margin.margin_15)
                                     }}>
                                         <View style={{ width: (Dimensions.get('screen').width - 64) * 0.2 }}>
-                                            <Text text={formatDateTime(data?.orderDate)}
+                                            <Text text={moment(data?.orderDate).format("YYYY-MM-DD")}
                                                 style={styles.textContent}
                                             />
                                         </View>
@@ -523,6 +524,7 @@ export const OrderDetails: FC = observer(
                                 closeOnOverlayTap: false,
                                 onPressButton: async () => {
                                     await cancelOrder()
+
                                     // Dialog.hide();
                                 }
                             })

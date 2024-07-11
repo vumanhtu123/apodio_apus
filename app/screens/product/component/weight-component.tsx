@@ -38,10 +38,10 @@ interface ItemOriginal {
 
 export default function ItemWeight(props: ItemWeight) {
   const {vendorStore} = useStores()
-  const { control, setValue, setError, getFieldState, getValues } = useFormContext()
+  const { control, setValue, setError, getFieldState, getValues, watch } = useFormContext()
   const {
     handleSubmit,
-    watch,
+    // watch,
     // getValues,
     formState: { errors },
   } = useForm({
@@ -68,6 +68,12 @@ export default function ItemWeight(props: ItemWeight) {
       }))
     }
   }, [props.dataUnitGroup])
+
+  useEffect(()=>{
+    if(watch('volumeOriginal')?.trim() === ""  && watch('weightOriginal')?.trim() === ""){
+      setValue('weight', [])
+    }
+  }, [watch('volumeOriginal'), watch('weightOriginal')])
 
   const deepEqual = (obj1, obj2) => {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
@@ -144,7 +150,8 @@ export default function ItemWeight(props: ItemWeight) {
               fontWeight: "400",
             }}
             tx="productScreen.weightConversion"></Text>
-          {data ? (data.length !== 0 ? <TouchableOpacity
+          {watch('weightOriginal') === "" && watch('volumeOriginal') === "" ? null : (data ? (data.length !== 0 ? 
+          <TouchableOpacity
             onPress={() => {
               if (props.setAdd.length === 0) {
                 append({ weight1: "", volume: "", unit: {} });
@@ -158,7 +165,7 @@ export default function ItemWeight(props: ItemWeight) {
                 } else {
                   append({ weight1: "", volume: "", unit: {} });
                 }
-              }     
+              }    
             }}>
             <Text
               style={{
@@ -167,7 +174,7 @@ export default function ItemWeight(props: ItemWeight) {
                 fontWeight: "400",
               }}
               tx="productScreen.addLine"></Text>
-          </TouchableOpacity> : null) : null}
+          </TouchableOpacity> : null) : null)}
         </View> : null}
       </View>
       {props.checkList ? <FlatList

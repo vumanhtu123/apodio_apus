@@ -290,7 +290,9 @@ export function formatCurrency(value: any, options = {}) {
   const { separator = '.', prefix = '', suffix = '' } = options;
   // Loại bỏ ký tự không phải số và không phải dấu phẩy
   value = value.toString().replace(/[^0-9,]/g, '');
-
+  if (value.startsWith(',') || value.match(/^,+/)) {
+    value = '0' + value;
+  }
   // Thay dấu phẩy bằng dấu chấm để định dạng
   let [integerPart, decimalPart] = value.split(',');
 
@@ -423,6 +425,9 @@ export function getDateToday() {
 }
 
 export function formatStringToFloat(input: string) {
+  if(input == undefined){
+    return
+  }else{
   // Loại bỏ dấu chấm
   let withoutDots = input.replace(/\./g, '');
 
@@ -433,6 +438,7 @@ export function formatStringToFloat(input: string) {
   let result = parseFloat(formattedString);
 
   return result;
+  }
 }
 
 export function getDateTodayOneDate() {

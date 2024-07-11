@@ -1,5 +1,5 @@
 import { observer, useLocalStore } from "mobx-react-lite";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import {
     Alert,
     Dimensions,
@@ -54,11 +54,13 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
     const [arrSelect, setArrSelect] = useState([]);
     const [idAttributeModal, setIdAttributeModal] = useState("");
     const [inputText, setInputText] = useState<{}[]>([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [dataEditDropdown, setDataEditDropdown] = useState([]);
     const [dropdownSelected, setDropdownSelected] = useState([]);
     const [valueSwitch, setValueSwitch] = useState(true);
     const { attributeStore } = useStores();
+    const render = useRef(0)
+    console.log('re-render', render.current++)
 
     const getListAttribute = async () => {
         try {
@@ -271,7 +273,22 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         return a;
                     });
                     const newArr3 = newArr2.flat();
-                    navigation.navigate("ProductEditScreen" as never, {check: true,attributeArr: selectedItems,dropdownSelected: newArr3,});
+                    if(!valueSwitch){
+                        // Tạo một tập hợp các cặp id và productAttributeId trong mảng con để dễ dàng kiểm tra
+                        let childSet = new Set(selectedItems.map(item => `${item.id}-${item.productAttributeId}`));
+                        // Duyệt qua từng mục trong mảng cha và xóa các mục không có trong mảng con
+                        const newArrSelectedGroup = selectedGroup.slice();
+                        newArrSelectedGroup.forEach(parent => {
+                        parent.attributeOutputList.forEach(attributeOutput => {
+                            attributeOutput.productAttributeValue = attributeOutput.productAttributeValue.filter(attributeValue => childSet.has(`${attributeValue.id}-${attributeValue.productAttributeId}`));
+                        });
+                        });
+                        console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
+                        navigation.navigate("ProductEditScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch});
+                    }else {
+                        navigation.navigate("ProductEditScreen" as never, {check: true,attributeArr: selectedItems,dropdownSelected: newArr3, selectedGroupAttribute: [], isVariantInConfig: valueSwitch});
+                    }
+                    
                 } else {
                     const newArr = selectedItems.map((item) => {
                         return item.idGroup;
@@ -296,7 +313,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
                         console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
                         navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch});
                     }else {
-                        navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false,});
+                        navigation.navigate("ProductCreateScreen" as never, {check: true, attributeArr: selectedItems, dropdownSelected: newArr3,resetData: false, selectedGroupAttribute: [],isVariantInConfig: valueSwitch});
                     }
                     
                 }
