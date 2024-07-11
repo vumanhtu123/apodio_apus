@@ -302,7 +302,7 @@ export const ProductEditScreen: FC = (item) => {
       // setCostPriceProduct(dataEdit?.costPrice);
       // setListPriceProduct(dataEdit?.listPrice);
       // setSku(dataEdit?.sku);
-      if(Object.keys(newDataEdit?.baseTemplatePackingLine).length !== 0){
+      if(newDataEdit?.baseTemplatePackingLine !== null){
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
