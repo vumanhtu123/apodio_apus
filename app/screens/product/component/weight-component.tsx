@@ -141,12 +141,12 @@ export default function ItemWeight(props: ItemWeight) {
           style={{
             color: "#242424",
             fontWeight: "700",
-            fontSize: 14,
+            fontSize: fontSize.size14,
           }}></Text>
         <Text
           tx="productScreen.weightOriginal"
           style={{
-            fontSize: 14,
+            fontSize: fontSize.size14,
             fontWeight: "400",
             color: "#242424",
             marginVertical: 15,
@@ -169,7 +169,7 @@ export default function ItemWeight(props: ItemWeight) {
               fontWeight: "400",
             }}
             tx="productScreen.weightConversion"></Text>
-          {watch('weightOriginal') === "" && watch('volumeOriginal') === "" ? null : (data ? (data.length !== 0 ? 
+          {watch('weightOriginal')?.trim() !== "" && watch('volumeOriginal')?.trim() !== "" ? (data ? (data.length !== 0 ? 
           <TouchableOpacity
             onPress={() => {
               if (props.setAdd.length === 0) {
@@ -193,7 +193,7 @@ export default function ItemWeight(props: ItemWeight) {
                 fontWeight: "400",
               }}
               tx="productScreen.addLine"></Text>
-          </TouchableOpacity> : null) : null)}
+          </TouchableOpacity> : null) : null): null}
         </View> : null}
       </View>
       {props.checkList ? <FlatList

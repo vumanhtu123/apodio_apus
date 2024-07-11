@@ -135,6 +135,7 @@ export type NavigatorParamList = {
   orderSuccess: undefined;
   orderScreen: undefined;
   editWeight: undefined;
+  EditClassify: undefined;
   RevenueScreen: undefined;
   receivable: undefined;
   detailReceivable: undefined;
@@ -471,6 +472,11 @@ export const AppStack = () => {
         name="editWeight"
         options={{ gestureEnabled: false }}
         component={Screens.EditWeight}
+      />
+      <Stack.Screen
+        name="EditClassify"
+        options={{ gestureEnabled: false }}
+        component={Screens.EditClassify}
       />
       <Stack.Screen
         name="detailsSupplier"
