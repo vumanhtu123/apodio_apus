@@ -722,13 +722,13 @@ export const OrderStoreModel = types
         return result;
       }
     }),
-    getDetailOrder: flow(function* (id: number) {
+    getDetailOrder: flow(function* (id: number , isLoading: boolean =  true) {
       console.log("page", id);
       const orderApi = new OrderApi(
         self.environment.apiOrder,
         self.environment.apiAccount
       );
-      const result: OrderResult = yield orderApi.getDetailOrder(id);
+      const result: OrderResult = yield orderApi.getDetailOrder(id ,isLoading);
       // console.log("-----------dsa", result);
       if (result.kind === "ok") {
         console.log("order", result);

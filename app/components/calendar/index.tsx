@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import moment from "moment";
-import CustomTabs from "./custom-tab";
+// import CustomTabs from "./custom-tab";
 import {
   getDateLast7days,
   getDateToday,
@@ -12,6 +12,8 @@ import {
 import { Text } from "../text/text";
 import { colors, padding, scaleHeight } from "../../theme";
 import { CustomModal } from "../custom-modal";
+import CustomTabs from "./custom-tab/index";
+// import { CustomModal } from "../custom-modal/index";
 
 LocaleConfig.locales["vi"] = {
   monthNames: [

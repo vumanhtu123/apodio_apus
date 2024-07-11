@@ -106,7 +106,7 @@ export const ClassifyDetailScreen: FC = () => {
     const nameAndValue: { name: any; value: any }[] = [];
 
     attributeCategory.forEach((category) => {
-      category.attributeOutputDtos.forEach((dto) => {
+      category.attributeOutputList.forEach((dto) => {
         dto.productAttributeValue.forEach((attrValue) => {
           nameAndValue.push({
             name: dto.name,
@@ -188,7 +188,7 @@ export const ClassifyDetailScreen: FC = () => {
               tx="detailScreen.information"
               style={{ fontSize: fontSize.size14, fontWeight: "500", flex: 1 }} />
           </View>
-          {arrImagesProduct.length > 0 ? (
+          {arrImagesProduct?.length > 0 ? (
             <ScrollView
               style={{
                 marginVertical: scaleHeight(margin.margin_12),
@@ -448,11 +448,11 @@ export const ClassifyDetailScreen: FC = () => {
                   </Text>
                   <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
                     <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
-                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.weight} kg</Text>
+                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.weight} kg</Text>
                   </View>
                   <View style={{ flex: 3, flexDirection: 'row' }}>
                     <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
-                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct.volume} m3</Text>
+                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.volume} m3</Text>
                   </View>
                 </View>
                 {/* )
@@ -479,12 +479,12 @@ export const ClassifyDetailScreen: FC = () => {
 
                         <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
                           <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
+                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.weight} kg</Text>
                         </View>
 
                         <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
                           <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
+                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
                         </View>
 
                       </View>
