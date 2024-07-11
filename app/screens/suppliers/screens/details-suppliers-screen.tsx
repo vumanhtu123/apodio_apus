@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { styles } from "../styles/styles";
 import { Header, Text } from "../../../components";
 import { Images } from "../../../../assets";
-import { AppStackScreenProps, navigationRef } from "../../../navigators";
+import { navigationRef, NavigatorParamList } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { TouchableOpacity, View } from "react-native";
 import { HeaderInfo } from "../component/header-details-supplier";
@@ -13,9 +13,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import { OrderSupplier } from "../component/order-supplier";
 import { DebtSupplier } from "../component/debt-supplier";
 import { ProductSupplier } from "../component/product-supplier";
+import { StackScreenProps } from "@react-navigation/stack";
 
 export const DetailsSupplierScreen: FC<
-  AppStackScreenProps<"suppliersScreen">
+  StackScreenProps<NavigatorParamList, "suppliersScreen">
 > = () => {
   const [onclick, setOnclick] = useState<number>(0);
 

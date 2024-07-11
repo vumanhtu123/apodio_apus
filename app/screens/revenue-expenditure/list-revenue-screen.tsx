@@ -1,5 +1,4 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { AppStackParamList } from "../../navigators/app-navigator";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import {
@@ -22,9 +21,10 @@ import { FundsModal } from "./funds-modal";
 import CustomCalendar from "../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
+import { NavigatorParamList } from "../../navigators";
 
 export const ListRevenueScreen: FC<
-  StackScreenProps<AppStackParamList, "RevenueScreen">
+  StackScreenProps<NavigatorParamList, "RevenueScreen">
 > = observer(function ListRevenueScreen(props) {
   const [makeDateE, setMakeDateE] = useState<any>();
   const [makeDateS, setMakeDateS] = useState<any>();
