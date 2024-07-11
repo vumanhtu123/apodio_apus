@@ -190,6 +190,7 @@ export const OrderDetails: FC = observer(
                     heightRightIcon={20}
                     style={{ height: scaleHeight(54), }}
                 />
+
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={styles.viewScrollView}>
