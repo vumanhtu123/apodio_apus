@@ -44,6 +44,7 @@ export const ClassifyDetailScreen: FC = () => {
   const [showNCC, setShowNCC] = useState(false);
   const [changeClassification, setChangeClassification] = useState("");
   const [dataClassification, setDataClassification] = useState({});
+  const [dataProductTemplate, setDataProductTemplate] = useState({});
   const [arrImagesProduct, setArrImagesProduct] = useState([]);
   const [arrClassification, setArrClassification] = useState([]);
   const [detailsClassification, setDetailsClassification] = useState([]);
@@ -61,6 +62,7 @@ export const ClassifyDetailScreen: FC = () => {
   const [nameValue, setNameValue] = useState<any>([]);
   const [isChecking, setIsChecking] = useState(true);
   const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
+  const [attributes, setAttributes] = useState<any>([]);
   const handleGetDetailClassify = async () => {
     try {
       const response = await productStore.getDetailClassify(productId);
@@ -69,16 +71,30 @@ export const ClassifyDetailScreen: FC = () => {
         const data = response.response.data;
         console.log("response detail classify", JSON.stringify(response.response.data));
 
-        setDetailProduct(data.baseProductPackingLine);
-        setDataClassification(data);
-        setArrImagesProduct(data.imageUrls);
-        setArrClassification(data.productVariants);
-        setArrNCC(data.vendors);
-        setAttributeCategory(data.attributeCategory);
-        if (data.productVariants !== undefined) {
-          setChangeClassification(data.productVariants[0]?.id);
-          setDetailsClassification(data.productVariants[0]);
+        if (data.productTemplate == null) {
+          setDetailProduct(data.baseProductPackingLine);
+          setDataClassification(data);
+          setArrImagesProduct(data.imageUrls);
+          setArrClassification(data.productVariants);
+          setAttributeCategory(data.attributeCategory);
+          setArrNCC(data.vendors);
+          if (data.productVariants !== undefined) {
+            setChangeClassification(data.productVariants[0]?.id);
+            setDetailsClassification(data.productVariants[0]);
+          }
+        } else {
+          setDetailProduct(data.productTemplate?.baseProductPackingLine);
+          setDataClassification(data.productTemplate);
+          setArrImagesProduct(data?.productTemplate?.imageUrls);
+          setArrClassification(data.productTemplate?.productVariants);
+          setAttributeCategory(data.productTemplate?.attributeCategory);
+          setArrNCC(data.productTemplate?.vendors);
+          // if (data.productTemplate?.productVariants !== undefined) {
+          //   setChangeClassification(data.productVariants[0]?.id);
+          //   setDetailsClassification(data.productVariants[0]);
+          // }
         }
+        // setDataProductTemplate(data.productTemplate)
         setIsChecking(false);
       } else {
         //setErrorMessage(response.response.errorCodes[0].message);
@@ -106,8 +122,8 @@ export const ClassifyDetailScreen: FC = () => {
     const nameAndValue: { name: any; value: any }[] = [];
 
     attributeCategory?.forEach((category) => {
-      category.attributeOutputList.forEach((dto) => {
-        dto.productAttributeValue.forEach((attrValue) => {
+      category.attributeOutputList?.forEach((dto) => {
+        dto.productAttributeValue?.forEach((attrValue) => {
           nameAndValue.push({
             name: dto.name,
             value: attrValue.value,
@@ -118,46 +134,30 @@ export const ClassifyDetailScreen: FC = () => {
     setNameValue(nameAndValue);
     // return nameAndValue;
   };
-  // const result = getNameAndValue();
-  // console.log('result:', result);
-  // getNameAndValue();
-
-  // useEffect(() => {
-  //     console.log('checkkk', nameValue)
-  // }, [nameValue])
-  // const result = getNameAndValue();
-  // console.log(result);
+  function extractAttributeInfo(data: any) {
+    if (!data?.attributeCategory || data?.attributeCategory.length === 0) {
+      return [];
+    }
+    const groupedData = data.attributeCategory?.map(category => ({
+      name: category.name,
+      items: category.attributeOutputList?.map(attr => ({
+        value: attr.productAttributeValue.map(val => val.value),
+        name: attr.name,
+      })
+      ) || []
+    }));
+    setAttributes(groupedData)
+    // return groupedData;
+  }
+  useEffect(() => {
+    extractAttributeInfo(dataClassification.productTemplate)
+  }, [dataClassification])
   const toggleDetails = () => {
     setShowDetails(!showDetails);
     getNameAndValue();
+    extractAttributeInfo(dataClassification.productTemplate)
     // selectDataClassification()
   };
-
-  const dataWeightOriginal = [
-    {
-      id: 1,
-      name: "Hộp",
-      weight: 1,
-      volume: 3
-    }
-  ]
-
-  const dataWeightExchange = [
-    {
-      id: 1,
-      kind: "Thùng",
-      boxQuantity: 2,
-      weight: 1,
-      volume: 3
-    },
-    {
-      id: 2,
-      kind: "Pallet",
-      boxQuantity: 3,
-      weight: 1,
-      volume: 3
-    }
-  ]
 
   return (
     <View style={styles.ROOT}>
@@ -406,33 +406,42 @@ export const ClassifyDetailScreen: FC = () => {
               />
             </View>
           </View>
-          <View style={styles.viewLine} />
-          <View style={styles.viewDescribe}>
-            <Text tx={"productScreen.describe"} style={styles.textTitle} />
-            <Text
-              text={dataClassification.description}
-              style={[
-                styles.textDolphin12,
-                {
-                  color: colors.palette.nero,
-                },
-              ]}
-            />
-          </View>
-          <View style={styles.viewLine} />
+          {dataClassification.description ? (
+            <View>
+              <View style={styles.viewLine} />
+              <View style={styles.viewDescribe}>
+                <Text tx={"productScreen.describe"} style={styles.textTitle} />
+                <Text
+                  text={dataClassification.description}
+                  style={[
+                    styles.textDolphin12,
+                    {
+                      color: colors.palette.nero,
+                    },
+                  ]}
+                />
+              </View>
+            </View>
+          ) : null}
 
+          {arrClassification?.baseProductPackingLine?.volume || dataClassification?.baseTemplatePackingLine?.volume != null ? (
+            <View>
+              <View style={styles.viewLine} />
+              <TouchableOpacity
+                style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
 
-          <TouchableOpacity
-            style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
-
-            onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
-          >
-            <Text tx="productScreen.weight"
-              style={{ fontSize: fontSize.size14, color: colors.navyBlue, marginRight: scaleWidth(5) }}
-            />
-            <Images.icon_caretDownBlue style={{ transform: [{ rotate: showOrHiddenWeight ? '0deg' : '180deg' }], }} />
-          </TouchableOpacity>
-
+                onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
+              >
+                <Text tx="productScreen.weight"
+                  style={{ fontSize: fontSize.size12, color: colors.navyBlue, marginRight: scaleWidth(5) }}
+                />
+                <Images.icon_caretDownBlue
+                  width={scaleWidth(16)}
+                  height={scaleHeight(16)}
+                  style={{ transform: [{ rotate: showOrHiddenWeight ? '180deg' : '0deg' }], }} />
+              </TouchableOpacity>
+            </View>
+          ) : null}
           {
             showOrHiddenWeight ?
               <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
@@ -486,7 +495,6 @@ export const ClassifyDetailScreen: FC = () => {
                           <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
                           <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
                         </View>
-
                       </View>
                     )
                   }}
@@ -509,7 +517,7 @@ export const ClassifyDetailScreen: FC = () => {
               marginHorizontal: scaleWidth(margin.margin_16),
             }}
             onPress={toggleDetails}>
-            <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5) }} />
+            <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5), fontSize: fontSize.size12 }} />
             <Images.iconDownBlue
               width={scaleWidth(16)}
               height={scaleHeight(16)}
@@ -529,7 +537,7 @@ export const ClassifyDetailScreen: FC = () => {
                 </Text>
               </View>
               <View style={styles.viewLine2} />
-              <View
+              {/* <View
                 style={{
                   marginVertical: scaleHeight(margin.margin_12),
                   paddingHorizontal: scaleWidth(padding.padding_12),
@@ -542,24 +550,67 @@ export const ClassifyDetailScreen: FC = () => {
                     color: colors.palette.navyBlue,
                   }} />
               </View>
-              <View style={styles.viewLine2} />
-              {nameValue?.map((item: any, index: number) => (
-                <View
-                  style={{
-                    marginTop: scaleHeight(margin.margin_12),
-                  }}>
-                  <ProductAttribute
-                    label={item.name}
-                    value={item.value}
-                    styleAttribute={{
-                      paddingHorizontal: scaleWidth(padding.padding_12),
-                    }}
-                  />
-                  {index !== attributeDetailsClassification.length - 1 ? (
-                    <View style={styles.viewLine2} />
-                  ) : null}
+              <View style={styles.viewLine2} /> */}
+              {dataClassification?.productTemplate == null ? (
+                <View>
+                  {nameValue?.map((item: any, index: number) => (
+                    <View
+                      style={{
+                        marginTop: scaleHeight(margin.margin_12),
+                      }}>
+                      <ProductAttribute
+                        label={item.name}
+                        value={item.value}
+                        styleAttribute={{
+                          paddingHorizontal: scaleWidth(padding.padding_12),
+                        }}
+                      />
+                      {index !== attributeDetailsClassification.length - 1 ? (
+                        <View style={styles.viewLine2} />
+                      ) : null}
+                    </View>
+                  ))}
                 </View>
-              ))}
+              ) : (
+                <View>
+                  {attributes?.map((item: any, index: any) => (
+                    <View key={index}>
+                      <View
+                        style={{
+                          marginVertical: scaleHeight(margin.margin_12),
+                          paddingHorizontal: scaleWidth(padding.padding_12),
+                        }}>
+                        <Text
+                          style={{
+                            fontWeight: "600",
+                            fontSize: fontSize.size12,
+                            color: colors.palette.navyBlue,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </View>
+                      <View style={styles.viewLine2} />
+                      {item.items?.map((dto: any) => (
+                        <View
+                          style={{
+                            marginTop: scaleHeight(margin.margin_12),
+                          }}>
+                          <ProductAttribute
+                            label={dto.name}
+                            value={dto.value.join('/')}
+                            styleAttribute={{
+                              paddingHorizontal: scaleWidth(padding.padding_12),
+                            }}
+                          />
+                          {index !== attributes?.length - 1 ? (
+                            <View style={styles.viewLine2} />
+                          ) : null}
+                        </View>
+                      ))}
+                    </View>
+                  ))}
+                </View>
+              )}
             </View>
           )}
           {arrNCC ? (
