@@ -394,4 +394,8 @@ const ItemSum = () => {
     </View>
   );
 };
+<<<<<<< HEAD
 // doan 
+=======
+//test conflict
+>>>>>>> e36254ec1513068e457b1aa014f8afb8275c777e
