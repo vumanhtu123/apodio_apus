@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 
 export const Styles = StyleSheet.create({
     btnAddFunds: { 
