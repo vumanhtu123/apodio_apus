@@ -88,8 +88,8 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
           renderItem={({ item }) => (
             <ItemListExChange
               item={item}
-              onClickComment={() => {}}
-              onClickLike={() => {}}
+              onClickComment={() => { }}
+              onClickLike={() => { }}
             />
           )}
         />

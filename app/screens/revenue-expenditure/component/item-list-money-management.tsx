@@ -1,9 +1,9 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { FC } from 'react'
-import { Styles } from './styles'
-import { Images } from '../../../../../assets'
-import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../../theme'
-import { commasToDots, formatCurrency, formatVND } from '../../../../utils/validate'
+import { Styles } from '../money-management/styles'
+import { Images } from '../../../../assets'
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme'
+import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 
 interface PropsItem {
     id: number,
@@ -14,10 +14,12 @@ interface PropsItem {
 interface Item {
     item: PropsItem,
     index: number,
-    data: any
+    data: any,
+    onClickItemPen: () => void,
+    onClickItemArrowsOutCardinal: () => void
 }
 
-const ItemListMoneyManagement: FC<Item> = ({ item, index, data }) => {
+const ItemListMoneyManagement: FC<Item> = ({ item, index, data, onClickItemPen, onClickItemArrowsOutCardinal }) => {
     console.log('dataItem', item);
 
     return (
@@ -51,9 +53,17 @@ const ItemListMoneyManagement: FC<Item> = ({ item, index, data }) => {
                     </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <Images.ic_pen style={{ marginRight: margin.margin_6, }} width={scaleWidth(15)} height={scaleHeight(15)} />
+                    <TouchableOpacity
+                        onPress={onClickItemPen}
+                    >
+                        <Images.ic_pen style={{ marginRight: margin.margin_6, }} width={scaleWidth(15)} height={scaleHeight(15)} />
+                    </TouchableOpacity>
 
-                    <Images.arrowsOutCardinal />
+                    <TouchableOpacity
+                        onPress={onClickItemArrowsOutCardinal}
+                    >
+                        <Images.arrowsOutCardinal />
+                    </TouchableOpacity>
 
                 </View>
             </View>
