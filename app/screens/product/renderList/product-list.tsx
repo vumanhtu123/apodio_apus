@@ -78,9 +78,6 @@ export const ProductList: React.FC<ProductListProps> = ({
             <ActivityIndicator size="large" color="#0000ff" />
         </View>
     );
-    const fetchCategories = async (searchText : any) => {
-        console.log('kkkkkk', searchText)
-    };
     return (
         <>
             <TouchableOpacity
@@ -180,12 +177,11 @@ export const ProductList: React.FC<ProductListProps> = ({
                     keyExtractor={(item) => item.id.toString()}
                     ref={flatListRef}
                     onEndReached={handleEndReached}
-                    ListFooterComponent={renderFooter}
+                    // ListFooterComponent={renderFooter}
                     onEndReachedThreshold={0.5}
                     key={isGridView ? "grid" : "list"}
                     numColumns={isGridView ? 3 : 1}
                     columnWrapperStyle={isGridView ? null : null}
-                    // ListEmptyComponent={isRefreshing ? <Loading/> : null}
                     renderItem={({ item, index }) => (
                         <RenderProductItem
                             item={item}
@@ -195,7 +191,6 @@ export const ProductList: React.FC<ProductListProps> = ({
                             handleProductDetail={handleProductDetail}
                             handleClassifyDetail={handleClassifyDetail}
                         />
-                        // <View></View>
                     )}
                 />
             </View>
