@@ -1,5 +1,4 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { AppStackParamList } from "../../navigators/app-navigator";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import {
@@ -22,9 +21,10 @@ import { FundsModal } from "./funds-modal";
 import CustomCalendar from "../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
+import { NavigatorParamList } from "../../navigators";
 
 export const ListRevenueScreen: FC<
-  StackScreenProps<AppStackParamList, "RevenueScreen">
+  StackScreenProps<NavigatorParamList, "RevenueScreen">
 > = observer(function ListRevenueScreen(props) {
   const [makeDateE, setMakeDateE] = useState<any>();
   const [makeDateS, setMakeDateS] = useState<any>();
@@ -132,7 +132,7 @@ export const ListRevenueScreen: FC<
               // testDebug();
             }}
           />
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => { }}>
             <Images.icon_search />
           </TouchableOpacity>
         </View>
@@ -230,7 +230,7 @@ export const ListRevenueScreen: FC<
           marginVertical: 15,
         }}>
         <TouchableOpacity
-          onPress={() => onModal()}
+          onPress={() => props.navigation.navigate('expenseScreen')}
           style={{
             backgroundColor: "#FF4956",
             flexDirection: "row",
@@ -241,7 +241,9 @@ export const ListRevenueScreen: FC<
             flex: 1,
             justifyContent: "center",
             marginRight: scaleWidth(13),
-          }}>
+          }}
+
+        >
           <Images.ic_arrow_up />
           <Text
             tx={"analysis.amountExpenditure"}
@@ -262,7 +264,9 @@ export const ListRevenueScreen: FC<
             alignContent: "center",
             borderRadius: 8,
             flex: 1,
-          }}>
+          }}
+          onPress={() => props.navigation.navigate('addRevenueScreen')}
+        >
           <Images.ic_arrow_down />
           <Text
             tx={"analysis.amountRevenue"}
@@ -382,3 +386,4 @@ const ItemSum = () => {
     </View>
   );
 };
+//test conflict

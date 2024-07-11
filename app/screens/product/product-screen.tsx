@@ -19,9 +19,6 @@ import EditDirectoryModal from "./component/modal-editDirectory";
 import { CategoryList } from "./renderList/category-list";
 import { ProductList } from "./renderList/product-list";
 import { styles } from "./styles";
-
-
-
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
   const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
@@ -139,6 +136,7 @@ export const ProductScreen: FC = () => {
   };
   const handleSubmitSearch = () => {
     setPage(0);
+    setDataProduct([])
     handleGetProduct(searchValue);
   };
   const handleGetProduct = async (searchValue?: any) => {
@@ -151,6 +149,7 @@ export const ProductScreen: FC = () => {
           productStore.sort[0] +
           (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
       }
+      // console.log('mmmmmmmzzz', page)
       const response: any = await productStore.getListProduct(
         page,
         size,
@@ -162,10 +161,8 @@ export const ProductScreen: FC = () => {
         productStore.isLoadMore
       );
       console.log('first------------------', response)
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
       if (response && response.kind === "ok") {
         setTotalPagesProduct(response.response.data.totalPages)
-        console.log('////////////////', response.response.data.totalPages)
         if (page === 0) {
           setDataProduct(response.response.data.content);
         } else {
@@ -195,7 +192,7 @@ export const ProductScreen: FC = () => {
     setIsVisible(true);
   };
   const getValueSearchCategoryFilter = (value: any) => {
-    console.log('first------------' , value)
+    // console.log('first------------', value)
     setValueSearchCategory(value)
   }
   const handleDeleteItem = async () => {
@@ -265,11 +262,11 @@ export const ProductScreen: FC = () => {
   };
   const [activeTab, setActiveTab] = useState(productStore.statusTab);
   const [isGridView, setIsGridView] = useState(productStore.viewGrid);
-  useEffect(() => {
-    handleGetProduct();
-    handleGetCategory();
-    handleGetCategoryFilter();
-  }, []);
+  // useEffect(() => {
+  //   handleGetProduct();
+  //   handleGetCategory();
+  //   handleGetCategoryFilter();
+  // }, []);
   useEffect(() => {
     handleGetCategoryFilter();
   }, [valueSearchCategory])
@@ -285,19 +282,7 @@ export const ProductScreen: FC = () => {
     handleGetCategory(searchCategory);
   }, [pageCategories]);
   useEffect(() => {
-    const fetchMoreProducts = async () => {
-      try {
-        await handleGetProduct(searchValue); // Load more
-      } catch (error) {
-        console.error('Error fetching more products:', error);
-      } finally {
-        productStore.setIsLoadMore(false);
-      }
-    };
-
-    if (productStore.isLoadMore) {
-      fetchMoreProducts();
-    }
+    handleGetProduct(searchValue); // Load more
   }, [page]);
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
@@ -326,7 +311,7 @@ export const ProductScreen: FC = () => {
     }
   }, [index])
   const refreshProduct = async () => {
-    // setIsRefreshing(true);
+    setIsRefreshing(true);
     setSelectedCategory(undefined);
     setPage(0);
     setSearchValue("");
@@ -335,8 +320,8 @@ export const ProductScreen: FC = () => {
     setDataProduct([]);
     productStore.setTagId(0);
     productStore.setSort([]);
-    await handleGetProduct();
-    // setIsRefreshing(false);
+    handleGetProduct();
+    setIsRefreshing(false);
   };
   const refreshCategory = async () => {
     setIsRefreshingCategory(true);
@@ -345,7 +330,7 @@ export const ProductScreen: FC = () => {
     setOpenSearch(false)
     setDataCategory([]);
     productStore.setSortCategory([]);
-    await handleGetCategory();
+    handleGetCategory();
     setIsRefreshingCategory(false);
   };
   const refreshCategoryFilter = async () => {
@@ -355,14 +340,16 @@ export const ProductScreen: FC = () => {
     // setOpenSearch(false)
     setDataCategoryFilter([]);
     // productStore.setSortCategory([]);
-    await handleGetCategoryFilter();
+    handleGetCategoryFilter();
     setIsRefreshingCategory(false);
   };
   const renderFooter = () => {
-    if (totalPagesProduct > 1 && page < totalPagesProduct) {
-      return <ActivityIndicator size="large" color="#F6961C" />
-    }
-    return null;
+    if (isRefreshing) return null;
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#F6961C" />
+      </View>
+    );
   };
 
   useEffect(() => {
@@ -477,7 +464,7 @@ export const ProductScreen: FC = () => {
             isRefreshing={isRefreshing}
             refreshProduct={refreshProduct}
             refreshCategory={refreshCategoryFilter}
-            isRefreshingCategory = {isRefreshingCategoryFilter}
+            isRefreshingCategory={isRefreshingCategoryFilter}
             flatListRef={flatListRef}
             handleEndReached={handleEndReached}
             isGridView={isGridView}
@@ -503,7 +490,7 @@ export const ProductScreen: FC = () => {
             isDeleteModalVisible={isDeleteModalVisible}
             setIsDeleteModalVisible={setIsDeleteModalVisible}
             handleDeleteItem={handleDeleteItem}
-            
+
           />
         )}
       </View>

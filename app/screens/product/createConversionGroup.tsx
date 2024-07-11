@@ -14,6 +14,7 @@ import { useStores } from "../../models"
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { translate } from "../../i18n/translate";
 import UnitModal from "./component/modal-unit";
+import { CustomModal } from "../../components/custom-modal";
 
 export const CreateConversionGroup: FC = observer(
     function CreateConversionGroup(props) {
@@ -138,7 +139,7 @@ export const CreateConversionGroup: FC = observer(
                     type: ALERT_TYPE.DANGER,
                     title: '',
                     textBody: translate('txtToats.required_information'),
-                
+
                 })
             } else {
                 Dialog.show({
@@ -195,7 +196,7 @@ export const CreateConversionGroup: FC = observer(
                         params.unitGroupLines = jsonArray;
                         console.log(conversionWatch)
                         createUnitGroupLine(params, false);
-                       
+
                     }
                 })
             }
@@ -339,7 +340,7 @@ export const CreateConversionGroup: FC = observer(
                                                         marginTop: 15,
                                                     }}>
                                                     {conversionWatch[index].changeDVT !== '' ?
-                                                        <Text style={{ flex: 1, paddingBottom: scaleHeight(12) }} text={conversionWatch[index].changeDVT} numberOfLines={1} />
+                                                        <Text style={{ flex: 1,fontSize:fontSize.size12, paddingBottom: scaleHeight(12) }} text={conversionWatch[index].changeDVT} numberOfLines={1} />
                                                         : <Text style={{
                                                             flex: 1, fontWeight: '400', fontSize: fontSize.size12,
                                                             color: colors.palette.dolphin,
@@ -399,22 +400,41 @@ export const CreateConversionGroup: FC = observer(
                                             </TouchableOpacity> :
                                             <View style={{ width: scaleWidth(12) }} />
                                         }
+
                                         <Modal isVisible={showModal}
                                             onBackdropPress={() => { setShowModal(false) }}
+                                            style={{ margin: 0 }}
                                         >
                                             <TouchableWithoutFeedback onPress={() => { setShowModal(false) }}>
                                                 <KeyboardAvoidingView
-                                                    behavior={Platform.OS === 'ios' ? 'height' : 'height'}
+                                                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                                                     keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
                                                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                                                 >
                                                     <View style={styles.viewModal}>
-                                                        <TextInput
-                                                            style={{ fontSize: 16, fontWeight: '400' }}
-                                                            onChangeText={(text) => handleSearch(text)}
-                                                            value={search}
-                                                            placeholder="Search..."
-                                                        />
+
+                                                        <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
+                                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                                <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
+                                                                    <Images.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
+                                                                </TouchableOpacity>
+
+                                                            </View>
+
+                                                            <TextInput
+                                                                style={{
+                                                                    fontSize: fontSize.size16,
+                                                                    fontWeight: "400",
+                                                                    paddingVertical: 0,
+                                                                    flex: 1
+                                                                }}
+                                                                onChangeText={(text) => handleSearch(text)}
+                                                                value={search}
+                                                                placeholder="Tìm kiếm..."
+                                                            />
+
+
+                                                        </View>
                                                         <FlatList
                                                             data={filteredData}
                                                             style={{
@@ -506,11 +526,12 @@ const styles = StyleSheet.create({
         // width: Dimensions.get('screen').width - 32,
         height: Dimensions.get('screen').height * 0.4,
         backgroundColor: colors.palette.neutral100,
-        borderRadius: 8,
+        borderTopLeftRadius: margin.border_top_left_radius,
+        borderTopRightRadius: margin.border_top_right_radius,
         paddingVertical: scaleHeight(padding.padding_12),
         paddingHorizontal: scaleWidth(padding.padding_16),
         position: 'absolute',
-        bottom: 16,
+        bottom: 0,
         left: 0,
         right: 0,
     }, textLabelFlatList: {

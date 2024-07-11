@@ -434,7 +434,7 @@ export const ProductDetailScreen: FC = (item) => {
                     onPress={() => {
                       setChangeClassification(item.id);
                       setDetailsClassification(item);
-                      console.log('first', dataClassification)
+                      console.log('first', item)
                       // setShowDetails(false);
                     }}>
                     <Text
@@ -706,7 +706,111 @@ export const ProductDetailScreen: FC = (item) => {
               </View>
             </View>
           ) : null}
+          <View>
+            {arrClassification?.baseProductPackingLine?.volume || dataClassification?.baseTemplatePackingLine?.volume != null ? (
+              <View>
+                <View style={styles.viewLine} />
+                <TouchableOpacity
+                  style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
 
+                  onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
+                >
+                  <Text tx="productScreen.weight"
+                    style={{ fontSize: fontSize.size12, color: colors.navyBlue, marginRight: scaleWidth(5) }}
+                  />
+                  <Images.icon_caretDownBlue width={scaleWidth(16)} height={scaleHeight(16)} style={{ transform: [{ rotate: showOrHiddenWeight ? '180deg' : '0deg' }], }} />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+            {
+              showOrHiddenWeight ?
+                <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
+
+                  <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
+                    <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
+                      {dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}
+                    </Text>
+                    <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
+                      <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{arrClassification ? detailsClassification.baseProductPackingLine?.weight : detailProduct?.weight} kg</Text>
+                    </View>
+                    <View style={{ flex: 3, flexDirection: 'row' }}>
+                      <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
+                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{arrClassification ? detailsClassification.baseProductPackingLine?.volume : detailProduct?.volume} m3</Text>
+                    </View>
+                  </View>
+                  {arrClassification?.productPackingLines != null ? (
+                    <View>
+                      <View>
+                        <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
+                        <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
+                          <View style={{ flex: 2 }}>
+                            <Text style={[styles.fontSizeWeight, {}]}>
+                              {detailsClassification.baseProductPackingLine?.unitName}
+                            </Text>
+                            <View
+                              style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                            />
+                            <Text style={[styles.fontSizeWeight, {}]}>
+                              {`${commasToDots(detailsClassification.baseProductPackingLine?.amount)} ${dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
+                            </Text>
+                          </View>
+                          <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                            <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                            <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailsClassification.productPackingLines?.weight} kg</Text>
+                          </View>
+
+                          <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                            <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                            <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailsClassification.productPackingLines?.volume} m3</Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  ) : null}
+                  {dataClassification?.templatePackingLines != null && arrClassification?.productPackingLines == null ? (
+                    <View>
+                      <View>
+                        <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
+                        <FlatList
+                          data={dataClassification.templatePackingLines}
+                          renderItem={({ item }) => {
+                            return (
+                              <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
+                                <View style={{ flex: 2 }}>
+                                  <Text style={[styles.fontSizeWeight, {}]}>
+                                    {item.uomGroupLineOutput?.unitName}
+                                  </Text>
+                                  <View
+                                    style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                                  />
+                                  <Text style={[styles.fontSizeWeight, {}]}>
+                                    {`${commasToDots(item.amount)} ${detailProduct?.uomGroupLineOutput?.unitName}`}
+                                  </Text>
+                                </View>
+                                <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                                  <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                                  <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
+                                </View>
+
+                                <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                                  <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                                  <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
+                                </View>
+                              </View>
+                            )
+                          }}
+                          keyExtractor={(item) => item.id.toString()}
+                          style={{ marginTop: scaleHeight(12) }}
+                        />
+                      </View>
+                    </View>
+                  ) : null}
+                </View>
+                : null
+            }
+          </View>
           {attributeDetailsClassification?.length !== 0 || attributes?.length !== 0 ? (
             <View>
               <View style={styles.viewLine} />
@@ -718,12 +822,12 @@ export const ProductDetailScreen: FC = (item) => {
                   marginHorizontal: scaleWidth(margin.margin_16),
                 }}
                 onPress={toggleDetails}>
-                <Text style={{ color: colors.palette.navyBlue }}>
+                <Text style={{ color: colors.palette.navyBlue, fontSize: fontSize.size12 }}>
                   Xem chi tiết thuộc tính{" "}
                 </Text>
                 <Images.iconDownBlue
-                  width={16}
-                  height={16}
+                  width={scaleWidth(16)}
+                  height={scaleHeight(16)}
                   style={{
                     transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
                   }}
@@ -782,7 +886,7 @@ export const ProductDetailScreen: FC = (item) => {
                   ))}
                 </View>
               ) : (
-                
+
                 <View>
                   {attributes?.map((item: any, index: any) => (
                     <View key={index}>
@@ -821,90 +925,11 @@ export const ProductDetailScreen: FC = (item) => {
                     </View>
                   ))}
                 </View>
-                
+
               )}
             </View>
           )}
-          <View>
-            <View style={styles.viewLine} />
 
-            <TouchableOpacity
-              style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
-
-              onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
-            >
-              <Text tx="productScreen.weight"
-                style={{ fontSize: fontSize.size14, color: colors.navyBlue, marginRight: scaleWidth(5) }}
-              />
-              <Images.icon_caretDownBlue style={{ transform: [{ rotate: showOrHiddenWeight ? '0deg' : '180deg' }], }} />
-            </TouchableOpacity>
-            {
-              showOrHiddenWeight ?
-                <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
-
-                  <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14 }} />
-                  {/* <FlatList
-                  data={detailProduct}
-                  renderItem={({ item }) => {
-                    return ( */}
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
-                    <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
-                      {dataClassification.uom?.name}
-                    </Text>
-                    <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
-                      <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.weight} kg</Text>
-                    </View>
-                    <View style={{ flex: 3, flexDirection: 'row' }}>
-                      <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.volume} m3</Text>
-                    </View>
-                  </View>
-                  {/* )
-                  }}
-                  keyExtractor={(item) => item.id.toString()}
-                /> */}
-                  {dataClassification.templatePackingLines !== null ? (
-                    <View>
-                      <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
-                      <FlatList
-                        data={dataClassification.templatePackingLines}
-                        renderItem={({ item }) => {
-                          return (
-                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
-                              <View style={{ flex: 2 }}>
-                                <Text style={[styles.fontSizeWeight, {}]}>
-                                  {item.uomGroupLineOutput?.unitName}
-                                </Text>
-                                <View
-                                  style={{ backgroundColor: '#E7EFFF', height: 1 }}
-                                />
-                                <Text style={[styles.fontSizeWeight, {}]}>
-                                  {`${commasToDots(item.amount)} ${dataClassification.uom?.name}`}
-                                </Text>
-                              </View>
-                              <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
-                                <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                                <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
-                              </View>
-
-                              <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
-                                <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                                <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
-                              </View>
-                            </View>
-                          )
-                        }}
-                        keyExtractor={(item) => item.id.toString()}
-                        style={{ marginTop: scaleHeight(12) }}
-                      />
-                    </View>
-                  ) : null}
-
-                </View>
-                : null
-            }
-          </View>
           {arrNCC?.length > 0 ? (
             <View>
               <View style={styles.viewLine} />

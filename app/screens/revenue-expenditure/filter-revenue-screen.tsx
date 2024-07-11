@@ -1,24 +1,25 @@
 import React, { FC, useState } from "react";
 import { FlatList, ScrollView, TouchableOpacity, View } from "react-native";
-import { styles } from "../styles";
-import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Header, Text } from "../../../components";
-import CustomCalendarWarehouseBook from "../calendar-warehouse-book/customCalendarWarehouseBook";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { NavigatorParamList } from "../../../navigators";
+import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
-import { Images } from "../../../../assets";
+
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
-import en from "../../../i18n/en";
+import { Header, Text } from "../../components";
+import { Images } from "../../../assets";
+import { colors, scaleWidth } from "../../theme";
+import { styles } from "./styles/styles-filter";
+import CustomCalendarWarehouseBook from "../warehouse-book/calendar-warehouse-book/customCalendarWarehouseBook";
+import { NavigatorParamList } from "../../navigators";
+import en from "../../i18n/en";
 
 interface ModalFielterProps {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
 }
 
-export const FilterWarehouseBook: FC<
-  StackNavigationProp<NavigatorParamList, "filterInWarehouseBook">
+export const FilterRevenueScreen: FC<
+  StackScreenProps<NavigatorParamList, "filterRevenueScreen">
 > = observer(function name(props) {
   const [indexTime, setIndexTime] = useState(0);
   const [indexClassify, setIndexClassify] = useState(0);

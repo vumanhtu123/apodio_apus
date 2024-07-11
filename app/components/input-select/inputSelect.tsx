@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useCallback, useEffect, useLayoutEffect } from "react";
 import {
   Dimensions,
   FlatList,
@@ -27,6 +27,8 @@ import { Text } from "../text/text";
 import { useState } from "react";
 import { Images } from "../../../assets/index";
 import Modal from "react-native-modal";
+import { Controller, useForm } from "react-hook-form";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ROOT: ViewStyle = {
   borderRadius: 8,
@@ -100,6 +102,7 @@ export function InputSelect(props: InputSelectProps) {
     styleView,
     dataDefault,
     isSearch,
+    isShowCheckBox,
     onLoadMore,
     checkUse,
     onPressNotUse,
@@ -115,11 +118,10 @@ export function InputSelect(props: InputSelectProps) {
   const [dataChoice, setDataChoice] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [filteredData, setFilteredData] = useState(arrData);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const { control, reset, setValue, getValues, handleSubmit, formState: { errors }, clearErrors } = useForm();
+  
   const handleSearch = (text: any) => {
-    // onChangeText(text)
-    setSearch(text);
     if (text) {
       const dataChoiceItem = arrData.filter((item) => item.label !== data);
       const newData = dataChoiceItem.filter((item) => {
@@ -140,6 +142,14 @@ export function InputSelect(props: InputSelectProps) {
       setLoading(false);
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+        reset();
+        clearErrors();
+    }, [showModal])
+)
+
   useEffect(() => {
     // if (
     //   dataDefault !== undefined &&
@@ -215,31 +225,39 @@ export function InputSelect(props: InputSelectProps) {
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <View style={VIEWMODAL}>
               {/* <Text text="chon ly do" /> */}
-              <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
-                    <Images.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
-                  </TouchableOpacity>
-                  {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
-                </View>
-                {isSearch ? (
-                  <TextInput
-                    style={{
-                      fontSize: fontSize.size16,
-                      fontWeight: "400",
-                      paddingVertical: 0,
-                      flex: 1
-                    }}
-                    onChangeText={(text) => handleSearch(text)}
-                    value={search}
-                    placeholder="Tìm kiếm..."
-                  // enterKeyHint="search"
-                  // onSubmitEditing={handleOnSubmitSearch}
-                  // enablesReturnKeyAutomatically
-                  />
-                ) : null}
+              {isSearch ? (
+                <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
+                      <Images.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
+                    </TouchableOpacity>
+                    {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
+                  </View>
 
-              </View>
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, value, onBlur } }) => (
+                        <TextInput
+                            placeholder="Tìm kiếm..."
+                            style={{
+                              fontSize: fontSize.size16,
+                              fontWeight: "400",
+                              paddingVertical: 0,
+                              flex: 1
+                            }}
+                            value={value}
+                            onBlur={onBlur}
+                            onChangeText={(text) =>{
+                              onChange(text)
+                              handleSearch(text)
+                            }}
+                            multiline={true}
+                        />)}
+                    defaultValue={''}
+                    name='searchData'
+                />
+                </View>
+              ) : null}
               <FlatList
                 data={filteredData}
                 style={{
@@ -264,10 +282,10 @@ export function InputSelect(props: InputSelectProps) {
                           setFilteredData(dataChoiceItem);
                           // console.log(data , 'dsadasd')
                         }}>
-                        <View style={styles.radioButton}>
+                        {isShowCheckBox ? (<View style={styles.radioButton}>
                           {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
                           {data === item.label && <Images.icon_checkBox />}
-                        </View>
+                        </View>) : null}
                         <Text text={item.label} style={TEXTLABELFLATLIST} />
                       </TouchableOpacity>
                       <View style={VIEWLINE}></View>
@@ -275,7 +293,7 @@ export function InputSelect(props: InputSelectProps) {
                   );
                 }}
               />
-            </View>   
+            </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </Modal>
@@ -286,7 +304,7 @@ const styles = StyleSheet.create({
   radioButton: {
     width: scaleWidth(17),
     height: scaleHeight(18),
-    borderRadius: 3   ,
+    borderRadius: 3,
     borderWidth: 1,
     borderColor: "#ccc",
     justifyContent: "center",

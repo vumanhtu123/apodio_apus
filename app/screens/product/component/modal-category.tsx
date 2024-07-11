@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, KeyboardAvoidingView, Platform, RefreshControl, Text as TextRN, ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal/dist/modal';
 import { Text } from '../../../components';
@@ -15,26 +15,28 @@ const CategoryModalFilter = ({ showCategory, setShowCategory, dataCategory, sele
         setSearch(text);
         // onSearchChange(text); // Gọi hàm callback để cập nhật state ở component cha
     };
-    const handleOnSubmitSearch = () => {
-        // setShowLoading(true);
+    const handleOnSubmitSearch = async () => {
+        setShowLoading(true);
         if (onSearchChange) {
-            onSearchChange(search)
+            await onSearchChange(search)
+            setTimeout(() => {
+                setShowLoading(false);
+            }, 1000);
         }
         // setShowLoading(false);
     };
-    const refresh = () => {
+    const refresh = async () => {
         setShowLoading(true);
         setSearch('')
         // setShowLoading(true)
-        onRefresh()
-            .then((result: any) => {
-                setShowLoading(false);
-            })
-            .catch((error: any) => {
-                setShowLoading(false);
-            });
+        await onRefresh()
+        setTimeout(() => {
+            setShowLoading(false);
+        }, 1000);
     }
-
+    useEffect(() => {
+        console.log('czcsadsad', showLoading)
+    }, [showLoading])
     const renderItem = ({ item, index }: any) => (
         <TouchableOpacity
             key={index}
