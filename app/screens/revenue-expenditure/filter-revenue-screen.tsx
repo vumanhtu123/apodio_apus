@@ -8,7 +8,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { Header, Text } from "../../components";
 import { Images } from "../../../assets";
 import { colors, scaleWidth } from "../../theme";
-import { styles } from "./styles/styles-fillter";
+import { styles } from "./styles/styles-filter";
 import CustomCalendarWarehouseBook from "../warehouse-book/calendar-warehouse-book/customCalendarWarehouseBook";
 import { NavigatorParamList } from "../../navigators";
 import en from "../../i18n/en";
