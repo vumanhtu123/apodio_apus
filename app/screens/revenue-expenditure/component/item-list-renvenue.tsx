@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../../../components";
+import { scaleWidth } from "../../../theme";
 
 interface InputItem {
   status?: any;
@@ -54,21 +55,23 @@ export const ItemRevenue = (props: InputItem) => {
       </View>
       <Text
         style={{
+          flex: 1,
           color: "#FF4956",
           fontSize: 12,
           fontWeight: "600",
           textAlign: "center",
-          marginHorizontal: props.revenueValue == "0" ? 80 : 70,
+          marginHorizontal: scaleWidth(40),
         }}>
         {props.revenueValue}
       </Text>
       <Text
         style={{
+          flex: 1,
           color: "#00CC6A",
           fontSize: 12,
           fontWeight: "600",
           textAlign: "center",
-          marginLeft: props.expenditureValue !== "0" || undefined ? 10 : 15,
+          // marginLeft: props.expenditureValue !== "0" || undefined ? 10 : 15,
         }}>
         {props.expenditureValue}
       </Text>
@@ -88,11 +91,18 @@ const ItemRevenueNoDate = (props: any) => {
       }}>
       <Text
         tx="analysis.importGoods"
-        style={{ fontSize: 12, fontWeight: "400", color: "#747475" }}></Text>
+        style={{
+          flex: 1,
+          fontSize: 12,
+          fontWeight: "400",
+          color: "#747475",
+        }}></Text>
       <View
         style={{
+          flex: 1,
           flexDirection: "column",
           alignItems: "center",
+          marginRight: scaleWidth(80),
         }}>
         <Text style={{ fontSize: 12, fontWeight: "600", color: "#FF4956" }}>
           {props.revenueValue}
