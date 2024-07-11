@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Images } from "../../../../assets";
 import { scaleHeight, scaleWidth } from "../../../theme";
@@ -21,66 +21,91 @@ interface SelectorProps {
 export const FilterAppBarComponent = (props: any) => {
   const [value, setValue] = useState(0);
 
+  console.log("propss", props.date);
   return (
     <View
       style={{
         flexDirection: "row",
         marginTop: 20,
         marginBottom: 20,
-        justifyContent: "space-between",
         marginHorizontal: 16,
         alignItems: "center",
+        justifyContent: "space-between",
       }}>
       <View
         style={{
-          padding: scaleHeight(8),
-          backgroundColor: "#EEEEEF",
-          borderRadius: scaleHeight(6),
-        }}>
-        <Images.icon_calendar />
-      </View>
-      <View
-        style={{
-          backgroundColor: "#EEEEEF",
           flexDirection: "row",
-          borderRadius: scaleHeight(8),
-          padding: scaleWidth(2),
         }}>
-        {props.date !== undefined ? (
+        <View
+          style={{
+            padding: scaleHeight(8),
+            backgroundColor: "#EEEEEF",
+            borderRadius: scaleHeight(6),
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              props.onShowCalender();
+            }}>
+            <Images.icon_calendar />
+          </TouchableOpacity>
+        </View>
+        {props.date !== null ? (
           <View
             style={{
-              backgroundColor: "#FFFFFF",
-              borderRadius: scaleHeight(7),
-              shadowColor: "black",
-              shadowOpacity: 0.2,
               flexDirection: "row",
-              alignItems: "center",
+              backgroundColor: "#EEEEEF",
+              borderRadius: scaleHeight(8),
+              padding: scaleWidth(2),
+              marginHorizontal: scaleWidth(9),
             }}>
-            <Text
-              text={"Tất cả"}
+            <View
               style={{
-                fontSize: 12,
-                fontWeight: "400",
-                color: "#0078D4",
-                textAlign: "center",
-                marginHorizontal: scaleWidth(12),
-                marginVertical: scaleHeight(7),
-              }}></Text>
-            <Images.ic_x />
+                backgroundColor: "#FFFFFF",
+                borderRadius: scaleHeight(7),
+                shadowColor: "black",
+                shadowOpacity: 0.2,
+                flexDirection: "row",
+                alignItems: "center",
+              }}>
+              <Text
+                text={props.date}
+                style={{
+                  fontSize: 12,
+                  fontWeight: "400",
+                  color: "#0078D4",
+                  marginHorizontal: scaleWidth(12),
+                }}></Text>
+              <TouchableOpacity
+                onPress={() => {
+                  props.clear();
+                }}>
+                <Images.ic_x />
+              </TouchableOpacity>
+            </View>
           </View>
-        ) : (
-          listTitle.map((item, index) => {
-            return (
-              <ItemSelector
-                selected={() => {
-                  setValue(item.id);
-                }}
-                name={item.name}
-                index={index}
-                id={value}
-              />
-            );
-          })
+        ) : null}
+        {props.date !== null ? null : (
+          <View
+            style={{
+              backgroundColor: "#EEEEEF",
+              flexDirection: "row",
+              borderRadius: scaleHeight(8),
+              padding: scaleWidth(2),
+              marginHorizontal: scaleWidth(9),
+            }}>
+            {listTitle.map((item, index) => {
+              return (
+                <ItemSelector
+                  selected={() => {
+                    setValue(item.id);
+                  }}
+                  name={item.name}
+                  index={index}
+                  id={value}
+                />
+              );
+            })}
+          </View>
         )}
       </View>
       <View style={{}}>
