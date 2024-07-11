@@ -144,6 +144,7 @@ export type NavigatorParamList = {
   transferMoneyScreen: undefined;
   expenseScreen: undefined;
   addRevenueScreen: undefined;
+  filterRevenueScreen: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -509,6 +510,11 @@ export const AppStack = () => {
         name="RevenueScreen"
         options={{ gestureEnabled: false }}
         component={Screens.ListRevenueScreen}
+      />
+      <Stack.Screen
+        name="filterRevenueScreen"
+        options={{ gestureEnabled: true }}
+        component={Screens.FilterRevenueScreen}
       />
     </Stack.Navigator>
   );

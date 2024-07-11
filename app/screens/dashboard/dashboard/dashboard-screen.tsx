@@ -824,6 +824,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               //     title="ok"
               //   />
               // }
+              scrollEnabled={false}
               renderItem={({ item }) => (
                 <ItemOrder
                   onPress={() => handleDetailOrder(item.id)}

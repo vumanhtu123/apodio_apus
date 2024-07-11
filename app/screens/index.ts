@@ -95,3 +95,4 @@ export * from "./revenue-expenditure/money-management/money-management-screen";
 export * from "./revenue-expenditure/transfer-money/transfer-money-screen";
 export * from "../screens/revenue-expenditure/expense/expense-screen";
 export * from "../screens/revenue-expenditure/revenue/revenue-screen";
+export * from "../screens/revenue-expenditure/fillter-revenue-screen";
