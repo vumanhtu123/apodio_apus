@@ -1,5 +1,4 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { AppStackParamList } from "../../navigators/app-navigator";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import {
@@ -22,9 +21,10 @@ import { FundsModal } from "./funds-modal";
 import CustomCalendar from "../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
+import { NavigatorParamList } from "../../navigators";
 
 export const ListRevenueScreen: FC<
-  StackScreenProps<AppStackParamList, "RevenueScreen">
+  StackScreenProps<NavigatorParamList, "RevenueScreen">
 > = observer(function ListRevenueScreen(props) {
   const [makeDateE, setMakeDateE] = useState<any>();
   const [makeDateS, setMakeDateS] = useState<any>();
@@ -117,29 +117,23 @@ export const ListRevenueScreen: FC<
             paddingTop: scaleHeight(30),
             paddingBottom: scaleHeight(8),
           }}>
-          <Text style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
-            {translate("analysis.balance")}
-            <Text
-              style={{
-                color: "#FF4956",
-                fontSize: 14,
-                fontWeight: "600",
-              }}>
-              10.000
-            </Text>
-          </Text>
-          <TouchableOpacity style={{ flexDirection: "row" }}
-            onPress={() => props.navigation.navigate('moneyManagement')}
-          >
-            <Images.ic_Chartbar />
-            <Text
-              style={{
-                color: "#0078D4",
-                fontSize: 12,
-                fontWeight: "400",
-              }}>
-              {translate("analysis.report")}
-            </Text>
+          <ViewInfo
+            // token={accountStore.authToken}
+            token="asd"
+            image={""}
+            // name={accountStore.name}
+            name="Công ty Thang Long"
+            onPress={() => props.navigation.navigate("inforAccount")}
+            // showInfo={}
+            // kind={KIND_SCREEN.HOME}
+            kind={1}
+            onChangeAVT={() => {
+              // navigation.dispatch(DrawerActions.openDrawer);
+              // testDebug();
+            }}
+          />
+          <TouchableOpacity onPress={() => { }}>
+            <Images.icon_search />
           </TouchableOpacity>
         </View>
         <View style={{ backgroundColor: "white" }}>
@@ -172,9 +166,7 @@ export const ListRevenueScreen: FC<
                 10.000
               </Text>
             </Text>
-            <TouchableOpacity style={{ flexDirection: "row" }}
-              onPress={() => props.navigation.navigate('moneyManagement')}
-            >
+            <View style={{ flexDirection: "row" }}>
               <Images.ic_Chartbar />
               <Text
                 style={{
@@ -184,7 +176,7 @@ export const ListRevenueScreen: FC<
                 }}>
                 {translate("analysis.report")}
               </Text>
-            </TouchableOpacity>
+            </View>
           </View>
           <ItemSum />
           <View style={{ backgroundColor: "#7676801F" }}>
@@ -237,32 +229,8 @@ export const ListRevenueScreen: FC<
           marginHorizontal: 16,
           marginVertical: 15,
         }}>
-        <TouchableOpacity onPress={
-          () =>
-            // onModal()
-            props.navigation.navigate('expenseScreen')
-        }>
-          <View
-            style={{
-              backgroundColor: "#FF4956",
-              flexDirection: "row",
-              paddingHorizontal: 36,
-              paddingVertical: 12,
-              alignContent: "center",
-              borderRadius: 8,
-            }}>
-            <Images.ic_arrow_up />
-            <Text
-              tx={"analysis.amountExpenditure"}
-              style={{
-                fontSize: 14,
-                fontWeight: "600",
-                color: "#FFFFFF",
-                marginLeft: 5,
-              }}></Text>
-          </View>
-        </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => props.navigation.navigate('expenseScreen')}
           style={{
             backgroundColor: "#FF4956",
             flexDirection: "row",
@@ -270,10 +238,34 @@ export const ListRevenueScreen: FC<
             paddingVertical: 12,
             alignContent: "center",
             borderRadius: 8,
+            flex: 1,
+            justifyContent: "center",
+            marginRight: scaleWidth(13),
           }}
-          onPress={() => {
-            props.navigation.navigate('addRevenueScreen')
+
+        >
+          <Images.ic_arrow_up />
+          <Text
+            tx={"analysis.amountExpenditure"}
+            style={{
+              fontSize: 14,
+              fontWeight: "600",
+              color: "#FFFFFF",
+              marginLeft: 5,
+            }}></Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#00CC6A",
+            flexDirection: "row",
+            // paddingHorizontal: 36,
+            justifyContent: "center",
+            paddingVertical: 12,
+            alignContent: "center",
+            borderRadius: 8,
+            flex: 1,
           }}
+          onPress={() => props.navigation.navigate('addRevenueScreen')}
         >
           <Images.ic_arrow_down />
           <Text
@@ -394,8 +386,4 @@ const ItemSum = () => {
     </View>
   );
 };
-<<<<<<< HEAD
-// doan 
-=======
 //test conflict
->>>>>>> e36254ec1513068e457b1aa014f8afb8275c777e
