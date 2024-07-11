@@ -225,6 +225,12 @@ export const EditClassify: FC = (item) => {
             setTextAttributes(textAttributeArr);
             setVariantInConfig(dataEdit.newDataEdit);
 
+            setUomId({ id: newDataEdit?.uom?.id, label: newDataEdit?.uom?.name, uomGroupLineId: newDataEdit?.uomGroup?.uomGroupLineId });
+
+            if (newDataEdit.uomGroupId !== null) {
+                getDetailUnitGroup(newDataEdit.uomGroupId)
+            }
+
             const dropdownEdit:
                 | ((prevState: never[]) => never[])
                 | { text: any; value: any }[] = [];
@@ -286,6 +292,7 @@ export const EditClassify: FC = (item) => {
                     );
                 }
             );
+            console.log(attributeEdit, 'yuefadyjafgsdyias')
             setConstAttributeToEdit(attributeEdit);
             setAttributeToEdit(attributeEdit);
 
@@ -294,7 +301,7 @@ export const EditClassify: FC = (item) => {
             // setCostPriceProduct(dataEdit?.costPrice);
             // setListPriceProduct(dataEdit?.listPrice);
             // setSku(dataEdit?.sku);
-            if (newDataEdit?.baseTemplatePackingLine !== null) {
+            if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null) {
                 setAddWeight(true)
             }
             methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -303,7 +310,7 @@ export const EditClassify: FC = (item) => {
             methods.setValue('productName', newDataEdit?.name)
             methods.setValue('volumeOriginal', typeVariant === 'variant' ? newDataEdit?.baseProductPackingLine?.volume?.toString() : newDataEdit?.baseTemplatePackingLine?.volume?.toString())
             methods.setValue('weightOriginal', typeVariant === 'variant' ? newDataEdit?.baseProductPackingLine?.weight?.toString() : newDataEdit?.baseTemplatePackingLine?.weight?.toString())
-            methods.setValue('weight', typeVariant === 'variant' ? (dataEdit?.baseProductPackingLines !== null ? dataEdit?.baseProductPackingLines?.map((item: any) => {
+            methods.setValue('weight', typeVariant === 'variant' ? (newDataEdit?.productPackingLines !== null ? dataEdit?.productPackingLines?.map((item: any) => {
                 return {
                     weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                     unit: {
@@ -311,7 +318,7 @@ export const EditClassify: FC = (item) => {
                         label: item.uomGroupLineOutput.unitName
                     }
                 }
-            }): []) : (dataEdit?.templatePackingLines !== null ? dataEdit?.templatePackingLines?.map((item: any) => {
+            }) : []) : (dataEdit?.templatePackingLines !== null ? dataEdit?.templatePackingLines?.map((item: any) => {
                 return {
                     weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                     unit: {
@@ -319,7 +326,7 @@ export const EditClassify: FC = (item) => {
                         label: item.uomGroupLineOutput.unitName
                     }
                 }
-            }): []))
+            }) : []))
             // setNameProduct(dataEdit?.name);
             if (dataEdit?.description !== "") {
                 setAddDescribe(true);
@@ -382,8 +389,7 @@ export const EditClassify: FC = (item) => {
             });
             setImagesNote(newDataEdit?.imageUrls);
             setValuePurchase(newDataEdit?.purchaseOk);
-            setValueSwitchUnit(newDataEdit?.hasUomGroupInConfig);
-            setUomId({ id: newDataEdit?.uom?.id, label: newDataEdit?.uom?.name, uomGroupLineId: newDataEdit?.uomGroup?.uomGroupLineId });
+            setValueSwitchUnit(newDataEdit?.uom !== null ? false : true);
             setUomGroupId({
                 id: newDataEdit?.uomGroupId,
                 label: newDataEdit?.uomGroup?.name,
@@ -424,6 +430,22 @@ export const EditClassify: FC = (item) => {
         });
         return unsubscribe;
     }, [newDataCreateProduct]);
+
+    const getDetailUnitGroup = async (id: number) => {
+        const unitResult = await unitStore.getDetailUnitGroup(id);
+        if (unitResult && unitResult.kind === "ok") {
+            const data = unitResult.result.data;
+            console.log("getDetailUnitGroup:-------", data);
+            setDetailUnitGroupData(data);
+            const uomId = {
+                id: data.originalUnit.id,
+                label: data.originalUnit.name,
+            };
+            setUomId(uomId);
+        } else {
+            console.error("Failed to fetch list unit:", unitResult);
+        }
+    };
 
     const requestCameraPermission = async () => {
         try {
@@ -1893,7 +1915,7 @@ export const EditClassify: FC = (item) => {
                                     onPress={() => {
                                         methods.setValue('volumeOriginal', typeVariant === 'variant' ? dataEdit?.baseProductPackingLine?.volume?.toString() : dataEdit?.baseTemplatePackingLine?.volume?.toString())
                                         methods.setValue('weightOriginal', typeVariant === 'variant' ? dataEdit?.baseProductPackingLine?.weight?.toString() : dataEdit?.baseTemplatePackingLine?.weight?.toString())
-                                        methods.setValue('weight', typeVariant === 'variant' ? (dataEdit?.baseProductPackingLines !== null ? dataEdit?.baseProductPackingLines?.map((item: any) => {
+                                        methods.setValue('weight', typeVariant === 'variant' ? (dataEdit?.productPackingLines !== null ? dataEdit?.productPackingLines?.map((item: any) => {
                                             return {
                                                 weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                                                 unit: {
@@ -1901,7 +1923,7 @@ export const EditClassify: FC = (item) => {
                                                     label: item.uomGroupLineOutput.unitName
                                                 }
                                             }
-                                        }): []) : (dataEdit?.templatePackingLines !== null ? dataEdit?.templatePackingLines?.map((item: any) => {
+                                        }) : []) : (dataEdit?.templatePackingLines !== null ? dataEdit?.templatePackingLines?.map((item: any) => {
                                             return {
                                                 weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                                                 unit: {
@@ -1909,7 +1931,7 @@ export const EditClassify: FC = (item) => {
                                                     label: item.uomGroupLineOutput.unitName
                                                 }
                                             }
-                                        }): []))
+                                        }) : []))
                                     }}>
                                     <Text tx={'productScreen.reset'} style={{ color: colors.navyBlue, fontSize: fontSize.size14 }} />
                                 </TouchableOpacity>
@@ -2469,7 +2491,7 @@ export const EditClassify: FC = (item) => {
                                                 fontWeight: "700",
                                                 marginBottom: scaleHeight(15),
                                             }} />
-                                        {description ? (
+                                        {/* {description ? (
                                             <TouchableOpacity
                                                 onPress={() => {
                                                     setModalDescribe(true);
@@ -2480,9 +2502,9 @@ export const EditClassify: FC = (item) => {
                                                     height={scaleHeight(14)}
                                                 />
                                             </TouchableOpacity>
-                                        ) : null}
+                                        ) : null} */}
                                     </View>
-                                    <TouchableOpacity
+                                    {/* <TouchableOpacity
                                         onPress={handleCloseDescribe}
                                         style={{
                                             position: "absolute",
@@ -2493,9 +2515,9 @@ export const EditClassify: FC = (item) => {
                                             width={scaleWidth(14)}
                                             height={scaleHeight(14)}
                                         />
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                 </View>
-                                {description === "" || description === null ? (
+                                {/* {description === "" || description === null ? (
                                     <View style={{}}>
                                         <TouchableOpacity
                                             style={{ flexDirection: "row", alignItems: "center" }}
@@ -2512,92 +2534,85 @@ export const EditClassify: FC = (item) => {
                                                 }} />
                                         </TouchableOpacity>
                                     </View>
-                                ) : (
-                                    <Text text={description} />
-                                )}
+                                ) : ( */}
+                                <Text text={description} />
+                                {/* )} */}
                             </View>
                         </View>
                     ) : null}
-                    <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-                        <View
-                            style={{
-                                marginHorizontal: scaleWidth(16),
-                                marginVertical: scaleHeight(20),
-                            }}>
-                            <Text
-                                tx="createProductScreen.information"
-                                style={{
-                                    fontSize: fontSize.size14,
-                                    fontWeight: "700",
-                                    marginBottom: scaleHeight(15),
-                                }}
-                            />
-                            <View>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <Images.icon_gear
-                                        width={scaleWidth(20)}
-                                        height={scaleHeight(20)}
-                                    />
-                                    {addDescribe === false ? (
-                                        <TouchableOpacity
-                                            onPress={handleDescribe}
-                                            style={{
-                                                borderWidth: 1,
-                                                alignItems: "center",
-                                                paddingVertical: scaleHeight(6),
-                                                paddingHorizontal: scaleWidth(8),
-                                                borderColor: "#0078d4",
-                                                borderRadius: 4,
-                                                marginLeft: scaleWidth(8),
-                                            }}>
-                                            <Text tx={"createProductScreen.description"}
-                                                style={{ color: "#0078d4", fontSize: fontSize.size10 }} />
-                                        </TouchableOpacity>
-                                    ) : null}
-                                    {addVariant === false ? (
-                                        <TouchableOpacity
-                                            onPress={() => setAddVariant(true)}
-                                            style={{
-                                                borderWidth: 1,
-                                                alignItems: "center",
-                                                paddingVertical: scaleHeight(6),
-                                                paddingHorizontal: scaleWidth(8),
-                                                borderColor: "#0078d4",
-                                                borderRadius: 4,
-                                                marginLeft: scaleWidth(8),
-                                            }}>
-                                            <Text tx={"createProductScreen.productClassification"}
-                                                style={{ color: "#0078d4", fontSize: fontSize.size10 }} />
-                                        </TouchableOpacity>
-                                    ) : null}
-                                    {addWeight === false ? (
-                                        <TouchableOpacity
-                                            onPress={() => setAddWeight(true)}
-                                            style={{
-                                                borderWidth: 1,
-                                                alignItems: "center",
-                                                paddingVertical: scaleHeight(6),
-                                                paddingHorizontal: scaleWidth(8),
-                                                borderColor: "#0078d4",
-                                                borderRadius: 4,
-                                                marginLeft: scaleWidth(8),
-                                            }}>
-                                            <Text
-                                                tx={"createProductScreen.weight"}
-                                                style={{ color: "#0078d4", fontSize: fontSize.size10 }}
-                                            />
-                                        </TouchableOpacity>
-                                    ) : null}
-                                    {addDescribe === true && addVariant === true && addWeight === true ? (
-                                        <Text tx={"createProductScreen.notificationAddAllInfoProduct"}
-                                            style={{
-                                                marginLeft: scaleWidth(8),
-                                                fontSize: fontSize.size13,
-                                            }} />
-                                    ) : null}
-                                </View>
+                    <View>
+                        {/* <View style={styles.viewDetails}>
+                            <View style={styles.viewTitleDetail}>
+                                <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                                    Thuộc tính
+                                </Text>
+                                <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                                    Giá trị
+                                </Text>
                             </View>
-                        </View>
+                            <View style={styles.viewLine2} />
+                            
+                            {dataClassification?.productTemplate == null ? (
+                                <View>
+                                    {nameValue?.map((item: any, index: number) => (
+                                        <View
+                                            style={{
+                                                marginTop: scaleHeight(margin.margin_12),
+                                            }}>
+                                            <ProductAttribute
+                                                label={item.name}
+                                                value={item.value}
+                                                styleAttribute={{
+                                                    paddingHorizontal: scaleWidth(padding.padding_12),
+                                                }}
+                                            />
+                                            {index !== attributeDetailsClassification.length - 1 ? (
+                                                <View style={styles.viewLine2} />
+                                            ) : null}
+                                        </View>
+                                    ))}
+                                </View>
+                            ) : (
+                                <View>
+                                    {attributes?.map((item: any, index: any) => (
+                                        <View key={index}>
+                                            <View
+                                                style={{
+                                                    marginVertical: scaleHeight(margin.margin_12),
+                                                    paddingHorizontal: scaleWidth(padding.padding_12),
+                                                }}>
+                                                <Text
+                                                    style={{
+                                                        fontWeight: "600",
+                                                        fontSize: fontSize.size12,
+                                                        color: colors.palette.navyBlue,
+                                                    }}>
+                                                    {item.name}
+                                                </Text>
+                                            </View>
+                                            <View style={styles.viewLine2} />
+                                            {item.items?.map((dto: any) => (
+                                                <View
+                                                    style={{
+                                                        marginTop: scaleHeight(margin.margin_12),
+                                                    }}>
+                                                    <ProductAttribute
+                                                        label={dto.name}
+                                                        value={dto.value.join('/')}
+                                                        styleAttribute={{
+                                                            paddingHorizontal: scaleWidth(padding.padding_12),
+                                                        }}
+                                                    />
+                                                    {index !== attributes?.length - 1 ? (
+                                                        <View style={styles.viewLine2} />
+                                                    ) : null}
+                                                </View>
+                                            ))}
+                                        </View>
+                                    ))}
+                                </View>
+                            )}
+                        </View> */}
                     </View>
                 </ScrollView>
                 <PriceModal
