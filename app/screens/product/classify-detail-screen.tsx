@@ -40,6 +40,8 @@ export const ClassifyDetailScreen: FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const idProduct = route?.params?.data;
+  const hasVariant = route?.params?.hasVariant;
+  const reload = route?.params?.reload;
   const [showDetails, setShowDetails] = useState(false);
   const [showRetailPrice, setShowRetailPrice] = useState(false);
   const [showWholesalePrice, setShowWholesalePrice] = useState(false);
@@ -65,6 +67,7 @@ export const ClassifyDetailScreen: FC = () => {
   const [isChecking, setIsChecking] = useState(true);
   const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
   const [attributes, setAttributes] = useState<any>([]);
+
   const handleGetDetailClassify = async () => {
     try {
       const response = await productStore.getDetailClassify(productId);
@@ -95,6 +98,18 @@ export const ClassifyDetailScreen: FC = () => {
   useEffect(() => {
     handleGetDetailClassify();
   }, [productId]);
+
+
+  useEffect(() => {
+    console.log("---------useEffect---------reload------------------");
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (reload === true) {
+        handleGetDetailClassify();
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, reload]);
 
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -141,6 +156,7 @@ export const ClassifyDetailScreen: FC = () => {
   }, [dataClassification])
 
 
+  console.log('----hasVariant------', hasVariant)
   const deleteProduct = async () => {
     const result = await productStore.deleteClassify(productId);
     console.log("deleteProduct-----------", result);

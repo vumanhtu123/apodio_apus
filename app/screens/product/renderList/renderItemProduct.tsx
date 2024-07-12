@@ -18,10 +18,10 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
         key={index}
         onPress={() => {
           (viewProduct === 'VIEW_PRODUCT')
-            ? handleProductDetail(item.id)
+            ? handleProductDetail(item.id, item.hasVariant)
             : (!item.hasVariant && viewProduct !== 'VIEW_PRODUCT')
-              ? handleProductDetail(item.productTemplateId)
-              : handleClassifyDetail(item.id);
+              ? handleProductDetail(item.productTemplateId, item.hasVariant)
+              : handleClassifyDetail(item.id, item.hasVariant);
           
           // console.log('cxzzc', item.productTemplateId)
         }}

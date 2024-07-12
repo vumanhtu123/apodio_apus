@@ -240,6 +240,30 @@ export class ProductApi {
       return { kind: "bad-data", result: error };
     }
   }
+
+  async editClassify(id: any, product: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.put(
+        ApiEndpoint.EDIT_CLASSIFY + "?id=" + id,
+        product
+      );
+      Loading.hide();
+      console.log('-------editClassify------', response.data)
+      const result = response.data;
+      if (response.data.data) {
+        return { kind: "ok", result };
+      } else {
+        return { kind: "bad-data", result };
+      }
+    } catch (error) {
+      Loading.hide();
+      return { kind: "bad-data", result: error };
+    }
+  }
+
   async deleteProduct(id: any): Promise<any> {
     Loading.show({
       text: 'Loading...',
