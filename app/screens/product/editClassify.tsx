@@ -139,7 +139,9 @@ export const EditClassify: FC = (item) => {
         typeVariant,
         isVariantInConfig,
         selectedGroupAttribute,
-        newDataCreateProduct
+        newDataCreateProduct,
+        nameValue,
+        attributes
     }: any = route?.params || {};
 
 
@@ -176,11 +178,21 @@ export const EditClassify: FC = (item) => {
         };
         setUomGroupId(dataModified);
     }, [nameUnitGroup]);
-
-
+    const [showDetails, setShowDetails] = useState(false);
+    const toggleDetails = () => {
+        setShowDetails(!showDetails);
+        // getNameAndValue();
+        // extractAttributeInfo(dataClassification.productTemplate)
+        // selectDataClassification()
+    };
     useEffect(() => {
         setVendor(selectedIds);
     }, [selectedIds]);
+    useEffect(() => {
+        console.log('first', nameValue)
+        console.log('first2', attributes)
+        console.log('first3', dataEdit)
+    }, []);
 
     useEffect(() => {
         getCheckUsingProduct();
@@ -1275,7 +1287,7 @@ export const EditClassify: FC = (item) => {
                     headerTx={"createProductScreen.editClassify"}
                     style={{ height: scaleHeight(54) }}
                 />
-                <ScrollView style={{ marginBottom: scaleHeight(20) }}>
+                <ScrollView style={{ marginBottom: scaleHeight(10) }}>
                     <View style={{ backgroundColor: "white" }}>
                         <View
                             style={{
@@ -2476,7 +2488,7 @@ export const EditClassify: FC = (item) => {
                             </View>
                         </View>
                     ) : null}
-                    {addDescribe ? (
+                    {/* {addDescribe ? (
                         <View
                             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
                             <View
@@ -2492,7 +2504,7 @@ export const EditClassify: FC = (item) => {
                                                 fontWeight: "700",
                                                 marginBottom: scaleHeight(15),
                                             }} />
-                                        {/* {description ? (
+                                        {description ? (
                                             <TouchableOpacity
                                                 onPress={() => {
                                                     setModalDescribe(true);
@@ -2503,9 +2515,9 @@ export const EditClassify: FC = (item) => {
                                                     height={scaleHeight(14)}
                                                 />
                                             </TouchableOpacity>
-                                        ) : null} */}
+                                        ) : null}
                                     </View>
-                                    {/* <TouchableOpacity
+                                    <TouchableOpacity
                                         onPress={handleCloseDescribe}
                                         style={{
                                             position: "absolute",
@@ -2516,9 +2528,9 @@ export const EditClassify: FC = (item) => {
                                             width={scaleWidth(14)}
                                             height={scaleHeight(14)}
                                         />
-                                    </TouchableOpacity> */}
+                                    </TouchableOpacity>
                                 </View>
-                                {/* {description === "" || description === null ? (
+                                {description === "" || description === null ? (
                                     <View style={{}}>
                                         <TouchableOpacity
                                             style={{ flexDirection: "row", alignItems: "center" }}
@@ -2535,86 +2547,112 @@ export const EditClassify: FC = (item) => {
                                                 }} />
                                         </TouchableOpacity>
                                     </View>
-                                ) : ( */}
-                                <Text text={description} />
-                                {/* )} */}
+                                ) : (
+                                    <Text text={description} />
+                                )}
                             </View>
                         </View>
-                    ) : null}
-                    <View>
-                        {/* <View style={styles.viewDetails}>
-                            <View style={styles.viewTitleDetail}>
-                                <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
-                                    Thuộc tính
-                                </Text>
-                                <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
-                                    Giá trị
-                                </Text>
+                    ) : null} */}
+                    {/* <View style={styles.viewLine2} /> */}
+                    {nameValue || attributes ? (
+                        <View style={{ backgroundColor: 'white', marginTop: scaleHeight(16) }}>
+                            <View >
+                                <TouchableOpacity
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        marginVertical: scaleHeight(16),
+                                        marginHorizontal: scaleWidth(margin.margin_16),
+                                    }}
+                                    onPress={toggleDetails}>
+                                    <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5), fontSize: fontSize.size12 }} />
+                                    <Images.iconDownBlue
+                                        width={scaleWidth(16)}
+                                        height={scaleHeight(16)}
+                                        style={{
+                                            transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                                        }}
+                                    />
+                                </TouchableOpacity>
+
                             </View>
-                            <View style={styles.viewLine2} />
-                            
-                            {dataClassification?.productTemplate == null ? (
-                                <View>
-                                    {nameValue?.map((item: any, index: number) => (
-                                        <View
-                                            style={{
-                                                marginTop: scaleHeight(margin.margin_12),
-                                            }}>
-                                            <ProductAttribute
-                                                label={item.name}
-                                                value={item.value}
-                                                styleAttribute={{
-                                                    paddingHorizontal: scaleWidth(padding.padding_12),
-                                                }}
-                                            />
-                                            {index !== attributeDetailsClassification.length - 1 ? (
-                                                <View style={styles.viewLine2} />
-                                            ) : null}
-                                        </View>
-                                    ))}
-                                </View>
-                            ) : (
-                                <View>
-                                    {attributes?.map((item: any, index: any) => (
-                                        <View key={index}>
-                                            <View
-                                                style={{
-                                                    marginVertical: scaleHeight(margin.margin_12),
-                                                    paddingHorizontal: scaleWidth(padding.padding_12),
-                                                }}>
-                                                <Text
-                                                    style={{
-                                                        fontWeight: "600",
-                                                        fontSize: fontSize.size12,
-                                                        color: colors.palette.navyBlue,
-                                                    }}>
-                                                    {item.name}
-                                                </Text>
-                                            </View>
+                            {/* ) : null} */}
+
+                            {showDetails && (
+                                <View style={[styles.viewDetails, { marginHorizontal: scaleWidth(16) }]}>
+                                    <View style={styles.viewTitleDetail}>
+                                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                                            Thuộc tính
+                                        </Text>
+                                        <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                                            Giá trị
+                                        </Text>
+                                    </View>
+                                    {dataEdit?.productTemplate == null ? (
+                                        <View>
                                             <View style={styles.viewLine2} />
-                                            {item.items?.map((dto: any) => (
+                                            {nameValue?.map((item: any, index: number) => (
                                                 <View
                                                     style={{
                                                         marginTop: scaleHeight(margin.margin_12),
                                                     }}>
                                                     <ProductAttribute
-                                                        label={dto.name}
-                                                        value={dto.value.join('/')}
+                                                        label={item.name}
+                                                        value={item.value}
                                                         styleAttribute={{
                                                             paddingHorizontal: scaleWidth(padding.padding_12),
                                                         }}
                                                     />
-                                                    {index !== attributes?.length - 1 ? (
+                                                    {index !== nameValue.length - 1 ? (
                                                         <View style={styles.viewLine2} />
                                                     ) : null}
                                                 </View>
                                             ))}
                                         </View>
-                                    ))}
+                                    ) : (
+                                        <View>
+                                            {attributes?.map((item: any, index: any) => (
+                                                <View key={index}>
+                                                    <View
+                                                        style={{
+                                                            marginVertical: scaleHeight(margin.margin_12),
+                                                            paddingHorizontal: scaleWidth(padding.padding_12),
+                                                        }}>
+                                                        <Text
+                                                            style={{
+                                                                fontWeight: "600",
+                                                                fontSize: fontSize.size12,
+                                                                color: colors.palette.navyBlue,
+                                                            }}>
+                                                            {item.name}
+                                                        </Text>
+                                                    </View>
+                                                    <View style={styles.viewLine2} />
+                                                    {item.items?.map((dto: any) => (
+                                                        <View
+                                                            style={{
+                                                                marginTop: scaleHeight(margin.margin_12),
+                                                            }}>
+                                                            <ProductAttribute
+                                                                label={dto.name}
+                                                                value={dto.value.join('/')}
+                                                                styleAttribute={{
+                                                                    paddingHorizontal: scaleWidth(padding.padding_12),
+                                                                }}
+                                                            />
+                                                            {index !== attributes?.length - 1 ? (
+                                                                <View style={styles.viewLine2} />
+                                                            ) : null}
+                                                        </View>
+                                                    ))}
+                                                </View>
+                                            ))}
+                                        </View>
+                                    )}
                                 </View>
                             )}
-                        </View> */}
-                    </View>
+                        </View>
+                    ) : null}
                 </ScrollView>
                 <PriceModal
                     isVisible={modalRetailPrice}

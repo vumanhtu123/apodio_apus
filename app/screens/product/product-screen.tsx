@@ -318,9 +318,9 @@ export const ProductScreen: FC = () => {
     setOpenSearch(false)
     setNameDirectory("");
     setDataProduct([]);
+    await handleGetProduct();
     productStore.setTagId(0);
     productStore.setSort([]);
-    handleGetProduct();
     setIsRefreshing(false);
   };
   const refreshCategory = async () => {
@@ -475,7 +475,7 @@ export const ProductScreen: FC = () => {
             isLoadingMore={false}
             renderFooter={renderFooter}
             searchCategory={getValueSearchCategoryFilter}
-            
+
           />
         ) : (
           <CategoryList
