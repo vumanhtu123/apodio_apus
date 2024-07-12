@@ -304,7 +304,7 @@ export const ProductEditScreen: FC = (item) => {
       // setCostPriceProduct(dataEdit?.costPrice);
       // setListPriceProduct(dataEdit?.listPrice);
       // setSku(dataEdit?.sku);
-      if(newDataEdit?.baseTemplatePackingLine !== null){
+      if(newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null){
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -658,6 +658,24 @@ export const ProductEditScreen: FC = (item) => {
         textBody: translate("txtToats.required_information"),
       });
       hasError = true
+    }
+    if (addWeight == true) {
+      const unit = data.weight.flatMap((items: any) => items.unit)
+      const weight1 = data.weight.flatMap((items: any) => items.weight1)
+      const volume = data.weight.flatMap((items: any) => items.volume)
+      const checkUnit = unit.some((item: any) => Object.keys(item).length === 0)
+      const checkWeight1 = weight1.some((item: any) => item?.trim() === "")
+      const checkVolume = volume.some((item: any) => item?.trim() === "")
+      if (checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "") {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "",
+          textBody: translate("txtToats.input_weight"),
+        });
+        hasError = true
+      } else {
+        hasError = false
+      }
     }
     if (hasError == true) {
     } else {

@@ -156,6 +156,9 @@ export const ClassifyDetailScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
+        RightIcon={Images.icon_editWhite}
+        onRightPress={()=> navigation.navigate({name: 'EditClassify', params: {dataEdit: dataClassification, typeVariant: 'variant'}} as never)}
+        RightIcon1={Images.icon_trashWhite}
       />
       <SafeAreaView style={{ flex: 1 }}>
         {/* <Screen style={{ flex: 1, marginBottom: scaleHeight(64) }} preset="fixed" > */}
@@ -207,9 +210,9 @@ export const ClassifyDetailScreen: FC = () => {
                 marginLeft: scaleWidth(16),
               }}
               onPress={() =>
-                navigation.navigate("view3D" as any, {
+                navigation.navigate({ name: "view3D", params: {
                   scene: dataClassification?.scene?.url,
-                })
+                }} as never)
                 // console.log('first' ,)
               }>
               <Images.ic_3d

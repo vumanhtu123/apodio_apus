@@ -307,9 +307,9 @@ export const ProductDetailScreen: FC = (item) => {
         RightIcon2={screen === "seeDetail" ? null : Images.icon_trashWhite}
         RightIcon1={screen === "seeDetail" ? null : Images.icon_editWhite}
         onRightPress1={() =>
-          navigation.navigate("ProductEditScreen" as any, {
+          navigation.navigate({name: "ProductEditScreen", params:{
             dataEdit: dataClassificationToEdit,
-          })
+          }}as never)
         }
         onRightPress2={() => {
           Dialog.show({

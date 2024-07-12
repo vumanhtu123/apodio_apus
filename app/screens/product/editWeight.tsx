@@ -8,6 +8,8 @@ import { Header, Text } from '../../components';
 import { Images } from '../../../assets';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../theme';
 import { commasToDots, formatCurrency, formatNumberFloat } from '../../utils/validate';
+import { ALERT_TYPE, Toast } from '../../components/dialog-notification';
+import { translate } from '../../i18n';
 export const EditWeight: FC = observer(
     function EditWeight() {
         const route = useRoute()
@@ -22,14 +24,36 @@ export const EditWeight: FC = observer(
         }, [])
 
         const submitAdd = (data: any) => {
-            dataCreateProduct[index].weight.volumeOriginal = data.volumeOriginal
-            dataCreateProduct[index].weight.weightOriginal = data.weightOriginal
-            dataCreateProduct[index].weight.weight = data.weight
-            console.log(dataCreateProduct[0].weight)
-            if (screen === 'edit') {
-                navigation.navigate({name: 'ProductEditScreen', params: {newDataCreateProduct: dataCreateProduct}} as never)
-            } else {
-                navigation.navigate({name: 'ProductCreateScreen', params: {newDataCreateProduct: dataCreateProduct}} as never)
+            let hasError = false
+
+            const unit = data.weight.flatMap((items: any)=> items.unit)
+            const weight1 = data.weight.flatMap((items: any)=> items.weight1)
+            const volume = data.weight.flatMap((items: any)=> items.volume)
+            const checkUnit = unit.some((item: any) => Object.keys(item).length===0 )
+            const checkWeight1 = weight1.some((item: any) => item?.trim() === "" )
+            const checkVolume = volume.some((item: any) => item?.trim() === "" )
+            if(checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() ==="" || data.volumeOriginal.trim() === ""){
+                hasError = true
+            }else{
+                hasError = false
+            }
+
+            if(hasError == true){
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: "",
+                    textBody: translate("txtToats.input_weight"),
+                  });
+            }else{
+                dataCreateProduct[index].weight.volumeOriginal = data.volumeOriginal
+                dataCreateProduct[index].weight.weightOriginal = data.weightOriginal
+                dataCreateProduct[index].weight.weight = data.weight
+                console.log(dataCreateProduct[0].weight)
+                if (screen === 'edit') {
+                    navigation.navigate({name: 'ProductEditScreen', params: {newDataCreateProduct: dataCreateProduct}} as never)
+                } else {
+                    navigation.navigate({name: 'ProductCreateScreen', params: {newDataCreateProduct: dataCreateProduct}} as never)
+                }
             }
         }
 
