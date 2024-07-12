@@ -62,6 +62,7 @@ import ItemWeight from "./component/weight-component";
 
 export const EditClassify: FC = (item) => {
     const route = useRoute();
+    const reload = route?.params?.reload;
     const navigation = useNavigation();
     const [imagesNote, setImagesNote] = useState<any>();
     const [modalImage, setModalImage] = useState(false);
@@ -755,17 +756,17 @@ export const EditClassify: FC = (item) => {
                 costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
                 listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
                 wholesalePrice: dataPrice,
-                baseTemplatePackingLine: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? {} : {
+                baseProductPackingLine: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? {} : {
                     uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
                     amount: 1,
                     volume: formatStringToFloat(data.volumeOriginal),
                     weight: formatStringToFloat(data.weightOriginal)
                 },
-                productTemplatePackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
+                productPackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
                 deleteVariantIds: newArr1,
             }
             console.log('dataCreate===========', JSON.stringify(doneData))
-            const result = await productStore?.putProduct(productStore.productId, doneData);
+            const result = await productStore?.putClassify(productStore.productId, doneData);
             if (result.kind === "ok") {
                 Dialog.show({
                     type: ALERT_TYPE.INFO,
@@ -774,7 +775,7 @@ export const EditClassify: FC = (item) => {
                     button2: translate("common.ok"),
                     closeOnOverlayTap: false,
                     onPressButton: () => {
-                        navigation.navigate({ name: "productDetailScreen", params: { reload: true } } as never);
+                        navigation.navigate({ name: "classifyDetailScreen", params: { reload: true } } as never);
                         Dialog.hide();
                     }
                 })

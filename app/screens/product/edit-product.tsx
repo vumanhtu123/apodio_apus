@@ -771,7 +771,8 @@ export const ProductEditScreen: FC = (item) => {
           weight: formatStringToFloat(item.weight1),
         }
       })
-      console.log('3')
+      console.log('--------newArr2-------', JSON.stringify(newArr2))
+      console.log('--------hasVariantInConfig-------', hasVariantInConfig)
       const doneData = {
         sku: data.SKU === "" ? null: data.SKU,
         name: data.productName,
@@ -792,7 +793,7 @@ export const ProductEditScreen: FC = (item) => {
         attributeCategoryIds: attributeIds,
         textAttributes: textAttributes,
         description: description,
-        productVariants: hasVariantInConfig ? newArr2 : [],
+        productVariants: hasVariantInConfig === false ? [] : newArr2,
         retailPrice: dataPrice2,
         costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
         listPrice: Number(formatNumberByString(methods.watch('listPrice'))),

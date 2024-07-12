@@ -29,8 +29,8 @@ interface ProductListProps {
     handleEndReached: () => void;
     isGridView: boolean;
     viewProduct: string;
-    handleProductDetail: (item: any) => void;
-    handleClassifyDetail: (item: any) => void;
+    handleProductDetail: (item: any, hasVariant: boolean) => void;
+    handleClassifyDetail: (item: any, hasVariant: boolean) => void;
     nameDirectory: string;
     isLoadingMore: boolean;
     renderFooter: any;

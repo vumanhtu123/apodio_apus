@@ -361,13 +361,13 @@ export const ProductScreen: FC = () => {
   const toggleView = () => {
     setIsGridView(!isGridView);
   };
-  const handleProductDetail = (idProduct: number) => {
+  const handleProductDetail = (idProduct: number, hasVariant: boolean) => {
     productStore.setSelectedProductId(idProduct);
-    navigation.navigate("productDetailScreen" as never);
+    navigation.navigate("productDetailScreen", { hasVariant: hasVariant });
   };
-  const handleClassifyDetail = (idProduct: number) => {
+  const handleClassifyDetail = (idProduct: number, hasVariant: boolean) => {
     productStore.setSelectedProductId(idProduct);
-    navigation.navigate("classifyDetailScreen" as never);
+    navigation.navigate("classifyDetailScreen", { hasVariant: hasVariant });
   };
   const [openSearch, setOpenSearch] = useState(false);
   const handleOpenSearch = () => {
