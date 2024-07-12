@@ -29,7 +29,7 @@ export const ApiEndpoint = {
   CREATE_DATA_ATTRIBUTE_GROUP: "/api/v1/mobile-product-attribute",
   GET_LIST_PRODUCT: "/api/v1/goods/mobile-product-template/list",
   ADD_PRODUCT: "/api/v1/goods/mobile-product-template",
-  DELETE_CLASSIFY: "v1/goods/mobile-product-template/variant",
+  DELETE_CLASSIFY: "/api/v1/goods/mobile-product-template/variant",
   PUT_MOVE_CATEGORY: "/api/v3/goods/product-category/move-sequence",
   GET_PRODUCT_DETAIL: "/api/v1/goods/mobile-product-template",
   GET_CLASSIFY_DETAIL: "/api/v1/goods/mobile-product-template/variant",
