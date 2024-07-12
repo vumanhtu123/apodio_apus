@@ -31,7 +31,7 @@ import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
-import { commasToDots, formatNumber } from "../../utils/validate";
+import { commasToDots, formatCurrency, formatVND } from "../../utils/validate";
 import ProductAttribute from "./component/productAttribute";
 import { translate } from "../../i18n/translate";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
@@ -556,7 +556,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={formatNumber(item.price)}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
@@ -566,7 +566,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={formatNumber(item.price)}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
@@ -575,32 +575,32 @@ export const ProductDetailScreen: FC = (item) => {
                 </View>
               ) : null}
               <View>
-                {detailsClassification?.length !== 0 ? (
+                {/* {detailsClassification?.length !== 0 ? ( */}
+                <ProductAttribute
+                  label="Giá vốn"
+                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification?.uom?.name}` : null}
+                  textStyle={{ color: colors.palette.radicalRed }}
+                />
+                {/* ) : (
                   <ProductAttribute
                     label="Giá vốn"
-                    value={formatNumber(detailsClassification?.costPrice)}
+                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification?.uom?.name}`}
                     textStyle={{ color: colors.palette.radicalRed }}
                   />
-                ) : (
-                  <ProductAttribute
-                    label="Giá vốn"
-                    value={formatNumber(dataClassification?.costPrice)}
-                    textStyle={{ color: colors.palette.radicalRed }}
-                  />
-                )}
-                {detailsClassification?.length !== 0 ? (
-                  <ProductAttribute
-                    label="Giá niêm yết"
-                    value={formatNumber(detailsClassification?.listPrice)}
-                    textStyle={{ color: colors.palette.radicalRed }}
-                  />
-                ) : (
+                )} */}
+                {/* {detailsClassification?.length !== 0 ? ( */}
+                <ProductAttribute
+                  label="Giá niêm yết"
+                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification?.uom?.name}` : null}
+                  textStyle={{ color: colors.palette.radicalRed }}
+                />
+                {/* ) : (
                   <ProductAttribute
                     label="Giá niêm yết"
-                    value={formatNumber(dataClassification?.listPrice)}
+                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification?.uom?.name}`}
                     textStyle={{ color: colors.palette.radicalRed }}
                   />
-                )}
+                )} */}
               </View>
               <TouchableOpacity
                 style={styles.viewCaret}
@@ -644,7 +644,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={formatNumber(item.price)}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
@@ -654,7 +654,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={formatNumber(item.price)}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
