@@ -32,6 +32,8 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
 import { commasToDots, formatCurrency, formatNumber, formatVND } from "../../utils/validate";
 import ProductAttribute from "./component/productAttribute";
+import { ALERT_TYPE, Dialog } from "../../components/dialog-notification";
+import { translate } from "../../i18n/translate";
 // import ProductAttribute from "./componet/productAttribute";
 
 export const ClassifyDetailScreen: FC = () => {
@@ -137,6 +139,40 @@ export const ClassifyDetailScreen: FC = () => {
   useEffect(() => {
     extractAttributeInfo(dataClassification.productTemplate)
   }, [dataClassification])
+
+
+  const deleteProduct = async () => {
+    const result = await productStore.deleteClassify(productId);
+    console.log("deleteProduct-----------", result);
+    if (result.kind === "ok") {
+      await Dialog.hideDialog();
+      Dialog.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: translate("txtDialog.txt_title_dialog"),
+        button: '',
+        button2: translate("common.ok"),
+        textBody: result.result.message,
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          navigation.goBack()
+          productStore.setReloadProductScreen(true)
+          Dialog.hide();
+        }
+      })
+    } else {
+      await Dialog.hideDialog();
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("productScreen.Notification"),
+        button: translate("common.ok"),
+        textBody: result.result.errorCodes[0].message,
+        closeOnOverlayTap: false
+      })
+      //setErrorContent(result.result.errorCodes[0].message);
+    }
+    //setDialogDeleteProduct(false);
+  };
+  
   const toggleDetails = () => {
     setShowDetails(!showDetails);
     getNameAndValue();
@@ -159,6 +195,18 @@ export const ClassifyDetailScreen: FC = () => {
         RightIcon={Images.icon_editWhite}
         onRightPress={()=> navigation.navigate({name: 'EditClassify', params: {dataEdit: dataClassification, typeVariant: 'variant'}} as never)}
         RightIcon1={Images.icon_trashWhite}
+        onRightPress1={() => {
+          Dialog.show({
+            type: ALERT_TYPE.INFO,
+            title: translate("productScreen.Notification"),
+            button: translate("productScreen.cancel"),
+            button2: translate("productScreen.BtnNotificationAccept"),
+            textBody: translate("productScreen.ProductDelete"),
+            closeOnOverlayTap: false,
+            onPressButton: () =>
+              deleteProduct()
+          })
+        }}
       />
       <SafeAreaView style={{ flex: 1 }}>
         {/* <Screen style={{ flex: 1, marginBottom: scaleHeight(64) }} preset="fixed" > */}

@@ -264,6 +264,32 @@ export class ProductApi {
       return { kind: "bad-data", result: error };
     }
   }
+
+  async deleteClassify(id: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+      onShow: () => console.log('Loading shown'),
+      onHide: () => console.log('Loading hidden'),
+    });
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.delete(
+        ApiEndpoint.DELETE_CLASSIFY + "?id=" + id
+      );
+      Loading.hide();
+      console.log('----------delete', response)
+      const result = response.data;
+      if (response.data.errorCodes) {
+        return { kind: "bad-data", result };
+      } else {
+        return { kind: "ok", result };
+      }
+
+    } catch (error) {
+      Loading.hide();
+      return { kind: "bad-data", result: error };
+    }
+  }
+
   async deleteCheck(id: any): Promise<any> {
     Loading.show({
       text: 'Loading...',
