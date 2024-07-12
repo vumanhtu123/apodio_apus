@@ -160,7 +160,7 @@ export const ProductScreen: FC = () => {
         parseSort,
         productStore.isLoadMore
       );
-      console.log('first------------------', response)
+      console.log('first------------------', JSON.stringify(response.response.data.content))
       if (response && response.kind === "ok") {
         setTotalPagesProduct(response.response.data.totalPages)
         if (page === 0) {
@@ -475,6 +475,7 @@ export const ProductScreen: FC = () => {
             isLoadingMore={false}
             renderFooter={renderFooter}
             searchCategory={getValueSearchCategoryFilter}
+            
           />
         ) : (
           <CategoryList

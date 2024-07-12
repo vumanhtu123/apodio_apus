@@ -30,7 +30,7 @@ import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
-import { commasToDots, formatCurrency, formatNumber } from "../../utils/validate";
+import { commasToDots, formatCurrency, formatNumber, formatVND } from "../../utils/validate";
 import ProductAttribute from "./component/productAttribute";
 import { ALERT_TYPE, Dialog } from "../../components/dialog-notification";
 import { translate } from "../../i18n/translate";
@@ -68,33 +68,19 @@ export const ClassifyDetailScreen: FC = () => {
   const handleGetDetailClassify = async () => {
     try {
       const response = await productStore.getDetailClassify(productId);
-      console.log("handleGetDetailClassify----------", response);
+      // console.log("handleGetDetailClassify----------", response);
       if (response && response.kind === "ok") {
         const data = response.response.data;
-        console.log("response detail classify", JSON.stringify(response.response.data));
-
-        if (data.productTemplate == null) {
-          setDetailProduct(data.baseProductPackingLine);
-          setDataClassification(data);
-          setArrImagesProduct(data.imageUrls);
-          setArrClassification(data.productVariants);
-          setAttributeCategory(data.attributeCategory);
-          setArrNCC(data.vendors);
-          if (data.productVariants !== undefined) {
-            setChangeClassification(data.productVariants[0]?.id);
-            setDetailsClassification(data.productVariants[0]);
-          }
-        } else {
-          setDetailProduct(data.productTemplate?.baseProductPackingLine);
-          setDataClassification(data.productTemplate);
-          setArrImagesProduct(data?.productTemplate?.imageUrls);
-          setArrClassification(data.productTemplate?.productVariants);
-          setAttributeCategory(data.productTemplate?.attributeCategory);
-          setArrNCC(data.productTemplate?.vendors);
-          // if (data.productTemplate?.productVariants !== undefined) {
-          //   setChangeClassification(data.productVariants[0]?.id);
-          //   setDetailsClassification(data.productVariants[0]);
-          // }
+        console.log("handleGetDetailClassify----------", JSON.stringify(data));
+        setDetailProduct(data.baseProductPackingLine);
+        setDataClassification(data);
+        setArrImagesProduct(data.imageUrls);
+        setArrClassification(data.productVariants);
+        setAttributeCategory(data.attributeCategory);
+        setArrNCC(data.vendors);
+        if (data.productVariants !== undefined) {
+          setChangeClassification(data.productVariants[0]?.id);
+          setDetailsClassification(data.productVariants[0]);
         }
         // setDataProductTemplate(data.productTemplate)
         setIsChecking(false);
@@ -122,7 +108,6 @@ export const ClassifyDetailScreen: FC = () => {
 
   const getNameAndValue = () => {
     const nameAndValue: { name: any; value: any }[] = [];
-
     attributeCategory?.forEach((category) => {
       category.attributeOutputList?.forEach((dto) => {
         dto.productAttributeValue?.forEach((attrValue) => {
@@ -362,7 +347,7 @@ export const ClassifyDetailScreen: FC = () => {
                     return (
                       <ProductAttribute
                         label={item.min}
-                        value={formatNumber(item.price)}
+                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
                       />
@@ -373,12 +358,12 @@ export const ClassifyDetailScreen: FC = () => {
               <View>
                 <ProductAttribute
                   labelTx="productScreen.priceCapital"
-                  value={formatNumber(dataClassification?.costPrice ?? 0)}
+                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification?.uom?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 <ProductAttribute
                   labelTx="productScreen.priceList"
-                  value={formatNumber(dataClassification?.listPrice ?? 0)}
+                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification?.uom?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
               </View>
@@ -419,11 +404,11 @@ export const ClassifyDetailScreen: FC = () => {
                     />
                     <Text tx="detailScreen.priceProduct" style={styles.textDolphin12} />
                   </View>
-                  {dataClassification.wholesalePrice?.map((item) => {
+                  {dataClassification?.wholesalePrice?.map((item: { min: string | undefined; price: any; }) => {
                     return (
                       <ProductAttribute
                         label={item.min}
-                        value={formatNumber(item.price)}
+                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
                       />
@@ -475,7 +460,7 @@ export const ClassifyDetailScreen: FC = () => {
             </View>
           ) : null}
 
-          {arrClassification?.baseProductPackingLine?.volume || dataClassification?.baseTemplatePackingLine?.volume != null ? (
+          {dataClassification?.baseProductPackingLine?.volume || dataClassification?.productPackingLines?.length > 0 ? (
             <View>
               <View style={styles.viewLine} />
               <TouchableOpacity
@@ -519,64 +504,73 @@ export const ClassifyDetailScreen: FC = () => {
                   }}
                   keyExtractor={(item) => item.id.toString()}
                 /> */}
-                <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
-                <FlatList
-                  data={dataClassification.productPackingLines}
-                  renderItem={({ item }) => {
-                    return (
-                      <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
-                        <View style={{ flex: 2 }}>
-                          <Text style={[styles.fontSizeWeight, {}]}>
-                            {item.uomGroupLineOutput?.unitName}
-                          </Text>
-                          <View
-                            style={{ backgroundColor: '#E7EFFF', height: 1 }}
-                          />
-                          <Text style={[styles.fontSizeWeight, {}]}>
-                            {`${commasToDots(item.amount)} ${dataClassification.uom?.name}`}
-                          </Text>
-                        </View>
+                {dataClassification.productPackingLines.length > 0 ? (
+                  <View>
+                    <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
+                    <FlatList
+                      data={dataClassification.productPackingLines}
+                      renderItem={({ item }) => {
+                        return (
+                          <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
+                            <View style={{ flex: 2 }}>
+                              <Text style={[styles.fontSizeWeight, {}]}>
+                                {item.uomGroupLineOutput?.unitName}
+                              </Text>
+                              <View
+                                style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                              />
+                              <Text style={[styles.fontSizeWeight, {}]}>
+                                {`${commasToDots(item.amount)} ${dataClassification.uom?.name}`}
+                              </Text>
+                            </View>
 
-                        <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
-                          <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.weight} kg</Text>
-                        </View>
+                            <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                              <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                              <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.weight} kg</Text>
+                            </View>
 
-                        <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
-                          <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
-                        </View>
-                      </View>
-                    )
-                  }}
-                  keyExtractor={(item) => item.id.toString()}
-                  style={{ marginTop: scaleHeight(12) }}
-                />
+                            <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                              <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                              <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
+                            </View>
+                          </View>
+                        )
+                      }}
+                      keyExtractor={(item) => item.id.toString()}
+                      style={{ marginTop: scaleHeight(12) }}
+                    />
+                  </View>
+                ) : null}
 
               </View>
               : null
           }
 
 
-          <View style={styles.viewLine} />
-
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginVertical: scaleHeight(16),
-              marginHorizontal: scaleWidth(margin.margin_16),
-            }}
-            onPress={toggleDetails}>
-            <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5), fontSize: fontSize.size12 }} />
-            <Images.iconDownBlue
-              width={scaleWidth(16)}
-              height={scaleHeight(16)}
+          {/* {attributes?.length !== 0 ? ( */}
+          <View>
+            <View style={styles.viewLine} />
+            <TouchableOpacity
               style={{
-                transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: scaleHeight(16),
+                marginHorizontal: scaleWidth(margin.margin_16),
               }}
-            />
-          </TouchableOpacity>
+              onPress={toggleDetails}>
+              <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5), fontSize: fontSize.size12 }} />
+              <Images.iconDownBlue
+                width={scaleWidth(16)}
+                height={scaleHeight(16)}
+                style={{
+                  transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                }}
+              />
+            </TouchableOpacity>
+
+          </View>
+          {/* ) : null} */}
+
           {showDetails && (
             <View style={styles.viewDetails}>
               <View style={styles.viewTitleDetail}>
@@ -664,7 +658,7 @@ export const ClassifyDetailScreen: FC = () => {
               )}
             </View>
           )}
-          {arrNCC ? (
+          {arrNCC?.length > 0 ? (
             <View>
               <View style={styles.viewLine} />
               <View

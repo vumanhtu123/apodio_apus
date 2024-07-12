@@ -37,6 +37,7 @@ interface ProductListProps {
     searchCategory?: any;
     isRefreshingCategory?: boolean;
     refreshCategory?: () => void;
+    hasVariant?: any
 }
 
 export const ProductList: React.FC<ProductListProps> = ({
@@ -62,6 +63,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     viewProduct,
     handleProductDetail,
     handleClassifyDetail,
+    hasVariant,
     nameDirectory,
     isLoadingMore,
     renderFooter,
@@ -78,6 +80,7 @@ export const ProductList: React.FC<ProductListProps> = ({
             <ActivityIndicator size="large" color="#0000ff" />
         </View>
     );
+    console.log('zxczxc', hasVariant)
     return (
         <>
             <TouchableOpacity
@@ -160,8 +163,8 @@ export const ProductList: React.FC<ProductListProps> = ({
                 isSearchBarVisible={openSearch}
                 setIndex={setIndex}
                 onSearchChange={searchCategory}
-                isRefreshing = {isRefreshingCategory}
-                onRefresh = {refreshCategory}
+                isRefreshing={isRefreshingCategory}
+                onRefresh={refreshCategory}
             />
             <View style={styles.containerProduct}>
                 <FlatList
@@ -190,6 +193,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                             viewProduct={viewProduct}
                             handleProductDetail={handleProductDetail}
                             handleClassifyDetail={handleClassifyDetail}
+                            hasVariant={hasVariant}
                         />
                     )}
                 />
