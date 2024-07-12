@@ -179,7 +179,10 @@ export const ClassifyDetailScreen: FC = () => {
     extractAttributeInfo(dataClassification.productTemplate)
     // selectDataClassification()
   };
-
+  useEffect(() => {
+    getNameAndValue();
+    extractAttributeInfo(dataClassification.productTemplate)
+  }, [])
   return (
     <View style={styles.ROOT}>
       <Header
@@ -193,7 +196,7 @@ export const ClassifyDetailScreen: FC = () => {
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
         RightIcon={Images.icon_editWhite}
-        onRightPress={() => navigation.navigate({ name: 'EditClassify', params: { dataEdit: dataClassification, typeVariant: 'variant' } } as never)}
+        onRightPress={() => navigation.navigate({ name: 'EditClassify', params: { dataEdit: dataClassification, typeVariant: 'variant', nameValue: nameValue, attributes: attributes } } as never)}
         RightIcon1={Images.icon_trashWhite}
         onRightPress1={() => {
           Dialog.show({
@@ -461,7 +464,6 @@ export const ClassifyDetailScreen: FC = () => {
               </View>
             </View>
           ) : null}
-
           {dataClassification?.baseProductPackingLine?.volume || dataClassification?.productPackingLines?.length > 0 ? (
             <View>
               <View style={styles.viewLine} />

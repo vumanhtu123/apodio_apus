@@ -688,6 +688,7 @@ export const ProductDetailScreen: FC = (item) => {
                 label="Đơn vị tính gốc"
                 value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
               />
+              
             </View>
           </View>
           {dataClassification?.description !== "" &&

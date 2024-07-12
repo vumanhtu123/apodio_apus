@@ -318,7 +318,7 @@ export const ProductEditScreen: FC = (item) => {
           weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
           unit: {
             ...item.uomGroupLineOutput,
-            label: item.uomGroupLineOutput.unitName
+            label: item.uomGroupLineOutput?.unitName
           }
         }
       }))
@@ -360,7 +360,7 @@ export const ProductEditScreen: FC = (item) => {
                 return {
                   unit: {
                     ...newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0],
-                    label: newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0].unitName
+                    label: newDataEdit?.uomGroup?.uomGroupLines.filter((item1: any) => item1.id === item?.uomGroupLineId)[0]?.unitName
                   },
                   weight1: formatCurrency(commasToDots(item.weight)),
                   volume: formatCurrency(commasToDots(item.volume)),
