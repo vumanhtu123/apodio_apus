@@ -307,9 +307,11 @@ export const ProductDetailScreen: FC = (item) => {
         RightIcon2={screen === "seeDetail" ? null : Images.icon_trashWhite}
         RightIcon1={screen === "seeDetail" ? null : Images.icon_editWhite}
         onRightPress1={() =>
-          navigation.navigate({name: "ProductEditScreen", params:{
-            dataEdit: dataClassificationToEdit,
-          }}as never)
+          navigation.navigate({
+            name: "ProductEditScreen", params: {
+              dataEdit: dataClassificationToEdit,
+            }
+          } as never)
         }
         onRightPress2={() => {
           Dialog.show({
@@ -556,7 +558,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
@@ -566,7 +568,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
@@ -578,7 +580,7 @@ export const ProductDetailScreen: FC = (item) => {
                 {/* {detailsClassification?.length !== 0 ? ( */}
                 <ProductAttribute
                   label="Giá vốn"
-                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification?.uom?.name}` : null}
+                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 {/* ) : (
@@ -591,7 +593,7 @@ export const ProductDetailScreen: FC = (item) => {
                 {/* {detailsClassification?.length !== 0 ? ( */}
                 <ProductAttribute
                   label="Giá niêm yết"
-                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification?.uom?.name}` : null}
+                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 {/* ) : (
@@ -644,7 +646,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
@@ -654,7 +656,7 @@ export const ProductDetailScreen: FC = (item) => {
                       return (
                         <ProductAttribute
                           label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
+                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />

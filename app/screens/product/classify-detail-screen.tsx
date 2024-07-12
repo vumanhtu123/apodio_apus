@@ -172,7 +172,7 @@ export const ClassifyDetailScreen: FC = () => {
     }
     //setDialogDeleteProduct(false);
   };
-  
+
   const toggleDetails = () => {
     setShowDetails(!showDetails);
     getNameAndValue();
@@ -193,7 +193,7 @@ export const ClassifyDetailScreen: FC = () => {
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
         RightIcon={Images.icon_editWhite}
-        onRightPress={()=> navigation.navigate({name: 'EditClassify', params: {dataEdit: dataClassification, typeVariant: 'variant'}} as never)}
+        onRightPress={() => navigation.navigate({ name: 'EditClassify', params: { dataEdit: dataClassification, typeVariant: 'variant' } } as never)}
         RightIcon1={Images.icon_trashWhite}
         onRightPress1={() => {
           Dialog.show({
@@ -258,9 +258,11 @@ export const ClassifyDetailScreen: FC = () => {
                 marginLeft: scaleWidth(16),
               }}
               onPress={() =>
-                navigation.navigate({ name: "view3D", params: {
-                  scene: dataClassification?.scene?.url,
-                }} as never)
+                navigation.navigate({
+                  name: "view3D", params: {
+                    scene: dataClassification?.scene?.url,
+                  }
+                } as never)
                 // console.log('first' ,)
               }>
               <Images.ic_3d
@@ -347,7 +349,7 @@ export const ClassifyDetailScreen: FC = () => {
                     return (
                       <ProductAttribute
                         label={item.min}
-                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
+                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
                       />
@@ -358,12 +360,12 @@ export const ClassifyDetailScreen: FC = () => {
               <View>
                 <ProductAttribute
                   labelTx="productScreen.priceCapital"
-                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification?.uom?.name}` : null}
+                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 <ProductAttribute
                   labelTx="productScreen.priceList"
-                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification?.uom?.name}` : null}
+                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
               </View>
@@ -408,7 +410,7 @@ export const ClassifyDetailScreen: FC = () => {
                     return (
                       <ProductAttribute
                         label={item.min}
-                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification?.uom?.name}`}
+                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
                       />
@@ -438,7 +440,7 @@ export const ClassifyDetailScreen: FC = () => {
               />
               <ProductAttribute
                 labelTx="detailScreen.unit"
-                value={dataClassification.uom?.name}
+                value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
               />
             </View>
           </View>
@@ -489,7 +491,7 @@ export const ClassifyDetailScreen: FC = () => {
                     return ( */}
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
                   <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
-                    {dataClassification.uom?.name}
+                    {dataClassification.uom == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}
                   </Text>
                   <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
                     <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
@@ -520,7 +522,7 @@ export const ClassifyDetailScreen: FC = () => {
                                 style={{ backgroundColor: '#E7EFFF', height: 1 }}
                               />
                               <Text style={[styles.fontSizeWeight, {}]}>
-                                {`${commasToDots(item.amount)} ${dataClassification.uom?.name}`}
+                                {`${commasToDots(item.amount)} ${dataClassification.uom == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
                               </Text>
                             </View>
 
