@@ -47,9 +47,7 @@ export default function ImageProduct(props: ImageProduct) {
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
                                         textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                
                                       })
-                                    
                                 }
                             }}
                             style={styles.btnLibrary}>
@@ -68,9 +66,7 @@ export default function ImageProduct(props: ImageProduct) {
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
                                         textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                
                                       })
-                                   
                                 }
                             }}
                             style={styles.btnCamera}>

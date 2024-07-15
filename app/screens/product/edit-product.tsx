@@ -1635,7 +1635,11 @@ export const ProductEditScreen: FC = (item) => {
                       ) : retailPriceProduct?.length > 0 &&
                         retailPriceProduct?.length === 1 ? (
                         <Text
-                          text={retailPriceProduct[0]?.price}
+                          text={vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(
+                                removeNonNumeric(retailPriceProduct[0]?.price)
+                            )
+                            : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
                           numberOfLines={1}
                           style={{
                             fontWeight: "500",
@@ -1679,6 +1683,11 @@ export const ProductEditScreen: FC = (item) => {
                       value={value}
                       onBlur={onBlur}
                       showRightIcon={false}
+                      valueInput={vendorStore.checkSeparator === "DOTS"
+                        ? formatCurrency(
+                          removeNonNumeric(value)
+                        )
+                        : addCommas(removeNonNumeric(value))}
                       // defaultValue={costPriceProduct?.toString()}
                       onChangeText={(value) => {
                         onChange(
@@ -1720,6 +1729,11 @@ export const ProductEditScreen: FC = (item) => {
                       }}
                       value={value}
                       onBlur={onBlur}
+                      valueInput={vendorStore.checkSeparator === "DOTS"
+                        ? formatCurrency(
+                          removeNonNumeric(value)
+                        )
+                        : addCommas(removeNonNumeric(value))}
                       // defaultValue={listPriceProduct?.toString()}
                       showRightIcon={false}
                       onChangeText={(value) => {
@@ -1781,7 +1795,11 @@ export const ProductEditScreen: FC = (item) => {
                       ) : wholesalePriceProduct?.length > 0 &&
                         wholesalePriceProduct?.length === 1 ? (
                         <Text
-                          text={wholesalePriceProduct[0]?.price}
+                          text={vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(
+                                removeNonNumeric(wholesalePriceProduct[0]?.price)
+                            )
+                            : addCommas(removeNonNumeric(wholesalePriceProduct[0]?.price))}
                           numberOfLines={1}
                           style={{
                             fontWeight: "500",
@@ -2308,11 +2326,11 @@ export const ProductEditScreen: FC = (item) => {
                                     )
                                   }
                                 />
-                                <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'edit' } } as never)}
+                                {addWeight === true ? <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'edit' } } as never)}
                                   style={{ marginHorizontal: scaleWidth(2), alignItems: 'center', justifyContent: 'center' }}>
                                   <Text tx={'productScreen.weight'} style={[styles.textTitleViewPrice, { color: colors.nero }]} />
                                   <Images.icon_edit />
-                                </TouchableOpacity>
+                                </TouchableOpacity> : false}
                                 <View
                                   style={{
                                     flexDirection: "row",
@@ -2377,7 +2395,11 @@ export const ProductEditScreen: FC = (item) => {
                                         ) : item.retailPrice?.length > 0 &&
                                           item.retailPrice?.length === 1 ? (
                                           <Text
-                                            text={item.retailPrice[0]?.price}
+                                            text={vendorStore.checkSeparator === "DOTS"
+                                              ? formatCurrency(
+                                                  removeNonNumeric(item.retailPrice[0]?.price)
+                                              )
+                                              : addCommas(removeNonNumeric(item.retailPrice[0]?.price))}
                                             style={{
                                               fontWeight: "500",
                                               fontSize: fontSize.size16,
@@ -2420,6 +2442,11 @@ export const ProductEditScreen: FC = (item) => {
                                         }}
                                         value={value}
                                         onBlur={onBlur}
+                                        valueInput={vendorStore.checkSeparator === "DOTS"
+                                          ? formatCurrency(
+                                            removeNonNumeric(value)
+                                          )
+                                          : addCommas(removeNonNumeric(value))}
                                         RightIconClear={Images.icon_delete2}
                                         // error={errors?.priceRetail?.message}
                                         onClearText={() => onChange("")}
@@ -2461,6 +2488,11 @@ export const ProductEditScreen: FC = (item) => {
                                         }}
                                         value={value}
                                         onBlur={onBlur}
+                                        valueInput={vendorStore.checkSeparator === "DOTS"
+                                          ? formatCurrency(
+                                            removeNonNumeric(value)
+                                          )
+                                          : addCommas(removeNonNumeric(value))}
                                         RightIconClear={Images.icon_delete2}
                                         error={errors?.priceRetail?.message}
                                         onClearText={() => onChange("")}
@@ -2540,7 +2572,11 @@ export const ProductEditScreen: FC = (item) => {
                                         ) : item.wholesalePrice?.length > 0 &&
                                           item.wholesalePrice?.length === 1 ? (
                                           <Text
-                                            text={item.wholesalePrice[0]?.price}
+                                            text={vendorStore.checkSeparator === "DOTS"
+                                              ? formatCurrency(
+                                                  removeNonNumeric(item.wholesalePrice[0]?.price)
+                                              )
+                                              : addCommas(removeNonNumeric(item.wholesalePrice[0]?.price))}
                                             style={{
                                               fontWeight: "500",
                                               fontSize: fontSize.size16,

@@ -580,7 +580,7 @@ export const ProductDetailScreen: FC = (item) => {
                 {/* {detailsClassification?.length !== 0 ? ( */}
                 <ProductAttribute
                   label="Giá vốn"
-                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
+                  value={detailsClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(detailsClassification?.costPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 {/* ) : (
@@ -593,7 +593,7 @@ export const ProductDetailScreen: FC = (item) => {
                 {/* {detailsClassification?.length !== 0 ? ( */}
                 <ProductAttribute
                   label="Giá niêm yết"
-                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
+                  value={detailsClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(detailsClassification?.listPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 {/* ) : (

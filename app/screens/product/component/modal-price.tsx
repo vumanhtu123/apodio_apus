@@ -239,6 +239,11 @@ const PriceModal = (props: PriceModalProps) => {
                         }}
                         value={value}
                         onBlur={onBlur}
+                        valueInput={vendorStore.checkSeparator === "DOTS"
+                          ? formatCurrency(
+                            removeNonNumeric(value)
+                          )
+                          : addCommas(removeNonNumeric(value))}
                         onChangeText={(value) => {
                           onChange(
                             vendorStore.checkSeparator === "DOTS"

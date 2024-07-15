@@ -328,7 +328,7 @@ export const EditClassify: FC = (item) => {
                     weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                     unit: {
                         ...item.uomGroupLineOutput,
-                        label: item.uomGroupLineOutput.unitName
+                        label: item.uomGroupLineOutput?.unitName
                     }
                 }
             }) : []) : (dataEdit?.templatePackingLines !== null ? dataEdit?.templatePackingLines?.map((item: any) => {
@@ -652,7 +652,6 @@ export const EditClassify: FC = (item) => {
                     })
                 };
             });
-            console.log('1')
             arrIdOrigin?.forEach((item) => {
                 let isUnique = true;
                 newArr?.forEach((obj) => {
@@ -677,7 +676,6 @@ export const EditClassify: FC = (item) => {
                     price: Number(formatNumberByString(item.price.toString())),
                 };
             });
-            console.log(newArr, '12345')
             const newArr3 = newArr.map((item: any) => {
                 return {
                     ...item,
@@ -702,7 +700,6 @@ export const EditClassify: FC = (item) => {
                     productPackingLines: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item.productPackingLines)
                 };
             });
-            console.log('2')
             const newArr2 = newArr3?.map((item) => {
                 return {
                     ...item,
@@ -730,28 +727,27 @@ export const EditClassify: FC = (item) => {
                     weight: formatStringToFloat(item.weight1),
                 }
             })
-            console.log('3')
             const doneData = {
-                sku: data.SKU === "" ? null : data.SKU,
+                // sku: data.SKU === "" ? null : data.SKU,
                 name: data.productName,
-                purchaseOk: valuePurchase,
+                // purchaseOk: valuePurchase,
                 imageUrls: imagesNote,
-                saleOk: true,
-                vendorIds: vendor,
-                managementForm: brands.label2,
-                productCategoryId: category.id || null,
-                brandId: brand.id || null,
-                tagIds: selectedItems,
-                hasUomGroupInConfig: valueSwitchUnit,
-                uomId: valueSwitchUnit === false ? uomId.id : null,
-                uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
+                // saleOk: true,
+                // vendorIds: vendor,
+                // managementForm: brands.label2,
+                // productCategoryId: category.id || null,
+                // brandId: brand.id || null,
+                // tagIds: selectedItems,
+                // hasUomGroupInConfig: valueSwitchUnit,
+                // uomId: valueSwitchUnit === false ? uomId.id : null,
+                // uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
                 // hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
-                hasVariantInConfig: hasVariantInConfig === false ? hasVariantInConfig : !checkArrayIsEmptyOrNull(dataCreateProduct),
-                attributeValues: attributeValues,
-                attributeCategoryIds: attributeIds,
-                textAttributes: textAttributes,
-                description: description,
-                productVariants: newArr2,
+                // hasVariantInConfig: hasVariantInConfig === false ? hasVariantInConfig : !checkArrayIsEmptyOrNull(dataCreateProduct),
+                // attributeValues: attributeValues,
+                // attributeCategoryIds: attributeIds,
+                // textAttributes: textAttributes,
+                // description: description,
+                // productVariants: newArr2,
                 retailPrice: dataPrice2,
                 costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
                 listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
@@ -763,7 +759,9 @@ export const EditClassify: FC = (item) => {
                     weight: formatStringToFloat(data.weightOriginal)
                 },
                 productPackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
-                deleteVariantIds: newArr1,
+                // deleteVariantIds: newArr1,
+                hasPrice: true,
+                activated: true,
             }
             console.log('dataCreate===========', JSON.stringify(doneData))
             const result = await productStore?.putClassify(productStore.productId, doneData);
@@ -1631,6 +1629,11 @@ export const EditClassify: FC = (item) => {
                                             }}
                                             value={value}
                                             onBlur={onBlur}
+                                            valueInput={vendorStore.checkSeparator === "DOTS"
+                                                ? formatCurrency(
+                                                    removeNonNumeric(value)
+                                                )
+                                                : addCommas(removeNonNumeric(value))}
                                             showRightIcon={false}
                                             // defaultValue={costPriceProduct?.toString()}
                                             onChangeText={(value) => {
@@ -1673,6 +1676,11 @@ export const EditClassify: FC = (item) => {
                                             }}
                                             value={value}
                                             onBlur={onBlur}
+                                            valueInput={vendorStore.checkSeparator === "DOTS"
+                                                ? formatCurrency(
+                                                    removeNonNumeric(value)
+                                                )
+                                                : addCommas(removeNonNumeric(value))}
                                             // defaultValue={listPriceProduct?.toString()}
                                             showRightIcon={false}
                                             onChangeText={(value) => {
@@ -1734,7 +1742,12 @@ export const EditClassify: FC = (item) => {
                                             ) : wholesalePriceProduct?.length > 0 &&
                                                 wholesalePriceProduct?.length === 1 ? (
                                                 <Text
-                                                    text={wholesalePriceProduct[0]?.price}
+                                                    text={vendorStore.checkSeparator === "DOTS"
+                                                        ? formatCurrency(
+                                                            removeNonNumeric(wholesalePriceProduct[0]?.price)
+                                                        )
+                                                        : addCommas(removeNonNumeric(wholesalePriceProduct[0]?.price))
+                                                    }
                                                     numberOfLines={1}
                                                     style={{
                                                         fontWeight: "500",
