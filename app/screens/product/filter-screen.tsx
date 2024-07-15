@@ -10,6 +10,7 @@ import { Header } from "../../components/header/header";
 import { Text } from "../../components/text/text";
 import { useStores } from "../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
+import { translate } from "../../i18n";
 // import { styles } from "./styles";
 
 export const FilterScreen: FC = (item) => {
@@ -31,8 +32,12 @@ export const FilterScreen: FC = (item) => {
     const data = await productStore.getListTagProduct();
     setData(data.result.data.content);
   };
-  const [selectedNameFilter, setSelectedNameFilter] = useState(productStore.sort[0]);
-  const [selectedTimeFilter, setSelectedTimeFilter] = useState(productStore.sort[1]);
+  const [selectedNameFilter, setSelectedNameFilter] = useState(
+    productStore.sort[0]
+  );
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState(
+    productStore.sort[1]
+  );
   const [selectedTagFilter, setSelectedTagFilter] = useState(0);
   const handleNamePress = (item: any) => {
     if (selectedNameFilter === item) {
@@ -61,8 +66,16 @@ export const FilterScreen: FC = (item) => {
   };
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedNameFilter(activeTab === "product" ? productStore.sort[1] : productStore.sortCategory[1]);
-      setSelectedTimeFilter(activeTab === "product" ? productStore.sort[0] : productStore.sortCategory[0]);
+      setSelectedNameFilter(
+        activeTab === "product"
+          ? productStore.sort[1]
+          : productStore.sortCategory[1]
+      );
+      setSelectedTimeFilter(
+        activeTab === "product"
+          ? productStore.sort[0]
+          : productStore.sortCategory[0]
+      );
       setSelectedTagFilter(productStore.tagId);
     }, [])
   );
@@ -70,17 +83,17 @@ export const FilterScreen: FC = (item) => {
   const handleSort = () => {
     const filterData = getFilterData();
     productStore.setSort(Object.values(filterData));
-    console.log(productStore.sort)
+    console.log(productStore.sort);
     productStore.setTagId(indexItemTag);
-    console.log(productStore.tagId)
+    console.log(productStore.tagId);
     navigation.navigate("productScreen" as never, { reload: false });
-  }
+  };
   const handleSortCategory = () => {
     const filterData = getFilterData();
-    productStore.setSortCategory(Object.values(filterData))
-    console.log(productStore.sortCategory)
+    productStore.setSortCategory(Object.values(filterData));
+    console.log(productStore.sortCategory);
     navigation.navigate("productScreen" as never, { reload: false });
-  }
+  };
   useEffect(() => {
     console.log("first ", indexItemTag);
   }, [indexItemTag]);
@@ -130,12 +143,15 @@ export const FilterScreen: FC = (item) => {
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Bộ lọc`}
+        headerText={translate("productScreen.filter1")}
         style={{ height: scaleHeight(54) }}
       />
       <View style={{ marginHorizontal: scaleWidth(16), flex: 1 }}>
         <View style={{ marginTop: scaleHeight(20) }}>
-          <Text tx="filterScreen.filterTime" style={{ fontSize: fontSize.size14, fontWeight: "500" }} />
+          <Text
+            tx="filterScreen.filterTime"
+            style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+          />
           <View
             style={{
               alignItems: "center",
@@ -174,7 +190,10 @@ export const FilterScreen: FC = (item) => {
         </View>
 
         <View style={{ marginTop: scaleHeight(20) }}>
-          <Text tx="filterScreen.filterName" style={{ fontSize: fontSize.size14, fontWeight: "500" }} />
+          <Text
+            tx="filterScreen.filterName"
+            style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+          />
           <View
             style={{
               alignItems: "center",
@@ -219,7 +238,10 @@ export const FilterScreen: FC = (item) => {
                 marginTop: scaleHeight(20),
                 marginBottom: scaleHeight(12),
               }}>
-              <Text tx="detailScreen.tag" style={{ fontSize: fontSize.size14, fontWeight: "500" }} />
+              <Text
+                tx="detailScreen.tag"
+                style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+              />
               <View style={{ marginTop: scaleWidth(12) }}>
                 <FlatList
                   data={dataTag}
@@ -240,7 +262,9 @@ export const FilterScreen: FC = (item) => {
           marginBottom: scaleWidth(20),
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("productScreen" as never, { reload: false })}
+          onPress={() =>
+            navigation.navigate("productScreen" as never, { reload: false })
+          }
           style={{
             width: scaleWidth(165),
             height: scaleHeight(48),
@@ -253,7 +277,7 @@ export const FilterScreen: FC = (item) => {
           <Text tx="common.cancel" style={{ fontSize: fontSize.size14 }} />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={activeTab === 'product' ? handleSort : handleSortCategory}
+          onPress={activeTab === "product" ? handleSort : handleSortCategory}
           style={{
             width: scaleWidth(150),
             height: scaleHeight(48),
@@ -262,7 +286,10 @@ export const FilterScreen: FC = (item) => {
             borderRadius: 10,
             backgroundColor: "#0078d4",
           }}>
-          <Text tx="common.confirm" style={{ fontSize: fontSize.size14, color: "white" }} />
+          <Text
+            tx="common.confirm"
+            style={{ fontSize: fontSize.size14, color: "white" }}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -274,4 +301,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#Ffffff",
     flex: 1,
   },
-})
+});

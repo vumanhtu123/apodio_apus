@@ -1,13 +1,6 @@
-import {
-  useFocusEffect,
-  useNavigation
-} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { Images } from "../../../assets/index";
 import Dialog from "../../components/dialog/dialog";
 import { Header } from "../../components/header/header";
@@ -19,6 +12,7 @@ import EditDirectoryModal from "./component/modal-editDirectory";
 import { CategoryList } from "./renderList/category-list";
 import { ProductList } from "./renderList/product-list";
 import { styles } from "./styles";
+import { translate } from "../../i18n";
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
   const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
@@ -27,7 +21,8 @@ export const ProductScreen: FC = () => {
   const [indexItem, setIndexItem] = useState(0);
   const [page, setPage] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isRefreshingCategoryFilter, setIsRefreshingCategoryFilter] = useState(false);
+  const [isRefreshingCategoryFilter, setIsRefreshingCategoryFilter] =
+    useState(false);
   const [isRefreshingCategory, setIsRefreshingCategory] = useState(false);
   const [isDirectoryModalVisible, setIsDirectoryModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<any>();
@@ -46,10 +41,10 @@ export const ProductScreen: FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [size, setSize] = useState(20);
   const [pageCategories, setPageCategories] = useState(0);
-  const [nameDirectory, setNameDirectory] = useState('')
+  const [nameDirectory, setNameDirectory] = useState("");
   const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
-  const [index, setIndex] = useState<any>()
-  const [valueSearchCategory, setValueSearchCategory] = useState('');
+  const [index, setIndex] = useState<any>();
+  const [valueSearchCategory, setValueSearchCategory] = useState("");
   useFocusEffect(
     useCallback(() => {
       setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
@@ -118,9 +113,9 @@ export const ProductScreen: FC = () => {
         valueSearchCategory
       );
       if (response && response.kind === "ok") {
-        const data = response.response.data.content
+        const data = response.response.data.content;
         const newElement = { name: "Tất cả danh mục" };
-        data.unshift(newElement)
+        data.unshift(newElement);
         setDataCategoryFilter(data);
       } else {
         console.error("Failed to fetch categories:", response);
@@ -136,11 +131,10 @@ export const ProductScreen: FC = () => {
   };
   const handleSubmitSearch = () => {
     setPage(0);
-    setDataProduct([])
+    setDataProduct([]);
     handleGetProduct(searchValue);
   };
   const handleGetProduct = async (searchValue?: any) => {
-
     var parseSort = "";
     try {
       if (productStore.sort.length > 0) {
@@ -160,9 +154,12 @@ export const ProductScreen: FC = () => {
         parseSort,
         productStore.isLoadMore
       );
-      console.log('first------------------', JSON.stringify(response.response.data.content))
+      console.log(
+        "first------------------",
+        JSON.stringify(response.response.data.content)
+      );
       if (response && response.kind === "ok") {
-        setTotalPagesProduct(response.response.data.totalPages)
+        setTotalPagesProduct(response.response.data.totalPages);
         if (page === 0) {
           setDataProduct(response.response.data.content);
         } else {
@@ -172,7 +169,10 @@ export const ProductScreen: FC = () => {
           ]);
         }
       } else {
-        console.error("Failed to fetch product:", response.response.errorCodes[0].message);
+        console.error(
+          "Failed to fetch product:",
+          response.response.errorCodes[0].message
+        );
       }
     } catch (error) {
       console.error("Error fetching product:", error);
@@ -180,12 +180,12 @@ export const ProductScreen: FC = () => {
   };
   const handlePressViewProduct = (type: any) => {
     viewProductType(type);
-    setPage(0)
+    setPage(0);
   };
   const viewProductType = (type: any) => {
     const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
     setViewProduct(viewType);
-    productStore.setViewProductType(viewType)
+    productStore.setViewProductType(viewType);
   };
   const handleEditCategory = (category: any) => {
     setSelectedEditCategory(category);
@@ -193,8 +193,8 @@ export const ProductScreen: FC = () => {
   };
   const getValueSearchCategoryFilter = (value: any) => {
     // console.log('first------------', value)
-    setValueSearchCategory(value)
-  }
+    setValueSearchCategory(value);
+  };
   const handleDeleteItem = async () => {
     const result = await categoryStore.getDeleteCategories(selectedCategoryId);
     console.log("mmm", selectedCategoryId);
@@ -250,7 +250,7 @@ export const ProductScreen: FC = () => {
       setErrorMessage(result.response.message);
       handleGetCategory();
       setIsDeleteFailModalVisible(true);
-      setIsVisible(false)
+      setIsVisible(false);
     } else {
       console.log(
         "Chỉnh sửa danh mục thất bại",
@@ -269,10 +269,10 @@ export const ProductScreen: FC = () => {
   // }, []);
   useEffect(() => {
     handleGetCategoryFilter();
-  }, [valueSearchCategory])
+  }, [valueSearchCategory]);
   useEffect(() => {
     const fetchData = async () => {
-      setPage(0)
+      setPage(0);
       setDataProduct([]);
       await handleGetProduct(searchValue);
     };
@@ -288,17 +288,21 @@ export const ProductScreen: FC = () => {
     setActiveTab(tab);
   };
   const handleEndReached = () => {
-    console.log('--------totalPagesProduct---------------', totalPagesProduct, '----', isRefreshing, '-----', page)
+    console.log(
+      "--------totalPagesProduct---------------",
+      totalPagesProduct,
+      "----",
+      isRefreshing,
+      "-----",
+      page
+    );
     if (!isRefreshing && page <= totalPagesProduct - 1) {
-      productStore.setIsLoadMore(true)
+      productStore.setIsLoadMore(true);
       setPage((prevPage) => prevPage + 1);
     }
   };
   const handleEndReachedCategory = () => {
-    if (
-      !isRefreshingCategory &&
-      pageCategories <= totalPages - 1
-    ) {
+    if (!isRefreshingCategory && pageCategories <= totalPages - 1) {
       setPageCategories((prevPage) => prevPage + 1);
     }
   };
@@ -307,15 +311,15 @@ export const ProductScreen: FC = () => {
   };
   useEffect(() => {
     if (index == 0) {
-      refreshProduct()
+      refreshProduct();
     }
-  }, [index])
+  }, [index]);
   const refreshProduct = async () => {
     setIsRefreshing(true);
     setSelectedCategory(undefined);
     setPage(0);
     setSearchValue("");
-    setOpenSearch(false)
+    setOpenSearch(false);
     setNameDirectory("");
     setDataProduct([]);
     await handleGetProduct();
@@ -327,7 +331,7 @@ export const ProductScreen: FC = () => {
     setIsRefreshingCategory(true);
     setPageCategories(0);
     setSearchCategory("");
-    setOpenSearch(false)
+    setOpenSearch(false);
     setDataCategory([]);
     productStore.setSortCategory([]);
     handleGetCategory();
@@ -336,7 +340,7 @@ export const ProductScreen: FC = () => {
   const refreshCategoryFilter = async () => {
     setIsRefreshingCategory(true);
     // setPageCategories(0);
-    setValueSearchCategory('');
+    setValueSearchCategory("");
     // setOpenSearch(false)
     setDataCategoryFilter([]);
     // productStore.setSortCategory([]);
@@ -378,7 +382,7 @@ export const ProductScreen: FC = () => {
     if (flatListRef.current) {
       flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
     }
-  }, [viewProduct])
+  }, [viewProduct]);
   return (
     <View style={styles.ROOT}>
       <Header
@@ -386,8 +390,14 @@ export const ProductScreen: FC = () => {
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Sản phẩm`}
-        RightIcon2={activeTab === "product" ? isGridView ? Images.ic_squareFour : Images.ic_grid : null}
+        headerText={translate("productScreen.productTittle")}
+        RightIcon2={
+          activeTab === "product"
+            ? isGridView
+              ? Images.ic_squareFour
+              : Images.ic_grid
+            : null
+        }
         onRightPress={handleOpenSearch}
         onRightPress2={toggleView}
         RightIcon={openSearch ? Images.icon_close : Images.search}
@@ -403,7 +413,6 @@ export const ProductScreen: FC = () => {
             ? handleSubmitSearch
             : handleSubmitSearchCategory
         }
-
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
       />
@@ -414,7 +423,7 @@ export const ProductScreen: FC = () => {
           <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>02466989909</Text>
         </View>
       </View> */}
-      <View style={{ flex: 1, backgroundColor: '#f6f7f9' }}>
+      <View style={{ flex: 1, backgroundColor: "#f6f7f9" }}>
         <View style={styles.btnTab}>
           <View style={styles.rowBtnTab}>
             {btnTab.map((item, index) => {
@@ -427,7 +436,7 @@ export const ProductScreen: FC = () => {
                   style={[
                     styles.buttonProduct,
                     activeTab === (index === 0 ? "product" : "category") &&
-                    styles.activeButton,
+                      styles.activeButton,
                   ]}>
                   <View
                     style={{ width: scaleWidth(114), height: scaleHeight(20) }}>
@@ -435,7 +444,7 @@ export const ProductScreen: FC = () => {
                       style={[
                         styles.buttonText,
                         activeTab === (index === 0 ? "product" : "category") &&
-                        styles.activeButtonText,
+                          styles.activeButtonText,
                       ]}>
                       {item}
                     </Text>
@@ -475,7 +484,6 @@ export const ProductScreen: FC = () => {
             isLoadingMore={false}
             renderFooter={renderFooter}
             searchCategory={getValueSearchCategoryFilter}
-
           />
         ) : (
           <CategoryList
@@ -491,7 +499,6 @@ export const ProductScreen: FC = () => {
             isDeleteModalVisible={isDeleteModalVisible}
             setIsDeleteModalVisible={setIsDeleteModalVisible}
             handleDeleteItem={handleDeleteItem}
-
           />
         )}
       </View>
