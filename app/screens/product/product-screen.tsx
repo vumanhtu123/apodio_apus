@@ -39,6 +39,7 @@ export const ProductScreen: FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<any>();
   const [totalPages, setTotalPages] = useState<any>(0);
   const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
+  const [totalElementsProduct, setTotalElementsProduct] = useState<any>(0);
   const [dataCategory, setDataCategory] = useState<any>([]);
   const [dataCategoryFilter, setDataCategoryFilter] = useState<any>([]);
   const [dataProduct, setDataProduct] = useState<any>([]);
@@ -163,6 +164,7 @@ export const ProductScreen: FC = () => {
       console.log('first------------------', JSON.stringify(response.response.data.content))
       if (response && response.kind === "ok") {
         setTotalPagesProduct(response.response.data.totalPages)
+        setTotalElementsProduct(response.response.data.totalElements)
         if (page === 0) {
           setDataProduct(response.response.data.content);
         } else {
@@ -445,6 +447,7 @@ export const ProductScreen: FC = () => {
             })}
           </View>
         </View>
+
         {activeTab === "product" ? (
           <ProductList
             navigation={navigation}
@@ -475,7 +478,9 @@ export const ProductScreen: FC = () => {
             isLoadingMore={false}
             renderFooter={renderFooter}
             searchCategory={getValueSearchCategoryFilter}
-
+            totalElements={totalElementsProduct}
+            page={page}
+            size={size}
           />
         ) : (
           <CategoryList

@@ -22,7 +22,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
             : (!item.hasVariant && viewProduct !== 'VIEW_PRODUCT')
               ? handleProductDetail(item.productTemplateId, item.hasVariant)
               : handleClassifyDetail(item.id, item.hasVariant);
-          
+
           // console.log('cxzzc', item.productTemplateId)
         }}
         style={[
@@ -67,9 +67,10 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
                   borderTopLeftRadius: 12,
                   borderTopRightRadius: 12,
                 }}
+                resizeMode={FastImage.resizeMode.cover}
                 source={{
                   uri: item.imageUrls && item.imageUrls.length > 0 ? `${item.imageUrls[0]}` : '',
-                  cache: FastImage.cacheControl.immutable,
+                  // cache: FastImage.cacheControl.immutable,
                 }}
                 defaultSource={require("../../../../assets/Images/no_images.png")}
               />

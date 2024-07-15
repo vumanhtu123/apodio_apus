@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Images } from '../../../../assets';
 import { Button, Text } from '../../../components';
-import { scaleHeight, scaleWidth } from '../../../theme';
+import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { styles } from '../styles';
 import CategoryModalFilter from '../component/modal-category';
 import RenderProductItem from './renderItemProduct';
@@ -37,7 +37,10 @@ interface ProductListProps {
     searchCategory?: any;
     isRefreshingCategory?: boolean;
     refreshCategory?: () => void;
-    hasVariant?: any
+    hasVariant?: any;
+    totalElements?: any
+    page?: any
+    size?: any
 }
 
 export const ProductList: React.FC<ProductListProps> = ({
@@ -70,6 +73,9 @@ export const ProductList: React.FC<ProductListProps> = ({
     searchCategory,
     isRefreshingCategory,
     refreshCategory,
+    totalElements,
+    page,
+    size
 }) => {
     const Loading = () => (
         <View style={{
@@ -166,6 +172,9 @@ export const ProductList: React.FC<ProductListProps> = ({
                 isRefreshing={isRefreshingCategory}
                 onRefresh={refreshCategory}
             />
+            <View style={{ alignItems: 'flex-end', paddingHorizontal: scaleWidth(16) }}>
+                <Text style={{ fontSize: fontSize.size12 }}>Tổng số sản phẩm: {size * (page + 1)}/{totalElements}</Text>
+            </View>
             <View style={styles.containerProduct}>
                 <FlatList
                     data={dataProduct}

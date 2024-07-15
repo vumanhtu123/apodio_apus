@@ -59,6 +59,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import Modal from "react-native-modal/dist/modal";
 import ImagesGroup from "./component/imageGroup";
 import ItemWeight from "./component/weight-component";
+import AutoHeightImage from "react-native-auto-height-image";
 
 export const EditClassify: FC = (item) => {
     const route = useRoute();
@@ -117,6 +118,8 @@ export const EditClassify: FC = (item) => {
     const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
     const [hasVariantInConfig, setVariantInConfig] = useState(false);
     const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
+    const [showNCC, setShowNCC] = useState(false);
+    const [arrNCC, setArrNCC] = useState([]);
     const {
         control,
         formState: { errors },
@@ -178,7 +181,7 @@ export const EditClassify: FC = (item) => {
         };
         setUomGroupId(dataModified);
     }, [nameUnitGroup]);
-    const [showDetails, setShowDetails] = useState(false);
+    const [showDetails, setShowDetails] = useState(true);
     const toggleDetails = () => {
         setShowDetails(!showDetails);
         // getNameAndValue();
@@ -328,7 +331,7 @@ export const EditClassify: FC = (item) => {
                     weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                     unit: {
                         ...item.uomGroupLineOutput,
-                        label: item.uomGroupLineOutput.unitName
+                        label: item.uomGroupLineOutput?.unitName
                     }
                 }
             }) : []) : (dataEdit?.templatePackingLines !== null ? dataEdit?.templatePackingLines?.map((item: any) => {
@@ -336,7 +339,7 @@ export const EditClassify: FC = (item) => {
                     weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                     unit: {
                         ...item.uomGroupLineOutput,
-                        label: item.uomGroupLineOutput.unitName
+                        label: item.uomGroupLineOutput?.unitName
                     }
                 }
             }) : []))
@@ -378,7 +381,7 @@ export const EditClassify: FC = (item) => {
                                 return {
                                     unit: {
                                         ...newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0],
-                                        label: newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0].unitName
+                                        label: newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0]?.unitName
                                     },
                                     weight1: formatCurrency(commasToDots(item.weight)),
                                     volume: formatCurrency(commasToDots(item.volume)),
@@ -412,7 +415,11 @@ export const EditClassify: FC = (item) => {
                 const a = newDataEdit?.vendors?.map((item: { vendorId: any }) => {
                     return item.vendorId;
                 });
+                const b = newDataEdit?.vendors?.map((item: { vendorId: any }) => {
+                    return item;
+                });
                 setVendor(a);
+                setArrNCC(b)
                 setValuePurchase(true);
             }
             const nameCreateProduct = newDataEdit?.productVariants?.map(
@@ -1773,36 +1780,98 @@ export const EditClassify: FC = (item) => {
                                     style={{
                                         fontSize: fontSize.size14,
                                         fontWeight: "700",
-                                        marginBottom: scaleHeight(15),
+                                        // marginBottom: scaleHeight(15),
                                     }} />
                                 <TouchableOpacity
-                                    // onPress={() => goToChooseSupplierScreen()}
+                                    onPress={() => setShowNCC(!showNCC)}
                                     style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        justifyContent: "space-between",
+
                                     }}>
                                     {vendor?.length > 0 ? (
-                                        <Text
+                                        <View
                                             style={{
-                                                fontSize: fontSize.size13,
-                                                fontWeight: "400",
-                                                color: "#242424",
+                                                paddingTop: scaleHeight(10),
+                                                // paddingHorizontal: scaleWidth(16),
+                                                // flexDirection: "row",
+                                                // justifyContent: 'space-between'
                                             }}>
-                                            {vendor.length} nhà cung cấp
-                                        </Text>
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                    marginBottom:
+                                                        showNCC === true ? scaleHeight(margin.margin_10) : 0,
+                                                }}>
+                                                <Text
+                                                    style={[
+                                                        styles.textDolphin12,
+                                                        {
+                                                            flex: 1,
+                                                        },
+                                                    ]}>
+                                                    {vendor.length + " nhà cung cấp"}
+                                                </Text>
+
+                                                <Images.dropDown
+                                                    width={scaleWidth(16)}
+                                                    height={scaleHeight(16)}
+                                                    style={{
+                                                        transform: [{ rotate: showNCC ? "180deg" : "0deg" }],
+                                                    }}
+                                                />
+                                            </View>
+                                            {showNCC === true
+                                                ? arrNCC.map((item: any) => {
+                                                    return (
+                                                        <View>
+                                                            <View
+                                                                style={{
+                                                                    flexDirection: "row",
+                                                                    paddingVertical: scaleHeight(padding.padding_8),
+                                                                }}>
+                                                                <AutoHeightImage
+                                                                    source={{ uri: item.imgUrl }}
+                                                                    width={scaleHeight(40)}
+                                                                    height={scaleHeight(40)}
+                                                                    style={{ borderRadius: 40 }}
+                                                                    fallbackSource={Images.imageError}
+                                                                />
+                                                                <View
+                                                                    style={{
+                                                                        marginLeft: scaleWidth(6),
+                                                                        justifyContent: "center",
+                                                                    }}>
+                                                                    <Text style={styles.textNameNCC}>
+                                                                        {item.vendorCode + "- " + item.vendorName}
+                                                                    </Text>
+                                                                    <Text style={styles.textNameClassification}>
+                                                                        {item.phoneNumber}
+                                                                    </Text>
+                                                                </View>
+                                                            </View>
+                                                            <View
+                                                                style={{
+                                                                    height: scaleHeight(1),
+                                                                    backgroundColor: colors.palette.ghostWhite,
+                                                                }}
+                                                            />
+                                                        </View>
+                                                    );
+                                                })
+                                                : null}
+                                        </View>
                                     ) : (
                                         <Text tx={"createProductScreen.noSelectSupplier"}
                                             style={{
                                                 fontSize: fontSize.size13,
                                                 fontWeight: "400",
                                                 color: colors.palette.dolphin,
+                                                marginTop: scaleHeight(10)
                                             }} />
                                     )}
-                                    <Images.icon_caretRight
+                                    {/* <Images.icon_caretRight
                                         width={scaleWidth(16)}
                                         height={scaleHeight(16)}
-                                    />
+                                    /> */}
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -2554,7 +2623,7 @@ export const EditClassify: FC = (item) => {
                         </View>
                     ) : null} */}
                     {/* <View style={styles.viewLine2} /> */}
-                    {nameValue || attributes ? (
+                    {nameValue.length > 0 || attributes.length > 0 ? (
                         <View style={{ backgroundColor: 'white', marginTop: scaleHeight(16) }}>
                             <View >
                                 <TouchableOpacity
@@ -2899,5 +2968,29 @@ const styles = StyleSheet.create({
     viewLine2: {
         borderWidth: scaleHeight(0.5),
         borderColor: colors.palette.ghostWhite,
+    },
+    textTitle: {
+        fontWeight: "700",
+        fontSize: fontSize.size12,
+        lineHeight: scaleHeight(14.52),
+        color: colors.palette.neutral900,
+        marginBottom: scaleHeight(margin.margin_12),
+    },
+    textNameNCC: {
+        marginBottom: scaleHeight(2),
+        fontWeight: "500",
+        fontSize: fontSize.size10,
+        color: colors.palette.nero,
+    },
+    textDolphin12: {
+        fontWeight: "400",
+        fontSize: fontSize.size12,
+        color: colors.palette.dolphin,
+    },
+    textNameClassification: {
+        fontWeight: "400",
+        fontSize: fontSize.size10,
+        lineHeight: scaleHeight(12.1),
+        color: colors.palette.dolphin,
     },
 });
