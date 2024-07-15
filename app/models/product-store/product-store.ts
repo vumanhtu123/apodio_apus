@@ -167,6 +167,23 @@ export const ProductStoreModel = types
         return result;
       }
     }),
+
+    putClassify: flow(function* (id: number, productAdd: typeof productData) {
+      console.log(
+        "tuvm product--------------------------",
+        JSON.stringify(productAdd)
+      );
+      const product = new ProductApi(self.environment.api);
+      const result = yield product.editClassify(id, productAdd);
+      if (result.kind === "ok") {
+        console.log("post-product-Success : ", result);
+        return result;
+      } else {
+        console.log("post-product-Failed : ", result.result.errorCodes);
+        return result;
+      }
+    }),
+
     deleteProduct: flow(function* (id: Number) {
       const product = new ProductApi(self.environment.api);
       const result = yield product.deleteProduct(id);
@@ -180,6 +197,21 @@ export const ProductStoreModel = types
         return result;
       }
     }),
+
+    deleteClassify: flow(function* (id: Number) {
+      const product = new ProductApi(self.environment.api);
+      const result = yield product.deleteClassify(id);
+
+      console.log("tuvm product----------------", result);
+      if (result.kind === "ok") {
+        console.log("post-product-Success : ", result);
+        return result;
+      } else {
+        console.log("post-product-Failed : ", result.message);
+        return result;
+      }
+    }),
+
     deleteCheck: flow(function* (id: Number) {
       const product = new ProductApi(self.environment.api);
       const result = yield product.deleteCheck(id);

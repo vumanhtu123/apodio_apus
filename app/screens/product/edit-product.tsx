@@ -145,9 +145,11 @@ export const ProductEditScreen: FC = (item) => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (dataEdit !== undefined) {
         if(dataEdit.hasVariantInConfig == false){
-          setAddVariant(true)
           setDataGroupAttribute(dataEdit.attributeCategory);
           setVariantInConfig(dataEdit.hasVariantInConfig);
+          if(dataEdit.attributeCategory.length > 0){
+            setAddVariant(true)
+          }
         }
       }
     });
@@ -302,7 +304,7 @@ export const ProductEditScreen: FC = (item) => {
       // setCostPriceProduct(dataEdit?.costPrice);
       // setListPriceProduct(dataEdit?.listPrice);
       // setSku(dataEdit?.sku);
-      if(newDataEdit?.baseTemplatePackingLine !== null){
+      if(newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null){
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -316,7 +318,7 @@ export const ProductEditScreen: FC = (item) => {
           weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
           unit: {
             ...item.uomGroupLineOutput,
-            label: item.uomGroupLineOutput.unitName
+            label: item.uomGroupLineOutput?.unitName
           }
         }
       }))
@@ -358,7 +360,7 @@ export const ProductEditScreen: FC = (item) => {
                 return {
                   unit: {
                     ...newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0],
-                    label: newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0].unitName
+                    label: newDataEdit?.uomGroup?.uomGroupLines.filter((item1: any) => item1.id === item?.uomGroupLineId)[0]?.unitName
                   },
                   weight1: formatCurrency(commasToDots(item.weight)),
                   volume: formatCurrency(commasToDots(item.volume)),
@@ -657,6 +659,24 @@ export const ProductEditScreen: FC = (item) => {
       });
       hasError = true
     }
+    if (addWeight == true) {
+      const unit = data.weight.flatMap((items: any) => items.unit)
+      const weight1 = data.weight.flatMap((items: any) => items.weight1)
+      const volume = data.weight.flatMap((items: any) => items.volume)
+      const checkUnit = unit.some((item: any) => Object.keys(item).length === 0)
+      const checkWeight1 = weight1.some((item: any) => item?.trim() === "")
+      const checkVolume = volume.some((item: any) => item?.trim() === "")
+      if (checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "") {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "",
+          textBody: translate("txtToats.input_weight"),
+        });
+        hasError = true
+      } else {
+        hasError = false
+      }
+    }
     if (hasError == true) {
     } else {
       const newArr1: never[] = [];
@@ -751,7 +771,8 @@ export const ProductEditScreen: FC = (item) => {
           weight: formatStringToFloat(item.weight1),
         }
       })
-      console.log('3')
+      console.log('--------newArr2-------', JSON.stringify(newArr2))
+      console.log('--------hasVariantInConfig-------', hasVariantInConfig)
       const doneData = {
         sku: data.SKU === "" ? null: data.SKU,
         name: data.productName,
@@ -772,7 +793,7 @@ export const ProductEditScreen: FC = (item) => {
         attributeCategoryIds: attributeIds,
         textAttributes: textAttributes,
         description: description,
-        productVariants: newArr2,
+        productVariants: hasVariantInConfig === false ? [] : newArr2,
         retailPrice: dataPrice2,
         costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
         listPrice: Number(formatNumberByString(methods.watch('listPrice'))),

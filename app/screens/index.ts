@@ -52,6 +52,7 @@ export * from "./product/newAttribute";
 export * from "./product/successScreen";
 export * from "./product/edit-product";
 export * from "./product/editWeight";
+export * from "./product/editClassify";
 export * from "./product/classify-detail-screen";
 export * from "./debugger/debugger_test";
 

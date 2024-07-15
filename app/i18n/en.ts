@@ -40,6 +40,7 @@ const en = {
     change_district: "Vui lòng chọn Quận/Huyện",
     change_payment: "Vui lòng chọn phuơng thức thanh toán trước",
     change_weight: "Vui lòng nhập đủ thông tin trước khi thêm dòng",
+    input_weight: "Vui lòng nhập đủ thông tin tải trọng",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -695,6 +696,7 @@ const en = {
     weightExchange: "Tải trọng theo đơn vị quy đổi",
     editWeight: "Chỉnh sửa tải trọng",
     resetDefault: "Reset về mặc định",
+    reset: "Đặt lại",
     conversionRate: "Ty le quy doi",
     enterConversionCode: "nhap ma quy doi",
     enterRatio: "nhap ty le",
@@ -750,6 +752,7 @@ const en = {
     infoMore: "Thông tin thêm",
     manageMultipleProduct: "Quản lý nhiều đơn vị tính của sản phẩm",
     createUnits: "Tạo đơn vị tính",
+    unit: "Đơn vị tính",
     originalUnit: "Đơn vị gốc",
     conversion: "Đơn vị quy đổi",
     conversionRate: "Tỷ lệ quy đổi",
@@ -758,6 +761,7 @@ const en = {
     productClassification: "Phân loại sản phẩm",
     volume: "Thể tích",
     select_unit: "Chọn đơn vị",
+    editClassify: "Chỉnh sửa phân loại",
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",

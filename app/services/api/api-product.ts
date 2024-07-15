@@ -20,7 +20,7 @@ export class ProductApi {
       text: 'Loading...',
     });
     try {
-      
+
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_PRODUCT,
         {
@@ -48,12 +48,13 @@ export class ProductApi {
     search: string,
     tagId: number,
     sort: string,
-    isLoadMore : boolean
+    isLoadMore: boolean
   ): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
+      console.log("dataa :", page);
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_LIST_PRODUCT + sort,
         {
@@ -66,7 +67,6 @@ export class ProductApi {
         }
       );
       const data = response.data;
-      console.log("dataa :", page);
       Loading.hide();
       if (response.data.data) {
         return { kind: "ok", response: data };
@@ -155,12 +155,12 @@ export class ProductApi {
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         ApiEndpoint.PUT_MOVE_CATEGORY +
-          "?" +
-          "fromId=" +
-          fromId +
-          "&" +
-          "toId=" +
-          toId
+        "?" +
+        "fromId=" +
+        fromId +
+        "&" +
+        "toId=" +
+        toId
       );
       Loading.hide();
       const result = response.data;
@@ -240,6 +240,30 @@ export class ProductApi {
       return { kind: "bad-data", result: error };
     }
   }
+
+  async editClassify(id: any, product: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+    });
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.put(
+        ApiEndpoint.EDIT_CLASSIFY + "?id=" + id,
+        product
+      );
+      Loading.hide();
+      console.log('-------editClassify------', response.data)
+      const result = response.data;
+      if (response.data.data) {
+        return { kind: "ok", result };
+      } else {
+        return { kind: "bad-data", result };
+      }
+    } catch (error) {
+      Loading.hide();
+      return { kind: "bad-data", result: error };
+    }
+  }
+
   async deleteProduct(id: any): Promise<any> {
     Loading.show({
       text: 'Loading...',
@@ -258,19 +282,45 @@ export class ProductApi {
       } else {
         return { kind: "ok", result };
       }
-      
+
     } catch (error) {
       Loading.hide();
       return { kind: "bad-data", result: error };
     }
   }
+
+  async deleteClassify(id: any): Promise<any> {
+    Loading.show({
+      text: 'Loading...',
+      onShow: () => console.log('Loading shown'),
+      onHide: () => console.log('Loading hidden'),
+    });
+    try {
+      const response: ApiResponse<any> = await this.api.apisauce.delete(
+        ApiEndpoint.DELETE_CLASSIFY + "?id=" + id
+      );
+      Loading.hide();
+      console.log('----------delete', response)
+      const result = response.data;
+      if (response.data.errorCodes) {
+        return { kind: "bad-data", result };
+      } else {
+        return { kind: "ok", result };
+      }
+
+    } catch (error) {
+      Loading.hide();
+      return { kind: "bad-data", result: error };
+    }
+  }
+
   async deleteCheck(id: any): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.DELETE_CHECK + '?productId=' +id,
+        ApiEndpoint.DELETE_CHECK + '?productId=' + id,
       );
       Loading.hide();
       const result = response.data;
@@ -290,7 +340,7 @@ export class ProductApi {
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.USING_PRODUCT_CHECK + '?id=' +id,
+        ApiEndpoint.USING_PRODUCT_CHECK + '?id=' + id,
       );
       Loading.hide();
       const result = response.data;
@@ -339,7 +389,7 @@ export class ProductApi {
       return { kind: "bad-data" };
     }
   }
-  
+
   async getPriceOrderVariant(
     value: any,
   ): Promise<any> {
@@ -348,7 +398,7 @@ export class ProductApi {
     // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
-        ApiEndpoint.POST_PRICE_VARIANT ,
+        ApiEndpoint.POST_PRICE_VARIANT,
         value
       );
       console.log("-----------------respone", response);
