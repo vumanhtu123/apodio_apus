@@ -250,7 +250,10 @@ const PriceModal = (props: PriceModalProps) => {
             }}
             style={stylesModalPrice.buttonAdd}>
             <Images.icon_add />
-            <Text text="Thêm khoảng giá" style={stylesModalPrice.textAdd} />
+            <Text
+              tx="productScreen.addPriceRange"
+              style={stylesModalPrice.textAdd}
+            />
           </Button>
           <View style={stylesModalPrice.viewCancel}>
             <Button

@@ -269,7 +269,9 @@ const EditDirectoryModal = (props: any) => {
           <View style={styles.modalView}>
             <TextRN style={styles.modalText} />
             <View style={styles.header}>
-              <Text style={styles.headerTitle}>Chỉnh sửa danh mục</Text>
+              <Text
+                tx="productScreen.refactorCategories"
+                style={styles.headerTitle}></Text>
             </View>
             <View style={styles.horizontalLine} />
 

@@ -16,6 +16,7 @@ import { Text } from "../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { styles, stylesItem } from "./styles";
 import { products } from "./data";
+import { translate } from "../../i18n";
 
 export const ArrangeProduct: FC = () => {
   const navigation = useNavigation();
@@ -282,7 +283,7 @@ export const ArrangeProduct: FC = () => {
               color: "#747475",
               fontSize: fontSize.size12,
             }}>
-            Chọn sản phẩm đưa lên đầu
+            {translate("productScreen.selectProductFirst")}
           </Text>
         </View>
         <View style={{ flex: 0.95, marginHorizontal: 16 }}>

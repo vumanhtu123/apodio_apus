@@ -266,7 +266,7 @@ const ItemOriginal = (item: ItemOriginal) => {
           ? item.checkList === false
             ? item.data?.label
             : item.data?.name
-          : "Đơn vị gốc"}
+          : translate("productDetail.originUnit")}
       </Text>
       <View style={{ marginLeft: scaleWidth(10) }}>
         <Controller

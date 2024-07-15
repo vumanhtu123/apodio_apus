@@ -12,10 +12,7 @@ import {
 } from "react-native";
 import { Button, Header, Switch, Text } from "../../components";
 import { Images } from "../../../assets";
-import {
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
   fontSize,
@@ -29,13 +26,22 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Modal from "react-native-modal";
 import { useStores } from "../../models";
 import { translate } from "../../i18n/translate";
-import { ALERT_TYPE, Dialog, Toast } from "../../components/dialog-notification";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+} from "../../components/dialog-notification";
 
 export const EditAttribute: FC = observer(function EditAttribute(props) {
   const navigation = useNavigation();
   const paddingTop = useSafeAreaInsets().top;
   const route = useRoute();
-  const { dataAttribute, dropdownSelected, editScreen, hasVariantInConfig }: any = route?.params;
+  const {
+    dataAttribute,
+    dropdownSelected,
+    editScreen,
+    hasVariantInConfig,
+  }: any = route?.params;
 
   const [attributeData, setAttributeData] = useState<{}[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<{}[]>([]);
@@ -55,18 +61,17 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
   const { attributeStore } = useStores();
   const [valueSwitch, setValueSwitch] = useState(true);
 
-
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (hasVariantInConfig !== undefined) {
-        console.log("---N--1------hasVariantInConfig", hasVariantInConfig)
+        console.log("---N--1------hasVariantInConfig", hasVariantInConfig);
         setValueSwitch(hasVariantInConfig);
       }
     });
     return unsubscribe;
   }, [hasVariantInConfig]);
 
-  console.log("---N--------hasVariantInConfig", hasVariantInConfig)
+  console.log("---N--------hasVariantInConfig", hasVariantInConfig);
 
   const getListAttribute = async () => {
     try {
@@ -254,7 +259,7 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
     setIdAttributeCategory(onlyInNew);
     setLoadNew(false);
   };
-  const handleRemove = () => { };
+  const handleRemove = () => {};
 
   const onPressCaret = (item: any, id: any, idGroup: any) => {
     const a = selectedItems.filter((item) => item.productAttributeId === id);
@@ -284,10 +289,9 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
     if (selectedItems.length === 0) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.please_select_attribute'),
-
-      })
+        title: "",
+        textBody: translate("txtToats.please_select_attribute"),
+      });
     } else {
       const newArr = selectedGroup.map((items) => {
         const a = items.attributeOutputList?.map((item) => {
@@ -304,10 +308,9 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
       if (newArr3 === true) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.please_select_attribute'),
-
-        })
+          title: "",
+          textBody: translate("txtToats.please_select_attribute"),
+        });
       } else {
         Dialog.show({
           type: ALERT_TYPE.INFO,
@@ -329,18 +332,43 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
               const newArr3 = newArr2.flat();
               if (!valueSwitch) {
                 // Tạo một tập hợp các cặp id và productAttributeId trong mảng con để dễ dàng kiểm tra
-                let childSet = new Set(selectedItems.map(item => `${item.id}-${item.productAttributeId}`));
+                let childSet = new Set(
+                  selectedItems.map(
+                    (item) => `${item.id}-${item.productAttributeId}`
+                  )
+                );
                 // Duyệt qua từng mục trong mảng cha và xóa các mục không có trong mảng con
                 const newArrSelectedGroup = selectedGroup.slice();
-                newArrSelectedGroup.forEach(parent => {
-                  parent.attributeOutputList.forEach(attributeOutput => {
-                    attributeOutput.productAttributeValue = attributeOutput.productAttributeValue.filter(attributeValue => childSet.has(`${attributeValue.id}-${attributeValue.productAttributeId}`));
+                newArrSelectedGroup.forEach((parent) => {
+                  parent.attributeOutputList.forEach((attributeOutput) => {
+                    attributeOutput.productAttributeValue =
+                      attributeOutput.productAttributeValue.filter(
+                        (attributeValue) =>
+                          childSet.has(
+                            `${attributeValue.id}-${attributeValue.productAttributeId}`
+                          )
+                      );
                   });
                 });
-                console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
-                navigation.navigate("ProductEditScreen" as never, { check: true, attributeArr: selectedItems, dropdownSelected: newArr3, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch });
+                console.log(
+                  "-N--------selectedGroup111-----",
+                  JSON.stringify(newArrSelectedGroup)
+                );
+                navigation.navigate("ProductEditScreen" as never, {
+                  check: true,
+                  attributeArr: selectedItems,
+                  dropdownSelected: newArr3,
+                  selectedGroupAttribute: newArrSelectedGroup,
+                  isVariantInConfig: valueSwitch,
+                });
               } else {
-                navigation.navigate("ProductEditScreen" as never, { check: true, attributeArr: selectedItems, dropdownSelected: newArr3, selectedGroupAttribute: [],  isVariantInConfig: valueSwitch});
+                navigation.navigate("ProductEditScreen" as never, {
+                  check: true,
+                  attributeArr: selectedItems,
+                  dropdownSelected: newArr3,
+                  selectedGroupAttribute: [],
+                  isVariantInConfig: valueSwitch,
+                });
               }
               Dialog.hide();
             } else {
@@ -355,24 +383,50 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
               const newArr3 = newArr2.flat();
               if (!valueSwitch) {
                 // Tạo một tập hợp các cặp id và productAttributeId trong mảng con để dễ dàng kiểm tra
-                let childSet = new Set(selectedItems.map(item => `${item.id}-${item.productAttributeId}`));
+                let childSet = new Set(
+                  selectedItems.map(
+                    (item) => `${item.id}-${item.productAttributeId}`
+                  )
+                );
                 // Duyệt qua từng mục trong mảng cha và xóa các mục không có trong mảng con
                 const newArrSelectedGroup = selectedGroup.slice();
-                newArrSelectedGroup.forEach(parent => {
-                  parent.attributeOutputList.forEach(attributeOutput => {
-                    attributeOutput.productAttributeValue = attributeOutput.productAttributeValue.filter(attributeValue => childSet.has(`${attributeValue.id}-${attributeValue.productAttributeId}`));
+                newArrSelectedGroup.forEach((parent) => {
+                  parent.attributeOutputList.forEach((attributeOutput) => {
+                    attributeOutput.productAttributeValue =
+                      attributeOutput.productAttributeValue.filter(
+                        (attributeValue) =>
+                          childSet.has(
+                            `${attributeValue.id}-${attributeValue.productAttributeId}`
+                          )
+                      );
                   });
                 });
-                console.log('-N--------selectedGroup111-----', JSON.stringify(newArrSelectedGroup))
-                navigation.navigate("ProductCreateScreen" as never, { check: true, attributeArr: selectedItems, dropdownSelected: newArr3, resetData: false, selectedGroupAttribute: newArrSelectedGroup, isVariantInConfig: valueSwitch });
+                console.log(
+                  "-N--------selectedGroup111-----",
+                  JSON.stringify(newArrSelectedGroup)
+                );
+                navigation.navigate("ProductCreateScreen" as never, {
+                  check: true,
+                  attributeArr: selectedItems,
+                  dropdownSelected: newArr3,
+                  resetData: false,
+                  selectedGroupAttribute: newArrSelectedGroup,
+                  isVariantInConfig: valueSwitch,
+                });
               } else {
-                navigation.navigate("ProductCreateScreen" as never, { check: true, attributeArr: selectedItems, dropdownSelected: newArr3, resetData: false, selectedGroupAttribute: [], isVariantInConfig: valueSwitch});
+                navigation.navigate("ProductCreateScreen" as never, {
+                  check: true,
+                  attributeArr: selectedItems,
+                  dropdownSelected: newArr3,
+                  resetData: false,
+                  selectedGroupAttribute: [],
+                  isVariantInConfig: valueSwitch,
+                });
               }
               Dialog.hide();
             }
-
-          }
-        })
+          },
+        });
       }
     }
   };
@@ -389,10 +443,10 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
         button2: translate("common.ok"),
         closeOnOverlayTap: false,
         onPressButton: () => {
-          navigation.goBack()
+          navigation.goBack();
           Dialog.hide();
-        }
-      })
+        },
+      });
     }
   };
 
@@ -449,7 +503,7 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
       <Header
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
-        headerText="Sửa thuộc tính"
+        headerText={translate("productScreen.updateAttribute")}
         style={{ height: scaleHeight(52) }}
       />
       <View
@@ -462,8 +516,8 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
           arrData={attributeData}
           onPressChoice={handleSelect}
           onRemove={handleRemove}
-          titleText="Nhóm thuộc tính"
-          hintText="Chọn nhóm thuộc tính"
+          titleText={translate("addAttribute.title")}
+          hintText={translate("addAttribute.hint")}
           dataEdit={dataEditDropdown}
           loadMore={() => setPage(page + 1)}
         />
@@ -613,7 +667,9 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
                                               ? scaleHeight(4)
                                               : 0,
                                         }}
-                                        placeholder="Nhập giá trị"
+                                        placeholder={translate(
+                                          "productScreen.enterValue"
+                                        )}
                                         placeholderTextColor={
                                           colors.palette.dolphin
                                         }
@@ -657,7 +713,9 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
                                   paddingVertical:
                                     Platform.OS === "ios" ? scaleHeight(4) : 0,
                                 }}
-                                placeholder="Nhập giá trị"
+                                placeholder={translate(
+                                  "productScreen.enterValue"
+                                )}
                                 placeholderTextColor={colors.palette.dolphin}
                                 onChangeText={(text) => {
                                   const newItem = {
@@ -700,7 +758,6 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
               tx={"addAttribute.allowsCreatingAttribute"}
               style={styles.textWeight400Dolphin}
             />
-
           </View>
         </ScrollView>
       </View>
@@ -871,6 +928,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     marginLeft: scaleWidth(8),
 
-    color: 'black',
+    color: "black",
   },
 });
