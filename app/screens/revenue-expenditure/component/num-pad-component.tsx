@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { Images } from "../../../../assets";
 import { scaleHeight, scaleWidth } from "../../../theme";
@@ -22,13 +22,7 @@ export const Numpad = (props: InputNumpad) => {
   const line5 = ["0", "00", "000", "OK"];
   return (
     <View style={{ flexDirection: "column" }}>
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 16,
-          justifyContent: "space-between",
-          marginVertical: 7,
-        }}>
+      <View style={styles.viewLine1}>
         {line1.map((item, index) => {
           return (
             <TouchableOpacity
@@ -42,15 +36,7 @@ export const Numpad = (props: InputNumpad) => {
                 }
                 console.log("tuvm", item.toString());
               }}>
-              <View
-                style={{
-                  borderRadius: scaleWidth(8),
-                  backgroundColor: "#E7EAED",
-                  width: scaleWidth(80),
-                  // height: scaleHeight(42),
-                  paddingVertical: 12,
-                  alignItems: "center",
-                }}>
+              <View style={styles.viewTextItem}>
                 {item.toString() ? (
                   <Text
                     style={{
@@ -69,12 +55,7 @@ export const Numpad = (props: InputNumpad) => {
           );
         })}
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 16,
-          justifyContent: "space-between",
-        }}>
+      <View style={styles.viewLine2}>
         {line2.map((item, index) => {
           return (
             <TouchableOpacity
@@ -89,15 +70,13 @@ export const Numpad = (props: InputNumpad) => {
                 console.log("tuvm", item.toString());
               }}>
               <View
-                style={{
-                  borderRadius: 8,
-                  backgroundColor: item == "+" ? "#E7EAED" : "#FFFFFF",
-                  width: scaleWidth(80),
-                  // height: scaleHeight(42),
-                  paddingVertical: 12,
-                  alignItems: "center",
-                  borderWidth: item == "+" ? 0 : 0.2,
-                }}>
+                style={[
+                  styles.viewTextItem2,
+                  {
+                    backgroundColor: item == "+" ? "#E7EAED" : "#FFFFFF",
+                    borderWidth: item == "+" ? 0 : 0.2,
+                  },
+                ]}>
                 {item.toString() ? (
                   <Text
                     style={{
@@ -113,13 +92,7 @@ export const Numpad = (props: InputNumpad) => {
           );
         })}
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 16,
-          justifyContent: "space-between",
-          marginVertical: 10,
-        }}>
+      <View style={styles.viewLine3}>
         {line3.map((item, index) => {
           return (
             <TouchableOpacity
@@ -134,15 +107,13 @@ export const Numpad = (props: InputNumpad) => {
                 console.log("tuvm", item.toString());
               }}>
               <View
-                style={{
-                  borderRadius: 8,
-                  backgroundColor: item == "-" ? "#E7EAED" : "#FFFFFF",
-                  width: scaleWidth(80),
-                  // height: scaleHeight(42),
-                  paddingVertical: 12,
-                  alignItems: "center",
-                  borderWidth: item == "-" ? 0 : 0.2,
-                }}>
+                style={[
+                  styles.viewTextItem3,
+                  {
+                    backgroundColor: item == "-" ? "#E7EAED" : "#FFFFFF",
+                    borderWidth: item == "-" ? 0 : 0.2,
+                  },
+                ]}>
                 {item.toString() ? (
                   <Text
                     style={{
@@ -158,12 +129,7 @@ export const Numpad = (props: InputNumpad) => {
           );
         })}
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 16,
-          justifyContent: "space-between",
-        }}>
+      <View style={styles.viewLine4}>
         {line4.map((item, index) => {
           return (
             <TouchableOpacity
@@ -178,15 +144,13 @@ export const Numpad = (props: InputNumpad) => {
                 console.log("tuvm", item.toString());
               }}>
               <View
-                style={{
-                  borderRadius: 8,
-                  backgroundColor: item == "=" ? "#E7EAED" : "#FFFFFF",
-                  width: scaleWidth(80),
-                  // height: scaleHeight(42),
-                  paddingVertical: 12,
-                  alignItems: "center",
-                  borderWidth: item == "=" ? 0 : 0.2,
-                }}>
+                style={[
+                  styles.viewTextItem4,
+                  {
+                    backgroundColor: item == "=" ? "#E7EAED" : "#FFFFFF",
+                    borderWidth: item == "=" ? 0 : 0.2,
+                  },
+                ]}>
                 {item.toString() ? (
                   <Text
                     style={{
@@ -202,13 +166,7 @@ export const Numpad = (props: InputNumpad) => {
           );
         })}
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 16,
-          justifyContent: "space-between",
-          marginVertical: 10,
-        }}>
+      <View style={styles.viewLine5}>
         {line5.map((item, index) => {
           return (
             <TouchableOpacity
@@ -224,15 +182,13 @@ export const Numpad = (props: InputNumpad) => {
                 console.log("tuvm", item.toString());
               }}>
               <View
-                style={{
-                  borderRadius: 8,
-                  backgroundColor: item == "OK" ? "#0078D4" : "#FFFFFF",
-                  width: scaleWidth(80),
-                  // height: scaleHeight(42),
-                  paddingVertical: 12,
-                  alignItems: "center",
-                  borderWidth: item == "+" ? 0 : 0.2,
-                }}>
+                style={[
+                  styles.viewTextItem5,
+                  {
+                    backgroundColor: item == "OK" ? "#0078D4" : "#FFFFFF",
+                    borderWidth: item == "+" ? 0 : 0.2,
+                  },
+                ]}>
                 {item.toString() ? (
                   <Text
                     style={{
@@ -251,3 +207,70 @@ export const Numpad = (props: InputNumpad) => {
     </View>
   );
 };
+
+export const styles = StyleSheet.create({
+  viewLine1: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    justifyContent: "space-between",
+    marginVertical: 7,
+  },
+  viewTextItem: {
+    borderRadius: scaleWidth(8),
+    backgroundColor: "#E7EAED",
+    width: scaleWidth(80),
+    // height: scaleHeight(42),
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  viewLine2: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    justifyContent: "space-between",
+  },
+  viewTextItem2: {
+    borderRadius: 8,
+    width: scaleWidth(80),
+    // height: scaleHeight(42),
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  viewLine3: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  viewTextItem3: {
+    borderRadius: 8,
+    width: scaleWidth(80),
+    // height: scaleHeight(42),
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  viewLine4: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    justifyContent: "space-between",
+  },
+  viewTextItem4: {
+    borderRadius: 8,
+    width: scaleWidth(80),
+    // height: scaleHeight(42),
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  viewLine5: {
+    flexDirection: "row",
+    marginHorizontal: 16,
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  viewTextItem5: {
+    borderRadius: 8,
+    width: scaleWidth(80),
+    // height: scaleHeight(42),
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+});

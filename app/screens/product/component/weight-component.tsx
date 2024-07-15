@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, FlatList } from "react-native";
 import { Text, TextField } from "../../../components";
-import { Controller, FormProvider, useFieldArray, useForm, useFormContext } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  useFieldArray,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
 import { Images } from "../../../../assets";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
-import { commasToDots, formatCurrency, formatNumberFloat, formatStringToFloat } from "../../../utils/validate";
+import {
+  commasToDots,
+  formatCurrency,
+  formatNumberFloat,
+  formatStringToFloat,
+} from "../../../utils/validate";
 import { useStores } from "../../../models";
+import { stylesWeight } from "../styles";
 
 interface InputSelectProps {
   control: any;
@@ -26,14 +38,14 @@ interface ItemWeight {
   checkList: boolean;
   data: {};
   dataUnitGroup: [];
-  setAdd: any
-  dataDefault?: any
+  setAdd: any;
+  dataDefault?: any;
 }
 
 interface ItemOriginal {
   data: any;
   control: any;
-  checkList: any
+  checkList: any;
 }
 
 export default function ItemWeight(props: ItemWeight) {
@@ -47,26 +59,39 @@ export default function ItemWeight(props: ItemWeight) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      weight: [{ weight1: "", volume: "", unit: { id: '', label: '' } }],
+      weight: [{ weight1: "", volume: "", unit: { id: "", label: "" } }],
     },
   });
   const dataUomGroup = props.dataUnitGroup?.map((item: any) => {
-    return { ...item, label: item.unitName }
-  })
-  const [data, setData] = useState(props.dataUnitGroup?.map((item: any) => {
-    return { ...item, label: item.unitName }
-  }))
+    return { ...item, label: item.unitName };
+  });
+  const [data, setData] = useState(
+    props.dataUnitGroup?.map((item: any) => {
+      return { ...item, label: item.unitName };
+    })
+  );
   useEffect(() => {
     if (props.dataDefault !== undefined) {
-      const newArr = props.dataUnitGroup?.filter((item1: any) => !props.dataDefault?.weight?.some((item2: any) => item2.unit.id === item1.id));
-      setData(newArr?.map((item: any) => {
-        return { ...item, label: item.unitName }
-      }))
+      const newArr = props.dataUnitGroup?.filter(
+        (item1: any) =>
+          !props.dataDefault?.weight?.some(
+            (item2: any) => item2.unit.id === item1.id
+          )
+      );
+      setData(
+        newArr?.map((item: any) => {
+          return { ...item, label: item.unitName };
+        })
+      );
     } else {
-      const newArr = props.dataUnitGroup?.filter((item1: any) => !fields.some((item2: any) => item2.unit.id === item1.id));
-      setData(newArr?.map((item: any) => {
-        return { ...item, label: item.unitName }
-      }))
+      const newArr = props.dataUnitGroup?.filter(
+        (item1: any) => !fields.some((item2: any) => item2.unit.id === item1.id)
+      );
+      setData(
+        newArr?.map((item: any) => {
+          return { ...item, label: item.unitName };
+        })
+      );
     }
     if(props.setAdd?.length !== 0){
       setAddLine(true)
@@ -80,9 +105,9 @@ export default function ItemWeight(props: ItemWeight) {
       setValue('weight', [])
       setAddLine(false)
     }
-  }, [watch('volumeOriginal'), watch('weightOriginal')])
+  }, [watch("volumeOriginal"), watch("weightOriginal")]);
 
-  const deepEqual = (obj1, obj2) => {
+  const deepEqual = (obj1: any, obj2: any) => {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
   };
 
@@ -105,7 +130,7 @@ export default function ItemWeight(props: ItemWeight) {
       setData(newArr3)
     }
     // }
-  }
+  };
   const resetData = (data: any, itemValue: any) => {
     const newArr = data.map((item: any) => {
       return item.unit
@@ -118,8 +143,8 @@ export default function ItemWeight(props: ItemWeight) {
     const newArr3 = unitGroupData.filter(
       (itemA) => !newArr2.some((itemB: any) => deepEqual(itemA, itemB))
     );
-    setData(newArr3)
-  }
+    setData(newArr3);
+  };
   const { fields, append, remove } = useFieldArray({
     control,
     name: "weight",
@@ -145,26 +170,11 @@ export default function ItemWeight(props: ItemWeight) {
 
   return (
     <View>
-      <View
-        style={{
-          flexDirection: "column",
-          backgroundColor: "#FFFFFF",
-        }}>
-        <Text
-          tx="productScreen.weight"
-          style={{
-            color: "#242424",
-            fontWeight: "700",
-            fontSize: fontSize.size14,
-          }}></Text>
+      <View style={stylesWeight.viewParent}>
+        <Text tx="productScreen.weight" style={stylesWeight.textTittle}></Text>
         <Text
           tx="productScreen.weightOriginal"
-          style={{
-            fontSize: fontSize.size14,
-            fontWeight: "400",
-            color: "#242424",
-            marginVertical: 15,
-          }}></Text>
+          style={stylesWeight.textOriginal}></Text>
         <ItemOriginal
           control={control}
           data={props.data}
@@ -244,15 +254,13 @@ export default function ItemWeight(props: ItemWeight) {
 const ItemOriginal = (item: ItemOriginal) => {
   const { vendorStore } = useStores()
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginRight: 6,
-      }}>
-      <Text style={{ color: "#000000", fontSize: fontSize.size12, fontWeight: "400", width: scaleWidth(80) }}>
-        {item.data?.id !== 0 ? (item.checkList === false ? item.data?.label : item.data?.name) : 'Đơn vị gốc'}
+    <View style={stylesWeight.viewItemOriginal}>
+      <Text style={stylesWeight.textItemOriginal}>
+        {item.data?.id !== 0
+          ? item.checkList === false
+            ? item.data?.label
+            : item.data?.name
+          : translate("productDetail.originUnit")}
       </Text>
       <View style={{ marginLeft: scaleWidth(10) }}>
         <Controller
@@ -260,7 +268,7 @@ const ItemOriginal = (item: ItemOriginal) => {
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
               styleTextLabel={true}
-              keyboardType={'numeric'}
+              keyboardType={"numeric"}
               labelTx={"productScreen.weightSpecified"}
               style={{
                 marginBottom: scaleHeight(10),
@@ -271,18 +279,17 @@ const ItemOriginal = (item: ItemOriginal) => {
               RightIconClear={null}
               RightIconShow={null}
               valueTextRight="Kg"
-              styleTextRight={{
-                color: "#747475",
-                fontSize: fontSize.size12,
-                fontWeight: "500",
-                marginTop: scaleHeight(20),
-              }}
+              styleTextRight={stylesWeight.textFieldOriginal}
               error={""}
               onClearText={() => {
                 onChange("");
               }}
               onChangeText={(value) => {
-                onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value));
+                onChange(
+                  vendorStore.companyInfo.thousandSeparator === "DOTS"
+                    ? formatCurrency(value)
+                    : formatCurrency(value)
+                );
               }}
             />
           )}
@@ -295,7 +302,7 @@ const ItemOriginal = (item: ItemOriginal) => {
         render={({ field: { onChange, value, onBlur } }) => (
           <TextField
             styleTextLabel={true}
-            keyboardType={'numeric'}
+            keyboardType={"numeric"}
             labelTx={"createProductScreen.volume"}
             style={{
               marginBottom: scaleHeight(10),
@@ -307,18 +314,17 @@ const ItemOriginal = (item: ItemOriginal) => {
             RightIconClear={null}
             RightIconShow={null}
             valueTextRight="m3"
-            styleTextRight={{
-              color: "#747475",
-              fontSize: fontSize.size12,
-              fontWeight: "500",
-              marginTop: scaleHeight(20),
-            }}
+            styleTextRight={stylesWeight.textFieldVolumeOriginal}
             error={""}
             onClearText={() => {
               onChange("");
             }}
             onChangeText={(value) => {
-              onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
+              onChange(
+                vendorStore.companyInfo.thousandSeparator === "DOTS"
+                  ? formatCurrency(value)
+                  : formatCurrency(value)
+              );
             }}
           />
         )}
@@ -334,21 +340,9 @@ const ItemConversion = (item: InputSelectProps) => {
   const { setValue, getValues } = useForm()
 
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        backgroundColor: "#FFFFFF",
-        // marginHorizontal: 6,
-      }}>
+    <View style={stylesWeight.viewItemConversion}>
       {item.fields?.length >= 0 ? (
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "flex-end",
-            width: '25%',
-            marginRight: scaleWidth(2)
-          }}>
+        <View style={stylesWeight.viewItemConversion2}>
           <TouchableOpacity
             style={{ marginBottom: scaleHeight(20) }}
             onPress={() => {
@@ -365,42 +359,32 @@ const ItemConversion = (item: InputSelectProps) => {
             name={`weight.${item.index}.unit`}
             control={item.control}
             render={({ field: { onChange, value, onBlur } }) => (
-              <TouchableOpacity onPress={() => { }}>
+              <TouchableOpacity onPress={() => {}}>
                 <View
                   style={{
                     flexDirection: "column",
                     marginBottom: scaleHeight(10),
                   }}>
                   <InputSelect
-                    textStyle={{ fontSize: fontSize.size12, marginTop: scaleHeight(10) }}
-                    styleView={{
-                      backgroundColor: "transparent",
-                      width: scaleHeight(60),
-                      paddingHorizontal: 4,
-                      paddingVertical: 2,
-                    }}
-                    styleViewDropdown={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 25,
-                    }}
-                    hintTx={'createProductScreen.select_unit'}
+                    textStyle={{ fontSize: 12, marginTop: scaleHeight(10) }}
+                    styleView={stylesWeight.viewInputSelect}
+                    styleViewDropdown={stylesWeight.viewDropdown}
+                    hintTx={"createProductScreen.select_unit"}
                     arrData={item.data ?? []}
                     dataDefault={value?.label ?? "Chọn đơn vị"}
                     onPressChoice={(items: any) => {
-                      onChange(items)
-                      item.onRemove(item.fields, items)
-                      item.onChange(item.index, items.conversionRate)
+                      onChange(items);
+                      item.onRemove(item.fields, items);
+                      item.onChange(item.index, items.conversionRate);
                     }}></InputSelect>
-                  <View
-                    style={{
-                      height: 1,
-                      backgroundColor: "#DFE0EB",
-                      marginBottom: 3,
-                    }}></View>
-                  <Text
-                    style={{ color: "#747475A6", fontSize: fontSize.size10, fontWeight: "500", width: '90%' }} numberOfLines={1}>
-                    {item.originUit?.name == undefined || value?.conversionRate == undefined ? '' : formatCurrency(commasToDots(value?.conversionRate)) + " " + item.originUit?.name}
+                  <View style={stylesWeight.viewLine}></View>
+                  <Text style={stylesWeight.textConversion} numberOfLines={1}>
+                    {item.originUit?.name == undefined ||
+                    value?.conversionRate == undefined
+                      ? ""
+                      : formatCurrency(commasToDots(value?.conversionRate)) +
+                        " " +
+                        item.originUit?.name}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -414,7 +398,7 @@ const ItemConversion = (item: InputSelectProps) => {
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
               styleTextLabel={true}
-              keyboardType={'numeric'}
+              keyboardType={"numeric"}
               labelTx={"productScreen.weightSpecified"}
               style={{
                 marginBottom: scaleHeight(10),
@@ -425,18 +409,17 @@ const ItemConversion = (item: InputSelectProps) => {
               RightIconClear={null}
               RightIconShow={null}
               valueTextRight="Kg"
-              styleTextRight={{
-                color: "#747475",
-                fontSize: fontSize.size12,
-                fontWeight: "500",
-                marginTop: scaleHeight(20),
-              }}
+              styleTextRight={stylesWeight.textFieldWeight}
               error={""}
               onClearText={() => {
                 onChange("");
               }}
               onChangeText={(value) => {
-                onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value));
+                onChange(
+                  vendorStore.companyInfo.thousandSeparator === "DOTS"
+                    ? formatCurrency(value)
+                    : formatCurrency(value)
+                );
               }}
             />
           )}
@@ -449,7 +432,7 @@ const ItemConversion = (item: InputSelectProps) => {
           render={({ field: { onChange, value, onBlur } }) => (
             <TextField
               styleTextLabel={true}
-              keyboardType={'numeric'}
+              keyboardType={"numeric"}
               labelTx={"createProductScreen.volume"}
               style={{
                 marginBottom: scaleHeight(10),
@@ -460,18 +443,17 @@ const ItemConversion = (item: InputSelectProps) => {
               RightIconClear={null}
               RightIconShow={null}
               valueTextRight="m3"
-              styleTextRight={{
-                color: "#747475",
-                fontSize: fontSize.size12,
-                fontWeight: "500",
-                marginTop: scaleHeight(20),
-              }}
+              styleTextRight={stylesWeight.textFieldVolume}
               error={""}
               onClearText={() => {
                 onChange("");
               }}
               onChangeText={(value) => {
-                onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value));
+                onChange(
+                  vendorStore.companyInfo.thousandSeparator === "DOTS"
+                    ? formatCurrency(value)
+                    : formatCurrency(value)
+                );
               }}
             />
           )}

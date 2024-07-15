@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   FlatList,
   Platform,
+  StyleSheet,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -50,51 +51,18 @@ export const ClassifyModal = (props: Input) => {
   return (
     <CustomModal isVisible={props.onVisible} setIsVisible={props.onClose}>
       <View>
-        <View
-          style={{
-            height: 5,
-            backgroundColor: "#C7C7C7",
-            borderRadius: 100,
-            marginHorizontal: 142,
-            marginTop: 8,
-          }}></View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            marginVertical: 18,
-          }}>
+        <View style={styles.viewContainer}></View>
+        <View style={styles.viewHeader}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Images.ic_pen />
-            <Text
-              tx="analysis.refactorMoney"
-              style={{
-                color: "#0078D4",
-                fontSize: 12,
-                fontWeight: "400",
-              }}></Text>
+            <Text tx="analysis.refactorMoney" style={styles.textUpdate}></Text>
           </View>
-          <Text
-            tx={"analysis.classify"}
-            style={{
-              color: "#242424",
-              fontSize: 14,
-              fontWeight: "700",
-              marginHorizontal: scaleWidth(120),
-              marginLeft: scaleWidth(85),
-            }}></Text>
+          <Text tx={"analysis.classify"} style={styles.textClassify}></Text>
           <TouchableOpacity
             onPress={() => {
               props.onClose();
             }}>
-            <Text
-              tx={"analysis.cancel"}
-              style={{
-                color: "#FF4956",
-                fontSize: 14,
-                fontWeight: "700",
-              }}></Text>
+            <Text tx={"analysis.cancel"} style={styles.textCancel}></Text>
           </TouchableOpacity>
         </View>
         <View
@@ -123,14 +91,7 @@ export const ClassifyModal = (props: Input) => {
                 keyboardType={null}
                 labelTx={"analysis.nameMoney"}
                 txColor="#747475"
-                style={{
-                  backgroundColor: "transparent",
-                  borderWidth: 1,
-                  width: "90%",
-                  marginVertical: 20,
-                  // borderWidth: 1.5,
-                  borderColor: colors.palette.accent100,
-                }}
+                style={styles.textFieldStyle}
                 RightIconClear={null}
                 value={value}
                 onBlur={() => onBlur()}
@@ -141,23 +102,11 @@ export const ClassifyModal = (props: Input) => {
                 }}
               />
             )}></Controller>
-          <View
-            style={{
-              backgroundColor: "#0078D4",
-              borderRadius: 8,
-              padding: 10,
-              alignSelf: "center",
-            }}>
+          <View style={styles.viewIconPlus}>
             <Images.icon_plus />
           </View>
         </View>
-        <Text
-          tx="analysis.listClassify"
-          style={{
-            fontWeight: "400",
-            fontSize: 14,
-            color: "#747475",
-          }}></Text>
+        <Text tx="analysis.listClassify" style={styles.textTittleList}></Text>
         <FlatList
           numColumns={3}
           data={list}
@@ -186,23 +135,22 @@ export const ClassifyModal = (props: Input) => {
                   selectItem(item.id);
                 }}>
                 <View
-                  style={{
-                    width: 115,
-                    borderRadius: 8,
-                    borderColor: borderColor,
-                    backgroundColor: backgroundColor,
-                    borderWidth: 1,
-                    alignItems: "center",
-                    margin: 5,
-                  }}>
+                  style={[
+                    styles.viewTextList,
+                    {
+                      borderColor: borderColor,
+                      backgroundColor: backgroundColor,
+                    },
+                  ]}>
                   <Text
                     text={item.value}
-                    style={{
-                      fontSize: 10,
-                      fontWeight: textWeight,
-                      color: textColor,
-                      marginVertical: 13,
-                    }}
+                    style={[
+                      styles.textList,
+                      {
+                        fontWeight: textWeight,
+                        color: textColor,
+                      },
+                    ]}
                   />
                 </View>
               </TouchableOpacity>
@@ -213,3 +161,66 @@ export const ClassifyModal = (props: Input) => {
     </CustomModal>
   );
 };
+
+export const styles = StyleSheet.create({
+  viewContainer: {
+    height: 5,
+    backgroundColor: "#C7C7C7",
+    borderRadius: 100,
+    marginHorizontal: 142,
+    marginTop: 8,
+  },
+  viewHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 18,
+  },
+  textUpdate: {
+    color: "#0078D4",
+    fontSize: 12,
+    fontWeight: "400",
+  },
+  textClassify: {
+    color: "#242424",
+    fontSize: 14,
+    fontWeight: "700",
+    marginHorizontal: scaleWidth(120),
+    marginLeft: scaleWidth(85),
+  },
+  textCancel: {
+    color: "#FF4956",
+    fontSize: 14,
+    fontWeight: "700",
+  },
+  textFieldStyle: {
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    width: "90%",
+    marginVertical: 20,
+    // borderWidth: 1.5,
+    borderColor: colors.palette.accent100,
+  },
+  viewIconPlus: {
+    backgroundColor: "#0078D4",
+    borderRadius: 8,
+    padding: 10,
+    alignSelf: "center",
+  },
+  textTittleList: {
+    fontWeight: "400",
+    fontSize: 14,
+    color: "#747475",
+  },
+  viewTextList: {
+    width: 115,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: "center",
+    margin: 5,
+  },
+  textList: {
+    fontSize: 10,
+    marginVertical: 13,
+  },
+});

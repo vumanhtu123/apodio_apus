@@ -213,16 +213,7 @@ const DropdownModal = (props: InputSelectProps) => {
         onBackdropPress={toggleModal}
         style={{ margin: 0 }}>
         <View style={styles.modalContainer}>
-          <Text
-            text={title}
-            style={{
-              marginVertical: scaleHeight(18),
-              marginLeft: scaleWidth(9),
-              fontWeight: "700",
-              fontSize: fontSize.size14,
-              color: colors.palette.nero,
-            }}
-          />
+          <Text text={title} style={styles.textTitleModal} />
           <FlatList
             data={filteredData}
             renderItem={renderItem}
@@ -230,47 +221,19 @@ const DropdownModal = (props: InputSelectProps) => {
             onEndReached={loadMore}
             // keyExtractor={(item) => item.toString()}
           />
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginBottom: scaleHeight(margin.margin_15),
-              marginTop: scaleHeight(10),
-            }}>
+          <View style={styles.viewModalButton}>
             <Button
               onPress={() => {
                 toggleModal();
               }}
               tx={"productScreen.cancel"}
-              style={{
-                height: scaleHeight(48),
-                backgroundColor: colors.palette.neutral100,
-                borderWidth: 1,
-                borderColor: colors.palette.veryLightGrey,
-                width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
-                borderRadius: 8,
-              }}
-              textStyle={{
-                color: colors.palette.dolphin,
-                fontWeight: "700",
-                fontSize: fontSize.size14,
-                lineHeight: scaleHeight(24),
-              }}
+              style={styles.buttonCancel}
+              textStyle={styles.textCancel}
             />
             <Button
               tx={"productScreen.BtnNotificationAccept"}
-              style={{
-                height: scaleHeight(48),
-                backgroundColor: colors.palette.navyBlue,
-                width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
-                borderRadius: 8,
-              }}
-              textStyle={{
-                color: colors.palette.neutral100,
-                fontWeight: "700",
-                fontSize: fontSize.size14,
-                lineHeight: scaleHeight(24),
-              }}
+              style={styles.buttonAccept}
+              textStyle={styles.textAccept}
               onPress={(item) => onConfirm(item)}
             />
           </View>
@@ -292,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.size12,
   },
   modalContainer: {
-    height: '50%',
+    height: "50%",
     backgroundColor: colors.palette.neutral100,
     borderRadius: 8,
     paddingVertical: scaleHeight(padding.padding_12),
@@ -383,6 +346,45 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: scaleWidth(6),
+  },
+  textTitleModal: {
+    marginVertical: scaleHeight(18),
+    marginLeft: scaleWidth(9),
+    fontWeight: "700",
+    fontSize: fontSize.size14,
+    color: colors.palette.nero,
+  },
+  viewModalButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: scaleHeight(margin.margin_15),
+    marginTop: scaleHeight(10),
+  },
+  buttonCancel: {
+    height: scaleHeight(48),
+    backgroundColor: colors.palette.neutral100,
+    borderWidth: 1,
+    borderColor: colors.palette.veryLightGrey,
+    width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
+    borderRadius: 8,
+  },
+  textCancel: {
+    color: colors.palette.dolphin,
+    fontWeight: "700",
+    fontSize: fontSize.size14,
+    lineHeight: scaleHeight(24),
+  },
+  buttonAccept: {
+    height: scaleHeight(48),
+    backgroundColor: colors.palette.navyBlue,
+    width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
+    borderRadius: 8,
+  },
+  textAccept: {
+    color: colors.palette.neutral100,
+    fontWeight: "700",
+    fontSize: fontSize.size14,
+    lineHeight: scaleHeight(24),
   },
 });
 

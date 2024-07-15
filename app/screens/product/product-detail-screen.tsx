@@ -34,7 +34,12 @@ import { useStores } from "../../models";
 import { commasToDots, formatCurrency, formatVND } from "../../utils/validate";
 import ProductAttribute from "./component/productAttribute";
 import { translate } from "../../i18n/translate";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+  Loading,
+} from "../../components/dialog-notification";
 
 export const ProductDetailScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -64,7 +69,7 @@ export const ProductDetailScreen: FC = (item) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false);
-  const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
+  const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false);
   const [attributes, setAttributes] = useState<any>([]);
 
   const handleGetDetailProduct = async () => {
@@ -114,7 +119,7 @@ export const ProductDetailScreen: FC = (item) => {
 
   useEffect(() => {
     console.log("---------useEffect---------reload------------------");
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener("focus", () => {
       if (reload === true) {
         handleGetDetailProduct();
       }
@@ -141,21 +146,21 @@ export const ProductDetailScreen: FC = (item) => {
     if (!data.attributeCategory || data.attributeCategory.length === 0) {
       return [];
     }
-    const groupedData = data.attributeCategory?.map(category => ({
+    const groupedData = data.attributeCategory?.map((category) => ({
       name: category.name,
-      items: category.attributeOutputList?.map(attr => ({
-        value: attr.productAttributeValue.map(val => val.value),
-        name: attr.name,
-      })
-      ) || []
+      items:
+        category.attributeOutputList?.map((attr) => ({
+          value: attr.productAttributeValue.map((val) => val.value),
+          name: attr.name,
+        })) || [],
     }));
-    setAttributes(groupedData)
+    setAttributes(groupedData);
     return groupedData;
   }
   useEffect(() => {
     extractAttributeInfo(dataClassification);
     // setAttributes(extractedAttributes);
-  }, [dataClassification])
+  }, [dataClassification]);
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
     { id: 4638, label: "Lô", label2: "LOTS" },
@@ -244,12 +249,14 @@ export const ProductDetailScreen: FC = (item) => {
       return acc;
     }, {});
 
-    const newArr3 = newArr2 ? Object.keys(newArr2).map((attributeName) => {
-      return {
-        name: attributeName,
-        items: newArr2[attributeName] || [],
-      };
-    }) : [];
+    const newArr3 = newArr2
+      ? Object.keys(newArr2).map((attributeName) => {
+          return {
+            name: attributeName,
+            items: newArr2[attributeName] || [],
+          };
+        })
+      : [];
     console.log(
       "---setAttributeDetailsClassification--------------",
       JSON.stringify(newArr3)
@@ -265,16 +272,16 @@ export const ProductDetailScreen: FC = (item) => {
       Dialog.show({
         type: ALERT_TYPE.SUCCESS,
         title: translate("txtDialog.txt_title_dialog"),
-        button: '',
+        button: "",
         button2: translate("common.ok"),
         textBody: result.result.message,
         closeOnOverlayTap: false,
         onPressButton: () => {
-          navigation.goBack()
-          productStore.setReloadProductScreen(true)
+          navigation.goBack();
+          productStore.setReloadProductScreen(true);
           Dialog.hide();
-        }
-      })
+        },
+      });
     } else {
       await Dialog.hideDialog();
       Dialog.show({
@@ -282,16 +289,16 @@ export const ProductDetailScreen: FC = (item) => {
         title: translate("productScreen.Notification"),
         button: translate("common.ok"),
         textBody: result.result.errorCodes[0].message,
-        closeOnOverlayTap: false
-      })
+        closeOnOverlayTap: false,
+      });
       setErrorContent(result.result.errorCodes[0].message);
     }
     setDialogDeleteProduct(false);
   };
   const toggleDetails = () => {
     setShowDetails(!showDetails);
-    extractAttributeInfo(dataClassification)
-    console.log('first', JSON.stringify(attributes))
+    extractAttributeInfo(dataClassification);
+    console.log("first", JSON.stringify(attributes));
     selectDataClassification();
   };
   return (
@@ -301,16 +308,17 @@ export const ProductDetailScreen: FC = (item) => {
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Chi tiết sản phẩm`}
+        headerText={translate("productScreen.detailsProduct")}
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
         RightIcon2={screen === "seeDetail" ? null : Images.icon_trashWhite}
         RightIcon1={screen === "seeDetail" ? null : Images.icon_editWhite}
         onRightPress1={() =>
           navigation.navigate({
-            name: "ProductEditScreen", params: {
+            name: "ProductEditScreen",
+            params: {
               dataEdit: dataClassificationToEdit,
-            }
+            },
           } as never)
         }
         onRightPress2={() => {
@@ -321,9 +329,8 @@ export const ProductDetailScreen: FC = (item) => {
             button2: translate("productScreen.BtnNotificationAccept"),
             textBody: translate("productScreen.ProductDelete"),
             closeOnOverlayTap: false,
-            onPressButton: () =>
-              deleteProduct()
-          })
+            onPressButton: () => deleteProduct(),
+          });
         }}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
@@ -341,9 +348,12 @@ export const ProductDetailScreen: FC = (item) => {
               marginHorizontal: scaleWidth(margin.margin_16),
             }}>
             <Text
-              style={{ fontSize: fontSize.size14, fontWeight: "500", flex: 1 }}>
-              Thông tin chung
-            </Text>
+              tx="productScreen.infoAll"
+              style={{
+                fontSize: fontSize.size14,
+                fontWeight: "500",
+                flex: 1,
+              }}></Text>
           </View>
           {arrImagesProduct?.length !== 0 ? (
             <ScrollView
@@ -401,7 +411,7 @@ export const ProductDetailScreen: FC = (item) => {
                 ]}
               />
               <Text
-                text=" phân loại sản phẩm"
+                tx={"productScreen.productClassification"}
                 style={[
                   styles.textDolphin12,
                   {
@@ -436,7 +446,7 @@ export const ProductDetailScreen: FC = (item) => {
                     onPress={() => {
                       setChangeClassification(item.id);
                       setDetailsClassification(item);
-                      console.log('first', item)
+                      console.log("first", item);
                       // setShowDetails(false);
                     }}>
                     <Text
@@ -480,38 +490,38 @@ export const ProductDetailScreen: FC = (item) => {
           <View style={{ marginHorizontal: scaleWidth(margin.margin_16) }}>
             <View style={{ marginTop: 20 }}>
               <ProductAttribute
-                label="Mã sản phẩm"
+                label={translate("detailScreen.productCode")}
                 value={dataClassification.sku}
               />
               <ProductAttribute
-                label="Tên sản phẩm "
+                label={translate("detailScreen.nameProduct")}
                 value={dataClassification.name}
               />
               {arrClassification ? (
                 <View>
                   <ProductAttribute
-                    label="Mã biến thể sản phẩm "
+                    label={translate("detailScreen.codeProduct")}
                     value={detailsClassification.sku}
                   />
                   <ProductAttribute
-                    label="Tên biến thể sản phẩm "
+                    label={translate("detailScreen.nameCodeProduct")}
                     value={detailsClassification.name}
                   />
                 </View>
               ) : null}
               <ProductAttribute
-                label="Trạng thái"
+                label={translate("detailScreen.status")}
                 value={
                   dataClassification.saleOk === true &&
-                    dataClassification.purchaseOk === false
+                  dataClassification.purchaseOk === false
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true &&
                       dataClassification.saleOk === false
-                      ? "Có thể mua"
-                      : dataClassification.saleOk === true &&
-                        dataClassification.purchaseOk === true
-                        ? "Có thể bán/ Có thể mua"
-                        : null
+                    ? "Có thể mua"
+                    : dataClassification.saleOk === true &&
+                      dataClassification.purchaseOk === true
+                    ? "Có thể bán/ Có thể mua"
+                    : null
                 }
               />
             </View>
@@ -543,7 +553,7 @@ export const ProductDetailScreen: FC = (item) => {
                       marginBottom: scaleHeight(margin.margin_10),
                     }}>
                     <Text
-                      text="Mua tối thiểu"
+                      tx={"detailScreen.miniumPurchase"}
                       style={[
                         styles.textDolphin12,
                         {
@@ -551,36 +561,60 @@ export const ProductDetailScreen: FC = (item) => {
                         },
                       ]}
                     />
-                    <Text text="Giá sản phẩm" style={styles.textDolphin12} />
+                    <Text
+                      tx="detailScreen.priceProduct"
+                      style={styles.textDolphin12}
+                    />
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.retailPrice?.map((item) => {
-                      return (
-                        <ProductAttribute
-                          label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
-                          labelStyle={{ color: colors.palette.nero }}
-                          textStyle={{ color: colors.palette.radicalRed }}
-                        />
-                      );
-                    })
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={`${formatVND(
+                              formatCurrency(commasToDots(item.price))
+                            )}/${
+                              dataClassification.uom?.name ||
+                              dataClassification.uomGroup?.originalUnit?.name
+                            }`}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })
                     : dataClassification?.retailPrice?.map((item) => {
-                      return (
-                        <ProductAttribute
-                          label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
-                          labelStyle={{ color: colors.palette.nero }}
-                          textStyle={{ color: colors.palette.radicalRed }}
-                        />
-                      );
-                    })}
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={`${formatVND(
+                              formatCurrency(commasToDots(item.price))
+                            )}/${
+                              dataClassification.uom?.name ||
+                              dataClassification.uomGroup?.originalUnit?.name
+                            }`}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })}
                 </View>
               ) : null}
               <View>
                 {/* {detailsClassification?.length !== 0 ? ( */}
                 <ProductAttribute
-                  label="Giá vốn"
-                  value={detailsClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(detailsClassification?.costPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
+                  label={translate("detailScreen.capitalPrice")}
+                  value={
+                    detailsClassification?.costPrice > 0
+                      ? `${formatVND(
+                          formatCurrency(
+                            commasToDots(detailsClassification?.costPrice)
+                          )
+                        )}/${
+                          dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
+                        }`
+                      : null
+                  }
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 {/* ) : (
@@ -592,8 +626,19 @@ export const ProductDetailScreen: FC = (item) => {
                 )} */}
                 {/* {detailsClassification?.length !== 0 ? ( */}
                 <ProductAttribute
-                  label="Giá niêm yết"
-                  value={detailsClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(detailsClassification?.listPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
+                  labelTx="detailScreen.listedPrice"
+                  value={
+                    detailsClassification?.listPrice > 0
+                      ? `${formatVND(
+                          formatCurrency(
+                            commasToDots(detailsClassification?.listPrice)
+                          )
+                        )}/${
+                          dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
+                        }`
+                      : null
+                  }
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 {/* ) : (
@@ -631,7 +676,7 @@ export const ProductDetailScreen: FC = (item) => {
                       marginBottom: scaleHeight(margin.margin_10),
                     }}>
                     <Text
-                      text="Mua tối thiểu"
+                      tx={"detailScreen.miniumPurchase"}
                       style={[
                         styles.textDolphin12,
                         {
@@ -639,39 +684,52 @@ export const ProductDetailScreen: FC = (item) => {
                         },
                       ]}
                     />
-                    <Text text="Giá sản phẩm" style={styles.textDolphin12} />
+                    <Text
+                      tx="detailScreen.priceProduct"
+                      style={styles.textDolphin12}
+                    />
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.wholesalePrice?.map((item) => {
-                      return (
-                        <ProductAttribute
-                          label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
-                          labelStyle={{ color: colors.palette.nero }}
-                          textStyle={{ color: colors.palette.radicalRed }}
-                        />
-                      );
-                    })
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={`${formatVND(
+                              formatCurrency(commasToDots(item.price))
+                            )}/${
+                              dataClassification.uom?.name ||
+                              dataClassification.uomGroup?.originalUnit?.name
+                            }`}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })
                     : dataClassification?.wholesalePrice?.map((item) => {
-                      return (
-                        <ProductAttribute
-                          label={item.min}
-                          value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
-                          labelStyle={{ color: colors.palette.nero }}
-                          textStyle={{ color: colors.palette.radicalRed }}
-                        />
-                      );
-                    })}
+                        return (
+                          <ProductAttribute
+                            label={item.min}
+                            value={`${formatVND(
+                              formatCurrency(commasToDots(item.price))
+                            )}/${
+                              dataClassification.uom?.name ||
+                              dataClassification.uomGroup?.originalUnit?.name
+                            }`}
+                            labelStyle={{ color: colors.palette.nero }}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                          />
+                        );
+                      })}
                 </View>
               ) : null}
             </View>
             <View>
               <ProductAttribute
-                label="Danh mục"
+                label={translate("detailScreen.category")}
                 value={dataClassification.productCategory?.name}
               />
               <ProductAttribute
-                label="Thương hiệu"
+                label={translate("detailScreen.brand")}
                 value={dataClassification.brand?.name}
               />
               <ProductAttribute
@@ -681,18 +739,20 @@ export const ProductDetailScreen: FC = (item) => {
                   .join("/ ")}
               />
               <ProductAttribute
-                label="Hình thức quản lý"
+                label={translate("detailScreen.management")}
                 value={getLabelByList(dataClassification.managementForm)}
               />
               <ProductAttribute
-                label="Đơn vị tính gốc"
-                value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
+                label={translate("detailScreen.unit")}
+                value={
+                  dataClassification.uom?.name ||
+                  dataClassification.uomGroup?.originalUnit?.name
+                }
               />
-              
             </View>
           </View>
           {dataClassification?.description !== "" &&
-            dataClassification?.description !== null ? (
+          dataClassification?.description !== null ? (
             <View>
               <View style={styles.viewLine} />
               <View style={styles.viewDescribe}>
@@ -710,111 +770,261 @@ export const ProductDetailScreen: FC = (item) => {
             </View>
           ) : null}
           <View>
-            {arrClassification?.baseProductPackingLine?.volume || dataClassification?.baseTemplatePackingLine?.volume != null ? (
+            {arrClassification?.baseProductPackingLine?.volume ||
+            dataClassification?.baseTemplatePackingLine?.volume != null ? (
               <View>
                 <View style={styles.viewLine} />
                 <TouchableOpacity
-                  style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
-
-                  onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
-                >
-                  <Text tx="productScreen.weight"
-                    style={{ fontSize: fontSize.size12, color: colors.navyBlue, marginRight: scaleWidth(5) }}
+                  style={[
+                    styles.viewWeight,
+                    { flex: 1, padding: scaleWidth(16) },
+                  ]}
+                  onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}>
+                  <Text
+                    tx="productScreen.weight"
+                    style={{
+                      fontSize: fontSize.size12,
+                      color: colors.navyBlue,
+                      marginRight: scaleWidth(5),
+                    }}
                   />
-                  <Images.icon_caretDownBlue width={scaleWidth(16)} height={scaleHeight(16)} style={{ transform: [{ rotate: showOrHiddenWeight ? '180deg' : '0deg' }], }} />
+                  <Images.icon_caretDownBlue
+                    width={scaleWidth(16)}
+                    height={scaleHeight(16)}
+                    style={{
+                      transform: [
+                        { rotate: showOrHiddenWeight ? "180deg" : "0deg" },
+                      ],
+                    }}
+                  />
                 </TouchableOpacity>
               </View>
             ) : null}
-            {
-              showOrHiddenWeight ?
-                <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
-
-                  <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
-                    <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
-                      {dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}
+            {showOrHiddenWeight ? (
+              <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
+                <Text
+                  tx="productScreen.weightOriginal"
+                  style={{ fontSize: fontSize.size14, fontWeight: "bold" }}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginVertical: scaleHeight(9),
+                  }}>
+                  <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
+                    {dataClassification.uomId == null
+                      ? detailProduct?.uomGroupLineOutput?.unitName
+                      : dataClassification?.uom?.name}
+                  </Text>
+                  <View
+                    style={{
+                      flex: 3,
+                      marginHorizontal: scaleWidth(25),
+                      flexDirection: "row",
+                    }}>
+                    <Text
+                      tx={`detailScreen.weight`}
+                      style={[styles.fontSizeWeight]}
+                    />
+                    <Text
+                      style={[
+                        styles.fontSizeWeight,
+                        { marginLeft: scaleWidth(2) },
+                      ]}>
+                      {arrClassification
+                        ? detailsClassification.baseProductPackingLine?.weight
+                        : detailProduct?.weight}{" "}
+                      kg
                     </Text>
-                    <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
-                      <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{arrClassification ? detailsClassification.baseProductPackingLine?.weight : detailProduct?.weight} kg</Text>
-                    </View>
-                    <View style={{ flex: 3, flexDirection: 'row' }}>
-                      <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
-                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{arrClassification ? detailsClassification.baseProductPackingLine?.volume : detailProduct?.volume} m3</Text>
-                    </View>
                   </View>
-                  {arrClassification?.productPackingLines != null ? (
+                  <View style={{ flex: 3, flexDirection: "row" }}>
+                    <Text
+                      tx="detailScreen.volume"
+                      style={[styles.fontSizeWeight]}
+                    />
+                    <Text
+                      style={[
+                        styles.fontSizeWeight,
+                        { marginLeft: scaleWidth(2) },
+                      ]}>
+                      {arrClassification
+                        ? detailsClassification.baseProductPackingLine?.volume
+                        : detailProduct?.volume}{" "}
+                      m3
+                    </Text>
+                  </View>
+                </View>
+                {arrClassification?.productPackingLines != null ? (
+                  <View>
                     <View>
-                      <View>
-                        <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
-                        <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
-                          <View style={{ flex: 2 }}>
-                            <Text style={[styles.fontSizeWeight, {}]}>
-                              {detailsClassification.baseProductPackingLine?.unitName}
-                            </Text>
-                            <View
-                              style={{ backgroundColor: '#E7EFFF', height: 1 }}
-                            />
-                            <Text style={[styles.fontSizeWeight, {}]}>
-                              {`${commasToDots(detailsClassification.baseProductPackingLine?.amount)} ${dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
-                            </Text>
-                          </View>
-                          <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
-                            <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                            <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailsClassification.productPackingLines?.weight} kg</Text>
-                          </View>
+                      <Text
+                        tx="productScreen.weightExchange"
+                        style={{
+                          fontSize: fontSize.size14,
+                          fontWeight: "bold",
+                        }}
+                      />
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          marginBottom: scaleHeight(12),
+                          justifyContent: "space-between",
+                        }}>
+                        <View style={{ flex: 2 }}>
+                          <Text style={[styles.fontSizeWeight, {}]}>
+                            {
+                              detailsClassification.baseProductPackingLine
+                                ?.unitName
+                            }
+                          </Text>
+                          <View
+                            style={{ backgroundColor: "#E7EFFF", height: 1 }}
+                          />
+                          <Text style={[styles.fontSizeWeight, {}]}>
+                            {`${commasToDots(
+                              detailsClassification.baseProductPackingLine
+                                ?.amount
+                            )} ${
+                              dataClassification.uomId == null
+                                ? detailProduct?.uomGroupLineOutput?.unitName
+                                : dataClassification?.uom?.name
+                            }`}
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flex: 3,
+                            marginHorizontal: scaleWidth(25),
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}>
+                          <Text
+                            tx="detailScreen.weight"
+                            style={[styles.fontSizeWeight]}
+                          />
+                          <Text
+                            style={[
+                              styles.fontSizeWeight,
+                              { marginLeft: scaleWidth(2) },
+                            ]}>
+                            {detailsClassification.productPackingLines?.weight}{" "}
+                            kg
+                          </Text>
+                        </View>
 
-                          <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
-                            <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                            <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailsClassification.productPackingLines?.volume} m3</Text>
-                          </View>
+                        <View
+                          style={{
+                            flex: 3,
+                            alignItems: "center",
+                            flexDirection: "row",
+                          }}>
+                          <Text
+                            tx="detailScreen.volume"
+                            style={[styles.fontSizeWeight]}
+                          />
+                          <Text
+                            style={[
+                              styles.fontSizeWeight,
+                              { marginLeft: scaleWidth(2) },
+                            ]}>
+                            {detailsClassification.productPackingLines?.volume}{" "}
+                            m3
+                          </Text>
                         </View>
                       </View>
                     </View>
-                  ) : null}
-                  {dataClassification?.templatePackingLines != null && arrClassification?.productPackingLines == null ? (
+                  </View>
+                ) : null}
+                {dataClassification?.templatePackingLines != null &&
+                arrClassification?.productPackingLines == null ? (
+                  <View>
                     <View>
-                      <View>
-                        <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
-                        <FlatList
-                          data={dataClassification.templatePackingLines}
-                          renderItem={({ item }) => {
-                            return (
-                              <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
-                                <View style={{ flex: 2 }}>
-                                  <Text style={[styles.fontSizeWeight, {}]}>
-                                    {item.uomGroupLineOutput?.unitName}
-                                  </Text>
-                                  <View
-                                    style={{ backgroundColor: '#E7EFFF', height: 1 }}
-                                  />
-                                  <Text style={[styles.fontSizeWeight, {}]}>
-                                    {`${commasToDots(item.amount)} ${detailProduct?.uomGroupLineOutput?.unitName}`}
-                                  </Text>
-                                </View>
-                                <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
-                                  <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                                  <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
-                                </View>
-
-                                <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
-                                  <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                                  <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
-                                </View>
+                      <Text
+                        tx="productScreen.weightExchange"
+                        style={{
+                          fontSize: fontSize.size14,
+                          fontWeight: "bold",
+                        }}
+                      />
+                      <FlatList
+                        data={dataClassification.templatePackingLines}
+                        renderItem={({ item }) => {
+                          return (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                marginBottom: scaleHeight(12),
+                                justifyContent: "space-between",
+                              }}>
+                              <View style={{ flex: 2 }}>
+                                <Text style={[styles.fontSizeWeight, {}]}>
+                                  {item.uomGroupLineOutput?.unitName}
+                                </Text>
+                                <View
+                                  style={{
+                                    backgroundColor: "#E7EFFF",
+                                    height: 1,
+                                  }}
+                                />
+                                <Text style={[styles.fontSizeWeight, {}]}>
+                                  {`${commasToDots(item.amount)} ${
+                                    detailProduct?.uomGroupLineOutput?.unitName
+                                  }`}
+                                </Text>
                               </View>
-                            )
-                          }}
-                          keyExtractor={(item) => item.id.toString()}
-                          style={{ marginTop: scaleHeight(12) }}
-                        />
-                      </View>
+                              <View
+                                style={{
+                                  flex: 3,
+                                  marginHorizontal: scaleWidth(25),
+                                  flexDirection: "row",
+                                  alignItems: "center",
+                                }}>
+                                <Text
+                                  tx="detailScreen.weight"
+                                  style={[styles.fontSizeWeight]}
+                                />
+                                <Text
+                                  style={[
+                                    styles.fontSizeWeight,
+                                    { marginLeft: scaleWidth(2) },
+                                  ]}>
+                                  {item.weight} kg
+                                </Text>
+                              </View>
+
+                              <View
+                                style={{
+                                  flex: 3,
+                                  alignItems: "center",
+                                  flexDirection: "row",
+                                }}>
+                                <Text
+                                  tx="detailScreen.volume"
+                                  style={[styles.fontSizeWeight]}
+                                />
+                                <Text
+                                  style={[
+                                    styles.fontSizeWeight,
+                                    { marginLeft: scaleWidth(2) },
+                                  ]}>
+                                  {item.volume} m3
+                                </Text>
+                              </View>
+                            </View>
+                          );
+                        }}
+                        keyExtractor={(item) => item.id.toString()}
+                        style={{ marginTop: scaleHeight(12) }}
+                      />
                     </View>
-                  ) : null}
-                </View>
-                : null
-            }
+                  </View>
+                ) : null}
+              </View>
+            ) : null}
           </View>
-          {attributeDetailsClassification?.length !== 0 || attributes?.length !== 0 ? (
+          {attributeDetailsClassification?.length !== 0 ||
+          attributes?.length !== 0 ? (
             <View>
               <View style={styles.viewLine} />
               <TouchableOpacity
@@ -825,8 +1035,12 @@ export const ProductDetailScreen: FC = (item) => {
                   marginHorizontal: scaleWidth(margin.margin_16),
                 }}
                 onPress={toggleDetails}>
-                <Text style={{ color: colors.palette.navyBlue, fontSize: fontSize.size12 }}>
-                  Xem chi tiết thuộc tính{" "}
+                <Text
+                  style={{
+                    color: colors.palette.navyBlue,
+                    fontSize: fontSize.size12,
+                  }}>
+                  {translate("detailScreen.propertyDetails")}
                 </Text>
                 <Images.iconDownBlue
                   width={scaleWidth(16)}
@@ -842,10 +1056,10 @@ export const ProductDetailScreen: FC = (item) => {
             <View style={styles.viewDetails}>
               <View style={styles.viewTitleDetail}>
                 <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
-                  Thuộc tính
+                  {translate("detailScreen.property")}
                 </Text>
                 <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
-                  Giá trị
+                  {translate("detailScreen.value")}
                 </Text>
               </View>
               <View style={styles.viewLine2} />
@@ -880,7 +1094,8 @@ export const ProductDetailScreen: FC = (item) => {
                               paddingHorizontal: scaleWidth(padding.padding_12),
                             }}
                           />
-                          {index !== attributeDetailsClassification?.length - 1 ? (
+                          {index !==
+                          attributeDetailsClassification?.length - 1 ? (
                             <View style={styles.viewLine2} />
                           ) : null}
                         </View>
@@ -889,7 +1104,6 @@ export const ProductDetailScreen: FC = (item) => {
                   ))}
                 </View>
               ) : (
-
                 <View>
                   {attributes?.map((item: any, index: any) => (
                     <View key={index}>
@@ -915,7 +1129,7 @@ export const ProductDetailScreen: FC = (item) => {
                           }}>
                           <ProductAttribute
                             label={dto.name}
-                            value={dto.value.join('/')}
+                            value={dto.value.join("/")}
                             styleAttribute={{
                               paddingHorizontal: scaleWidth(padding.padding_12),
                             }}
@@ -928,7 +1142,6 @@ export const ProductDetailScreen: FC = (item) => {
                     </View>
                   ))}
                 </View>
-
               )}
             </View>
           )}
@@ -941,7 +1154,7 @@ export const ProductDetailScreen: FC = (item) => {
                   paddingVertical: scaleHeight(20),
                   paddingHorizontal: scaleWidth(16),
                 }}>
-                <Text text={"Nhà cung cấp"} style={styles.textTitle} />
+                <Text tx="detailScreen.supplier" style={styles.textTitle} />
                 <View
                   style={{
                     flexDirection: "row",
@@ -969,42 +1182,42 @@ export const ProductDetailScreen: FC = (item) => {
                 </View>
                 {showNCC === true
                   ? arrNCC?.map((item) => {
-                    return (
-                      <View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            paddingVertical: scaleHeight(padding.padding_8),
-                          }}>
-                          <AutoHeightImage
-                            source={{ uri: item?.avatarUrl }}
-                            width={scaleHeight(40)}
-                            height={scaleHeight(40)}
-                            style={{ borderRadius: 40 }}
-                            fallbackSource={Images.imageError}
-                          />
+                      return (
+                        <View>
                           <View
                             style={{
-                              marginLeft: scaleWidth(6),
-                              justifyContent: "center",
+                              flexDirection: "row",
+                              paddingVertical: scaleHeight(padding.padding_8),
                             }}>
-                            <Text style={styles.textNameNCC}>
-                              {item?.vendorCode + "- " + item?.vendorName}
-                            </Text>
-                            <Text style={styles.textNameClassification}>
-                              {item?.phoneNumber}
-                            </Text>
+                            <AutoHeightImage
+                              source={{ uri: item?.avatarUrl }}
+                              width={scaleHeight(40)}
+                              height={scaleHeight(40)}
+                              style={{ borderRadius: 40 }}
+                              fallbackSource={Images.imageError}
+                            />
+                            <View
+                              style={{
+                                marginLeft: scaleWidth(6),
+                                justifyContent: "center",
+                              }}>
+                              <Text style={styles.textNameNCC}>
+                                {item?.vendorCode + "- " + item?.vendorName}
+                              </Text>
+                              <Text style={styles.textNameClassification}>
+                                {item?.phoneNumber}
+                              </Text>
+                            </View>
                           </View>
+                          <View
+                            style={{
+                              height: scaleHeight(1),
+                              backgroundColor: colors.palette.ghostWhite,
+                            }}
+                          />
                         </View>
-                        <View
-                          style={{
-                            height: scaleHeight(1),
-                            backgroundColor: colors.palette.ghostWhite,
-                          }}
-                        />
-                      </View>
-                    );
-                  })
+                      );
+                    })
                   : null}
               </View>
             </View>
@@ -1081,7 +1294,7 @@ export const ProductDetailScreen: FC = (item) => {
         onBackdropPress={() => setModalImages1(false)}>
         <View>
           {detailsClassification.imageUrls &&
-            detailsClassification.imageUrls?.length > 0 ? (
+          detailsClassification.imageUrls?.length > 0 ? (
             <View>
               <Carousel
                 data={detailsClassification.imageUrls}
@@ -1232,10 +1445,11 @@ const styles = StyleSheet.create({
     borderColor: colors.palette.ghostWhite,
   },
   viewWeight: {
-    flexDirection: 'row',
-    alignItems: 'center'
+    flexDirection: "row",
+    alignItems: "center",
   },
   fontSizeWeight: {
-    color: palette.dolphin, fontSize: fontSize.size12,
-  }
+    color: palette.dolphin,
+    fontSize: fontSize.size12,
+  },
 });
