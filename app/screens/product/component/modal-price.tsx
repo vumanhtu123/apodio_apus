@@ -29,6 +29,7 @@ import {
   formatCurrency,
   removeNonNumeric,
 } from "../../../utils/validate";
+import { observer } from "mobx-react-lite";
 const { width, height } = Dimensions.get("screen");
 
 interface PriceModalProps {
@@ -46,7 +47,7 @@ const VIEWMODAL: ViewStyle = {
   margin: 0,
 };
 
-const PriceModal = (props: PriceModalProps) => {
+const PriceModal = observer((props: PriceModalProps) => {
   const {
     isVisible,
     setIsVisible,
@@ -394,6 +395,6 @@ const PriceModal = (props: PriceModalProps) => {
       </KeyboardAvoidingView>
     </Modal>
   );
-};
+});
 
 export default PriceModal;

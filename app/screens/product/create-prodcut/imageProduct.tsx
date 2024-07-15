@@ -1,4 +1,4 @@
-import React, { Dimensions, FlatList, Image, TouchableOpacity, View } from "react-native"
+import React, { Dimensions, FlatList, Image, Linking, TouchableOpacity, View } from "react-native"
 import { scaleHeight, scaleWidth } from "../../../theme"
 import { Images } from "../../../../assets"
 import { styles } from "./styles"
@@ -7,24 +7,180 @@ import Modal from "react-native-modal/dist/modal";
 import Carousel, { Pagination } from "react-native-snap-carousel"
 import { useRef, useState } from "react"
 import { useStores } from "../../../models"
-import { ALERT_TYPE, Toast } from "../../../components/dialog-notification"
+import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification"
 import { translate } from "../../../i18n/translate"
+import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from "../../../utils/requesPermissions"
+import { RESULTS } from "react-native-permissions"
+import { launchCamera, launchImageLibrary } from "react-native-image-picker"
 
 interface ImageProduct {
     arrData: any
-    useCamera: () => void
-    useLibrary: () => void
+    // useCamera: () => void
+    // useLibrary: () => void
     deleteImage: (index: any, item: any) => void
+    uploadImage: (imageArray: any[],
+        checkUploadSlider: boolean,
+        indexItem?: number) => void
 }
 
 export default function ImageProduct(props: ImageProduct) {
-    const { arrData, useCamera, useLibrary, deleteImage } = props
+    const { arrData, deleteImage, uploadImage } = props
 
     const [modalImages, setModalImages] = useState(false);
     const [activeSlide, setActiveSlide] = useState(0);
     const refCarousel = useRef(null);
 
     const { productStore } = useStores()
+
+    const handleCameraUse = async () => {
+        const permissionStatus = await checkCameraPermission();
+        console.log(permissionStatus);
+
+        if (permissionStatus === RESULTS.GRANTED) {
+            console.log("You can use the camera");
+
+            const options = {
+                cameraType: "back",
+                quality: 1,
+                maxHeight: 500,
+                maxWidth: 500,
+            };
+            launchCamera(options, (response) => {
+                console.log("==========> response1233123", response);
+                if (response.didCancel) {
+                    console.log("User cancelled photo picker1");
+                } else if (response.errorCode) {
+                    console.log("ImagePicker Error2: ", response.errorCode);
+                } else if (response.errorCode) {
+                    console.log("User cancelled photo picker1");
+                } else if (response?.assets[0].uri) {
+                    console.log(response?.assets[0].uri);
+                    const imageAssets = [response?.assets[0]];
+                    uploadImage(imageAssets, true, -1);
+                }
+            });
+        } else if (permissionStatus === RESULTS.DENIED) {
+            const newStatus = await requestCameraPermission();
+            if (newStatus === RESULTS.GRANTED) {
+                console.log("Permission granted");
+            } else {
+                console.log("Permission denied");
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: "",
+                    textBody: translate("txtToats.permission_denied"),
+                });
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.permission_allow"),
+                    textBody: translate("txtDialog.allow_permission_in_setting"),
+                    button: translate("common.cancel"),
+                    button2: translate("txtDialog.settings"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        Linking.openSettings();
+                        Dialog.hide();
+                    },
+                });
+            }
+        } else if (permissionStatus === RESULTS.BLOCKED) {
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: "",
+                textBody: translate("txtToats.permission_blocked"),
+            });
+            console.log("Permission blocked, you need to enable it from settings");
+        }
+    };
+
+    const handleLibraryUse = async () => {
+        const permissionStatus = await checkLibraryPermission();
+        console.log(permissionStatus);
+
+        if (permissionStatus === RESULTS.GRANTED) {
+            const options = {
+                cameraType: "back",
+                quality: 1,
+                maxHeight: 500,
+                maxWidth: 500,
+                selectionLimit: 6 - productStore.imagesLimit,
+            };
+            launchImageLibrary(options, (response) => {
+                console.log("==========> response4564546", response);
+                if (response.didCancel) {
+                    console.log("User cancelled photo picker1");
+                } else if (response.errorCode) {
+                    console.log("ImagePicker Error2: ", response.errorCode);
+                } else if (response.errorCode) {
+                    console.log("User cancelled photo picker1");
+                } else if (response?.assets && response.assets.length > 0) {
+                    const selectedAssets = response.assets.map((asset) => asset);
+                    uploadImage(selectedAssets, true, -1);
+                }
+            });
+        } else if (permissionStatus === RESULTS.DENIED) {
+            const newStatus = await requestLibraryPermission();
+            if (newStatus === RESULTS.GRANTED) {
+                console.log("Permission granted");
+            } else {
+                console.log("Permission denied");
+                Toast.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: "",
+                    textBody: translate("txtToats.permission_denied"),
+                });
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.permission_allow"),
+                    textBody: translate("txtDialog.allow_permission_in_setting"),
+                    button: translate("common.cancel"),
+                    button2: translate("txtDialog.settings"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        Linking.openSettings();
+                        Dialog.hide();
+                    },
+                });
+            }
+        } else if (permissionStatus === RESULTS.BLOCKED) {
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: "",
+                textBody: translate("txtToats.permission_blocked"),
+            });
+
+            console.log("Permission blocked, you need to enable it from settings");
+        } else if (permissionStatus === RESULTS.UNAVAILABLE) {
+            const options = {
+                cameraType: "back",
+                quality: 1,
+                maxHeight: 500,
+                maxWidth: 500,
+                selectionLimit: 6 - productStore.imagesLimit,
+            };
+            launchImageLibrary(options, (response) => {
+                console.log("==========> response4564546", response);
+                if (response.didCancel) {
+                    console.log("User cancelled photo picker1");
+                } else if (response.errorCode) {
+                    console.log("ImagePicker Error2: ", response.errorCode);
+                } else if (response.errorCode) {
+                    console.log("User cancelled photo picker1");
+                } else if (response?.assets && response.assets.length > 0) {
+                    const selectedAssets = response.assets.map((asset) => asset);
+                    if (selectedAssets.length + imagesNote.length > 6) {
+                        Toast.show({
+                            type: ALERT_TYPE.DANGER,
+                            title: "",
+                            textBody: translate("txtToats.required_maximum_number_of_photos"),
+                        });
+                    } else {
+                        uploadImage(selectedAssets, true, -1);
+                    }
+                }
+            });
+        }
+    };
 
     return (
         <View>
@@ -39,15 +195,15 @@ export default function ImageProduct(props: ImageProduct) {
                         <TouchableOpacity
                             onPress={() => {
                                 if (arrData.length < 6) {
-                                    // handleLibraryUse()
-                                    useLibrary()
+                                    handleLibraryUse()
+                                    // useLibrary()
                                     productStore.setImagesLimit(arrData.length)
                                 } else {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
                                         textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                      })
+                                    })
                                 }
                             }}
                             style={styles.btnLibrary}>
@@ -59,14 +215,14 @@ export default function ImageProduct(props: ImageProduct) {
                         <TouchableOpacity
                             onPress={() => {
                                 if (arrData.length < 6) {
-                                    // handleCameraUse() 
-                                    useCamera()
+                                    handleCameraUse() 
+                                    // useCamera()
                                 } else {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
                                         textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                      })
+                                    })
                                 }
                             }}
                             style={styles.btnCamera}>
@@ -121,16 +277,16 @@ export default function ImageProduct(props: ImageProduct) {
                         <TouchableOpacity
                             onPress={() => {
                                 if (arrData.length < 6) {
-                                    // handleLibraryUse()
-                                    useLibrary()
+                                    handleLibraryUse()
+                                    // useLibrary()
                                     productStore.setImagesLimit(arrData.length)
                                 } else {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
                                         textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                
-                                      })
+
+                                    })
                                 }
                             }}
                             style={styles.viewBtnCamera}>
@@ -146,15 +302,15 @@ export default function ImageProduct(props: ImageProduct) {
                         <TouchableOpacity
                             onPress={() => {
                                 if (arrData.length < 6) {
-                                    // handleCameraUse() 
-                                    useCamera()
+                                    handleCameraUse() 
+                                    // useCamera()
                                 } else {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
                                         textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                
-                                      })
+
+                                    })
                                 }
                             }}
                             style={styles.viewBtnLibrary}>

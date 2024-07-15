@@ -1,12 +1,17 @@
 import React, { useEffect, useRef, useState } from "react"
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../components/text/text";
-import { Dimensions, FlatList, Image, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
+import { Dimensions, FlatList, Image, Linking, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import { Button } from "../../../components";
 import { Images } from "../../../../assets";
 import Modal from 'react-native-modal'
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useStores } from "../../../models";
+import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
+import { translate } from "../../../i18n";
+import { checkLibraryPermission, requestLibraryPermission } from "../../../utils/requesPermissions";
+import { RESULTS } from "react-native-permissions";
+import { launchImageLibrary } from "react-native-image-picker";
 
 interface ImagesGroup {
     onPressZoom?: ([]) => void,
@@ -15,10 +20,14 @@ interface ImagesGroup {
     arrData: [],
     onPressOpenLibrary?: () => void;
     onchangeData?: (value: any) => void
+    uploadImage?: (imageArray: any[],
+        checkUploadSlider: boolean,
+        indexItem?: number) => void
+    index1?: number
 }
 
 export default function ImagesGroup(props: ImagesGroup) {
-    const { arrData, onPressZoom, onPressDelete ,onPressOpenLibrary, onPressDelete1, onchangeData } = props
+    const { arrData, onPressZoom, onPressDelete ,onPressOpenLibrary, onPressDelete1, onchangeData, uploadImage, index1 } = props
 
     const refCarousel = useRef(null)
     const [isModal, setIsModal] = useState(false)
@@ -43,11 +52,135 @@ export default function ImagesGroup(props: ImagesGroup) {
         return [];
     }
 
+    const handleLibraryUseProduct = async (itemId: any, indexItem: any) => {
+        const permissionStatus = await checkLibraryPermission();
+        console.log(permissionStatus);
+        if (permissionStatus === RESULTS.GRANTED) {
+          const options = {
+            cameraType: "back",
+            quality: 1,
+            maxHeight: 500,
+            maxWidth: 500,
+            selectionLimit: 6 - productStore.imagesLimit,
+          };
+          launchImageLibrary(options, (response) => {
+            console.log("==========> response---Phan loai", response);
+            if (response.didCancel) {
+              console.log("User cancelled photo picker1");
+            } else if (response.errorCode) {
+              console.log("ImagePicker Error2: ", response.errorCode);
+            } else if (response.errorCode) {
+              console.log("User cancelled photo picker1");
+            } else if (response?.assets && response.assets.length > 0) {
+              const selectedAssets = response.assets.map((asset) => asset);
+              console.log(
+                "first ",
+                selectedAssets.length + productStore.imagesLimit
+              );
+              if (selectedAssets.length + productStore.imagesLimit > 6) {
+                Toast.show({
+                  type: ALERT_TYPE.DANGER,
+                  title: "",
+                  textBody: translate("txtToats.required_maximum_number_of_photos"),
+                });
+              } else {
+                uploadImage(selectedAssets, false, indexItem);
+              }
+            }
+          });
+        } else if (permissionStatus === RESULTS.DENIED) {
+          const newStatus = await requestLibraryPermission();
+          if (newStatus === RESULTS.GRANTED) {
+            console.log("Permission granted");
+          } else {
+            console.log("Permission denied");
+            Toast.show({
+              type: ALERT_TYPE.DANGER,
+              title: "",
+              textBody: translate("txtToats.permission_denied"),
+            });
+            Dialog.show({
+              type: ALERT_TYPE.INFO,
+              title: translate("txtDialog.permission_allow"),
+              textBody: translate("txtDialog.allow_permission_in_setting"),
+              button: translate("common.cancel"),
+              button2: translate("txtDialog.settings"),
+              closeOnOverlayTap: false,
+              onPressButton: () => {
+                Linking.openSettings();
+                Dialog.hide();
+              },
+            });
+          }
+        } else if (permissionStatus === RESULTS.BLOCKED) {
+          Toast.show({
+            type: ALERT_TYPE.DANGER,
+            title: "",
+            textBody: translate("txtToats.permission_blocked"),
+          });
+    
+          console.log("Permission blocked, you need to enable it from settings");
+        } else if (permissionStatus === RESULTS.UNAVAILABLE) {
+          const options = {
+            cameraType: "back",
+            quality: 1,
+            maxHeight: 500,
+            maxWidth: 500,
+            selectionLimit: 6 - productStore.imagesLimit,
+          };
+          launchImageLibrary(options, (response) => {
+            console.log("==========> responsePhan loai upload", response);
+            if (response.didCancel) {
+              console.log("User cancelled photo picker1");
+            } else if (response.errorCode) {
+              console.log("ImagePicker Error2: ", response.errorCode);
+            } else if (response.errorCode) {
+              console.log("User cancelled photo picker1");
+            } else if (response?.assets && response.assets.length > 0) {
+              const selectedAssets = response.assets.map((asset) => asset);
+              // uploadImages(selectedAssets, false, indexItem);
+              console.log(
+                "first ",
+                selectedAssets.length + productStore.imagesLimit
+              );
+              if (selectedAssets.length + productStore.imagesLimit > 6) {
+                Toast.show({
+                  type: ALERT_TYPE.DANGER,
+                  title: "",
+                  textBody: translate("txtToats.required_maximum_number_of_photos"),
+                });
+              } else {
+                uploadImage(selectedAssets, false, indexItem);
+              }
+            }
+          });
+        }
+      };
+
     // console.log("arr_image-------", arrData)
     return (
         <View>
             {arrData?.length === 0 ?
-                <TouchableOpacity onPress={onPressOpenLibrary} style={{ width: scaleWidth(68), height: scaleHeight(44) }}>
+                <TouchableOpacity onPress={() => {
+                    if (arrData.length < 6) {
+                      handleLibraryUseProduct(
+                        arrData,
+                        index1
+                      );
+                      productStore.setImagesLimit(
+                        arrData?.length
+                      );
+                    } else {
+                      Toast.show({
+                        type: ALERT_TYPE.DANGER,
+                        title: "",
+                        textBody: translate(
+                          "txtToats.required_maximum_number_of_photos"
+                        ),
+                      });
+                    }
+                  }} 
+                style={{ width: scaleWidth(68), height: scaleHeight(44) }}>
                     <Images.imageUpload />
                 </TouchableOpacity>
                 :
@@ -195,7 +328,25 @@ export default function ImagesGroup(props: ImagesGroup) {
                     ) : null}
                     <View style={{alignItems: 'center'}}>
 
-                    <Button onPress={onPressOpenLibrary} style={{height: scaleHeight(38), width: scaleWidth(127),
+                    <Button onPress={() => {
+                    if (arrData.length < 6) {
+                      handleLibraryUseProduct(
+                        arrData,
+                        index1
+                      );
+                      productStore.setImagesLimit(
+                        arrData?.length
+                      );
+                    } else {
+                      Toast.show({
+                        type: ALERT_TYPE.DANGER,
+                        title: "",
+                        textBody: translate(
+                          "txtToats.required_maximum_number_of_photos"
+                        ),
+                      });
+                    }
+                  }} style={{height: scaleHeight(38), width: scaleWidth(127),
                         borderRadius: 8,
                         borderWidth: scaleWidth(1),
                         borderColor: colors.palette.navyBlue,
