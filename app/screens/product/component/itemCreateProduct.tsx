@@ -144,7 +144,7 @@ export const ItemGroupPrice = observer(
     const [modalRetailPrice, setModalRetailPrice] = useState(false);
     const [modalWholesalePrice, setModalWholesalePrice] = useState(false);
     const [retailPriceProduct, setRetailPriceProduct] = useState([]);
-    const { control } = useFormContext()
+    const { control, setValue, getValues, watch } = useFormContext()
 
     return (
       <View>
@@ -155,7 +155,7 @@ export const ItemGroupPrice = observer(
               <TouchableOpacity
                 style={styles.viewBtnPriceProduct}
                 onPress={() => {
-                  setModalRetailPrice(true), setDataModal(retailPriceProduct);
+                  setModalRetailPrice(true), setDataModal(value);
                 }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View style={{ flex: 1 }}>
@@ -163,21 +163,21 @@ export const ItemGroupPrice = observer(
                       tx={"productScreen.priceRetail"}
                       style={styles.textTitleViewPrice}
                     />
-                    {retailPriceProduct.length > 0 &&
-                      retailPriceProduct.length !== 1 ? (
+                    {value.length > 0 &&
+                      value.length !== 1 ? (
                       <Text
-                        text={convertRetailPrice(retailPriceProduct)}
+                        text={convertRetailPrice(value)}
                         numberOfLines={1}
                         style={styles.textTextField}
                       />
-                    ) : retailPriceProduct.length > 0 &&
-                      retailPriceProduct.length === 1 ? (
+                    ) : value.length > 0 &&
+                      value.length === 1 ? (
                       <Text
                         text={vendorStore.checkSeparator === "DOTS"
                           ? formatCurrency(
-                            removeNonNumeric(retailPriceProduct[0]?.price)
+                            removeNonNumeric(value[0]?.price)
                           )
-                          : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
+                          : addCommas(removeNonNumeric(value[0]?.price))}
                         numberOfLines={1}
                         style={styles.textTextField}
                       />
@@ -257,46 +257,52 @@ export const ItemGroupPrice = observer(
             defaultValue={""}
             name="listPrice"
           />
-          <TouchableOpacity
-            style={styles.viewBtnPriceProduct}
-            onPress={() => {
-              setModalWholesalePrice(true);
-              setDataModal(wholesalePriceProduct);
-            }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View style={{ flex: 1 }}>
-                <Text
-                  tx={"productScreen.priceWholesale"}
-                  style={styles.textTitleViewPrice}
-                />
-                {wholesalePriceProduct.length > 0 &&
-                  wholesalePriceProduct.length !== 1 ? (
-                  <Text
-                    text={convertWholesalePrice(wholesalePriceProduct)}
-                    numberOfLines={1}
-                    style={styles.textTextField}
-                  />
-                ) : wholesalePriceProduct.length > 0 &&
-                  wholesalePriceProduct.length === 1 ? (
-                  <Text
-                    text={vendorStore.checkSeparator === "DOTS"
-                      ? formatCurrency(
-                        removeNonNumeric(wholesalePriceProduct[0]?.price)
-                      )
-                      : addCommas(removeNonNumeric(wholesalePriceProduct[0]?.price))}
-                    numberOfLines={1}
-                    style={styles.textTextField}
-                  />
-                ) : (
-                  <Text
-                    text="0.000 - 0.000"
-                    style={styles.textTextFieldNoData}
-                  />
-                )}
-              </View>
-              <Images.icon_caretRightDown />
-            </View>
-          </TouchableOpacity>
+          <Controller
+            control={control}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TouchableOpacity
+                style={styles.viewBtnPriceProduct}
+                onPress={() => {
+                  setModalWholesalePrice(true);
+                  setDataModal(value);
+                }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      tx={"productScreen.priceWholesale"}
+                      style={styles.textTitleViewPrice}
+                    />
+                    {value.length > 0 &&
+                      value.length !== 1 ? (
+                      <Text
+                        text={convertWholesalePrice(value)}
+                        numberOfLines={1}
+                        style={styles.textTextField}
+                      />
+                    ) : value.length > 0 &&
+                      value.length === 1 ? (
+                      <Text
+                        text={vendorStore.checkSeparator === "DOTS"
+                          ? formatCurrency(
+                            removeNonNumeric(value[0]?.price)
+                          )
+                          : addCommas(removeNonNumeric(value[0]?.price))}
+                        numberOfLines={1}
+                        style={styles.textTextField}
+                      />
+                    ) : (
+                      <Text
+                        text="0.000 - 0.000"
+                        style={styles.textTextFieldNoData}
+                      />
+                    )}
+                  </View>
+                  <Images.icon_caretRightDown />
+                </View>
+              </TouchableOpacity>
+            )}
+            name="wholesalePriceProduct"
+          />
         </View>
         <PriceModal
           isVisible={modalRetailPrice}
@@ -309,7 +315,8 @@ export const ItemGroupPrice = observer(
               : setDataModal([{ min: "", price: "" }]);
           }}
           onConfirm={(data) => {
-            setRetailPriceProduct(data.price);
+            // setRetailPriceProduct(data.price);
+            setValue('retailPriceProduct', data.price)
             setModalRetailPrice(false);
             setDataModal([{ min: "", price: "" }]);
           }}
@@ -326,7 +333,8 @@ export const ItemGroupPrice = observer(
               : setDataModal([{ min: "", price: "" }]);
           }}
           onConfirm={(data) => {
-            setWholesalePriceProduct(data.price);
+            // setWholesalePriceProduct(data.price);
+            setValue('wholesalePriceProduct', data.price)
             setModalWholesalePrice(false);
             setDataModal([]);
           }}

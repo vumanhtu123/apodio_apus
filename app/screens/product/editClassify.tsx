@@ -195,6 +195,17 @@ export const EditClassify: FC = (item) => {
         console.log('first3', dataEdit)
     }, []);
 
+    const arrBrands = [
+        { id: 3746, label: "Mặc định", label2: "DEFAULT" },
+        { id: 4638, label: "Lô", label2: "LOTS" },
+        { id: 4398, label: "Serial", label2: "SERIAL" },
+      ];
+
+    const getLabelByList = (label2: string) => {
+        const item = arrBrands.find((item) => item.label2 === label2);
+        return item ? item.label : "";
+      };
+
     useEffect(() => {
         getCheckUsingProduct();
 
@@ -1169,7 +1180,11 @@ export const EditClassify: FC = (item) => {
                                             ) : retailPriceProduct?.length > 0 &&
                                                 retailPriceProduct?.length === 1 ? (
                                                 <Text
-                                                    text={retailPriceProduct[0]?.price}
+                                                    text={vendorStore.checkSeparator === "DOTS"
+                                                        ? formatCurrency(
+                                                            removeNonNumeric(retailPriceProduct[0]?.price)
+                                                        )
+                                                        : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
                                                     numberOfLines={1}
                                                     style={{
                                                         fontWeight: "500",
