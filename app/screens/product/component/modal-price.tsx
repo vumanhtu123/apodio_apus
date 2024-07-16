@@ -29,6 +29,7 @@ import {
   formatCurrency,
   removeNonNumeric,
 } from "../../../utils/validate";
+import { observer } from "mobx-react-lite";
 import { stylesModalPrice } from "../styles";
 const { width, height } = Dimensions.get("screen");
 
@@ -47,7 +48,7 @@ const VIEWMODAL: ViewStyle = {
   margin: 0,
 };
 
-const PriceModal = (props: PriceModalProps) => {
+const PriceModal = observer((props: PriceModalProps) => {
   const {
     isVisible,
     setIsVisible,
@@ -210,6 +211,11 @@ const PriceModal = (props: PriceModalProps) => {
                         }}
                         value={value}
                         onBlur={onBlur}
+                        valueInput={vendorStore.checkSeparator === "DOTS"
+                          ? formatCurrency(
+                            removeNonNumeric(value)
+                          )
+                          : addCommas(removeNonNumeric(value))}
                         onChangeText={(value) => {
                           onChange(
                             vendorStore.checkSeparator === "DOTS"
@@ -313,6 +319,6 @@ const PriceModal = (props: PriceModalProps) => {
       </KeyboardAvoidingView>
     </Modal>
   );
-};
+});
 
 export default PriceModal;
