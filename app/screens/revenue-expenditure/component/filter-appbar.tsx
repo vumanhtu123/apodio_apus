@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Images } from "../../../../assets";
 import { scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../components";
@@ -23,25 +23,12 @@ export const FilterAppBarComponent = (props: any) => {
 
   console.log("propss", props.date);
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        marginTop: 20,
-        marginBottom: 20,
-        marginHorizontal: 16,
-        alignItems: "center",
-        justifyContent: "space-between",
-      }}>
+    <View style={styles.container}>
       <View
         style={{
           flexDirection: "row",
         }}>
-        <View
-          style={{
-            padding: scaleHeight(8),
-            backgroundColor: "#EEEEEF",
-            borderRadius: scaleHeight(6),
-          }}>
+        <View style={styles.viewCalendar}>
           <TouchableOpacity
             onPress={() => {
               props.onShowCalender();
@@ -50,31 +37,9 @@ export const FilterAppBarComponent = (props: any) => {
           </TouchableOpacity>
         </View>
         {props.date !== null ? (
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#EEEEEF",
-              borderRadius: scaleHeight(8),
-              padding: scaleWidth(2),
-              marginHorizontal: scaleWidth(9),
-            }}>
-            <View
-              style={{
-                backgroundColor: "#FFFFFF",
-                borderRadius: scaleHeight(7),
-                shadowColor: "black",
-                shadowOpacity: 0.2,
-                flexDirection: "row",
-                alignItems: "center",
-              }}>
-              <Text
-                text={props.date}
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  color: "#0078D4",
-                  marginHorizontal: scaleWidth(12),
-                }}></Text>
+          <View style={styles.viewShowDate}>
+            <View style={styles.viewDate}>
+              <Text text={props.date} style={styles.textDate}></Text>
               <TouchableOpacity
                 onPress={() => {
                   props.clear();
@@ -85,14 +50,7 @@ export const FilterAppBarComponent = (props: any) => {
           </View>
         ) : null}
         {props.date !== null ? null : (
-          <View
-            style={{
-              backgroundColor: "#EEEEEF",
-              flexDirection: "row",
-              borderRadius: scaleHeight(8),
-              padding: scaleWidth(2),
-              marginHorizontal: scaleWidth(9),
-            }}>
+          <View style={styles.viewNoDate}>
             {listTitle.map((item, index) => {
               return (
                 <ItemSelector
@@ -123,26 +81,69 @@ const ItemSelector = (item: SelectorProps) => {
       }}>
       <View
         style={
-          item.id == item.index
-            ? {
-                backgroundColor: "#FFFFFF",
-                borderRadius: scaleHeight(7),
-                shadowColor: "black",
-                shadowOpacity: 0.2,
-              }
-            : {}
+          item.id == item.index ? styles.itemSelector : styles.itemNoSelector
         }>
-        <Text
-          text={item.name}
-          style={{
-            fontSize: 12,
-            fontWeight: "400",
-            color: "#242424",
-            textAlign: "center",
-            marginHorizontal: scaleWidth(12),
-            marginVertical: scaleHeight(7),
-          }}></Text>
+        <Text text={item.name} style={styles.textItem}></Text>
       </View>
     </TouchableOpacity>
   );
 };
+
+export const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    marginTop: 20,
+    marginBottom: 20,
+    marginHorizontal: 16,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  viewCalendar: {
+    padding: scaleHeight(8),
+    backgroundColor: "#EEEEEF",
+    borderRadius: scaleHeight(6),
+  },
+  viewShowDate: {
+    flexDirection: "row",
+    backgroundColor: "#EEEEEF",
+    borderRadius: scaleHeight(8),
+    padding: scaleWidth(2),
+    marginHorizontal: scaleWidth(9),
+  },
+  viewDate: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: scaleHeight(7),
+    shadowColor: "black",
+    shadowOpacity: 0.2,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textDate: {
+    fontSize: 12,
+    fontWeight: "400",
+    color: "#0078D4",
+    marginHorizontal: scaleWidth(12),
+  },
+  viewNoDate: {
+    backgroundColor: "#EEEEEF",
+    flexDirection: "row",
+    borderRadius: scaleHeight(8),
+    padding: scaleWidth(2),
+    marginHorizontal: scaleWidth(9),
+  },
+  itemSelector: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: scaleHeight(7),
+    shadowColor: "black",
+    shadowOpacity: 0.2,
+  },
+  itemNoSelector: {},
+  textItem: {
+    fontSize: 12,
+    fontWeight: "400",
+    color: "#242424",
+    textAlign: "center",
+    marginHorizontal: scaleWidth(12),
+    marginVertical: scaleHeight(7),
+  },
+});
