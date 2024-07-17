@@ -97,3 +97,4 @@ export * from "./revenue-expenditure/transfer-money/transfer-money-screen";
 export * from "../screens/revenue-expenditure/expense/expense-screen";
 export * from "../screens/revenue-expenditure/revenue/revenue-screen";
 export * from "./revenue-expenditure/filter-revenue-screen";
+export * from "./ware-house/create-warehouse/create-warehouse";

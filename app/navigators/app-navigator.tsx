@@ -31,8 +31,6 @@ import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
 
-
-
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
@@ -146,6 +144,7 @@ export type NavigatorParamList = {
   expenseScreen: undefined;
   addRevenueScreen: undefined;
   filterRevenueScreen: undefined;
+  warehouse: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -264,14 +263,8 @@ export const AppStack = () => {
       <Stack.Screen name="detailDebt" component={Screens.DetailDebtScreen} />
       <Stack.Screen name="receivable" component={Screens.ReceivableScreen} />
 
-      <Stack.Screen
-        name="addRevenueScreen"
-        component={Screens.RevenueScreen}
-      />
-      <Stack.Screen
-        name="expenseScreen"
-        component={Screens.ExpenseScreen}
-      />
+      <Stack.Screen name="addRevenueScreen" component={Screens.RevenueScreen} />
+      <Stack.Screen name="expenseScreen" component={Screens.ExpenseScreen} />
       <Stack.Screen
         name="detailReceivable"
         component={Screens.DetailReceivable}
@@ -522,12 +515,17 @@ export const AppStack = () => {
         options={{ gestureEnabled: true }}
         component={Screens.FilterRevenueScreen}
       />
+      <Stack.Screen
+        name="warehouse"
+        options={{ gestureEnabled: true }}
+        component={Screens.CreateWareHouseScreen}
+      />
     </Stack.Navigator>
   );
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()
