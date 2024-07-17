@@ -89,7 +89,7 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                     style={{ padding: scaleHeight(16), }}
                 >
 
-                    <View style={{ marginBottom: 20 }}>
+                    <View style={{ marginBottom: scaleWidth(20) }}>
                         <Text tx="selectClient.timeCreate" style={Styles.stylesTitle} />
                         <View style={Styles.flexRow}>
                             <TouchableOpacity style={[sort == "createdAt,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
@@ -110,7 +110,7 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                     </View>
 
 
-                    <View style={{ marginBottom: 20 }}>
+                    <View style={{ marginBottom: scaleWidth(20) }}>
                         <Text tx="selectClient.followName" style={Styles.stylesTitle} />
                         <View style={Styles.flexRow}>
                             <TouchableOpacity style={[sort == "name,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}

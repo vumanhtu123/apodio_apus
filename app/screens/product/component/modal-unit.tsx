@@ -9,12 +9,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import { CustomModal } from '../../../components/custom-modal';
 
 interface UnitModalProps {
-    isVisible: boolean;
-    setIsVisible: () => void;
-    title?: string;
-    titleTx?: TxKeyPath | {};
-    onSave: (value: any) => void
-    onSaveAndChange: (value: any) => void
+  isVisible: boolean;
+  setIsVisible: () => void;
+  title?: string;
+  titleTx?: TxKeyPath | {};
+  onSave: (value: any) => void;
+  onSaveAndChange: (value: any) => void;
 }
 
 const UnitModal = (props: UnitModalProps) => {

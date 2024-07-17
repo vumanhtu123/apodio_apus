@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   textHeader: {
     color: colors.palette.neutral100,
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: fontSize.size16,
     alignSelf: "flex-start",
     // fontFamily: typography.primary.bold,
   },
@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
     marginBottom: scaleHeight(10),
   },
   textTime: {
-    fontSize: 14,
+    fontSize: fontSize.size14,
     color: "#848688",
     marginRight: scaleWidth(16),
     alignSelf: "center",
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    right: 16,
+    right: scaleWidth(16),
     bottom: scaleHeight(11),
   },
 });

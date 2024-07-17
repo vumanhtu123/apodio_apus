@@ -1,5 +1,5 @@
 import { Platform, StyleSheet } from "react-native";
-import { colors, fontSize, padding, palette, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, padding, palette, scaleHeight, scaleWidth } from "../../../theme";
 
 export const styles = StyleSheet.create({
     ROOT: {
@@ -69,8 +69,8 @@ export const styles = StyleSheet.create({
       position: "absolute",
       zIndex: 10,
       // borderBottomEndRadius: 5,
-      borderBottomLeftRadius: 12,
-      borderTopRightRadius: 12,
+      borderBottomLeftRadius: scaleWidth(margin.margin_12),
+      borderTopRightRadius: scaleWidth(margin.margin_12),
       // top : 10,
       right: scaleHeight(0),
     },
@@ -122,9 +122,9 @@ export const styles = StyleSheet.create({
     },
     tabButton: {
       borderRadius: 4,
-      paddingHorizontal: 8,
-      paddingVertical: 8,
-      marginRight: 10,
+      paddingHorizontal: scaleWidth(8),
+      paddingVertical: scaleWidth(8),
+      marginRight: scaleWidth(10),
       borderWidth: 1,
     },
     tabButtonActive: {
@@ -187,8 +187,8 @@ export const styles = StyleSheet.create({
     viewModal: {
         // height: Dimensions.get("screen").height * 0.3,
         backgroundColor: colors.palette.neutral100,
-        borderTopRightRadius: 8,
-        borderTopLeftRadius: 8,
+        borderTopRightRadius: scaleWidth(margin.margin_8),
+        borderTopLeftRadius: scaleWidth(margin.margin_8),
         paddingVertical: scaleHeight(padding.padding_12),
         paddingHorizontal: scaleWidth(padding.padding_16),
         position: "absolute",
@@ -205,8 +205,8 @@ export const styles = StyleSheet.create({
       viewImageSelectVariant: {
         width: scaleWidth(70),
         height: scaleHeight(70),
-        borderRadius: 10,
-        marginRight: 12,
+        borderRadius: scaleWidth(margin.margin_10),
+        marginRight: scaleWidth(10),
     },
     viewBodySelectVariant: {
       flex: 1,

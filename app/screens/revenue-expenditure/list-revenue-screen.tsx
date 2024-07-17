@@ -166,7 +166,9 @@ export const ListRevenueScreen: FC<
                 10.000
               </Text>
             </Text>
-            <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity style={{ flexDirection: "row" }}
+              onPress={() => props.navigation.navigate('moneyManagement')}
+            >
               <Images.ic_Chartbar />
               <Text
                 style={{
@@ -176,7 +178,7 @@ export const ListRevenueScreen: FC<
                 }}>
                 {translate("analysis.report")}
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
           <ItemSum />
           <View style={{ backgroundColor: "#7676801F" }}>

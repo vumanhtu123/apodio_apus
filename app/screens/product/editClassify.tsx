@@ -59,6 +59,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import Modal from "react-native-modal/dist/modal";
 import ImagesGroup from "./component/imageGroup";
 import ItemWeight from "./component/weight-component";
+import ImageProduct from "./create-prodcut/imageProduct";
 
 export const EditClassify: FC = (item) => {
     const route = useRoute();
@@ -328,7 +329,7 @@ export const EditClassify: FC = (item) => {
                     weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
                     unit: {
                         ...item.uomGroupLineOutput,
-                        label: item.uomGroupLineOutput.unitName
+                        label: item.uomGroupLineOutput?.unitName
                     }
                 }
             }) : []) : (dataEdit?.templatePackingLines !== null ? dataEdit?.templatePackingLines?.map((item: any) => {
@@ -459,47 +460,6 @@ export const EditClassify: FC = (item) => {
             console.error("Failed to fetch list unit:", unitResult);
         }
     };
-
-    const requestCameraPermission = async () => {
-        try {
-            if (Platform.OS === "ios") {
-                const result = await request(PERMISSIONS.IOS.CAMERA);
-                return result;
-            } else {
-                const result = await request(PERMISSIONS.ANDROID.CAMERA);
-                return result;
-            }
-        } catch (error) {
-            console.warn(error);
-            return null;
-        }
-    };
-
-    const checkCameraPermission = async () => {
-        try {
-            if (Platform.OS === "ios") {
-                const result = await check(PERMISSIONS.IOS.CAMERA);
-                return result;
-            } else {
-                const result = await check(PERMISSIONS.ANDROID.CAMERA);
-                return result;
-            }
-        } catch (error) {
-            console.warn(error);
-            return null;
-        }
-    };
-
-    const arrBrands = [
-        { id: 3746, label: "Mặc định", label2: "DEFAULT" },
-        { id: 4638, label: "Lô", label2: "LOTS" },
-        { id: 4398, label: "Serial", label2: "SERIAL" },
-    ];
-    const getLabelByList = (label2: string) => {
-        const item = arrBrands.find((item) => item.label2 === label2);
-        return item ? item.label : "";
-    };
-
 
     useEffect(() => {
         if (attributeArr !== undefined) {
@@ -652,7 +612,6 @@ export const EditClassify: FC = (item) => {
                     })
                 };
             });
-            console.log('1')
             arrIdOrigin?.forEach((item) => {
                 let isUnique = true;
                 newArr?.forEach((obj) => {
@@ -677,7 +636,6 @@ export const EditClassify: FC = (item) => {
                     price: Number(formatNumberByString(item.price.toString())),
                 };
             });
-            console.log(newArr, '12345')
             const newArr3 = newArr.map((item: any) => {
                 return {
                     ...item,
@@ -702,7 +660,6 @@ export const EditClassify: FC = (item) => {
                     productPackingLines: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item.productPackingLines)
                 };
             });
-            console.log('2')
             const newArr2 = newArr3?.map((item) => {
                 return {
                     ...item,
@@ -730,28 +687,27 @@ export const EditClassify: FC = (item) => {
                     weight: formatStringToFloat(item.weight1),
                 }
             })
-            console.log('3')
             const doneData = {
-                sku: data.SKU === "" ? null : data.SKU,
+                // sku: data.SKU === "" ? null : data.SKU,
                 name: data.productName,
-                purchaseOk: valuePurchase,
+                // purchaseOk: valuePurchase,
                 imageUrls: imagesNote,
-                saleOk: true,
-                vendorIds: vendor,
-                managementForm: brands.label2,
-                productCategoryId: category.id || null,
-                brandId: brand.id || null,
-                tagIds: selectedItems,
-                hasUomGroupInConfig: valueSwitchUnit,
-                uomId: valueSwitchUnit === false ? uomId.id : null,
-                uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
+                // saleOk: true,
+                // vendorIds: vendor,
+                // managementForm: brands.label2,
+                // productCategoryId: category.id || null,
+                // brandId: brand.id || null,
+                // tagIds: selectedItems,
+                // hasUomGroupInConfig: valueSwitchUnit,
+                // uomId: valueSwitchUnit === false ? uomId.id : null,
+                // uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
                 // hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
-                hasVariantInConfig: hasVariantInConfig === false ? hasVariantInConfig : !checkArrayIsEmptyOrNull(dataCreateProduct),
-                attributeValues: attributeValues,
-                attributeCategoryIds: attributeIds,
-                textAttributes: textAttributes,
-                description: description,
-                productVariants: newArr2,
+                // hasVariantInConfig: hasVariantInConfig === false ? hasVariantInConfig : !checkArrayIsEmptyOrNull(dataCreateProduct),
+                // attributeValues: attributeValues,
+                // attributeCategoryIds: attributeIds,
+                // textAttributes: textAttributes,
+                // description: description,
+                // productVariants: newArr2,
                 retailPrice: dataPrice2,
                 costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
                 listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
@@ -763,7 +719,9 @@ export const EditClassify: FC = (item) => {
                     weight: formatStringToFloat(data.weightOriginal)
                 },
                 productPackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
-                deleteVariantIds: newArr1,
+                // deleteVariantIds: newArr1,
+                hasPrice: true,
+                activated: true,
             }
             console.log('dataCreate===========', JSON.stringify(doneData))
             const result = await productStore?.putClassify(productStore.productId, doneData);
@@ -946,117 +904,6 @@ export const EditClassify: FC = (item) => {
         }
     };
 
-    const handleLibraryUse = async () => {
-        const permissionStatus = await checkLibraryPermission();
-        console.log(permissionStatus);
-
-        if (permissionStatus === RESULTS.GRANTED) {
-            const options = {
-                cameraType: "back",
-                quality: 1,
-                maxHeight: 500,
-                maxWidth: 500,
-                selectionLimit: 6 - productStore.imagesLimit,
-            };
-            launchImageLibrary(options, (response) => {
-                console.log("==========> response4564546", response);
-                if (response.didCancel) {
-                    console.log("User cancelled photo picker1");
-                } else if (response.errorCode) {
-                    console.log("ImagePicker Error2: ", response.errorCode);
-                } else if (response.errorCode) {
-                    console.log("User cancelled photo picker1");
-                } else if (response?.assets && response.assets.length > 0) {
-                    const selectedAssets = response.assets.map((asset) => asset);
-                    //const selectedAssets = response.assets.map((asset) => asset.uri);
-                    //setImagesNote([...imagesNote, ...selectedAssets]);
-                    // uploadImages(selectedAssets, true, -1);
-                    // setModalImage(false);
-                    if (selectedAssets.length + imagesNote.length > 6) {
-                        Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: '',
-                            textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                        })
-
-                    } else {
-                        uploadImages(selectedAssets, true, -1);
-                    }
-                }
-            });
-        } else if (permissionStatus === RESULTS.DENIED) {
-            const newStatus = await requestLibraryPermission();
-            if (newStatus === RESULTS.GRANTED) {
-                console.log("Permission granted");
-
-            } else {
-                console.log("Permission denied");
-                Toast.show({
-                    type: ALERT_TYPE.DANGER,
-                    title: '',
-                    textBody: translate('txtToats.permission_denied'),
-
-                })
-                Dialog.show({
-                    type: ALERT_TYPE.INFO,
-                    title: translate("txtDialog.permission_allow"),
-                    textBody: translate("txtDialog.allow_permission_in_setting"),
-                    button: translate("common.cancel"),
-                    button2: translate("txtDialog.settings"),
-                    closeOnOverlayTap: false,
-                    onPressButton: () => {
-                        Linking.openSettings();
-                        Dialog.hide();
-                    }
-                })
-            }
-        } else if (permissionStatus === RESULTS.BLOCKED) {
-            Toast.show({
-                type: ALERT_TYPE.DANGER,
-                title: '',
-                textBody: translate('txtToats.permission_blocked'),
-
-            })
-
-            console.log("Permission blocked, you need to enable it from settings");
-        } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-            const options = {
-                cameraType: "back",
-                quality: 1,
-                maxHeight: 500,
-                maxWidth: 500,
-                selectionLimit: 6 - productStore.imagesLimit,
-            };
-            launchImageLibrary(options, (response) => {
-                console.log("==========> response4564546", response);
-                if (response.didCancel) {
-                    console.log("User cancelled photo picker1");
-                } else if (response.errorCode) {
-                    console.log("ImagePicker Error2: ", response.errorCode);
-                } else if (response.errorCode) {
-                    console.log("User cancelled photo picker1");
-                } else if (response?.assets && response.assets.length > 0) {
-                    const selectedAssets = response.assets.map((asset) => asset);
-                    //const selectedAssets = response.assets.map((asset) => asset.uri);
-                    //setImagesNote([...imagesNote, ...selectedAssets]);
-                    // uploadImages(selectedAssets, true, -1);
-                    if (selectedAssets.length + imagesNote.length > 6) {
-                        Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: '',
-                            textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                        })
-                    } else {
-                        uploadImages(selectedAssets, true, -1);
-                    }
-                    // setModalImage(false);
-                }
-            });
-        }
-    };
-
     const handleDeleteImage = (index: number) => {
         const newArr = dataCreateProduct.slice();
         newArr[index].imageUrls = [];
@@ -1072,105 +919,6 @@ export const EditClassify: FC = (item) => {
         setDataCreateProduct(newArr);
     };
 
-    const handleLibraryUseProduct = async (itemId: any, indexItem: any) => {
-        const permissionStatus = await checkLibraryPermission();
-        const numberUrl = checkArrayIsEmptyOrNull(
-            dataCreateProduct[indexItem]?.imageUrls
-        )
-            ? 0
-            : dataCreateProduct[indexItem]?.imageUrls?.length;
-        console.log("----------------indexItem-----------------", numberUrl);
-        if (permissionStatus === RESULTS.GRANTED) {
-
-            const options = {
-                cameraType: "back",
-                quality: 1,
-                maxHeight: 500,
-                maxWidth: 500,
-                selectionLimit: 6 - numberUrl,
-            };
-            launchImageLibrary(options, (response) => {
-                console.log("==========> response4564546", response);
-                if (response.didCancel) {
-                    console.log("User cancelled photo picker1");
-                } else if (response.errorCode) {
-                    console.log("ImagePicker Error2: ", response.errorCode);
-                } else if (response.errorCode) {
-                    console.log("User cancelled photo picker1");
-                } else if (response?.assets && response.assets.length > 0) {
-                    const selectedAssets = response.assets.map((asset) => asset);
-                    uploadImages(selectedAssets, false, indexItem);
-                }
-            });
-        } else if (permissionStatus === RESULTS.DENIED) {
-            const newStatus = await requestLibraryPermission();
-            if (newStatus === RESULTS.GRANTED) {
-                console.log("Permission granted");
-
-            } else {
-                console.log("Permission denied");
-                Toast.show({
-                    type: ALERT_TYPE.DANGER,
-                    title: '',
-                    textBody: translate('txtToats.permission_denied'),
-
-                })
-
-                Dialog.show({
-                    type: ALERT_TYPE.INFO,
-                    title: translate("txtDialog.permission_allow"),
-                    textBody: translate("txtDialog.allow_permission_in_setting"),
-                    button: translate("common.cancel"),
-                    button2: translate("txtDialog.settings"),
-                    closeOnOverlayTap: false,
-                    onPressButton: () => {
-                        Linking.openSettings();
-                        Dialog.hide();
-                    }
-                })
-            }
-        } else if (permissionStatus === RESULTS.BLOCKED) {
-            Toast.show({
-                type: ALERT_TYPE.DANGER,
-                title: '',
-                textBody: translate('txtToats.permission_blocked'),
-
-            })
-
-            console.log("Permission blocked, you need to enable it from settings");
-        } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-            const options = {
-                cameraType: "back",
-                quality: 1,
-                maxHeight: 500,
-                maxWidth: 500,
-                selectionLimit: 6 - numberUrl,
-            };
-            launchImageLibrary(options, (response) => {
-                console.log("==========> response4564546", response);
-                if (response.didCancel) {
-                    console.log("User cancelled photo picker1");
-                } else if (response.errorCode) {
-                    console.log("ImagePicker Error2: ", response.errorCode);
-                } else if (response.errorCode) {
-                    console.log("User cancelled photo picker1");
-                } else if (response?.assets && response.assets.length > 0) {
-                    const selectedAssets = response.assets.map((asset) => asset);
-                    if (selectedAssets.length + numberUrl > 6) {
-                        Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: '',
-                            textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                        })
-
-                    } else {
-                        uploadImages(selectedAssets, false, indexItem);
-                    }
-                }
-            });
-        }
-    };
     const handleRemoveImage = (index: number, url: string) => {
         let fileName = url.split("/").pop();
         console.log("handleRemoveImage Slider---Root", fileName);
@@ -1187,13 +935,6 @@ export const EditClassify: FC = (item) => {
     const getConvertedUnitsForGroup = () => {
         return detailUnitGroupData ? detailUnitGroupData.uomGroupLines : [];
     };
-
-    const arrBrand = dataBrand.map((item) => {
-        return { label: item.name, id: item.id };
-    });
-    const arrCategory = dataCategory.map((item: { name: any; id: any }) => {
-        return { label: item.name, id: item.id };
-    });
 
     const handleDeleteProduct = async (index: any, id: any) => {
         Dialog.show({
@@ -1294,173 +1035,13 @@ export const EditClassify: FC = (item) => {
                                 marginHorizontal: scaleWidth(16),
                                 marginVertical: scaleHeight(20),
                             }}>
-                            {imagesNote?.length > 0 ? (
-                                <View
-                                    style={{ flexDirection: "row", marginBottom: scaleHeight(20) }}>
-                                    <View
-                                        style={{
-                                            flexDirection: "column",
-                                            marginRight: scaleHeight(11),
-                                        }}>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                if (imagesNote.length < 6) {
-                                                    handleLibraryUse();
-                                                    productStore.setImagesLimit(imagesNote.length);
-                                                } else {
-                                                    Toast.show({
-                                                        type: ALERT_TYPE.DANGER,
-                                                        title: '',
-                                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                                    })
-                                                }
-                                            }}
-                                            style={styles.btnLibrary}>
-                                            <Images.ic_addImages
-                                                width={scaleWidth(16)}
-                                                height={scaleHeight(16)}
-                                            />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                if (imagesNote.length < 6) {
-                                                    handleCameraUse();
-                                                } else {
-                                                    Toast.show({
-                                                        type: ALERT_TYPE.DANGER,
-                                                        title: '',
-                                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
-                                                    })
-                                                }
-                                            }}
-                                            style={styles.btnCamera}>
-                                            <Images.ic_camera
-                                                width={scaleWidth(16)}
-                                                height={scaleHeight(16)}
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                    <FlatList
-                                        data={imagesNote}
-                                        keyExtractor={(item, index) => index.toString()}
-                                        renderItem={({ item, index }) => (
-                                            <TouchableOpacity
-                                                key={index}
-                                                onPress={() => {
-                                                    setModalImages(true);
-                                                    setActiveSlide(index);
-                                                }}>
-                                                <AutoImage
-                                                    style={{
-                                                        width: scaleWidth(107),
-                                                        height: scaleHeight(70),
-                                                        borderRadius: 8,
-                                                    }}
-                                                    source={{ uri: item }}
-                                                />
-                                                <TouchableOpacity
-                                                    style={{
-                                                        position: "absolute",
-                                                        right: scaleWidth(5),
-                                                        top: scaleHeight(5),
-                                                    }}
-                                                    onPress={() => handleRemoveImage(index, item)}>
-                                                    <Images.circle_close
-                                                        width={scaleWidth(16)}
-                                                        height={scaleHeight(16)}
-                                                    />
-                                                </TouchableOpacity>
-                                            </TouchableOpacity>
-                                        )}
-                                        horizontal
-                                        showsHorizontalScrollIndicator={false}
-                                        ItemSeparatorComponent={() => (
-                                            <View style={{ width: scaleWidth(11) }} />
-                                        )}
-                                    />
-                                </View>
-                            ) : (
-                                <>
-                                    <View
-                                        style={{
-                                            flexDirection: "row",
-                                            marginBottom: scaleHeight(20),
-                                        }}>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                if (imagesNote.length < 6) {
-                                                    handleLibraryUse();
-                                                    productStore.setImagesLimit(imagesNote.length);
-                                                } else {
-                                                    Toast.show({
-                                                        type: ALERT_TYPE.DANGER,
-                                                        title: '',
-                                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                                                    })
-                                                }
-                                            }}
-                                            style={{
-                                                flexDirection: "row",
-                                                alignItems: "center",
-                                                borderWidth: 1,
-                                                borderColor: "#0078d4",
-                                                marginRight: scaleWidth(10),
-                                                borderRadius: 8,
-                                            }}>
-                                            <View
-                                                style={{
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    marginHorizontal: scaleWidth(16),
-                                                    marginVertical: scaleHeight(7),
-                                                }}>
-                                                <Images.ic_addImages
-                                                    width={scaleWidth(16)}
-                                                    height={scaleHeight(16)}
-                                                />
-                                                <Text tx={"createProductScreen.uploadImage"}
-                                                    style={{ fontSize: fontSize.size14, color: "#0078d4" }} />
-                                            </View>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                if (imagesNote.length < 6) {
-                                                    handleCameraUse();
-                                                } else {
-                                                    Toast.show({
-                                                        type: ALERT_TYPE.DANGER,
-                                                        title: '',
-                                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                                                    })
-                                                }
-                                            }}
-                                            style={{
-                                                flexDirection: "row",
-                                                alignItems: "center",
-                                                borderWidth: 1,
-                                                borderColor: "#0078d4",
-                                                borderRadius: 8,
-                                            }}>
-                                            <View
-                                                style={{
-                                                    flexDirection: "row",
-                                                    alignItems: "center",
-                                                    marginHorizontal: scaleWidth(16),
-                                                    marginVertical: scaleHeight(7),
-                                                }}>
-                                                <Images.ic_camera
-                                                    width={scaleWidth(16)}
-                                                    height={scaleHeight(16)}
-                                                />
-                                                <Text tx={"createProductScreen.openCamera"}
-                                                    style={{ fontSize: fontSize.size14, color: "#0078d4" }} />
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                </>
-                            )}
+                            <ImageProduct
+                                arrData={imagesNote}
+                                uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray, checkUploadSlider, indexItem)}
+                                deleteImage={(index, item) => {
+                                    handleRemoveImage(index, item);
+                                }}
+                            />
                             <Controller
                                 control={methods.control}
                                 render={({ field: { onChange, value, onBlur } }) => (
@@ -1631,6 +1212,11 @@ export const EditClassify: FC = (item) => {
                                             }}
                                             value={value}
                                             onBlur={onBlur}
+                                            valueInput={vendorStore.checkSeparator === "DOTS"
+                                                ? formatCurrency(
+                                                    removeNonNumeric(value)
+                                                )
+                                                : addCommas(removeNonNumeric(value))}
                                             showRightIcon={false}
                                             // defaultValue={costPriceProduct?.toString()}
                                             onChangeText={(value) => {
@@ -1673,6 +1259,11 @@ export const EditClassify: FC = (item) => {
                                             }}
                                             value={value}
                                             onBlur={onBlur}
+                                            valueInput={vendorStore.checkSeparator === "DOTS"
+                                                ? formatCurrency(
+                                                    removeNonNumeric(value)
+                                                )
+                                                : addCommas(removeNonNumeric(value))}
                                             // defaultValue={listPriceProduct?.toString()}
                                             showRightIcon={false}
                                             onChangeText={(value) => {
@@ -1734,7 +1325,12 @@ export const EditClassify: FC = (item) => {
                                             ) : wholesalePriceProduct?.length > 0 &&
                                                 wholesalePriceProduct?.length === 1 ? (
                                                 <Text
-                                                    text={wholesalePriceProduct[0]?.price}
+                                                    text={vendorStore.checkSeparator === "DOTS"
+                                                        ? formatCurrency(
+                                                            removeNonNumeric(wholesalePriceProduct[0]?.price)
+                                                        )
+                                                        : addCommas(removeNonNumeric(wholesalePriceProduct[0]?.price))
+                                                    }
                                                     numberOfLines={1}
                                                     style={{
                                                         fontWeight: "500",
@@ -2102,32 +1698,8 @@ export const EditClassify: FC = (item) => {
                                                                 </TouchableOpacity>
                                                                 <ImagesGroup
                                                                     arrData={item.imageUrls || []}
-                                                                    onPressOpenLibrary={() => {
-                                                                        if (item.imageUrls !== undefined) {
-                                                                            if (item.imageUrls?.length < 6) {
-                                                                                handleLibraryUseProduct(
-                                                                                    item.imageUrls,
-                                                                                    index
-                                                                                );
-                                                                                productStore.setImagesLimit(
-                                                                                    item.imageUrls?.length
-                                                                                );
-                                                                            } else {
-                                                                                Toast.show({
-                                                                                    type: ALERT_TYPE.DANGER,
-                                                                                    title: '',
-                                                                                    textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                                                                                })
-
-                                                                            }
-                                                                        } else {
-                                                                            handleLibraryUseProduct(
-                                                                                item.imageUrls,
-                                                                                index
-                                                                            );
-                                                                        }
-                                                                    }}
+                                                                    uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray, checkUploadSlider, indexItem)}
+                                                                    index1={index}
                                                                     onPressDelete={() => handleDeleteImage(index)}
                                                                     onPressDelete1={() =>
                                                                         handleDeleteImageItem(

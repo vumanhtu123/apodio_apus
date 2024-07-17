@@ -1,10 +1,12 @@
 import React, { FC, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Text as TextRN, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text as TextRN, View } from 'react-native';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { useNavigation } from '@react-navigation/native';
 import { Images } from '../../../../../assets';
 import ModalCreateClientFromNumber from './modal-create-client';
 import Modal from 'react-native-modal'
+import en from '../../../../i18n/en';
+import { Text } from '../../../../components';
 
 
 interface ModalProps {
@@ -29,14 +31,14 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
 
 
     const sortOptions = [
-        { type: 'alphabetAsc', label: 'Theo tên từ A - Z' },
-        { type: 'alphabetDesc', label: 'Theo tên từ Z - A' },
-        { type: 'createdDateNCC', label: 'Theo ngày tạo NCC' },
+        { type: 'alphabetAsc', label: en.ClientScreen.aToZ },
+        { type: 'alphabetDesc', label: en.ClientScreen.zToA },
+        { type: 'createdDateNCC', label: en.ClientScreen.byCreationDate },
     ];
 
     const groupOptions = [
-        { type: 'clientBad', label: 'Khách hàng khu vực Hà Nội' },
-        { type: 'clientGoood', label: 'Khách hàng khu vực Đà Nẵng' },
+        { type: 'clientBad', label: en.ClientScreen.customersInHanoiArea },
+        { type: 'clientGoood', label: en.ClientScreen.customersInDaNangArea },
 
     ];
 
@@ -107,15 +109,15 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
                 <View style={styles.modalView}>
                     <TextRN style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Bộ lọc</Text>
+                        <Text style={styles.headerTitle} tx='ClientScreen.filter' ></Text>
                         <TouchableOpacity onPress={setIsVisible}>
-                            <Text style={styles.headerButton}>Hủy</Text>
+                            <Text style={styles.headerButton} tx='common.cancel'></Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.horizontalLine} />
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowSortOption}>
-                            <Text style={styles.groupTitle}>Sắp xếp theo</Text>
+                            <Text style={styles.groupTitle} tx='ClientScreen.sortBy'></Text>
                             <Images.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showSortOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showSortOption && (
@@ -258,7 +260,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginTop: 20,
         marginBottom: 10,
-        color: 'black'
+        color: 'black',
     },
     horizontalLine: {
         height: 1,
