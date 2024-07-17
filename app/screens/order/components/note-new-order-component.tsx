@@ -45,8 +45,8 @@ export const ShowNote = (props: InputNote) => {
     getValues,
   } = useForm();
 
-  useEffect(()=>{
-    if(props.imageNote !== undefined){
+  useEffect(() => {
+    if (props.imageNote !== undefined) {
       setImagesNote(props.imageNote)
     }
   }, [props.imageNote])
@@ -70,8 +70,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchImageLibrary(options, (response) => {
@@ -124,8 +124,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchImageLibrary(options, (response) => {
@@ -164,8 +164,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchCamera(options, (response) => {
@@ -295,12 +295,12 @@ export const ShowNote = (props: InputNote) => {
                   multiline={true}
                   placeholderTx={"order.placeNote"}
                   placeholderTextColor={colors.palette.nero}
-                  //isImportant={true}
-                  // error={errors?.phone?.message}
+                //isImportant={true}
+                // error={errors?.phone?.message}
                 />
               )}
               name="noteText"
-              // rules={{ required: "Address is required" }}
+            // rules={{ required: "Address is required" }}
             />
           </View>
 

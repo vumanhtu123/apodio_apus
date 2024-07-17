@@ -169,7 +169,7 @@ export const styles = StyleSheet.create({
   },
   viewNote: {
     backgroundColor: colors.palette.neutral100,
-    marginVertical: 15,
+    marginVertical: margin.margin_15,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: scaleWidth(padding.padding_16),
@@ -177,7 +177,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   viewTextfieldNote: {
-    fontSize: 12,
+    fontSize: fontSize.size12,
     marginRight: scaleWidth(margin.margin_6),
     backgroundColor: colors.palette.neutral100,
   },

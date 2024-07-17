@@ -11,6 +11,7 @@ export const padding = {
   padding_10: 10,
   padding_12: 12,
   padding_14: 14,
+  padding_15:15,
   padding_16: 16,
   padding_18: 18,
   padding_20: 20,

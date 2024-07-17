@@ -215,17 +215,13 @@ export const SelectApplicablePriceList: FC<
           renderItem={({ item, index }): any => {
             return (
               <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  width: scaleWidth(375),
-                  height: scaleHeight(56),
-                  paddingHorizontal: 16,
+                style={[Styles.itemPriceList, {
+
                   backgroundColor:
                     dataPriceListSelected.id === item.id ? "#DBEFFF" : "white",
                   marginBottom: 1.5,
-                  justifyContent: "space-between",
-                }}
+
+                }]}
                 onPress={() => {
                   console.log("data Item :", item);
                   setWatching(true);
@@ -249,17 +245,13 @@ export const SelectApplicablePriceList: FC<
                     setDataPriceListSelected(item);
                   }}>
                   <View
-                    style={{
-                      borderRadius: scaleHeight(8),
-                      borderWidth: 1,
-                      borderColor: colors.palette.lightGrey,
-                      width: scaleHeight(16),
-                      height: scaleHeight(16),
+                    style={[Styles.dotsPriceList, {
+
                       backgroundColor:
                         dataPriceListSelected.id === item.id
                           ? colors.palette.navyBlue
                           : colors.palette.white,
-                    }}></View>
+                    }]}></View>
                 </TouchableOpacity>
               </TouchableOpacity>
             );
@@ -323,10 +315,10 @@ export const SelectApplicablePriceList: FC<
         </TouchableOpacity>
       </View>
 
-      <SelectFilterModal
+      {/* <SelectFilterModal
         isVisible={isVisible}
         setIsVisible={() => setIsVisible(!isVisible)}
-      />
+      /> */}
     </View>
   );
 });
