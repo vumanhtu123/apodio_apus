@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   },
   textPayStatus: {
     fontWeight: "400",
-    fontSize: 10,
+    fontSize: fontSize.size10,
     color: colors.palette.malachite,
   },
   viewLine: {
@@ -165,7 +165,7 @@ export const styles = StyleSheet.create({
   textPayStatus3: {
     fontWeight: "400",
     lineHeight: 9.68,
-    fontSize: 8,
+    fontSize: fontSize.size8,
     color: colors.palette.malachite,
   },
   viewLineCash: {
@@ -242,7 +242,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 8,
     backgroundColor: colors.palette.navyBlue,
-    height: 52,
+    height: scaleHeight(52),
   },
   viewModal: {
     paddingVertical: scaleHeight(margin.margin_14),
@@ -250,7 +250,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.palette.neutral100,
     borderRadius: 8,
     position: "absolute",
-    bottom: 15,
+    bottom: scaleWidth(15),
     right: 0,
     left: 0,
   },
@@ -304,12 +304,12 @@ export const styles = StyleSheet.create({
     borderColor: '#ddd', // Adjust border color
   },
   stepText: {
-    fontSize: 16,
+    fontSize: fontSize.size16,
     fontWeight: 'bold',
     color: '#333', // Adjust text color
   },
   labelText: {
-    fontSize: 14, // Adjust label text size
+    fontSize: fontSize.size14, // Adjust label text size
     color: '#333', // Adjust label text color
     marginTop: 5, // Adjust spacing between circle and label
   },

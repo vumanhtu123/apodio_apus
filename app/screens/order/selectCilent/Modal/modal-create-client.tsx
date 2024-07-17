@@ -47,7 +47,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     const getAPIcreateClient = useStores();
 
     const checkStatusCompany = (): boolean => {
-        if (selectCustomerType.label == "Cá nhân") {
+        if (selectCustomerType.label == en.ClientScreen.individual) {
             return true
         } else {
             return false
@@ -138,8 +138,8 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     }
 
     const dataFindClient = [
-        { id: 1, title: 'Cá nhân' },
-        { id: 2, title: 'Tổ chức' },
+        { id: 1, title: en.ClientScreen.individual },
+        { id: 2, title: en.ClientScreen.organization },
 
     ]
 
@@ -269,7 +269,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
                         }}
                         isImportant
-                        placeholder="VD Nguyễn Phương Linh"
+                        placeholder={en.ClientScreen.example}
                         RightIconClear={Images.icon_delete2}
                         error={errors?.NameClient?.message}
                     />
@@ -279,13 +279,13 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                 }}
             />
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
-                <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}
+            <View style={styles.viewBottom}>
+                <TouchableOpacity style={styles.btnCancel}
                     onPress={() => resetForm()}
                 >
                     <Text style={{ fontSize: fontSize.size14 }} tx="common.cancel" ></Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width: scaleWidth(166), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}
+                <TouchableOpacity style={styles.btnAdd}
                     onPress={() => {
                         setCheckHind(true)
                         handleSubmit(onSubmit)()
@@ -353,6 +353,29 @@ const styles = StyleSheet.create({
         paddingHorizontal: scaleWidth(18),
         marginVertical: scaleHeight(7)
 
+    },
+    viewBottom: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: scaleHeight(15)
+    },
+    btnCancel: {
+        width: scaleWidth(166),
+        height: scaleHeight(48),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        marginRight: scaleWidth(12),
+        borderRadius: 10,
+        borderColor: '#c8c8c8'
+    },
+    btnAdd: {
+        width: scaleWidth(166),
+        height: scaleHeight(48),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        backgroundColor: '#0078d4'
     },
     // ... (other styles)
 });

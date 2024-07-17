@@ -342,6 +342,9 @@ const en = {
     invoiceType: "Loại hoá đơn",
     createOrderSuccess: "Tạo đơn hàng thành công",
     cart: "Giỏ hàng",
+    phoneNumberIsRequired: "Số điện thoại là bắt buộc",
+    addressIsRequired: "Địa chỉ là bắt buộc",
+    dateIsCannotBeEmpty: "Ngày không được để trống"
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -543,6 +546,17 @@ const en = {
     formatError: "Sai định dạng sô điện thoại",
     startNumber02: "Vui lòng nhập 11 số",
     createClientSuccess: "Tạo khách hàng thành công",
+    individual: "Cá nhân",
+    organization: "Tổ chức",
+    example:"VD Nguyễn Phương Linh",
+    aToZ: "Theo tên từ A - Z",
+    zToA:"Theo tên từ Z - A",
+    byCreationDate: 'Theo ngày tạo NCC',
+    customersInHanoiArea: "Khách hàng khu vực Hà Nội",
+    customersInDaNangArea: "Khách hàng khu vực Đà Nẵng",
+    filter: "Bộ lọc",
+    sortBy: "Sắp xếp theo",
+
   },
   NCCScreen: {
     idSupliers: "Mã nhà cung cấp",
@@ -697,6 +711,19 @@ const en = {
     weightExchange: "Tải trọng theo đơn vị quy đổi",
     editWeight: "Chỉnh sửa tải trọng",
     resetDefault: "Reset về mặc định",
+    youNeedEnterPriceBeforeSelectTax :"Bạn cần nhập giá trước khi chọn thuế",
+    youNeedSelectPaymentMethods:"Bạn cần chọn phương thức thanh toán",
+    cannotPrepayMoreThanTheOrderValue: "Không thể trả trước quá giá trị đơn hàng",
+    guestsNeedToPay: "Khách cần trả lớn hơn số tiền tối thiểu",
+    cannotPay: "Không thể trả trước quá giá trị đối trừ công nợ",
+    amountIsRequired: "Số tiền là bắt buộc",
+    youNeedSelectedClient: "Bạn cần chọn khách hàng",
+    youNeedEnterAddressShip:"Bạn cần nhập địa chỉ giao hàng",
+    youNeedSelectedProduct:"Bạn cần chọn sản phẩm",
+    youNeedSelectedPaymentMethods :"Bạn cần chọn phương thức thanh toán",
+    stocking:"Còn hàng",
+    outOfStock:"Hết hàng",
+
     reset: "Đặt lại",
     addLineWeight: "Thêm tải trọng cho các ĐVT quy đổi",
     conversionRate: "Ty le quy doi",
@@ -878,6 +905,9 @@ const en = {
     createOder: "Xuất hàng",
     createProduct: "Kiểm kho",
     createBatchProduct: "Nhập hàng",
+    isActive: 'Đang hoạt động',
+    save: "Lứu trữ",
+    all: "Tất cả",
   },
 
   GoodsExportBook: {

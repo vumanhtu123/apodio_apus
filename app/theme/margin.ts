@@ -18,6 +18,7 @@ export const margin = {
   margin_30: 30,
   margin_32: 32,
   margin_48: 48,
+  margin_50:50,
   margin_64: 64,
   border_top_left_radius: 16,
   border_top_right_radius: 16,

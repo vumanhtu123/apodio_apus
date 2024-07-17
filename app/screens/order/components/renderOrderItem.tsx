@@ -41,7 +41,7 @@ const RenderOrderItem = ({
         key={item.id}
         disabled={
           item.quantityInventory === 0 ||
-          item.quantityInventory < item.minQuantity
+            item.quantityInventory < item.minQuantity
             ? true
             : false
         }
@@ -58,7 +58,7 @@ const RenderOrderItem = ({
             marginRight: scaleWidth(11),
             opacity:
               item.quantityInventory === 0 ||
-              item.quantityInventory < item.minQuantity
+                item.quantityInventory < item.minQuantity
                 ? 0.5
                 : 1,
           },
@@ -143,7 +143,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="Hết hàng"
+                  text="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -152,7 +152,7 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="Còn hàng"
+                  text="productScreen.stocking"
                 />
               )
             ) : viewProduct === "VIEW_VARIANT" &&
@@ -161,7 +161,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="Hết hàng"
+                  text="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -170,13 +170,13 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="Còn hàng"
+                  text="productScreen.stocking"
                 />
               )
             ) : null}
             {viewProduct === "VIEW_PRODUCT" ? null : item.isSelect === false ? (
               item.quantityInventory === 0 ||
-              item.quantityInventory < item.minQuantity ? null : (
+                item.quantityInventory < item.minQuantity ? null : (
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
@@ -197,7 +197,7 @@ const RenderOrderItem = ({
                 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    if(item.amount == item.minQuantity){
+                    if (item.amount == item.minQuantity) {
                       Dialog.show({
                         type: ALERT_TYPE.INFO,
                         title: translate("productScreen.Notification"),
@@ -210,7 +210,7 @@ const RenderOrderItem = ({
                           Dialog.hide();
                         },
                       });
-                    }else{
+                    } else {
                       handleMinus(item)
                     }
                   }}
@@ -241,14 +241,14 @@ const RenderOrderItem = ({
                     orderStore.checkPriceList === true
                       ? item.amount === item.quantityInventory ||
                         item.amount ===
-                          Math.floor(
-                            item.quantityInventory / item.conversionRate
-                          )
+                        Math.floor(
+                          item.quantityInventory / item.conversionRate
+                        )
                         ? true
                         : false
                       : item.amount === item.quantityInventory
-                      ? true
-                      : false
+                        ? true
+                        : false
                   }
                   style={{ width: "30%", alignItems: "center" }}>
                   <Images.icon_plusGreen />
@@ -265,7 +265,7 @@ const RenderOrderItem = ({
         key={item.id}
         disabled={
           item.quantityInventory === 0 ||
-          item.quantityInventory < item.minQuantity
+            item.quantityInventory < item.minQuantity
             ? true
             : false
         }
@@ -280,7 +280,7 @@ const RenderOrderItem = ({
             width: scaleWidth(343),
             opacity:
               item.quantityInventory === 0 ||
-              item.quantityInventory < item.minQuantity
+                item.quantityInventory < item.minQuantity
                 ? 0.5
                 : 1,
           },
@@ -371,7 +371,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="Hết hàng"
+                  text="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -380,7 +380,7 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="Còn hàng"
+                  text="productScreen.stocking"
                 />
               )
             ) : viewProduct === "VIEW_VARIANT" &&
@@ -389,7 +389,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="Hết hàng"
+                  text="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -398,13 +398,13 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="Còn hàng"
+                  text="productScreen.stocking"
                 />
               )
             ) : null}
             {viewProduct === "VIEW_PRODUCT" ? null : item.isSelect === false ? (
               item.quantityInventory === 0 ||
-              item.quantityInventory < item.minQuantity ? null : (
+                item.quantityInventory < item.minQuantity ? null : (
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
@@ -425,7 +425,7 @@ const RenderOrderItem = ({
                 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    if(item.amount == item.minQuantity){
+                    if (item.amount == item.minQuantity) {
                       Dialog.show({
                         type: ALERT_TYPE.INFO,
                         title: translate("productScreen.Notification"),
@@ -438,7 +438,7 @@ const RenderOrderItem = ({
                           Dialog.hide();
                         },
                       });
-                    }else{
+                    } else {
                       handleMinus(item)
                     }
                   }}
@@ -469,14 +469,14 @@ const RenderOrderItem = ({
                     orderStore.checkPriceList === true
                       ? item.amount === item.quantityInventory ||
                         item.amount ===
-                          Math.floor(
-                            item.quantityInventory / item.conversionRate
-                          )
+                        Math.floor(
+                          item.quantityInventory / item.conversionRate
+                        )
                         ? true
                         : false
                       : item.amount === item.quantityInventory
-                      ? true
-                      : false
+                        ? true
+                        : false
                   }
                   style={{ width: "15%", alignItems: "center" }}>
                   <Images.icon_plusGreen />

@@ -3,7 +3,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header, Screen, Text, TextField } from "../../../components";
 import { Images } from "../../../../assets";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { ModalPayment } from "../components/modal-payment-method";
@@ -176,16 +176,16 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               style={{
                 backgroundColor: "#FEF7E5",
                 flexDirection: "row",
-                paddingHorizontal: 20,
+                paddingHorizontal: padding.padding_20,
                 justifyContent: "flex-start",
-                paddingVertical: 10,
+                paddingVertical: padding.padding_10,
               }}>
               <Images.ic_warning_yellow />
               <Text
                 tx="order.tittle_warning"
                 style={{
                   color: "#242424",
-                  fontSize: 12,
+                  fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}></Text>
             </View>}
@@ -196,11 +196,11 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               fontWeight: "600",
               color: "#FF4956",
               textAlign: "center",
-              marginVertical: 20,
+              marginVertical: margin.margin_20,
             }}>
             {formatVND(formatCurrency(commasToDots(Sum())))}
           </Text>
-          {type === false  ? (
+          {type === false ? (
             <View style={{ flexDirection: "row", marginHorizontal: scaleWidth(16) }}>
               <Text
                 style={{
@@ -241,7 +241,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             <Text
               tx="order.method_payment"
               style={{
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "400",
                 color: "#242424",
               }}></Text>
@@ -280,12 +280,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 keyboardType='numeric'
-                labelTx={type === false && price > debtAmount ? "order.customer_needPaid" : "order.customer_paid" }
+                labelTx={type === false && price > debtAmount ? "order.customer_needPaid" : "order.customer_paid"}
                 style={{
                   marginHorizontal: scaleWidth(16),
                   marginVertical: scaleHeight(8),
                   backgroundColor: "white",
-                  borderRadius: 8,
+                  borderRadius: scaleWidth(8),
                 }}
                 value={value}
                 onBlur={onBlur}
@@ -310,19 +310,19 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   if (Number(formatStringToFloat(value)) >= Number(price)) {
                     setError('price', {
                       type: "validate",
-                      message: "Không thể trả trước quá giá trị đơn hàng",
+                      message: "productScreen.cannotPrepayMoreThanTheOrderValue",
                     })
                   }
                   if (Number(formatStringToFloat(value)) < Number(Sum1())) {
                     setError("price", {
                       type: "validate",
-                      message: 'Khách cần trả lớn hơn số tiền tối thiểu',
+                      message: 'productScreen.guestsNeedToPay',
                     });
                   }
                   if (Number(formatStringToFloat(value)) > Number(credit) && countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
                     setError('price', {
                       type: "validate",
-                      message: "Không thể trả trước quá giá trị đối trừ công nợ",
+                      message: "productScreen.cannotPay",
                     })
                     return
                   }
@@ -337,7 +337,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               />
             )}
             name="price"
-            rules={{ required: "Số tiền là bắt buộc" }}
+            rules={{ required: "productScreen.amountIsRequired" }}
           />
           {/* <View
             style={{
@@ -351,12 +351,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           {warning === true ? null : <View
             style={{
               flexDirection: "row",
-              marginHorizontal: 16,
-              marginVertical: 6,
+              marginHorizontal: margin.margin_16,
+              marginVertical: margin.margin_6,
             }}>
             <Text
               style={{
-                fontSize: 12,
+                fontSize: fontSize.size12,
                 fontWeight: "400",
                 color: "#747475",
               }}
@@ -376,18 +376,18 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             style={{
               backgroundColor: "#0078D4",
               borderRadius: 8,
-              marginHorizontal: 15,
-              marginBottom: 15,
-              marginTop: 5,
+              marginHorizontal: margin.margin_15,
+              marginBottom: margin.margin_15,
+              marginTop: margin.margin_5,
             }}>
             <Text
               tx="order.apply"
               style={{
                 color: "white",
-                fontSize: 14,
+                fontSize: fontSize.size14,
                 fontWeight: "600",
-                marginHorizontal: 50,
-                marginVertical: 12,
+                marginHorizontal: margin.margin_50,
+                marginVertical: margin.margin_12,
                 textAlign: "center",
               }}></Text>
           </View>

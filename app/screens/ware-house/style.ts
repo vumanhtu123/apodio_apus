@@ -83,12 +83,12 @@ export const Styles = StyleSheet.create({
         // backgroundColor:'red', 
         alignItems: 'center',
     },
-    flexrow: {
+    flexRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     txtItemWareHouse: {
-        fontSize: scaleWidth(10),
+        fontSize: scaleWidth(8),
         color: colors.palette.dolphin
     },
     btnPlus: {
@@ -110,7 +110,17 @@ export const Styles = StyleSheet.create({
         paddingHorizontal:scaleWidth(12), 
         paddingVertical:scaleHeight(7)
 
-    }
+    },
+    itemList: { 
+        flex: 1, 
+        flexDirection: 'row', 
+        padding: scaleHeight(6), 
+        borderRadius: scaleWidth(8), 
+        backgroundColor: '#FFFFFF',
+        marginBottom: scaleHeight(12), 
+        alignItems: 'center',
+         
+    },
 
 
 
