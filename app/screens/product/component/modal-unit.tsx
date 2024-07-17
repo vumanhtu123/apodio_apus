@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Dimensions, View, Platform } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Button, Text, TextField } from '../../../components';
@@ -6,7 +6,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { TxKeyPath, translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { useFocusEffect } from '@react-navigation/native';
-import { Loading } from '../../../components/dialog-notification';
 import { CustomModal } from '../../../components/custom-modal';
 
 interface UnitModalProps {
@@ -19,64 +18,58 @@ interface UnitModalProps {
 }
 
 const UnitModal = (props: UnitModalProps) => {
+    console.log('--------re-render---unit----');
     const { isVisible, setIsVisible, title, titleTx, onSave, onSaveAndChange } = props;
-    const actualTitle = titleTx
-        ? translate(titleTx)
-        : title;
+    const actualTitle = useMemo(() => titleTx ? translate(titleTx) : title, [titleTx, title]);
 
     const { control, reset, setValue, getValues, handleSubmit, formState: { errors }, clearErrors } = useForm();
     const { unitStore } = useStores()
     const [textError, setTextError] = useState('');
-    const [showLoading, setShowLoading] = useState(false)
+    const [showLoading, setShowLoading] = useState(false);
 
-    const createUnitName = async (onclickSave: boolean) => {
-        setShowLoading(true)
+    const createUnitName = useCallback(async (onclickSave) => {
+        setShowLoading(true);
         const name = getValues('unit');
-        const unitResult = await unitStore.createUnitName(name)
+        const unitResult = await unitStore.createUnitName(name);
         if (unitResult && unitResult.kind === 'ok') {
             const data = unitResult.result.data;
             const dataModified = {
                 id: data.id,
-                label: data.name
+                label: data.name,
             };
             if (onclickSave) {
-                console.log('--------onSave---111----', dataModified),
-                    onSave(dataModified)
+                onSave(dataModified);
             } else {
-                console.log('--------onSaveAndChange---111----', dataModified),
-                    onSaveAndChange(dataModified)
+                onSaveAndChange(dataModified);
             }
-            setShowLoading(false)
+            setShowLoading(false);
         } else {
-            setShowLoading(false)
-            setTextError(unitResult.result.errorCodes[0].message)
+            setShowLoading(false);
+            setTextError(unitResult.result.errorCodes[0].message);
             console.error('Failed to fetch list unit:', unitResult);
         }
-    }
+    }, [getValues, unitStore, onSave, onSaveAndChange]);
 
-    const saveData = async () => {
-        createUnitName(true)
-        console.log('------saveData----')
-    }
+    const saveData = useCallback(() => {
+        createUnitName(true);
+    }, [createUnitName]);
 
-    const saveAndChange = async () => {
-        createUnitName(false)
-        console.log('------saveAndChange----')
-    }
+    const saveAndChange = useCallback(() => {
+        createUnitName(false);
+    }, [createUnitName]);
 
     useFocusEffect(
         useCallback(() => {
             reset();
             clearErrors();
-        }, [isVisible])
-    )
+        }, [isVisible, reset, clearErrors])
+    );
 
-    const onError = (errors) => {
+    const onError = useCallback((errors) => {
         if (errors.unit) {
             setTextError(errors.unit.message);
-            console.log('------setTextError----')
         }
-    };
+    }, []);
 
     return (
         <CustomModal
@@ -108,8 +101,8 @@ const UnitModal = (props: UnitModalProps) => {
                             value={value}
                             onBlur={onBlur}
                             onChangeText={(value) => {
-                                onChange(value)
-                                setTextError('')
+                                onChange(value);
+                                setTextError('');
                             }}
                             showRightIcon={false}
                             multiline={true}
@@ -153,10 +146,9 @@ const UnitModal = (props: UnitModalProps) => {
                     }}
                     onPress={handleSubmit(saveAndChange, onError)}
                 />
-
             </View>
         </CustomModal>
     );
 };
 
-export default UnitModal;
+export default memo(UnitModal);
