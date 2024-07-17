@@ -29,14 +29,15 @@ interface ProductListProps {
     handleEndReached: () => void;
     isGridView: boolean;
     viewProduct: string;
-    handleProductDetail: (item: any) => void;
-    handleClassifyDetail: (item: any) => void;
+    handleProductDetail: (item: any, hasVariant: boolean) => void;
+    handleClassifyDetail: (item: any, hasVariant: boolean) => void;
     nameDirectory: string;
     isLoadingMore: boolean;
     renderFooter: any;
     searchCategory?: any;
     isRefreshingCategory?: boolean;
     refreshCategory?: () => void;
+    hasVariant?: any
 }
 
 export const ProductList: React.FC<ProductListProps> = ({
@@ -62,6 +63,7 @@ export const ProductList: React.FC<ProductListProps> = ({
     viewProduct,
     handleProductDetail,
     handleClassifyDetail,
+    hasVariant,
     nameDirectory,
     isLoadingMore,
     renderFooter,
@@ -78,9 +80,7 @@ export const ProductList: React.FC<ProductListProps> = ({
             <ActivityIndicator size="large" color="#0000ff" />
         </View>
     );
-    const fetchCategories = async (searchText : any) => {
-        console.log('kkkkkk', searchText)
-    };
+    console.log('zxczxc', hasVariant)
     return (
         <>
             <TouchableOpacity
@@ -163,8 +163,8 @@ export const ProductList: React.FC<ProductListProps> = ({
                 isSearchBarVisible={openSearch}
                 setIndex={setIndex}
                 onSearchChange={searchCategory}
-                isRefreshing = {isRefreshingCategory}
-                onRefresh = {refreshCategory}
+                isRefreshing={isRefreshingCategory}
+                onRefresh={refreshCategory}
             />
             <View style={styles.containerProduct}>
                 <FlatList
@@ -180,12 +180,11 @@ export const ProductList: React.FC<ProductListProps> = ({
                     keyExtractor={(item) => item.id.toString()}
                     ref={flatListRef}
                     onEndReached={handleEndReached}
-                    ListFooterComponent={renderFooter}
+                    // ListFooterComponent={renderFooter}
                     onEndReachedThreshold={0.5}
                     key={isGridView ? "grid" : "list"}
                     numColumns={isGridView ? 3 : 1}
                     columnWrapperStyle={isGridView ? null : null}
-                    // ListEmptyComponent={isRefreshing ? <Loading/> : null}
                     renderItem={({ item, index }) => (
                         <RenderProductItem
                             item={item}
@@ -194,8 +193,8 @@ export const ProductList: React.FC<ProductListProps> = ({
                             viewProduct={viewProduct}
                             handleProductDetail={handleProductDetail}
                             handleClassifyDetail={handleClassifyDetail}
+                            hasVariant={hasVariant}
                         />
-                        // <View></View>
                     )}
                 />
             </View>

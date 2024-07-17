@@ -107,7 +107,7 @@ export class  Api {
         if (token) {
            request.headers!.Authorization = "Bearer " + token;
         }
-        console.log("REQUEST---111: ", request);
+        console.log("REQUEST---111: ", JSON.stringify(request));
       } catch (err) {
         console.log("Catch err", err);
         Loading.hide();

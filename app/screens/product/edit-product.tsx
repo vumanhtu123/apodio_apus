@@ -59,6 +59,8 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import Modal from "react-native-modal/dist/modal";
 import ImagesGroup from "./component/imageGroup";
 import ItemWeight from "./component/weight-component";
+import ImageProduct from "./create-prodcut/imageProduct";
+import { checkLibraryPermission, requestLibraryPermission } from "../../utils/requesPermissions";
 
 export const ProductEditScreen: FC = (item) => {
   const route = useRoute();
@@ -145,9 +147,11 @@ export const ProductEditScreen: FC = (item) => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (dataEdit !== undefined) {
         if(dataEdit.hasVariantInConfig == false){
-          setAddVariant(true)
           setDataGroupAttribute(dataEdit.attributeCategory);
           setVariantInConfig(dataEdit.hasVariantInConfig);
+          if(dataEdit.attributeCategory.length > 0){
+            setAddVariant(true)
+          }
         }
       }
     });
@@ -302,7 +306,7 @@ export const ProductEditScreen: FC = (item) => {
       // setCostPriceProduct(dataEdit?.costPrice);
       // setListPriceProduct(dataEdit?.listPrice);
       // setSku(dataEdit?.sku);
-      if(newDataEdit?.baseTemplatePackingLine !== null){
+      if(newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null){
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -316,7 +320,7 @@ export const ProductEditScreen: FC = (item) => {
           weight1: formatCurrency(commasToDots(item.weight?.toString())), volume: formatCurrency(commasToDots(item.volume?.toString())),
           unit: {
             ...item.uomGroupLineOutput,
-            label: item.uomGroupLineOutput.unitName
+            label: item.uomGroupLineOutput?.unitName
           }
         }
       }))
@@ -358,7 +362,7 @@ export const ProductEditScreen: FC = (item) => {
                 return {
                   unit: {
                     ...newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0],
-                    label: newDataEdit?.uomGroup.uomGroupLines.filter((item1: any) => item1.id === item.uomGroupLineId)[0].unitName
+                    label: newDataEdit?.uomGroup?.uomGroupLines.filter((item1: any) => item1.id === item?.uomGroupLineId)[0]?.unitName
                   },
                   weight1: formatCurrency(commasToDots(item.weight)),
                   volume: formatCurrency(commasToDots(item.volume)),
@@ -657,6 +661,24 @@ export const ProductEditScreen: FC = (item) => {
       });
       hasError = true
     }
+    if (addWeight == true) {
+      const unit = data.weight.flatMap((items: any) => items.unit)
+      const weight1 = data.weight.flatMap((items: any) => items.weight1)
+      const volume = data.weight.flatMap((items: any) => items.volume)
+      const checkUnit = unit.some((item: any) => Object.keys(item).length === 0)
+      const checkWeight1 = weight1.some((item: any) => item?.trim() === "")
+      const checkVolume = volume.some((item: any) => item?.trim() === "")
+      if (checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "") {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "",
+          textBody: translate("txtToats.input_weight"),
+        });
+        hasError = true
+      } else {
+        hasError = false
+      }
+    }
     if (hasError == true) {
     } else {
       const newArr1: never[] = [];
@@ -751,7 +773,8 @@ export const ProductEditScreen: FC = (item) => {
           weight: formatStringToFloat(item.weight1),
         }
       })
-      console.log('3')
+      console.log('--------newArr2-------', JSON.stringify(newArr2))
+      console.log('--------hasVariantInConfig-------', hasVariantInConfig)
       const doneData = {
         sku: data.SKU === "" ? null: data.SKU,
         name: data.productName,
@@ -772,7 +795,7 @@ export const ProductEditScreen: FC = (item) => {
         attributeCategoryIds: attributeIds,
         textAttributes: textAttributes,
         description: description,
-        productVariants: newArr2,
+        productVariants: hasVariantInConfig === false ? [] : newArr2,
         retailPrice: dataPrice2,
         costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
         listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
@@ -810,103 +833,6 @@ export const ProductEditScreen: FC = (item) => {
           closeOnOverlayTap: false
         })
       }
-    }
-  };
-
-  // console.log("dataCreateProduct----------------------", dataCreateProduct);
-  const handleCameraUse = async () => {
-    const permissionStatus = await checkCameraPermission();
-    console.log(permissionStatus);
-
-    if (permissionStatus === RESULTS.GRANTED) {
-      console.log("You can use the camera");
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-      };
-      launchCamera(options, (response) => {
-        console.log("==========> response1233123", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets[0].uri) {
-          console.log(response?.assets[0].uri);
-          const imageAssets = [response?.assets[0]];
-          //setImagesNote([...imagesNote, response?.assets[0].uri]);
-          setModalImage(false);
-          uploadImages(imageAssets, true, -1);
-        }
-      });
-    } else if (permissionStatus === RESULTS.DENIED) {
-      const newStatus = await requestCameraPermission();
-      if (newStatus === RESULTS.GRANTED) {
-        console.log("Permission granted");
-
-      } else {
-        console.log("Permission denied");
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-
-        })
-
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("txtDialog.permission_allow"),
-          textBody: translate("txtDialog.allow_permission_in_setting"),
-          button: translate("common.cancel"),
-          button2: translate("txtDialog.settings"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Linking.openSettings();
-            Dialog.hide();
-          }
-        })
-      }
-    } else if (permissionStatus === RESULTS.BLOCKED) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-
-      })
-
-      console.log("Permission blocked, you need to enable it from settings");
-    }
-  };
-  const requestLibraryPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
-        return result;
-      } else {
-        const result = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const checkLibraryPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await check(PERMISSIONS.IOS.MEDIA_LIBRARY);
-        return result;
-      } else {
-        const result = await check(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
     }
   };
 
@@ -967,117 +893,6 @@ export const ProductEditScreen: FC = (item) => {
     }
   };
 
-  const handleLibraryUse = async () => {
-    const permissionStatus = await checkLibraryPermission();
-    console.log(permissionStatus);
-
-    if (permissionStatus === RESULTS.GRANTED) {
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - productStore.imagesLimit,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          //const selectedAssets = response.assets.map((asset) => asset.uri);
-          //setImagesNote([...imagesNote, ...selectedAssets]);
-          // uploadImages(selectedAssets, true, -1);
-          // setModalImage(false);
-          if (selectedAssets.length + imagesNote.length > 6) {
-            Toast.show({
-              type: ALERT_TYPE.DANGER,
-              title: '',
-              textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-            })
-
-          } else {
-            uploadImages(selectedAssets, true, -1);
-          }
-        }
-      });
-    } else if (permissionStatus === RESULTS.DENIED) {
-      const newStatus = await requestLibraryPermission();
-      if (newStatus === RESULTS.GRANTED) {
-        console.log("Permission granted");
-
-      } else {
-        console.log("Permission denied");
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-
-        })
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("txtDialog.permission_allow"),
-          textBody: translate("txtDialog.allow_permission_in_setting"),
-          button: translate("common.cancel"),
-          button2: translate("txtDialog.settings"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Linking.openSettings();
-            Dialog.hide();
-          }
-        })
-      }
-    } else if (permissionStatus === RESULTS.BLOCKED) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-
-      })
-
-      console.log("Permission blocked, you need to enable it from settings");
-    } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - productStore.imagesLimit,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          //const selectedAssets = response.assets.map((asset) => asset.uri);
-          //setImagesNote([...imagesNote, ...selectedAssets]);
-          // uploadImages(selectedAssets, true, -1);
-          if (selectedAssets.length + imagesNote.length > 6) {
-            Toast.show({
-              type: ALERT_TYPE.DANGER,
-              title: '',
-              textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-            })
-          } else {
-            uploadImages(selectedAssets, true, -1);
-          }
-          // setModalImage(false);
-        }
-      });
-    }
-  };
-
   const handleDeleteImage = (index: number) => {
     const newArr = dataCreateProduct.slice();
     newArr[index].imageUrls = [];
@@ -1093,105 +908,6 @@ export const ProductEditScreen: FC = (item) => {
     setDataCreateProduct(newArr);
   };
 
-  const handleLibraryUseProduct = async (itemId: any, indexItem: any) => {
-    const permissionStatus = await checkLibraryPermission();
-    const numberUrl = checkArrayIsEmptyOrNull(
-      dataCreateProduct[indexItem]?.imageUrls
-    )
-      ? 0
-      : dataCreateProduct[indexItem]?.imageUrls?.length;
-    console.log("----------------indexItem-----------------", numberUrl);
-    if (permissionStatus === RESULTS.GRANTED) {
-
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - numberUrl,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          uploadImages(selectedAssets, false, indexItem);
-        }
-      });
-    } else if (permissionStatus === RESULTS.DENIED) {
-      const newStatus = await requestLibraryPermission();
-      if (newStatus === RESULTS.GRANTED) {
-        console.log("Permission granted");
-
-      } else {
-        console.log("Permission denied");
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          title: '',
-          textBody: translate('txtToats.permission_denied'),
-
-        })
-
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("txtDialog.permission_allow"),
-          textBody: translate("txtDialog.allow_permission_in_setting"),
-          button: translate("common.cancel"),
-          button2: translate("txtDialog.settings"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Linking.openSettings();
-            Dialog.hide();
-          }
-        })
-      }
-    } else if (permissionStatus === RESULTS.BLOCKED) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: '',
-        textBody: translate('txtToats.permission_blocked'),
-
-      })
-
-      console.log("Permission blocked, you need to enable it from settings");
-    } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - numberUrl,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          if (selectedAssets.length + numberUrl > 6) {
-            Toast.show({
-              type: ALERT_TYPE.DANGER,
-              title: '',
-              textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-            })
-
-          } else {
-            uploadImages(selectedAssets, false, indexItem);
-          }
-        }
-      });
-    }
-  };
   const handleRemoveImage = (index: number, url: string) => {
     let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
@@ -1315,175 +1031,13 @@ export const ProductEditScreen: FC = (item) => {
                 marginHorizontal: scaleWidth(16),
                 marginVertical: scaleHeight(20),
               }}>
-              {imagesNote?.length > 0 ? (
-                <View
-                  style={{ flexDirection: "row", marginBottom: scaleHeight(20) }}>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      marginRight: scaleHeight(11),
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleLibraryUse();
-                          productStore.setImagesLimit(imagesNote.length);
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: '',
-                            textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                          })
-
-                        }
-                      }}
-                      style={styles.btnLibrary}>
-                      <Images.ic_addImages
-                        width={scaleWidth(16)}
-                        height={scaleHeight(16)}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleCameraUse();
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: '',
-                            textBody: translate('txtToats.required_maximum_number_of_photos'),
-                          })
-                        }
-                      }}
-                      style={styles.btnCamera}>
-                      <Images.ic_camera
-                        width={scaleWidth(16)}
-                        height={scaleHeight(16)}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <FlatList
-                    data={imagesNote}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => (
-                      <TouchableOpacity
-                        key={index}
-                        onPress={() => {
-                          setModalImages(true);
-                          setActiveSlide(index);
-                        }}>
-                        <AutoImage
-                          style={{
-                            width: scaleWidth(107),
-                            height: scaleHeight(70),
-                            borderRadius: 8,
-                          }}
-                          source={{ uri: item }}
-                        />
-                        <TouchableOpacity
-                          style={{
-                            position: "absolute",
-                            right: scaleWidth(5),
-                            top: scaleHeight(5),
-                          }}
-                          onPress={() => handleRemoveImage(index, item)}>
-                          <Images.circle_close
-                            width={scaleWidth(16)}
-                            height={scaleHeight(16)}
-                          />
-                        </TouchableOpacity>
-                      </TouchableOpacity>
-                    )}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    ItemSeparatorComponent={() => (
-                      <View style={{ width: scaleWidth(11) }} />
-                    )}
-                  />
-                </View>
-              ) : (
-                <>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      marginBottom: scaleHeight(20),
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleLibraryUse();
-                          productStore.setImagesLimit(imagesNote.length);
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: '',
-                            textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                          })
-                        }
-                      }}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderWidth: 1,
-                        borderColor: "#0078d4",
-                        marginRight: scaleWidth(10),
-                        borderRadius: 8,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginHorizontal: scaleWidth(16),
-                          marginVertical: scaleHeight(7),
-                        }}>
-                        <Images.ic_addImages
-                          width={scaleWidth(16)}
-                          height={scaleHeight(16)}
-                        />
-                        <Text tx={"createProductScreen.uploadImage"}
-                          style={{ fontSize: fontSize.size14, color: "#0078d4" }} />
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleCameraUse();
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: '',
-                            textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                          })
-                        }
-                      }}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderWidth: 1,
-                        borderColor: "#0078d4",
-                        borderRadius: 8,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginHorizontal: scaleWidth(16),
-                          marginVertical: scaleHeight(7),
-                        }}>
-                        <Images.ic_camera
-                          width={scaleWidth(16)}
-                          height={scaleHeight(16)}
-                        />
-                        <Text tx={"createProductScreen.openCamera"}
-                          style={{ fontSize: fontSize.size14, color: "#0078d4" }} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </>
-              )}
+              <ImageProduct
+                arrData={imagesNote}
+                uploadImage={(imageArray, checkUploadSlider, indexItem)=> uploadImages(imageArray, checkUploadSlider, indexItem)}
+                deleteImage={(index, item) => {
+                  handleRemoveImage(index, item);
+                }}
+              />
               <Controller
                 control={methods.control}
                 render={({ field: { onChange, value, onBlur } }) => (
@@ -1614,7 +1168,11 @@ export const ProductEditScreen: FC = (item) => {
                       ) : retailPriceProduct?.length > 0 &&
                         retailPriceProduct?.length === 1 ? (
                         <Text
-                          text={retailPriceProduct[0]?.price}
+                          text={vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(
+                                removeNonNumeric(retailPriceProduct[0]?.price)
+                            )
+                            : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
                           numberOfLines={1}
                           style={{
                             fontWeight: "500",
@@ -1658,6 +1216,11 @@ export const ProductEditScreen: FC = (item) => {
                       value={value}
                       onBlur={onBlur}
                       showRightIcon={false}
+                      valueInput={vendorStore.checkSeparator === "DOTS"
+                        ? formatCurrency(
+                          removeNonNumeric(value)
+                        )
+                        : addCommas(removeNonNumeric(value))}
                       // defaultValue={costPriceProduct?.toString()}
                       onChangeText={(value) => {
                         onChange(
@@ -1699,6 +1262,11 @@ export const ProductEditScreen: FC = (item) => {
                       }}
                       value={value}
                       onBlur={onBlur}
+                      valueInput={vendorStore.checkSeparator === "DOTS"
+                        ? formatCurrency(
+                          removeNonNumeric(value)
+                        )
+                        : addCommas(removeNonNumeric(value))}
                       // defaultValue={listPriceProduct?.toString()}
                       showRightIcon={false}
                       onChangeText={(value) => {
@@ -1760,7 +1328,11 @@ export const ProductEditScreen: FC = (item) => {
                       ) : wholesalePriceProduct?.length > 0 &&
                         wholesalePriceProduct?.length === 1 ? (
                         <Text
-                          text={wholesalePriceProduct[0]?.price}
+                          text={vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(
+                                removeNonNumeric(wholesalePriceProduct[0]?.price)
+                            )
+                            : addCommas(removeNonNumeric(wholesalePriceProduct[0]?.price))}
                           numberOfLines={1}
                           style={{
                             fontWeight: "500",
@@ -2253,32 +1825,8 @@ export const ProductEditScreen: FC = (item) => {
                                 </TouchableOpacity>
                                 <ImagesGroup
                                   arrData={item.imageUrls || []}
-                                  onPressOpenLibrary={() => {
-                                    if (item.imageUrls !== undefined) {
-                                      if (item.imageUrls?.length < 6) {
-                                        handleLibraryUseProduct(
-                                          item.imageUrls,
-                                          index
-                                        );
-                                        productStore.setImagesLimit(
-                                          item.imageUrls?.length
-                                        );
-                                      } else {
-                                        Toast.show({
-                                          type: ALERT_TYPE.DANGER,
-                                          title: '',
-                                          textBody: translate('txtToats.required_maximum_number_of_photos'),
-
-                                        })
-
-                                      }
-                                    } else {
-                                      handleLibraryUseProduct(
-                                        item.imageUrls,
-                                        index
-                                      );
-                                    }
-                                  }}
+                                  uploadImage={(imageArray, checkUploadSlider, indexItem)=> uploadImages(imageArray, checkUploadSlider, indexItem)}
+                                  index1={index}
                                   onPressDelete={() => handleDeleteImage(index)}
                                   onPressDelete1={() =>
                                     handleDeleteImageItem(
@@ -2287,11 +1835,11 @@ export const ProductEditScreen: FC = (item) => {
                                     )
                                   }
                                 />
-                                <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'edit' } } as never)}
+                                {addWeight === true ? <TouchableOpacity onPress={() => navigation.navigate({ name: 'editWeight', params: { data: item.weight, check: valueSwitchUnit, unitData: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit, unitOrigin: valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines, index: index, dataCreateProduct: dataCreateProduct, screen: 'edit' } } as never)}
                                   style={{ marginHorizontal: scaleWidth(2), alignItems: 'center', justifyContent: 'center' }}>
                                   <Text tx={'productScreen.weight'} style={[styles.textTitleViewPrice, { color: colors.nero }]} />
                                   <Images.icon_edit />
-                                </TouchableOpacity>
+                                </TouchableOpacity> : false}
                                 <View
                                   style={{
                                     flexDirection: "row",
@@ -2356,7 +1904,11 @@ export const ProductEditScreen: FC = (item) => {
                                         ) : item.retailPrice?.length > 0 &&
                                           item.retailPrice?.length === 1 ? (
                                           <Text
-                                            text={item.retailPrice[0]?.price}
+                                            text={vendorStore.checkSeparator === "DOTS"
+                                              ? formatCurrency(
+                                                  removeNonNumeric(item.retailPrice[0]?.price)
+                                              )
+                                              : addCommas(removeNonNumeric(item.retailPrice[0]?.price))}
                                             style={{
                                               fontWeight: "500",
                                               fontSize: fontSize.size16,
@@ -2399,6 +1951,11 @@ export const ProductEditScreen: FC = (item) => {
                                         }}
                                         value={value}
                                         onBlur={onBlur}
+                                        valueInput={vendorStore.checkSeparator === "DOTS"
+                                          ? formatCurrency(
+                                            removeNonNumeric(value)
+                                          )
+                                          : addCommas(removeNonNumeric(value))}
                                         RightIconClear={Images.icon_delete2}
                                         // error={errors?.priceRetail?.message}
                                         onClearText={() => onChange("")}
@@ -2440,6 +1997,11 @@ export const ProductEditScreen: FC = (item) => {
                                         }}
                                         value={value}
                                         onBlur={onBlur}
+                                        valueInput={vendorStore.checkSeparator === "DOTS"
+                                          ? formatCurrency(
+                                            removeNonNumeric(value)
+                                          )
+                                          : addCommas(removeNonNumeric(value))}
                                         RightIconClear={Images.icon_delete2}
                                         error={errors?.priceRetail?.message}
                                         onClearText={() => onChange("")}
@@ -2519,7 +2081,11 @@ export const ProductEditScreen: FC = (item) => {
                                         ) : item.wholesalePrice?.length > 0 &&
                                           item.wholesalePrice?.length === 1 ? (
                                           <Text
-                                            text={item.wholesalePrice[0]?.price}
+                                            text={vendorStore.checkSeparator === "DOTS"
+                                              ? formatCurrency(
+                                                  removeNonNumeric(item.wholesalePrice[0]?.price)
+                                              )
+                                              : addCommas(removeNonNumeric(item.wholesalePrice[0]?.price))}
                                             style={{
                                               fontWeight: "500",
                                               fontSize: fontSize.size16,

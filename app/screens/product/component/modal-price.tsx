@@ -29,6 +29,8 @@ import {
   formatCurrency,
   removeNonNumeric,
 } from "../../../utils/validate";
+import { observer } from "mobx-react-lite";
+import { stylesModalPrice } from "../styles";
 const { width, height } = Dimensions.get("screen");
 
 interface PriceModalProps {
@@ -46,7 +48,7 @@ const VIEWMODAL: ViewStyle = {
   margin: 0,
 };
 
-const PriceModal = (props: PriceModalProps) => {
+const PriceModal = observer((props: PriceModalProps) => {
   const {
     isVisible,
     setIsVisible,
@@ -134,46 +136,16 @@ const PriceModal = (props: PriceModalProps) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-        style={{ flex: 1, justifyContent: "flex-end", alignItems: "flex-end" }}>
-        <View
-          style={{
-            maxHeight: Dimensions.get("screen").height * 0.6,
-            width: "100%",
-            backgroundColor: colors.palette.neutral100,
-            borderTopRightRadius: 8,
-            borderTopLeftRadius: 8,
-            position: "absolute",
-            bottom: 0,
-          }}>
-          <Text
-            style={{
-              fontWeight: "700",
-              fontSize: fontSize.size14,
-              lineHeight: scaleHeight(24),
-              color: colors.palette.nero,
-              marginLeft: scaleWidth(margin.margin_24),
-              marginVertical: scaleHeight(margin.margin_16),
-            }}
-            tx={actualTitle}
-          />
-          <View
-            style={{
-              height: scaleHeight(1),
-              backgroundColor: colors.palette.ghostWhite,
-            }}
-          />
+        style={stylesModalPrice.keyboardView}>
+        <View style={stylesModalPrice.viewModal}>
+          <Text style={stylesModalPrice.viewTextTittle} tx={actualTitle} />
+          <View style={stylesModalPrice.line} />
           <FlatList
             data={fields}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => {
               return (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    paddingHorizontal: scaleWidth(16),
-                    marginTop: scaleHeight(margin.margin_16),
-                  }}>
+                <View style={stylesModalPrice.viewItem}>
                   <Controller
                     control={control}
                     name={`price.${index}.min`}
@@ -204,7 +176,7 @@ const PriceModal = (props: PriceModalProps) => {
                           showRightIcon={false}
                           isImportant={true}
                           maxLength={15}
-                          placeholder="Nhập SL"
+                          placeholder={translate("productScreen.enterCount")}
                           styleTextError={{
                             maxWidth:
                               (Dimensions.get("screen").width -
@@ -217,7 +189,7 @@ const PriceModal = (props: PriceModalProps) => {
                       </View>
                     )}
                     rules={{
-                      required: "Nhập số lượng tối thiểu",
+                      required: translate("productScreen.enterCountMinimum"),
                       validate: validateUniqueMinQuantity,
                     }}
                   />
@@ -239,6 +211,11 @@ const PriceModal = (props: PriceModalProps) => {
                         }}
                         value={value}
                         onBlur={onBlur}
+                        valueInput={vendorStore.checkSeparator === "DOTS"
+                          ? formatCurrency(
+                            removeNonNumeric(value)
+                          )
+                          : addCommas(removeNonNumeric(value))}
                         onChangeText={(value) => {
                           onChange(
                             vendorStore.checkSeparator === "DOTS"
@@ -250,10 +227,12 @@ const PriceModal = (props: PriceModalProps) => {
                         isImportant={true}
                         showRightIcon={false}
                         maxLength={15}
-                        placeholder="Nhập giá"
+                        placeholder={translate("productScreen.enterPrice")}
                       />
                     )}
-                    rules={{ required: "Nhập giá sản phẩm" }}
+                    rules={{
+                      required: translate("productScreen.enterProduct"),
+                    }}
                   />
                   {fields?.length > 1 ? (
                     <TouchableOpacity onPress={() => remove(index)}>
@@ -275,36 +254,14 @@ const PriceModal = (props: PriceModalProps) => {
                 setModalNotify(true);
               }
             }}
-            style={{
-              height: scaleHeight(38),
-              borderWidth: 1,
-              flexDirection: "row",
-              borderColor: colors.palette.navyBlue,
-              backgroundColor: colors.palette.neutral100,
-              marginHorizontal: scaleWidth(margin.margin_16),
-              alignItems: "center",
-              borderRadius: 8,
-              marginTop: scaleHeight(margin.margin_20),
-              marginBottom: scaleHeight(margin.margin_15),
-            }}>
+            style={stylesModalPrice.buttonAdd}>
             <Images.icon_add />
             <Text
-              text="Thêm khoảng giá"
-              style={{
-                color: colors.palette.navyBlue,
-                fontWeight: "600",
-                fontSize: fontSize.size14,
-                marginLeft: scaleWidth(6),
-              }}
+              tx="productScreen.addPriceRange"
+              style={stylesModalPrice.textAdd}
             />
           </Button>
-          <View
-            style={{
-              marginHorizontal: scaleWidth(margin.margin_16),
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginBottom: scaleHeight(margin.margin_15),
-            }}>
+          <View style={stylesModalPrice.viewCancel}>
             <Button
               onPress={() => {
                 if (
@@ -318,35 +275,13 @@ const PriceModal = (props: PriceModalProps) => {
                 }
               }}
               tx={"productScreen.cancel"}
-              style={{
-                height: scaleHeight(48),
-                backgroundColor: colors.palette.neutral100,
-                borderWidth: 1,
-                borderColor: colors.palette.veryLightGrey,
-                width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
-                borderRadius: 8,
-              }}
-              textStyle={{
-                color: colors.palette.dolphin,
-                fontWeight: "700",
-                fontSize: fontSize.size14,
-                lineHeight: scaleHeight(24),
-              }}
+              style={stylesModalPrice.buttonCancel}
+              textStyle={stylesModalPrice.textCancel}
             />
             <Button
               tx={"productScreen.BtnNotificationAccept"}
-              style={{
-                height: scaleHeight(48),
-                backgroundColor: colors.palette.navyBlue,
-                width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
-                borderRadius: 8,
-              }}
-              textStyle={{
-                color: colors.palette.neutral100,
-                fontWeight: "700",
-                fontSize: fontSize.size14,
-                lineHeight: scaleHeight(24),
-              }}
+              style={stylesModalPrice.buttonAccept}
+              textStyle={stylesModalPrice.textAccept}
               onPress={handleSubmit(onSubmit)}
             />
           </View>
@@ -362,12 +297,7 @@ const PriceModal = (props: PriceModalProps) => {
           content={"productScreen.NotifyCloseModal"}
           titleBTN1="productScreen.cancel"
           titleBTN2="productScreen.BtnNotificationAccept"
-          styleBTN1={{
-            backgroundColor: "white",
-            borderWidth: 1,
-            borderColor: "#d5d5d5",
-            borderRadius: 8,
-          }}
+          styleBTN1={stylesModalPrice.styleBTN1}
           styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
         />
         <Dialog
@@ -389,6 +319,6 @@ const PriceModal = (props: PriceModalProps) => {
       </KeyboardAvoidingView>
     </Modal>
   );
-};
+});
 
 export default PriceModal;

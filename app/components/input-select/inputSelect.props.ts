@@ -9,7 +9,7 @@ export interface InputSelectProps {
   hintTx?: TxKeyPath;
   required?: boolean;
   styleView?: ViewStyle;
-
+  isShowCheckBox?: boolean,
   checkUse?: boolean;
   onPressNotUse?(): void;
   arrData: {}[];

@@ -30,20 +30,25 @@ import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../models";
-import { commasToDots, formatCurrency, formatNumber } from "../../utils/validate";
+import { commasToDots, formatCurrency, formatNumber, formatVND } from "../../utils/validate";
 import ProductAttribute from "./component/productAttribute";
+import { ALERT_TYPE, Dialog } from "../../components/dialog-notification";
+import { translate } from "../../i18n/translate";
 // import ProductAttribute from "./componet/productAttribute";
 
 export const ClassifyDetailScreen: FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const idProduct = route?.params?.data;
+  const hasVariant = route?.params?.hasVariant;
+  const reload = route?.params?.reload;
   const [showDetails, setShowDetails] = useState(false);
   const [showRetailPrice, setShowRetailPrice] = useState(false);
   const [showWholesalePrice, setShowWholesalePrice] = useState(false);
   const [showNCC, setShowNCC] = useState(false);
   const [changeClassification, setChangeClassification] = useState("");
   const [dataClassification, setDataClassification] = useState({});
+  const [dataProductTemplate, setDataProductTemplate] = useState({});
   const [arrImagesProduct, setArrImagesProduct] = useState([]);
   const [arrClassification, setArrClassification] = useState([]);
   const [detailsClassification, setDetailsClassification] = useState([]);
@@ -61,24 +66,26 @@ export const ClassifyDetailScreen: FC = () => {
   const [nameValue, setNameValue] = useState<any>([]);
   const [isChecking, setIsChecking] = useState(true);
   const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
+  const [attributes, setAttributes] = useState<any>([]);
+
   const handleGetDetailClassify = async () => {
     try {
       const response = await productStore.getDetailClassify(productId);
-      console.log("handleGetDetailClassify----------", response);
+      // console.log("handleGetDetailClassify----------", response);
       if (response && response.kind === "ok") {
         const data = response.response.data;
-        console.log("response detail classify", JSON.stringify(response.response.data));
-
+        console.log("handleGetDetailClassify----------", JSON.stringify(data));
         setDetailProduct(data.baseProductPackingLine);
         setDataClassification(data);
         setArrImagesProduct(data.imageUrls);
         setArrClassification(data.productVariants);
-        setArrNCC(data.vendors);
         setAttributeCategory(data.attributeCategory);
+        setArrNCC(data.vendors);
         if (data.productVariants !== undefined) {
           setChangeClassification(data.productVariants[0]?.id);
           setDetailsClassification(data.productVariants[0]);
         }
+        // setDataProductTemplate(data.productTemplate)
         setIsChecking(false);
       } else {
         //setErrorMessage(response.response.errorCodes[0].message);
@@ -92,6 +99,18 @@ export const ClassifyDetailScreen: FC = () => {
     handleGetDetailClassify();
   }, [productId]);
 
+
+  useEffect(() => {
+    console.log("---------useEffect---------reload------------------");
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (reload === true) {
+        handleGetDetailClassify();
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation, reload]);
+
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
     { id: 4638, label: "Lô", label2: "LOTS" },
@@ -104,10 +123,9 @@ export const ClassifyDetailScreen: FC = () => {
 
   const getNameAndValue = () => {
     const nameAndValue: { name: any; value: any }[] = [];
-
-    attributeCategory.forEach((category) => {
-      category.attributeOutputList.forEach((dto) => {
-        dto.productAttributeValue.forEach((attrValue) => {
+    attributeCategory?.forEach((category) => {
+      category.attributeOutputList?.forEach((dto) => {
+        dto.productAttributeValue?.forEach((attrValue) => {
           nameAndValue.push({
             name: dto.name,
             value: attrValue.value,
@@ -118,47 +136,69 @@ export const ClassifyDetailScreen: FC = () => {
     setNameValue(nameAndValue);
     // return nameAndValue;
   };
-  // const result = getNameAndValue();
-  // console.log('result:', result);
-  // getNameAndValue();
+  function extractAttributeInfo(data: any) {
+    if (!data?.attributeCategory || data?.attributeCategory.length === 0) {
+      return [];
+    }
+    const groupedData = data.attributeCategory?.map(category => ({
+      name: category.name,
+      items: category.attributeOutputList?.map(attr => ({
+        value: attr.productAttributeValue.map(val => val.value),
+        name: attr.name,
+      })
+      ) || []
+    }));
+    setAttributes(groupedData)
+    // return groupedData;
+  }
+  useEffect(() => {
+    extractAttributeInfo(dataClassification.productTemplate)
+  }, [dataClassification])
 
-  // useEffect(() => {
-  //     console.log('checkkk', nameValue)
-  // }, [nameValue])
-  // const result = getNameAndValue();
-  // console.log(result);
+
+  console.log('----hasVariant------', hasVariant)
+  const deleteProduct = async () => {
+    const result = await productStore.deleteClassify(productId);
+    console.log("deleteProduct-----------", result);
+    if (result.kind === "ok") {
+      await Dialog.hideDialog();
+      Dialog.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: translate("txtDialog.txt_title_dialog"),
+        button: '',
+        button2: translate("common.ok"),
+        textBody: result.result.message,
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          navigation.goBack()
+          productStore.setReloadProductScreen(true)
+          Dialog.hide();
+        }
+      })
+    } else {
+      await Dialog.hideDialog();
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("productScreen.Notification"),
+        button: translate("common.ok"),
+        textBody: result.result.errorCodes[0].message,
+        closeOnOverlayTap: false
+      })
+      //setErrorContent(result.result.errorCodes[0].message);
+    }
+    //setDialogDeleteProduct(false);
+  };
+
   const toggleDetails = () => {
     setShowDetails(!showDetails);
     getNameAndValue();
+    extractAttributeInfo(dataClassification.productTemplate)
     // selectDataClassification()
   };
-
-  const dataWeightOriginal = [
-    {
-      id: 1,
-      name: "Hộp",
-      weight: 1,
-      volume: 3
-    }
-  ]
-
-  const dataWeightExchange = [
-    {
-      id: 1,
-      kind: "Thùng",
-      boxQuantity: 2,
-      weight: 1,
-      volume: 3
-    },
-    {
-      id: 2,
-      kind: "Pallet",
-      boxQuantity: 3,
-      weight: 1,
-      volume: 3
-    }
-  ]
-
+  useEffect(() => {
+    getNameAndValue();
+    extractAttributeInfo(dataClassification.productTemplate)
+  }, [])
   return (
     <View style={styles.ROOT}>
       <Header
@@ -171,6 +211,21 @@ export const ClassifyDetailScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
+        RightIcon={Images.icon_editWhite}
+        onRightPress={() => navigation.navigate({ name: 'EditClassify', params: { dataEdit: dataClassification, typeVariant: 'variant', nameValue: nameValue, attributes: attributes } } as never)}
+        RightIcon1={Images.icon_trashWhite}
+        onRightPress1={() => {
+          Dialog.show({
+            type: ALERT_TYPE.INFO,
+            title: translate("productScreen.Notification"),
+            button: translate("productScreen.cancel"),
+            button2: translate("productScreen.BtnNotificationAccept"),
+            textBody: translate("productScreen.ProductDelete"),
+            closeOnOverlayTap: false,
+            onPressButton: () =>
+              deleteProduct()
+          })
+        }}
       />
       <SafeAreaView style={{ flex: 1 }}>
         {/* <Screen style={{ flex: 1, marginBottom: scaleHeight(64) }} preset="fixed" > */}
@@ -222,9 +277,11 @@ export const ClassifyDetailScreen: FC = () => {
                 marginLeft: scaleWidth(16),
               }}
               onPress={() =>
-                navigation.navigate("view3D" as any, {
-                  scene: dataClassification?.scene?.url,
-                })
+                navigation.navigate({
+                  name: "view3D", params: {
+                    scene: dataClassification?.scene?.url,
+                  }
+                } as never)
                 // console.log('first' ,)
               }>
               <Images.ic_3d
@@ -311,7 +368,7 @@ export const ClassifyDetailScreen: FC = () => {
                     return (
                       <ProductAttribute
                         label={item.min}
-                        value={formatNumber(item.price)}
+                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
                       />
@@ -322,12 +379,12 @@ export const ClassifyDetailScreen: FC = () => {
               <View>
                 <ProductAttribute
                   labelTx="productScreen.priceCapital"
-                  value={formatNumber(dataClassification?.costPrice ?? 0)}
+                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
                 <ProductAttribute
                   labelTx="productScreen.priceList"
-                  value={formatNumber(dataClassification?.listPrice ?? 0)}
+                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
                   textStyle={{ color: colors.palette.radicalRed }}
                 />
               </View>
@@ -368,11 +425,11 @@ export const ClassifyDetailScreen: FC = () => {
                     />
                     <Text tx="detailScreen.priceProduct" style={styles.textDolphin12} />
                   </View>
-                  {dataClassification.wholesalePrice?.map((item) => {
+                  {dataClassification?.wholesalePrice?.map((item: { min: string | undefined; price: any; }) => {
                     return (
                       <ProductAttribute
                         label={item.min}
-                        value={formatNumber(item.price)}
+                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
                       />
@@ -402,37 +459,45 @@ export const ClassifyDetailScreen: FC = () => {
               />
               <ProductAttribute
                 labelTx="detailScreen.unit"
-                value={dataClassification.uom?.name}
+                value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
               />
             </View>
           </View>
-          <View style={styles.viewLine} />
-          <View style={styles.viewDescribe}>
-            <Text tx={"productScreen.describe"} style={styles.textTitle} />
-            <Text
-              text={dataClassification.description}
-              style={[
-                styles.textDolphin12,
-                {
-                  color: colors.palette.nero,
-                },
-              ]}
-            />
-          </View>
-          <View style={styles.viewLine} />
+          {dataClassification.description ? (
+            <View>
+              <View style={styles.viewLine} />
+              <View style={styles.viewDescribe}>
+                <Text tx={"productScreen.describe"} style={styles.textTitle} />
+                <Text
+                  text={dataClassification.description}
+                  style={[
+                    styles.textDolphin12,
+                    {
+                      color: colors.palette.nero,
+                    },
+                  ]}
+                />
+              </View>
+            </View>
+          ) : null}
+          {dataClassification?.baseProductPackingLine?.volume || dataClassification?.productPackingLines?.length > 0 ? (
+            <View>
+              <View style={styles.viewLine} />
+              <TouchableOpacity
+                style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
 
-
-          <TouchableOpacity
-            style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
-
-            onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
-          >
-            <Text tx="productScreen.weight"
-              style={{ fontSize: fontSize.size14, color: colors.navyBlue, marginRight: scaleWidth(5) }}
-            />
-            <Images.icon_caretDownBlue style={{ transform: [{ rotate: showOrHiddenWeight ? '0deg' : '180deg' }], }} />
-          </TouchableOpacity>
-
+                onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
+              >
+                <Text tx="productScreen.weight"
+                  style={{ fontSize: fontSize.size12, color: colors.navyBlue, marginRight: scaleWidth(5) }}
+                />
+                <Images.icon_caretDownBlue
+                  width={scaleWidth(16)}
+                  height={scaleHeight(16)}
+                  style={{ transform: [{ rotate: showOrHiddenWeight ? '180deg' : '0deg' }], }} />
+              </TouchableOpacity>
+            </View>
+          ) : null}
           {
             showOrHiddenWeight ?
               <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
@@ -444,7 +509,7 @@ export const ClassifyDetailScreen: FC = () => {
                     return ( */}
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
                   <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
-                    {dataClassification.uom?.name}
+                    {dataClassification.uom == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}
                   </Text>
                   <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
                     <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
@@ -459,65 +524,73 @@ export const ClassifyDetailScreen: FC = () => {
                   }}
                   keyExtractor={(item) => item.id.toString()}
                 /> */}
-                <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
-                <FlatList
-                  data={dataClassification.productPackingLines}
-                  renderItem={({ item }) => {
-                    return (
-                      <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
-                        <View style={{ flex: 2 }}>
-                          <Text style={[styles.fontSizeWeight, {}]}>
-                            {item.uomGroupLineOutput?.unitName}
-                          </Text>
-                          <View
-                            style={{ backgroundColor: '#E7EFFF', height: 1 }}
-                          />
-                          <Text style={[styles.fontSizeWeight, {}]}>
-                            {`${commasToDots(item.amount)} ${dataClassification.uom?.name}`}
-                          </Text>
-                        </View>
+                {dataClassification.productPackingLines.length > 0 ? (
+                  <View>
+                    <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
+                    <FlatList
+                      data={dataClassification.productPackingLines}
+                      renderItem={({ item }) => {
+                        return (
+                          <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
+                            <View style={{ flex: 2 }}>
+                              <Text style={[styles.fontSizeWeight, {}]}>
+                                {item.uomGroupLineOutput?.unitName}
+                              </Text>
+                              <View
+                                style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                              />
+                              <Text style={[styles.fontSizeWeight, {}]}>
+                                {`${commasToDots(item.amount)} ${dataClassification.uom == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
+                              </Text>
+                            </View>
 
-                        <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
-                          <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.weight} kg</Text>
-                        </View>
+                            <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                              <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                              <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.weight} kg</Text>
+                            </View>
 
-                        <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
-                          <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                          <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
-                        </View>
-
-                      </View>
-                    )
-                  }}
-                  keyExtractor={(item) => item.id.toString()}
-                  style={{ marginTop: scaleHeight(12) }}
-                />
+                            <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                              <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                              <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
+                            </View>
+                          </View>
+                        )
+                      }}
+                      keyExtractor={(item) => item.id.toString()}
+                      style={{ marginTop: scaleHeight(12) }}
+                    />
+                  </View>
+                ) : null}
 
               </View>
               : null
           }
 
 
-          <View style={styles.viewLine} />
-
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginVertical: scaleHeight(16),
-              marginHorizontal: scaleWidth(margin.margin_16),
-            }}
-            onPress={toggleDetails}>
-            <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5) }} />
-            <Images.iconDownBlue
-              width={scaleWidth(16)}
-              height={scaleHeight(16)}
+          {/* {attributes?.length !== 0 ? ( */}
+          <View>
+            <View style={styles.viewLine} />
+            <TouchableOpacity
               style={{
-                transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                flexDirection: "row",
+                alignItems: "center",
+                marginVertical: scaleHeight(16),
+                marginHorizontal: scaleWidth(margin.margin_16),
               }}
-            />
-          </TouchableOpacity>
+              onPress={toggleDetails}>
+              <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5), fontSize: fontSize.size12 }} />
+              <Images.iconDownBlue
+                width={scaleWidth(16)}
+                height={scaleHeight(16)}
+                style={{
+                  transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
+                }}
+              />
+            </TouchableOpacity>
+
+          </View>
+          {/* ) : null} */}
+
           {showDetails && (
             <View style={styles.viewDetails}>
               <View style={styles.viewTitleDetail}>
@@ -529,7 +602,7 @@ export const ClassifyDetailScreen: FC = () => {
                 </Text>
               </View>
               <View style={styles.viewLine2} />
-              <View
+              {/* <View
                 style={{
                   marginVertical: scaleHeight(margin.margin_12),
                   paddingHorizontal: scaleWidth(padding.padding_12),
@@ -542,27 +615,70 @@ export const ClassifyDetailScreen: FC = () => {
                     color: colors.palette.navyBlue,
                   }} />
               </View>
-              <View style={styles.viewLine2} />
-              {nameValue?.map((item: any, index: number) => (
-                <View
-                  style={{
-                    marginTop: scaleHeight(margin.margin_12),
-                  }}>
-                  <ProductAttribute
-                    label={item.name}
-                    value={item.value}
-                    styleAttribute={{
-                      paddingHorizontal: scaleWidth(padding.padding_12),
-                    }}
-                  />
-                  {index !== attributeDetailsClassification.length - 1 ? (
-                    <View style={styles.viewLine2} />
-                  ) : null}
+              <View style={styles.viewLine2} /> */}
+              {dataClassification?.productTemplate == null ? (
+                <View>
+                  {nameValue?.map((item: any, index: number) => (
+                    <View
+                      style={{
+                        marginTop: scaleHeight(margin.margin_12),
+                      }}>
+                      <ProductAttribute
+                        label={item.name}
+                        value={item.value}
+                        styleAttribute={{
+                          paddingHorizontal: scaleWidth(padding.padding_12),
+                        }}
+                      />
+                      {index !== attributeDetailsClassification.length - 1 ? (
+                        <View style={styles.viewLine2} />
+                      ) : null}
+                    </View>
+                  ))}
                 </View>
-              ))}
+              ) : (
+                <View>
+                  {attributes?.map((item: any, index: any) => (
+                    <View key={index}>
+                      <View
+                        style={{
+                          marginVertical: scaleHeight(margin.margin_12),
+                          paddingHorizontal: scaleWidth(padding.padding_12),
+                        }}>
+                        <Text
+                          style={{
+                            fontWeight: "600",
+                            fontSize: fontSize.size12,
+                            color: colors.palette.navyBlue,
+                          }}>
+                          {item.name}
+                        </Text>
+                      </View>
+                      <View style={styles.viewLine2} />
+                      {item.items?.map((dto: any) => (
+                        <View
+                          style={{
+                            marginTop: scaleHeight(margin.margin_12),
+                          }}>
+                          <ProductAttribute
+                            label={dto.name}
+                            value={dto.value.join('/')}
+                            styleAttribute={{
+                              paddingHorizontal: scaleWidth(padding.padding_12),
+                            }}
+                          />
+                          {index !== attributes?.length - 1 ? (
+                            <View style={styles.viewLine2} />
+                          ) : null}
+                        </View>
+                      ))}
+                    </View>
+                  ))}
+                </View>
+              )}
             </View>
           )}
-          {arrNCC ? (
+          {arrNCC?.length > 0 ? (
             <View>
               <View style={styles.viewLine} />
               <View
