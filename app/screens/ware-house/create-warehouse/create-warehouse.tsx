@@ -18,10 +18,12 @@ import { scaleHeight, scaleWidth } from "../../../theme";
 import { Images } from "../../../../assets";
 import { ConditionsComponent } from "../component/conditions-component";
 import { ConfigInfoMoreComponent } from "../component/config-info-component";
+import { useStores } from "../../../models";
 
 export const CreateWareHouseScreen: FC<
   StackScreenProps<NavigatorParamList, "warehouse">
 > = observer(function CreateWareHouseScreen(props) {
+  const api = useStores();
   const {
     control,
     handleSubmit,
@@ -31,9 +33,57 @@ export const CreateWareHouseScreen: FC<
   });
   const [conditions, setConditions] = useState(false);
   const [config, setConfig] = useState(false);
-  const onSubmit = (data: any) => console.log("tuvm test data", data);
+  const onSubmit = (data: any) => {
+    console.log("tuvm test data", data);
+    onHandleData(data);
+  };
 
-  const onHandleData = () => {};
+  const onHandleData = (data: any) => {
+    api.warehouseStore.postCreateWareHouse({
+      name: data.nameWareHouse,
+      code: data.codeWareHouse ?? "",
+      companyId: 0,
+      branchId: 0,
+      sourceProductType: "INTERNAL",
+      address: data.addressWareHouse,
+      areaCode: "string",
+      hasAdditionalInfo: config,
+      additionalInfo: {
+        latitude: data.latitude,
+        longitude: data.longitude,
+        height: data.height,
+        heightUom: {
+          id: 0,
+          name: "string",
+        },
+        length: data.longs,
+        lengthUom: {
+          id: 0,
+          name: "string",
+        },
+        width: data.width,
+        widthUom: {
+          id: 0,
+          name: "string",
+        },
+        weightCapacity: data.weight,
+        weightCapacityUom: {
+          id: 0,
+          name: "string",
+        },
+        scene: "string",
+      },
+      hasConditionStorage: conditions,
+      conditionStorage: {
+        standardTemperature: data.temperature1,
+        minTemperature: data.temperature2,
+        standardHumidity: data.temperature3,
+      },
+      action: "CREATE",
+      note: "string",
+      isMobile: true,
+    });
+  };
 
   return (
     <View style={stylesWareHouse.containerView}>

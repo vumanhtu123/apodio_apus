@@ -113,6 +113,19 @@ export const Styles = StyleSheet.create({
     paddingHorizontal: scaleWidth(12),
     paddingVertical: scaleHeight(7),
   },
+  itemList: {
+    flex: 1,
+    flexDirection: "row",
+    padding: scaleHeight(6),
+    borderRadius: scaleWidth(8),
+    backgroundColor: "#FFFFFF",
+    marginBottom: scaleHeight(12),
+    alignItems: "center",
+  },
+  flexRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });
 
 export const stylesWareHouse = StyleSheet.create({
@@ -203,14 +216,5 @@ export const stylesWareHouse = StyleSheet.create({
   },
   itemText: {
     fontSize: fontSize.size14,
-  },
-  itemList: {
-    flex: 1,
-    flexDirection: "row",
-    padding: scaleHeight(6),
-    borderRadius: scaleWidth(8),
-    backgroundColor: "#FFFFFF",
-    marginBottom: scaleHeight(12),
-    alignItems: "center",
   },
 });
