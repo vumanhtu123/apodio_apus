@@ -2,7 +2,7 @@ import { Observer, observer } from 'mobx-react-lite';
 import { FC, useEffect, useState } from 'react';
 import React, { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { Text, TextField } from '../../../components';
+import { Switch, Text, TextField } from '../../../components';
 import { InputSelect } from '../../../components/input-select/inputSelect';
 import DropdownModal from './multiSelect';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -13,9 +13,6 @@ import { addCommas, convertRetailPrice, convertWholesalePrice, formatCurrency, r
 import PriceModal from './modal-price';
 
 interface ItemMoreInfo {
-  // dataCategory: {}[];
-  // dataBrand: {}[];
-  // dataTags: {}[];
   defaultTags: {}[];
 }
 interface ItemGroupPrice {
@@ -140,10 +137,8 @@ export const ItemGroupPrice = observer(
   function ItemGroupPrice(props: ItemGroupPrice) {
     const { vendorStore } = useStores()
     const [dataModal, setDataModal] = useState<{}[]>([]);
-    const [wholesalePriceProduct, setWholesalePriceProduct] = useState([]);
     const [modalRetailPrice, setModalRetailPrice] = useState(false);
     const [modalWholesalePrice, setModalWholesalePrice] = useState(false);
-    const [retailPriceProduct, setRetailPriceProduct] = useState([]);
     const { control, setValue, getValues, watch } = useFormContext()
 
     return (
@@ -194,7 +189,6 @@ export const ItemGroupPrice = observer(
             )}
             name="retailPriceProduct"
           />
-
           <Controller
             control={control}
             render={({ field: { onChange, value, onBlur } }) => (
@@ -248,8 +242,6 @@ export const ItemGroupPrice = observer(
                       ? formatCurrency(removeNonNumeric(value))
                       : addCommas(removeNonNumeric(value))
                   );
-                  // setListPriceProduct(value);
-                  // methods.setValue('listPrice', value)
                 }}
                 placeholderTx="productScreen.placeholderPrice"
               />
@@ -315,7 +307,6 @@ export const ItemGroupPrice = observer(
               : setDataModal([{ min: "", price: "" }]);
           }}
           onConfirm={(data) => {
-            // setRetailPriceProduct(data.price);
             setValue('retailPriceProduct', data.price)
             setModalRetailPrice(false);
             setDataModal([{ min: "", price: "" }]);
@@ -333,7 +324,6 @@ export const ItemGroupPrice = observer(
               : setDataModal([{ min: "", price: "" }]);
           }}
           onConfirm={(data) => {
-            // setWholesalePriceProduct(data.price);
             setValue('wholesalePriceProduct', data.price)
             setModalWholesalePrice(false);
             setDataModal([]);
@@ -341,6 +331,143 @@ export const ItemGroupPrice = observer(
           dataAdd={dataModal}
         />
       </View>
+    )
+  })
+
+  interface ItemUnit {
+    detailUnitGroupData: any;
+    valueSwitchUnit: boolean;
+    arrUnitGroupData: any;
+    uomGroupId: {};
+    uomId: {};
+    addUnitOrGroup: ()=> void;
+    onChangeSwitch: ()=> void;
+    onChangeInput: (item: any)=> void;
+  }
+
+export const ItemUnit = observer(
+  function ItemUnit(props: ItemUnit) {
+
+    const getConvertedUnitsForGroup = () => {
+      return props.detailUnitGroupData
+        ? props.detailUnitGroupData.uomGroupLines != null
+          ? props.detailUnitGroupData.uomGroupLines
+          : []
+        : [];
+    };
+
+    return (
+        <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
+          >
+            <View style={styles.viewViewDetail}>
+              <Text
+                tx={
+                  props.valueSwitchUnit
+                    ? "productScreen.unit_group"
+                    : "productScreen.unit"
+                }
+                style={styles.textTitleView}
+              />
+              <View style={styles.viewLineSwitchUnit}>
+                <Text
+                  tx={"productScreen.manage_multiple_units"}
+                  style={styles.textWeight400Dolphin}
+                />
+                <Switch
+                  value={props.valueSwitchUnit}
+                  onToggle={props.onChangeSwitch}
+                />
+              </View>
+              <InputSelect
+                titleTx={
+                  props.valueSwitchUnit
+                    ? "productScreen.unit_group"
+                    : "productScreen.unit"
+                }
+                hintTx={
+                  props.valueSwitchUnit
+                    ? "productScreen.select_unit_group"
+                    : "productScreen.select_unit"
+                }
+                isSearch
+                required={true}
+                arrData={props.arrUnitGroupData}
+                dataDefault={props.valueSwitchUnit ? props.uomGroupId.label : props.uomId.label}
+                onPressChoice={(item)=>props.onChangeInput(item)}
+                styleView={{ marginBottom: scaleHeight(6) }}
+              />
+              <View style={{ marginBottom: scaleHeight(15) }}>
+                <TouchableOpacity
+                  style={{ flexDirection: "row", alignItems: "center" }}
+                  onPress={props.addUnitOrGroup}
+                >
+                  <Images.ic_plusCircleBlue
+                    width={scaleWidth(14)}
+                    height={scaleHeight(14)}
+                  />
+                  <Text
+                    tx={
+                      props.valueSwitchUnit
+                        ? "productScreen.create_unit_group"
+                        : "productScreen.create_unit"
+                    }
+                    style={styles.textWeight400Blue}
+                  />
+                </TouchableOpacity>
+              </View>
+              {props.valueSwitchUnit ? (
+                <>
+                  <View style={styles.viewLineSwitchUnit}>
+                    <Text
+                      tx={"createProductScreen.originalUnit"}
+                      style={{ fontSize: fontSize.size14 }}
+                    />
+                    {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
+                    {props.detailUnitGroupData ? (
+                      <Text style={styles.textWeight600}>
+                        {props.detailUnitGroupData.originalUnit.name}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <View style={styles.viewLineSwitchUnit}>
+                    <Text
+                      tx={"createProductScreen.conversion"}
+                      style={{ fontSize: fontSize.size14 }}
+                    />
+                    <Text
+                      tx={"createProductScreen.conversionRate"}
+                      style={styles.textWeight600}
+                    />
+                  </View>
+                  {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
+                    <View key={index} style={styles.viewLineSwitchUnit}>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Images.ic_arrowDownRight
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                        <Text
+                          style={{
+                            fontSize: fontSize.size14,
+                            marginHorizontal: scaleWidth(6),
+                          }}
+                        >
+                          {item.unitName}
+                        </Text>
+                      </View>
+                      <Text style={styles.textWeight600}>
+                        {item.conversionRate}{" "}
+                        {props.detailUnitGroupData?.originalUnit?.name}
+                      </Text>
+                    </View>
+                  ))}
+                </>
+              ) : null}
+            </View>
+          </View>
     )
   })
 
@@ -386,4 +513,22 @@ const styles = StyleSheet.create({
     color: colors.palette.nero,
     lineHeight: scaleHeight(24),
   },
+  viewLineSwitchUnit: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: scaleHeight(15),
+  },
+  textWeight400Dolphin: {
+    fontSize: fontSize.size13,
+    fontWeight: "400",
+    color: colors.palette.dolphin,
+  },
+  textWeight400Blue: {
+    fontSize: fontSize.size12,
+    fontWeight: "400",
+    color: colors.palette.navyBlue,
+    marginLeft: scaleWidth(4),
+  },
+  textWeight600: { fontSize: fontSize.size14, fontWeight: "600" },
 })

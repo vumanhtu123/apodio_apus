@@ -146,7 +146,7 @@ const UnitModal = (props: UnitModalProps) => {
         <Button
           tx={"productScreen.saveAndChange"}
           style={stylesModalInit.buttonSaveChange}
-          textStyle={stylesModalInit.textButtonSave}
+          textStyle={stylesModalInit.textButtonSaveChange}
           onPress={handleSubmit(saveAndChange, onError)}
         />
       </View>

@@ -607,6 +607,24 @@ export const EditClassify: FC = (item) => {
             });
             hasError = true
         }
+        if (addWeight == true) {
+            const unit = data.weight?.flatMap((items: any) => items.unit)
+            const weight1 = data.weight?.flatMap((items: any) => items.weight1)
+            const volume = data.weight?.flatMap((items: any) => items.volume)
+            const checkUnit = unit?.some((item: any) => Object.keys(item).length === 0)
+            const checkWeight1 = weight1?.some((item: any) => item?.trim() === "")
+            const checkVolume = volume?.some((item: any) => item?.trim() === "")
+            if (checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "") {
+              Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: "",
+                textBody: translate("txtToats.input_weight"),
+              });
+              hasError = true
+            } else {
+              hasError = false
+            }
+          }
         if (hasError == true) {
         } else {
             const newArr1: never[] = [];
@@ -637,13 +655,13 @@ export const EditClassify: FC = (item) => {
             });
             const dataPrice2 = retailPriceProduct?.map((item: any) => {
                 return {
-                    min: item.min,
+                    min: Number(formatNumberByString(item.min.toString())),
                     price: Number(formatNumberByString(item.price.toString())),
                 };
             });
             const dataPrice = wholesalePriceProduct?.map((item: any) => {
                 return {
-                    min: item.min,
+                    min: Number(formatNumberByString(item.min.toString())),
                     price: Number(formatNumberByString(item.price.toString())),
                 };
             });
