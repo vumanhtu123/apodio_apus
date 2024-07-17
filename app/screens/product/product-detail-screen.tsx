@@ -604,10 +604,10 @@ export const ProductDetailScreen: FC = (item) => {
                 <ProductAttribute
                   label={translate("detailScreen.capitalPrice")}
                   value={
-                    dataClassification?.costPrice > 0
+                    detailsClassification?.costPrice > 0
                       ? `${formatVND(
                           formatCurrency(
-                            commasToDots(dataClassification?.costPrice)
+                            commasToDots(detailsClassification?.costPrice)
                           )
                         )}/${
                           dataClassification.uom?.name ||
@@ -628,10 +628,10 @@ export const ProductDetailScreen: FC = (item) => {
                 <ProductAttribute
                   labelTx="detailScreen.listedPrice"
                   value={
-                    dataClassification?.listPrice > 0
+                    detailsClassification?.listPrice > 0
                       ? `${formatVND(
                           formatCurrency(
-                            commasToDots(dataClassification?.listPrice)
+                            commasToDots(detailsClassification?.listPrice)
                           )
                         )}/${
                           dataClassification.uom?.name ||

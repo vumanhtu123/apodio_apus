@@ -16,7 +16,7 @@ import { NavigatorParamList } from "../../../navigators";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../components";
 import { Images } from "../../../../assets";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Styles } from "./styles";
 import SelectFilterModal from "./Modal/modal-select-filter";
 import { useStores } from "../../../models";
@@ -204,17 +204,10 @@ export const SelectClientScreen: FC<
             }
             return (
               <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  width: scaleWidth(375),
-                  height: scaleHeight(56),
-                  paddingHorizontal: 16,
+                style={[Styles.itemClient, {
                   backgroundColor:
                     dataItemSelect?.id == item.id ? "#DBEFFF" : "white",
-                  marginBottom: 1.5,
-                  justifyContent: "space-between",
-                }}
+                }]}
                 onPress={() => {
 
                   setdataItemSelect(item);
@@ -222,20 +215,13 @@ export const SelectClientScreen: FC<
                 }}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View
-                    style={{
-                      width: 40,
-                      height: 40,
-                      backgroundColor: "#EFF8FF",
-                      borderRadius: 50,
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}>
+                    style={Styles.icCodeItem}>
                     <Text
                       style={{ fontSize: fontSize.size10, color: "#0078D4" }}>
                       {item.code}
                     </Text>
                   </View>
-                  <View style={{ marginHorizontal: 6 }}>
+                  <View style={{ marginHorizontal: padding.padding_6 }}>
                     <Text style={{ fontSize: fontSize.size10 }}>
                       {item.name}
                     </Text>
@@ -252,17 +238,13 @@ export const SelectClientScreen: FC<
                   }}>
                   {/* <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} /> */}
                   <View
-                    style={{
-                      borderRadius: scaleHeight(8),
-                      borderWidth: 1,
-                      borderColor: colors.palette.lightGrey,
-                      width: scaleHeight(16),
-                      height: scaleHeight(16),
+                    style={[Styles.dots, {
+
                       backgroundColor:
                         dataItemSelect.id === item.id
                           ? colors.palette.navyBlue
                           : colors.palette.white,
-                    }}></View>
+                    }]}></View>
                 </TouchableOpacity>
               </TouchableOpacity>
             );
@@ -271,6 +253,7 @@ export const SelectClientScreen: FC<
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
+
           onEndReached={() => handleLoadMore()}
           onEndReachedThreshold={0.2}
 
@@ -291,25 +274,14 @@ export const SelectClientScreen: FC<
         />
 
         <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 30,
-            position: "absolute",
-            paddingHorizontal: scaleWidth(18),
-            paddingVertical: scaleHeight(8),
-            backgroundColor: colors.palette.navyBlue,
-            bottom: Platform.OS === "ios" ? scaleHeight(20) : scaleHeight(5),
-            right: scaleWidth(16),
-          }}
+          style={Styles.btnAddClient}
           onPress={() => {
             setIsVisibleCreateClient(!isVisibleCreateClient);
           }}>
           <Images.icon_plus
             width={scaleWidth(16)}
             height={scaleHeight(16)}
-            style={{ marginRight: 6, marginTop: 2 }}
+            style={{ marginRight: scaleWidth(6), marginTop: scaleHeight(2) }}
           />
           <Text
             style={{ color: "white", fontSize: fontSize.size14 }}
@@ -321,7 +293,7 @@ export const SelectClientScreen: FC<
         <TouchableOpacity
           style={[
             onClick === "save" ? Styles.btnSuccessfully : Styles.btnSave,
-            { marginRight: 13 },
+            { marginRight: scaleWidth(13) },
           ]}
           onPress={() => {
             // set = false de co animation loading full man hinh

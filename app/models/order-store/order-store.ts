@@ -342,7 +342,7 @@ export const OrderStoreModel = types
             partnerTagIds
           );
         console.log(
-          "SlectClientResult-------------",
+          "SelectClientResult-------------",
           JSON.stringify(result.data)
         );
         return result.data;

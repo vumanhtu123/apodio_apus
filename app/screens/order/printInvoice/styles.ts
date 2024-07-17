@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 
 export const styles = StyleSheet.create({
   ROOT: { backgroundColor: colors.palette.neutral100, flex: 1 },
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     // backgroundColor : 'red',
     // marginRight: scaleWidth(9),
     // width: scaleWidth(80)
-    marginTop : 15
+    marginTop : scaleWidth(15)
   },
   cellUnitPrice: {
     fontSize : fontSize.size12,
@@ -150,7 +150,7 @@ export const styles = StyleSheet.create({
   rowPrice: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
+    paddingVertical: scaleHeight(padding.padding_8),
   },
   label: { fontSize: fontSize.size10 },
   value: { fontSize: fontSize.size10, fontWeight: 'bold' },

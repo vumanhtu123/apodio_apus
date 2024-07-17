@@ -45,8 +45,8 @@ export const ShowNote = (props: InputNote) => {
     getValues,
   } = useForm();
 
-  useEffect(()=>{
-    if(props.imageNote !== undefined){
+  useEffect(() => {
+    if (props.imageNote !== undefined) {
       setImagesNote(props.imageNote)
     }
   }, [props.imageNote])
@@ -70,8 +70,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchImageLibrary(options, (response) => {
@@ -124,8 +124,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchImageLibrary(options, (response) => {
@@ -164,8 +164,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchCamera(options, (response) => {
@@ -295,47 +295,31 @@ export const ShowNote = (props: InputNote) => {
                   multiline={true}
                   placeholderTx={"order.placeNote"}
                   placeholderTextColor={colors.palette.nero}
-                  //isImportant={true}
-                  // error={errors?.phone?.message}
+                //isImportant={true}
+                // error={errors?.phone?.message}
                 />
               )}
               name="noteText"
-              // rules={{ required: "Address is required" }}
+            // rules={{ required: "Address is required" }}
             />
           </View>
 
-          <TouchableOpacity onPress={() => setModalImage(true)}>
+          {/* <TouchableOpacity onPress={() => setModalImage(true)}>
             <TouchableOpacity
               // key={index}
               onPress={() => {
                 setModalImage(true);
                 // setModalImages(true);
                 // setActiveSlide(index);
-              }}>
+              }}> */}
               <ImagesGroup
                 arrData={imagesNote || []}
-                onPressOpenLibrary={() => {
-                  if (imagesNote !== undefined) {
-                    if (imagesNote?.length < 6) {
-                      setModalImage(true);
-                    } else {
-                      Toast.show({
-                        type: ALERT_TYPE.DANGER,
-                        title: "",
-                        textBody: translate(
-                          "txtToats.required_maximum_number_of_photos"
-                        ),
-                      });
-                    }
-                  } else {
-                    setModalImage(true);
-                  }
-                }}
+                uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray)}
                 onPressDelete={() => handleDeleteImage()}
                 onPressDelete1={() => handleDeleteImageItem()}
               />
-            </TouchableOpacity>
-          </TouchableOpacity>
+            {/* </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity
             onPress={() => props.setNote(false)}

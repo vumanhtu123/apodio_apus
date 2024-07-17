@@ -250,7 +250,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         //     isPrepayment: null,
         // });
         const dataSubmit = ({
-            id : data.invoiceIds?.[0],
+            id: data.invoiceIds?.[0],
             codeInvoice: invoiceCode,
             paymentTerm: payment.id,
             invoiceDate: minDateS,
@@ -307,7 +307,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     }
     const validateDate = (value: any) => {
         if (!value) {
-            return "Ngày không được để trống";
+            return "order.dateIsCannotBeEmpty";
         }
 
         return true;
