@@ -172,7 +172,16 @@ const PriceModal = observer((props: PriceModalProps) => {
                           }}
                           value={value}
                           onBlur={onBlur}
-                          onChangeText={(value) => onChange(value)}
+                          valueInput={vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(
+                              removeNonNumeric(value)
+                            )
+                            : addCommas(removeNonNumeric(value))}
+                          onChangeText={(value) => onChange(
+                            vendorStore.checkSeparator === "DOTS"
+                              ? formatCurrency(removeNonNumeric(value))
+                              : addCommas(removeNonNumeric(value))
+                          )}
                           showRightIcon={false}
                           isImportant={true}
                           maxLength={15}
