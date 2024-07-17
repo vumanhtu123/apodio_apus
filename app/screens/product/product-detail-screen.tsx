@@ -259,11 +259,11 @@ export const ProductDetailScreen: FC = (item) => {
 
     const newArr3 = newArr2
       ? Object.keys(newArr2).map((attributeName) => {
-          return {
-            name: attributeName,
-            items: newArr2[attributeName] || [],
-          };
-        })
+        return {
+          name: attributeName,
+          items: newArr2[attributeName] || [],
+        };
+      })
       : [];
     console.log(
       "---setAttributeDetailsClassification--------------",
@@ -309,6 +309,9 @@ export const ProductDetailScreen: FC = (item) => {
     console.log("first", JSON.stringify(attributes));
     selectDataClassification();
   };
+  useEffect(()=>{
+    
+  },[])
   return (
     <View style={styles.ROOT}>
       <Header
@@ -521,15 +524,15 @@ export const ProductDetailScreen: FC = (item) => {
                 label={translate("detailScreen.status")}
                 value={
                   dataClassification.saleOk === true &&
-                  dataClassification.purchaseOk === false
+                    dataClassification.purchaseOk === false
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true &&
                       dataClassification.saleOk === false
-                    ? "Có thể mua"
-                    : dataClassification.saleOk === true &&
-                      dataClassification.purchaseOk === true
-                    ? "Có thể bán/ Có thể mua"
-                    : null
+                      ? "Có thể mua"
+                      : dataClassification.saleOk === true &&
+                        dataClassification.purchaseOk === true
+                        ? "Có thể bán/ Có thể mua"
+                        : null
                 }
               />
             </View>
@@ -576,35 +579,33 @@ export const ProductDetailScreen: FC = (item) => {
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.retailPrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })
                     : dataClassification?.retailPrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })}
                 </View>
               ) : null}
               <View>
@@ -612,15 +613,14 @@ export const ProductDetailScreen: FC = (item) => {
                 <ProductAttribute
                   label={translate("detailScreen.capitalPrice")}
                   value={
-                    dataClassification?.costPrice > 0
+                    detailsClassification?.costPrice > 0
                       ? `${formatVND(
-                          formatCurrency(
-                            commasToDots(dataClassification?.costPrice)
-                          )
-                        )}/${
-                          dataClassification.uom?.name ||
-                          dataClassification.uomGroup?.originalUnit?.name
-                        }`
+                        formatCurrency(
+                          commasToDots(detailsClassification?.costPrice)
+                        )
+                      )}/${dataClassification.uom?.name ||
+                      dataClassification.uomGroup?.originalUnit?.name
+                      }`
                       : null
                   }
                   textStyle={{ color: colors.palette.radicalRed }}
@@ -636,15 +636,14 @@ export const ProductDetailScreen: FC = (item) => {
                 <ProductAttribute
                   labelTx="detailScreen.listedPrice"
                   value={
-                    dataClassification?.listPrice > 0
+                    detailsClassification?.listPrice > 0
                       ? `${formatVND(
-                          formatCurrency(
-                            commasToDots(dataClassification?.listPrice)
-                          )
-                        )}/${
-                          dataClassification.uom?.name ||
-                          dataClassification.uomGroup?.originalUnit?.name
-                        }`
+                        formatCurrency(
+                          commasToDots(detailsClassification?.listPrice)
+                        )
+                      )}/${dataClassification.uom?.name ||
+                      dataClassification.uomGroup?.originalUnit?.name
+                      }`
                       : null
                   }
                   textStyle={{ color: colors.palette.radicalRed }}
@@ -699,35 +698,33 @@ export const ProductDetailScreen: FC = (item) => {
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.wholesalePrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })
                     : dataClassification?.wholesalePrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })}
                 </View>
               ) : null}
             </View>
@@ -751,11 +748,11 @@ export const ProductDetailScreen: FC = (item) => {
                 value={getLabelByList(dataClassification.managementForm)}
               />
               <ProductAttribute
-               label={translate("detailScreen.unit")}
-               value={
-                 dataClassification.uom?.name ||
-                 dataClassification.uomGroup?.originalUnit?.name
-               }
+                label={translate("detailScreen.unit")}
+                value={
+                  dataClassification.uom?.name ||
+                  dataClassification.uomGroup?.originalUnit?.name
+                }
               />
               {dataClassification?.uomGroup ? (
                 <View>
@@ -809,7 +806,7 @@ export const ProductDetailScreen: FC = (item) => {
             </View>
           </View>
           {dataClassification?.description !== "" &&
-          dataClassification?.description !== null ? (
+            dataClassification?.description !== null ? (
             <View>
               <View style={styles.viewLine} />
               <View style={styles.viewDescribe}>
@@ -828,7 +825,7 @@ export const ProductDetailScreen: FC = (item) => {
           ) : null}
           <View>
             {arrClassification?.baseProductPackingLine?.volume ||
-            dataClassification?.baseTemplatePackingLine?.volume != null ? (
+              dataClassification?.baseTemplatePackingLine?.volume ? (
               <View>
                 <View style={styles.viewLine} />
                 <TouchableOpacity
@@ -875,7 +872,7 @@ export const ProductDetailScreen: FC = (item) => {
                       <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{arrClassification ? detailsClassification.baseProductPackingLine?.volume : detailProduct?.volume} m3</Text>
                     </View>
                   </View>
-                  {arrClassification && arrClassification?.productPackingLines ? (
+                  {arrClassification && detailsClassification?.productPackingLines ? (
                     <View>
                       <View>
                         <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
@@ -889,7 +886,7 @@ export const ProductDetailScreen: FC = (item) => {
                                 style={{ backgroundColor: '#E7EFFF', height: 1 }}
                               />
                               <Text style={[styles.fontSizeWeight, {}]}>
-                                {`${commasToDots(detailsClassification.baseProductPackingLine?.amount)} ${dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
+                                {`${commasToDots(line?.amount)} ${dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
                               </Text>
                             </View>
                             {/* <View style={{}} key={index}> */}
@@ -908,7 +905,7 @@ export const ProductDetailScreen: FC = (item) => {
                       </View>
                     </View>
                   ) :
-                    dataClassification?.templatePackingLines != null && arrClassification?.productPackingLines == null ? (
+                    dataClassification?.templatePackingLines != null && arrClassification?.productPackingLines == null && arrClassification?.productPackingLines ? (
                       <View>
                         <View>
                           <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
@@ -950,7 +947,7 @@ export const ProductDetailScreen: FC = (item) => {
             }
           </View>
           {attributeDetailsClassification?.length !== 0 ||
-          attributes?.length !== 0 ? (
+            attributes?.length !== 0 ? (
             <View>
               <View style={styles.viewLine} />
               <TouchableOpacity
@@ -1021,7 +1018,7 @@ export const ProductDetailScreen: FC = (item) => {
                             }}
                           />
                           {index !==
-                          attributeDetailsClassification?.length - 1 ? (
+                            attributeDetailsClassification?.length - 1 ? (
                             <View style={styles.viewLine2} />
                           ) : null}
                         </View>
@@ -1108,42 +1105,42 @@ export const ProductDetailScreen: FC = (item) => {
                 </View>
                 {showNCC === true
                   ? arrNCC?.map((item) => {
-                      return (
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              paddingVertical: scaleHeight(padding.padding_8),
-                            }}>
-                            <AutoHeightImage
-                              source={{ uri: item?.avatarUrl }}
-                              width={scaleHeight(40)}
-                              height={scaleHeight(40)}
-                              style={{ borderRadius: 40 }}
-                              fallbackSource={Images.imageError}
-                            />
-                            <View
-                              style={{
-                                marginLeft: scaleWidth(6),
-                                justifyContent: "center",
-                              }}>
-                              <Text style={styles.textNameNCC}>
-                                {item?.vendorCode + "- " + item?.vendorName}
-                              </Text>
-                              <Text style={styles.textNameClassification}>
-                                {item?.phoneNumber}
-                              </Text>
-                            </View>
-                          </View>
-                          <View
-                            style={{
-                              height: scaleHeight(1),
-                              backgroundColor: colors.palette.ghostWhite,
-                            }}
+                    return (
+                      <View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            paddingVertical: scaleHeight(padding.padding_8),
+                          }}>
+                          <AutoHeightImage
+                            source={{ uri: item?.avatarUrl }}
+                            width={scaleHeight(40)}
+                            height={scaleHeight(40)}
+                            style={{ borderRadius: 40 }}
+                            fallbackSource={Images.imageError}
                           />
+                          <View
+                            style={{
+                              marginLeft: scaleWidth(6),
+                              justifyContent: "center",
+                            }}>
+                            <Text style={styles.textNameNCC}>
+                              {item?.vendorCode + "- " + item?.vendorName}
+                            </Text>
+                            <Text style={styles.textNameClassification}>
+                              {item?.phoneNumber}
+                            </Text>
+                          </View>
                         </View>
-                      );
-                    })
+                        <View
+                          style={{
+                            height: scaleHeight(1),
+                            backgroundColor: colors.palette.ghostWhite,
+                          }}
+                        />
+                      </View>
+                    );
+                  })
                   : null}
               </View>
             </View>
@@ -1220,7 +1217,7 @@ export const ProductDetailScreen: FC = (item) => {
         onBackdropPress={() => setModalImages1(false)}>
         <View>
           {detailsClassification.imageUrls &&
-          detailsClassification.imageUrls?.length > 0 ? (
+            detailsClassification.imageUrls?.length > 0 ? (
             <View>
               <Carousel
                 data={detailsClassification.imageUrls}

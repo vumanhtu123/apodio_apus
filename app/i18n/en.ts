@@ -41,6 +41,7 @@ const en = {
     change_payment: "Vui lòng chọn phuơng thức thanh toán trước",
     change_weight: "Vui lòng nhập đủ thông tin trước khi thêm dòng",
     input_weight: "Vui lòng nhập đủ thông tin tải trọng",
+    add_line_weight: "Vui lòng nhập đủ thông tin và chọn nhóm đơn vị tính",
   },
   txtDialog: {
     txt_title_dialog: "Thông báo",
@@ -697,6 +698,7 @@ const en = {
     editWeight: "Chỉnh sửa tải trọng",
     resetDefault: "Reset về mặc định",
     reset: "Đặt lại",
+    addLineWeight: "Thêm tải trọng cho các ĐVT quy đổi",
     conversionRate: "Ty le quy doi",
     enterConversionCode: "nhap ma quy doi",
     enterRatio: "nhap ty le",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Images } from '../../../../assets';
 import { Button, Text } from '../../../components';
@@ -8,42 +8,42 @@ import CategoryModalFilter from '../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 
 
-interface ProductListProps {
-    navigation: any;
-    tabTypes: string[];
-    indexItem: number;
-    handlePressViewProduct: (item: string) => void;
-    setIndexItem: (index: number) => void;
-    setShowCategory: (show: boolean) => void;
-    showCategory: boolean;
-    dataCategoryFilter: any[];
-    selectedCategory: any;
-    setSelectedCategory: (category: any) => void;
-    setNameDirectory: (name: string) => void;
-    openSearch: boolean;
-    setIndex: (index: number) => void;
-    dataProduct: any[];
-    isRefreshing: boolean;
-    refreshProduct: () => void;
-    flatListRef: any;
-    handleEndReached: () => void;
-    isGridView: boolean;
-    viewProduct: string;
-    handleProductDetail: (item: any, hasVariant: boolean) => void;
-    handleClassifyDetail: (item: any, hasVariant: boolean) => void;
-    nameDirectory: string;
-    isLoadingMore: boolean;
-    renderFooter: any;
-    searchCategory?: any;
-    isRefreshingCategory?: boolean;
-    refreshCategory?: () => void;
-    hasVariant?: any;
-    totalElements?: any
-    page?: any
-    size?: any
-}
+// interface ProductListProps {
+//     navigation: any;
+//     tabTypes: string[];
+//     indexItem: number;
+//     handlePressViewProduct: (item: string) => void;
+//     setIndexItem: (index: number) => void;
+//     setShowCategory: (show: boolean) => void;
+//     showCategory: boolean;
+//     dataCategoryFilter: any[];
+//     selectedCategory: any;
+//     setSelectedCategory: (category: any) => void;
+//     setNameDirectory: (name: string) => void;
+//     openSearch: boolean;
+//     setIndex: (index: number) => void;
+//     dataProduct: any[];
+//     isRefreshing: boolean;
+//     refreshProduct: () => void;
+//     flatListRef: any;
+//     handleEndReached: () => void;
+//     isGridView: boolean;
+//     viewProduct: string;
+//     handleProductDetail: (item: any, hasVariant: boolean) => void;
+//     handleClassifyDetail: (item: any, hasVariant: boolean) => void;
+//     nameDirectory: string;
+//     isLoadingMore: boolean;
+//     renderFooter: any;
+//     searchCategory?: any;
+//     isRefreshingCategory?: boolean;
+//     refreshCategory?: () => void;
+//     hasVariant?: any;
+//     totalElements?: any
+//     page?: any
+//     size?: any
+// }
 
-export const ProductList: React.FC<ProductListProps> = ({
+const ProductListComponent = ({
     navigation,
     tabTypes,
     indexItem,
@@ -76,17 +76,16 @@ export const ProductList: React.FC<ProductListProps> = ({
     totalElements,
     page,
     size
-}) => {
-    const Loading = () => (
-        <View style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}>
-            <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-    );
-    console.log('zxczxc', hasVariant)
+}: any) => {
+    // const Loading = () => (
+    //     <View style={{
+    //         flex: 1,
+    //         justifyContent: 'center',
+    //         alignItems: 'center',
+    //     }}>
+    //         <ActivityIndicator size="large" color="#0000ff" />
+    //     </View>
+    // );
     return (
         <>
             <TouchableOpacity
@@ -210,3 +209,4 @@ export const ProductList: React.FC<ProductListProps> = ({
         </>
     );
 };
+export const ProductList = memo(ProductListComponent)

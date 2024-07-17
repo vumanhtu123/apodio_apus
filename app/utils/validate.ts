@@ -308,7 +308,7 @@ export function formatCurrency(value: any, options = {}) {
 
 }
 export function removeNonNumeric(num: any) {
-  return num.toString().replace(/[^0-9.]/g, "");
+  return num?.toString().replace(/[^0-9.]/g, "");
 }
 export function formatNumberByString(num: any) {
   // console.log('num-------------------', num)

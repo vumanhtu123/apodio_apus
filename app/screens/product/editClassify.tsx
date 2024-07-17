@@ -19,14 +19,7 @@ import {
 import { Images } from "../../../assets/index";
 import { Header } from "../../components/header/header";
 import { Text } from "../../components/text/text";
-import {
-  colors,
-  fontSize,
-  margin,
-  padding,
-  scaleHeight,
-  scaleWidth,
-} from "../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers, detailProduct, listCreateProduct } from "./data";
 // import { styles } from "./styles"
 import { AutoImage } from "../../../app/components/auto-image/auto-image";
@@ -34,12 +27,7 @@ import ProductAttribute from "./component/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
 import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import {
-  Controller,
-  FormProvider,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
+import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { TextField } from "../../components/text-field/text-field";
 import { Switch } from "../../components";
 import { InputSelect } from "../../components/input-select/inputSelect";
@@ -64,12 +52,7 @@ import {
   validateFileSize,
 } from "../../utils/validate";
 
-import {
-  ALERT_TYPE,
-  Dialog,
-  Toast,
-  Loading,
-} from "../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { translate } from "../../i18n/translate";
 import UnitModal from "./component/modal-unit";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -77,6 +60,7 @@ import Modal from "react-native-modal/dist/modal";
 import ImagesGroup from "./component/imageGroup";
 import ItemWeight from "./component/weight-component";
 import AutoHeightImage from "react-native-auto-height-image";
+import ImageProduct from "./create-prodcut/imageProduct";
 
 export const EditClassify: FC = (item) => {
   const route = useRoute();
@@ -169,7 +153,7 @@ export const EditClassify: FC = (item) => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (dataEdit !== undefined) {
         if (dataEdit.hasVariantInConfig == false) {
-          setAddVariant(true);
+          setAddVariant(true)
           setDataGroupAttribute(dataEdit.attributeCategory);
           setVariantInConfig(dataEdit.hasVariantInConfig);
         }
@@ -180,17 +164,15 @@ export const EditClassify: FC = (item) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      if (
-        selectedGroupAttribute !== undefined &&
-        isVariantInConfig !== undefined
-      ) {
-        setAddVariant(true);
+      if (selectedGroupAttribute !== undefined && isVariantInConfig !== undefined) {
+        setAddVariant(true)
         setDataGroupAttribute(selectedGroupAttribute);
         setVariantInConfig(isVariantInConfig);
       }
     });
     return unsubscribe;
   }, [selectedGroupAttribute, isVariantInConfig]);
+
 
   useEffect(() => {
     console.log("----nameUnitGroup-----", nameUnitGroup);
@@ -211,11 +193,20 @@ export const EditClassify: FC = (item) => {
     setVendor(selectedIds);
   }, [selectedIds]);
   useEffect(() => {
-    console.log('first', nameValue)
-    console.log('first2', attributes)
-    console.log('first3', dataEdit)
+    console.log("first", nameValue);
+    console.log("first2", attributes);
+    console.log("first3", dataEdit);
   }, []);
+  const arrBrands = [
+    { id: 3746, label: "Mặc định", label2: "DEFAULT" },
+    { id: 4638, label: "Lô", label2: "LOTS" },
+    { id: 4398, label: "Serial", label2: "SERIAL" },
+  ];
 
+  const getLabelByList = (label2: string) => {
+    const item = arrBrands.find((item) => item.label2 === label2);
+    return item ? item.label : "";
+  };
   useEffect(() => {
     getCheckUsingProduct();
 
@@ -260,14 +251,10 @@ export const EditClassify: FC = (item) => {
       setTextAttributes(textAttributeArr);
       setVariantInConfig(dataEdit.newDataEdit);
 
-      setUomId({
-        id: newDataEdit?.uom?.id,
-        label: newDataEdit?.uom?.name,
-        uomGroupLineId: newDataEdit?.uomGroup?.uomGroupLineId,
-      });
+      setUomId({ id: newDataEdit?.uom?.id, label: newDataEdit?.uom?.name, uomGroupLineId: newDataEdit?.uomGroup?.uomGroupLineId });
 
       if (newDataEdit.uomGroupId !== null) {
-        getDetailUnitGroup(newDataEdit.uomGroupId);
+        getDetailUnitGroup(newDataEdit.uomGroupId)
       }
 
       const dropdownEdit:
@@ -331,7 +318,7 @@ export const EditClassify: FC = (item) => {
           );
         }
       );
-      console.log(attributeEdit, "yuefadyjafgsdyias");
+      console.log(attributeEdit, 'yuefadyjafgsdyias')
       setConstAttributeToEdit(attributeEdit);
       setAttributeToEdit(attributeEdit);
 
@@ -529,46 +516,6 @@ export const EditClassify: FC = (item) => {
     }
   };
 
-  const requestCameraPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await request(PERMISSIONS.IOS.CAMERA);
-        return result;
-      } else {
-        const result = await request(PERMISSIONS.ANDROID.CAMERA);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const checkCameraPermission = async () => {
-    try {
-      if (Platform.OS === "ios") {
-        const result = await check(PERMISSIONS.IOS.CAMERA);
-        return result;
-      } else {
-        const result = await check(PERMISSIONS.ANDROID.CAMERA);
-        return result;
-      }
-    } catch (error) {
-      console.warn(error);
-      return null;
-    }
-  };
-
-  const arrBrands = [
-    { id: 3746, label: "Mặc định", label2: "DEFAULT" },
-    { id: 4638, label: "Lô", label2: "LOTS" },
-    { id: 4398, label: "Serial", label2: "SERIAL" },
-  ];
-  const getLabelByList = (label2: string) => {
-    const item = arrBrands.find((item) => item.label2 === label2);
-    return item ? item.label : "";
-  };
-
   useEffect(() => {
     if (attributeArr !== undefined) {
       const groupedById = attributeArr.reduce(
@@ -606,10 +553,8 @@ export const EditClassify: FC = (item) => {
 
       setAttributeValues(attributeValueArr);
       setTextAttributes(textAttributeValueArr);
-      const abc = [
-        ...new Set(attributeArr?.flatMap((item: any) => item.idGroup)),
-      ];
-      setAttributeIds(abc);
+      const abc = [...new Set(attributeArr?.flatMap((item: any) => item.idGroup))]
+      setAttributeIds(abc)
 
       const newArr = mapDataDistribute(resultArray);
       const newArr2 = newArr.map((item) => {
@@ -645,20 +590,15 @@ export const EditClassify: FC = (item) => {
           id: null,
           name: item,
           imageUrls: imagesNote,
-          costPrice: methods.watch("costPrice"),
+          costPrice: methods.watch('costPrice'),
           retailPrice: retailPriceProduct,
-          listPrice: methods.watch("listPrice"),
+          listPrice: methods.watch('listPrice'),
           wholesalePrice: wholesalePriceProduct,
           attributeValues: [],
           weight: {
-            weight: methods.watch(`weight`),
-            weightOriginal: methods.watch(`weightOriginal`),
-            volumeOriginal: methods.watch(`volumeOriginal`),
-            uom:
-              valueSwitchUnit == false
-                ? uomId
-                : detailUnitGroupData?.originalUnit,
-          },
+            weight: methods.watch(`weight`), weightOriginal: methods.watch(`weightOriginal`),
+            volumeOriginal: methods.watch(`volumeOriginal`), uom: valueSwitchUnit == false ? uomId : detailUnitGroupData?.originalUnit
+          }
         };
       });
 
@@ -678,6 +618,8 @@ export const EditClassify: FC = (item) => {
     }
   }, [attributeArr]);
 
+
+
   const getCheckUsingProduct = async () => {
     const data = await productStore.usingProductCheck(productStore.productId);
     console.log("checkUsing:-------", data);
@@ -685,23 +627,21 @@ export const EditClassify: FC = (item) => {
       const result = data.result.data;
       console.log("checkUsing:-------", result);
       setProductUsing(result.isUsingInAnotherService);
-      setPriceUsing(result.isUsingInPriceList);
+      setPriceUsing(result.isUsingInPriceList)
     } else {
       console.error("Failed to fetch check using:", data);
     }
   };
 
+
   const submitAdd = async (data: any) => {
-    console.log("dataInput------------", data);
-    let hasError = false;
+    console.log('dataInput------------', data)
+    let hasError = false
     if (data.productName.trim() !== "") {
-      hasError = false;
+      hasError = false
     } else {
-      methods.setError("productName", {
-        type: "validate",
-        message: "Vui lòng nhập thông tin",
-      });
-      hasError = true;
+      methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
+      hasError = true
     }
     if (uomId.id === "") {
       Toast.show({
@@ -709,7 +649,7 @@ export const EditClassify: FC = (item) => {
         title: "",
         textBody: translate("txtToats.required_information"),
       });
-      hasError = true;
+      hasError = true
     }
     if (hasError == true) {
     } else {
@@ -722,12 +662,11 @@ export const EditClassify: FC = (item) => {
               uomGroupLineId: item.unit.id,
               amount: item.unit.conversionRate,
               volume: formatStringToFloat(item?.volume),
-              weight: formatStringToFloat(item?.weight1),
-            };
-          }),
+              weight: formatStringToFloat(item?.weight1)
+            }
+          })
         };
       });
-      console.log("1");
       arrIdOrigin?.forEach((item) => {
         let isUnique = true;
         newArr?.forEach((obj) => {
@@ -752,45 +691,30 @@ export const EditClassify: FC = (item) => {
           price: Number(formatNumberByString(item.price.toString())),
         };
       });
-      console.log(newArr, "12345");
       const newArr3 = newArr.map((item: any) => {
         return {
           ...item,
           name: methods.getValues("productName") + " - " + item.name,
           imageUrls: item.imageUrls,
-          costPrice: item?.costPrice,
+          costPrice: (item?.costPrice),
           retailPrice: item.retailPrice,
-          listPrice: item?.listPrice,
+          listPrice: (item?.listPrice),
           wholesalePrice: item.wholesalePrice,
           attributeValues: item.attributeValues,
-          baseProductPackingLine:
-            item.weight?.weightOriginal?.trim() === "" ||
-              item.weight?.volumeOriginal?.trim() === ""
-              ? {}
-              : valueSwitchUnit === false
-                ? {
-                  uomGroupLineId: null,
-                  amount: 1,
-                  volume: formatStringToFloat(item.weight?.volumeOriginal),
-                  weight: formatStringToFloat(item.weight?.weightOriginal),
-                }
-                : {
-                  uomGroupLineId:
-                    detailUnitGroupData?.originalUnit?.uomGroupLineId,
-                  amount: 1,
-                  volume: formatStringToFloat(item.weight?.volumeOriginal),
-                  weight: formatStringToFloat(item.weight?.weightOriginal),
-                },
-          productPackingLines:
-            item.weight?.weightOriginal?.trim() === "" ||
-              item.weight?.volumeOriginal?.trim() === ""
-              ? []
-              : valueSwitchUnit == false
-                ? []
-                : item.productPackingLines,
+          baseProductPackingLine: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? {} : (valueSwitchUnit === false ? {
+            uomGroupLineId: null,
+            amount: 1,
+            volume: formatStringToFloat(item.weight?.volumeOriginal),
+            weight: formatStringToFloat(item.weight?.weightOriginal),
+          } : {
+            uomGroupLineId: detailUnitGroupData?.originalUnit?.uomGroupLineId,
+            amount: 1,
+            volume: formatStringToFloat(item.weight?.volumeOriginal),
+            weight: formatStringToFloat(item.weight?.weightOriginal),
+          }),
+          productPackingLines: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item.productPackingLines)
         };
       });
-      console.log("2");
       const newArr2 = newArr3?.map((item) => {
         return {
           ...item,
@@ -816,9 +740,8 @@ export const EditClassify: FC = (item) => {
           amount: item.unit.conversionRate,
           volume: formatStringToFloat(item.volume),
           weight: formatStringToFloat(item.weight1),
-        };
-      });
-      console.log("3");
+        }
+      })
       const doneData = {
         // sku: data.SKU === "" ? null : data.SKU,
         name: data.productName,
@@ -855,11 +778,8 @@ export const EditClassify: FC = (item) => {
         hasPrice: true,
         activated: true,
       }
-      console.log("dataCreate===========", JSON.stringify(doneData));
-      const result = await productStore?.putClassify(
-        productStore.productId,
-        doneData
-      );
+      console.log('dataCreate===========', JSON.stringify(doneData))
+      const result = await productStore?.putClassify(productStore.productId, doneData);
       if (result.kind === "ok") {
         Dialog.show({
           type: ALERT_TYPE.INFO,
@@ -868,25 +788,19 @@ export const EditClassify: FC = (item) => {
           button2: translate("common.ok"),
           closeOnOverlayTap: false,
           onPressButton: () => {
-            navigation.navigate({
-              name: "classifyDetailScreen",
-              params: { reload: true },
-            } as never);
+            navigation.navigate({ name: "classifyDetailScreen", params: { reload: true } } as never);
             Dialog.hide();
-          },
-        });
+          }
+        })
       } else {
-        console.log(
-          "data------------------------------",
-          JSON.stringify(result)
-        );
+        console.log("data------------------------------", JSON.stringify(result));
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: translate("txtDialog.txt_title_dialog"),
           textBody: result.result.errorCodes[0].message,
           button: translate("common.ok"),
-          closeOnOverlayTap: false,
-        });
+          closeOnOverlayTap: false
+        })
       }
     }
   };
@@ -924,13 +838,15 @@ export const EditClassify: FC = (item) => {
       const newStatus = await requestCameraPermission();
       if (newStatus === RESULTS.GRANTED) {
         console.log("Permission granted");
+
       } else {
         console.log("Permission denied");
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          title: "",
-          textBody: translate("txtToats.permission_denied"),
-        });
+          title: '',
+          textBody: translate('txtToats.permission_denied'),
+
+        })
 
         Dialog.show({
           type: ALERT_TYPE.INFO,
@@ -942,15 +858,16 @@ export const EditClassify: FC = (item) => {
           onPressButton: () => {
             Linking.openSettings();
             Dialog.hide();
-          },
-        });
+          }
+        })
       }
     } else if (permissionStatus === RESULTS.BLOCKED) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        title: "",
-        textBody: translate("txtToats.permission_blocked"),
-      });
+        title: '',
+        textBody: translate('txtToats.permission_blocked'),
+
+      })
 
       console.log("Permission blocked, you need to enable it from settings");
     }
@@ -1001,8 +918,8 @@ export const EditClassify: FC = (item) => {
             title: translate("txtDialog.txt_title_dialog"),
             textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
             button: translate("common.ok"),
-            closeOnOverlayTap: false,
-          });
+            closeOnOverlayTap: false
+          })
         } else {
           const formData = new FormData();
           formData.append("file", {
@@ -1042,111 +959,6 @@ export const EditClassify: FC = (item) => {
     }
   };
 
-  const handleLibraryUse = async () => {
-    const permissionStatus = await checkLibraryPermission();
-    console.log(permissionStatus);
-
-    if (permissionStatus === RESULTS.GRANTED) {
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - productStore.imagesLimit,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          //const selectedAssets = response.assets.map((asset) => asset.uri);
-          //setImagesNote([...imagesNote, ...selectedAssets]);
-          // uploadImages(selectedAssets, true, -1);
-          // setModalImage(false);
-          if (selectedAssets.length + imagesNote.length > 6) {
-            Toast.show({
-              type: ALERT_TYPE.DANGER,
-              title: "",
-              textBody: translate("txtToats.required_maximum_number_of_photos"),
-            });
-          } else {
-            uploadImages(selectedAssets, true, -1);
-          }
-        }
-      });
-    } else if (permissionStatus === RESULTS.DENIED) {
-      const newStatus = await requestLibraryPermission();
-      if (newStatus === RESULTS.GRANTED) {
-        console.log("Permission granted");
-      } else {
-        console.log("Permission denied");
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          title: "",
-          textBody: translate("txtToats.permission_denied"),
-        });
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("txtDialog.permission_allow"),
-          textBody: translate("txtDialog.allow_permission_in_setting"),
-          button: translate("common.cancel"),
-          button2: translate("txtDialog.settings"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Linking.openSettings();
-            Dialog.hide();
-          },
-        });
-      }
-    } else if (permissionStatus === RESULTS.BLOCKED) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: "",
-        textBody: translate("txtToats.permission_blocked"),
-      });
-
-      console.log("Permission blocked, you need to enable it from settings");
-    } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - productStore.imagesLimit,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          //const selectedAssets = response.assets.map((asset) => asset.uri);
-          //setImagesNote([...imagesNote, ...selectedAssets]);
-          // uploadImages(selectedAssets, true, -1);
-          if (selectedAssets.length + imagesNote.length > 6) {
-            Toast.show({
-              type: ALERT_TYPE.DANGER,
-              title: "",
-              textBody: translate("txtToats.required_maximum_number_of_photos"),
-            });
-          } else {
-            uploadImages(selectedAssets, true, -1);
-          }
-          // setModalImage(false);
-        }
-      });
-    }
-  };
-
   const handleDeleteImage = (index: number) => {
     const newArr = dataCreateProduct.slice();
     newArr[index].imageUrls = [];
@@ -1162,99 +974,6 @@ export const EditClassify: FC = (item) => {
     setDataCreateProduct(newArr);
   };
 
-  const handleLibraryUseProduct = async (itemId: any, indexItem: any) => {
-    const permissionStatus = await checkLibraryPermission();
-    const numberUrl = checkArrayIsEmptyOrNull(
-      dataCreateProduct[indexItem]?.imageUrls
-    )
-      ? 0
-      : dataCreateProduct[indexItem]?.imageUrls?.length;
-    console.log("----------------indexItem-----------------", numberUrl);
-    if (permissionStatus === RESULTS.GRANTED) {
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - numberUrl,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          uploadImages(selectedAssets, false, indexItem);
-        }
-      });
-    } else if (permissionStatus === RESULTS.DENIED) {
-      const newStatus = await requestLibraryPermission();
-      if (newStatus === RESULTS.GRANTED) {
-        console.log("Permission granted");
-      } else {
-        console.log("Permission denied");
-        Toast.show({
-          type: ALERT_TYPE.DANGER,
-          title: "",
-          textBody: translate("txtToats.permission_denied"),
-        });
-
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("txtDialog.permission_allow"),
-          textBody: translate("txtDialog.allow_permission_in_setting"),
-          button: translate("common.cancel"),
-          button2: translate("txtDialog.settings"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            Linking.openSettings();
-            Dialog.hide();
-          },
-        });
-      }
-    } else if (permissionStatus === RESULTS.BLOCKED) {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: "",
-        textBody: translate("txtToats.permission_blocked"),
-      });
-
-      console.log("Permission blocked, you need to enable it from settings");
-    } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
-        cameraType: "back",
-        quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
-        selectionLimit: 6 - numberUrl,
-      };
-      launchImageLibrary(options, (response) => {
-        console.log("==========> response4564546", response);
-        if (response.didCancel) {
-          console.log("User cancelled photo picker1");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error2: ", response.errorCode);
-        } else if (response.errorCode) {
-          console.log("User cancelled photo picker1");
-        } else if (response?.assets && response.assets.length > 0) {
-          const selectedAssets = response.assets.map((asset) => asset);
-          if (selectedAssets.length + numberUrl > 6) {
-            Toast.show({
-              type: ALERT_TYPE.DANGER,
-              title: "",
-              textBody: translate("txtToats.required_maximum_number_of_photos"),
-            });
-          } else {
-            uploadImages(selectedAssets, false, indexItem);
-          }
-        }
-      });
-    }
-  };
   const handleRemoveImage = (index: number, url: string) => {
     let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
@@ -1271,13 +990,6 @@ export const EditClassify: FC = (item) => {
   const getConvertedUnitsForGroup = () => {
     return detailUnitGroupData ? detailUnitGroupData.uomGroupLines : [];
   };
-
-  const arrBrand = dataBrand.map((item) => {
-    return { label: item.name, id: item.id };
-  });
-  const arrCategory = dataCategory.map((item: { name: any; id: any }) => {
-    return { label: item.name, id: item.id };
-  });
 
   const handleDeleteProduct = async (index: any, id: any) => {
     Dialog.show({
@@ -1306,8 +1018,8 @@ export const EditClassify: FC = (item) => {
                   title: translate("txtDialog.txt_title_dialog"),
                   textBody: checkDelete.result.message,
                   button: translate("common.ok"),
-                  closeOnOverlayTap: false,
-                });
+                  closeOnOverlayTap: false
+                })
               } else {
                 setErrorContent(checkDelete.result.errorCodes[0].message);
                 await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
@@ -1316,8 +1028,8 @@ export const EditClassify: FC = (item) => {
                   title: translate("txtDialog.txt_title_dialog"),
                   textBody: checkDelete.result.errorCodes[0].message,
                   button: translate("common.ok"),
-                  closeOnOverlayTap: false,
-                });
+                  closeOnOverlayTap: false
+                })
               }
             } else {
               setErrorContent(checkDelete.result.errorCodes[0].message);
@@ -1327,8 +1039,8 @@ export const EditClassify: FC = (item) => {
                 title: translate("txtDialog.txt_title_dialog"),
                 textBody: checkDelete.result.errorCodes[0].message,
                 button: translate("common.ok"),
-                closeOnOverlayTap: false,
-              });
+                closeOnOverlayTap: false
+              })
               console.error("Failed to fetch categories:", checkDelete.result);
             }
           } else {
@@ -1341,8 +1053,8 @@ export const EditClassify: FC = (item) => {
         } catch (error) {
           console.error("Error fetching categories:", error);
         }
-      },
-    });
+      }
+    })
   };
 
   const handleSelect = (items: any) => {
@@ -1358,10 +1070,7 @@ export const EditClassify: FC = (item) => {
   const goToChooseSupplierScreen = () => {
     const listIds = vendor;
     // console.log('mômmo' , listIds)
-    navigation.navigate({
-      name: "ChooseVendorScreen",
-      params: { listIds, mode: "edit" },
-    } as never);
+    navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: "edit" } } as never);
   };
   return (
     <FormProvider {...methods}>
@@ -1381,192 +1090,13 @@ export const EditClassify: FC = (item) => {
                 marginHorizontal: scaleWidth(16),
                 marginVertical: scaleHeight(20),
               }}>
-              {imagesNote?.length > 0 ? (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    marginBottom: scaleHeight(20),
-                  }}>
-                  <View
-                    style={{
-                      flexDirection: "column",
-                      marginRight: scaleHeight(11),
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleLibraryUse();
-                          productStore.setImagesLimit(imagesNote.length);
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: "",
-                            textBody: translate(
-                              "txtToats.required_maximum_number_of_photos"
-                            ),
-                          });
-                        }
-                      }}
-                      style={styles.btnLibrary}>
-                      <Images.ic_addImages
-                        width={scaleWidth(16)}
-                        height={scaleHeight(16)}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleCameraUse();
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: "",
-                            textBody: translate(
-                              "txtToats.required_maximum_number_of_photos"
-                            ),
-                          });
-                        }
-                      }}
-                      style={styles.btnCamera}>
-                      <Images.ic_camera
-                        width={scaleWidth(16)}
-                        height={scaleHeight(16)}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <FlatList
-                    data={imagesNote}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => (
-                      <TouchableOpacity
-                        key={index}
-                        onPress={() => {
-                          setModalImages(true);
-                          setActiveSlide(index);
-                        }}>
-                        <AutoImage
-                          style={{
-                            width: scaleWidth(107),
-                            height: scaleHeight(70),
-                            borderRadius: 8,
-                          }}
-                          source={{ uri: item }}
-                        />
-                        <TouchableOpacity
-                          style={{
-                            position: "absolute",
-                            right: scaleWidth(5),
-                            top: scaleHeight(5),
-                          }}
-                          onPress={() => handleRemoveImage(index, item)}>
-                          <Images.circle_close
-                            width={scaleWidth(16)}
-                            height={scaleHeight(16)}
-                          />
-                        </TouchableOpacity>
-                      </TouchableOpacity>
-                    )}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    ItemSeparatorComponent={() => (
-                      <View style={{ width: scaleWidth(11) }} />
-                    )}
-                  />
-                </View>
-              ) : (
-                <>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      marginBottom: scaleHeight(20),
-                    }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleLibraryUse();
-                          productStore.setImagesLimit(imagesNote.length);
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: "",
-                            textBody: translate(
-                              "txtToats.required_maximum_number_of_photos"
-                            ),
-                          });
-                        }
-                      }}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderWidth: 1,
-                        borderColor: "#0078d4",
-                        marginRight: scaleWidth(10),
-                        borderRadius: 8,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginHorizontal: scaleWidth(16),
-                          marginVertical: scaleHeight(7),
-                        }}>
-                        <Images.ic_addImages
-                          width={scaleWidth(16)}
-                          height={scaleHeight(16)}
-                        />
-                        <Text
-                          tx={"createProductScreen.uploadImage"}
-                          style={{
-                            fontSize: fontSize.size14,
-                            color: "#0078d4",
-                          }}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (imagesNote.length < 6) {
-                          handleCameraUse();
-                        } else {
-                          Toast.show({
-                            type: ALERT_TYPE.DANGER,
-                            title: "",
-                            textBody: translate(
-                              "txtToats.required_maximum_number_of_photos"
-                            ),
-                          });
-                        }
-                      }}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        borderWidth: 1,
-                        borderColor: "#0078d4",
-                        borderRadius: 8,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginHorizontal: scaleWidth(16),
-                          marginVertical: scaleHeight(7),
-                        }}>
-                        <Images.ic_camera
-                          width={scaleWidth(16)}
-                          height={scaleHeight(16)}
-                        />
-                        <Text
-                          tx={"createProductScreen.openCamera"}
-                          style={{
-                            fontSize: fontSize.size14,
-                            color: "#0078d4",
-                          }}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                </>
-              )}
+              <ImageProduct
+                arrData={imagesNote}
+                uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray, checkUploadSlider, indexItem)}
+                deleteImage={(index, item) => {
+                  handleRemoveImage(index, item);
+                }}
+              />
               <Controller
                 control={methods.control}
                 render={({ field: { onChange, value, onBlur } }) => (
@@ -1578,18 +1108,15 @@ export const EditClassify: FC = (item) => {
                       marginBottom: scaleHeight(15),
                       justifyContent: "center",
                     }}
-                    inputStyle={{
-                      fontSize: fontSize.size16,
-                      fontWeight: "500",
-                    }}
+                    inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                     value={value}
                     onBlur={onBlur}
-                    defaultValue={methods.watch("SKU")}
+                    defaultValue={methods.watch('SKU')}
                     RightIconClear={Images.icon_delete2}
                     error={errors?.SKU?.message}
                     onClearText={() => onChange("")}
                     onChangeText={(value) => {
-                      onChange(value);
+                      onChange(value)
                     }}
                     placeholderTx="productScreen.placeholderSKU"
                     RightIcon={Images.ic_QR}
@@ -1614,10 +1141,7 @@ export const EditClassify: FC = (item) => {
                       marginBottom: scaleHeight(15),
                       justifyContent: "center",
                     }}
-                    inputStyle={{
-                      fontSize: fontSize.size16,
-                      fontWeight: "500",
-                    }}
+                    inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                     value={value}
                     onBlur={onBlur}
                     // defaultValue={nameProduct}
@@ -1639,14 +1163,14 @@ export const EditClassify: FC = (item) => {
                 }}
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text
-                  tx="createProductScreen.canBuy"
+                <Text tx="createProductScreen.canBuy"
                   style={{
                     fontSize: fontSize.size13,
                     marginRight: scaleWidth(10),
-                  }}
+                  }} />
+                <Switch
+                  value={valuePurchase}
                 />
-                <Switch value={valuePurchase} />
               </View>
               <View
                 style={{
@@ -1700,7 +1224,11 @@ export const EditClassify: FC = (item) => {
                       ) : retailPriceProduct?.length > 0 &&
                         retailPriceProduct?.length === 1 ? (
                         <Text
-                          text={retailPriceProduct[0]?.price}
+                          text={vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(
+                              removeNonNumeric(retailPriceProduct[0]?.price)
+                            )
+                            : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
                           numberOfLines={1}
                           style={{
                             fontWeight: "500",
@@ -1743,6 +1271,11 @@ export const EditClassify: FC = (item) => {
                       }}
                       value={value}
                       onBlur={onBlur}
+                      valueInput={vendorStore.checkSeparator === "DOTS"
+                        ? formatCurrency(
+                          removeNonNumeric(value)
+                        )
+                        : addCommas(removeNonNumeric(value))}
                       showRightIcon={false}
                       // defaultValue={costPriceProduct?.toString()}
                       onChangeText={(value) => {
@@ -1785,6 +1318,11 @@ export const EditClassify: FC = (item) => {
                       }}
                       value={value}
                       onBlur={onBlur}
+                      valueInput={vendorStore.checkSeparator === "DOTS"
+                        ? formatCurrency(
+                          removeNonNumeric(value)
+                        )
+                        : addCommas(removeNonNumeric(value))}
                       // defaultValue={listPriceProduct?.toString()}
                       showRightIcon={false}
                       onChangeText={(value) => {
@@ -1846,7 +1384,12 @@ export const EditClassify: FC = (item) => {
                       ) : wholesalePriceProduct?.length > 0 &&
                         wholesalePriceProduct?.length === 1 ? (
                         <Text
-                          text={wholesalePriceProduct[0]?.price}
+                          text={vendorStore.checkSeparator === "DOTS"
+                            ? formatCurrency(
+                              removeNonNumeric(wholesalePriceProduct[0]?.price)
+                            )
+                            : addCommas(removeNonNumeric(wholesalePriceProduct[0]?.price))
+                          }
                           numberOfLines={1}
                           style={{
                             fontWeight: "500",
@@ -2256,13 +1799,9 @@ export const EditClassify: FC = (item) => {
                               }}>
                               <ProductAttribute
                                 label={dto.name}
-                                value={dto.productAttributeValue
-                                  .map((value) => value.value)
-                                  .join("/")}
+                                value={dto.productAttributeValue.map(value => value.value).join('/')}
                                 styleAttribute={{
-                                  paddingHorizontal: scaleWidth(
-                                    padding.padding_12
-                                  ),
+                                  paddingHorizontal: scaleWidth(padding.padding_12),
                                 }}
                               />
                               {index !== dataGroupAttribute?.length - 1 ? (
@@ -2285,22 +1824,20 @@ export const EditClassify: FC = (item) => {
                           onPress={() => {
                             if (productUsing === true || priceUsing === true) {
                               navigation.navigate({
-                                name: "editAttributeByEdit",
-                                params: {
+                                name: "editAttributeByEdit", params: {
                                   dataAttribute: attributeToEdit,
                                   constDataAttribute: constAttributeToEdit,
                                   dropdownSelected: dropdownToEdit,
-                                },
+                                }
                               } as never);
                             } else {
                               navigation.navigate({
-                                name: "editAttribute",
-                                params: {
+                                name: "editAttribute", params: {
                                   dataAttribute: attributeToEdit,
                                   dropdownSelected: dropdownToEdit,
                                   editScreen: true,
-                                  hasVariantInConfig: hasVariantInConfig,
-                                },
+                                  hasVariantInConfig: hasVariantInConfig
+                                }
                               } as never);
                             }
                           }}>
@@ -2311,6 +1848,7 @@ export const EditClassify: FC = (item) => {
                           />
                         </TouchableOpacity>
                       ) : null}
+
 
                       {dataGroupAttribute.length > 0 ? (
                         <TouchableOpacity
@@ -2882,18 +2420,12 @@ export const EditClassify: FC = (item) => {
               {/* ) : null} */}
 
               {showDetails && (
-                <View
-                  style={[
-                    styles.viewDetails,
-                    { marginHorizontal: scaleWidth(16) },
-                  ]}>
+                <View style={[styles.viewDetails, { marginHorizontal: scaleWidth(16) }]}>
                   <View style={styles.viewTitleDetail}>
-                    <Text
-                      style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                    <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
                       Thuộc tính
                     </Text>
-                    <Text
-                      style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
+                    <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
                       Giá trị
                     </Text>
                   </View>
@@ -2944,11 +2476,9 @@ export const EditClassify: FC = (item) => {
                               }}>
                               <ProductAttribute
                                 label={dto.name}
-                                value={dto.value.join("/")}
+                                value={dto.value.join('/')}
                                 styleAttribute={{
-                                  paddingHorizontal: scaleWidth(
-                                    padding.padding_12
-                                  ),
+                                  paddingHorizontal: scaleWidth(padding.padding_12),
                                 }}
                               />
                               {index !== attributes?.length - 1 ? (
@@ -3140,10 +2670,7 @@ export const EditClassify: FC = (item) => {
               borderRadius: 10,
               backgroundColor: "#0078d4",
             }}>
-            <Text
-              tx={"createProductScreen.done"}
-              style={{ fontSize: fontSize.size14, color: "white" }}
-            />
+            <Text tx={"createProductScreen.done"} style={{ fontSize: fontSize.size14, color: "white" }} />
           </TouchableOpacity>
         </View>
       </View>

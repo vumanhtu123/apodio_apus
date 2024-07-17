@@ -9,7 +9,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { Images } from "../../../../assets";
-import { fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
@@ -49,10 +49,9 @@ interface ItemOriginal {
 }
 
 export default function ItemWeight(props: ItemWeight) {
-  const { vendorStore } = useStores();
-  console.log("tuvm weight");
-  const { control, setValue, setError, getFieldState, getValues, watch } =
-    useFormContext();
+  const { vendorStore } = useStores()
+  const [addLine, setAddLine] = useState(false)
+  const { control, setValue, setError, getFieldState, getValues, watch } = useFormContext()
   const {
     handleSubmit,
     // watch,
@@ -94,14 +93,17 @@ export default function ItemWeight(props: ItemWeight) {
         })
       );
     }
-  }, [props.dataUnitGroup]);
+    if(props.setAdd?.length !== 0){
+      setAddLine(true)
+    }else{
+      setAddLine(false)
+    }
+  }, [props.dataUnitGroup, props.setAdd])
 
   useEffect(() => {
-    if (
-      watch("volumeOriginal")?.trim() === "" &&
-      watch("weightOriginal")?.trim() === ""
-    ) {
-      setValue("weight", []);
+    if (watch('volumeOriginal')?.trim() === "" && watch('weightOriginal')?.trim() === "") {
+      setValue('weight', [])
+      setAddLine(false)
     }
   }, [watch("volumeOriginal"), watch("weightOriginal")]);
 
@@ -110,44 +112,34 @@ export default function ItemWeight(props: ItemWeight) {
   };
 
   const resetData1 = (data1: any, index: any) => {
-    console.log(data1.length);
-    console.log(index);
     // if(Object.keys(data1[index].unit).length !== 0){
     if (index === props.dataUnitGroup?.length - 1) {
       const newArr = data1.map((item: any) => {
-        return item.unit;
-      });
-      const filteredData = newArr.filter(
-        (obj: any) => Object.keys(obj).length > 0
-      );
-      console.log(filteredData);
+        return item.unit
+      })
+      const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
       const unitGroupData = props.dataUnitGroup?.map((item: any) => {
-        return { ...item, label: item.unitName };
-      });
-      console.log(unitGroupData);
+        return { ...item, label: item.unitName }
+      })
       const newArr3 = unitGroupData.filter(
         (itemA) => !filteredData.some((itemB: any) => deepEqual(itemA, itemB))
       );
-      console.log(newArr3, "ahsdfkjas");
-      setData(newArr3);
+      setData(newArr3)
     } else {
-      const newArr3 = data.concat(data1[index].unit);
-      setData(newArr3);
+      const newArr3 = data.concat(data1[index].unit)
+      setData(newArr3)
     }
     // }
   };
   const resetData = (data: any, itemValue: any) => {
     const newArr = data.map((item: any) => {
-      return item.unit;
-    });
-    const filteredData = newArr.filter(
-      (obj: any) => Object.keys(obj).length > 0
-    );
-    const newArr2 = filteredData.concat(itemValue);
+      return item.unit
+    })
+    const filteredData = newArr.filter((obj: any) => Object.keys(obj).length > 0);
+    const newArr2 = filteredData.concat(itemValue)
     const unitGroupData = props.dataUnitGroup?.map((item: any) => {
-      return { ...item, label: item.unitName };
-    });
-    console.log(unitGroupData);
+      return { ...item, label: item.unitName }
+    })
     const newArr3 = unitGroupData.filter(
       (itemA) => !newArr2.some((itemB: any) => deepEqual(itemA, itemB))
     );
@@ -159,25 +151,22 @@ export default function ItemWeight(props: ItemWeight) {
   });
 
   const onChange = (index: any, conversionRate: any) => {
-    setValue(
-      `weight.${index}.weight1`,
-      formatCurrency(
-        commasToDots(
-          Number(formatStringToFloat(getValues("weightOriginal"))) *
-            Number(conversionRate)
-        )
-      ).toString()
-    );
-    setValue(
-      `weight.${index}.volume`,
-      formatCurrency(
-        commasToDots(
-          Number(formatStringToFloat(getValues("volumeOriginal"))) *
-            Number(conversionRate)
-        )
-      ).toString()
-    );
-  };
+    setValue(`weight.${index}.weight1`, formatCurrency(commasToDots((Number(formatStringToFloat(getValues('weightOriginal'))) * Number(conversionRate)))).toString())
+    setValue(`weight.${index}.volume`, formatCurrency(commasToDots(Number(formatStringToFloat(getValues('volumeOriginal'))) * Number(conversionRate))).toString())
+  }
+
+  const addLineWeight = () => {
+    if (watch('volumeOriginal')?.trim() === "" || watch('weightOriginal')?.trim() === "" || props.dataUnitGroup.length === 0) {
+      Toast.show({
+        type: ALERT_TYPE.DANGER,
+        title: "",
+        textBody: translate("txtToats.add_line_weight"),
+      })
+    } else {
+      setAddLine(true)
+      setValue('weight', [{ weight1: '', volume: '', unit: {} }])
+    }
+  }
 
   return (
     <View>
@@ -191,74 +180,79 @@ export default function ItemWeight(props: ItemWeight) {
           data={props.data}
           checkList={props.checkList}
         />
-        {props.checkList ? (
-          <View style={stylesWeight.viewCheckList}>
-            <Text
-              style={stylesWeight.textWeightConversion}
-              tx="productScreen.weightConversion"></Text>
-            {watch("weightOriginal") === "" &&
-            watch("volumeOriginal") === "" ? null : data ? (
-              data.length !== 0 ? (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (props.setAdd.length === 0) {
-                      append({ weight1: "", volume: "", unit: {} });
-                    } else {
-                      if (
-                        props.setAdd[fields.length - 1]?.weight1 === "" ||
-                        props.setAdd[fields.length - 1]?.volume === "" ||
-                        Object.keys(props.setAdd[fields.length - 1]?.unit)
-                          .length === 0
-                      ) {
-                        Toast.show({
-                          type: ALERT_TYPE.DANGER,
-                          title: "",
-                          textBody: translate("txtToats.change_weight"),
-                        });
-                      } else {
-                        append({ weight1: "", volume: "", unit: {} });
-                      }
-                    }
-                  }}>
-                  <Text
-                    style={stylesWeight.textAddLine}
-                    tx="productScreen.addLine"></Text>
-                </TouchableOpacity>
-              ) : null
-            ) : null}
-          </View>
-        ) : null}
-      </View>
-      {props.checkList ? (
-        <FlatList
-          data={fields}
-          scrollEnabled={false}
-          keyExtractor={(item, index) => item.id}
-          renderItem={({ item, index }) => {
-            return (
-              <ItemConversion
-                onRemove={resetData}
-                onRestore={resetData1}
-                control={control}
-                index={index}
-                data={data}
-                remove={() => {
-                  remove(index);
+        {props.checkList ? (addLine === true ? <View
+          style={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            marginVertical: 10,
+          }}>
+          <Text
+            style={{
+              color: "#242424",
+              fontSize: fontSize.size14,
+              fontWeight: "400",
+            }}
+            tx="productScreen.weightConversion"></Text>
+          {watch('weightOriginal')?.trim() !== "" && watch('volumeOriginal')?.trim() !== "" ? (data ? (data.length !== 0 ?
+            <TouchableOpacity
+              onPress={() => {
+                if (props.setAdd?.length === 0) {
+                  append({ weight1: "", volume: "", unit: {} });
+                } else {
+                  if (props.setAdd[fields.length - 1]?.weight1 === '' || props.setAdd[fields.length - 1]?.volume === '' || Object.keys(props.setAdd[fields.length - 1]?.unit).length === 0) {
+                    Toast.show({
+                      type: ALERT_TYPE.DANGER,
+                      title: "",
+                      textBody: translate("txtToats.change_weight"),
+                    })
+                  } else {
+                    append({ weight1: "", volume: "", unit: {} });
+                  }
+                }
+              }}>
+              <Text
+                style={{
+                  color: "#0078D4",
+                  fontSize: fontSize.size12,
+                  fontWeight: "400",
                 }}
-                fields={fields}
-                originUit={props.data}
-                onChange={onChange}
-              />
-            );
-          }}
-        />
-      ) : null}
+                tx="productScreen.addLine"></Text>
+            </TouchableOpacity> : null) : null) : null}
+        </View> : <TouchableOpacity onPress={() => addLineWeight()}>
+          <Text tx="productScreen.addLineWeight" style={{ color: colors.navyBlue, fontStyle: 'italic', fontWeight: '400', fontSize: fontSize.size12 }} />
+        </TouchableOpacity>) : null}
+      </View>
+      {props.checkList ? <FlatList
+        data={fields}
+        scrollEnabled={false}
+        keyExtractor={(item, index) => item.id}
+        renderItem={({ item, index }) => {
+          return (
+            <ItemConversion
+              onRemove={resetData}
+              onRestore={resetData1}
+              control={control}
+              index={index}
+              data={data}
+              remove={() => {
+                remove(index)
+                if(fields.length === 1){
+                  setAddLine(false)
+                }
+              }}
+              fields={fields}
+              originUit={props.data}
+              onChange={onChange}
+            />
+          );
+        }}
+      /> : null}
     </View>
   );
 }
 
 const ItemOriginal = (item: ItemOriginal) => {
-  const { vendorStore } = useStores();
+  const { vendorStore } = useStores()
   return (
     <View style={stylesWeight.viewItemOriginal}>
       <Text style={stylesWeight.textItemOriginal}>
@@ -342,8 +336,8 @@ const ItemOriginal = (item: ItemOriginal) => {
 };
 
 const ItemConversion = (item: InputSelectProps) => {
-  const { vendorStore } = useStores();
-  const { setValue, getValues } = useForm();
+  const { vendorStore } = useStores()
+  const { setValue, getValues } = useForm()
 
   return (
     <View style={stylesWeight.viewItemConversion}>

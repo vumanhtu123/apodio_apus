@@ -124,14 +124,14 @@ export class CategoryApi {
       return { kind: "bad-data" };
     }
   }
-  async getDeleteCategories(id: number): Promise<any> {
+  async getDeleteCategories(productCategoryId: number): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.delete(
         ApiEndpoint.DELETE_CATEGORY,
-        { id }
+        { productCategoryId }
       );
       console.log('------------------------------response delete category', response)
       const data = response.data;
@@ -152,10 +152,11 @@ export class CategoryApi {
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
         ApiEndpoint.CREATE_CATEGORY,
-        { name, 
+        {
+          name,
           imageUrl,
           activated: true
-         }
+        }
       );
       // Loading.hide();
       const data = response.data;
