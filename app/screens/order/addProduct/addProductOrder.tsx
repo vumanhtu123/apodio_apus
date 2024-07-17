@@ -11,7 +11,7 @@ import React, {
 import { Button, Header, Text } from "../../../components";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Images } from "../../../../assets";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { useStores } from "../../../models";
 import CategoryModalFilter from "../../product/component/modal-category";
 import Dialog from "../../../components/dialog/dialog";
@@ -91,114 +91,72 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     }
   };
   const handleGetProduct = async (searchValue?: any) => {
-      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
-      const response: any = await orderStore.getListOrderProduct(
-        page,
-        size,
-        orderStore.productCategoryId === 0
-          ? undefined
-          : orderStore.productCategoryId,
-        searchValue,
-        orderStore.tagId,
-        parseSort,
-        orderStore.isLoadMore,
-        undefined
-      );
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
-      if (response && response.kind === "ok") {
-        setTotalPagesProduct(response.response.data.totalPages);
-        console.log("////////////////", response.response.data.totalPages);
-        if (page === 0) {
-          if (response.response.data.content.length === 0) {
-            setDataProduct([]);
-          } else {
-            const newArr = response.response.data.content.map((items: any) => {
-              return { ...items, amount: 0 };
-            });
-            setDataProduct(newArr);
-          }
+    const parseSort = orderStore.sort === '' ? '' : "&sort=" + orderStore.sort
+    const response: any = await orderStore.getListOrderProduct(
+      page,
+      size,
+      orderStore.productCategoryId === 0
+        ? undefined
+        : orderStore.productCategoryId,
+      searchValue,
+      orderStore.tagId,
+      parseSort,
+      orderStore.isLoadMore,
+      undefined
+    );
+    // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+    if (response && response.kind === "ok") {
+      setTotalPagesProduct(response.response.data.totalPages);
+      console.log("////////////////", response.response.data.totalPages);
+      if (page === 0) {
+        if (response.response.data.content.length === 0) {
+          setDataProduct([]);
         } else {
-          setDataProduct((prevProducts: any) => [
-            ...prevProducts,
-            ...response.response.data.content.map((items: any) => {
-              return { ...items, amount: 0 };
-            }),
-          ]);
+          const newArr = response.response.data.content.map((items: any) => {
+            return { ...items, amount: 0 };
+          });
+          setDataProduct(newArr);
         }
       } else {
-        console.error("Failed to fetch product:", response);
+        setDataProduct((prevProducts: any) => [
+          ...prevProducts,
+          ...response.response.data.content.map((items: any) => {
+            return { ...items, amount: 0 };
+          }),
+        ]);
       }
+    } else {
+      console.error("Failed to fetch product:", response);
+    }
   };
   const handleGetVariant = async (searchValue?: any) => {
-      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
-      const response: any = await orderStore.getListOrderVariant(
-        page,
-        size,
-        orderStore.productCategoryId === 0
-          ? undefined
-          : orderStore.productCategoryId,
-        searchValue,
-        orderStore.tagId,
-        parseSort,
-        orderStore.isLoadMore,
-        undefined,
-        undefined
+    const parseSort = orderStore.sort === '' ? '' : "&sort=" + orderStore.sort
+    const response: any = await orderStore.getListOrderVariant(
+      page,
+      size,
+      orderStore.productCategoryId === 0
+        ? undefined
+        : orderStore.productCategoryId,
+      searchValue,
+      orderStore.tagId,
+      parseSort,
+      orderStore.isLoadMore,
+      undefined,
+      undefined
+    );
+    console.log(
+      "mm------------------",
+      JSON.stringify(response.response.data.content)
+    );
+    if (response && response.kind === "ok") {
+      setTotalPagesProduct(response.response.data.totalPages);
+      const aMap = new Map(
+        orderStore.dataProductAddOrder.map((item) => [item.id, item])
       );
-      console.log(
-        "mm------------------",
-        JSON.stringify(response.response.data.content)
-      );
-      if (response && response.kind === "ok") {
-        setTotalPagesProduct(response.response.data.totalPages);
-        const aMap = new Map(
-          orderStore.dataProductAddOrder.map((item) => [item.id, item])
-        );
-        console.log("////////////////", response.response.data.totalPages);
-        if (page === 0) {
-          if (response.response.data.content.length === 0) {
-            setDataProduct([]);
-          } else {
-            const newArr = response.response.data.content.map((items: any) => {
-              if (items.uomId === items.saleUom?.id) {
-                return {
-                  ...items,
-                  amount: 0,
-                  isSelect: false,
-                  // conversionRate: 1,
-                  originAmount: 0,
-                };
-              } else {
-                const newObject = items.uomGroup.uomGroupLineItems.filter(
-                  (item: any) => item.uomId === items.saleUom?.id
-                );
-                return {
-                  ...items,
-                  amount: 0,
-                  isSelect: false,
-                  // conversionRate: newObject[0].conversionRate,
-                  originAmount: 0,
-                };
-              }
-            });
-            const newArr1 = newArr.map((item: any) => {
-              if (aMap.has(item.id)) {
-                return {
-                  ...item,
-                  isSelect: true,
-                  amount: aMap.get(item.id).amount,
-                  price: aMap.get(item.id).price,
-                  unitPrice: aMap.get(item.id).unitPrice,
-                  conversionRate: aMap.get(item.id).conversionRate,
-                  saleUom: aMap.get(item.id).saleUom,
-                  originAmount: aMap.get(item.id).originAmount,
-                  taxValue: aMap.get(item.id).taxValue,
-                  VAT: aMap.get(item.id).VAT,
-                };
-              }
-              return item;
-            });
-            setDataProduct(newArr1);
-          }
+      console.log("////////////////", response.response.data.totalPages);
+      if (page === 0) {
+        if (response.response.data.content.length === 0) {
+          setDataProduct([]);
         } else {
           const newArr = response.response.data.content.map((items: any) => {
             if (items.uomId === items.saleUom?.id) {
@@ -239,125 +197,120 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
             }
             return item;
           });
-          setDataProduct((prevProducts: any) => [...prevProducts, ...newArr1]);
+          setDataProduct(newArr1);
         }
       } else {
-        console.error("Failed to fetch product:", response);
+        const newArr = response.response.data.content.map((items: any) => {
+          if (items.uomId === items.saleUom?.id) {
+            return {
+              ...items,
+              amount: 0,
+              isSelect: false,
+              // conversionRate: 1,
+              originAmount: 0,
+            };
+          } else {
+            const newObject = items.uomGroup.uomGroupLineItems.filter(
+              (item: any) => item.uomId === items.saleUom?.id
+            );
+            return {
+              ...items,
+              amount: 0,
+              isSelect: false,
+              // conversionRate: newObject[0].conversionRate,
+              originAmount: 0,
+            };
+          }
+        });
+        const newArr1 = newArr.map((item: any) => {
+          if (aMap.has(item.id)) {
+            return {
+              ...item,
+              isSelect: true,
+              amount: aMap.get(item.id).amount,
+              price: aMap.get(item.id).price,
+              unitPrice: aMap.get(item.id).unitPrice,
+              conversionRate: aMap.get(item.id).conversionRate,
+              saleUom: aMap.get(item.id).saleUom,
+              originAmount: aMap.get(item.id).originAmount,
+              taxValue: aMap.get(item.id).taxValue,
+              VAT: aMap.get(item.id).VAT,
+            };
+          }
+          return item;
+        });
+        setDataProduct((prevProducts: any) => [...prevProducts, ...newArr1]);
       }
+    } else {
+      console.error("Failed to fetch product:", response);
+    }
   };
   const handleGetProductPrice = async (searchValue?: any) => {
-      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
-      const response: any = await orderStore.getListOrderProductPrice(
-        page,
-        size,
-        orderStore.productCategoryId === 0
-          ? undefined
-          : orderStore.productCategoryId,
-        searchValue,
-        orderStore.tagId,
-        parseSort,
-        orderStore.isLoadMore,
-        undefined,
-        Number(orderStore.dataPriceListSelected.id)
-      );
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
-      if (response && response.kind === "ok") {
-        setTotalPagesProduct(response.response.data.totalPages);
-        console.log("////////////////", response.response.data.totalPages);
-        if (page === 0) {
-          if (response.response.data.content.length === 0) {
-            setDataProduct([]);
-          } else {
-            const newArr = response.response.data.content.map((items: any) => {
-              return { ...items, amount: 0 };
-            });
-            setDataProduct(newArr);
-          }
+    const parseSort = orderStore.sort === '' ? '' : "&sort=" + orderStore.sort
+    const response: any = await orderStore.getListOrderProductPrice(
+      page,
+      size,
+      orderStore.productCategoryId === 0
+        ? undefined
+        : orderStore.productCategoryId,
+      searchValue,
+      orderStore.tagId,
+      parseSort,
+      orderStore.isLoadMore,
+      undefined,
+      Number(orderStore.dataPriceListSelected.id)
+    );
+    // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+    if (response && response.kind === "ok") {
+      setTotalPagesProduct(response.response.data.totalPages);
+      console.log("////////////////", response.response.data.totalPages);
+      if (page === 0) {
+        if (response.response.data.content.length === 0) {
+          setDataProduct([]);
         } else {
-          setDataProduct((prevProducts: any) => [
-            ...prevProducts,
-            ...response.response.data.content?.map((items: any) => {
-              return { ...items, amount: 0 };
-            }),
-          ]);
+          const newArr = response.response.data.content.map((items: any) => {
+            return { ...items, amount: 0 };
+          });
+          setDataProduct(newArr);
         }
       } else {
-        console.error("Failed to fetch product:", response);
+        setDataProduct((prevProducts: any) => [
+          ...prevProducts,
+          ...response.response.data.content?.map((items: any) => {
+            return { ...items, amount: 0 };
+          }),
+        ]);
       }
+    } else {
+      console.error("Failed to fetch product:", response);
+    }
   };
   const handleGetVariantPrice = async (searchValue?: any) => {
-      const parseSort = orderStore.sort === '' ? '': "&sort=" + orderStore.sort
-      const response: any = await orderStore.getListOrderVariantPrice(
-        page,
-        size,
-        orderStore.productCategoryId === 0
-          ? undefined
-          : orderStore.productCategoryId,
-        searchValue,
-        orderStore.tagId,
-        parseSort,
-        orderStore.isLoadMore,
-        undefined,
-        undefined,
-        Number(orderStore.dataPriceListSelected.id)
+    const parseSort = orderStore.sort === '' ? '' : "&sort=" + orderStore.sort
+    const response: any = await orderStore.getListOrderVariantPrice(
+      page,
+      size,
+      orderStore.productCategoryId === 0
+        ? undefined
+        : orderStore.productCategoryId,
+      searchValue,
+      orderStore.tagId,
+      parseSort,
+      orderStore.isLoadMore,
+      undefined,
+      undefined,
+      Number(orderStore.dataPriceListSelected.id)
+    );
+    // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
+    if (response && response.kind === "ok") {
+      setTotalPagesProduct(response.response.data.totalPages);
+      const aMap = new Map(
+        orderStore.dataProductAddOrder.map((item) => [item.id, item])
       );
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
-      if (response && response.kind === "ok") {
-        setTotalPagesProduct(response.response.data.totalPages);
-        const aMap = new Map(
-          orderStore.dataProductAddOrder.map((item) => [item.id, item])
-        );
-        console.log("////////////////", response.response.data.totalPages);
-        if (page === 0) {
-          if (response.response.data.content.length === 0) {
-            setDataProduct([]);
-          } else {
-            const newArr = response.response.data.content.map((items: any) => {
-              if (items.uomId === items.saleUom?.id) {
-                return {
-                  ...items,
-                  amount: items.minQuantity,
-                  isSelect: false,
-                  conversionRate: 1,
-                  originAmount: items.minQuantity,
-                };
-              } else {
-                const newObject = items.uomGroup.uomGroupLineItems.filter(
-                  (item: any) => item.uomId === items.saleUom?.id
-                );
-                const newAmount = Math.ceil(
-                  items.minQuantity / newObject[0].conversionRate
-                );
-                return {
-                  ...items,
-                  amount: newAmount,
-                  isSelect: false,
-                  conversionRate: newObject[0].conversionRate,
-                  originAmount: Math.ceil(
-                    newAmount * newObject[0].conversionRate
-                  ),
-                };
-              }
-            });
-            const newArr1 = newArr.map((item: any) => {
-              if (aMap.has(item.id)) {
-                return {
-                  ...item,
-                  isSelect: true,
-                  amount: aMap.get(item.id).amount,
-                  price: aMap.get(item.id).price,
-                  unitPrice: aMap.get(item.id).unitPrice,
-                  conversionRate: aMap.get(item.id).conversionRate,
-                  saleUom: aMap.get(item.id).saleUom,
-                  originAmount: aMap.get(item.id).originAmount,
-                  taxValue: aMap.get(item.id).taxValue,
-                  VAT: aMap.get(item.id).VAT,
-                };
-              }
-              return item;
-            });
-            setDataProduct(newArr1);
-          }
+      console.log("////////////////", response.response.data.totalPages);
+      if (page === 0) {
+        if (response.response.data.content.length === 0) {
+          setDataProduct([]);
         } else {
           const newArr = response.response.data.content.map((items: any) => {
             if (items.uomId === items.saleUom?.id) {
@@ -403,20 +356,67 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
             }
             return item;
           });
-          setDataProduct((prevProducts: any) => [...prevProducts, ...newArr1]);
+          setDataProduct(newArr1);
         }
       } else {
-        console.error("Failed to fetch product:", response);
+        const newArr = response.response.data.content.map((items: any) => {
+          if (items.uomId === items.saleUom?.id) {
+            return {
+              ...items,
+              amount: items.minQuantity,
+              isSelect: false,
+              conversionRate: 1,
+              originAmount: items.minQuantity,
+            };
+          } else {
+            const newObject = items.uomGroup.uomGroupLineItems.filter(
+              (item: any) => item.uomId === items.saleUom?.id
+            );
+            const newAmount = Math.ceil(
+              items.minQuantity / newObject[0].conversionRate
+            );
+            return {
+              ...items,
+              amount: newAmount,
+              isSelect: false,
+              conversionRate: newObject[0].conversionRate,
+              originAmount: Math.ceil(
+                newAmount * newObject[0].conversionRate
+              ),
+            };
+          }
+        });
+        const newArr1 = newArr.map((item: any) => {
+          if (aMap.has(item.id)) {
+            return {
+              ...item,
+              isSelect: true,
+              amount: aMap.get(item.id).amount,
+              price: aMap.get(item.id).price,
+              unitPrice: aMap.get(item.id).unitPrice,
+              conversionRate: aMap.get(item.id).conversionRate,
+              saleUom: aMap.get(item.id).saleUom,
+              originAmount: aMap.get(item.id).originAmount,
+              taxValue: aMap.get(item.id).taxValue,
+              VAT: aMap.get(item.id).VAT,
+            };
+          }
+          return item;
+        });
+        setDataProduct((prevProducts: any) => [...prevProducts, ...newArr1]);
       }
+    } else {
+      console.error("Failed to fetch product:", response);
+    }
   };
   const getPriceVariant = async (value: any) => {
-      const response = await orderStore.getPriceOrderVariant(value);
-      if (response && response.kind === "ok") {
-        const data = response.response.data;
-        return data.price;
-      } else {
-        console.error("Failed to fetch detail:", response);
-      }
+    const response = await orderStore.getPriceOrderVariant(value);
+    if (response && response.kind === "ok") {
+      const data = response.response.data;
+      return data.price;
+    } else {
+      console.error("Failed to fetch detail:", response);
+    }
   };
   const handleAddProduct = async (data: any) => {
     const arrProduct = dataProduct.map((items: any) => {
@@ -698,9 +698,11 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   };
   const handleProductDetail = (idProduct: number) => {
     productStore.setSelectedProductId(idProduct);
-    navigation.navigate({name: "selectVariant" as never, params:{
-      productTemplateId: idProduct,
-    }} as never);
+    navigation.navigate({
+      name: "selectVariant" as never, params: {
+        productTemplateId: idProduct,
+      }
+    } as never);
   };
   const handleClassifyDetail = (idProduct: number) => {
     productStore.setSelectedProductId(idProduct);
@@ -893,7 +895,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
               <Images.ic_shopping
                 width={scaleWidth(20)}
                 height={scaleHeight(20)}
-                style={{ marginRight: 6, marginTop: 2 }}
+                style={{ marginRight: scaleWidth(margin.margin_6), marginTop: scaleHeight(margin.margin_2) }}
               />
             </View>
             <Text

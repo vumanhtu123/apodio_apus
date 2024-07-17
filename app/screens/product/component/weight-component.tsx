@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, FlatList } from "react-native";
 import { Text, TextField } from "../../../components";
 import {

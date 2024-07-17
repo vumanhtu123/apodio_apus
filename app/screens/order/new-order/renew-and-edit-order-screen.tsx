@@ -202,7 +202,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn khách hàng",
+        textBody: "productScreen.youNeedSelectedClient",
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -214,7 +214,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần nhập địa chỉ giao hàng",
+        textBody: "productScreen.youNeedEnterAddressShip",
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -226,7 +226,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn sản phẩm",
+        textBody: "productScreen.youNeedSelectedProduct",
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -238,7 +238,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn phương thức thanh toán",
+        textBody: "productScreen.youNeedSelectedPaymentMethods",
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -1048,9 +1048,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           <InputSelect
             styleView={{
               backgroundColor: "white",
-              paddingHorizontal: 16,
-              paddingVertical: 8,
-              marginVertical: 15,
+              paddingHorizontal: padding.padding_16,
+              paddingVertical: padding.padding_8,
+              marginVertical: padding.padding_15,
             }}
             disabled={screen === "edit" ? true : false}
             required={true}
@@ -1096,7 +1096,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                           ? Dialog.show({
                             type: ALERT_TYPE.INFO,
                             title: translate("productScreen.Notification"),
-                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                            textBody: "productScreen.youNeedEnterPriceBeforeSelectTax",
                             button2: translate(
                               "productScreen.BtnNotificationAccept"
                             ),
@@ -1178,8 +1178,8 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                 flexDirection: "row",
                 borderRadius: 8,
                 backgroundColor: "white",
-                paddingHorizontal: 16,
-                paddingVertical: 15,
+                paddingHorizontal: padding.padding_16,
+                paddingVertical: padding.padding_15,
                 justifyContent: "space-between",
                 alignItems: "center",
               }}>
