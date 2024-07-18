@@ -79,4 +79,5 @@ export const ApiEndpoint = {
   POST_SUBMIT_PASSWORD: "/public-api/v1/user/submit-password",
   PRINT_INVOICE : '/api/v1/print/invoice-sale',
   GET_LIST_WAREHOUSE: '/api/v1/sale/stock-warehouse/list',
+  GET_DETAIL_WAREHOUSE: '/api/v1/sale/stock-warehouse',
 };

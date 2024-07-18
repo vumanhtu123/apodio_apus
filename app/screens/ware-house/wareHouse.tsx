@@ -35,10 +35,12 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const [lengthAll, setLengthAll] = useState<number>()
         const [lengthIsActive, setLengthIsActive] = useState<number>()
         const [lengthSave, setLengthSave] = useState<number>()
+        const [isShowSearch, setIsShowSearch] = useState(false)
 
         const getAPI = useStores()
 
         const size = useRef(10);
+
 
         const dataListTabar = [
             {
@@ -117,11 +119,14 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 return 'ARCHIVED'
             }
         }
+        console.log('====================================');
+        console.log('value state', state());
+        console.log('====================================');
 
         const getListWarehouse = () => {
 
             getAPI.warehouseStore.getListWareHouse(0, size.current, state(), valueSearch, statusLoadMore).then((data) => {
-                console.log('data doan', data);
+                console.log('data doan', data?.content);
                 const dataWarehouse = data?.content.map((item) => {
                     return {
                         id: item.id,
@@ -131,26 +136,23 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     };
                 });
                 setMyData(dataWarehouse)
+
+                console.log('doandev', myData);
+
             });
         }
 
-        const getAllLength = () => {
-            getAPI.warehouseStore.getListWareHouse().then((data) => {
-                console.log('data length ALL', data?.content);
-                setLengthAll(data?.content.length)
-                const lengthIsActive = data?.content.filter(item => item.state === 'APPROVED').length
-                const lengthSave = data?.content.filter(item => item.state === 'ARCHIVED').length
-                setLengthSave(lengthSave)
-                setLengthIsActive(lengthIsActive)
-            })
-        }
+        // const getAllLength = () => {
+        //     getAPI.warehouseStore.getListWareHouse().then((data) => {
+        //         console.log('data length ALL', data?.content);
+        //         setLengthAll(data?.content.length)
+        //         const lengthIsActive = data?.content.filter(item => item.state === 'APPROVED').length
+        //         const lengthSave = data?.content.filter(item => item.state === 'ARCHIVED').length
+        //         setLengthSave(lengthSave)
+        //         setLengthIsActive(lengthIsActive)
+        //     })
+        // }
 
-        const getIsActiveLength = () => {
-            // getAPI.warehouseStore.getListWareHouse().then((data) => {
-            //     console.log('data length isActive', data?.content.length);
-            //     setLengthAll(data?.content.length)
-            // })
-        }
 
 
         const handleRefresh = () => {
@@ -190,8 +192,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         }
 
         useEffect(() => {
-            getAllLength()
-            getIsActiveLength()
+            // getAllLength()
             getListWarehouse()
 
 
@@ -215,6 +216,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 <TouchableOpacity style={Styles.itemList}
                     onPress={() => {
                         setIdWarehouse(item.id)
+                        props.navigation.navigate('detailWarehouse')
                     }}
                 >
                     <Images.ic_Brick
@@ -288,11 +290,12 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     RightIcon1={Images.ic_QR}
                     RightIcon2={Images.icon_search}
                     RightIcon={Images.icon_funnel}
-                    headerInput={true}
+                    headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
                         handleSearch()
                     }}
                     onSearchValueChange={(txt: any) => setValueSearch(txt)}
+                    onRightPress2={() => setIsShowSearch(!isShowSearch)}
                     btnRightStyle={{ width: scaleWidth(30), height: scaleHeight(30), marginRight: -10, }}
                     onLeftPress={() => props.navigation.goBack()}
                 />

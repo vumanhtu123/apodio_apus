@@ -1,9 +1,11 @@
+import { id } from 'date-fns/locale';
 import { ApiResponse } from "apisauce";
 import { ApiErp } from "../base-api/api-config-erp";
-import { ResponseWarehouse } from "../../models/warehouse-model";
+import { ResponseWarehouse } from "../../models/warehouse-store/warehouse-model";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { ApiWarehouse } from "../base-api/api-config-warehouse";
 import { Loading } from "../../components/dialog-notification";
+import { DataDetailWarehouse } from '../../models/warehouse-store/detail-warehouse-model';
 
 export class WarehouseAPI {
     private api: ApiWarehouse
@@ -84,6 +86,32 @@ export class WarehouseAPI {
                 return { kind: "bad-data", result: error };
             }
         }
-       
+
     }
+
+    // async getDetailWarehouse ( 
+    //     id: number
+    // ): Promise<any> {
+    //     try {
+    //         console.log("doandev url detaile warehouse ", this.api.config.url);
+    //         const response : ApiResponse<BaseResponse< DataDetailWarehouse,Error>> = await this.api.apisauce.get(
+    //             ApiEndpoint.GET_DETAIL_WAREHOUSE,
+    //                 {
+    //                     id: id
+    //                 }
+    //             )
+    //         const result = response.data;
+    //         console.log('====================================');
+    //         console.log("my data detail warehouse" , result);
+    //         console.log('====================================');
+
+    //         if (result?.data != null) {
+    //             return result;
+    //           } else {
+    //             return result?.errorCodes ;
+    //           }
+    //     } catch (error) {
+    //         return { kind: "bad-data", result: error };
+    //     }
+    // }
 }

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { scaleWidth, scaleHeight, colors } from "../../theme";
+import { scaleWidth, scaleHeight, colors, padding, fontSize } from "../../theme";
 
 
 export const Styles = StyleSheet.create({
@@ -121,6 +121,28 @@ export const Styles = StyleSheet.create({
         alignItems: 'center',
          
     },
+    box : {
+        backgroundColor:'#FFF',
+        paddingHorizontal:scaleWidth(padding.padding_16),
+        paddingBottom:scaleWidth(63),
+        paddingVertical:scaleHeight(padding.padding_20)
+    },
+    label: { 
+        color: colors.palette.dolphin, 
+        fontSize: fontSize.size12, 
+        fontWeight: '400' 
+    },
+    value: { 
+        fontWeight: '600', 
+        fontSize: fontSize.size12 
+    },
+    box2: {
+        marginTop: scaleHeight(12),
+        paddingHorizontal: scaleHeight(19),
+        paddingVertical: scaleWidth(16),
+        backgroundColor: '#FFF'
+    }
+    
 
 
 

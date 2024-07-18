@@ -33,6 +33,7 @@ import { AddClientToGroup } from "../screens/Client/add-client-to-group";
 
 
 
+
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
 /**
@@ -146,6 +147,7 @@ export type NavigatorParamList = {
   expenseScreen: undefined;
   addRevenueScreen: undefined;
   filterRevenueScreen: undefined;
+  detailWarehouse: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -263,6 +265,8 @@ export const AppStack = () => {
       <Stack.Screen name="mustPay" component={Screens.MustPayScreen} />
       <Stack.Screen name="detailDebt" component={Screens.DetailDebtScreen} />
       <Stack.Screen name="receivable" component={Screens.ReceivableScreen} />
+
+      <Stack.Screen name="detailWarehouse" component={Screens.DetailWarehouseScreen} />
 
       <Stack.Screen
         name="addRevenueScreen"
