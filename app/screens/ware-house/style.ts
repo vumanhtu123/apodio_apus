@@ -1,23 +1,22 @@
-import { StyleSheet } from "react-native";
-import { scaleWidth, scaleHeight, colors, padding, fontSize } from "../../theme";
+import { Dimensions, Platform, StyleSheet } from "react-native";
+import { scaleWidth, scaleHeight, colors, padding, fontSize, margin } from "../../theme";
 
 
 export const Styles = StyleSheet.create({
-    main: {
-        flex: 1,
-    },
-    body: {
-        marginTop: scaleHeight(20),
-        marginLeft: scaleWidth(16)
-    },
-    bodyContainer: {
-        flex: 1,
-        // backgroundColor:'#FFF' ,
-        marginTop: scaleHeight(12),
-        marginHorizontal: scaleWidth(16),
-        marginBottom: scaleHeight(20)
-
-    },
+  main: {
+    flex: 1,
+  },
+  body: {
+    marginTop: scaleHeight(20),
+    marginLeft: scaleWidth(16),
+  },
+  bodyContainer: {
+    flex: 1,
+    // backgroundColor:'#FFF' ,
+    marginTop: scaleHeight(12),
+    marginHorizontal: scaleWidth(16),
+    marginBottom: scaleHeight(20),
+  },
 
     bodyItemTabar: {
         width: scaleWidth(70),
@@ -121,29 +120,121 @@ export const Styles = StyleSheet.create({
         alignItems: 'center',
          
     },
-    box : {
-        backgroundColor:'#FFF',
-        paddingHorizontal:scaleWidth(padding.padding_16),
-        paddingBottom:scaleWidth(63),
-        paddingVertical:scaleHeight(padding.padding_20)
+    box: {
+        paddingVertical: scaleWidth(20),
+        paddingHorizontal:scaleHeight(16),
+        backgroundColor: '#FFFFFF',
+
     },
-    label: { 
-        color: colors.palette.dolphin, 
-        fontSize: fontSize.size12, 
-        fontWeight: '400' 
+    label: {
+        fontWeight: '400',
+        fontSize: fontSize.size12,
+        color: colors.dolphin
     },
-    value: { 
-        fontWeight: '600', 
-        fontSize: fontSize.size12 
+    value: {
+        fontWeight: '700',
+        fontSize: fontSize.size12,
     },
     box2: {
-        marginTop: scaleHeight(12),
-        paddingHorizontal: scaleHeight(19),
-        paddingVertical: scaleWidth(16),
-        backgroundColor: '#FFF'
+        paddingVertical: scaleWidth(20),
+        paddingHorizontal:scaleHeight(16),
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row', 
+        marginTop: scaleHeight(12) 
+
     }
-    
 
 
 
 })
+
+export const stylesWareHouse = StyleSheet.create({
+    containerView: {
+      // backgroundColor: "white",
+      marginHorizontal: scaleWidth(16),
+      marginVertical: scaleHeight(20),
+      justifyContent: "space-between",
+      flex: 1,
+    },
+    inputPass:
+      Platform.OS === "ios"
+        ? {
+            fontSize: 16,
+          }
+        : {
+            fontSize: 16,
+          },
+    selected: {
+      borderWidth: 1,
+      borderRadius: 4,
+      paddingHorizontal: scaleWidth(9),
+      paddingVertical: scaleHeight(10),
+      marginRight: scaleWidth(5),
+    },
+    textConfig: {
+      fontSize: fontSize.size14,
+      fontWeight: "400",
+      color: "#747475",
+      marginHorizontal: scaleWidth(5),
+    },
+    modalContainer: {
+      height: "50%",
+      backgroundColor: colors.palette.neutral100,
+      borderRadius: 8,
+      paddingVertical: scaleHeight(padding.padding_12),
+      paddingHorizontal: scaleWidth(padding.padding_16),
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      // marginHorizontal : 15
+    },
+    textTitleModal: {
+      marginVertical: scaleHeight(18),
+      marginLeft: scaleWidth(9),
+      fontWeight: "700",
+      fontSize: fontSize.size14,
+      color: colors.palette.nero,
+    },
+    viewModalButton: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: scaleHeight(margin.margin_15),
+      marginTop: scaleHeight(10),
+    },
+    buttonCancel: {
+      height: scaleHeight(48),
+      backgroundColor: colors.palette.neutral100,
+      borderWidth: 1,
+      borderColor: colors.palette.veryLightGrey,
+      width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
+      borderRadius: 8,
+    },
+    textCancel: {
+      color: colors.palette.dolphin,
+      fontWeight: "700",
+      fontSize: fontSize.size14,
+      lineHeight: scaleHeight(24),
+    },
+    buttonAccept: {
+      height: scaleHeight(48),
+      backgroundColor: colors.palette.navyBlue,
+      width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.48,
+      borderRadius: 8,
+    },
+    textAccept: {
+      color: colors.palette.neutral100,
+      fontWeight: "700",
+      fontSize: fontSize.size14,
+      lineHeight: scaleHeight(24),
+    },
+    item: {
+      paddingVertical: scaleHeight(10),
+      flexDirection: "row",
+      paddingHorizontal: scaleWidth(3),
+      alignItems: "center",
+    },
+    itemText: {
+      fontSize: fontSize.size14,
+    },
+  });

@@ -132,7 +132,7 @@ export interface TextFieldProps extends TextInputProps {
   styleTextError?: StyleProp<TextStyle>;
   styleTextRight?: StyleProp<TextStyle>;
   styleTextLabel?: boolean;
-  valueTextRight?: string;
+  valueTextRight?: any;
   isMultiline?: boolean;
   value?: any;
   valueInput?: any;
@@ -238,54 +238,54 @@ export function TextField(props: TextFieldProps) {
                 style={
                   styleTextLabel == false
                     ? {
-                      // position: "absolute",
-                      left: isTL38
-                        ? scaleWidth(Platform.OS === "android" ? 50 : 55)
-                        : 0,
-                      top:
-                        !isFocused && !actualPlaceholder && value === ""
-                          ? scaleHeight(19)
-                          : scaleHeight(8),
-                      fontSize:
-                        !isFocused && !actualPlaceholder && value === ""
-                          ? fontSize.size16
-                          : fontSize.size12,
-                      fontWeight: "500",
-                      color: labelDolphin
-                        ? colors.palette.dolphin
-                        : !isFocused
+                        // position: "absolute",
+                        left: isTL38
+                          ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                          : 0,
+                        top:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(19)
+                            : scaleHeight(8),
+                        fontSize:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? fontSize.size16
+                            : fontSize.size12,
+                        fontWeight: "500",
+                        color: labelDolphin
+                          ? colors.palette.dolphin
+                          : !isFocused
                           ? txColor
                           : colors.palette.dolphin,
-                      paddingLeft: scaleWidth(16),
-                      marginTop:
-                        isFocused && !actualPlaceholder && value === ""
-                          ? scaleHeight(0)
-                          : scaleHeight(0),
-                    }
+                        paddingLeft: scaleWidth(16),
+                        marginTop:
+                          isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(0)
+                            : scaleHeight(0),
+                      }
                     : {
-                      left: isTL38
-                        ? scaleWidth(Platform.OS === "android" ? 50 : 55)
-                        : 0,
-                      top:
-                        !isFocused && !actualPlaceholder && value === ""
-                          ? scaleHeight(19)
-                          : scaleHeight(8),
-                      fontSize:
-                        !isFocused && !actualPlaceholder && value === ""
-                          ? fontSize.size13
-                          : fontSize.size12,
-                      fontWeight: "500",
-                      color: labelDolphin
-                        ? colors.palette.dolphin
-                        : !isFocused
+                        left: isTL38
+                          ? scaleWidth(Platform.OS === "android" ? 50 : 55)
+                          : 0,
+                        top:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(19)
+                            : scaleHeight(8),
+                        fontSize:
+                          !isFocused && !actualPlaceholder && value === ""
+                            ? fontSize.size13
+                            : fontSize.size12,
+                        fontWeight: "500",
+                        color: labelDolphin
+                          ? colors.palette.dolphin
+                          : !isFocused
                           ? txColor
                           : colors.palette.dolphin,
-                      paddingLeft: scaleWidth(16),
-                      marginTop:
-                        isFocused && !actualPlaceholder && value === ""
-                          ? scaleHeight(0)
-                          : scaleHeight(0),
-                    }
+                        paddingLeft: scaleWidth(16),
+                        marginTop:
+                          isFocused && !actualPlaceholder && value === ""
+                            ? scaleHeight(0)
+                            : scaleHeight(0),
+                      }
                 }
               />
             ) : null}
@@ -318,8 +318,7 @@ export function TextField(props: TextFieldProps) {
           </View>
           <View
             style={{
-
-              marginTop: (Platform.OS === 'ios' ? margin.margin_10 : null),
+              marginTop: Platform.OS === "ios" ? margin.margin_10 : null,
               flexDirection: "row",
             }}>
             {/* <View style={{}}> */}
@@ -329,7 +328,7 @@ export function TextField(props: TextFieldProps) {
                   <LeftIcon width={scaleWidth(18)} height={scaleHeight(18)} />
                 </TouchableOpacity>
                 {/* <View style= ></View> */}
-              {/* </View>
+            {/* </View>
             ) : null} */}
             {/* </View> */}
             <TextInput
@@ -344,7 +343,6 @@ export function TextField(props: TextFieldProps) {
                 {
                   paddingRight: showRightIcon === true ? scaleWidth(16) : 0,
                   paddingLeft: LeftIcon ? scaleWidth(5) : scaleWidth(16),
-
                 },
               ]}
               ref={forwardedRef ? forwardedRef : focus}
@@ -384,12 +382,14 @@ export function TextField(props: TextFieldProps) {
               {RightIconClear !== null ? <RightIconClear /> : null}
             </TouchableOpacity>
           ) : RightIcon ? (
-            <TouchableOpacity onPress={pressRightIcon} style={{}}>
+            <TouchableOpacity
+              onPress={pressRightIcon}
+              style={{ flexDirection: "row", alignItems: "center" }}>
+              {valueTextRight !== "" ? (
+                <Text text={valueTextRight} style={styleTextRight}></Text>
+              ) : null}
               <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} />
             </TouchableOpacity>
-          ) : null}
-          {valueTextRight !== "" ? (
-            <Text style={styleTextRight}>{valueTextRight}</Text>
           ) : null}
         </View>
       </View>

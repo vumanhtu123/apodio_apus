@@ -8,110 +8,137 @@ import { Loading } from "../../components/dialog-notification";
 import { DataDetailWarehouse } from '../../models/warehouse-store/detail-warehouse-model';
 
 export class WarehouseAPI {
-    private api: ApiWarehouse
+  private api: ApiWarehouse;
 
-    constructor(api :ApiWarehouse){
-        this.api = api
-    }
+  constructor(api: ApiWarehouse) {
+    this.api = api;
+  }
 
-    async getListWarehouse (
-        size: number,
-        page: number,
-        search: string,
-        state: string,
-        isLoadMore: boolean
+  async getListWarehouse(
+    size: number,
+    page: number,
+    search: string,
+    state: string,
+    isLoadMore: boolean
+  ): Promise<any> {
+    console.log("value isVisible", isLoadMore);
 
-    ): Promise<any> {
-        console.log('value isVisible', isLoadMore);
-        
-        if(isLoadMore == true){
-
-            Loading.hide()
-            try {
-                console.log("doandev url warehouse ", this.api.config.url);
-                const response: ApiResponse<BaseResponse<ResponseWarehouse,ErrorCode>> = await this.api.apisauce.get(
-                    ApiEndpoint.GET_LIST_WAREHOUSE,
-                    // truyền params.
-                    {
-                        page: page,
-                        size: size,
-                        search: search,
-                        state: state
-                    }
-                )   
-                const result = response.data;
-                console.log('====================================');
-                console.log("my data warehouse" , result);
-                console.log('====================================');
-                Loading.hide()
-                if (result?.data != null) {
-                    return result;
-                  } else {
-                    return result?.errorCodes ;
-                  }
-    
-            } catch (error) {
-                Loading.hide()
-                return { kind: "bad-data", result: error };
-            }
-        }else{
-            Loading.show({
-                text: 'Loading...',
-            })
-            try {
-                console.log("doandev url warehouse ", this.api.config.url);
-                const response: ApiResponse<BaseResponse<ResponseWarehouse,ErrorCode>> = await this.api.apisauce.get(
-                    ApiEndpoint.GET_LIST_WAREHOUSE,
-                    // truyền params.
-                    {
-                        page: page,
-                        size: size,
-                        search: search,
-                        state: state
-                    }
-                )   
-                const result = response.data;
-                console.log('====================================');
-                console.log("my data warehouse" , result);
-                console.log('====================================');
-                Loading.hide()
-                if (result?.data != null) {
-                    return result;
-                  } else {
-                    return result?.errorCodes ;
-                  }
-    
-            } catch (error) {
-                Loading.hide()
-                return { kind: "bad-data", result: error };
-            }
+    if (isLoadMore == true) {
+      Loading.hide();
+      try {
+        console.log("doandev url warehouse ", this.api.config.url);
+        const response: ApiResponse<
+          BaseResponse<ResponseWarehouse, ErrorCode>
+        > = await this.api.apisauce.get(
+          ApiEndpoint.GET_LIST_WAREHOUSE,
+          // truyền params.
+          {
+            page: page,
+            size: size,
+            search: search,
+            state: state,
+          }
+        );
+        const result = response.data;
+        console.log("====================================");
+        console.log("my data warehouse", result);
+        console.log("====================================");
+        Loading.hide();
+        if (result?.data != null) {
+          return result;
+        } else {
+          return result?.errorCodes;
         }
-
+      } catch (error) {
+        Loading.hide();
+        return { kind: "bad-data", result: error };
+      }
+    } else {
+      Loading.show({
+        text: "Loading...",
+      });
+      try {
+        console.log("doandev url warehouse ", this.api.config.url);
+        const response: ApiResponse<
+          BaseResponse<ResponseWarehouse, ErrorCode>
+        > = await this.api.apisauce.get(
+          ApiEndpoint.GET_LIST_WAREHOUSE,
+          // truyền params.
+          {
+            page: page,
+            size: size,
+            search: search,
+            state: state,
+          }
+        );
+        const result = response.data;
+        console.log("====================================");
+        console.log("my data warehouse", result);
+        console.log("====================================");
+        Loading.hide();
+        if (result?.data != null) {
+          return result;
+        } else {
+          return result?.errorCodes;
+        }
+      } catch (error) {
+        Loading.hide();
+        return { kind: "bad-data", result: error };
+      }
     }
+  }
 
-    // async getDetailWarehouse ( 
-    //     id: number
-    // ): Promise<any> {
-    //     try {
-    //         console.log("doandev url detaile warehouse ", this.api.config.url);
-    //         const response : ApiResponse<BaseResponse< DataDetailWarehouse,Error>> = await this.api.apisauce.get(
-    //             ApiEndpoint.GET_DETAIL_WAREHOUSE,
-    //                 {
-    //                     id: id
-    //                 }
-    //             )
-    //         const result = response.data;
-    //         console.log('====================================');
-    //         console.log("my data detail warehouse" , result);
-    //         console.log('====================================');
+  async getDetailWarehouse( id: number) : Promise<any> {
+        try {
+                console.log("doandev url detail warehouse ", this.api.config.url);
 
-    //         if (result?.data != null) {
-    //             return result;
-    //           } else {
-    //             return result?.errorCodes ;
-    //           }
-    //     } catch (error) {
-    //         return { kind: "bad-data", result: error };
-    //     }
-    // }
+                const response : ApiResponse<BaseResponse<ResponseWarehouse,ErrorCode>> = await 
+                this.api.apisauce.get(
+                    ApiEndpoint.GET_DETAIL_WAREHOUSE,
+                    {
+                        id: id
+                    }
+                )
+                const result = response.data;
+                console.log('data result detail warehouse', result);
+
+                if (result?.data != null ) {
+                    console.log('data result detail warehouse2', result);
+
+                    return result
+                }else{
+                    return result?.errorCodes
+                }
+
+        } catch (error) {
+
+            return { kind: "bad-data", result: error };
+        }
+  }
+
+
+  async createWareHouse(wareHouse: any): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
+      const response: ApiResponse<any> = await this.api.apisauce.post(
+        ApiEndpoint.POST_STOCK_WAREHOUSE,
+        wareHouse
+      );
+      Loading.hide();
+      console.log("-----------------tuvm_warehouse", response);
+      const result = response.data;
+      console.log("-----------------tuvm_warehouse", result);
+      if (result?.data != null) {
+        return result;
+      } else {
+        return result?.errorCodes;
+      }
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
 }

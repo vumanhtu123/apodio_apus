@@ -14,7 +14,6 @@ import { formatDateTime } from "../../../utils/formatDate";
 import { calculateTotalDiscount, calculateTotalPrice, calculateTotalUnitPrice, commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 import ItemOrder from "../components/item-order";
 import { styles } from "./styles";
-import ProductAttribute from "../../product/component/productAttribute";
 import moment from "moment";
 export const OrderDetails: FC = observer(
     function OrderDetails(props) {

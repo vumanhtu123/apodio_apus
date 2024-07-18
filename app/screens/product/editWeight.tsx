@@ -18,20 +18,21 @@ export const EditWeight: FC = observer(
         const methods = useForm()
 
         useEffect(() => {
-            methods.setValue(`weight`, data?.weight)
-            methods.setValue(`weightOriginal`, data?.weightOriginal)
-            methods.setValue(`volumeOriginal`, data?.volumeOriginal)
+            console.log(data?.weight) 
+            methods.setValue(`weight`, data?.weight ?? [])
+            methods.setValue(`weightOriginal`, data?.weightOriginal ?? '')
+            methods.setValue(`volumeOriginal`, data?.volumeOriginal ?? '')
         }, [])
 
         const submitAdd = (data: any) => {
             let hasError = false
 
-            const unit = data.weight.flatMap((items: any)=> items.unit)
-            const weight1 = data.weight.flatMap((items: any)=> items.weight1)
-            const volume = data.weight.flatMap((items: any)=> items.volume)
-            const checkUnit = unit.some((item: any) => Object.keys(item).length===0 )
-            const checkWeight1 = weight1.some((item: any) => item?.trim() === "" )
-            const checkVolume = volume.some((item: any) => item?.trim() === "" )
+            const unit = data.weight?.flatMap((items: any)=> items.unit)
+            const weight1 = data.weight?.flatMap((items: any)=> items.weight1)
+            const volume = data.weight?.flatMap((items: any)=> items.volume)
+            const checkUnit = unit?.some((item: any) => Object.keys(item).length===0 )
+            const checkWeight1 = weight1?.some((item: any) => item?.trim() === "" )
+            const checkVolume = volume?.some((item: any) => item?.trim() === "" )
             if(checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() ==="" || data.volumeOriginal.trim() === ""){
                 hasError = true
             }else{
@@ -83,7 +84,7 @@ export const EditWeight: FC = observer(
                             dataUnitGroup={unitOrigin}
                             checkList={check}
                             data={unitData}
-                            setAdd={methods.watch(`weight`)}
+                            setAdd={methods.getValues(`weight`)}
                         ></ItemWeight>
                     </View>
                 </View>

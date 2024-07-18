@@ -1149,6 +1149,8 @@ PODS:
     - React-perflogger (= 0.73.6)
   - RNCAsyncStorage (1.23.1):
     - React-Core
+  - RNCMaskedView (0.3.1):
+    - React-Core
   - RNDeviceInfo (10.14.0):
     - React-Core
   - RNFastImage (8.6.3):
@@ -1167,7 +1169,7 @@ PODS:
     - React-Core
   - RNPermissions (4.1.5):
     - React-Core
-  - RNReanimated (3.12.0):
+  - RNReanimated (3.13.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1270,6 +1272,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
@@ -1415,6 +1418,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-masked-view/masked-view"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
@@ -1508,6 +1513,7 @@ SPEC CHECKSUMS:
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
+  RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNDeviceInfo: 59344c19152c4b2b32283005f9737c5c64b42fba
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFlashList: b521ebdd7f9352673817f1d98e8bdc0c8cf8545b
@@ -1515,7 +1521,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 67d3f1f69d4d0c98d6e83f4229e3bbf997d1dc72
   RNLocalize: b77875884750cb6a58cd6865863fe2ba2729b72b
   RNPermissions: dec6481e344807a55da01e120be2e33d1cb640df
-  RNReanimated: 6aeb85e1e17364c8069f9ee5661615b4a281bd5c
+  RNReanimated: b8c6a25415d1efcb854590cacae34115bdffa29b
   RNScreens: e842cdccb23c0a084bd6307f6fa83fd1c1738029
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d

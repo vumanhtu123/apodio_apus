@@ -237,7 +237,11 @@ import ic_divide from "./Images/Divide.svg";
 import ic_MinusCircleGray from "./Images/ic_MinusCircleGray";
 import ic_MinusCircleRed from "./Images/ic_MinusCirleRed.svg";
 import ic_ArrowsLeftRight from "./Images/ic_ArrowsLeftRight.svg";
-import ic_img_blue from "./Images/ic_img.svg"
+import ic_img_blue from "./Images/ic_img.svg";
+import ic_checkbox from "./Images/Checkbox.svg";
+import ic_bin_white from "./Images/ic_bin.svg";
+import ic_pen_white from "./Images/ic_pen_white.svg"
+
 export const Images = {
   icon_test: _test,
   icon_English: _test2,
@@ -470,4 +474,7 @@ export const Images = {
   ic_MinusCircleRed: ic_MinusCircleRed,
   ic_ArrowsLeftRight: ic_ArrowsLeftRight,
   ic_img_blue: ic_img_blue,
+  ic_checkbox: ic_checkbox,
+  ic_bin_white: ic_bin_white,
+  ic_pen_white: ic_pen_white,
 };

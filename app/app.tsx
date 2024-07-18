@@ -56,7 +56,7 @@ function App(props: AppProps) {
     initialNavigationState,
     onNavigationStateChange,
     isRestored: isNavigationStateRestored,
-  } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY);
+  } = useNavigationPersistence(storage, '');
 
   const linking = {
     prefixes: [prefix],
@@ -75,9 +75,6 @@ function App(props: AppProps) {
   if (!rootStore || !isNavigationStateRestored) return null;
 
 
-
-
-
   // otherwise, we're ready to render the app
   return (
     <Root>
@@ -87,7 +84,7 @@ function App(props: AppProps) {
           <GestureHandlerRootView style={$container}>
             <AppNavigator
               linking={linking}
-              initialState={initialNavigationState}
+              //initialState={initialNavigationState}
               onStateChange={onNavigationStateChange}
             />
           </GestureHandlerRootView>
