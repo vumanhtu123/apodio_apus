@@ -146,10 +146,10 @@ export const ProductEditScreen: FC = (item) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (dataEdit !== undefined) {
-        if(dataEdit.hasVariantInConfig == false){
+        if (dataEdit.hasVariantInConfig == false) {
           setDataGroupAttribute(dataEdit.attributeCategory);
           setVariantInConfig(dataEdit.hasVariantInConfig);
-          if(dataEdit.attributeCategory.length > 0){
+          if (dataEdit.attributeCategory.length > 0) {
             setAddVariant(true)
           }
         }
@@ -306,7 +306,7 @@ export const ProductEditScreen: FC = (item) => {
       // setCostPriceProduct(dataEdit?.costPrice);
       // setListPriceProduct(dataEdit?.listPrice);
       // setSku(dataEdit?.sku);
-      if(newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null){
+      if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null) {
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -662,12 +662,12 @@ export const ProductEditScreen: FC = (item) => {
       hasError = true
     }
     if (addWeight == true) {
-      const unit = data.weight.flatMap((items: any) => items.unit)
-      const weight1 = data.weight.flatMap((items: any) => items.weight1)
-      const volume = data.weight.flatMap((items: any) => items.volume)
-      const checkUnit = unit.some((item: any) => Object.keys(item).length === 0)
-      const checkWeight1 = weight1.some((item: any) => item?.trim() === "")
-      const checkVolume = volume.some((item: any) => item?.trim() === "")
+      const unit = data.weight?.flatMap((items: any) => items.unit)
+      const weight1 = data.weight?.flatMap((items: any) => items.weight1)
+      const volume = data.weight?.flatMap((items: any) => items.volume)
+      const checkUnit = unit?.some((item: any) => Object.keys(item).length === 0)
+      const checkWeight1 = weight1?.some((item: any) => item?.trim() === "")
+      const checkVolume = volume?.some((item: any) => item?.trim() === "")
       if (checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "") {
         Toast.show({
           type: ALERT_TYPE.DANGER,
@@ -710,13 +710,13 @@ export const ProductEditScreen: FC = (item) => {
       });
       const dataPrice2 = retailPriceProduct?.map((item: any) => {
         return {
-          min: item.min,
+          min: Number(formatNumberByString(item.min.toString())),
           price: Number(formatNumberByString(item.price.toString())),
         };
       });
       const dataPrice = wholesalePriceProduct?.map((item: any) => {
         return {
-          min: item.min,
+          min: Number(formatNumberByString(item.min.toString())),
           price: Number(formatNumberByString(item.price.toString())),
         };
       });
@@ -776,7 +776,7 @@ export const ProductEditScreen: FC = (item) => {
       console.log('--------newArr2-------', JSON.stringify(newArr2))
       console.log('--------hasVariantInConfig-------', hasVariantInConfig)
       const doneData = {
-        sku: data.SKU === "" ? null: data.SKU,
+        sku: data.SKU === "" ? null : data.SKU,
         name: data.productName,
         purchaseOk: valuePurchase,
         imageUrls: imagesNote,
@@ -1033,7 +1033,7 @@ export const ProductEditScreen: FC = (item) => {
               }}>
               <ImageProduct
                 arrData={imagesNote}
-                uploadImage={(imageArray, checkUploadSlider, indexItem)=> uploadImages(imageArray, checkUploadSlider, indexItem)}
+                uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray, checkUploadSlider, indexItem)}
                 deleteImage={(index, item) => {
                   handleRemoveImage(index, item);
                 }}
@@ -1170,7 +1170,7 @@ export const ProductEditScreen: FC = (item) => {
                         <Text
                           text={vendorStore.checkSeparator === "DOTS"
                             ? formatCurrency(
-                                removeNonNumeric(retailPriceProduct[0]?.price)
+                              removeNonNumeric(retailPriceProduct[0]?.price)
                             )
                             : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
                           numberOfLines={1}
@@ -1330,7 +1330,7 @@ export const ProductEditScreen: FC = (item) => {
                         <Text
                           text={vendorStore.checkSeparator === "DOTS"
                             ? formatCurrency(
-                                removeNonNumeric(wholesalePriceProduct[0]?.price)
+                              removeNonNumeric(wholesalePriceProduct[0]?.price)
                             )
                             : addCommas(removeNonNumeric(wholesalePriceProduct[0]?.price))}
                           numberOfLines={1}
@@ -1663,14 +1663,15 @@ export const ProductEditScreen: FC = (item) => {
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
               <View style={[styles.viewViewDetail]}>
-              <TouchableOpacity style={{position: 'absolute', top: 0, right: 0, zIndex: 1}}
-                onPress={()=> {setAddWeight(false)
-                  methods.setValue('weightOriginal', '')
-                  methods.setValue('volumeOriginal', '')
-                  methods.setValue('weight', [])
-                }}>
-                  <Images.icon_deleteDolphin/>
-                  </TouchableOpacity>
+                <TouchableOpacity style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}
+                  onPress={() => {
+                    setAddWeight(false)
+                    methods.setValue('weightOriginal', '')
+                    methods.setValue('volumeOriginal', '')
+                    methods.setValue('weight', [])
+                  }}>
+                  <Images.icon_deleteDolphin />
+                </TouchableOpacity>
                 <ItemWeight
                   dataUnitGroup={valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines}
                   checkList={valueSwitchUnit}
@@ -1825,7 +1826,7 @@ export const ProductEditScreen: FC = (item) => {
                                 </TouchableOpacity>
                                 <ImagesGroup
                                   arrData={item.imageUrls || []}
-                                  uploadImage={(imageArray, checkUploadSlider, indexItem)=> uploadImages(imageArray, checkUploadSlider, indexItem)}
+                                  uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray, checkUploadSlider, indexItem)}
                                   index1={index}
                                   onPressDelete={() => handleDeleteImage(index)}
                                   onPressDelete1={() =>
@@ -1906,7 +1907,7 @@ export const ProductEditScreen: FC = (item) => {
                                           <Text
                                             text={vendorStore.checkSeparator === "DOTS"
                                               ? formatCurrency(
-                                                  removeNonNumeric(item.retailPrice[0]?.price)
+                                                removeNonNumeric(item.retailPrice[0]?.price)
                                               )
                                               : addCommas(removeNonNumeric(item.retailPrice[0]?.price))}
                                             style={{
@@ -2083,7 +2084,7 @@ export const ProductEditScreen: FC = (item) => {
                                           <Text
                                             text={vendorStore.checkSeparator === "DOTS"
                                               ? formatCurrency(
-                                                  removeNonNumeric(item.wholesalePrice[0]?.price)
+                                                removeNonNumeric(item.wholesalePrice[0]?.price)
                                               )
                                               : addCommas(removeNonNumeric(item.wholesalePrice[0]?.price))}
                                             style={{
