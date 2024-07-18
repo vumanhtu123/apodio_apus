@@ -138,6 +138,7 @@ export interface TextFieldProps extends TextInputProps {
   valueInput?: any;
   valueCurrency?: any;
   iconRight?: any;
+  valueTextRight1?: any;
 }
 
 /**
@@ -182,6 +183,7 @@ export function TextField(props: TextFieldProps) {
     styleTextRight,
     styleTextLabel,
     iconRight,
+    valueTextRight1,
     ...rest
   } = props;
   const [isFocused, setisFocused] = useState(false);
@@ -385,11 +387,14 @@ export function TextField(props: TextFieldProps) {
             <TouchableOpacity
               onPress={pressRightIcon}
               style={{ flexDirection: "row", alignItems: "center" }}>
-              {valueTextRight !== "" ? (
-                <Text text={valueTextRight} style={styleTextRight}></Text>
+              {valueTextRight1 !== "" ? (
+                <Text text={valueTextRight1} style={styleTextRight}></Text>
               ) : null}
               <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} />
             </TouchableOpacity>
+          ) : null}
+          {valueTextRight !== "" ? (
+            <Text text={valueTextRight} style={styleTextRight}></Text>
           ) : null}
         </View>
       </View>

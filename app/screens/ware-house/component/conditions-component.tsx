@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Button, TouchableOpacity, View } from "react-native";
 import { TextField } from "../../../components";
 import { scaleHeight } from "../../../theme";
 import { stylesWareHouse } from "../style";
 import { translate } from "../../../i18n";
-export const ConditionsComponent = ({ control, errors }: any) => {
-  return (
+export const ConditionsComponent = ({
+  control,
+  errors,
+  conditions,
+  setValue,
+  clearError,
+}: any) => {
+  console.log("check tuvm", conditions);
+  useEffect(() => {
+    setValue("temperature1", "");
+    clearError("temperature1");
+    setValue("temperature2", "");
+    clearError("temperature2");
+    setValue("temperature3", "");
+    clearError("temperature3");
+  }, [conditions]);
+  return conditions ? (
     <View>
       <Controller
         control={control}
@@ -112,5 +127,5 @@ export const ConditionsComponent = ({ control, errors }: any) => {
         />
       </View>
     </View>
-  );
+  ) : null;
 };

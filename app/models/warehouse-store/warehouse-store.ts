@@ -55,13 +55,33 @@ export const WarehouseStoreModal = types
         const warehouseAPI = new WarehouseAPI(self.environment.apiWarehouse);
         const result: BaseResponse<any, ErrorCode> =
           yield warehouseAPI.createWareHouse(form);
-        console.log(
-          "Warehouse_Create-------------",
-          JSON.stringify(result.data)
-        );
-        return result.data;
+        console.log("Warehouse_Create-------------", JSON.stringify(result));
+        if (result?.data != null) {
+          return result;
+        } else {
+          return result.errorCodes;
+        }
       } catch (error) {
         console.log("post warehouse error", error);
+      }
+    }),
+
+    putUpdateWareHouse: flow(function* (form: any, id: any) {
+      try {
+        const warehouseAPI = new WarehouseAPI(self.environment.apiWarehouse);
+        const result: BaseResponse<any, ErrorCode> =
+          yield warehouseAPI.updateWareHouse(form, id);
+        console.log(
+          "Warehouse_Update-------------",
+          JSON.stringify(result.data)
+        );
+        if (result?.data != null) {
+          return result;
+        } else {
+          return result.errorCodes;
+        }
+      } catch (error) {
+        console.log("update warehouse error", error);
       }
     }),
   }));

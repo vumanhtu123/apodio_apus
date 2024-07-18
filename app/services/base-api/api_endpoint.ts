@@ -80,4 +80,6 @@ export const ApiEndpoint = {
   PRINT_INVOICE: "/api/v1/print/invoice-sale",
   GET_LIST_WAREHOUSE: "/api/v1/sale/stock-warehouse/list",
   POST_STOCK_WAREHOUSE: "/api/v1/sale/stock-warehouse",
+
+  PUT_STOCK_WAREHOUSE: "/api/v1/sale/stock-warehouse",
 };
