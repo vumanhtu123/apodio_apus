@@ -935,6 +935,15 @@ const en = {
     isActive: "Đang hoạt động",
     save: "Lứu trữ",
     all: "Tất cả",
+    generalInformation: "Thông tin chung",
+    codeWarehouse: "Mã kho",
+    nameWarehouse: "Tên kho",
+    status: "Trạng thái",
+    longitude: "Kinh độ",
+    backgroundLoad: "Tải trọng nền",
+    additionalInformation : "Thông tin bổ sung",
+    detailWarehouse: "Chi tiết kho hàng",
+    
   },
 
   GoodsExportBook: {

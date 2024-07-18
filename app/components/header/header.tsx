@@ -24,7 +24,7 @@ const LEFT: ViewStyle = { width: scaleWidth(16) }
 // const TOP: ViewStyle = { height: Platform.OS === 'ios' ? scaleHeight(44) : scaleHeight(32) }
 const RIGHT: ViewStyle = { width: scaleWidth(32), marginRight: 2, zIndex: 2 }
 const BTNLEFT: ViewStyle = { width: scaleWidth(30), height: scaleHeight(30), alignItems: 'center' }
-const BTNRIGHT: ViewStyle = { width: scaleWidth(25), height: scaleHeight(20), alignItems: 'center'  }
+const BTNRIGHT: ViewStyle = { width: scaleWidth(25), height: scaleHeight(20), alignItems: 'center' }
 const LOGO: ViewStyle = {
   position: 'absolute', opacity: 1, top: 0, right: 40, height: 40, width: 40, zIndex: 1
 }
@@ -104,7 +104,7 @@ export function Header(props: HeaderProps) {
         )
         }
         {leftText && (
-          <TouchableOpacity onPress={onLeftTextPress} style={{ width: 80, justifyContent: 'center' }}>
+          <TouchableOpacity onPress={onLeftTextPress} style={{ width: '30%', justifyContent: 'center', }}>
             <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center', }} />
           </TouchableOpacity>
         )
@@ -188,7 +188,7 @@ export function Header(props: HeaderProps) {
             <Button preset="link" onPress={onRightPress} style={[BTNRIGHT, btnRightStyle]}>
               <RightIcon width={scaleWidth(16)} height={scaleHeight(16)} />
               {TitleIcon && (<Text tx={TitleIcon} numberOfLines={1} style={{
-                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite, 
+                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite,
               }} />
               )}
             </Button>
@@ -197,7 +197,7 @@ export function Header(props: HeaderProps) {
             <Button preset="link" onPress={onRightPress1} style={[BTNRIGHT, btnRightStyle]}>
               <RightIcon1 width={scaleWidth(16)} height={scaleHeight(16)} />
               {TitleIcon1 && (<Text tx={TitleIcon1} numberOfLines={1} style={{
-                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite, 
+                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite,
               }} />
               )}
             </Button>
@@ -206,7 +206,7 @@ export function Header(props: HeaderProps) {
             <Button preset="link" onPress={onRightPress2} style={[BTNRIGHT, btnRightStyle]}>
               <RightIcon2 width={scaleWidth(16)} height={scaleHeight(16)} />
               {TitleIcon2 && (<Text tx={TitleIcon2} numberOfLines={1} style={{
-                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite, 
+                fontSize: fontSize.size9, fontWeight: '400', textAlign: 'center', color: colors.textWhite,
               }} />
               )}
             </Button>
