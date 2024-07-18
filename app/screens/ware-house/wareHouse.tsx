@@ -378,7 +378,55 @@ export const wareHouseScreen: FC<
         />
         <TouchableOpacity
           style={Styles.btnPlus}
-          onPress={() => setOpenDialogPlus(!openDialogPlus)}>
+          onPress={() =>
+            // navigation.navigate("warehouse", {
+            //   name: "Vu manh tu",
+            //   code: "123123",
+            //   companyId: 0,
+            //   branchId: 0,
+            //   sourceProductType: "INTERNAL",
+            //   address: "Hanoi viet nam",
+            //   areaCode: "string",
+            //   hasAdditionalInfo: true,
+            //   additionalInfo: {
+            //     latitude: "324",
+            //     longitude: "432",
+            //     height: "234",
+            //     heightUom: {
+            //       id: 0,
+            //       name: "string",
+            //     },
+            //     length: "111",
+            //     lengthUom: {
+            //       id: 0,
+            //       name: "string",
+            //     },
+            //     width: "222",
+            //     widthUom: {
+            //       id: 0,
+            //       name: "string",
+            //     },
+            //     weightCapacity: "444",
+            //     weightCapacityUom: {
+            //       id: 0,
+            //       name: "string",
+            //     },
+            //     scene: "string",
+            //   },
+            //   hasConditionStorage: true,
+            //   conditionStorage: {
+            //     standardTemperature: "123",
+            //     minTemperature: "321",
+            //     standardHumidity: "213",
+            //   },
+            //   action: "CREATE",
+            //   note: "string",
+            //   isMobile: true,
+            //   status: "UPDATE",
+            //   id: "2503",
+            // })
+            navigation.navigate("warehouse", { status: "CREATE" })
+          }>
           <Images.icon_plus style={{ opacity: openDialogPlus ? 0 : 1 }} />
         </TouchableOpacity>
 
