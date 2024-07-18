@@ -103,6 +103,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                         isMobile: true,
                         status: "UPDATE",
                         id: idNumber,
+                        sequenceCopy: myData?.sequenceCopy
                     })}
 
                 />

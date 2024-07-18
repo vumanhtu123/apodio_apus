@@ -134,6 +134,31 @@ export class WarehouseAPI {
       if (result?.data != null) {
         return result;
       } else {
+        return response;
+      }
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+
+  async updateWareHouse(wareHouse: any, id: any): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
+      const response: ApiResponse<any> = await this.api.apisauce.put(
+        ApiEndpoint.PUT_STOCK_WAREHOUSE + "?id=" + id,
+        wareHouse
+      );
+      Loading.hide();
+      console.log("-----------------put_tuvm_warehouse", response);
+      const result = response.data;
+      console.log("-----------------put_tuvm_warehouse", result);
+      if (result?.data != null) {
+        return result;
+      } else {
         return result?.errorCodes;
       }
     } catch (e) {

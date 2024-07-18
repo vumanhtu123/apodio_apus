@@ -81,4 +81,6 @@ export const ApiEndpoint = {
   GET_LIST_WAREHOUSE: '/api/v1/sale/stock-warehouse/list',
   GET_DETAIL_WAREHOUSE: '/api/v1/sale/stock-warehouse',
   POST_STOCK_WAREHOUSE: "/api/v1/sale/stock-warehouse",
+
+  PUT_STOCK_WAREHOUSE: "/api/v1/sale/stock-warehouse",
 };
