@@ -188,7 +188,7 @@ export const ProductEditScreen: FC = (item) => {
       );
       setAttributeValues(valueAttributeArr);
       setTextAttributes(textAttributeArr);
-      setVariantInConfig(dataEdit.newDataEdit);
+      setVariantInConfig(newDataEdit?.hasVariantInConfig);
 
       const dropdownEdit:
         | ((prevState: never[]) => never[])
@@ -254,7 +254,7 @@ export const ProductEditScreen: FC = (item) => {
       setConstAttributeToEdit(attributeEdit);
       setAttributeToEdit(attributeEdit);
 
-      if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null) {
+      if (newDataEdit?.baseTemplatePackingLine !== null ) {
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -274,8 +274,7 @@ export const ProductEditScreen: FC = (item) => {
           }
         }
       }))
-      // setNameProduct(dataEdit?.name);
-      if (dataEdit?.description !== "") {
+      if (newDataEdit?.description !== "" && newDataEdit?.description !== null) {
         setAddDescribe(true);
         setDescription(newDataEdit?.description);
       }
@@ -884,7 +883,7 @@ export const ProductEditScreen: FC = (item) => {
         }
       } as never);
     }
-  }, [])
+  }, [dropdownToEdit, attributeToEdit, constAttributeToEdit, hasVariantInConfig])
 
   return (
     <FormProvider {...methods}>

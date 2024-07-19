@@ -69,10 +69,10 @@ export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
       const response = await attributeStore.getListAttribute(page, 50, true);
       if (response && response.kind === "ok") {
         if (page === 0) {
-          console.log(
-            "getListAttribute---------------------",
-            JSON.stringify(response.response.data)
-          );
+          // console.log(
+          //   "getListAttribute---------------------",
+          //   JSON.stringify(response.response.data)
+          // );
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             text: item.name,
@@ -80,10 +80,10 @@ export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
           }));
           setAttributeData(formatArr);
         } else {
-          console.log(
-            "getListAttribute---------------------",
-            JSON.stringify(response.response.data)
-          );
+          // console.log(
+          //   "getListAttribute---------------------",
+          //   JSON.stringify(response.response.data)
+          // );
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             text: item.name,
@@ -147,6 +147,7 @@ export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
   }, [idAttributeCategory]);
 
   useEffect(() => {
+    console.log(dropdownSelected, '1239012638')
     if (dataAttribute !== undefined) {
       const newArr = dropdownSelected.map((item: { value: any }) => {
         return item.value;
@@ -227,11 +228,11 @@ export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
       button2: translate("common.ok"),
       closeOnOverlayTap: false,
       onPressButton: () => {
-        navigation.navigate("ProductEditScreen" as never, {
+        navigation.navigate({name: "ProductEditScreen" as never, params: {
           check: true,
           attributeArr: selectedItems,
           dropdownSelected: arrSelectDrop,
-        });
+        }}as never);
         Dialog.hide();
       },
     });

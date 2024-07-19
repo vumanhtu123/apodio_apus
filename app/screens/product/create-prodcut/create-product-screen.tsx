@@ -172,7 +172,7 @@ export const ProductCreateScreen: FC = (item) => {
         hasVariantInConfig: hasVariantInConfig,
       },
     } as never);
-  },[])
+  },[attributeArr, dropdownSelected, hasVariantInConfig])
 
   const getListUnitGroup = async (valueSwitchUnit: boolean) => {
     let unitResult = null;

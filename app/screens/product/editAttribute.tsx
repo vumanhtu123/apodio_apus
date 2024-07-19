@@ -64,24 +64,22 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (hasVariantInConfig !== undefined) {
-        console.log("---N--1------hasVariantInConfig", hasVariantInConfig);
+        // console.log("---N--1------hasVariantInConfig", hasVariantInConfig);
         setValueSwitch(hasVariantInConfig);
       }
     });
     return unsubscribe;
   }, [hasVariantInConfig]);
 
-  console.log("---N--------hasVariantInConfig", hasVariantInConfig);
-
   const getListAttribute = async () => {
     try {
       const response = await attributeStore.getListAttribute(page, 50, true);
       if (response && response.kind === "ok") {
         if (page === 0) {
-          console.log(
-            "getListAttribute---------------------",
-            JSON.stringify(response.response.data)
-          );
+          // console.log(
+          //   "getListAttribute---------------------",
+          //   JSON.stringify(response.response.data)
+          // );
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             text: item.name,
@@ -89,10 +87,10 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
           }));
           setAttributeData(formatArr);
         } else {
-          console.log(
-            "getListAttribute---------------------",
-            JSON.stringify(response.response.data)
-          );
+          // console.log(
+          //   "getListAttribute---------------------",
+          //   JSON.stringify(response.response.data)
+          // );
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             text: item.name,
@@ -179,29 +177,30 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
   useEffect(() => {
     if (idAttributeCategory.length > 0 && loadNew === false) {
       getListDataAttribute();
-      console.log("56789");
+      // console.log("56789");
     }
     if (idAttributeCategory.length > 0 && loadNew === true) {
       getListDataAttributeNew();
-      console.log("12345");
+      // console.log("12345");
     }
   }, [idAttributeCategory]);
 
   useEffect(() => {
+    console.log('dataDropdown' ,dropdownSelected)
     if (dataAttribute !== undefined) {
-      const newArr = dropdownSelected.map((item) => {
+      const newArr = dropdownSelected.map((item: any) => {
         return item.value;
       });
       setIdAttributeCategory(newArr);
       setSelectedItems(dataAttribute);
       setDataEditDropdown(dropdownSelected);
       setArrSelectDrop(dropdownSelected);
-      console.log(dataAttribute, "dataAttribute====");
+      // console.log(dataAttribute, "dataAttribute====");
     }
   }, [dropdownSelected]);
 
   const deleteLineAttribute = (items: any) => {
-    const newArr = selectedGroup.map((item) => {
+    const newArr = selectedGroup.map((item: any) => {
       if (item.id === items.item.attributeCategoryId) {
         const arr = item.attributeOutputList.slice();
         arr.splice(items.index, 1);
@@ -211,12 +210,12 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
       }
     });
     const newArr1 = newArr.filter(
-      (item) => item.attributeOutputList?.length !== 0
+      (item: any) => item.attributeOutputList?.length !== 0
     );
     const newArr2 = selectedItems.filter(
-      (item) => item.productAttributeId !== items.item.id
+      (item: any) => item.productAttributeId !== items.item.id
     );
-    const newArr3 = newArr1.map((item) => {
+    const newArr3 = newArr1.map((item: any) => {
       return { text: item.name, value: item.id };
     });
     setDataEditDropdown(newArr3);
@@ -225,9 +224,9 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
   };
 
   const handleSelect = (items: any) => {
-    const newArr = items.map((item) => item.value);
+    const newArr = items.map((item: any) => item.value);
     const setNew = new Set(newArr);
-    const newIdAttribute = selectedGroup.map((items) => {
+    const newIdAttribute = selectedGroup.map((items: any) => {
       return items.id;
     });
     const setOld = new Set(newIdAttribute);
@@ -350,25 +349,25 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
                       );
                   });
                 });
-                console.log(
-                  "-N--------selectedGroup111-----",
-                  JSON.stringify(newArrSelectedGroup)
-                );
-                navigation.navigate("ProductEditScreen" as never, {
+                // console.log(
+                //   "-N--------selectedGroup111-----",
+                //   JSON.stringify(newArrSelectedGroup)
+                // );
+                navigation.navigate({name: "ProductEditScreen" as never, params:{
                   check: true,
                   attributeArr: selectedItems,
                   dropdownSelected: newArr3,
                   selectedGroupAttribute: newArrSelectedGroup,
                   isVariantInConfig: valueSwitch,
-                });
+                }}as never);
               } else {
-                navigation.navigate("ProductEditScreen" as never, {
+                navigation.navigate({name: "ProductEditScreen" as never, params: {
                   check: true,
                   attributeArr: selectedItems,
                   dropdownSelected: newArr3,
                   selectedGroupAttribute: [],
                   isVariantInConfig: valueSwitch,
-                });
+                }}as never);
               }
               Dialog.hide();
             } else {
@@ -401,27 +400,27 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
                       );
                   });
                 });
-                console.log(
-                  "-N--------selectedGroup111-----",
-                  JSON.stringify(newArrSelectedGroup)
-                );
-                navigation.navigate("ProductCreateScreen" as never, {
+                // console.log(
+                //   "-N--------selectedGroup111-----",
+                //   JSON.stringify(newArrSelectedGroup)
+                // );
+                navigation.navigate({name: "ProductCreateScreen" as never, params: {
                   check: true,
                   attributeArr: selectedItems,
                   dropdownSelected: newArr3,
                   resetData: false,
                   selectedGroupAttribute: newArrSelectedGroup,
                   isVariantInConfig: valueSwitch,
-                });
+                }}as never);
               } else {
-                navigation.navigate("ProductCreateScreen" as never, {
+                navigation.navigate({name: "ProductCreateScreen" as never, params: {
                   check: true,
                   attributeArr: selectedItems,
                   dropdownSelected: newArr3,
                   resetData: false,
                   selectedGroupAttribute: [],
                   isVariantInConfig: valueSwitch,
-                });
+                }}as never);
               }
               Dialog.hide();
             }
