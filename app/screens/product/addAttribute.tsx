@@ -740,7 +740,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
           onPress={() => onConfirm()}
         />
       </View>
-      <Modal isVisible={showModal}>
+      <Modal isVisible={showModal} style={{margin: 0}}>
         <View style={styles.viewModal}>
           <Text
             text={titleModal}
@@ -848,7 +848,7 @@ const styles = StyleSheet.create({
     paddingVertical: scaleHeight(padding.padding_12),
     paddingHorizontal: scaleWidth(padding.padding_16),
     position: "absolute",
-    bottom: 16,
+    bottom: 0,
     left: 0,
     right: 0,
   },

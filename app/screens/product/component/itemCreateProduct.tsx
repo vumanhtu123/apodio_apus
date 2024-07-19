@@ -1,5 +1,5 @@
 import { Observer, observer } from 'mobx-react-lite';
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import React, { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { Switch, Text, TextField } from '../../../components';
@@ -16,10 +16,13 @@ interface ItemMoreInfo {
   defaultTags: {}[];
 }
 interface ItemGroupPrice {
-
+  retailPrice?: {}[];
+  wholesalePrice?: {}[];
+  listPrice?: any;
+  costPrice?: any;
 }
 
-export const ItemMoreInformation = observer(
+export const ItemMoreInformation = memo(
   function ItemMoreInformation(props: ItemMoreInfo) {
     const { control } = useFormContext()
     const { productStore, categoryStore } = useStores()
@@ -133,7 +136,7 @@ export const ItemMoreInformation = observer(
     )
   })
 
-export const ItemGroupPrice = observer(
+export const ItemGroupPrice = memo(
   function ItemGroupPrice(props: ItemGroupPrice) {
     const { vendorStore } = useStores()
     const [dataModal, setDataModal] = useState<{}[]>([]);
@@ -158,15 +161,15 @@ export const ItemGroupPrice = observer(
                       tx={"productScreen.priceRetail"}
                       style={styles.textTitleViewPrice}
                     />
-                    {value.length > 0 &&
-                      value.length !== 1 ? (
+                    {value?.length > 0 &&
+                      value?.length !== 1 ? (
                       <Text
                         text={convertRetailPrice(value)}
                         numberOfLines={1}
                         style={styles.textTextField}
                       />
-                    ) : value.length > 0 &&
-                      value.length === 1 ? (
+                    ) : value?.length > 0 &&
+                      value?.length === 1 ? (
                       <Text
                         text={vendorStore.checkSeparator === "DOTS"
                           ? formatCurrency(
@@ -205,6 +208,11 @@ export const ItemGroupPrice = observer(
                 value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
+                valueInput={vendorStore.checkSeparator === "DOTS"
+                  ? formatCurrency(
+                    removeNonNumeric(value)
+                  )
+                  : addCommas(removeNonNumeric(value))}
                 onChangeText={(value) => {
                   onChange(
                     vendorStore.checkSeparator === "DOTS"
@@ -215,7 +223,7 @@ export const ItemGroupPrice = observer(
                 placeholderTx="productScreen.placeholderPrice"
               />
             )}
-            defaultValue={""}
+            // defaultValue={""}
             name="costPrice"
           />
         </View>
@@ -236,6 +244,11 @@ export const ItemGroupPrice = observer(
                 value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
+                valueInput={vendorStore.checkSeparator === "DOTS"
+                  ? formatCurrency(
+                    removeNonNumeric(value)
+                  )
+                  : addCommas(removeNonNumeric(value))}
                 onChangeText={(value) => {
                   onChange(
                     vendorStore.checkSeparator === "DOTS"
@@ -246,7 +259,7 @@ export const ItemGroupPrice = observer(
                 placeholderTx="productScreen.placeholderPrice"
               />
             )}
-            defaultValue={""}
+            // defaultValue={""}
             name="listPrice"
           />
           <Controller
@@ -264,15 +277,15 @@ export const ItemGroupPrice = observer(
                       tx={"productScreen.priceWholesale"}
                       style={styles.textTitleViewPrice}
                     />
-                    {value.length > 0 &&
-                      value.length !== 1 ? (
+                    {value?.length > 0 &&
+                      value?.length !== 1 ? (
                       <Text
                         text={convertWholesalePrice(value)}
                         numberOfLines={1}
                         style={styles.textTextField}
                       />
-                    ) : value.length > 0 &&
-                      value.length === 1 ? (
+                    ) : value?.length > 0 &&
+                      value?.length === 1 ? (
                       <Text
                         text={vendorStore.checkSeparator === "DOTS"
                           ? formatCurrency(
@@ -302,7 +315,7 @@ export const ItemGroupPrice = observer(
           title={"productDetail.retailPrice"}
           onCancel={() => {
             setModalRetailPrice(false);
-            dataModal.length !== 0
+            dataModal?.length !== 0
               ? setDataModal([])
               : setDataModal([{ min: "", price: "" }]);
           }}
@@ -345,7 +358,7 @@ export const ItemGroupPrice = observer(
     onChangeInput: (item: any)=> void;
   }
 
-export const ItemUnit = observer(
+export const ItemUnit = memo(
   function ItemUnit(props: ItemUnit) {
 
     const getConvertedUnitsForGroup = () => {

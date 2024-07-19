@@ -41,6 +41,7 @@ const en = {
     change_payment: "Vui lòng chọn phuơng thức thanh toán trước",
     change_weight: "Vui lòng nhập đủ thông tin trước khi thêm dòng",
     input_weight: "Vui lòng nhập đủ thông tin tải trọng",
+    input_weight_variant: "Vui lòng nhập đủ thông tin tải trọng biến thể",
     add_line_weight: "Vui lòng nhập đủ thông tin và chọn nhóm đơn vị tính",
   },
   txtDialog: {
@@ -799,6 +800,9 @@ const en = {
     weight: "Tải trọng",
     openCamera: "Chụp ảnh",
     uploadImage: "Tải ảnh lên",
+    supplier: "nhà cung cấp",
+    property: "Thuộc tính",
+    value: "Giá trị",
     infoSupplier: "Thông tin nhà cung cấp",
     noSelectSupplier: "Chưa có nhà cung cấp nào được chọn",
     inventory_management: "Quản lý tồn kho",
