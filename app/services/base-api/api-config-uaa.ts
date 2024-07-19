@@ -7,7 +7,12 @@ import {
 } from "./api-config";
 import { resetRoot } from "../../navigators";
 import { getAccessToken, getTenantId } from "../../utils/storage";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Toast,
+  Loading,
+} from "../../components/dialog-notification";
 
 const API_PAGE_SIZE = 50;
 
@@ -42,36 +47,37 @@ export class UAA_API {
         if (error.toJSON().message === "Network Error") {
           Dialog.show({
             type: ALERT_TYPE.DANGER,
-            title: 'Error',
-            button: 'OK',
-            textBody: 'Network Error!',
-            closeOnOverlayTap: false})
+            title: "Error",
+            button: "OK",
+            textBody: "Network Error!",
+            closeOnOverlayTap: false,
+          });
         }
         if (error.response.status === 401) {
-          
           Dialog.show({
             type: ALERT_TYPE.DANGER,
-            title: 'Error',
-            button: 'OK',
-            textBody: 'Your session was expired',
+            title: "Error",
+            button: "OK",
+            textBody: "Your session was expired",
             closeOnOverlayTap: false,
             onPressButton: () => {
               resetRoot({
                 index: 1,
-                routes: [{ name: 'authStack' }],
-              })
-              Dialog.hide();              
+                routes: [{ name: "authStack" }],
+              });
+              Dialog.hide();
               Loading.hide();
-            }
-          }) 
+            },
+          });
         }
         if (error.response.status === 500 || error.response.status === 404) {
           Dialog.show({
             type: ALERT_TYPE.DANGER,
-            title: 'Error',
-            button: 'OK',
-            textBody: 'System Busy!',
-            closeOnOverlayTap: false}) 
+            title: "Error",
+            button: "OK",
+            textBody: "System Busy!",
+            closeOnOverlayTap: false,
+          });
         }
       }
     );
