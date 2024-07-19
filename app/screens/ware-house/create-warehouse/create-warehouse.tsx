@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { NavigatorParamList } from "../../../navigators";
+import { navigate, NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useRef, useState } from "react";
 import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
@@ -31,29 +31,52 @@ export const CreateWareHouseScreen: FC<
   });
   // const [status, setCheckStatus] = useState(props.route.params.status ?? null);
   const status = useRef(props.route.params.status ?? null);
-  console.log("status: ", JSON.stringify(status.current));
+  const id = useRef(props.route.params.id ?? null);
+  console.log(
+    "status: ",
+    JSON.stringify(props.route.params.conditionStorage?.minTemperature)
+  );
   useEffect(() => {
-    setValue("nameWareHouse", props.route.params.name ?? "");
-    setValue("codeWareHouse", props.route.params.code ?? "");
-    setValue("addressWareHouse", props.route.params.address ?? "");
-    setValue("latitude", props.route.params.additionalInfo?.latitude ?? "");
-    setValue("longitude", props.route.params.additionalInfo?.longitude ?? "");
-    setValue("height", props.route.params.additionalInfo?.height ?? "");
-    setValue("longs", props.route.params.additionalInfo?.length ?? "");
-    setValue("width", props.route.params.additionalInfo?.width ?? "");
+    status.current == "COPY"
+      ? setValue(
+          "nameWareHouse",
+          props.route.params.name +
+            "-COPY-" +
+            props.route.params.sequenceCopy ?? ""
+        )
+      : setValue("nameWareHouse", props.route.params.name ?? "");
+    status.current == "COPY"
+      ? setValue(
+          "codeWareHouse",
+          props.route.params.code +
+            "-COPY-" +
+            props.route.params.sequenceCopy ??
+            "" ??
+            ""
+        )
+      : setValue("codeWareHouse", String(props.route.params.code));
+    setValue("addressWareHouse", String(props.route.params.address));
+    setValue("latitude", String(props.route.params.additionalInfo?.latitude));
+    setValue("longitude", String(props.route.params.additionalInfo?.longitude));
+    setValue("height", String(props.route.params.additionalInfo?.height));
+    setValue("longs", String(props.route.params.additionalInfo?.length));
+    setValue("width", String(props.route.params.additionalInfo?.width));
     setValue(
       "temperature1",
-      props.route.params.conditionStorage?.minTemperature ?? ""
+      String(props.route.params.conditionStorage?.minTemperature)
     );
     setValue(
       "temperature2",
-      props.route.params.conditionStorage?.standardHumidity ?? ""
+      String(props.route.params.conditionStorage?.standardHumidity)
     );
     setValue(
       "temperature3",
-      props.route.params.conditionStorage?.standardTemperature ?? ""
+      String(props.route.params.conditionStorage?.standardTemperature)
     );
-    setValue("weight", props.route.params.additionalInfo?.weightCapacity ?? "");
+    setValue(
+      "weight",
+      String(props.route.params.additionalInfo?.weightCapacity)
+    );
   }, [props.route.params]);
 
   const [conditions, setConditions] = useState(
@@ -63,13 +86,22 @@ export const CreateWareHouseScreen: FC<
     props.route.params.hasAdditionalInfo ? true : false
   );
   const onSubmit = (data: any) => {
-    console.log("tuvm test data", data);
-    status.current == "UPDATE"
-      ? handlerUpdateData(data, 2305)
-      : onHandleData(data);
+    // console.log("tuvm test data", data);
+    switch (status.current) {
+      case "UPDATE":
+        handlerUpdateData(data, id.current);
+        break;
+      case "COPY":
+        onHandleDataCopy(data);
+        break;
+      default:
+        onHandleData(data);
+        break;
+    }
   };
 
   const handlerUpdateData = (data: any, id: any) => {
+    console.log("update data");
     api.warehouseStore
       .putUpdateWareHouse(
         {
@@ -125,7 +157,90 @@ export const CreateWareHouseScreen: FC<
             title: translate("txtDialog.txt_title_dialog"),
             textBody: item.message,
             button: translate("common.ok"),
-            closeOnOverlayTap: true,
+            closeOnOverlayTap: false,
+            onHide() {
+              props.navigation.navigate("wareHouse");
+            },
+          });
+        } else {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: translate("txtDialog.txt_title_dialog"),
+            textBody: item.data.errorCodes[1].message.toString(),
+            button: translate("common.ok"),
+            closeOnOverlayTap: false,
+            onPressButton() {
+              props.navigation.navigate("wareHouse");
+            },
+          });
+        }
+        // if (item.data.errorCodes[0].code.toString()) {
+
+        console.log(
+          "tuvm response: ",
+          JSON.stringify(item.data.errorCodes[1].message.toString())
+        );
+      });
+  };
+
+  const onHandleDataCopy = (data: any) => {
+    console.log("copy data");
+    api.warehouseStore
+      .postCreateWareHouse({
+        name: data.nameWareHouse,
+        code: data.codeWareHouse ?? "",
+        companyId: 0,
+        branchId: 0,
+        sourceProductType: "INTERNAL",
+        address: data.addressWareHouse,
+        areaCode: "string",
+        hasAdditionalInfo: config,
+        additionalInfo: {
+          latitude: data.latitude,
+          longitude: data.longitude,
+          height: data.height,
+          heightUom: {
+            id: 0,
+            name: "string",
+          },
+          length: data.longs,
+          lengthUom: {
+            id: 0,
+            name: "string",
+          },
+          width: data.width,
+          widthUom: {
+            id: 0,
+            name: "string",
+          },
+          weightCapacity: data.weight,
+          weightCapacityUom: {
+            id: 0,
+            name: "string",
+          },
+          scene: "INDOOR",
+        },
+        hasConditionStorage: conditions,
+        conditionStorage: {
+          standardTemperature: data.temperature1,
+          minTemperature: data.temperature2,
+          standardHumidity: data.temperature3,
+        },
+        copyId: id.current,
+        action: "CREATE",
+        note: "string",
+        isMobile: true,
+      })
+      .then((item: any) => {
+        if (item.message != null) {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: translate("txtDialog.txt_title_dialog"),
+            textBody: item.message,
+            button: translate("common.ok"),
+            onHide() {
+              props.navigation.navigate("wareHouse");
+            },
           });
         } else {
           Dialog.show({
@@ -146,6 +261,7 @@ export const CreateWareHouseScreen: FC<
   };
 
   const onHandleData = (data: any) => {
+    console.log("create data");
     api.warehouseStore
       .postCreateWareHouse({
         name: data.nameWareHouse,
@@ -198,7 +314,9 @@ export const CreateWareHouseScreen: FC<
             title: translate("txtDialog.txt_title_dialog"),
             textBody: item.message,
             button: translate("common.ok"),
-            closeOnOverlayTap: true,
+            onHide() {
+              props.navigation.navigate("wareHouse");
+            },
           });
         } else {
           Dialog.show({
@@ -270,7 +388,7 @@ export const CreateWareHouseScreen: FC<
               required: "",
               maxLength: 50,
               pattern: {
-                value: /^[a-zA-Z0-9_]+$/,
+                value: /^[a-zA-Z0-9-]+$/,
                 message: "Only letters, numbers, and underscores are allowed",
               },
             }}
