@@ -1,11 +1,12 @@
+
 import { id } from 'date-fns/locale';
-import { ApiResponse } from "apisauce";
 import { ApiErp } from "../base-api/api-config-erp";
 import { ResponseWarehouse } from "../../models/warehouse-store/warehouse-model";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { ApiWarehouse } from "../base-api/api-config-warehouse";
 import { Loading } from "../../components/dialog-notification";
 import { DataDetailWarehouse } from '../../models/warehouse-store/detail-warehouse-model';
+import { ApiResponse } from 'apisauce';
 
 export class WarehouseAPI {
   private api: ApiWarehouse;
@@ -139,6 +140,37 @@ export class WarehouseAPI {
     } catch (e) {
       Loading.hide();
       return { kind: "bad-data" };
+    }
+  }
+
+  async deleteWarehouse( id: number ): Promise<any> {
+
+    try {
+            
+        console.log('url delete' ,ApiEndpoint.DELETE_WAREHOUSE )
+            const response : ApiResponse<BaseResponse<any,ErrorCode>> = await this.api.apisauce.delete(
+                ApiEndpoint.DELETE_WAREHOUSE + "?id=" + id,{},{
+                    data:
+                    {
+                        "isMobile": true,
+                        "reason": "string"
+                    }
+                }
+               
+            ) 
+            console.log('doandev test delete', response.data);
+            const result = response.data
+            if (response.data != null){
+                return result;
+            }else{
+                return result?.errorCodes
+            };
+
+            
+            
+    } catch (error ) {
+        console.log('error delete warehouse', error);
+        return { kind: "bad-data", result: error };
     }
   }
 

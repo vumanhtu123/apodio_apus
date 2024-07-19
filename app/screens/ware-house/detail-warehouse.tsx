@@ -13,6 +13,8 @@ import ViewInfo from "../dashboard/component/view-info";
 import { useStores } from "../../models";
 import data from "../../components/svg-icon/data";
 import DataDetailWarehouse from "../../models/warehouse-store/detail-warehouse-model"
+import { ModalDeleteWareHouse } from "./modal/modal_delete_warehouse";
+import en from "../../i18n/en";
 
 
 export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'detailWarehouse'>> = observer(
@@ -21,14 +23,15 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
         const [myData, setMyData] = useState(DataDetailWarehouse);
         const [box1, setBox1] = useState(true)
         const [box2, setBox2] = useState(true)
+        const [isVisible, setIsVisible] = useState(false)
 
         const getAPI = useStores()
 
 
         const { id } = props.route.params
-        // console.log('====================================');
-        // console.log('data id', id);
-        // console.log('====================================');
+        console.log('====================================');
+        console.log('data id', id);
+        console.log('====================================');
         const idNumber = Number(id)
 
         const getDataDetail = () => {
@@ -57,6 +60,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                     RightIcon2={Images.ic_bin_white}
                     RightIcon={Images.icon_copy}
                     onLeftPress={() => props.navigation.goBack()}
+                    onRightPress2={() => setIsVisible(!isVisible)}
 
                     onRightPress={() => props.navigation.navigate("warehouse", {
                         name: myData?.name,
@@ -113,11 +117,11 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
 
                         <View style={Styles.flexRow}>
                             <Text tx="wareHouse.codeWarehouse" style={Styles.label} />
-                            <Text style={Styles.value}>{myData.code}</Text>
+                            <Text style={Styles.value}>{myData?.code}</Text>
                         </View>
                         <View style={[Styles.flexRow, { marginVertical: scaleHeight(12) }]}>
                             <Text tx="wareHouse.nameWarehouse" style={Styles.label} />
-                            <Text style={Styles.value}>{myData.name}</Text>
+                            <Text style={Styles.value}>{myData?.name}</Text>
                         </View>
                         <View style={[Styles.flexRow]}>
                             <Text tx="wareHouse.address" style={[Styles.label, { flex: 1 }]} />
@@ -125,7 +129,14 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                         </View>
                         <View style={[Styles.flexRow, { marginTop: scaleHeight(12) }]} >
                             <Text tx="wareHouse.status" style={Styles.label} />
-                            <Text style={[{ fontSize: fontSize.size12, color: colors.palette.navyBlue }]}> {myData?.state} </Text>
+                            <Text style={[{ fontSize: fontSize.size12, color: colors.palette.navyBlue }]}>
+                                {
+                                    myData?.state == "APPROVED"
+                                        ? en.wareHouse.isActive
+                                        : en.wareHouse.save
+
+                                }
+                            </Text>
                         </View>
                     </View>
 
@@ -267,6 +278,13 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
 
                 </ScrollView >
 
+                <ModalDeleteWareHouse
+                    isVisible={isVisible}
+                    setIsVisible={() => setIsVisible(!isVisible)}
+                    dataCodeWarehouse={myData?.code}
+                    idDetailWarehouse={myData?.id}
+                    handleBack={() => props.navigation.navigate('wareHouse')}
+                />
 
 
             </View >

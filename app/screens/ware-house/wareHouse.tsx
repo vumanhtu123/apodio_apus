@@ -374,9 +374,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         onEndReachedThreshold={0.3}
                         ListFooterComponent={() => (
                             <View>
-                                {myData?.length !== 1 ? (
-                                    <>{isLoadingMore && <ActivityIndicator />}</>
-                                ) : null}
+
+                                <>{isLoadingMore && <ActivityIndicator />}</>
+
                             </View>
                         )}
                     />
