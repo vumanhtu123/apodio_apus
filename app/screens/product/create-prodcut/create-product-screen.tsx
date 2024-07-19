@@ -549,7 +549,7 @@ export const ProductCreateScreen: FC = (item) => {
     }
   };
 
-  const uploadImages = async (
+  const uploadImages = useCallback(async (
     imageArray: any[],
     checkUploadSlider: boolean,
     indexItem?: number
@@ -604,7 +604,7 @@ export const ProductCreateScreen: FC = (item) => {
     } catch (error) {
       console.error("Error uploading images:", error);
     }
-  };
+  }, [dataCreateProduct, imagesNote])
 
   const handleSelectUnit = useCallback((item: any) => {
     if (valueSwitchUnit) {
@@ -636,7 +636,7 @@ export const ProductCreateScreen: FC = (item) => {
     methods.setValue("volumeOriginal", "");
   }, [valueSwitchUnit])
 
-  const handleRemoveImage = (index: number, url: any) => {
+  const handleRemoveImage = useCallback((index: number, url: any) => {
     let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
     const indexToRemoveLocal = imagesNote.findIndex(
@@ -647,7 +647,7 @@ export const ProductCreateScreen: FC = (item) => {
       updatedImages.splice(indexToRemoveLocal, 1);
       setImagesNote(updatedImages);
     }
-  }
+  }, [imagesNote])
 
   const goToChooseSupplierScreen = () => {
     const listIds = selectedIds;

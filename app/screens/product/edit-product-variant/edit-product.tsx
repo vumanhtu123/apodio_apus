@@ -753,7 +753,7 @@ export const ProductEditScreen: FC = (item) => {
     }
   };
 
-  const uploadImages = async (
+  const uploadImages = useCallback(async (
     imageArray: any[],
     checkUploadSlider: boolean,
     indexItem?: number
@@ -808,7 +808,7 @@ export const ProductEditScreen: FC = (item) => {
     } catch (error) {
       console.error("Error uploading images:", error);
     }
-  }
+  }, [dataCreateProduct, imagesNote])
 
   const handleSelectUnit = useCallback((item: any) => {
     if (valueSwitchUnit) {
@@ -840,7 +840,7 @@ export const ProductEditScreen: FC = (item) => {
     methods.setValue("volumeOriginal", "");
   }, [valueSwitchUnit])
 
-  const handleRemoveImage = (index: number, url: string) => {
+  const handleRemoveImage = useCallback((index: number, url: string) => {
     let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
     const indexToRemoveLocal = imagesNote.findIndex(
@@ -851,7 +851,7 @@ export const ProductEditScreen: FC = (item) => {
       updatedImages.splice(indexToRemoveLocal, 1);
       setImagesNote(updatedImages);
     }
-  }
+  }, [imagesNote])
 
   const handleDescribe = () => {
     setAddDescribe(true);
