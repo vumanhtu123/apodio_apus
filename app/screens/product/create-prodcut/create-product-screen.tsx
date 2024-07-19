@@ -636,7 +636,7 @@ export const ProductCreateScreen: FC = (item) => {
     methods.setValue("volumeOriginal", "");
   }, [valueSwitchUnit])
 
-  const handleRemoveImage = useCallback((index: number, url: any) => {
+  const handleRemoveImage = (index: number, url: any) => {
     let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
     const indexToRemoveLocal = imagesNote.findIndex(
@@ -647,7 +647,7 @@ export const ProductCreateScreen: FC = (item) => {
       updatedImages.splice(indexToRemoveLocal, 1);
       setImagesNote(updatedImages);
     }
-  }, [])
+  }
 
   const goToChooseSupplierScreen = () => {
     const listIds = selectedIds;
