@@ -1,5 +1,5 @@
 import { Observer, observer } from 'mobx-react-lite';
-import { FC, useState } from 'react';
+import { FC, memo, useCallback, useState } from 'react';
 import React, { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Text, TextField } from '../../../components';
@@ -23,14 +23,15 @@ interface ItemVariant {
     addWeight: boolean;
     detailUnitGroupData: {};
     uomId: {};
-    setDataCreateProduct: ([])=> void;
+    screen: string;
+    setDataCreateProduct: ([]) => void;
     setAddVariant: (a: boolean) => void;
     setDataGroupAttribute: ([]) => void;
     setVariantInConfig: (a: boolean) => void
     handleEditAttribute: () => void
 }
 
-export const ItemVariant = observer(
+export const ItemVariant = memo(
     function ItemVariant(props: ItemVariant) {
         const navigation = useNavigation()
         const { vendorStore, productStore } = useStores()
@@ -40,81 +41,146 @@ export const ItemVariant = observer(
         const [modalWholesalePrice1, setModalWholesalePrice1] = useState(false);
         const [indexVariant, setIndexVariant] = useState(0);
 
-        const uploadImages = async (
+        const uploadImages = useCallback( async (
             imageArray: any[],
             checkUploadSlider: boolean,
             indexItem?: number
-          ) => {
+        ) => {
             try {
-              const uploadPromises = imageArray.map(async (image: any, index: any) => {
-                const { fileSize, uri, type, fileName } = image;
-                const checkFileSize = validateFileSize(fileSize);
-                if (checkFileSize) {
-                  Loading.hide();
-                  Dialog.show({
-                    type: ALERT_TYPE.DANGER,
-                    title: translate("txtDialog.txt_title_dialog"),
-                    textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
-                    button: translate("common.ok"),
-                    closeOnOverlayTap: false,
-                  });
-                } else {
-                  const formData = new FormData();
-                  formData.append("file", {
-                    uri,
-                    type,
-                    name: fileName,
-                  });
-                  // Trả về một promise chứa cả vị trí của hình ảnh trong mảng
-                  return await productStore.uploadImages(formData);
+                const uploadPromises = imageArray.map(async (image: any, index: any) => {
+                    const { fileSize, uri, type, fileName } = image;
+                    const checkFileSize = validateFileSize(fileSize);
+                    if (checkFileSize) {
+                        Loading.hide();
+                        Dialog.show({
+                            type: ALERT_TYPE.DANGER,
+                            title: translate("txtDialog.txt_title_dialog"),
+                            textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
+                            button: translate("common.ok"),
+                            closeOnOverlayTap: false,
+                        });
+                    } else {
+                        const formData = new FormData();
+                        formData.append("file", {
+                            uri,
+                            type,
+                            name: fileName,
+                        });
+                        // Trả về một promise chứa cả vị trí của hình ảnh trong mảng
+                        return await productStore.uploadImages(formData);
+                    }
+                });
+
+                // Gửi các yêu cầu upload đồng thời và chờ cho đến khi tất cả hoàn thành
+                const results = await Promise.all(uploadPromises);
+                console.log(`successfully----------`, results);
+                if (results) {
+                    console.log(`imageArray---------------`, imageArray);
+                    if (checkUploadSlider) {
+                    } else {
+                        const newArr = props.dataCreateProduct.slice();
+                        const newArr1 = newArr[indexItem].imageUrls.concat(results);
+                        props.dataCreateProduct[indexItem].imageUrls = newArr1;
+                        props.setDataCreateProduct(newArr);
+                    }
                 }
-              });
-        
-              // Gửi các yêu cầu upload đồng thời và chờ cho đến khi tất cả hoàn thành
-              const results = await Promise.all(uploadPromises);
-              console.log(`successfully----------`, results);
-              if (results) {
-                console.log(`imageArray---------------`, imageArray);
-                if (checkUploadSlider) {
-                } else {
-                  const newArr = props.dataCreateProduct.slice();
-                  const newArr1 = newArr[indexItem].imageUrls.concat(results);
-                  props.dataCreateProduct[indexItem].imageUrls = newArr1;
-                  props.setDataCreateProduct(newArr);
-                }
-              }
-              // Xử lý kết quả upload
-              results.forEach((result, index) => {
-                if (result) {
-                  console.log(`Upload image ${imageArray[index]} successfully`);
-                } else {
-                  console.log(`Failed to upload image ${imageArray[index]}`);
-                }
-              });
+                // Xử lý kết quả upload
+                results.forEach((result, index) => {
+                    if (result) {
+                        console.log(`Upload image ${imageArray[index]} successfully`);
+                    } else {
+                        console.log(`Failed to upload image ${imageArray[index]}`);
+                    }
+                });
             } catch (error) {
-              console.error("Error uploading images:", error);
+                console.error("Error uploading images:", error);
             }
-          };
+        }, [])
 
-          const handleDeleteProduct = (index: any) => {
-            const updatedData = [
-              ...props.dataCreateProduct.slice(0, index),
-              ...props.dataCreateProduct.slice(index + 1),
-            ];
-            props.setDataCreateProduct(updatedData);
-          };
+        const handleDeleteProduct = (index: any, id: any) => {
+            if(props.screen === 'create'){
+                const updatedData = [
+                    ...props.dataCreateProduct.slice(0, index),
+                    ...props.dataCreateProduct.slice(index + 1),
+                ];
+                props.setDataCreateProduct(updatedData);
+            }
+            if(props.screen === 'edit'){
+                console.log('456')
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: translate("txtDialog.delete_variant"),
+                    button: translate("common.cancel"),
+                    button2: translate("common.confirm"),
+                    closeOnOverlayTap: false,
+                    onPressButton: async () => {
+                      try {
+                        if (id !== null) {
+                          const checkDelete = await productStore.deleteCheck(id);
+                          console.log(checkDelete, "----------check");
+                          if (checkDelete.result && checkDelete.kind === "ok") {
+                            if (checkDelete.result.data.isUsing === false) {
+                              const updatedData = [
+                                ...props.dataCreateProduct.slice(0, index),
+                                ...props.dataCreateProduct.slice(index + 1),
+                              ];
+                              props.setDataCreateProduct(updatedData);
+                              await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
+                              Dialog.show({
+                                type: ALERT_TYPE.DANGER,
+                                title: translate("txtDialog.txt_title_dialog"),
+                                textBody: checkDelete.result.message,
+                                button: translate("common.ok"),
+                                closeOnOverlayTap: false
+                              })
+                            } else {
+                              await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
+                              Dialog.show({
+                                type: ALERT_TYPE.DANGER,
+                                title: translate("txtDialog.txt_title_dialog"),
+                                textBody: checkDelete.result.errorCodes[0].message,
+                                button: translate("common.ok"),
+                                closeOnOverlayTap: false
+                              })
+                            }
+                          } else {
+                            await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
+                            Dialog.show({
+                              type: ALERT_TYPE.DANGER,
+                              title: translate("txtDialog.txt_title_dialog"),
+                              textBody: checkDelete.result.errorCodes[0].message,
+                              button: translate("common.ok"),
+                              closeOnOverlayTap: false
+                            })
+                            console.error("Failed to fetch categories:", checkDelete.result);
+                          }
+                        } else {
+                          const updatedData = [
+                            ...props.dataCreateProduct.slice(0, index),
+                            ...props.dataCreateProduct.slice(index + 1),
+                          ];
+                          props.setDataCreateProduct(updatedData);
+                        }
+                      } catch (error) {
+                        console.error("Error fetching categories:", error);
+                      }
+                    }
+                  })
+            }
+        };
 
-          const handleDeleteImage = (index: number) => {
+        const handleDeleteImage = (index: number) => {
             const newArr = props.dataCreateProduct.slice();
             newArr[index].imageUrls = [];
             console.log("==========> handleDeleteImage--All");
             props.setDataCreateProduct(newArr);
-          };
-          
-          const handleDeleteImageItem = (index: number) => {
+        };
+
+        const handleDeleteImageItem = (index: number) => {
             console.log(
-              "-------productStore.imageModalIndex-----------",
-              productStore.imageModalIndex
+                "-------productStore.imageModalIndex-----------",
+                productStore.imageModalIndex
             );
             const newArr = props.dataCreateProduct.slice();
             const newArrUrl = newArr[index].imageUrls.slice();
@@ -122,7 +188,7 @@ export const ItemVariant = observer(
             newArr[index].imageUrls = newArrUrl;
             console.log("==========> handleDeleteImageItem---", newArr);
             props.setDataCreateProduct(newArr);
-          };
+        };
 
         return (
             <View>
@@ -139,16 +205,10 @@ export const ItemVariant = observer(
                             {props.dataGroupAttribute.length > 0 ? (
                                 <View style={styles.viewDetails}>
                                     <View style={styles.viewTitleDetail}>
-                                        <Text
-                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }}
-                                        >
-                                            Thuộc tính
-                                        </Text>
-                                        <Text
-                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }}
-                                        >
-                                            Giá trị
-                                        </Text>
+                                        <Text tx="createProductScreen.property"
+                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
+                                        <Text tx="createProductScreen.value"
+                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
                                     </View>
                                     <View style={styles.viewLine2} />
                                     {props.dataGroupAttribute?.map((item, index) => (
@@ -229,7 +289,7 @@ export const ItemVariant = observer(
                                                                 >
                                                                     <TouchableOpacity
                                                                         style={{ marginRight: scaleWidth(6) }}
-                                                                        onPress={() => handleDeleteProduct(index)}
+                                                                        onPress={() => handleDeleteProduct(index, item.id)}
                                                                     >
                                                                         <Images.ic_minusCircle
                                                                             width={scaleWidth(14)}
@@ -276,8 +336,8 @@ export const ItemVariant = observer(
                                                                                             : props.detailUnitGroupData?.uomGroupLines,
                                                                                     index: index,
                                                                                     dataCreateProduct:
-                                                                                    props.dataCreateProduct,
-                                                                                    screen: "create",
+                                                                                        props.dataCreateProduct,
+                                                                                    screen: props.screen,
                                                                                 },
                                                                             } as never)
                                                                         }
@@ -323,8 +383,8 @@ export const ItemVariant = observer(
                                                                                     tx={"productScreen.priceRetail"}
                                                                                     style={styles.textTitleViewPrice}
                                                                                 />
-                                                                                {item.retailPrice.length > 0 &&
-                                                                                    item.retailPrice.length !== 1 ? (
+                                                                                {item.retailPrice?.length > 0 &&
+                                                                                    item.retailPrice?.length !== 1 ? (
                                                                                     <Text
                                                                                         text={convertAttributeRetailPrice(
                                                                                             props.dataCreateProduct,
@@ -333,8 +393,8 @@ export const ItemVariant = observer(
                                                                                         numberOfLines={1}
                                                                                         style={styles.textTextField}
                                                                                     />
-                                                                                ) : item.retailPrice.length > 0 &&
-                                                                                    item.retailPrice.length === 1 ? (
+                                                                                ) : item.retailPrice?.length > 0 &&
+                                                                                    item.retailPrice?.length === 1 ? (
                                                                                     <Text
                                                                                         text={
                                                                                             vendorStore.checkSeparator ===
@@ -383,6 +443,11 @@ export const ItemVariant = observer(
                                                                                 RightIconClear={Images.icon_delete2}
                                                                                 // error={errors?.priceRetail?.message}
                                                                                 onClearText={() => onChange("")}
+                                                                                valueInput={vendorStore.checkSeparator === "DOTS"
+                                                                                    ? formatCurrency(
+                                                                                      removeNonNumeric(value)
+                                                                                    )
+                                                                                    : addCommas(removeNonNumeric(value))}
                                                                                 onChangeText={(value) => {
                                                                                     onChange(
                                                                                         vendorStore.checkSeparator ===
@@ -422,6 +487,11 @@ export const ItemVariant = observer(
                                                                                 RightIconClear={Images.icon_delete2}
                                                                                 // error={errors?.priceRetail?.message}
                                                                                 onClearText={() => onChange("")}
+                                                                                valueInput={vendorStore.checkSeparator === "DOTS"
+                                                                                    ? formatCurrency(
+                                                                                      removeNonNumeric(value)
+                                                                                    )
+                                                                                    : addCommas(removeNonNumeric(value))}
                                                                                 onChangeText={(value) => {
                                                                                     onChange(
                                                                                         vendorStore.checkSeparator ===
@@ -462,8 +532,8 @@ export const ItemVariant = observer(
                                                                                 tx={"productScreen.priceWholesale"}
                                                                                 style={styles.textTitleViewPrice}
                                                                             />
-                                                                            {item.wholesalePrice.length > 0 &&
-                                                                                item.wholesalePrice.length !== 1 ? (
+                                                                            {item.wholesalePrice?.length > 0 &&
+                                                                                item.wholesalePrice?.length !== 1 ? (
                                                                                 <Text
                                                                                     text={convertAttributeWholesalePrice(
                                                                                         props.dataCreateProduct,
@@ -472,8 +542,8 @@ export const ItemVariant = observer(
                                                                                     numberOfLines={1}
                                                                                     style={styles.textTextField}
                                                                                 />
-                                                                            ) : item.wholesalePrice.length > 0 &&
-                                                                                item.wholesalePrice.length === 1 ? (
+                                                                            ) : item.wholesalePrice?.length > 0 &&
+                                                                                item.wholesalePrice?.length === 1 ? (
                                                                                 <Text
                                                                                     text={
                                                                                         vendorStore.checkSeparator ===
@@ -552,17 +622,17 @@ export const ItemVariant = observer(
                             >
                                 {props.dataCreateProduct.length > 0 ? (
                                     <TouchableOpacity
-                                    onPress={props.handleEditAttribute}
-                                        // onPress={() => {
-                                        //     navigation.navigate({
-                                        //         name: "editAttribute",
-                                        //         params: {
-                                        //             dataAttribute: attributeArr,
-                                        //             dropdownSelected: dropdownSelected,
-                                        //             hasVariantInConfig: hasVariantInConfig,
-                                        //         },
-                                        //     } as never);
-                                        // }}
+                                        onPress={props.handleEditAttribute}
+                                    // onPress={() => {
+                                    //     navigation.navigate({
+                                    //         name: "editAttribute",
+                                    //         params: {
+                                    //             dataAttribute: attributeArr,
+                                    //             dropdownSelected: dropdownSelected,
+                                    //             hasVariantInConfig: hasVariantInConfig,
+                                    //         },
+                                    //     } as never);
+                                    // }}
                                     >
                                         <Images.icon_edit
                                             // style={{ marginRight: scaleWidth(8) }}
@@ -600,41 +670,41 @@ export const ItemVariant = observer(
                     </View>
                 ) : null}
                 <PriceModal
-          isVisible={modalRetailPrice1}
-          setIsVisible={() => setModalRetailPrice1(false)}
-          title={"productDetail.retailPrice"}
-          onCancel={() => {
-            setModalRetailPrice1(false);
-            dataModal.length !== 0
-              ? setDataModal([])
-              : setDataModal([{ min: "", price: "" }]);
-          }}
-          onConfirm={(data) => {
-            // setRetailPriceProduct(data.price)
-            props.dataCreateProduct[indexVariant].retailPrice = data.price;
-            setModalRetailPrice1(false);
-            setDataModal([]);
-          }}
-          dataAdd={dataModal}
-        />
-        <PriceModal
-          isVisible={modalWholesalePrice1}
-          setIsVisible={() => setModalWholesalePrice1(false)}
-          title={"productDetail.wholesalePrice"}
-          onCancel={() => {
-            setModalWholesalePrice1(false);
-            dataModal.length !== 0
-              ? setDataModal([])
-              : setDataModal([{ min: "", price: "" }]);
-          }}
-          onConfirm={(data) => {
-            // setWholesalePriceProduct(data.price);
-            props.dataCreateProduct[indexVariant].wholesalePrice = data.price;
-            setModalWholesalePrice1(false);
-            setDataModal([]);
-          }}
-          dataAdd={dataModal}
-        />
+                    isVisible={modalRetailPrice1}
+                    setIsVisible={() => setModalRetailPrice1(false)}
+                    title={"productDetail.retailPrice"}
+                    onCancel={() => {
+                        setModalRetailPrice1(false);
+                        dataModal.length !== 0
+                            ? setDataModal([])
+                            : setDataModal([{ min: "", price: "" }]);
+                    }}
+                    onConfirm={(data) => {
+                        // setRetailPriceProduct(data.price)
+                        props.dataCreateProduct[indexVariant].retailPrice = data.price;
+                        setModalRetailPrice1(false);
+                        setDataModal([]);
+                    }}
+                    dataAdd={dataModal}
+                />
+                <PriceModal
+                    isVisible={modalWholesalePrice1}
+                    setIsVisible={() => setModalWholesalePrice1(false)}
+                    title={"productDetail.wholesalePrice"}
+                    onCancel={() => {
+                        setModalWholesalePrice1(false);
+                        dataModal.length !== 0
+                            ? setDataModal([])
+                            : setDataModal([{ min: "", price: "" }]);
+                    }}
+                    onConfirm={(data) => {
+                        // setWholesalePriceProduct(data.price);
+                        props.dataCreateProduct[indexVariant].wholesalePrice = data.price;
+                        setModalWholesalePrice1(false);
+                        setDataModal([]);
+                    }}
+                    dataAdd={dataModal}
+                />
             </View>
         )
     })
