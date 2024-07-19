@@ -41,7 +41,7 @@ export const ItemVariant = memo(
         const [modalWholesalePrice1, setModalWholesalePrice1] = useState(false);
         const [indexVariant, setIndexVariant] = useState(0);
 
-        const uploadImages = useCallback( async (
+        const uploadImages =  async (
             imageArray: any[],
             checkUploadSlider: boolean,
             indexItem?: number
@@ -95,7 +95,7 @@ export const ItemVariant = memo(
             } catch (error) {
                 console.error("Error uploading images:", error);
             }
-        }, [])
+        }
 
         const handleDeleteProduct = (index: any, id: any) => {
             if(props.screen === 'create'){

@@ -247,7 +247,7 @@ export const EditClassify: FC = (item) => {
         }
     };
 
-    const uploadImages = useCallback(async (
+    const uploadImages = async (
         imageArray: any[],
     ) => {
         try {
@@ -294,9 +294,9 @@ export const EditClassify: FC = (item) => {
         } catch (error) {
             console.error("Error uploading images:", error);
         }
-    }, [])
+    }
 
-    const handleRemoveImage = useCallback((index: number, url: string) => {
+    const handleRemoveImage = (index: number, url: string) => {
         let fileName = url.split("/").pop();
         console.log("handleRemoveImage Slider---Root", fileName);
         const indexToRemoveLocal = imagesNote.findIndex(
@@ -307,7 +307,7 @@ export const EditClassify: FC = (item) => {
             updatedImages.splice(indexToRemoveLocal, 1);
             setImagesNote(updatedImages);
         }
-    }, [])
+    }
 
     const getConvertedUnitsForGroup = () => {
         return detailUnitGroupData ? detailUnitGroupData.uomGroupLines : [];

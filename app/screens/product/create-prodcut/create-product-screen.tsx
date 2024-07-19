@@ -618,7 +618,7 @@ export const ProductCreateScreen: FC = (item) => {
       methods.setValue("weightOriginal", "");
       methods.setValue("volumeOriginal", "");
     }
-  }, [])
+  }, [valueSwitchUnit])
 
   const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
@@ -626,7 +626,7 @@ export const ProductCreateScreen: FC = (item) => {
     } else {
       setModalcreateUnit(true);
     }
-  }, [])
+  }, [valueSwitchUnit])
 
   const handleSwitchUnit = useCallback(() => {
     // setUomGroupId({ id: "", label: "" })
@@ -634,7 +634,7 @@ export const ProductCreateScreen: FC = (item) => {
     getListUnitGroup(!valueSwitchUnit);
     methods.setValue("weightOriginal", "");
     methods.setValue("volumeOriginal", "");
-  }, [])
+  }, [valueSwitchUnit])
 
   const handleRemoveImage = useCallback((index: number, url: any) => {
     let fileName = url.split("/").pop();

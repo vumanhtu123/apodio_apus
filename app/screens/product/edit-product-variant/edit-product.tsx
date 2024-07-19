@@ -753,7 +753,7 @@ export const ProductEditScreen: FC = (item) => {
     }
   };
 
-  const uploadImages = useCallback(async (
+  const uploadImages = async (
     imageArray: any[],
     checkUploadSlider: boolean,
     indexItem?: number
@@ -808,7 +808,7 @@ export const ProductEditScreen: FC = (item) => {
     } catch (error) {
       console.error("Error uploading images:", error);
     }
-  }, [])
+  }
 
   const handleSelectUnit = useCallback((item: any) => {
     if (valueSwitchUnit) {
@@ -822,7 +822,7 @@ export const ProductEditScreen: FC = (item) => {
       methods.setValue("weightOriginal", "");
       methods.setValue("volumeOriginal", "");
     }
-  }, [])
+  }, [valueSwitchUnit])
 
   const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
@@ -830,7 +830,7 @@ export const ProductEditScreen: FC = (item) => {
     } else {
       setModalcreateUnit(true);
     }
-  }, [])
+  }, [valueSwitchUnit])
 
   const handleSwitchUnit = useCallback(() => {
     // setUomGroupId({ id: "", label: "" })
@@ -838,9 +838,9 @@ export const ProductEditScreen: FC = (item) => {
     getListUnitGroup(!valueSwitchUnit);
     methods.setValue("weightOriginal", "");
     methods.setValue("volumeOriginal", "");
-  }, [])
+  }, [valueSwitchUnit])
 
-  const handleRemoveImage = useCallback((index: number, url: string) => {
+  const handleRemoveImage = (index: number, url: string) => {
     let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
     const indexToRemoveLocal = imagesNote.findIndex(
@@ -851,7 +851,7 @@ export const ProductEditScreen: FC = (item) => {
       updatedImages.splice(indexToRemoveLocal, 1);
       setImagesNote(updatedImages);
     }
-  }, [])
+  }
 
   const handleDescribe = () => {
     setAddDescribe(true);
