@@ -76,7 +76,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         // defaultValue={"system_admin"}
         // Account test
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 50,
         }}
         defaultValue={""}
@@ -136,7 +136,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         )}
         name="latitude"
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 50,
         }}
       />
@@ -177,7 +177,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         )}
         name="longs"
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 50,
         }}
       />
@@ -220,7 +220,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           )}
           name="width"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 50,
           }}
         />
@@ -261,7 +261,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           )}
           name="height"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 50,
           }}
         />
@@ -302,7 +302,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           )}
           name="weight"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 50,
           }}
         />
