@@ -947,7 +947,11 @@ const en = {
     backgroundLoad: "Tải trọng nền",
     additionalInformation : "Thông tin bổ sung",
     detailWarehouse: "Chi tiết kho hàng",
-    
+    warning: " Lưu ý : Kho sẽ chuyển trạng thái lưu trữ , bạn không thể thực hiện hành động nhập sau khi lưu trữ",
+    titleConfirm: "Bạn có chắc muốn lưu trữ kho",
+    this: "này không",
+    messengerSucces: "Bạn đã xóa kho hàng thành công",
+    messengerFail: "Lỗi xóa kho hàng"
   },
 
   GoodsExportBook: {

@@ -43,6 +43,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const [lengthIsActive, setLengthIsActive] = useState<number>()
         const [lengthSave, setLengthSave] = useState<number>()
         const [isShowSearch, setIsShowSearch] = useState(false)
+        const page = useRef(0)
+        const totalPages2 = useRef<any>()
 
         const getAPI = useStores()
 
@@ -128,41 +130,58 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         console.log('====================================');
 
         const getListWarehouse = () => {
+            try {
+                getAPI.warehouseStore.getListWareHouse(page.current, 20, state(), valueSearch, statusLoadMore).then((data) => {
+                    console.log('data doan', data?.content);
+                    if (data?.content != null) {
+                        const dataWarehouse = data?.content.map((item) => {
+                            return {
+                                id: item.id,
+                                code: item.code,
+                                name: item.name,
+                                state: item.state,
+                            };
 
-            getAPI.warehouseStore.getListWareHouse(0, size.current, state(), valueSearch, statusLoadMore).then((data) => {
-                console.log('data doan', data?.content);
-                const dataWarehouse = data?.content.map((item) => {
-                    return {
-                        id: item.id,
-                        code: item.code,
-                        name: item.name,
-                        state: item.state,
-                    };
+                        });
+                        setMyData((prevProducts) => [...prevProducts, ...dataWarehouse])
+
+                        const lengthIsActive = data?.content.filter(item => item.state === 'APPROVED').length
+                        const lengthSave = data?.content.filter(item => item.state === 'ARCHIVED').length
+                        const totalPages = data?.totalPages
+                        console.log('dang hoat dong', lengthIsActive);
+                        console.log('dung hoat dong', lengthSave);
+                        console.log('totalPages', totalPages);
+
+                        setLengthSave(lengthSave)
+                        setLengthIsActive(lengthIsActive)
+                        setLengthAll(data?.totalElements)
+                        totalPages2.current = (totalPages)
+                        // if (data?.content != []) {
+
+                        // }
+                        console.log("apoppp", dataWarehouse)
+
+                    }
+
                 });
-                setMyData(dataWarehouse)
+            } catch (error) {
+                console.log('====================================');
+                console.log('Error loadMore', error);
+                console.log('====================================');
+            }
 
-                console.log('doandev', myData);
 
-            });
         }
 
-        const getAllLength = () => {
-            getAPI.warehouseStore.getListWareHouse().then((data) => {
-                console.log('data length ALL', data?.content);
-                setLengthAll(data?.content.length)
-                const lengthIsActive = data?.content.filter(item => item.state === 'APPROVED').length
-                const lengthSave = data?.content.filter(item => item.state === 'ARCHIVED').length
-                setLengthSave(lengthSave)
-                setLengthIsActive(lengthIsActive)
-            })
-        }
+        console.log('totalPages2', totalPages2.current);
+
+        console.log('doandev size', myData);
 
 
 
         const handleRefresh = () => {
             try {
                 setRefreshing(true);
-
                 // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
                 getListWarehouse();
                 // Cập nhật state của danh sách dữ liệu
@@ -175,27 +194,38 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         };
 
         const handleLoadMore = () => {
-            if (!isLoadingMore) {
-                getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
-                setIsLoadingMore(true);
-                // console.log('====================================');
-                console.log("value loading", isLoadingMore);
-                // console.log('====================================');
-                size.current = size.current + 2;
-                getListWarehouse();
-                console.log("doandev test");
+            console.log('pageCurrent2');
 
-                setTimeout(() => {
+            try {
+                setIsLoadingMore(true)
+                // getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
+
+                if (
+                    page.current < totalPages2.current
+                ) {
+                    // console.log("value loading", isLoadingMore);
+                    page.current = page.current + 1;
+                    console.log('pageDoan', page.current);
+                    getListWarehouse();
                     setIsLoadingMore(false);
-                }, 3000);
+
+                }
+                setIsLoadingMore(false);
+
+            } catch (error) {
+                console.log('====================================');
+                console.log('Error loadMore', error);
+                console.log('====================================');
             }
+
+
         };
         const handleSearch = () => {
             getListWarehouse();
         };
 
         useEffect(() => {
-            getAllLength()
+
             getListWarehouse()
 
 
@@ -365,24 +395,28 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         style={{}}
                         data={myData}
                         renderItem={({ item }) => <ItemListWareHouse item={item} />}
-                        keyExtractor={(item: any) => item.id.toString()}
+                        keyExtractor={(item: any) => item?.id}
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                         }
-                        onEndReached={() => handleLoadMore()}
+                        onEndReached={() => {
+                            handleLoadMore()
+                            console.log('pageCurrent', page.current)
+                        }}
+
                         onEndReachedThreshold={0.3}
                         ListFooterComponent={() => (
                             <View>
-                                {myData?.length !== 1 ? (
-                                    <>{isLoadingMore && <ActivityIndicator />}</>
-                                ) : null}
+
+                                <>{isLoadingMore ? <ActivityIndicator /> : <></>}</>
+
                             </View>
                         )}
                     />
                     <TouchableOpacity
                         style={Styles.btnPlus}
-                        onPress={() => setOpenDialogPlus(!openDialogPlus)}>
+                        onPress={() => props.navigation.navigate("warehouse", { status: "CREATE" })}>
                         <Images.icon_plus style={{ opacity: openDialogPlus ? 0 : 1 }} />
                     </TouchableOpacity>
 

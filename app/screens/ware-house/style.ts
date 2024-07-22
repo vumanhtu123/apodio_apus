@@ -142,6 +142,25 @@ export const Styles = StyleSheet.create({
         flexDirection: 'row', 
         marginTop: scaleHeight(12) 
 
+    },
+    styleBtnCancel: { 
+        backgroundColor: '#FFF', 
+        flex: 1, 
+        alignItems: 'center', 
+        padding: scaleWidth(padding.padding_14), 
+        marginRight: scaleWidth(9),
+        borderRadius: margin.margin_8,
+        borderWidth:1, 
+        borderColor: colors.palette.dolphin
+
+    },
+    styleBtnConfirm: { 
+        backgroundColor: colors.palette.navyBlue, 
+        flex: 1, 
+        alignItems: 'center', 
+        padding: scaleWidth(padding.padding_14),
+        borderRadius: margin.margin_8,
+        
     }
 
 

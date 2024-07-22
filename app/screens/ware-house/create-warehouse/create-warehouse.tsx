@@ -39,43 +39,43 @@ export const CreateWareHouseScreen: FC<
   useEffect(() => {
     status.current == "COPY"
       ? setValue(
-          "nameWareHouse",
-          props.route.params.name +
-            "-COPY-" +
-            props.route.params.sequenceCopy ?? ""
-        )
+        "nameWareHouse",
+        props.route.params.name +
+        "-COPY-" +
+        props.route.params.sequenceCopy ?? ""
+      )
       : setValue("nameWareHouse", props.route.params.name ?? "");
     status.current == "COPY"
       ? setValue(
-          "codeWareHouse",
-          props.route.params.code +
-            "-COPY-" +
-            props.route.params.sequenceCopy ??
-            "" ??
-            ""
-        )
-      : setValue("codeWareHouse", String(props.route.params.code));
-    setValue("addressWareHouse", String(props.route.params.address));
-    setValue("latitude", String(props.route.params.additionalInfo?.latitude));
-    setValue("longitude", String(props.route.params.additionalInfo?.longitude));
-    setValue("height", String(props.route.params.additionalInfo?.height));
-    setValue("longs", String(props.route.params.additionalInfo?.length));
-    setValue("width", String(props.route.params.additionalInfo?.width));
+        "codeWareHouse",
+        props.route.params.code +
+        "-COPY-" +
+        props.route.params.sequenceCopy ??
+        "" ??
+        ""
+      )
+      : setValue("codeWareHouse", String(props.route.params.code ?? ""));
+    setValue("addressWareHouse", String(props.route.params.address ?? ""));
+    setValue("latitude", String(props.route.params.additionalInfo?.latitude ?? ""));
+    setValue("longitude", String(props.route.params.additionalInfo?.longitude ?? ""));
+    setValue("height", String(props.route.params.additionalInfo?.height ?? ""));
+    setValue("longs", String(props.route.params.additionalInfo?.length ?? ""));
+    setValue("width", String(props.route.params.additionalInfo?.width ?? ""));
     setValue(
       "temperature1",
-      String(props.route.params.conditionStorage?.minTemperature)
+      String(props.route.params.conditionStorage?.minTemperature ?? "")
     );
     setValue(
       "temperature2",
-      String(props.route.params.conditionStorage?.standardHumidity)
+      String(props.route.params.conditionStorage?.standardHumidity ?? "")
     );
     setValue(
       "temperature3",
-      String(props.route.params.conditionStorage?.standardTemperature)
+      String(props.route.params.conditionStorage?.standardTemperature ?? "")
     );
     setValue(
       "weight",
-      String(props.route.params.additionalInfo?.weightCapacity)
+      String(props.route.params.additionalInfo?.weightCapacity ?? "")
     );
   }, [props.route.params]);
 
@@ -373,10 +373,10 @@ export const CreateWareHouseScreen: FC<
                 onBlur={onBlur}
                 isShowPassword
                 RightIconClear={null}
-                RightIconShow={() => {}}
-                onClearText={() => {}}
+                RightIconShow={() => { }}
+                onClearText={() => { }}
                 maxLength={50}
-                onShowPassword={() => {}}
+                onShowPassword={() => { }}
                 error={errors.codeWareHouse?.message ?? ""}
                 onChangeText={(value) => {
                   onChange(value);
@@ -414,10 +414,10 @@ export const CreateWareHouseScreen: FC<
                 onBlur={onBlur}
                 isShowPassword
                 RightIconClear={null}
-                RightIconShow={() => {}}
-                onClearText={() => {}}
+                RightIconShow={() => { }}
+                onClearText={() => { }}
                 maxLength={250}
-                onShowPassword={() => {}}
+                onShowPassword={() => { }}
                 error={errors.nameWareHouse?.message ?? ""}
                 onChangeText={(value) => {
                   onChange(value);
@@ -456,9 +456,9 @@ export const CreateWareHouseScreen: FC<
                 onBlur={onBlur}
                 isShowPassword
                 RightIconClear={null}
-                RightIconShow={() => {}}
-                onClearText={() => {}}
-                onShowPassword={() => {}}
+                RightIconShow={() => { }}
+                onClearText={() => { }}
+                onShowPassword={() => { }}
                 onChangeText={(value) => {
                   onChange(value);
                 }}

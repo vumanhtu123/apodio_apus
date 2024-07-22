@@ -19,9 +19,9 @@ export const WarehouseStoreModal = types
       console.log("doanlog value isLoadMore warehouse", value);
       self.isLoadMoreWarehouse = value;
     },
-    // reset(){
-    //     self.isLoadMoreWarehouse = false
-    // }
+    reset(){
+        self.isLoadMoreWarehouse = false
+    }
   }))
 
   .actions((self) => ({
@@ -104,4 +104,24 @@ export const WarehouseStoreModal = types
         console.log("update warehouse error", error);
       }
     }),
+
+    deleteWarehouse: flow(function* (id : number) {
+        try {
+            const warehouseAPI = new WarehouseAPI(self.environment.apiWarehouse)
+            const result : BaseResponse<any, ErrorCode> = 
+            yield warehouseAPI.deleteWarehouse(id);
+            console.log('Warehouse_Delete------------',
+                JSON.stringify(result.message)
+            );
+            if  (result.message != null) {
+
+                return  result
+            }else{
+                return result.errorCodes
+            }
+        } catch (error) {
+        console.log("delete warehouse error", error);
+            
+        }
+    })
   }));
