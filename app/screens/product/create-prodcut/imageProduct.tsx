@@ -330,7 +330,7 @@ export default function ImageProduct(props: ImageProduct) {
                 isVisible={modalImages}
                 onBackdropPress={() => setModalImages(false)}>
                 <View>
-                    {arrData && arrData?.length > 0 ? (
+                    {arrData?.length !== 0 ? (
                         <View>
                             <Carousel
                                 data={arrData}
@@ -341,7 +341,7 @@ export default function ImageProduct(props: ImageProduct) {
                                     <View>
                                         <Image
                                             source={{
-                                                uri: item.uri,
+                                                uri: item,
                                             }}
                                             defaultSource={Images.imageError}
                                             resizeMode="cover"
@@ -358,7 +358,7 @@ export default function ImageProduct(props: ImageProduct) {
                             />
                             <Pagination
                                 dotsLength={
-                                    arrData.length > 0 && arrData.length
+                                    arrData?.length > 0 && arrData.length
                                 }
                                 activeDotIndex={activeSlide}
                                 dotStyle={styles.paginationDotStyle}

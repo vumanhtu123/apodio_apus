@@ -570,7 +570,7 @@ export const ProductDetailScreen: FC = (item) => {
                     ? detailsClassification?.retailPrice?.map((item) => {
                         return (
                           <ProductAttribute
-                            label={item.min}
+                            label={formatCurrency(commasToDots(item.min))}
                             value={`${formatVND(
                               formatCurrency(commasToDots(item.price))
                             )}/${
@@ -693,7 +693,7 @@ export const ProductDetailScreen: FC = (item) => {
                     ? detailsClassification?.wholesalePrice?.map((item) => {
                         return (
                           <ProductAttribute
-                            label={item.min}
+                            label={formatCurrency(commasToDots(item.min))}
                             value={`${formatVND(
                               formatCurrency(commasToDots(item.price))
                             )}/${
