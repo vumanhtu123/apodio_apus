@@ -103,7 +103,7 @@ export class ApiWarehouse {
         request.headers = {
           imei: DeviceInfo.getUniqueIdSync() + 2,
           "Accept-Language": "en",
-          "X-TenantId": 77,
+          "X-TenantId": tenantId,
         };
         const token = await getAccessToken();
         if (token) {

@@ -19,9 +19,9 @@ export const WarehouseStoreModal = types
       console.log("doanlog value isLoadMore warehouse", value);
       self.isLoadMoreWarehouse = value;
     },
-    // reset(){
-    //     self.isLoadMoreWarehouse = false
-    // }
+    reset(){
+        self.isLoadMoreWarehouse = false
+    }
   }))
 
   .actions((self) => ({

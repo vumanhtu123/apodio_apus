@@ -61,55 +61,106 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                     RightIcon={Images.icon_copy}
                     onLeftPress={() => props.navigation.goBack()}
                     onRightPress2={() => setIsVisible(!isVisible)}
-
-                    onRightPress={() => props.navigation.navigate("warehouse", {
-                        name: myData?.name,
-                        code: myData?.code,
-                        companyId: myData?.companyId,
-                        branchId: myData?.branchId,
-                        sourceProductType: myData?.sourceProductType,
-                        address: myData?.address,
-                        areaCode: myData?.areaCode,
-                        hasAdditionalInfo: myData?.hasAdditionalInfo,
-                        additionalInfo: {
-                            latitude: myData?.additionalInfo?.latitude,
-                            longitude: myData?.additionalInfo?.longitude,
-                            height: myData?.additionalInfo?.height,
-                            heightUom: {
-                                id: 0,
-                                name: "string",
+                    onRightPress1={() => {
+                        props.navigation.navigate("warehouse", {
+                            name: myData?.name,
+                            code: myData?.code,
+                            companyId: myData?.companyId,
+                            branchId: myData?.branchId,
+                            sourceProductType: myData?.sourceProductType,
+                            address: myData?.address,
+                            areaCode: myData?.areaCode,
+                            hasAdditionalInfo: myData?.hasAdditionalInfo,
+                            additionalInfo: {
+                                latitude: myData?.additionalInfo.latitude,
+                                longitude: myData?.additionalInfo.longitude,
+                                height: myData?.additionalInfo.height,
+                                heightUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                length: myData?.additionalInfo?.length,
+                                lengthUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                width: myData?.additionalInfo?.width,
+                                widthUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                weightCapacity: myData?.additionalInfo?.weightCapacity,
+                                weightCapacityUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                scene: myData?.additionalInfo?.scene,
                             },
-                            length: myData?.additionalInfo?.length,
-                            lengthUom: {
-                                id: 0,
-                                name: "string",
+                            hasConditionStorage: myData?.hasConditionStorage,
+                            conditionStorage: {
+                                standardTemperature: String(
+                                    myData?.conditionStorage.standardTemperature
+                                ),
+                                minTemperature: myData?.conditionStorage.minTemperature,
+                                standardHumidity: myData?.conditionStorage.standardHumidity,
                             },
-                            width: myData?.additionalInfo?.width,
-                            widthUom: {
-                                id: 0,
-                                name: "string",
+                            action: "CREATE",
+                            note: "string",
+                            isMobile: true,
+                            status: "UPDATE",
+                            id: idNumber,
+                            sequenceCopy: myData?.sequenceCopy,
+                        });
+                    }}
+                    onRightPress={() =>
+                        props.navigation.navigate("warehouse", {
+                            name: myData?.name,
+                            code: myData?.code,
+                            companyId: myData?.companyId,
+                            branchId: myData?.branchId,
+                            sourceProductType: myData?.sourceProductType,
+                            address: myData?.address,
+                            areaCode: myData?.areaCode,
+                            hasAdditionalInfo: myData?.hasAdditionalInfo,
+                            additionalInfo: {
+                                latitude: myData?.additionalInfo?.latitude,
+                                longitude: myData?.additionalInfo?.longitude,
+                                height: myData?.additionalInfo?.height,
+                                heightUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                length: myData?.additionalInfo?.length,
+                                lengthUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                width: myData?.additionalInfo?.width,
+                                widthUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                weightCapacity: myData?.additionalInfo?.weightCapacity,
+                                weightCapacityUom: {
+                                    id: 0,
+                                    name: "string",
+                                },
+                                scene: myData?.additionalInfo?.scene,
                             },
-                            weightCapacity: myData?.additionalInfo?.weightCapacity,
-                            weightCapacityUom: {
-                                id: 0,
-                                name: "string",
+                            hasConditionStorage: myData?.hasConditionStorage,
+                            conditionStorage: {
+                                standardTemperature: myData?.conditionStorage.standardTemperature,
+                                minTemperature: myData?.conditionStorage.minTemperature,
+                                standardHumidity: myData?.conditionStorage.standardHumidity,
                             },
-                            scene: myData?.additionalInfo?.scene,
-                        },
-                        hasConditionStorage: myData?.hasConditionStorage,
-                        conditionStorage: {
-                            standardTemperature: myData?.conditionStorage.standardTemperature,
-                            minTemperature: myData?.conditionStorage.minTemperature,
-                            standardHumidity: myData?.conditionStorage.standardHumidity,
-                        },
-                        action: "CREATE",
-                        note: "string",
-                        isMobile: true,
-                        status: "UPDATE",
-                        id: idNumber,
-                        sequenceCopy: myData?.sequenceCopy
-                    })}
-
+                            action: "CREATE",
+                            note: "string",
+                            isMobile: true,
+                            status: "COPY",
+                            id: idNumber,
+                            sequenceCopy: myData?.sequenceCopy,
+                        })
+                    }
                 />
                 <ScrollView style={{ flex: 1 }}>
                     <View style={Styles.box}>
