@@ -21,7 +21,7 @@ import en from "../../i18n/en";
 import { Style } from "../check-inventory/add-check-inventory/add-check-inventory";
 import Modal_Infor_wareHouse from "./modal/modal_Infor_wareHouse";
 import Modal_Plus from "./modal/modal_plus";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../navigators";
 import { useStores } from "../../models";
@@ -29,7 +29,8 @@ import { number } from "mobx-state-tree/dist/internal";
 
 export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse'>> = observer(
     function WareHouseScreen(props) {
-
+        const route = useRoute();
+        const reload = route?.params?.reload;
 
         const [indexTabbar, setIndexTabbar] = useState(en.wareHouse.all)
         const [openInforWareHouse, setOpneInforWareHouse] = useState(false)
@@ -45,11 +46,14 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const [isShowSearch, setIsShowSearch] = useState(false)
         const page = useRef(0)
         const totalPages2 = useRef<any>()
-
         const getAPI = useStores()
-
         const size = useRef(10);
 
+        // const { resetCreate } = props.route?.params
+
+        console.log('====================================');
+        console.log("tu chueyn key", props.route);
+        console.log('====================================');
 
         const dataListTabar = [
             {
@@ -99,6 +103,93 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 },
             },
         ];
+
+
+        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
+
+        const checkState = () => {
+            if (indexTabbar == en.wareHouse.all) {
+                console.log('tab select all');
+                return undefined
+
+            } else if (indexTabbar == en.wareHouse.isActive) {
+                console.log('tab select isActive');
+
+                return 'APPROVED'
+            } else {
+                console.log('tab select save');
+
+                return 'ARCHIVED'
+            }
+        }
+        console.log('====================================');
+        console.log('value state', checkState());
+        console.log('====================================');
+
+        const getListWarehouse = () => {
+            try {
+
+                getAPI.warehouseStore.getListWareHouse(size.current, page.current, undefined, valueSearch, statusLoadMore).then((data) => {
+                    console.log('data doan', data);
+                    if (data?.content != null) {
+                        setMyData([])
+                        const dataWarehouse = data?.content.map((item) => {
+                            return {
+                                id: item.id,
+                                code: item.code,
+                                name: item.name,
+                                state: item.state,
+                            };
+
+                        });
+                        setMyData((prevProducts) => {
+                            console.log('doan123', prevProducts);
+
+                            // Tạo một tập hợp các id đã xuất hiện trong prevProducts
+                            const idsInPrevProducts = new Set(prevProducts.map(product => product.id));
+
+                            // Lọc dataWarehouse để chỉ giữ lại các đối tượng có id chưa xuất hiện trong prevProducts
+                            const filteredDataWarehouse = dataWarehouse.filter(item => !idsInPrevProducts.has(item.id));
+
+                            // Nối hai mảng lại với nhau
+                            return [
+                                ...prevProducts,
+                                ...filteredDataWarehouse
+                            ];
+                        });
+
+
+                        const lengthIsActiveData = data?.content.filter(item => item.state === 'APPROVED').length
+                        const lengthSaveData = data?.content.filter(item => item.state === 'ARCHIVED').length
+                        const totalElementsData = data?.totalElements
+                        const totalPages = data?.totalPages
+                        console.log('dang hoat dong', lengthIsActive);
+                        console.log('dung hoat dong', lengthSave);
+                        console.log('totalPages', totalPages);
+                        console.log("totalElement", totalElementsData);
+
+
+                        setLengthAll(totalElementsData)
+                        setLengthIsActive(lengthIsActiveData)
+                        setLengthSave(lengthSaveData)
+
+                        console.log('value All', lengthAll);
+
+
+                        totalPages2.current = (totalPages)
+
+                    }
+
+                });
+            } catch (error) {
+                console.log('====================================');
+                console.log('Error loadMore', error);
+                console.log('====================================');
+            }
+
+
+        }
+
         const titleTabbar = [
             {
                 name: en.wareHouse.all,
@@ -114,66 +205,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             },
         ];
 
-        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
-
-        const state = () => {
-            if (indexTabbar == en.wareHouse.all) {
-                return undefined
-            } else if (indexTabbar == en.wareHouse.isActive) {
-                return 'APPROVED'
-            } else {
-                return 'ARCHIVED'
-            }
-        }
-        console.log('====================================');
-        console.log('value state', state());
-        console.log('====================================');
-
-        const getListWarehouse = () => {
-            try {
-                getAPI.warehouseStore.getListWareHouse(page.current, 20, state(), valueSearch, statusLoadMore).then((data) => {
-                    console.log('data doan', data?.content);
-                    if (data?.content != null) {
-                        const dataWarehouse = data?.content.map((item) => {
-                            return {
-                                id: item.id,
-                                code: item.code,
-                                name: item.name,
-                                state: item.state,
-                            };
-
-                        });
-                        setMyData((prevProducts) => [...prevProducts, ...dataWarehouse])
-
-                        const lengthIsActive = data?.content.filter(item => item.state === 'APPROVED').length
-                        const lengthSave = data?.content.filter(item => item.state === 'ARCHIVED').length
-                        const totalPages = data?.totalPages
-                        console.log('dang hoat dong', lengthIsActive);
-                        console.log('dung hoat dong', lengthSave);
-                        console.log('totalPages', totalPages);
-
-                        setLengthSave(lengthSave)
-                        setLengthIsActive(lengthIsActive)
-                        setLengthAll(data?.totalElements)
-                        totalPages2.current = (totalPages)
-                        // if (data?.content != []) {
-
-                        // }
-                        console.log("apoppp", dataWarehouse)
-
-                    }
-
-                });
-            } catch (error) {
-                console.log('====================================');
-                console.log('Error loadMore', error);
-                console.log('====================================');
-            }
-
-
-        }
-
-        console.log('totalPages2', totalPages2.current);
+        console.log('lengthALL', lengthAll);
 
         console.log('doandev size', myData);
 
@@ -220,17 +252,28 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
 
         };
-        const handleSearch = () => {
-            getListWarehouse();
-        };
 
         useEffect(() => {
+            console.log("---------useEffect---------reload------------------");
+            const unsubscribe = props.navigation.addListener("focus", () => {
+                if (reload === true) {
+                    console.log("---------useEffect---------reload2------------------");
 
+                    getListWarehouse()
+                }
+            });
+
+            return unsubscribe;
+        }, [props.navigation, reload]);
+
+        useEffect(() => {
             getListWarehouse()
+        }, []);
 
 
-        }, [props.navigation, state()])
-
+        console.log('====================================');
+        console.log('check doan', props.navigation);
+        console.log('====================================');
         // console.log('====================================');
         // console.log(dataListTabar[0].img);
         // console.log('====================================');
@@ -301,7 +344,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         // console.log('====================================');
                         item.onPress();
                     }}>
-                    <View style={{ alignItems: "center" }}>
+                    <View style={{ alignItems: "center", }}>
                         <Image
                             source={item.img}
                             style={{ width: scaleWidth(16), height: scaleHeight(16) }}
@@ -327,14 +370,20 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     LeftIcon={Images.back}
                     style={{ height: scaleHeight(52) }}
                     leftText="wareHouse.wareHouse"
-                    RightIcon1={Images.ic_QR}
+
                     RightIcon2={Images.icon_search}
-                    RightIcon={Images.icon_funnel}
+
                     headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
-                        handleSearch()
+                        getListWarehouse();
+
                     }}
-                    onSearchValueChange={(txt: any) => setValueSearch(txt)}
+                    onSearchValueChange={(txt: any) => {
+                        console.log('value search', txt);
+
+                        setValueSearch(txt)
+
+                    }}
                     onRightPress2={() => setIsShowSearch(!isShowSearch)}
                     btnRightStyle={{ width: scaleWidth(30), height: scaleHeight(30), marginRight: -10, }}
                     onLeftPress={() => props.navigation.goBack()}
@@ -372,9 +421,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                     }
                                     key={item.name}
                                     onPress={() => {
-                                        console.log(item.name);
-
+                                        console.log("type tabbar", item.name);
                                         setIndexTabbar(item?.name);
+
                                     }}>
                                     <Text
                                         style={{
@@ -402,7 +451,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         }
                         onEndReached={() => {
                             handleLoadMore()
-                            console.log('pageCurrent', page.current)
+                            // console.log('pageCurrent', page.current)
                         }}
 
                         onEndReachedThreshold={0.3}
