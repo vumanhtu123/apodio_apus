@@ -1,11 +1,12 @@
-import { id } from 'date-fns/locale';
+import { id } from "date-fns/locale";
 import { values } from "mobx";
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { WarehouseAPI } from "../../services/api/api-warehouse";
 import { reset } from "i18n-js";
-import { ResponseWarehouse } from './warehouse-model';
-import { DataDetailWarehouse } from './detail-warehouse-model';
+import { ResponseWarehouse } from "./warehouse-model";
+import { DataDetailWarehouse } from "./detail-warehouse-model";
+import { UnitResult } from "../unit/unit-model";
 
 export const WarehouseStoreModal = types
   .model("WarehouseStore")
@@ -19,9 +20,9 @@ export const WarehouseStoreModal = types
       console.log("doanlog value isLoadMore warehouse", value);
       self.isLoadMoreWarehouse = value;
     },
-    reset(){
-        self.isLoadMoreWarehouse = false
-    }
+    reset() {
+      self.isLoadMoreWarehouse = false;
+    },
   }))
 
   .actions((self) => ({
@@ -33,7 +34,10 @@ export const WarehouseStoreModal = types
       isLoadMore?: boolean
     ) {
       try {
-        const warehouseAPI = new WarehouseAPI(self.environment.apiWarehouse);
+        const warehouseAPI = new WarehouseAPI(
+          self.environment.apiWarehouse,
+          self.environment.api
+        );
         const result: BaseResponse<ResponseWarehouse, ErrorCode> =
           yield warehouseAPI.getListWarehouse(
             size,
@@ -53,26 +57,28 @@ export const WarehouseStoreModal = types
       }
     }),
 
-    getDetailWarehouse: flow(function* (
-        id : number
-    ) {
-        try {
-            const warehouseDetail = new WarehouseAPI(self.environment.apiWarehouse)
-            const result : BaseResponse<DataDetailWarehouse,ErrorCode> = 
-                yield warehouseDetail.getDetailWarehouse(id);
-            console.log("WarehouseDetail------------- ", JSON.stringify(result));
+    getDetailWarehouse: flow(function* (id: number) {
+      try {
+        const warehouseAPI = new WarehouseAPI(
+          self.environment.apiWarehouse,
+          self.environment.api
+        );
+        const result: BaseResponse<DataDetailWarehouse, ErrorCode> =
+          yield warehouseAPI.getDetailWarehouse(id);
+        console.log("WarehouseDetail------------- ", JSON.stringify(result));
 
-            return result
-        } catch (error) {
-
-            console.log("Get detail warehouse error", error);
-            
-        }
+        return result;
+      } catch (error) {
+        console.log("Get detail warehouse error", error);
+      }
     }),
 
     postCreateWareHouse: flow(function* (form: any) {
       try {
-        const warehouseAPI = new WarehouseAPI(self.environment.apiWarehouse);
+        const warehouseAPI = new WarehouseAPI(
+          self.environment.apiWarehouse,
+          self.environment.api
+        );
         const result: BaseResponse<any, ErrorCode> =
           yield warehouseAPI.createWareHouse(form);
         console.log("Warehouse_Create-------------", JSON.stringify(result));
@@ -88,7 +94,10 @@ export const WarehouseStoreModal = types
 
     putUpdateWareHouse: flow(function* (form: any, id: any) {
       try {
-        const warehouseAPI = new WarehouseAPI(self.environment.apiWarehouse);
+        const warehouseAPI = new WarehouseAPI(
+          self.environment.apiWarehouse,
+          self.environment.api
+        );
         const result: BaseResponse<any, ErrorCode> =
           yield warehouseAPI.updateWareHouse(form, id);
         console.log(
@@ -105,23 +114,39 @@ export const WarehouseStoreModal = types
       }
     }),
 
-    deleteWarehouse: flow(function* (id : number) {
-        try {
-            const warehouseAPI = new WarehouseAPI(self.environment.apiWarehouse)
-            const result : BaseResponse<any, ErrorCode> = 
-            yield warehouseAPI.deleteWarehouse(id);
-            console.log('Warehouse_Delete------------',
-                JSON.stringify(result.message)
-            );
-            if  (result.message != null) {
-
-                return  result
-            }else{
-                return result.errorCodes
-            }
-        } catch (error) {
-        console.log("delete warehouse error", error);
-            
+    deleteWarehouse: flow(function* (id: number) {
+      try {
+        const warehouseAPI = new WarehouseAPI(
+          self.environment.apiWarehouse,
+          self.environment.api
+        );
+        const result: BaseResponse<any, ErrorCode> =
+          yield warehouseAPI.deleteWarehouse(id);
+        console.log(
+          "Warehouse_Delete------------",
+          JSON.stringify(result.message)
+        );
+        if (result.message != null) {
+          return result;
+        } else {
+          return result.errorCodes;
         }
-    })
+      } catch (error) {
+        console.log("delete warehouse error", error);
+      }
+    }),
+
+    getListUnit: flow(function* () {
+      try {
+        const warehouseAPI = new WarehouseAPI(
+          self.environment.apiWarehouse,
+          self.environment.api
+        );
+        const result: UnitResult = yield warehouseAPI.getListUnit();
+        return result;
+      } catch (error) {
+        console.log("LOG ERROR PROMOTION", error);
+        return error;
+      }
+    }),
   }));

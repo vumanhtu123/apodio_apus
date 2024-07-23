@@ -32,11 +32,29 @@ export const CreateWareHouseScreen: FC<
   // const [status, setCheckStatus] = useState(props.route.params.status ?? null);
   const status = useRef(props.route.params.status ?? null);
   const id = useRef(props.route.params.id ?? null);
+  const [listUnit, setListUnit] = useState([]);
   console.log(
     "status: ",
     JSON.stringify(props.route.params.conditionStorage?.minTemperature)
   );
+
+  const handlerDataList = () => {
+    api.warehouseStore.getListUnit().then((unit: any) => {
+      console.log("getListUnit---------------------:", JSON.stringify(unit));
+      const data = unit.result.data.content;
+      const listUnit = data.map((obj: { id: any; name: any }) => {
+        return {
+          value: obj.id,
+          text: obj.name,
+        };
+      });
+      setListUnit(listUnit);
+      console.log("list unit--------------------", listUnit);
+    });
+  };
+
   useEffect(() => {
+    handlerDataList();
     status.current == "COPY"
       ? setValue(
           "nameWareHouse",
@@ -565,6 +583,7 @@ export const CreateWareHouseScreen: FC<
             config={config}
             setValue={setValue}
             clearError={clearErrors}
+            list={listUnit}
           />
           {/* <Controller
             control={control}

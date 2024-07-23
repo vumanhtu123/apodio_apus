@@ -390,9 +390,20 @@ export function TextField(props: TextFieldProps) {
               {valueTextRight1 !== "" ? (
                 <Text text={valueTextRight1} style={styleTextRight}></Text>
               ) : null}
+              {/* <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} /> */}
+            </TouchableOpacity>
+          ) : null}
+          {RightIcon != null ? (
+            <TouchableOpacity
+              onPress={pressRightIcon}
+              style={{ flexDirection: "row", alignItems: "center" }}>
+              {valueTextRight1 !== "" ? (
+                <Text text={valueTextRight1} style={styleTextRight}></Text>
+              ) : null}
               <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} />
             </TouchableOpacity>
           ) : null}
+
           {valueTextRight !== "" ? (
             <Text text={valueTextRight} style={styleTextRight}></Text>
           ) : null}

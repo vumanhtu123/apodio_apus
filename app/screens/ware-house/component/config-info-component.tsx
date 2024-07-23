@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Text, TextField } from "../../../components";
@@ -13,7 +13,14 @@ export const ConfigInfoMoreComponent = (props: any) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>([]);
   const [selectedItems, setSelectedItems] = useState<any>([]);
+  const heightUom = useRef({ id: 0, name: "" });
+  const lengthUom = useRef({ id: 0, name: "" });
+  const widthUom = useRef({ id: 0, name: "" });
+  const weightCapacityUom = useRef({ id: 0, name: "" });
+
+  console.log("list unit", props.list);
   const toggleModal = () => {
+    console.log("preChoice", selectedItems);
     setModalVisible(!modalVisible);
   };
   const renderItem = ({ item }: any) => {
@@ -27,6 +34,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           style={stylesWareHouse.item}
           onPress={() => handleItemSelect(item)}>
           <Text style={[stylesWareHouse.itemText]}>{item.text}</Text>
+          {isSelected ? <Images.icon_check /> : null}
         </TouchableOpacity>
       </View>
     );
@@ -42,10 +50,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           (selectedItem: { value: any }) => selectedItem.value !== item.value
         )
       );
-    } else {
-      setSelectedItem([...selectedItem, item]);
     }
-    // onPressChoice(selectedItems);
   };
 
   const onConfirm = () => {
@@ -160,7 +165,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
             isShowPassword
             RightIcon={Images.dropDown}
             styleTextRight={stylesWareHouse.textConfig}
-            valueTextRight="m2"
+            valueTextRight={lengthUom.current.name ?? ""}
             RightIconClear={null}
             RightIconShow={() => {}}
             onClearText={() => {
@@ -204,7 +209,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight="m2"
+              valueTextRight={widthUom.current.name ?? ""}
               styleTextRight={stylesWareHouse.textConfig}
               RightIcon={Images.dropDown}
               RightIconClear={null}
@@ -245,9 +250,8 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight="m2"
+              valueTextRight={heightUom.current.name ?? ""}
               RightIconClear={null}
-              RightIconShow={() => {}}
               styleTextRight={stylesWareHouse.textConfig}
               RightIcon={Images.dropDown}
               onClearText={() => {
@@ -286,7 +290,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight="Tấn"
+              valueTextRight={weightCapacityUom.current.name ?? ""}
               RightIconClear={null}
               RightIconShow={() => {}}
               styleTextRight={stylesWareHouse.textConfig}
@@ -314,7 +318,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         <View style={stylesWareHouse.modalContainer}>
           {/* <Text text={"List"} style={stylesWareHouse.textTitleModal} /> */}
           <FlatList
-            data={[]}
+            data={props.list}
             renderItem={renderItem}
             keyExtractor={(item: any) => item.value}
             onEndReached={props.loadMore}
