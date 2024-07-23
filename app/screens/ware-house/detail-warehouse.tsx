@@ -15,11 +15,15 @@ import data from "../../components/svg-icon/data";
 import DataDetailWarehouse from "../../models/warehouse-store/detail-warehouse-model"
 import { ModalDeleteWareHouse } from "./modal/modal_delete_warehouse";
 import en from "../../i18n/en";
+import { ALERT_TYPE, Dialog } from "../../components/dialog-notification";
+import { translate } from "../../i18n";
+import { useNavigation } from "@react-navigation/native";
+import { reset } from "i18n-js";
 
 
 export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'detailWarehouse'>> = observer(
     function DetailWarehouse(props) {
-
+        const navigation = useNavigation()
         const [myData, setMyData] = useState(DataDetailWarehouse);
         const [box1, setBox1] = useState(true)
         const [box2, setBox2] = useState(true)
@@ -43,6 +47,40 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
             })
         }
 
+        const deleteWarehouse = async () => {
+
+            const result = await getAPI.warehouseStore.deleteWarehouse(idNumber)
+            console.log("resultMess", result?.message);
+
+            // if (result?.message == 'Success') {
+            console.log("abv")
+            Dialog.show({
+                title: translate("txtDialog.txt_title_dialog"),
+                button: '',
+                button2: translate("common.ok"),
+                textBody: en.wareHouse.messengerSucces,
+                closeOnOverlayTap: false,
+                onPressButton: () => {
+                    console.log('doantesttt');
+                    // navigation.navigate("wareHouse", { reset: true });
+                    // navigation.goBack()
+                    Dialog.hide();
+
+                }
+            })
+            // }
+            // else {
+            //     await Dialog.hideDialog();
+            //     Dialog.show({
+            //         title: translate("productScreen.Notification"),
+            //         button: translate("common.ok"),
+            //         textBody: data?.message + en.wareHouse.messengerFail,
+            //         closeOnOverlayTap: false
+            //     })
+            // }
+
+
+        }
 
         useEffect(() => {
             getDataDetail()
@@ -60,7 +98,20 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                     RightIcon2={Images.ic_bin_white}
                     RightIcon={Images.icon_copy}
                     onLeftPress={() => props.navigation.goBack()}
-                    onRightPress2={() => setIsVisible(!isVisible)}
+                    onRightPress2={() => {
+                        Dialog.show({
+                            type: ALERT_TYPE.INFO,
+                            title: translate("productScreen.Notification"),
+                            button: translate("productScreen.cancel"),
+                            button2: translate("productScreen.BtnNotificationAccept"),
+                            textBody: translate("productScreen.ProductDelete"),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                                deleteWarehouse()
+                            }
+
+                        });
+                    }}
                     onRightPress1={() => {
                         props.navigation.navigate("warehouse", {
                             name: myData?.name,
@@ -329,13 +380,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
 
                 </ScrollView >
 
-                <ModalDeleteWareHouse
-                    isVisible={isVisible}
-                    setIsVisible={() => setIsVisible(!isVisible)}
-                    dataCodeWarehouse={myData?.code}
-                    idDetailWarehouse={myData?.id}
-                    handleBack={() => props.navigation.navigate('wareHouse')}
-                />
+
 
 
             </View >

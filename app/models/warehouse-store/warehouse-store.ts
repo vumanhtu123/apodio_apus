@@ -26,9 +26,9 @@ export const WarehouseStoreModal = types
 
   .actions((self) => ({
     getListWareHouse: flow(function* (
-      page?: number,
       size?: number,
-      state?: string,
+      page?: number,
+      state?: string | undefined,
       search?: string,
       isLoadMore?: boolean
     ) {
