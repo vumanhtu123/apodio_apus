@@ -6,6 +6,7 @@ import { WarehouseAPI } from "../../services/api/api-warehouse";
 import { reset } from "i18n-js";
 import { ResponseWarehouse } from './warehouse-model';
 import { DataDetailWarehouse } from './detail-warehouse-model';
+import { DataNumberState } from './number-state-model';
 
 export const WarehouseStoreModal = types
   .model("WarehouseStore")
@@ -123,5 +124,22 @@ export const WarehouseStoreModal = types
         console.log("delete warehouse error", error);
             
         }
-    })
+    }),
+
+    getNumberState: flow(function* (
+      value : string
+    ) {
+      try {
+          const warehouseDetail = new WarehouseAPI(self.environment.apiWarehouse)
+          const result : BaseResponse<DataNumberState,ErrorCode> = 
+              yield warehouseDetail.getNumberState(value);
+              console.log("WarehouseNumber------------- ", JSON.stringify(result));
+
+          return result
+      } catch (error) {
+          console.log("Get detail warehouse error", error);
+      }
+  }),
+
+
   }));

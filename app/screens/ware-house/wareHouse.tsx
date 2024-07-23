@@ -16,7 +16,7 @@ import {
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { Images } from "../../../assets";
 import { styles } from "../account_security/styles";
-import { id } from "date-fns/locale";
+import { da, id } from "date-fns/locale";
 import en from "../../i18n/en";
 import { Style } from "../check-inventory/add-check-inventory/add-check-inventory";
 import Modal_Infor_wareHouse from "./modal/modal_Infor_wareHouse";
@@ -40,7 +40,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const [refreshing, setRefreshing] = useState(false);
         const [isLoadingMore, setIsLoadingMore] = useState(false);
         const [valueSearch, setValueSearch] = useState("");
-        const [myData, setMyData] = useState([]);
+        const [myData, setMyData] = useState<{}[]>([]);
         const [lengthAll, setLengthAll] = useState<number>()
         const [lengthIsActive, setLengthIsActive] = useState<number>()
         const [lengthSave, setLengthSave] = useState<number>()
@@ -51,10 +51,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const size = useRef(10);
 
 
-
-        console.log('====================================');
-        console.log("value search", valueSearch);
-        console.log('====================================');
 
         const dataListTabar = [
             {
@@ -105,6 +101,21 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             },
         ];
 
+        const titleTabbar = [
+            {
+                name: en.wareHouse.all,
+                length: lengthAll,
+            },
+            {
+                name: en.wareHouse.isActive,
+                length: lengthIsActive,
+            },
+            {
+                name: en.wareHouse.save,
+                length: lengthSave,
+            },
+        ];
+
 
         const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
 
@@ -131,73 +142,46 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         console.log('====================================');
 
         const getListWarehouse = () => {
-            console.log("chay lan: 1");
+            console.log("chay lan: ", page.current);
 
             try {
-
-                getAPI.warehouseStore.getListWareHouse(size.current, page.current, undefined, 'H', statusLoadMore).then((data) => {
+                getAPI.warehouseStore.getListWareHouse(size.current, page.current, checkState(), valueSearch, statusLoadMore).then((data) => {
                     console.log('data doan', data);
                     if (data?.content != null) {
-                        // setMyData([])
-                        const dataWarehouse = data?.content.map((item) => {
-                            return {
-                                id: item.id,
-                                code: item.code,
-                                name: item.name,
-                                state: item.state,
-                            };
+                        const dataWarehouse = data.content
 
-                        });
-                        // console.log('dataWarehouse', dataWarehouse);
-
-                        if (myData?.length <= data?.totalElements) {
-
-                            // setMyData({
-                            // (prevProducts) => {
-                            // console.log('doan123', prevProducts);
-
-                            // // Tạo một tập hợp các id đã xuất hiện trong prevProducts
-                            // const idsInPrevProducts = new Set(prevProducts.map(product => product.id));
-
-                            // // Lọc dataWarehouse để chỉ giữ lại các đối tượng có id chưa xuất hiện trong prevProducts
-                            // const filteredDataWarehouse = dataWarehouse.filter(item => !idsInPrevProducts.has(item.id));
-
-                            // Nối hai mảng lại với nhau
-
-                            // console.log('dataMap1', dataWarehouse);
-
-                            // return [
-                            //     ...prevProducts,
-                            //     ...filteredDataWarehouse
-                            // ];
-
-
-                            // });
-                            setMyData(item => [...item, ...dataWarehouse])
+                        if (page.current === 0) {
+                            setMyData(dataWarehouse)
+                        } else {
+                            setMyData((item: any) => [
+                                ...item,
+                                ...dataWarehouse
+                            ]
+                            )
                         }
 
-
-
-                        const lengthIsActiveData = data?.content.filter(item => item.state === 'APPROVED').length
-                        const lengthSaveData = data?.content.filter(item => item.state === 'ARCHIVED').length
-                        const totalElementsData = data?.totalElements
+                        // const lengthIsActiveData = data?.content.filter(item => item.state === 'APPROVED').length
+                        // const lengthSaveData = data?.content.filter(item => item.state === 'ARCHIVED').length
+                        // const totalElementsData = data?.totalElements
                         const totalPages = data?.totalPages
 
                         console.log('dang hoat dong', lengthIsActive);
                         console.log('dung hoat dong', lengthSave);
-                        console.log('totalPages', totalPages);
-                        console.log("totalElement", totalElementsData);
+                        // console.log('totalPages', totalPages);
+                        // console.log("totalElement", totalElementsData);
 
 
-                        setLengthAll(totalElementsData)
-                        setLengthIsActive(lengthIsActiveData)
-                        setLengthSave(lengthSaveData)
+                        // setLengthAll(totalElementsData)
+                        // setLengthIsActive(lengthIsActiveData)
+                        // setLengthSave(lengthSaveData)
 
                         console.log('value All', lengthAll);
 
 
-                        totalPages2.current = (totalPages)
+                        totalPages2.current = totalPages
 
+                    } else {
+                        console.log('loi nen crash')
                     }
 
                 });
@@ -210,20 +194,18 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
         }
 
-        const titleTabbar = [
-            {
-                name: en.wareHouse.all,
-                length: lengthAll,
-            },
-            {
-                name: en.wareHouse.isActive,
-                length: lengthIsActive,
-            },
-            {
-                name: en.wareHouse.save,
-                length: lengthSave,
-            },
-        ];
+        const getNumberState = () => {
+            getAPI.warehouseStore.getNumberState(valueSearch).then((data) => {
+                setLengthAll(data?.data.allQty)
+                setLengthIsActive(data?.data.approvedQty)
+                setLengthSave(data?.data.archiveQty)
+            })
+
+
+        }
+        console.log("MyData", myData);
+
+
 
         console.log('lengthALL', lengthAll);
 
@@ -235,6 +217,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             try {
                 setRefreshing(true);
                 // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
+                page.current = 0
                 getListWarehouse();
                 // Cập nhật state của danh sách dữ liệu
                 // setmyDataSlectClient(newData);
@@ -246,39 +229,25 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         };
 
         const handleLoadMore = () => {
-            console.log('pageCurrent1');
+            console.log('pageCurrent1', page.current);
             try {
-                setIsLoadingMore(true)
+                // setIsLoadingMore(true)
                 // getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
-                console.log('pageCurrent2');
-
                 if (
                     page.current < totalPages2.current - 1
-
                 ) {
-                    console.log('pageCurrent3');
-
-                    // console.log("value loading", isLoadingMore);
+                    console.log("page so lan", page.current);
                     page.current = page.current + 1;
-                    console.log('pageCurrent4');
-
                     console.log('pageDoan', page.current);
                     getListWarehouse();
-                    console.log('pageCurrent5');
-
-                    setIsLoadingMore(false);
-                    console.log('pageCurrent6');
+                    // setIsLoadingMore(false);
 
                 }
                 // setIsLoadingMore(false);
                 console.log('pageCurrent7');
-
-
             } catch (error) {
                 console.log('====================================');
                 console.log('Error loadMore', error);
-                console.log('pageCurrent8');
-
                 console.log('====================================');
             }
 
@@ -290,7 +259,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             const unsubscribe = props.navigation.addListener("focus", () => {
                 if (reload === true) {
                     console.log("---------useEffect---------reload2------------------");
-                    // page.current = 0
+                    page.current = 0
                     getListWarehouse()
                 }
             });
@@ -298,17 +267,15 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             return unsubscribe;
         }, [props.navigation, reload]);
 
-        // useEffect(() => {
-        //     getListWarehouse()
-        // }, []);
-
         useEffect(() => {
+            page.current = 0
             getListWarehouse()
+            getNumberState()
         }, [indexTabbar]);
 
-        console.log('====================================');
-        console.log('check doan', props.navigation);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log('check doan', props.navigation);
+        // console.log('====================================');
         // console.log('====================================');
         // console.log(dataListTabar[0].img);
         // console.log('====================================');
@@ -409,6 +376,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     RightIcon2={Images.icon_search}
                     headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
+                        page.current = 0
+                        getNumberState()
                         getListWarehouse();
                     }}
                     onSearchValueChange={(txt: string) => {
@@ -478,7 +447,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         style={{}}
                         data={myData}
                         renderItem={({ item, index }) => <ItemListWareHouse item={item} index={index} />}
-                        keyExtractor={(item: any, index) => item?.toString() + index}
+                        keyExtractor={(item: any, index) => item?.id.toString()}
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
