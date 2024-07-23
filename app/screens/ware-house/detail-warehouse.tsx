@@ -125,7 +125,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             title: translate("productScreen.Notification"),
                             button: translate("productScreen.cancel"),
                             button2: translate("productScreen.BtnNotificationDeleteFail"),
-                            textBody: translate("wareHouse.titleConfirm") + " " + (ten) + " " + translate("wareHouse.this"),
+                            textBody: translate("wareHouse.titleConfirm") + " " + (state) + " " + translate("wareHouse.this"),
                             textBodyWarning: translate("wareHouse.warning"),
                             closeOnOverlayTap: false,
                             onPressButton: () => {
@@ -133,104 +133,116 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             }
                         });
                     } : undefined}
-                    onRightPress1={state !== "ARCHIVED" ? () => {
-                        props.navigation.navigate("warehouse", {
-                            name: myData?.name,
-                            code: myData?.code,
-                            companyId: myData?.companyId,
-                            branchId: myData?.branchId,
-                            sourceProductType: myData?.sourceProductType,
-                            address: myData?.address,
-                            areaCode: myData?.areaCode,
-                            hasAdditionalInfo: myData?.hasAdditionalInfo,
-                            additionalInfo: {
-                                latitude: myData?.additionalInfo.latitude,
-                                longitude: myData?.additionalInfo.longitude,
-                                height: myData?.additionalInfo.height,
-                                heightUom: {
-                                    id: 0,
-                                    name: "string",
-                                },
-                                length: myData?.additionalInfo?.length,
-                                lengthUom: {
-                                    id: 0,
-                                    name: "string",
-                                },
-                                width: myData?.additionalInfo?.width,
-                                widthUom: {
-                                    id: 0,
-                                    name: "string",
-                                },
-                                weightCapacity: myData?.additionalInfo?.weightCapacity,
-                                weightCapacityUom: {
-                                    id: 0,
-                                    name: "string",
-                                },
-                                scene: myData?.additionalInfo?.scene,
-                            },
-                            hasConditionStorage: myData?.hasConditionStorage,
-                            conditionStorage: {
-                                standardTemperature: String(
-                                    myData?.conditionStorage.standardTemperature
-                                ),
-                                minTemperature: myData?.conditionStorage.minTemperature,
-                                standardHumidity: myData?.conditionStorage.standardHumidity,
-                            },
-                            action: "CREATE",
-                            note: "string",
-                            isMobile: true,
-                            status: "UPDATE",
-                            id: idNumber,
-                            sequenceCopy: myData?.sequenceCopy,
-                        });
-                    } : undefined}
+                    onRightPress1={
+                        state !== "ARCHIVED"
+                            ? () => {
+                                props.navigation.navigate({
+                                    name: "warehouse",
+                                    params: {
+                                        name: myData?.name,
+                                        code: myData?.code,
+                                        companyId: myData?.companyId,
+                                        branchId: myData?.branchId,
+                                        sourceProductType: myData?.sourceProductType,
+                                        address: myData?.address,
+                                        areaCode: myData?.areaCode,
+                                        hasAdditionalInfo: myData?.hasAdditionalInfo,
+                                        additionalInfo: {
+                                            latitude: myData?.additionalInfo.latitude,
+                                            longitude: myData?.additionalInfo.longitude,
+                                            height: myData?.additionalInfo.height,
+                                            heightUom: {
+                                                id: myData?.additionalInfo.heightUom.id,
+                                                name: myData?.additionalInfo.heightUom.name,
+                                            },
+                                            length: myData?.additionalInfo?.length,
+                                            lengthUom: {
+                                                id: myData?.additionalInfo.lengthUom.id,
+                                                name: myData?.additionalInfo.lengthUom.name,
+                                            },
+                                            width: myData?.additionalInfo?.width,
+                                            widthUom: {
+                                                id: myData?.additionalInfo.widthUom.id,
+                                                name: myData?.additionalInfo.widthUom.name,
+                                            },
+                                            weightCapacity: myData?.additionalInfo?.weightCapacity,
+                                            weightCapacityUom: {
+                                                id: myData?.additionalInfo.weightCapacityUom.id,
+                                                name: myData?.additionalInfo.weightCapacityUom.name,
+                                            },
+                                            scene: myData?.additionalInfo?.scene,
+                                        },
+                                        hasConditionStorage: myData?.hasConditionStorage,
+                                        conditionStorage: {
+                                            standardTemperature: String(
+                                                myData?.conditionStorage.standardTemperature
+                                            ),
+                                            minTemperature: myData?.conditionStorage.minTemperature,
+                                            standardHumidity:
+                                                myData?.conditionStorage.standardHumidity,
+                                        },
+                                        action: "CREATE",
+                                        note: "string",
+                                        isMobile: true,
+                                        status: "UPDATE",
+                                        id: idNumber,
+                                        sequenceCopy: myData?.sequenceCopy,
+                                    } as never,
+                                });
+                            }
+                            : undefined
+                    }
                     onRightPress={() =>
-                        props.navigation.navigate("warehouse", {
-                            name: myData?.name,
-                            code: myData?.code,
-                            companyId: myData?.companyId,
-                            branchId: myData?.branchId,
-                            sourceProductType: myData?.sourceProductType,
-                            address: myData?.address,
-                            areaCode: myData?.areaCode,
-                            hasAdditionalInfo: myData?.hasAdditionalInfo,
-                            additionalInfo: {
-                                latitude: myData?.additionalInfo?.latitude,
-                                longitude: myData?.additionalInfo?.longitude,
-                                height: myData?.additionalInfo?.height,
-                                heightUom: {
-                                    id: 0,
-                                    name: "string",
+                        props.navigation.navigate({
+                            name: "warehouse",
+                            params: {
+                                name: myData?.name,
+                                code: myData?.code,
+                                companyId: myData?.companyId,
+                                branchId: myData?.branchId,
+                                sourceProductType: myData?.sourceProductType,
+                                address: myData?.address,
+                                areaCode: myData?.areaCode,
+                                hasAdditionalInfo: myData?.hasAdditionalInfo,
+                                additionalInfo: {
+                                    latitude: myData?.additionalInfo.latitude,
+                                    longitude: myData?.additionalInfo.longitude,
+                                    height: myData?.additionalInfo.height,
+                                    heightUom: {
+                                        id: myData?.additionalInfo.heightUom.id,
+                                        name: myData?.additionalInfo.heightUom.name,
+                                    },
+                                    length: myData?.additionalInfo?.length,
+                                    lengthUom: {
+                                        id: myData?.additionalInfo.lengthUom.id,
+                                        name: myData?.additionalInfo.lengthUom.name,
+                                    },
+                                    width: myData?.additionalInfo?.width,
+                                    widthUom: {
+                                        id: myData?.additionalInfo.widthUom.id,
+                                        name: myData?.additionalInfo.widthUom.name,
+                                    },
+                                    weightCapacity: myData?.additionalInfo?.weightCapacity,
+                                    weightCapacityUom: {
+                                        id: myData?.additionalInfo.weightCapacityUom.id,
+                                        name: myData?.additionalInfo.weightCapacityUom.name,
+                                    },
+                                    scene: myData?.additionalInfo?.scene,
                                 },
-                                length: myData?.additionalInfo?.length,
-                                lengthUom: {
-                                    id: 0,
-                                    name: "string",
+                                hasConditionStorage: myData?.hasConditionStorage,
+                                conditionStorage: {
+                                    standardTemperature:
+                                        myData?.conditionStorage.standardTemperature,
+                                    minTemperature: myData?.conditionStorage.minTemperature,
+                                    standardHumidity: myData?.conditionStorage.standardHumidity,
                                 },
-                                width: myData?.additionalInfo?.width,
-                                widthUom: {
-                                    id: 0,
-                                    name: "string",
-                                },
-                                weightCapacity: myData?.additionalInfo?.weightCapacity,
-                                weightCapacityUom: {
-                                    id: 0,
-                                    name: "string",
-                                },
-                                scene: myData?.additionalInfo?.scene,
-                            },
-                            hasConditionStorage: myData?.hasConditionStorage,
-                            conditionStorage: {
-                                standardTemperature: myData?.conditionStorage.standardTemperature,
-                                minTemperature: myData?.conditionStorage.minTemperature,
-                                standardHumidity: myData?.conditionStorage.standardHumidity,
-                            },
-                            action: "CREATE",
-                            note: "string",
-                            isMobile: true,
-                            status: "COPY",
-                            id: idNumber,
-                            sequenceCopy: myData?.sequenceCopy,
+                                action: "CREATE",
+                                note: "string",
+                                isMobile: true,
+                                status: "COPY",
+                                id: idNumber,
+                                sequenceCopy: myData?.sequenceCopy,
+                            } as never,
                         })
                     }
                 />
@@ -289,7 +301,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                                         <Text
                                             style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                         >
-                                            {myData.conditionStorage?.standardTemperature}
+                                            {myData.conditionStorage?.standardTemperature} °C
                                         </Text>
                                     </View>
                                     <View
@@ -301,16 +313,17 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                                         <Text
                                             style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                         >
-                                            {myData.conditionStorage?.minTemperature}
+                                            {myData.conditionStorage?.minTemperature} °C
                                         </Text>
                                     </View>
                                     <View
                                     >
                                         <Text tx="wareHouse.standardHumidity" style={Styles.value} />
                                         <Text
-                                            style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                            style={[Styles.label, { marginTop: scaleHeight(12), marginBottom: scaleWidth(10) }]}
                                         >
-                                            {myData.conditionStorage?.standardHumidity}
+                                            {myData.conditionStorage?.standardHumidity} %
+
                                         </Text>
                                     </View>
                                 </View> : <></>
@@ -363,7 +376,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                                     <Text
                                         style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                     >
-                                        {myData.additionalInfo?.length}
+                                        {myData.additionalInfo?.length} {myData?.additionalInfo?.lengthUom?.name}
                                     </Text>
                                 </View>
                                 <View
@@ -373,7 +386,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                                     <Text
                                         style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                     >
-                                        {myData.additionalInfo?.width}
+                                        {myData.additionalInfo?.width} {myData?.additionalInfo?.widthUom?.name}
                                     </Text>
                                 </View>
                                 <View
@@ -382,7 +395,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                                     <Text
                                         style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                     >
-                                        {myData.additionalInfo?.height}
+                                        {myData.additionalInfo?.height} {myData?.additionalInfo?.heightUom?.name}
                                     </Text>
                                 </View>
                                 <View
@@ -392,7 +405,8 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                                     <Text
                                         style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                     >
-                                        {myData.additionalInfo?.longitude}
+
+                                        {myData.additionalInfo?.weightCapacity} {myData?.additionalInfo?.weightCapacityUom?.name}
                                     </Text>
                                 </View>
 
