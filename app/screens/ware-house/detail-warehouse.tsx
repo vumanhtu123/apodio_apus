@@ -32,9 +32,9 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
         const getAPI = useStores()
 
 
-        const { id } = props.route.params
+        const { id, state } = props.route.params
         console.log('====================================');
-        console.log('data id', id);
+        console.log('data id', id, state );
         console.log('====================================');
         const idNumber = Number(id)
 
@@ -42,11 +42,27 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
             getAPI.warehouseStore.getDetailWarehouse(idNumber).then((data) => {
                 // console.log('data cua toi ', data?.data?.conditionStorage?.standardTemperature);
                 const dataDetailWarehouse = data?.data
-
+                console.log('detail-------', JSON.stringify(dataDetailWarehouse))
                 setMyData(dataDetailWarehouse)
             })
         }
 
+        const isConditionStorageAllNull = (conditionStorage) => {
+            if (!conditionStorage) {
+                return false; // Nếu conditionStorage là undefined hoặc null, trả về false
+            }
+
+            return !Object.values(conditionStorage).every(value => value === null);
+        }
+
+        const isAdditionalInfoAllNull = (additionalInfo) => {
+            if (!additionalInfo) {
+                return false; // Nếu conditionStorage là undefined hoặc null, trả về false
+            }
+            
+            return !Object.values(additionalInfo).every(value => value === null);
+        }
+        
         const deleteWarehouse = async () => {
 
             const result = await getAPI.warehouseStore.deleteWarehouse(idNumber)
@@ -94,11 +110,12 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                     LeftIcon={Images.back}
                     style={{ height: scaleHeight(52) }}
                     leftText="wareHouse.detailWarehouse"
-                    RightIcon1={Images.ic_pen_white}
-                    RightIcon2={Images.ic_bin_white}
+                    RightIcon1={state !== "ARCHIVED" ? Images.ic_pen_white : null}
+                    RightIcon2={state !== "ARCHIVED" ? Images.ic_bin_white : null}
                     RightIcon={Images.icon_copy}
                     onLeftPress={() => props.navigation.goBack()}
-                    onRightPress2={() => {
+
+                    onRightPress2={state !== "ARCHIVED" ? () => {
                         Dialog.show({
                             type: ALERT_TYPE.INFO,
                             title: translate("productScreen.Notification"),
@@ -107,12 +124,11 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             textBody: translate("productScreen.ProductDelete"),
                             closeOnOverlayTap: false,
                             onPressButton: () => {
-                                deleteWarehouse()
+                                deleteWarehouse();
                             }
-
                         });
-                    }}
-                    onRightPress1={() => {
+                    } : undefined}
+                    onRightPress1={ state !== "ARCHIVED" ? () => {
                         props.navigation.navigate("warehouse", {
                             name: myData?.name,
                             code: myData?.code,
@@ -162,7 +178,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             id: idNumber,
                             sequenceCopy: myData?.sequenceCopy,
                         });
-                    }}
+                    } : undefined }
                     onRightPress={() =>
                         props.navigation.navigate("warehouse", {
                             name: myData?.name,
@@ -242,6 +258,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                         </View>
                     </View>
 
+                    {isConditionStorageAllNull(myData.conditionStorage) ? <View>
                     <TouchableOpacity
                         style={[Styles.box2,]}
                         onPress={() => setBox1(!box1)}
@@ -293,10 +310,11 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                                 </View>
                             </View> : <></>
                     }
+                    </View> : null }
 
 
-
-                    <TouchableOpacity
+                    {isAdditionalInfoAllNull(myData.additionalInfo) ? <View>
+                        <TouchableOpacity
                         style={[Styles.box2]}
                         onPress={() => setBox2(!box2)}
                     >
@@ -377,6 +395,8 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             :
                             <></>
                     }
+                    </View> : null}
+
 
                 </ScrollView >
 

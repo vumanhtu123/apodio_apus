@@ -321,7 +321,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         // setIdWarehouse(item.id)
                         console.log('id select', item.id);
 
-                        props.navigation.navigate({ name: 'detailWarehouse', params: { id: item.id } } as never)
+                        props.navigation.navigate({ name: 'detailWarehouse', params: { id: item.id, state: item.state } } as never)
                     }}
                 >
                     <Images.ic_Brick
