@@ -937,6 +937,8 @@ const en = {
     enterFoundationLoad: "Nhập tải trọng",
     createWareHouse: "Tạo kho",
     isActive: "Đang hoạt động",
+    refactorWareHouse: "Chỉnh sửa kho",
+    refactor: "Chỉnh sửa",
     save: "Lứu trữ",
     all: "Tất cả",
     generalInformation: "Thông tin chung",
@@ -945,13 +947,14 @@ const en = {
     status: "Trạng thái",
     longitude: "Kinh độ",
     backgroundLoad: "Tải trọng nền",
-    additionalInformation : "Thông tin bổ sung",
+    additionalInformation: "Thông tin bổ sung",
     detailWarehouse: "Chi tiết kho hàng",
-    warning: " Lưu ý : Kho sẽ chuyển trạng thái lưu trữ , bạn không thể thực hiện hành động nhập sau khi lưu trữ",
+    warning:
+      " Lưu ý : Kho sẽ chuyển trạng thái lưu trữ , bạn không thể thực hiện hành động nhập sau khi lưu trữ",
     titleConfirm: "Bạn có chắc muốn lưu trữ kho",
     this: "này không",
     messengerSucces: "Bạn đã xóa kho hàng thành công",
-    messengerFail: "Lỗi xóa kho hàng"
+    messengerFail: "Lỗi xóa kho hàng",
   },
 
   GoodsExportBook: {
