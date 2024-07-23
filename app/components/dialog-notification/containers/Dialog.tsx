@@ -9,6 +9,7 @@ export type IConfigDialog = {
   type?: ALERT_TYPE;
   title?: string;
   textBody?: string;
+  textBodyWarning?: string;
   button?: string;
   button2?: string;
   autoClose?: number | boolean;
@@ -182,7 +183,7 @@ export class Dialog extends React.Component<IProps, IState> {
     });
   };
 
-  
+
   private onPressBTN = async () => {
     const { onPressButton } = this.state.config!;
     if (onPressButton) {
@@ -201,11 +202,11 @@ export class Dialog extends React.Component<IProps, IState> {
     return (
       <View style={styles.viewButton}>
 
-        {button && (<TouchableOpacity style={StyleSheet.flatten([button2 ? styles.button : styles.buttonBackground ])} onPress={this._close}>
-          <Text style={[styles.buttonLabel , {color: button2 ? '#747475' : '#fff'}] }>{button}</Text>
+        {button && (<TouchableOpacity style={StyleSheet.flatten([button2 ? styles.button : styles.buttonBackground])} onPress={this._close}>
+          <Text style={[styles.buttonLabel, { color: button2 ? '#747475' : '#fff' }]}>{button}</Text>
         </TouchableOpacity>)}
         {button && button2 && <View style={{ width: scaleWidth(9) }} />}
-        {button2 && ( <TouchableOpacity style={StyleSheet.flatten([styles.buttonAccept])} onPress={this.onPressBTN ?? this._close}>
+        {button2 && (<TouchableOpacity style={StyleSheet.flatten([styles.buttonAccept])} onPress={this.onPressBTN ?? this._close}>
           <Text style={styles.buttonLabelAccept}>{button2}</Text>
         </TouchableOpacity>)}
       </View>
@@ -233,7 +234,7 @@ export class Dialog extends React.Component<IProps, IState> {
 
     const {
       styles,
-      config: { title, type, textBody },
+      config: { title, type, textBody, textBodyWarning },
     } = this.state;
     const { _buttonRender } = this;
     return (
@@ -250,6 +251,7 @@ export class Dialog extends React.Component<IProps, IState> {
         <View style={styles.cardBody}>
           {title && <Text style={styles.titleLabel}>{title}</Text>}
           {textBody && <Text style={styles.descLabel}>{textBody}</Text>}
+          {textBodyWarning && <Text style={styles.textWarning}>{textBodyWarning}</Text>}
         </View>
         <View style={styles.cardFooter}>
           <_buttonRender />
@@ -312,6 +314,13 @@ const __styles = (isDark: boolean) =>
       fontWeight: 'bold',
       fontSize: 20,
       color: Color.get('label', isDark),
+    },
+    textWarning: {
+      fontSize: 10,
+      color: '#747475',
+      fontWeight: "400",
+      textAlign: 'center',
+      fontStyle: 'italic'
     },
     descLabel: {
       textAlign: 'center',

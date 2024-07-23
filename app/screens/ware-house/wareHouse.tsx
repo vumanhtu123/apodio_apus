@@ -131,10 +131,12 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         console.log('====================================');
 
         const getListWarehouse = () => {
+            console.log("chay lan: 1");
+
             try {
 
-                getAPI.warehouseStore.getListWareHouse(size.current, page.current, checkState(), 'Ddd', statusLoadMore).then((data) => {
-                    console.log('data doan', data?.totalElements);
+                getAPI.warehouseStore.getListWareHouse(size.current, page.current, undefined, 'H', statusLoadMore).then((data) => {
+                    console.log('data doan', data);
                     if (data?.content != null) {
                         // setMyData([])
                         const dataWarehouse = data?.content.map((item) => {
@@ -148,25 +150,30 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         });
                         // console.log('dataWarehouse', dataWarehouse);
 
-                        if (myData?.length != data?.totalElements) {
-                            setMyData((prevProducts) => {
-                                console.log('doan123', prevProducts);
+                        if (myData?.length <= data?.totalElements) {
 
-                                // Tạo một tập hợp các id đã xuất hiện trong prevProducts
-                                const idsInPrevProducts = new Set(prevProducts.map(product => product.id));
+                            // setMyData({
+                            // (prevProducts) => {
+                            // console.log('doan123', prevProducts);
 
-                                // Lọc dataWarehouse để chỉ giữ lại các đối tượng có id chưa xuất hiện trong prevProducts
-                                const filteredDataWarehouse = dataWarehouse.filter(item => !idsInPrevProducts.has(item.id));
+                            // // Tạo một tập hợp các id đã xuất hiện trong prevProducts
+                            // const idsInPrevProducts = new Set(prevProducts.map(product => product.id));
 
-                                // Nối hai mảng lại với nhau
-                                // if (page.current == 0) {
-                                return [
-                                    ...prevProducts,
-                                    ...filteredDataWarehouse
-                                ];
-                                // }
+                            // // Lọc dataWarehouse để chỉ giữ lại các đối tượng có id chưa xuất hiện trong prevProducts
+                            // const filteredDataWarehouse = dataWarehouse.filter(item => !idsInPrevProducts.has(item.id));
 
-                            });
+                            // Nối hai mảng lại với nhau
+
+                            // console.log('dataMap1', dataWarehouse);
+
+                            // return [
+                            //     ...prevProducts,
+                            //     ...filteredDataWarehouse
+                            // ];
+
+
+                            // });
+                            setMyData(item => [...item, ...dataWarehouse])
                         }
 
 
@@ -283,6 +290,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             const unsubscribe = props.navigation.addListener("focus", () => {
                 if (reload === true) {
                     console.log("---------useEffect---------reload2------------------");
+                    // page.current = 0
                     getListWarehouse()
                 }
             });
@@ -290,9 +298,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             return unsubscribe;
         }, [props.navigation, reload]);
 
-        useEffect(() => {
-            getListWarehouse()
-        }, []);
+        // useEffect(() => {
+        //     getListWarehouse()
+        // }, []);
 
         useEffect(() => {
             getListWarehouse()
@@ -332,8 +340,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                             marginRight: scaleWidth(6)
                         }}
                     />
-                    <View style={[Styles.flexRow, { flex: 2, alignItems: 'center' }]}>
-                        <View>
+                    <View style={[Styles.flexRow, { flex: 2, alignItems: 'center', }]}>
+                        <View style={{ flex: 1 }}>
                             <Text style={Styles.txtItemWareHouse}>{item.code}</Text>
                             <Text style={{ fontSize: scaleWidth(10), fontWeight: '500' }}>{item?.name}</Text>
 
@@ -409,7 +417,10 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     }}
                     onRightPress2={() => setIsShowSearch(!isShowSearch)}
                     btnRightStyle={{ width: scaleWidth(30), height: scaleHeight(30), marginRight: -10, }}
-                    onLeftPress={() => props.navigation.goBack()}
+                    onLeftPress={() => {
+                        setMyData([])
+                        props.navigation.goBack()
+                    }}
                 />
                 <View>
 

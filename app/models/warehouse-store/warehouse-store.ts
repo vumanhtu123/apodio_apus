@@ -26,10 +26,10 @@ export const WarehouseStoreModal = types
 
   .actions((self) => ({
     getListWareHouse: flow(function* (
-      size?: number,
-      page?: number,
-      state?: string | undefined,
-      search?: string,
+      size: number,
+      page: number,
+      state: string | undefined,
+      search: string,
       isLoadMore?: boolean
     ) {
       try {
