@@ -15,11 +15,15 @@ import data from "../../components/svg-icon/data";
 import DataDetailWarehouse from "../../models/warehouse-store/detail-warehouse-model"
 import { ModalDeleteWareHouse } from "./modal/modal_delete_warehouse";
 import en from "../../i18n/en";
+import { ALERT_TYPE, Dialog } from "../../components/dialog-notification";
+import { translate } from "../../i18n";
+import { useNavigation } from "@react-navigation/native";
+import { reset } from "i18n-js";
 
 
 export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'detailWarehouse'>> = observer(
     function DetailWarehouse(props) {
-
+        const navigation = useNavigation()
         const [myData, setMyData] = useState(DataDetailWarehouse);
         const [box1, setBox1] = useState(true)
         const [box2, setBox2] = useState(true)
@@ -28,9 +32,9 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
         const getAPI = useStores()
 
 
-        const { id } = props.route.params
+        const { id, state } = props.route.params
         console.log('====================================');
-        console.log('data id', id);
+        console.log('data id', id, state);
         console.log('====================================');
         const idNumber = Number(id)
 
@@ -38,14 +42,68 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
             getAPI.warehouseStore.getDetailWarehouse(idNumber).then((data) => {
                 // console.log('data cua toi ', data?.data?.conditionStorage?.standardTemperature);
                 const dataDetailWarehouse = data?.data
-
+                console.log('detail-------', JSON.stringify(dataDetailWarehouse))
                 setMyData(dataDetailWarehouse)
             })
         }
 
+        const isConditionStorageAllNull = (conditionStorage) => {
+            if (!conditionStorage) {
+                return false; // Nếu conditionStorage là undefined hoặc null, trả về false
+            }
+
+            return !Object.values(conditionStorage).every(value => value === null);
+        }
+
+        const isAdditionalInfoAllNull = (additionalInfo) => {
+            if (!additionalInfo) {
+                return false; // Nếu conditionStorage là undefined hoặc null, trả về false
+            }
+
+            return !Object.values(additionalInfo).every(value => value === null);
+        }
+
+        const deleteWarehouse = async () => {
+
+            const result = await getAPI.warehouseStore.deleteWarehouse(idNumber)
+            console.log("resultMess", result?.message);
+
+            if (result?.message == 'Success') {
+                console.log("abv")
+                await Dialog.hideDialog();
+
+                Dialog.show({
+                    title: translate("txtDialog.txt_title_dialog"),
+                    button: '',
+                    button2: translate("common.ok"),
+                    textBody: en.wareHouse.messengerSucces,
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        console.log('doantesttt');
+                        navigation.navigate("wareHouse", { reset: true });
+                        // navigation.goBack()
+                        Dialog.hide();
+
+                    }
+                })
+            }
+            else {
+                await Dialog.hideDialog();
+                Dialog.show({
+                    title: translate("productScreen.Notification"),
+                    button: translate("common.ok"),
+                    textBody: data?.message + en.wareHouse.messengerFail,
+                    closeOnOverlayTap: false
+                })
+            }
+
+
+        }
 
         useEffect(() => {
+
             getDataDetail()
+
         }, [props.navigation])
 
         return (
@@ -56,12 +114,26 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                     LeftIcon={Images.back}
                     style={{ height: scaleHeight(52) }}
                     leftText="wareHouse.detailWarehouse"
-                    RightIcon1={Images.ic_pen_white}
-                    RightIcon2={Images.ic_bin_white}
+                    RightIcon1={state !== "ARCHIVED" ? Images.ic_pen_white : null}
+                    RightIcon2={state !== "ARCHIVED" ? Images.ic_bin_white : null}
                     RightIcon={Images.icon_copy}
                     onLeftPress={() => props.navigation.goBack()}
-                    onRightPress2={() => setIsVisible(!isVisible)}
-                    onRightPress1={() => {
+
+                    onRightPress2={state !== "ARCHIVED" ? () => {
+                        Dialog.show({
+                            type: ALERT_TYPE.INFO,
+                            title: translate("productScreen.Notification"),
+                            button: translate("productScreen.cancel"),
+                            button2: translate("productScreen.BtnNotificationDeleteFail"),
+                            textBody: translate("wareHouse.titleConfirm") + " " + (ten) + " " + translate("wareHouse.this"),
+                            textBodyWarning: translate("wareHouse.warning"),
+                            closeOnOverlayTap: false,
+                            onPressButton: () => {
+                                deleteWarehouse();
+                            }
+                        });
+                    } : undefined}
+                    onRightPress1={state !== "ARCHIVED" ? () => {
                         props.navigation.navigate("warehouse", {
                             name: myData?.name,
                             code: myData?.code,
@@ -111,7 +183,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             id: idNumber,
                             sequenceCopy: myData?.sequenceCopy,
                         });
-                    }}
+                    } : undefined}
                     onRightPress={() =>
                         props.navigation.navigate("warehouse", {
                             name: myData?.name,
@@ -191,151 +263,149 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                         </View>
                     </View>
 
-                    <TouchableOpacity
-                        style={[Styles.box2,]}
-                        onPress={() => setBox1(!box1)}
-                    >
-                        <Text
-                            style={{ fontSize: fontSize.size12, color: colors.palette.navyBlue, marginRight: scaleWidth(6) }}
-                            tx="wareHouse.storageConditions"
-                        />
-                        <Images.icon_caretUp style={{ transform: [{ rotate: box1 ? '180deg' : '0deg' }] }} />
-                    </TouchableOpacity>
-                    {
-                        box1 ?
-                            <View
-                                style={{
-                                    paddingHorizontal: scaleHeight(16), backgroundColor: '#FFF'
-                                }}
-                            >
-
-
-                                <View
-                                >
-                                    <Text tx="wareHouse.standardStorageTemperature" style={Styles.value} />
-                                    <Text
-                                        style={[Styles.label, { marginTop: scaleHeight(12) }]}
-                                    >
-                                        {myData.conditionStorage?.standardTemperature}
-                                    </Text>
-                                </View>
+                    {isConditionStorageAllNull(myData.conditionStorage) ? <View>
+                        <TouchableOpacity
+                            style={[Styles.box2,]}
+                            onPress={() => setBox1(!box1)}
+                        >
+                            <Text
+                                style={{ fontSize: fontSize.size12, color: colors.palette.navyBlue, marginRight: scaleWidth(6) }}
+                                tx="wareHouse.storageConditions"
+                            />
+                            <Images.icon_caretUp style={{ transform: [{ rotate: box1 ? '180deg' : '0deg' }] }} />
+                        </TouchableOpacity>
+                        {
+                            box1 ?
                                 <View
                                     style={{
-                                        marginVertical: scaleHeight(20)
+                                        paddingHorizontal: scaleHeight(16), backgroundColor: '#FFF'
                                     }}
                                 >
-                                    <Text tx="wareHouse.minimumStorageTemperature" style={Styles.value} />
+
+
+                                    <View
+                                    >
+                                        <Text tx="wareHouse.standardStorageTemperature" style={Styles.value} />
+                                        <Text
+                                            style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                        >
+                                            {myData.conditionStorage?.standardTemperature}
+                                        </Text>
+                                    </View>
+                                    <View
+                                        style={{
+                                            marginVertical: scaleHeight(20)
+                                        }}
+                                    >
+                                        <Text tx="wareHouse.minimumStorageTemperature" style={Styles.value} />
+                                        <Text
+                                            style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                        >
+                                            {myData.conditionStorage?.minTemperature}
+                                        </Text>
+                                    </View>
+                                    <View
+                                    >
+                                        <Text tx="wareHouse.standardHumidity" style={Styles.value} />
+                                        <Text
+                                            style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                        >
+                                            {myData.conditionStorage?.standardHumidity}
+                                        </Text>
+                                    </View>
+                                </View> : <></>
+                        }
+                    </View> : null}
+
+
+                    {isAdditionalInfoAllNull(myData.additionalInfo) ? <View>
+                        <TouchableOpacity
+                            style={[Styles.box2]}
+                            onPress={() => setBox2(!box2)}
+                        >
+                            <Text
+                                style={{ fontSize: fontSize.size12, color: colors.palette.navyBlue, marginRight: scaleWidth(6) }}
+                                tx="wareHouse.additionalInformation"
+                            />
+                            <Images.icon_caretUp style={{ transform: [{ rotate: box2 ? '180deg' : '0deg' }] }} />
+                        </TouchableOpacity>
+                        {
+                            box2 ? <View
+                                style={{
+                                    paddingHorizontal: scaleHeight(16),
+                                    backgroundColor: '#FFF'
+
+                                }}
+                            >
+                                <View
+                                >
+                                    <Text tx="wareHouse.longitude" style={Styles.value} />
                                     <Text
                                         style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                     >
-                                        {myData.conditionStorage?.minTemperature}
+                                        {myData.additionalInfo?.longitude}
+                                    </Text>
+                                </View>
+
+                                <View
+                                    style={{ marginVertical: scaleHeight(20) }}
+                                >
+                                    <Text tx="wareHouse.Latitude" style={Styles.value} />
+                                    <Text
+                                        style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                    >
+                                        {myData.additionalInfo?.latitude}
                                     </Text>
                                 </View>
                                 <View
                                 >
-                                    <Text tx="wareHouse.standardHumidity" style={Styles.value} />
+                                    <Text tx="wareHouse.length" style={Styles.value} />
                                     <Text
                                         style={[Styles.label, { marginTop: scaleHeight(12) }]}
                                     >
-                                        {myData.conditionStorage?.standardHumidity}
+                                        {myData.additionalInfo?.length}
                                     </Text>
                                 </View>
-                            </View> : <></>
-                    }
-
-
-
-                    <TouchableOpacity
-                        style={[Styles.box2]}
-                        onPress={() => setBox2(!box2)}
-                    >
-                        <Text
-                            style={{ fontSize: fontSize.size12, color: colors.palette.navyBlue, marginRight: scaleWidth(6) }}
-                            tx="wareHouse.additionalInformation"
-                        />
-                        <Images.icon_caretUp style={{ transform: [{ rotate: box2 ? '180deg' : '0deg' }] }} />
-                    </TouchableOpacity>
-                    {
-                        box2 ? <View
-                            style={{
-                                paddingHorizontal: scaleHeight(16),
-                                backgroundColor: '#FFF'
-
-                            }}
-                        >
-                            <View
-                            >
-                                <Text tx="wareHouse.longitude" style={Styles.value} />
-                                <Text
-                                    style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                <View
+                                    style={{ marginVertical: scaleHeight(20) }}
                                 >
-                                    {myData.additionalInfo?.longitude}
-                                </Text>
-                            </View>
+                                    <Text tx="wareHouse.width" style={Styles.value} />
+                                    <Text
+                                        style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                    >
+                                        {myData.additionalInfo?.width}
+                                    </Text>
+                                </View>
+                                <View
+                                >
+                                    <Text tx="wareHouse.height" style={Styles.value} />
+                                    <Text
+                                        style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                    >
+                                        {myData.additionalInfo?.height}
+                                    </Text>
+                                </View>
+                                <View
+                                    style={{ marginVertical: scaleHeight(20) }}
+                                >
+                                    <Text tx="wareHouse.backgroundLoad" style={Styles.value} />
+                                    <Text
+                                        style={[Styles.label, { marginTop: scaleHeight(12) }]}
+                                    >
+                                        {myData.additionalInfo?.longitude}
+                                    </Text>
+                                </View>
 
-                            <View
-                                style={{ marginVertical: scaleHeight(20) }}
-                            >
-                                <Text tx="wareHouse.Latitude" style={Styles.value} />
-                                <Text
-                                    style={[Styles.label, { marginTop: scaleHeight(12) }]}
-                                >
-                                    {myData.additionalInfo?.latitude}
-                                </Text>
                             </View>
-                            <View
-                            >
-                                <Text tx="wareHouse.length" style={Styles.value} />
-                                <Text
-                                    style={[Styles.label, { marginTop: scaleHeight(12) }]}
-                                >
-                                    {myData.additionalInfo?.length}
-                                </Text>
-                            </View>
-                            <View
-                                style={{ marginVertical: scaleHeight(20) }}
-                            >
-                                <Text tx="wareHouse.width" style={Styles.value} />
-                                <Text
-                                    style={[Styles.label, { marginTop: scaleHeight(12) }]}
-                                >
-                                    {myData.additionalInfo?.width}
-                                </Text>
-                            </View>
-                            <View
-                            >
-                                <Text tx="wareHouse.height" style={Styles.value} />
-                                <Text
-                                    style={[Styles.label, { marginTop: scaleHeight(12) }]}
-                                >
-                                    {myData.additionalInfo?.height}
-                                </Text>
-                            </View>
-                            <View
-                                style={{ marginVertical: scaleHeight(20) }}
-                            >
-                                <Text tx="wareHouse.backgroundLoad" style={Styles.value} />
-                                <Text
-                                    style={[Styles.label, { marginTop: scaleHeight(12) }]}
-                                >
-                                    {myData.additionalInfo?.longitude}
-                                </Text>
-                            </View>
+                                :
+                                <></>
+                        }
+                    </View> : null}
 
-                        </View>
-                            :
-                            <></>
-                    }
 
                 </ScrollView >
 
-                <ModalDeleteWareHouse
-                    isVisible={isVisible}
-                    setIsVisible={() => setIsVisible(!isVisible)}
-                    dataCodeWarehouse={myData?.code}
-                    idDetailWarehouse={myData?.id}
-                    handleBack={() => props.navigation.navigate('wareHouse')}
-                />
+
 
 
             </View >
