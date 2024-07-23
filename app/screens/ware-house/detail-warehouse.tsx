@@ -18,6 +18,7 @@ import en from "../../i18n/en";
 import { ALERT_TYPE, Dialog } from "../../components/dialog-notification";
 import { translate } from "../../i18n";
 import { useNavigation } from "@react-navigation/native";
+import { reset } from "i18n-js";
 
 
 export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'detailWarehouse'>> = observer(
@@ -51,32 +52,32 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
             const result = await getAPI.warehouseStore.deleteWarehouse(idNumber)
             console.log("resultMess", result?.message);
 
-            if (result?.message == 'Success') {
-                console.log("abv")
-                Dialog.show({
-                    title: translate("txtDialog.txt_title_dialog"),
-                    button: '',
-                    button2: translate("common.ok"),
-                    textBody: en.wareHouse.messengerSucces,
-                    closeOnOverlayTap: false,
-                    onPressButton: () => {
-                        console.log('doantesttt');
-                        // props.navigation.navigate("wareHouse", { reload: true });
+            // if (result?.message == 'Success') {
+            console.log("abv")
+            Dialog.show({
+                title: translate("txtDialog.txt_title_dialog"),
+                button: '',
+                button2: translate("common.ok"),
+                textBody: en.wareHouse.messengerSucces,
+                closeOnOverlayTap: false,
+                onPressButton: () => {
+                    console.log('doantesttt');
+                    // navigation.navigate("wareHouse", { reset: true });
+                    // navigation.goBack()
+                    Dialog.hide();
 
-                        Dialog.hide();
-
-                    }
-                })
-            }
-            else {
-                await Dialog.hideDialog();
-                Dialog.show({
-                    title: translate("productScreen.Notification"),
-                    button: translate("common.ok"),
-                    textBody: data?.message + en.wareHouse.messengerFail,
-                    closeOnOverlayTap: false
-                })
-            }
+                }
+            })
+            // }
+            // else {
+            //     await Dialog.hideDialog();
+            //     Dialog.show({
+            //         title: translate("productScreen.Notification"),
+            //         button: translate("common.ok"),
+            //         textBody: data?.message + en.wareHouse.messengerFail,
+            //         closeOnOverlayTap: false
+            //     })
+            // }
 
 
         }
@@ -105,7 +106,10 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             button2: translate("productScreen.BtnNotificationAccept"),
                             textBody: translate("productScreen.ProductDelete"),
                             closeOnOverlayTap: false,
-                            onPressButton: () => deleteWarehouse(),
+                            onPressButton: () => {
+                                deleteWarehouse()
+                            }
+
                         });
                     }}
                     onRightPress1={() => {

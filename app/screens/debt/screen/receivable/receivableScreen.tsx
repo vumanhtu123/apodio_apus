@@ -30,7 +30,6 @@ import ItemListTransaction from "../../component/itemListTransaction";
 import ItemListNCC from "../../component/itemListNCC";
 import { ModalPayReceivable } from "../../component/modalPayReceivable";
 
-
 export const ReceivableScreen: FC<
   StackScreenProps<NavigatorParamList, "receivable">
 > = observer(function receivableScreen(props) {

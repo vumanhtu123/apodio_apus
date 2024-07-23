@@ -26,9 +26,8 @@ import { Styles } from "../styles";
 import data from "../../../../components/svg-icon/data";
 import CustomCalendar from "../../../../components/calendar";
 import moment from "moment";
-
-import { ModalExchange } from "../../component/modalExchange";
 import { ModalPay } from "../../component/modalPay";
+import { ModalExchange } from "../../component/modalExchange";
 
 export const DetailDebtScreen: FC<
   StackScreenProps<NavigatorParamList, "detailDebt">

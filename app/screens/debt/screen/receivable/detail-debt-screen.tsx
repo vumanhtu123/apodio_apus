@@ -29,7 +29,6 @@ import {
 import ItemDetailDebt from "./item-detail-debt";
 import { ModalPayReceivable } from "../../component/modalPayReceivable";
 
-
 export const DetailReceivable: FC<
   StackScreenProps<NavigatorParamList, "detailReceivable">
 > = observer(function detailDebtScreen(props) {

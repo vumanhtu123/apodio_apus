@@ -22,7 +22,6 @@ import { ItemListMustPay } from "../../component/itemListMustPay";
 import en from "../../../../i18n/en";
 import { ModalFilter } from "../../component/modalFilter";
 
-
 export const MustPayScreen: FC<
   StackScreenProps<NavigatorParamList, "mustPay">
 > = observer(function mustPayScreen(props) {

@@ -36,6 +36,7 @@ export const ConditionsComponent = ({
             placeholder={translate("wareHouse.enterTemperature")}
             style={{ marginBottom: scaleHeight(0) }}
             inputStyle={stylesWareHouse.inputPass}
+            valueTextRight="°C"
             isImportant
             maxLength={20}
             RightIconClear={null}
@@ -50,7 +51,7 @@ export const ConditionsComponent = ({
         )}
         name="temperature1"
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 20,
         }}
       />
@@ -75,6 +76,7 @@ export const ConditionsComponent = ({
               style={{ marginBottom: scaleHeight(0) }}
               inputStyle={stylesWareHouse.inputPass}
               value={value}
+              valueTextRight="°C"
               // secureTextEntry={false}
               onBlur={onBlur}
               RightIconClear={null}
@@ -87,7 +89,7 @@ export const ConditionsComponent = ({
           )}
           name="temperature2"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 20,
           }}
         />
@@ -109,6 +111,7 @@ export const ConditionsComponent = ({
               style={{ marginBottom: scaleHeight(0) }}
               inputStyle={stylesWareHouse.inputPass}
               value={value}
+              valueTextRight="°C"
               // secureTextEntry={false}
               onBlur={onBlur}
               RightIconClear={null}
@@ -121,7 +124,7 @@ export const ConditionsComponent = ({
           )}
           name="temperature3"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 20,
           }}
         />

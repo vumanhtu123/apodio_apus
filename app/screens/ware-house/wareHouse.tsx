@@ -30,7 +30,9 @@ import { number } from "mobx-state-tree/dist/internal";
 export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse'>> = observer(
     function WareHouseScreen(props) {
         const route = useRoute();
-        const reload = route?.params?.reload;
+        const reload = route?.params?.reset;
+        console.log('doandev value', reload);
+
 
         const [indexTabbar, setIndexTabbar] = useState(en.wareHouse.all)
         const [openInforWareHouse, setOpneInforWareHouse] = useState(false)
@@ -39,7 +41,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const [isLoadingMore, setIsLoadingMore] = useState(false);
         const [valueSearch, setValueSearch] = useState("");
         const [myData, setMyData] = useState([]);
-        const [idWarehouse, setIdWarehouse] = useState<number>()
         const [lengthAll, setLengthAll] = useState<number>()
         const [lengthIsActive, setLengthIsActive] = useState<number>()
         const [lengthSave, setLengthSave] = useState<number>()
@@ -49,10 +50,10 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const getAPI = useStores()
         const size = useRef(10);
 
-        // const { resetCreate } = props.route?.params
+
 
         console.log('====================================');
-        console.log("tu chueyn key", props.route);
+        console.log("value search", valueSearch);
         console.log('====================================');
 
         const dataListTabar = [
@@ -110,14 +111,17 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const checkState = () => {
             if (indexTabbar == en.wareHouse.all) {
                 console.log('tab select all');
+                // setMyData([])
                 return undefined
 
             } else if (indexTabbar == en.wareHouse.isActive) {
                 console.log('tab select isActive');
+                // setMyData([])
 
                 return 'APPROVED'
             } else {
                 console.log('tab select save');
+                // setMyData([])
 
                 return 'ARCHIVED'
             }
@@ -129,10 +133,10 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const getListWarehouse = () => {
             try {
 
-                getAPI.warehouseStore.getListWareHouse(size.current, page.current, undefined, valueSearch, statusLoadMore).then((data) => {
-                    console.log('data doan', data);
+                getAPI.warehouseStore.getListWareHouse(size.current, page.current, checkState(), 'Ddd', statusLoadMore).then((data) => {
+                    console.log('data doan', data?.totalElements);
                     if (data?.content != null) {
-                        setMyData([])
+                        // setMyData([])
                         const dataWarehouse = data?.content.map((item) => {
                             return {
                                 id: item.id,
@@ -142,27 +146,36 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                             };
 
                         });
-                        setMyData((prevProducts) => {
-                            console.log('doan123', prevProducts);
+                        // console.log('dataWarehouse', dataWarehouse);
 
-                            // Tạo một tập hợp các id đã xuất hiện trong prevProducts
-                            const idsInPrevProducts = new Set(prevProducts.map(product => product.id));
+                        if (myData?.length != data?.totalElements) {
+                            setMyData((prevProducts) => {
+                                console.log('doan123', prevProducts);
 
-                            // Lọc dataWarehouse để chỉ giữ lại các đối tượng có id chưa xuất hiện trong prevProducts
-                            const filteredDataWarehouse = dataWarehouse.filter(item => !idsInPrevProducts.has(item.id));
+                                // Tạo một tập hợp các id đã xuất hiện trong prevProducts
+                                const idsInPrevProducts = new Set(prevProducts.map(product => product.id));
 
-                            // Nối hai mảng lại với nhau
-                            return [
-                                ...prevProducts,
-                                ...filteredDataWarehouse
-                            ];
-                        });
+                                // Lọc dataWarehouse để chỉ giữ lại các đối tượng có id chưa xuất hiện trong prevProducts
+                                const filteredDataWarehouse = dataWarehouse.filter(item => !idsInPrevProducts.has(item.id));
+
+                                // Nối hai mảng lại với nhau
+                                // if (page.current == 0) {
+                                return [
+                                    ...prevProducts,
+                                    ...filteredDataWarehouse
+                                ];
+                                // }
+
+                            });
+                        }
+
 
 
                         const lengthIsActiveData = data?.content.filter(item => item.state === 'APPROVED').length
                         const lengthSaveData = data?.content.filter(item => item.state === 'ARCHIVED').length
                         const totalElementsData = data?.totalElements
                         const totalPages = data?.totalPages
+
                         console.log('dang hoat dong', lengthIsActive);
                         console.log('dung hoat dong', lengthSave);
                         console.log('totalPages', totalPages);
@@ -207,7 +220,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
         console.log('lengthALL', lengthAll);
 
-        console.log('doandev size', myData);
+        console.log('doandev size', myData.length);
 
 
 
@@ -226,27 +239,39 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         };
 
         const handleLoadMore = () => {
-            console.log('pageCurrent2');
-
+            console.log('pageCurrent1');
             try {
                 setIsLoadingMore(true)
                 // getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
+                console.log('pageCurrent2');
 
                 if (
-                    page.current < totalPages2.current
+                    page.current < totalPages2.current - 1
+
                 ) {
+                    console.log('pageCurrent3');
+
                     // console.log("value loading", isLoadingMore);
                     page.current = page.current + 1;
+                    console.log('pageCurrent4');
+
                     console.log('pageDoan', page.current);
                     getListWarehouse();
+                    console.log('pageCurrent5');
+
                     setIsLoadingMore(false);
+                    console.log('pageCurrent6');
 
                 }
-                setIsLoadingMore(false);
+                // setIsLoadingMore(false);
+                console.log('pageCurrent7');
+
 
             } catch (error) {
                 console.log('====================================');
                 console.log('Error loadMore', error);
+                console.log('pageCurrent8');
+
                 console.log('====================================');
             }
 
@@ -258,7 +283,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             const unsubscribe = props.navigation.addListener("focus", () => {
                 if (reload === true) {
                     console.log("---------useEffect---------reload2------------------");
-
                     getListWarehouse()
                 }
             });
@@ -270,6 +294,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             getListWarehouse()
         }, []);
 
+        useEffect(() => {
+            getListWarehouse()
+        }, [indexTabbar]);
 
         console.log('====================================');
         console.log('check doan', props.navigation);
@@ -285,15 +312,16 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             onClick: () => void;
         }
 
-        const ItemListWareHouse: React.FC<{ item: ItemList }> = ({ item }) => {
+        const ItemListWareHouse: React.FC<{ item: ItemList, index: any }> = ({ item, index }) => {
 
             return (
                 <TouchableOpacity style={Styles.itemList}
+                    key={index}
                     onPress={() => {
                         // setIdWarehouse(item.id)
                         console.log('id select', item.id);
 
-                        props.navigation.navigate('detailWarehouse', { id: item.id })
+                        props.navigation.navigate({ name: 'detailWarehouse', params: { id: item.id } } as never)
                     }}
                 >
                     <Images.ic_Brick
@@ -370,19 +398,14 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     LeftIcon={Images.back}
                     style={{ height: scaleHeight(52) }}
                     leftText="wareHouse.wareHouse"
-
                     RightIcon2={Images.icon_search}
-
                     headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
                         getListWarehouse();
-
                     }}
-                    onSearchValueChange={(txt: any) => {
+                    onSearchValueChange={(txt: string) => {
                         console.log('value search', txt);
-
                         setValueSearch(txt)
-
                     }}
                     onRightPress2={() => setIsShowSearch(!isShowSearch)}
                     btnRightStyle={{ width: scaleWidth(30), height: scaleHeight(30), marginRight: -10, }}
@@ -443,8 +466,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     <FlatList
                         style={{}}
                         data={myData}
-                        renderItem={({ item }) => <ItemListWareHouse item={item} />}
-                        keyExtractor={(item: any) => item?.id}
+                        renderItem={({ item, index }) => <ItemListWareHouse item={item} index={index} />}
+                        keyExtractor={(item: any, index) => item?.toString() + index}
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
@@ -458,7 +481,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         ListFooterComponent={() => (
                             <View>
 
-                                <>{isLoadingMore ? <ActivityIndicator /> : <></>}</>
+                                {/* <>{isLoadingMore ? <ActivityIndicator /> : <></>}</> */}
 
                             </View>
                         )}

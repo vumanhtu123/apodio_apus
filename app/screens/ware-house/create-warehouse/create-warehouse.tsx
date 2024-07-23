@@ -39,25 +39,31 @@ export const CreateWareHouseScreen: FC<
   useEffect(() => {
     status.current == "COPY"
       ? setValue(
-        "nameWareHouse",
-        props.route.params.name +
-        "-COPY-" +
-        props.route.params.sequenceCopy ?? ""
-      )
+          "nameWareHouse",
+          props.route.params.name +
+            "-COPY-" +
+            props.route.params.sequenceCopy ?? ""
+        )
       : setValue("nameWareHouse", props.route.params.name ?? "");
     status.current == "COPY"
       ? setValue(
-        "codeWareHouse",
-        props.route.params.code +
-        "-COPY-" +
-        props.route.params.sequenceCopy ??
-        "" ??
-        ""
-      )
+          "codeWareHouse",
+          props.route.params.code +
+            "-COPY-" +
+            props.route.params.sequenceCopy ??
+            "" ??
+            ""
+        )
       : setValue("codeWareHouse", String(props.route.params.code ?? ""));
     setValue("addressWareHouse", String(props.route.params.address ?? ""));
-    setValue("latitude", String(props.route.params.additionalInfo?.latitude ?? ""));
-    setValue("longitude", String(props.route.params.additionalInfo?.longitude ?? ""));
+    setValue(
+      "latitude",
+      String(props.route.params.additionalInfo?.latitude ?? "")
+    );
+    setValue(
+      "longitude",
+      String(props.route.params.additionalInfo?.longitude ?? "")
+    );
     setValue("height", String(props.route.params.additionalInfo?.height ?? ""));
     setValue("longs", String(props.route.params.additionalInfo?.length ?? ""));
     setValue("width", String(props.route.params.additionalInfo?.width ?? ""));
@@ -102,9 +108,105 @@ export const CreateWareHouseScreen: FC<
 
   const handlerUpdateData = (data: any, id: any) => {
     console.log("update data");
-    api.warehouseStore
-      .putUpdateWareHouse(
-        {
+    try {
+      api.warehouseStore
+        .putUpdateWareHouse(
+          {
+            name: data.nameWareHouse,
+            code: data.codeWareHouse ?? "",
+            companyId: 0,
+            branchId: 0,
+            sourceProductType: "INTERNAL",
+            address: data.addressWareHouse,
+            areaCode: "string",
+            hasAdditionalInfo: config,
+            additionalInfo: {
+              latitude: data.latitude,
+              longitude: data.longitude,
+              height: data.height,
+              heightUom: {
+                id: 0,
+                name: "string",
+              },
+              length: data.longs,
+              lengthUom: {
+                id: 0,
+                name: "string",
+              },
+              width: data.width,
+              widthUom: {
+                id: 0,
+                name: "string",
+              },
+              weightCapacity: data.weight,
+              weightCapacityUom: {
+                id: 0,
+                name: "string",
+              },
+              scene: "INDOOR",
+            },
+            hasConditionStorage: conditions,
+            conditionStorage: {
+              standardTemperature: data.temperature1,
+              minTemperature: data.temperature2,
+              standardHumidity: data.temperature3,
+            },
+            action: "UPDATE",
+            note: "string",
+            isMobile: true,
+          },
+          id
+        )
+        .then((item: any) => {
+          if (item.message != null) {
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: translate("txtDialog.txt_title_dialog"),
+              textBody: item.message,
+              button: translate("common.ok"),
+              closeOnOverlayTap: false,
+              onHide() {
+                props.navigation.navigate("wareHouse", { reset: true });
+              },
+            });
+          } else {
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: translate("txtDialog.txt_title_dialog"),
+              textBody: item.data.errorCodes[1].message.toString(),
+              button: translate("common.ok"),
+              closeOnOverlayTap: false,
+              onPressButton() {
+                props.navigation.navigate("wareHouse", { reset: true });
+              },
+            });
+          }
+          // if (item.data.errorCodes[0].code.toString()) {
+
+          console.log(
+            "tuvm response: ",
+            JSON.stringify(item.data.errorCodes[1].message.toString())
+          );
+        });
+    } catch (e: any) {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("txtDialog.txt_title_dialog"),
+        textBody: e.message.toString(),
+        button: translate("common.ok"),
+        closeOnOverlayTap: false,
+        onPressButton() {
+          props.navigation.navigate("wareHouse", { reset: true });
+        },
+      });
+    }
+  };
+
+  const onHandleDataCopy = (data: any) => {
+    console.log("copy data");
+    try {
+      api.warehouseStore
+        .postCreateWareHouse({
           name: data.nameWareHouse,
           code: data.codeWareHouse ?? "",
           companyId: 0,
@@ -144,196 +246,139 @@ export const CreateWareHouseScreen: FC<
             minTemperature: data.temperature2,
             standardHumidity: data.temperature3,
           },
-          action: "UPDATE",
+          copyId: id.current,
+          action: "CREATE",
           note: "string",
           isMobile: true,
-        },
-        id
-      )
-      .then((item: any) => {
-        if (item.message != null) {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: translate("txtDialog.txt_title_dialog"),
-            textBody: item.message,
-            button: translate("common.ok"),
-            closeOnOverlayTap: false,
-            onHide() {
-              props.navigation.navigate("wareHouse");
-            },
-          });
-        } else {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: translate("txtDialog.txt_title_dialog"),
-            textBody: item.data.errorCodes[1].message.toString(),
-            button: translate("common.ok"),
-            closeOnOverlayTap: false,
-            onPressButton() {
-              props.navigation.navigate("wareHouse");
-            },
-          });
-        }
-        // if (item.data.errorCodes[0].code.toString()) {
+        })
+        .then((item: any) => {
+          if (item.message != null) {
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: translate("txtDialog.txt_title_dialog"),
+              textBody: item.message,
+              button: translate("common.ok"),
+              onHide() {
+                props.navigation.navigate("wareHouse", { reset: true });
+              },
+            });
+          } else {
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: translate("txtDialog.txt_title_dialog"),
+              textBody: item.data.errorCodes[1].message.toString(),
+              button: translate("common.ok"),
+              closeOnOverlayTap: false,
+            });
+          }
+          // if (item.data.errorCodes[0].code.toString()) {
 
-        console.log(
-          "tuvm response: ",
-          JSON.stringify(item.data.errorCodes[1].message.toString())
-        );
+          console.log(
+            "tuvm response: ",
+            JSON.stringify(item.data.errorCodes[1].message.toString())
+          );
+        });
+    } catch (e: any) {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("txtDialog.txt_title_dialog"),
+        textBody: e.message.toString(),
+        button: translate("common.ok"),
+        closeOnOverlayTap: false,
+        onPressButton() {
+          props.navigation.navigate("wareHouse", { reset: true });
+        },
       });
-  };
-
-  const onHandleDataCopy = (data: any) => {
-    console.log("copy data");
-    api.warehouseStore
-      .postCreateWareHouse({
-        name: data.nameWareHouse,
-        code: data.codeWareHouse ?? "",
-        companyId: 0,
-        branchId: 0,
-        sourceProductType: "INTERNAL",
-        address: data.addressWareHouse,
-        areaCode: "string",
-        hasAdditionalInfo: config,
-        additionalInfo: {
-          latitude: data.latitude,
-          longitude: data.longitude,
-          height: data.height,
-          heightUom: {
-            id: 0,
-            name: "string",
-          },
-          length: data.longs,
-          lengthUom: {
-            id: 0,
-            name: "string",
-          },
-          width: data.width,
-          widthUom: {
-            id: 0,
-            name: "string",
-          },
-          weightCapacity: data.weight,
-          weightCapacityUom: {
-            id: 0,
-            name: "string",
-          },
-          scene: "INDOOR",
-        },
-        hasConditionStorage: conditions,
-        conditionStorage: {
-          standardTemperature: data.temperature1,
-          minTemperature: data.temperature2,
-          standardHumidity: data.temperature3,
-        },
-        copyId: id.current,
-        action: "CREATE",
-        note: "string",
-        isMobile: true,
-      })
-      .then((item: any) => {
-        if (item.message != null) {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: translate("txtDialog.txt_title_dialog"),
-            textBody: item.message,
-            button: translate("common.ok"),
-            onHide() {
-              props.navigation.navigate("wareHouse");
-            },
-          });
-        } else {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: translate("txtDialog.txt_title_dialog"),
-            textBody: item.data.errorCodes[1].message.toString(),
-            button: translate("common.ok"),
-            closeOnOverlayTap: false,
-          });
-        }
-        // if (item.data.errorCodes[0].code.toString()) {
-
-        console.log(
-          "tuvm response: ",
-          JSON.stringify(item.data.errorCodes[1].message.toString())
-        );
-      });
+    }
   };
 
   const onHandleData = (data: any) => {
     console.log("create data");
-    api.warehouseStore
-      .postCreateWareHouse({
-        name: data.nameWareHouse,
-        code: data.codeWareHouse ?? "",
-        companyId: 0,
-        branchId: 0,
-        sourceProductType: "INTERNAL",
-        address: data.addressWareHouse,
-        areaCode: "string",
-        hasAdditionalInfo: config,
-        additionalInfo: {
-          latitude: data.latitude,
-          longitude: data.longitude,
-          height: data.height,
-          heightUom: {
-            id: 0,
-            name: "string",
-          },
-          length: data.longs,
-          lengthUom: {
-            id: 0,
-            name: "string",
-          },
-          width: data.width,
-          widthUom: {
-            id: 0,
-            name: "string",
-          },
-          weightCapacity: data.weight,
-          weightCapacityUom: {
-            id: 0,
-            name: "string",
-          },
-          scene: "INDOOR",
-        },
-        hasConditionStorage: conditions,
-        conditionStorage: {
-          standardTemperature: data.temperature1,
-          minTemperature: data.temperature2,
-          standardHumidity: data.temperature3,
-        },
-        action: "CREATE",
-        note: "string",
-        isMobile: true,
-      })
-      .then((item: any) => {
-        if (item.message != null) {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: translate("txtDialog.txt_title_dialog"),
-            textBody: item.message,
-            button: translate("common.ok"),
-            onHide() {
-              props.navigation.navigate("wareHouse");
+    try {
+      api.warehouseStore
+        .postCreateWareHouse({
+          name: data.nameWareHouse,
+          code: data.codeWareHouse ?? "",
+          companyId: 0,
+          branchId: 0,
+          sourceProductType: "INTERNAL",
+          address: data.addressWareHouse,
+          areaCode: "string",
+          hasAdditionalInfo: config,
+          additionalInfo: {
+            latitude: data.latitude,
+            longitude: data.longitude,
+            height: data.height,
+            heightUom: {
+              id: 0,
+              name: "string",
             },
-          });
-        } else {
-          Dialog.show({
-            type: ALERT_TYPE.DANGER,
-            title: translate("txtDialog.txt_title_dialog"),
-            textBody: item.data.errorCodes[1].message.toString(),
-            button: translate("common.ok"),
-            closeOnOverlayTap: false,
-          });
-        }
-        // if (item.data.errorCodes[0].code.toString()) {
+            length: data.longs,
+            lengthUom: {
+              id: 0,
+              name: "string",
+            },
+            width: data.width,
+            widthUom: {
+              id: 0,
+              name: "string",
+            },
+            weightCapacity: data.weight,
+            weightCapacityUom: {
+              id: 0,
+              name: "string",
+            },
+            scene: "INDOOR",
+          },
+          hasConditionStorage: conditions,
+          conditionStorage: {
+            standardTemperature: data.temperature1,
+            minTemperature: data.temperature2,
+            standardHumidity: data.temperature3,
+          },
+          action: "CREATE",
+          note: "string",
+          isMobile: true,
+        })
+        .then((item: any) => {
+          if (item.message != null) {
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: translate("txtDialog.txt_title_dialog"),
+              textBody: item.message,
+              button: translate("common.ok"),
+              onHide() {
+                props.navigation.navigate("wareHouse", { reset: true });
+              },
+            });
+          } else {
+            Dialog.show({
+              type: ALERT_TYPE.DANGER,
+              title: translate("txtDialog.txt_title_dialog"),
+              textBody: item.data.errorCodes[1].message.toString(),
+              button: translate("common.ok"),
+              closeOnOverlayTap: false,
+            });
+          }
+          // if (item.data.errorCodes[0].code.toString()) {
 
-        console.log(
-          "tuvm response: ",
-          JSON.stringify(item.data.errorCodes[1].message.toString())
-        );
+          console.log(
+            "tuvm response: ",
+            JSON.stringify(item.data.errorCodes[1].message.toString())
+          );
+        });
+    } catch (e: any) {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("txtDialog.txt_title_dialog"),
+        textBody: e.message.toString(),
+        button: translate("common.ok"),
+        closeOnOverlayTap: false,
+        onPressButton() {
+          props.navigation.navigate("wareHouse", { reset: true });
+        },
       });
+    }
   };
 
   return (
@@ -341,7 +386,11 @@ export const CreateWareHouseScreen: FC<
       <Header
         LeftIcon={Images.back}
         style={{ height: scaleHeight(52) }}
-        leftText="wareHouse.createWareHouse"
+        headerTx={
+          status.current == "UPDATE"
+            ? "wareHouse.refactorWareHouse"
+            : "wareHouse.createWareHouse"
+        }
         onLeftPress={() => props.navigation.goBack()}
       />
       <View style={stylesWareHouse.containerView}>
@@ -373,10 +422,10 @@ export const CreateWareHouseScreen: FC<
                 onBlur={onBlur}
                 isShowPassword
                 RightIconClear={null}
-                RightIconShow={() => { }}
-                onClearText={() => { }}
+                RightIconShow={() => {}}
+                onClearText={() => {}}
                 maxLength={50}
-                onShowPassword={() => { }}
+                onShowPassword={() => {}}
                 error={errors.codeWareHouse?.message ?? ""}
                 onChangeText={(value) => {
                   onChange(value);
@@ -414,10 +463,10 @@ export const CreateWareHouseScreen: FC<
                 onBlur={onBlur}
                 isShowPassword
                 RightIconClear={null}
-                RightIconShow={() => { }}
-                onClearText={() => { }}
+                RightIconShow={() => {}}
+                onClearText={() => {}}
                 maxLength={250}
-                onShowPassword={() => { }}
+                onShowPassword={() => {}}
                 error={errors.nameWareHouse?.message ?? ""}
                 onChangeText={(value) => {
                   onChange(value);
@@ -426,7 +475,7 @@ export const CreateWareHouseScreen: FC<
             )}
             name="nameWareHouse"
             rules={{
-              required: "Please input data",
+              required: "Vui lòng nhập thông tin",
               maxLength: 250,
             }}
           />
@@ -456,9 +505,9 @@ export const CreateWareHouseScreen: FC<
                 onBlur={onBlur}
                 isShowPassword
                 RightIconClear={null}
-                RightIconShow={() => { }}
-                onClearText={() => { }}
-                onShowPassword={() => { }}
+                RightIconShow={() => {}}
+                onClearText={() => {}}
+                onShowPassword={() => {}}
                 onChangeText={(value) => {
                   onChange(value);
                 }}
@@ -466,7 +515,7 @@ export const CreateWareHouseScreen: FC<
             )}
             name="addressWareHouse"
             rules={{
-              required: "Please input data",
+              required: "Vui lòng nhập thông tin",
               maxLength: 250,
             }}
           />
@@ -517,7 +566,7 @@ export const CreateWareHouseScreen: FC<
             setValue={setValue}
             clearError={clearErrors}
           />
-          <Controller
+          {/* <Controller
             control={control}
             render={({ field: { onChange, value } }) => (
               <View
@@ -537,7 +586,7 @@ export const CreateWareHouseScreen: FC<
               </View>
             )}
             name="notifications"
-          />
+          /> */}
         </ScrollView>
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
@@ -547,7 +596,11 @@ export const CreateWareHouseScreen: FC<
             borderRadius: 10,
           }}>
           <Text
-            tx="wareHouse.createWareHouse"
+            tx={
+              status.current == "UPDATE"
+                ? "wareHouse.refactor"
+                : "wareHouse.createWareHouse"
+            }
             style={{
               fontSize: 14,
               color: "#FFFFFF",
