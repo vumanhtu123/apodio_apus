@@ -393,6 +393,10 @@ export function TextField(props: TextFieldProps) {
               {/* <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} /> */}
             </TouchableOpacity>
           ) : null}
+
+          {valueTextRight !== "" ? (
+            <Text text={valueTextRight} style={styleTextRight}></Text>
+          ) : null}
           {RightIcon != null ? (
             <TouchableOpacity
               onPress={pressRightIcon}
@@ -402,10 +406,6 @@ export function TextField(props: TextFieldProps) {
               ) : null}
               <RightIcon width={scaleWidth(18)} height={scaleHeight(18)} />
             </TouchableOpacity>
-          ) : null}
-
-          {valueTextRight !== "" ? (
-            <Text text={valueTextRight} style={styleTextRight}></Text>
           ) : null}
         </View>
       </View>

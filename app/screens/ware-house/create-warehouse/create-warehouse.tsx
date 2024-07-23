@@ -29,9 +29,14 @@ export const CreateWareHouseScreen: FC<
   } = useForm({
     mode: "all",
   });
-  // const [status, setCheckStatus] = useState(props.route.params.status ?? null);
+
   const status = useRef(props.route.params.status ?? null);
   const id = useRef(props.route.params.id ?? null);
+  const heightUom = useRef({ value: 0, text: "" });
+  const lengthUom = useRef({ value: 0, text: "" });
+  const widthUom = useRef({ value: 0, text: "" });
+  const weightCapacityUom = useRef({ value: 0, text: "" });
+
   const [listUnit, setListUnit] = useState([]);
   console.log(
     "status: ",
@@ -40,7 +45,6 @@ export const CreateWareHouseScreen: FC<
 
   const handlerDataList = () => {
     api.warehouseStore.getListUnit().then((unit: any) => {
-      console.log("getListUnit---------------------:", JSON.stringify(unit));
       const data = unit.result.data.content;
       const listUnit = data.map((obj: { id: any; name: any }) => {
         return {
@@ -49,12 +53,22 @@ export const CreateWareHouseScreen: FC<
         };
       });
       setListUnit(listUnit);
-      console.log("list unit--------------------", listUnit);
     });
   };
 
   useEffect(() => {
     handlerDataList();
+    heightUom.current = props.route.params.additionalInfo?.heightUom;
+    lengthUom.current = props.route.params.additionalInfo?.lengthUom;
+    widthUom.current = props.route.params.additionalInfo?.widthUom;
+    weightCapacityUom.current =
+      props.route.params.additionalInfo?.weightCapacityUom;
+
+    console.log(
+      "width uom",
+      props.route.params.additionalInfo?.weightCapacityUom
+    );
+
     status.current == "COPY"
       ? setValue(
           "nameWareHouse",
@@ -87,15 +101,15 @@ export const CreateWareHouseScreen: FC<
     setValue("width", String(props.route.params.additionalInfo?.width ?? ""));
     setValue(
       "temperature1",
-      String(props.route.params.conditionStorage?.minTemperature ?? "")
+      String(props.route.params.conditionStorage?.standardTemperature ?? "")
     );
     setValue(
       "temperature2",
-      String(props.route.params.conditionStorage?.standardHumidity ?? "")
+      String(props.route.params.conditionStorage?.minTemperature ?? "")
     );
     setValue(
       "temperature3",
-      String(props.route.params.conditionStorage?.standardTemperature ?? "")
+      String(props.route.params.conditionStorage?.standardHumidity ?? "")
     );
     setValue(
       "weight",
@@ -143,23 +157,23 @@ export const CreateWareHouseScreen: FC<
               longitude: data.longitude,
               height: data.height,
               heightUom: {
-                id: 0,
-                name: "string",
+                id: heightUom.current.value ?? 0,
+                name: heightUom.current.text ?? "",
               },
               length: data.longs,
               lengthUom: {
-                id: 0,
-                name: "string",
+                id: lengthUom.current.value ?? 0,
+                name: lengthUom.current.text ?? "",
               },
               width: data.width,
               widthUom: {
-                id: 0,
-                name: "string",
+                id: widthUom.current.value ?? 0,
+                name: widthUom.current.text ?? "",
               },
               weightCapacity: data.weight,
               weightCapacityUom: {
-                id: 0,
-                name: "string",
+                id: weightCapacityUom.current.value ?? 0,
+                name: weightCapacityUom.current.text ?? "",
               },
               scene: "INDOOR",
             },
@@ -191,7 +205,7 @@ export const CreateWareHouseScreen: FC<
             Dialog.show({
               type: ALERT_TYPE.DANGER,
               title: translate("txtDialog.txt_title_dialog"),
-              textBody: item.data.errorCodes[1].message.toString(),
+              textBody: item.data.errorCodes[0].message.toString(),
               button: translate("common.ok"),
               closeOnOverlayTap: false,
               onPressButton() {
@@ -203,7 +217,7 @@ export const CreateWareHouseScreen: FC<
 
           console.log(
             "tuvm response: ",
-            JSON.stringify(item.data.errorCodes[1].message.toString())
+            JSON.stringify(item.data.errorCodes[0].message.toString())
           );
         });
     } catch (e: any) {
@@ -238,23 +252,23 @@ export const CreateWareHouseScreen: FC<
             longitude: data.longitude,
             height: data.height,
             heightUom: {
-              id: 0,
-              name: "string",
+              id: heightUom.current.value ?? 0,
+              name: heightUom.current.text ?? "",
             },
             length: data.longs,
             lengthUom: {
-              id: 0,
-              name: "string",
+              id: lengthUom.current.value ?? 0,
+              name: lengthUom.current.text ?? "",
             },
             width: data.width,
             widthUom: {
-              id: 0,
-              name: "string",
+              id: widthUom.current.value ?? 0,
+              name: widthUom.current.text ?? "",
             },
             weightCapacity: data.weight,
             weightCapacityUom: {
-              id: 0,
-              name: "string",
+              id: weightCapacityUom.current.value ?? 0,
+              name: weightCapacityUom.current.text ?? "",
             },
             scene: "INDOOR",
           },
@@ -284,13 +298,11 @@ export const CreateWareHouseScreen: FC<
             Dialog.show({
               type: ALERT_TYPE.DANGER,
               title: translate("txtDialog.txt_title_dialog"),
-              textBody: item.data.errorCodes[1].message.toString(),
+              textBody: item.data.errorCodes[0].message.toString(),
               button: translate("common.ok"),
               closeOnOverlayTap: false,
             });
           }
-          // if (item.data.errorCodes[0].code.toString()) {
-
           console.log(
             "tuvm response: ",
             JSON.stringify(item.data.errorCodes[1].message.toString())
@@ -311,7 +323,7 @@ export const CreateWareHouseScreen: FC<
   };
 
   const onHandleData = (data: any) => {
-    console.log("create data");
+    console.log("create data", data);
     try {
       api.warehouseStore
         .postCreateWareHouse({
@@ -328,23 +340,23 @@ export const CreateWareHouseScreen: FC<
             longitude: data.longitude,
             height: data.height,
             heightUom: {
-              id: 0,
-              name: "string",
+              id: heightUom.current?.value ?? 0,
+              name: heightUom.current?.text ?? "",
             },
             length: data.longs,
             lengthUom: {
-              id: 0,
-              name: "string",
+              id: lengthUom.current?.value ?? 0,
+              name: lengthUom.current?.text ?? "",
             },
             width: data.width,
             widthUom: {
-              id: 0,
-              name: "string",
+              id: widthUom.current?.value ?? 0,
+              name: widthUom.current?.text ?? "",
             },
             weightCapacity: data.weight,
             weightCapacityUom: {
-              id: 0,
-              name: "string",
+              id: weightCapacityUom.current?.value ?? 0,
+              name: weightCapacityUom.current?.text ?? "",
             },
             scene: "INDOOR",
           },
@@ -359,7 +371,7 @@ export const CreateWareHouseScreen: FC<
           isMobile: true,
         })
         .then((item: any) => {
-          if (item.message != null) {
+          if (item.message == "Success") {
             Dialog.show({
               type: ALERT_TYPE.DANGER,
               title: translate("txtDialog.txt_title_dialog"),
@@ -373,7 +385,7 @@ export const CreateWareHouseScreen: FC<
             Dialog.show({
               type: ALERT_TYPE.DANGER,
               title: translate("txtDialog.txt_title_dialog"),
-              textBody: item.data.errorCodes[1].message.toString(),
+              textBody: item.data.errorCodes[0].message.toString(),
               button: translate("common.ok"),
               closeOnOverlayTap: false,
             });
@@ -584,6 +596,26 @@ export const CreateWareHouseScreen: FC<
             setValue={setValue}
             clearError={clearErrors}
             list={listUnit}
+            heightUomData={heightUom.current}
+            lengthUomData={lengthUom.current}
+            widthUomData={widthUom.current}
+            weightCapacityUomData={weightCapacityUom.current}
+            heightUom={(item: any) => {
+              heightUom.current = item;
+              console.log("item uom", heightUom.current);
+            }}
+            lengthUom={(item: any) => {
+              lengthUom.current = item;
+              console.log("item length", lengthUom.current);
+            }}
+            widthUom={(item: any) => {
+              widthUom.current = item;
+              console.log("item width", widthUom.current);
+            }}
+            weightCapacityUom={(item: any) => {
+              weightCapacityUom.current = item;
+              console.log("item weight capacity", weightCapacityUom.current);
+            }}
           />
           {/* <Controller
             control={control}

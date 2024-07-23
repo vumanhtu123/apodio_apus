@@ -11,55 +11,88 @@ import { Button } from "../../../components";
 
 export const ConfigInfoMoreComponent = (props: any) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<any>([]);
-  const [selectedItems, setSelectedItems] = useState<any>([]);
-  const heightUom = useRef({ id: 0, name: "" });
-  const lengthUom = useRef({ id: 0, name: "" });
-  const widthUom = useRef({ id: 0, name: "" });
-  const weightCapacityUom = useRef({ id: 0, name: "" });
+  const [selectedItems, setSelectedItems] = useState<any>();
+  const heightUom = useRef({ value: 0, text: "" });
+  const lengthUom = useRef({ value: 0, text: "" });
+  const widthUom = useRef({ value: 0, text: "" });
+  const weightCapacityUom = useRef({ value: 0, text: "" });
+  const [focusedField, setFocusedField] = useState("");
 
-  console.log("list unit", props.list);
-  const toggleModal = () => {
-    console.log("preChoice", selectedItems);
+  const toggleModal = (name?: any) => {
+    setFocusedField(name);
     setModalVisible(!modalVisible);
   };
+
+  const checkTicker = () => {
+    switch (focusedField) {
+      case "longs":
+        return lengthUom.current.value;
+      case "width":
+        return widthUom.current.value;
+      case "height":
+        return heightUom.current.value;
+      case "weight":
+        return weightCapacityUom.current.value;
+      default:
+        return selectedItems?.value;
+    }
+  };
+
   const renderItem = ({ item }: any) => {
-    const isSelected = selectedItem.some(
-      (selectedItem: { value: any }) => selectedItem.value === item.value
-    );
     return (
       <View>
         <View style={{ height: scaleHeight(1), backgroundColor: "#E7EFFF" }} />
         <TouchableOpacity
           style={stylesWareHouse.item}
-          onPress={() => handleItemSelect(item)}>
+          onPress={() => setSelectedItems(item)}>
           <Text style={[stylesWareHouse.itemText]}>{item.text}</Text>
-          {isSelected ? <Images.icon_check /> : null}
+          {checkTicker() == item.value ? (
+            <Images.icon_check />
+          ) : selectedItems?.value == item.value ? (
+            <Images.icon_check />
+          ) : null}
         </TouchableOpacity>
       </View>
     );
   };
 
   const handleItemSelect = (item: any) => {
-    const isSelected = selectedItem.some(
-      (selectedItem: { value: any }) => selectedItem.value === item.value
-    );
-    if (isSelected) {
-      setSelectedItem(
-        selectedItem.filter(
-          (selectedItem: { value: any }) => selectedItem.value !== item.value
-        )
-      );
+    switch (focusedField) {
+      case "longs":
+        lengthUom.current.value = item.value;
+        lengthUom.current.text = item.text;
+        break;
+      case "width":
+        widthUom.current.value = item.value;
+        widthUom.current.text = item.text;
+        break;
+      case "height":
+        heightUom.current.value = item.value;
+        heightUom.current.text = item.text;
+        break;
+      case "weight":
+        weightCapacityUom.current.value = item.value;
+        weightCapacityUom.current.text = item.text;
+        break;
+      default:
+        break;
     }
   };
 
   const onConfirm = () => {
-    setSelectedItems(selectedItem);
-    //   props.onPressChoice(selectedItem);
+    handleItemSelect(selectedItems);
     toggleModal();
+    props.heightUom(heightUom.current);
+    props.lengthUom(lengthUom.current);
+    props.widthUom(widthUom.current);
+    props.weightCapacityUom(weightCapacityUom.current);
   };
 
   useEffect(() => {
+    heightUom.current = props.heightUomData;
+    widthUom.current = props.widthUomData;
+    lengthUom.current = props.lengthUomData;
+    weightCapacityUom.current = props.weightCapacityUomData;
     props.setValue("longitude", "");
     props.setValue("latitude", "");
     props.setValue("longs", "");
@@ -165,14 +198,15 @@ export const ConfigInfoMoreComponent = (props: any) => {
             isShowPassword
             RightIcon={Images.dropDown}
             styleTextRight={stylesWareHouse.textConfig}
-            valueTextRight={lengthUom.current.name ?? ""}
+            valueTextRight={lengthUom.current.text ?? ""}
             RightIconClear={null}
             RightIconShow={() => {}}
             onClearText={() => {
               onChange("");
             }}
             pressRightIcon={() => {
-              toggleModal();
+              setSelectedItems(null);
+              toggleModal("longs");
             }}
             error={props.errors.longs?.message ?? ""}
             onChangeText={(value) => {
@@ -209,9 +243,13 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight={widthUom.current.name ?? ""}
+              valueTextRight={widthUom.current.text ?? ""}
               styleTextRight={stylesWareHouse.textConfig}
               RightIcon={Images.dropDown}
+              pressRightIcon={() => {
+                setSelectedItems(null);
+                toggleModal("width");
+              }}
               RightIconClear={null}
               RightIconShow={() => {}}
               onClearText={() => {
@@ -250,9 +288,14 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight={heightUom.current.name ?? ""}
+              valueTextRight={heightUom.current.text ?? ""}
               RightIconClear={null}
               styleTextRight={stylesWareHouse.textConfig}
+              RightIconShow={() => {}}
+              pressRightIcon={() => {
+                setSelectedItems(null);
+                toggleModal("height");
+              }}
               RightIcon={Images.dropDown}
               onClearText={() => {
                 onChange("");
@@ -290,9 +333,13 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight={weightCapacityUom.current.name ?? ""}
+              valueTextRight={weightCapacityUom.current.text ?? ""}
               RightIconClear={null}
               RightIconShow={() => {}}
+              pressRightIcon={() => {
+                setSelectedItems(null);
+                toggleModal("weight");
+              }}
               styleTextRight={stylesWareHouse.textConfig}
               RightIcon={Images.dropDown}
               onClearText={() => {
@@ -322,7 +369,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
             renderItem={renderItem}
             keyExtractor={(item: any) => item.value}
             onEndReached={props.loadMore}
-            // keyExtractor={(item) => item.toString()}
+            keyExtractor={(item: any, index: any) => index.toString()}
           />
           <View style={stylesWareHouse.viewModalButton}>
             <Button
