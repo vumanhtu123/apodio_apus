@@ -32,9 +32,9 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
         const getAPI = useStores()
 
 
-        const { id } = props.route.params
+        const { id, ten } = props.route.params
         console.log('====================================');
-        console.log('data id', id);
+        console.log('data id', id, ten);
         console.log('====================================');
         const idNumber = Number(id)
 
@@ -52,38 +52,42 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
             const result = await getAPI.warehouseStore.deleteWarehouse(idNumber)
             console.log("resultMess", result?.message);
 
-            // if (result?.message == 'Success') {
-            console.log("abv")
-            Dialog.show({
-                title: translate("txtDialog.txt_title_dialog"),
-                button: '',
-                button2: translate("common.ok"),
-                textBody: en.wareHouse.messengerSucces,
-                closeOnOverlayTap: false,
-                onPressButton: () => {
-                    console.log('doantesttt');
-                    // navigation.navigate("wareHouse", { reset: true });
-                    // navigation.goBack()
-                    Dialog.hide();
+            if (result?.message == 'Success') {
+                console.log("abv")
+                await Dialog.hideDialog();
 
-                }
-            })
-            // }
-            // else {
-            //     await Dialog.hideDialog();
-            //     Dialog.show({
-            //         title: translate("productScreen.Notification"),
-            //         button: translate("common.ok"),
-            //         textBody: data?.message + en.wareHouse.messengerFail,
-            //         closeOnOverlayTap: false
-            //     })
-            // }
+                Dialog.show({
+                    title: translate("txtDialog.txt_title_dialog"),
+                    button: '',
+                    button2: translate("common.ok"),
+                    textBody: en.wareHouse.messengerSucces,
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        console.log('doantesttt');
+                        navigation.navigate("wareHouse", { reset: true });
+                        // navigation.goBack()
+                        Dialog.hide();
+
+                    }
+                })
+            }
+            else {
+                await Dialog.hideDialog();
+                Dialog.show({
+                    title: translate("productScreen.Notification"),
+                    button: translate("common.ok"),
+                    textBody: data?.message + en.wareHouse.messengerFail,
+                    closeOnOverlayTap: false
+                })
+            }
 
 
         }
 
         useEffect(() => {
+
             getDataDetail()
+
         }, [props.navigation])
 
         return (
@@ -97,16 +101,18 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                     RightIcon1={Images.ic_pen_white}
                     RightIcon2={Images.ic_bin_white}
                     RightIcon={Images.icon_copy}
-                    onLeftPress={() => props.navigation.goBack()}
+                    onLeftPress={() => navigation.navigate("wareHouse", { reset: true })}
                     onRightPress2={() => {
                         Dialog.show({
                             type: ALERT_TYPE.INFO,
                             title: translate("productScreen.Notification"),
                             button: translate("productScreen.cancel"),
-                            button2: translate("productScreen.BtnNotificationAccept"),
-                            textBody: translate("productScreen.ProductDelete"),
+                            button2: translate("productScreen.BtnNotificationDeleteFail"),
+                            textBody: translate("wareHouse.titleConfirm") + " " + (ten) + " " + translate("wareHouse.this"),
+                            textBodyWarning: translate("wareHouse.warning"),
                             closeOnOverlayTap: false,
                             onPressButton: () => {
+
                                 deleteWarehouse()
                             }
 
