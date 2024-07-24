@@ -32,7 +32,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
         const getAPI = useStores()
 
 
-        const { id, state } = props.route.params
+        const { id, state, name } = props.route.params
         console.log('====================================');
         console.log('data id', id, state);
         console.log('====================================');
@@ -125,7 +125,7 @@ export const DetailWarehouseScreen: FC<StackScreenProps<NavigatorParamList, 'det
                             title: translate("productScreen.Notification"),
                             button: translate("productScreen.cancel"),
                             button2: translate("productScreen.BtnNotificationDeleteFail"),
-                            textBody: translate("wareHouse.titleConfirm") + " " + (state) + " " + translate("wareHouse.this"),
+                            textBody: translate("wareHouse.titleConfirm") + " " + (name) + " " + translate("wareHouse.this"),
                             textBodyWarning: translate("wareHouse.warning"),
                             closeOnOverlayTap: false,
                             onPressButton: () => {

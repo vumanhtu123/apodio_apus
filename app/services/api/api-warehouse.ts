@@ -19,7 +19,7 @@ export class WarehouseAPI {
     size: number,
     page: number,
     search: string,
-    state: string,
+    state: string | undefined,
     isLoadMore: boolean
   ): Promise<any> {
     console.log("value isVisible", isLoadMore);
