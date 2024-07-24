@@ -6,6 +6,7 @@ import { WarehouseAPI } from "../../services/api/api-warehouse";
 import { reset } from "i18n-js";
 import { ResponseWarehouse } from "./warehouse-model";
 import { DataDetailWarehouse } from "./detail-warehouse-model";
+import { DataNumberState } from "./number-state-model";
 import { UnitResult } from "../unit/unit-model";
 
 export const WarehouseStoreModal = types
@@ -100,10 +101,7 @@ export const WarehouseStoreModal = types
         );
         const result: BaseResponse<any, ErrorCode> =
           yield warehouseAPI.updateWareHouse(form, id);
-        console.log(
-          "Warehouse_Update-------------",
-          JSON.stringify(result.data)
-        );
+        console.log("Warehouse_Update-------------", JSON.stringify(form));
         if (result?.data != null) {
           return result;
         } else {
@@ -136,13 +134,28 @@ export const WarehouseStoreModal = types
       }
     }),
 
-    getListUnit: flow(function* () {
+    getNumberState: flow(function* (value: string) {
       try {
-        const warehouseAPI = new WarehouseAPI(
+        const warehouseDetail = new WarehouseAPI(
           self.environment.apiWarehouse,
           self.environment.api
         );
-        const result: UnitResult = yield warehouseAPI.getListUnit();
+        const result: BaseResponse<DataNumberState, ErrorCode> =
+          yield warehouseDetail.getNumberState(value);
+        console.log("WarehouseNumber------------- ", JSON.stringify(result));
+
+        return result;
+      } catch (error) {
+        console.log("Get detail warehouse error", error);
+      }
+    }),
+    getListUnit: flow(function* () {
+      try {
+        const warehouseDetail = new WarehouseAPI(
+          self.environment.apiWarehouse,
+          self.environment.api
+        );
+        const result: UnitResult = yield warehouseDetail.getListUnit();
         return result;
       } catch (error) {
         console.log("LOG ERROR PROMOTION", error);

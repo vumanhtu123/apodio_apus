@@ -8,11 +8,9 @@ import { translate } from "../../../i18n";
 export const ConditionsComponent = ({
   control,
   errors,
-  conditions,
   setValue,
   clearError,
 }: any) => {
-  console.log("check tuvm", conditions);
   useEffect(() => {
     setValue("temperature1", "");
     clearError("temperature1");
@@ -20,8 +18,8 @@ export const ConditionsComponent = ({
     clearError("temperature2");
     setValue("temperature3", "");
     clearError("temperature3");
-  }, [conditions]);
-  return conditions ? (
+  }, []);
+  return (
     <View>
       <Controller
         control={control}
@@ -130,5 +128,5 @@ export const ConditionsComponent = ({
         />
       </View>
     </View>
-  ) : null;
+  );
 };

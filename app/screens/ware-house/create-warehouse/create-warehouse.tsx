@@ -26,6 +26,7 @@ export const CreateWareHouseScreen: FC<
     formState: { errors },
     setValue,
     clearErrors,
+    watch,
   } = useForm({
     mode: "all",
   });
@@ -36,6 +37,8 @@ export const CreateWareHouseScreen: FC<
   const lengthUom = useRef({ value: 0, text: "" });
   const widthUom = useRef({ value: 0, text: "" });
   const weightCapacityUom = useRef({ value: 0, text: "" });
+  const conditions = watch("conditions", false);
+  const config = watch("config", false);
 
   const [listUnit, setListUnit] = useState([]);
   console.log(
@@ -57,18 +60,16 @@ export const CreateWareHouseScreen: FC<
   };
 
   useEffect(() => {
-    handlerDataList();
+    console.log("width uom", lengthUom.current);
     heightUom.current = props.route.params.additionalInfo?.heightUom;
     lengthUom.current = props.route.params.additionalInfo?.lengthUom;
     widthUom.current = props.route.params.additionalInfo?.widthUom;
     weightCapacityUom.current =
       props.route.params.additionalInfo?.weightCapacityUom;
+  }, []);
 
-    console.log(
-      "width uom",
-      props.route.params.additionalInfo?.weightCapacityUom
-    );
-
+  useEffect(() => {
+    handlerDataList();
     status.current == "COPY"
       ? setValue(
           "nameWareHouse",
@@ -115,14 +116,20 @@ export const CreateWareHouseScreen: FC<
       "weight",
       String(props.route.params.additionalInfo?.weightCapacity ?? "")
     );
+    setValue(
+      "conditions",
+      props.route.params?.hasConditionStorage ? true : false
+    );
+    setValue("config", props.route.params?.hasAdditionalInfo ? true : false);
   }, [props.route.params]);
 
-  const [conditions, setConditions] = useState(
-    props.route.params.hasConditionStorage ? true : false
-  );
-  const [config, setConfig] = useState(
-    props.route.params.hasAdditionalInfo ? true : false
-  );
+  // const [conditions, setConditions] = useState(
+  //   props.route.params.hasConditionStorage ? true : false
+  // );
+  // const [config, setConfig] = useState(
+  //   props.route.params.hasAdditionalInfo ? true : false
+  // );
+
   const onSubmit = (data: any) => {
     // console.log("tuvm test data", data);
     switch (status.current) {
@@ -213,7 +220,6 @@ export const CreateWareHouseScreen: FC<
               },
             });
           }
-          // if (item.data.errorCodes[0].code.toString()) {
 
           console.log(
             "tuvm response: ",
@@ -239,8 +245,8 @@ export const CreateWareHouseScreen: FC<
     try {
       api.warehouseStore
         .postCreateWareHouse({
-          name: data.nameWareHouse,
-          code: data.codeWareHouse ?? "",
+          name: data?.nameWareHouse,
+          code: data?.codeWareHouse == "" ? null : data?.codeWareHouse,
           companyId: 0,
           branchId: 0,
           sourceProductType: "INTERNAL",
@@ -327,8 +333,8 @@ export const CreateWareHouseScreen: FC<
     try {
       api.warehouseStore
         .postCreateWareHouse({
-          name: data.nameWareHouse,
-          code: data.codeWareHouse ?? "",
+          name: data?.nameWareHouse,
+          code: data?.codeWareHouse == "" ? null : data?.codeWareHouse,
           companyId: 0,
           branchId: 0,
           sourceProductType: "INTERNAL",
@@ -468,7 +474,7 @@ export const CreateWareHouseScreen: FC<
               maxLength: 50,
               pattern: {
                 value: /^[a-zA-Z0-9-]+$/,
-                message: "Only letters, numbers, and underscores are allowed",
+                message: "Mã chỉ gồm chữ , số và ký tự _",
               },
             }}
           />
@@ -549,74 +555,92 @@ export const CreateWareHouseScreen: FC<
               maxLength: 250,
             }}
           />
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignContent: "center",
-              marginVertical: scaleHeight(15),
-            }}
-            onPress={() => {
-              setConditions(!conditions);
-              console.log(conditions);
-            }}>
-            {conditions ? (
-              <Images.ic_checkbox marginRight={5} />
-            ) : (
-              <View style={stylesWareHouse.selected}></View>
-            )}
-            <Text tx="wareHouse.storageConditions"></Text>
-          </TouchableOpacity>
-          <ConditionsComponent
+          <Controller
+            name="conditions"
             control={control}
-            errors={errors}
-            conditions={conditions}
-            setValue={setValue}
-            clearError={clearErrors}
-          />
-          <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              alignContent: "center",
-              marginVertical: scaleHeight(15),
-            }}
-            onPress={() => {
-              setConfig(!config);
-            }}>
-            {config ? (
-              <Images.ic_checkbox marginRight={5} />
-            ) : (
-              <View style={stylesWareHouse.selected}></View>
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  alignContent: "center",
+                  marginVertical: scaleHeight(15),
+                }}
+                onPress={() => {
+                  // setConditions(!conditions);
+                  setValue("conditions", !conditions);
+                  console.log(conditions);
+                }}>
+                {conditions ? (
+                  <Images.ic_checkbox marginRight={5} />
+                ) : (
+                  <View style={stylesWareHouse.selected}></View>
+                )}
+                <Text tx="wareHouse.storageConditions"></Text>
+              </TouchableOpacity>
             )}
-            <Text tx="wareHouse.configInfoMore"></Text>
-          </TouchableOpacity>
-          <ConfigInfoMoreComponent
-            control={control}
-            errors={errors}
-            config={config}
-            setValue={setValue}
-            clearError={clearErrors}
-            list={listUnit}
-            heightUomData={heightUom.current}
-            lengthUomData={lengthUom.current}
-            widthUomData={widthUom.current}
-            weightCapacityUomData={weightCapacityUom.current}
-            heightUom={(item: any) => {
-              heightUom.current = item;
-              console.log("item uom", heightUom.current);
-            }}
-            lengthUom={(item: any) => {
-              lengthUom.current = item;
-              console.log("item length", lengthUom.current);
-            }}
-            widthUom={(item: any) => {
-              widthUom.current = item;
-              console.log("item width", widthUom.current);
-            }}
-            weightCapacityUom={(item: any) => {
-              weightCapacityUom.current = item;
-              console.log("item weight capacity", weightCapacityUom.current);
-            }}
           />
+          {conditions ? (
+            <ConditionsComponent
+              control={control}
+              errors={errors}
+              // conditions={conditions}
+              setValue={setValue}
+              clearError={clearErrors}
+            />
+          ) : null}
+          <Controller
+            name="config"
+            control={control}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  alignContent: "center",
+                  marginVertical: scaleHeight(15),
+                }}
+                onPress={() => {
+                  setValue("config", !config);
+                  // setConfig(!config);
+                }}>
+                {config ? (
+                  <Images.ic_checkbox marginRight={5} />
+                ) : (
+                  <View style={stylesWareHouse.selected}></View>
+                )}
+                <Text tx="wareHouse.configInfoMore"></Text>
+              </TouchableOpacity>
+            )}
+          />
+          {config ? (
+            <ConfigInfoMoreComponent
+              control={control}
+              errors={errors}
+              // config={config}
+              setValue={setValue}
+              clearError={clearErrors}
+              list={listUnit}
+              heightUomData={heightUom.current}
+              lengthUomData={lengthUom.current}
+              widthUomData={widthUom.current}
+              weightCapacityUomData={weightCapacityUom.current}
+              heightUom={(item: any) => {
+                heightUom.current = item;
+                console.log("item uom", heightUom.current);
+              }}
+              lengthUom={(item: any) => {
+                lengthUom.current = item;
+                console.log("item length", lengthUom.current);
+              }}
+              widthUom={(item: any) => {
+                widthUom.current = item;
+                console.log("item width", widthUom.current);
+              }}
+              weightCapacityUom={(item: any) => {
+                weightCapacityUom.current = item;
+                console.log("item weight capacity", weightCapacityUom.current);
+              }}
+            />
+          ) : null}
           {/* <Controller
             control={control}
             render={({ field: { onChange, value } }) => (

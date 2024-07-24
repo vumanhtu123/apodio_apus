@@ -71,9 +71,9 @@ const getBaseURL = () => {
 
 const getDomainWarehouse = () => {
   const domain = CONFIG.API.STAGING.URL_WAREHOUSE;
-  console.log('URL warehouse 2',domain )
-  return domain
-}
+  console.log("URL warehouse 2", domain);
+  return domain;
+};
 export interface ApiConfig {
   /**
    * The URL of the api.
@@ -125,5 +125,5 @@ export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
 
 export const DEFAULT_API_WAREHOUSE: ApiConfig = {
   url: getDomainWarehouse(),
-  timeout: 100000
-}
+  timeout: 100000,
+};

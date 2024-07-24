@@ -114,6 +114,32 @@ export class WarehouseAPI {
       return { kind: "bad-data", result: error };
     }
   }
+  async getNumberState(value: string ): Promise<any>{
+    try {
+      console.log("doandev url detail warehouse ", this.api.config.url);
+
+      const response : ApiResponse<BaseResponse<ResponseWarehouse,ErrorCode>> = await 
+        this.api.apisauce.get(
+          ApiEndpoint.NUMBER_STATE,
+          {
+            search: value
+          }
+        )
+        const result = response.data;
+        console.log('data result Number State warehouse', result);
+
+        if (result?.data != null ) {
+          console.log('data result', result);
+
+          return result
+        }else{
+          return result?.errorCodes
+        }
+
+    } catch (error) {
+     return { kind: "bad-data", result: error };
+    }
+  } 
 
   async createWareHouse(wareHouse: any): Promise<any> {
     Loading.show({
