@@ -38,19 +38,20 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const [openInforWareHouse, setOpneInforWareHouse] = useState(false)
         const [openDialogPlus, setOpenDialogPlus] = useState(false)
         const [refreshing, setRefreshing] = useState(false);
-        const [isLoadingMore, setIsLoadingMore] = useState(false);
+        const [isLoadingMore, setIsLoadingMore] = useState<boolean>();
         const [valueSearch, setValueSearch] = useState("");
-        const [myData, setMyData] = useState<{}[]>([]);
+        const [myData, setMyData] = useState<ItemList[]>([]);
         const [lengthAll, setLengthAll] = useState<number>()
         const [lengthIsActive, setLengthIsActive] = useState<number>()
         const [lengthSave, setLengthSave] = useState<number>()
         const [isShowSearch, setIsShowSearch] = useState(false)
         const page = useRef(0)
         const totalPages2 = useRef<any>()
+        const totalElement = useRef<any>()
         const getAPI = useStores()
         const size = useRef(10);
-
-
+        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
+        console.log('value load more', isLoadingMore);
 
         const dataListTabar = [
             {
@@ -116,9 +117,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             },
         ];
 
-
-        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
-
         const checkState = () => {
             if (indexTabbar == en.wareHouse.all) {
                 console.log('tab select all');
@@ -135,12 +133,10 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 return 'ARCHIVED'
             }
         }
-        // console.log('====================================');
-        // console.log('value state', checkState());
-        // console.log('====================================');
 
         const getListWarehouse = () => {
-            console.log("chay lan: ", page.current);
+
+            console.log("chay lan");
             try {
                 getAPI.warehouseStore.getListWareHouse(size.current, page.current, checkState(), valueSearch, statusLoadMore).then((data) => {
                     console.log('data doan 1', data);
@@ -162,13 +158,13 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                             )
                             // const a = myData.concat(dataWarehouse)
                             // setMyData(a)
-                            // console.log("My data 3", a);
-
-                            // console.log('data doan 5');
-
+                            console.log("My data 5",);
                         }
+                        console.log('data doan 6');
 
                         const totalPages = data?.totalPages
+                        const totalElementData = data?.totalElements
+                        totalElement.current = totalElementData
                         totalPages2.current = totalPages
 
                     }
@@ -176,7 +172,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     console.log('totalPage', totalPages2.current);
                     console.log('page', page.current);
                     console.log('data doan 7', myData);
-
+                    // setIsLoadingMore(false)
                 });
             } catch (error) {
                 console.log('data doan 7')
@@ -184,8 +180,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 console.log('Error loadMore', error);
                 console.log('====================================');
             }
-
-
         }
 
         const getNumberState = () => {
@@ -197,15 +191,14 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
 
         }
-        // console.log("MyData", myData);
-        // console.log('lengthALL', lengthAll);
-        // console.log('doandev size', myData.length);
-
 
 
         const handleRefresh = () => {
             try {
+                getAPI.warehouseStore.setIsLoadMoreWarehouse(false);
+
                 setRefreshing(true);
+                getAPI.warehouseStore.reset
                 // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
                 page.current = 0
                 getListWarehouse();
@@ -219,37 +212,32 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         };
 
         const handleLoadMore = () => {
+            setIsLoadingMore(true)
+            getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
+
             console.log('pageCurrent1', page.current);
             console.log('totalPageData', totalPages2.current);
             console.log('value loadMore', isLoadingMore);
-
-
             try {
-                setIsLoadingMore(true)
-                getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
+
                 if (
                     page.current < totalPages2.current - 1
-
                 ) {
 
                     console.log("page so lan", page.current);
                     page.current = page.current + 1;
                     console.log('pageDoan', page.current);
                     getListWarehouse();
-                    // setIsLoadingMore(false);
-
-                } else {
-                    console.log('page end');
+                    setIsLoadingMore(false);
                 }
                 // setIsLoadingMore(false);
                 console.log('pageCurrent7');
+                setIsLoadingMore(!isLoadingMore)
             } catch (error) {
                 console.log('====================================');
                 console.log('Error loadMore', error);
                 console.log('====================================');
             }
-
-
         };
 
         useEffect(() => {
@@ -267,33 +255,26 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
         useEffect(() => {
             page.current = 0
+            // getAPI.warehouseStore.setIsLoadMoreWarehouse(false)
             getListWarehouse()
             getNumberState()
         }, [indexTabbar]);
 
-        // console.log('====================================');
-        // console.log('check doan', props.navigation);
-        // console.log('====================================');
-        // console.log('====================================');
-        // console.log(dataListTabar[0].img);
-        // console.log('====================================');
         interface ItemList {
             id: number;
             code: string;
             name: string;
             state: string;
-            onClick: () => void;
         }
 
-        const ItemListWareHouse: React.FC<{ item: ItemList, index: any }> = ({ item, index }) => {
+        const ItemListWareHouse: React.FC<{ item: ItemList }> = ({ item }) => {
 
             return (
                 <TouchableOpacity style={Styles.itemList}
-                    key={index}
+
                     onPress={() => {
                         // setIdWarehouse(item.id)
                         console.log('id select', item.id);
-
                         props.navigation.navigate({ name: 'detailWarehouse', params: { id: item.id, state: item.state, name: item.name } } as never)
                     }}
                 >
@@ -375,6 +356,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
                         page.current = 0
+                        setIsLoadingMore(!isLoadingMore)
                         getNumberState()
                         getListWarehouse();
                     }}
@@ -442,25 +424,30 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     </View>
 
                     <FlatList
-                        style={{}}
+                        style={{ paddingBottom: 50 }}
                         data={myData}
-                        renderItem={({ item, index }) => <ItemListWareHouse item={item} index={index} />}
-                        keyExtractor={(item: any, index) => item?.id.toString()}
+                        renderItem={({ item, index }) => <ItemListWareHouse item={item} />}
+                        keyExtractor={(item: any, index) => item?.id.toString() + index}
                         showsVerticalScrollIndicator={false}
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                         }
-                        onEndReached={() => {
-                            handleLoadMore()
-                            // console.log('pageCurrent', page.current)
-                        }}
-
-                        onEndReachedThreshold={0.3}
+                        onEndReached={handleLoadMore}
+                        onEndReachedThreshold={0.2}
                         ListFooterComponent={() => {
-                            return <View style={{ backgroundColor: 'red', flex: 1 }}>
-                                {isLoadingMore ?? <ActivityIndicator />}
+                            return <View>
+                                {
+                                    myData.length !== 1 ?
+                                        <>
+                                            {isLoadingMore ?? <ActivityIndicator />}
+                                        </>
+                                        : null
+                                }
                             </View>
                         }}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={5}
                     />
                     <TouchableOpacity
                         style={Styles.btnPlus}
@@ -478,6 +465,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         setIsVisible={() => navigation.navigate("warehouse" as never)}
                     />
                 </View>
-            </View>
+            </View >
         );
     });
