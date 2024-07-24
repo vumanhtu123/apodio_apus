@@ -13,6 +13,12 @@ import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Images } from "../../../../assets";
 import { AutoImage, TextField } from "../../../components";
+import { CustomModal } from "../../../components/custom-modal";
+import {
+  ALERT_TYPE,
+  Dialog,
+  Loading,
+} from "../../../components/dialog-notification";
 import { translate } from "../../../i18n/translate";
 import { useStores } from "../../../models";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
@@ -22,18 +28,26 @@ import {
   requestCameraPermission,
   requestLibraryPermission,
 } from "../../../utils/requesPermissions";
-import {
-  ALERT_TYPE,
-  Dialog,
-  Loading,
-} from "../../../components/dialog-notification";
 import { validateFileSize } from "../../../utils/validate";
-import { CustomModal } from "../../../components/custom-modal";
 import { stylesCreateDirectory } from "../styles";
 
 const CreateDirectoryModal = (props: any) => {
-  const { isVisible, setType, setIsVisible, onCreateDirectory } = props;
-
+  const { isVisible, setIsVisible, onCreateDirectory } = props;
+  const { categoryStore } = useStores();
+  const handleCreateDirectory = async (name: any, imageUrl: any) => {
+    const result = await categoryStore.getCreateCategories(name, imageUrl);
+    if (result.kind === "ok") {
+      console.log("Tạo danh mục thành công", result.response);
+      onCreateDirectory(result.response.message, result.kind)
+      setIsVisible(false);
+    } else {
+      console.log(
+        "Tạo danh mục thất bại",
+        result.response.errorCodes[0].message
+      );
+      onCreateDirectory(result.response.errorCodes[0].message);
+    }
+  };
   const {
     control,
     reset,
@@ -50,7 +64,7 @@ const CreateDirectoryModal = (props: any) => {
 
   const handleCreateButtonPress = async () => {
     setShowLoading(true);
-    onCreateDirectory(getValues("nameCategory"), imagesNote)
+    handleCreateDirectory(getValues("nameCategory"), imagesNote)
       .then((result: any) => {
         setShowLoading(false);
       })
