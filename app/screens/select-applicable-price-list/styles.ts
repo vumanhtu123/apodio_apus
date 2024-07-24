@@ -64,5 +64,20 @@ export const Styles = StyleSheet.create({
         fontWeight: "600",
         marginBottom: scaleHeight(12)
 
+    },
+    itemPriceList: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: scaleWidth(375),
+        height: scaleHeight(56),
+        paddingHorizontal: 16,
+        justifyContent: "space-between",
+    },
+    dotsPriceList: {
+        borderRadius: scaleHeight(8),
+        borderWidth: 1,
+        borderColor: colors.palette.lightGrey,
+        width: scaleHeight(16),
+        height: scaleHeight(16),
     }
 })

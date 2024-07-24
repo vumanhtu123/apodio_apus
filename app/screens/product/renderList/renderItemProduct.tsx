@@ -40,7 +40,7 @@ const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProduct
             right: scaleWidth(6),
             zIndex: 1,
           }}>
-          {viewProduct === 'VIEW_VARIANT' && item.scene?.url !== '' ?
+          {viewProduct === 'VIEW_PRODUCT' && item.scene?.url == '' ?
             <TouchableOpacity >
               <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
             </TouchableOpacity> : null

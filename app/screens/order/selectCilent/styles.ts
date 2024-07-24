@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { colors, scaleHeight, scaleWidth } from "../../../theme";
+import { Platform, StyleSheet } from "react-native";
+import { colors, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../orderScreen/styles";
 
 export const Styles = StyleSheet.create({
@@ -65,5 +65,42 @@ export const Styles = StyleSheet.create({
         fontWeight: "600",
         marginBottom: scaleHeight(12)
 
-    }
+    },
+    itemClient: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: scaleWidth(375),
+        height: scaleHeight(56),
+        paddingHorizontal: padding.padding_16,
+        marginBottom: 1.5,
+        justifyContent: "space-between",
+    },
+    icCodeItem: {
+        width: 40,
+        height: 40,
+        backgroundColor: "#EFF8FF",
+        borderRadius: 50,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    dots :{
+        borderRadius: scaleHeight(8),
+        borderWidth: 1,
+        borderColor: colors.palette.lightGrey,
+        width: scaleHeight(16),
+        height: scaleHeight(16),
+    },
+    btnAddClient:{
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 30,
+        position: "absolute",
+        paddingHorizontal: scaleWidth(18),
+        paddingVertical: scaleHeight(8),
+        backgroundColor: colors.palette.navyBlue,
+        bottom: Platform.OS === "ios" ? scaleHeight(20) : scaleHeight(5),
+        right: scaleWidth(16),
+      },
+
 })

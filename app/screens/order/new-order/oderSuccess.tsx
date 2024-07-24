@@ -85,7 +85,7 @@ export const OrderSuccess: FC = () => {
                                             tx="successScreen.orderHasBeenPaid"
                                         />
                                         <Text style={{ fontSize: fontSize.size14 }}>
-                                            {paymentMethod ==true ? formatVND(formatCurrency(commasToDots(formattedPrice))) : formatVND(formatCurrency(commasToDots(formattedInputPrice)))}
+                                            {paymentMethod == true ? formatVND(formatCurrency(commasToDots(formattedPrice))) : formatVND(formatCurrency(commasToDots(formattedInputPrice)))}
                                         </Text>
                                     </View>
 
@@ -93,7 +93,7 @@ export const OrderSuccess: FC = () => {
                                         tx="successScreen.theRemainingAmount"
                                     />
                                     <Text style={{ color: colors.palette.radicalRed, fontWeight: "500", fontSize: fontSize.size14, marginBottom: scaleWidth(12) }}>
-                                    {paymentMethod ==true ? formatVND(0) : formatVND(formatCurrency(commasToDots(formattedReceivables)))}
+                                        {paymentMethod == true ? formatVND(0) : formatVND(formatCurrency(commasToDots(formattedReceivables)))}
                                     </Text>
                                 </>
                         }
@@ -119,7 +119,7 @@ export const OrderSuccess: FC = () => {
                     }} style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                        borderRadius: 10, borderColor: '#c8c8c8',
+                        borderRadius: scaleWidth(10), borderColor: '#c8c8c8',
                         paddingVertical: scaleHeight(12),
                         backgroundColor: '#0078d4'
                     }}>

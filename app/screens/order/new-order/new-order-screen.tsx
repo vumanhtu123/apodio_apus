@@ -952,7 +952,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                           ? Dialog.show({
                             type: ALERT_TYPE.INFO,
                             title: translate("productScreen.Notification"),
-                            textBody: "Bạn cần nhập giá trước khi chọn thuế",
+                            textBody: "productScreen.youNeedEnterPriceBeforeSelectTax",
                             button2: translate(
                               "productScreen.BtnNotificationAccept"
                             ),
@@ -1029,17 +1029,17 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             <View
               style={{
                 flexDirection: "row",
-                borderRadius: 8,
+                borderRadius: scaleWidth(8),
                 backgroundColor: "white",
-                paddingHorizontal: 16,
-                paddingVertical: 15,
+                paddingHorizontal: padding.padding_16,
+                paddingVertical: padding.padding_15,
                 justifyContent: "space-between",
                 alignItems: "center",
               }}>
               <Text
                 tx="order.method_pay"
                 style={{
-                  fontSize: 10,
+                  fontSize: fontSize.size10,
                   fontWeight: "400",
                   color: "#242424",
                 }}></Text>
@@ -1048,7 +1048,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   <Text
                     text={countRef.current.toString()}
                     style={{
-                      fontSize: 10,
+                      fontSize: fontSize.size10,
                       fontWeight: "400",
                       color: "#242424",
                       marginRight: 6,
@@ -1062,13 +1062,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       tx="order.available_limit"
                       style={{
                         fontWeight: "400",
-                        fontSize: 10,
+                        fontSize: fontSize.size10,
                         color: "#747475",
                         alignContent: "center",
                       }}></Text>
                     <Text
                       style={{
-                        fontSize: 10,
+                        fontSize: fontSize.size10,
                         fontWeight: "400",
                         color:
                           Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
@@ -1086,7 +1086,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       <Text
                         style={{
                           fontWeight: "400",
-                          fontSize: 10,
+                          fontSize: fontSize.size10,
                           color: "#747475",
                           alignContent: "center",
                         }}>
@@ -1110,7 +1110,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             <View
               style={{
                 flexDirection: "row",
-                marginVertical: 15,
+                marginVertical: margin.margin_15,
                 alignItems: "center",
               }}>
               <TouchableOpacity onPress={() => setDesiredDate(false)}>
@@ -1176,7 +1176,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         return Dialog.show({
                           type: ALERT_TYPE.INFO,
                           title: translate("productScreen.Notification"),
-                          textBody: "Bạn cần chọn phương thức thanh toán",
+                          textBody: "productScreen.youNeedSelectPaymentMethods",
                           button2: translate(
                             "productScreen.BtnNotificationAccept"
                           ),
@@ -1319,6 +1319,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               flexDirection: "row",
               paddingBottom: scaleHeight(padding.padding_12),
             }}>
+
             <Text
               tx={"order.usedDebt"}
               style={[styles.textTotal,]}
@@ -1406,10 +1407,12 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         onMarkedDatesChangeS={(markedDatesS: any) => {
           setMarkedDatesS(markedDatesS);
         }}
+
         onMarkedDatesChangeE={(markedDatesE: any) => {
           setMarkedDatesE(markedDatesE);
         }}
         isShowTabs={false}
+
         isSortByDate={isSortByDate}
         isOneDate={true}
         toggleModalDate={toggleModalDate}

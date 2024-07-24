@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, FlatList } from "react-native";
 import { Text, TextField } from "../../../components";
 import {
@@ -21,6 +21,7 @@ import {
 } from "../../../utils/validate";
 import { useStores } from "../../../models";
 import { stylesWeight } from "../styles";
+import { observer } from "mobx-react-lite";
 
 interface InputSelectProps {
   control: any;
@@ -93,9 +94,9 @@ export default function ItemWeight(props: ItemWeight) {
         })
       );
     }
-    if(props.setAdd?.length !== 0){
+    if (props.setAdd?.length !== 0 ) {
       setAddLine(true)
-    }else{
+    } else {
       setAddLine(false)
     }
   }, [props.dataUnitGroup, props.setAdd])
@@ -180,7 +181,8 @@ export default function ItemWeight(props: ItemWeight) {
           data={props.data}
           checkList={props.checkList}
         />
-        {props.checkList ? (addLine === true ? <View
+        {props.checkList ? (addLine === true ? 
+        <View
           style={{
             justifyContent: "space-between",
             flexDirection: "row",
@@ -193,7 +195,7 @@ export default function ItemWeight(props: ItemWeight) {
               fontWeight: "400",
             }}
             tx="productScreen.weightConversion"></Text>
-          {watch('weightOriginal')?.trim() !== "" && watch('volumeOriginal')?.trim() !== "" ? (data ? (data.length !== 0 ?
+          {watch('weightOriginal')?.trim() !== "" && watch('volumeOriginal')?.trim() !== "" && fields.length !== 0 ? (data ? (data.length !== 0 ?
             <TouchableOpacity
               onPress={() => {
                 if (props.setAdd?.length === 0) {
@@ -236,7 +238,7 @@ export default function ItemWeight(props: ItemWeight) {
               data={data}
               remove={() => {
                 remove(index)
-                if(fields.length === 1){
+                if (fields.length === 1) {
                   setAddLine(false)
                 }
               }}
@@ -251,7 +253,7 @@ export default function ItemWeight(props: ItemWeight) {
   );
 }
 
-const ItemOriginal = (item: ItemOriginal) => {
+const ItemOriginal = observer((item: ItemOriginal) => {
   const { vendorStore } = useStores()
   return (
     <View style={stylesWeight.viewItemOriginal}>
@@ -333,9 +335,9 @@ const ItemOriginal = (item: ItemOriginal) => {
       />
     </View>
   );
-};
+});
 
-const ItemConversion = (item: InputSelectProps) => {
+const ItemConversion = observer((item: InputSelectProps) => {
   const { vendorStore } = useStores()
   const { setValue, getValues } = useForm()
 
@@ -359,7 +361,7 @@ const ItemConversion = (item: InputSelectProps) => {
             name={`weight.${item.index}.unit`}
             control={item.control}
             render={({ field: { onChange, value, onBlur } }) => (
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={() => { }}>
                 <View
                   style={{
                     flexDirection: "column",
@@ -380,11 +382,11 @@ const ItemConversion = (item: InputSelectProps) => {
                   <View style={stylesWeight.viewLine}></View>
                   <Text style={stylesWeight.textConversion} numberOfLines={1}>
                     {item.originUit?.name == undefined ||
-                    value?.conversionRate == undefined
+                      value?.conversionRate == undefined
                       ? ""
                       : formatCurrency(commasToDots(value?.conversionRate)) +
-                        " " +
-                        item.originUit?.name}
+                      " " +
+                      item.originUit?.name}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -463,4 +465,4 @@ const ItemConversion = (item: InputSelectProps) => {
       </View>
     </View>
   );
-};
+});

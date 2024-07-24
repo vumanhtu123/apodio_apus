@@ -34,7 +34,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
 
 export const NewDelivery: FC = observer(function NewDelivery() {
-  
+
   const navigation = useNavigation();
   const paddingTop = useSafeAreaInsets().top;
   const heightScroll =
@@ -385,7 +385,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
               />
             )}
             name="phone"
-            rules={{ required: "Số điện thoại là bắt buộc" }}
+            rules={{ required: "order.phoneNumberIsRequired" }}
           />
           <InputSelect
             titleTx={"order.city"}
@@ -449,7 +449,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
               />
             )}
             name="address"
-            rules={{ required: "Địa chỉ là bắt buộc" }}
+            rules={{ required: "order.addressIsRequired" }}
           />
           <View
             style={{

@@ -17,6 +17,7 @@ export const CategoryStoreModel = types
     size: types.optional(types.number, 20),
     totalElements: types.optional(types.number, 0),
     totalPages: types.optional(types.number, 0),
+    isLoadMore: types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -33,20 +34,25 @@ export const CategoryStoreModel = types
     setTotalPages(totalPages: number) {
       self.totalPages = totalPages;
     },
+    setIsLoadMore(isLoadMore: boolean) {
+      self.isLoadMore = isLoadMore
+    }
   }))
   .actions((self) => ({
     getListCategories: flow(function* (
       page: number,
       size: number,
       search?: any,
-      sort?: any
+      sort?: any,
+      isLoadMore?: any
     ) {
       const categoryApi = new CategoryApi(self.environment.api);
       const result: any = yield categoryApi.getListCategories(
         page,
         size,
         search,
-        sort
+        sort,
+        isLoadMore
       );
       if (result.kind === "ok") {
         // console.log("category", result);

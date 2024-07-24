@@ -70,8 +70,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchImageLibrary(options, (response) => {
@@ -124,8 +124,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchImageLibrary(options, (response) => {
@@ -164,8 +164,8 @@ export const ShowNote = (props: InputNote) => {
       const options = {
         cameraType: "back",
         quality: 1,
-        maxHeight: 500,
-        maxWidth: 500,
+        maxHeight: scaleHeight(500),
+        maxWidth: scaleWidth(500),
         selectionLimit: 6 - numberUrl,
       };
       launchCamera(options, (response) => {

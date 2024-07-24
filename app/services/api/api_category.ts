@@ -39,11 +39,14 @@ export class CategoryApi {
     page: any,
     size: any,
     search: any,
-    sort: string
+    sort: string,
+    isLoadMore: any
   ): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+    if (!isLoadMore) {
+      Loading.show({
+        text: 'Loading...',
+      });
+    }
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_CATEGORY + sort,

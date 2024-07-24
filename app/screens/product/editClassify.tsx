@@ -634,176 +634,194 @@ export const EditClassify: FC = (item) => {
   };
 
 
-  const submitAdd = async (data: any) => {
-    console.log('dataInput------------', data)
-    let hasError = false
-    if (data.productName.trim() !== "") {
-      hasError = false
-    } else {
-      methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
-      hasError = true
-    }
-    if (uomId.id === "") {
-      Toast.show({
-        type: ALERT_TYPE.DANGER,
-        title: "",
-        textBody: translate("txtToats.required_information"),
-      });
-      hasError = true
-    }
-    if (hasError == true) {
-    } else {
-      const newArr1: never[] = [];
-      const newArr = dataCreateProduct?.map((item: any) => {
-        return {
-          ...item,
-          productPackingLines: item.weight?.weight?.map((item: any) => {
-            return {
-              uomGroupLineId: item.unit.id,
-              amount: item.unit.conversionRate,
-              volume: formatStringToFloat(item?.volume),
-              weight: formatStringToFloat(item?.weight1)
+    const submitAdd = async (data: any) => {
+        console.log('dataInput------------', data)
+        let hasError = false
+        if (data.productName.trim() !== "") {
+            hasError = false
+        } else {
+            methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
+            hasError = true
+        }
+        if (uomId.id === "") {
+            Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: "",
+                textBody: translate("txtToats.required_information"),
+            });
+            hasError = true
+        }
+        if (addWeight == true) {
+            const unit = data.weight?.flatMap((items: any) => items.unit)
+            const weight1 = data.weight?.flatMap((items: any) => items.weight1)
+            const volume = data.weight?.flatMap((items: any) => items.volume)
+            const checkUnit = unit?.some((item: any) => Object.keys(item).length === 0)
+            const checkWeight1 = weight1?.some((item: any) => item?.trim() === "")
+            const checkVolume = volume?.some((item: any) => item?.trim() === "")
+            if (checkUnit == true || checkWeight1 == true || checkVolume == true || data.weightOriginal.trim() === "" || data.volumeOriginal.trim() === "") {
+              Toast.show({
+                type: ALERT_TYPE.DANGER,
+                title: "",
+                textBody: translate("txtToats.input_weight"),
+              });
+              hasError = true
+            } else {
+              hasError = false
             }
-          })
-        };
-      });
-      arrIdOrigin?.forEach((item) => {
-        let isUnique = true;
-        newArr?.forEach((obj) => {
-          if (obj.id === item) {
-            isUnique = false;
           }
-        });
+        if (hasError == true) {
+        } else {
+            const newArr1: never[] = [];
+            const newArr = dataCreateProduct?.map((item: any) => {
+                return {
+                    ...item,
+                    productPackingLines: item.weight?.weight?.map((item: any) => {
+                        return {
+                            uomGroupLineId: item.unit.id,
+                            amount: item.unit.conversionRate,
+                            volume: formatStringToFloat(item?.volume),
+                            weight: formatStringToFloat(item?.weight1)
+                        }
+                    })
+                };
+            });
+            arrIdOrigin?.forEach((item) => {
+                let isUnique = true;
+                newArr?.forEach((obj) => {
+                    if (obj.id === item) {
+                        isUnique = false;
+                    }
+                });
 
-        if (isUnique) {
-          newArr1.push(item);
+                if (isUnique) {
+                    newArr1.push(item);
+                }
+            });
+            const dataPrice2 = retailPriceProduct?.map((item: any) => {
+                return {
+                    min: Number(formatNumberByString(item.min.toString())),
+                    price: Number(formatNumberByString(item.price.toString())),
+                };
+            });
+            const dataPrice = wholesalePriceProduct?.map((item: any) => {
+                return {
+                    min: Number(formatNumberByString(item.min.toString())),
+                    price: Number(formatNumberByString(item.price.toString())),
+                };
+            });
+            const newArr3 = newArr.map((item: any) => {
+                return {
+                    ...item,
+                    name: methods.getValues("productName") + " - " + item.name,
+                    imageUrls: item.imageUrls,
+                    costPrice: (item?.costPrice),
+                    retailPrice: item.retailPrice,
+                    listPrice: (item?.listPrice),
+                    wholesalePrice: item.wholesalePrice,
+                    attributeValues: item.attributeValues,
+                    baseProductPackingLine: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? {} : (valueSwitchUnit === false ? {
+                        uomGroupLineId: null,
+                        amount: 1,
+                        volume: formatStringToFloat(item.weight?.volumeOriginal),
+                        weight: formatStringToFloat(item.weight?.weightOriginal),
+                    } : {
+                        uomGroupLineId: detailUnitGroupData?.originalUnit?.uomGroupLineId,
+                        amount: 1,
+                        volume: formatStringToFloat(item.weight?.volumeOriginal),
+                        weight: formatStringToFloat(item.weight?.weightOriginal),
+                    }),
+                    productPackingLines: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item.productPackingLines)
+                };
+            });
+            const newArr2 = newArr3?.map((item) => {
+                return {
+                    ...item,
+                    retailPrice: item.retailPrice?.map((items: any) => {
+                        return {
+                            ...items,
+                            price: Number(formatNumberByString(items.price)),
+                        };
+                    }),
+                    wholesalePrice: item.wholesalePrice?.map((items: any) => {
+                        return {
+                            ...items,
+                            price: Number(formatNumberByString(items.price)),
+                        };
+                    }),
+                    costPrice: Number(formatNumberByString(item.costPrice)),
+                    listPrice: Number(formatNumberByString(item.listPrice)),
+                };
+            });
+            const packingLine = data.weight?.map((item: any) => {
+                return {
+                    uomGroupLineId: item.unit.id,
+                    amount: item.unit.conversionRate,
+                    volume: formatStringToFloat(item.volume),
+                    weight: formatStringToFloat(item.weight1),
+                }
+            })
+            const doneData = {
+                // sku: data.SKU === "" ? null : data.SKU,
+                name: data.productName,
+                // purchaseOk: valuePurchase,
+                imageUrls: imagesNote,
+                // saleOk: true,
+                // vendorIds: vendor,
+                // managementForm: brands.label2,
+                // productCategoryId: category.id || null,
+                // brandId: brand.id || null,
+                // tagIds: selectedItems,
+                // hasUomGroupInConfig: valueSwitchUnit,
+                // uomId: valueSwitchUnit === false ? uomId.id : null,
+                // uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
+                // hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
+                // hasVariantInConfig: hasVariantInConfig === false ? hasVariantInConfig : !checkArrayIsEmptyOrNull(dataCreateProduct),
+                // attributeValues: attributeValues,
+                // attributeCategoryIds: attributeIds,
+                // textAttributes: textAttributes,
+                // description: description,
+                // productVariants: newArr2,
+                retailPrice: dataPrice2,
+                costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
+                listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
+                wholesalePrice: dataPrice,
+                baseProductPackingLine: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? {} : {
+                    uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
+                    amount: 1,
+                    volume: formatStringToFloat(data.volumeOriginal),
+                    weight: formatStringToFloat(data.weightOriginal)
+                },
+                productPackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
+                // deleteVariantIds: newArr1,
+                hasPrice: true,
+                activated: true,
+            }
+            console.log('dataCreate===========', JSON.stringify(doneData))
+            const result = await productStore?.putClassify(productStore.productId, doneData);
+            if (result.kind === "ok") {
+                Dialog.show({
+                    type: ALERT_TYPE.INFO,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: translate("txtDialog.product_repair_successful"),
+                    button2: translate("common.ok"),
+                    closeOnOverlayTap: false,
+                    onPressButton: () => {
+                        navigation.navigate({ name: "classifyDetailScreen", params: { reload: true } } as never);
+                        Dialog.hide();
+                    }
+                })
+            } else {
+                console.log("data------------------------------", JSON.stringify(result));
+                Dialog.show({
+                    type: ALERT_TYPE.DANGER,
+                    title: translate("txtDialog.txt_title_dialog"),
+                    textBody: result.result.errorCodes[0].message,
+                    button: translate("common.ok"),
+                    closeOnOverlayTap: false
+                })
+            }
         }
-      });
-      const dataPrice2 = retailPriceProduct?.map((item: any) => {
-        return {
-          min: item.min,
-          price: Number(formatNumberByString(item.price.toString())),
-        };
-      });
-      const dataPrice = wholesalePriceProduct?.map((item: any) => {
-        return {
-          min: item.min,
-          price: Number(formatNumberByString(item.price.toString())),
-        };
-      });
-      const newArr3 = newArr.map((item: any) => {
-        return {
-          ...item,
-          name: methods.getValues("productName") + " - " + item.name,
-          imageUrls: item.imageUrls,
-          costPrice: (item?.costPrice),
-          retailPrice: item.retailPrice,
-          listPrice: (item?.listPrice),
-          wholesalePrice: item.wholesalePrice,
-          attributeValues: item.attributeValues,
-          baseProductPackingLine: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? {} : (valueSwitchUnit === false ? {
-            uomGroupLineId: null,
-            amount: 1,
-            volume: formatStringToFloat(item.weight?.volumeOriginal),
-            weight: formatStringToFloat(item.weight?.weightOriginal),
-          } : {
-            uomGroupLineId: detailUnitGroupData?.originalUnit?.uomGroupLineId,
-            amount: 1,
-            volume: formatStringToFloat(item.weight?.volumeOriginal),
-            weight: formatStringToFloat(item.weight?.weightOriginal),
-          }),
-          productPackingLines: item.weight?.weightOriginal?.trim() === "" || item.weight?.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : item.productPackingLines)
-        };
-      });
-      const newArr2 = newArr3?.map((item) => {
-        return {
-          ...item,
-          retailPrice: item.retailPrice?.map((items: any) => {
-            return {
-              ...items,
-              price: Number(formatNumberByString(items.price)),
-            };
-          }),
-          wholesalePrice: item.wholesalePrice?.map((items: any) => {
-            return {
-              ...items,
-              price: Number(formatNumberByString(items.price)),
-            };
-          }),
-          costPrice: Number(formatNumberByString(item.costPrice)),
-          listPrice: Number(formatNumberByString(item.listPrice)),
-        };
-      });
-      const packingLine = data.weight?.map((item: any) => {
-        return {
-          uomGroupLineId: item.unit.id,
-          amount: item.unit.conversionRate,
-          volume: formatStringToFloat(item.volume),
-          weight: formatStringToFloat(item.weight1),
-        }
-      })
-      const doneData = {
-        // sku: data.SKU === "" ? null : data.SKU,
-        name: data.productName,
-        // purchaseOk: valuePurchase,
-        imageUrls: imagesNote,
-        // saleOk: true,
-        // vendorIds: vendor,
-        // managementForm: brands.label2,
-        // productCategoryId: category.id || null,
-        // brandId: brand.id || null,
-        // tagIds: selectedItems,
-        // hasUomGroupInConfig: valueSwitchUnit,
-        // uomId: valueSwitchUnit === false ? uomId.id : null,
-        // uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
-        // hasVariantInConfig: !checkArrayIsEmptyOrNull(dataCreateProduct),
-        // hasVariantInConfig: hasVariantInConfig === false ? hasVariantInConfig : !checkArrayIsEmptyOrNull(dataCreateProduct),
-        // attributeValues: attributeValues,
-        // attributeCategoryIds: attributeIds,
-        // textAttributes: textAttributes,
-        // description: description,
-        // productVariants: newArr2,
-        retailPrice: dataPrice2,
-        costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
-        listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
-        wholesalePrice: dataPrice,
-        baseProductPackingLine: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? {} : {
-          uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
-          amount: 1,
-          volume: formatStringToFloat(data.volumeOriginal),
-          weight: formatStringToFloat(data.weightOriginal)
-        },
-        productPackingLines: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? [] : (valueSwitchUnit == false ? [] : packingLine),
-        // deleteVariantIds: newArr1,
-        hasPrice: true,
-        activated: true,
-      }
-      console.log('dataCreate===========', JSON.stringify(doneData))
-      const result = await productStore?.putClassify(productStore.productId, doneData);
-      if (result.kind === "ok") {
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("txtDialog.txt_title_dialog"),
-          textBody: translate("txtDialog.product_repair_successful"),
-          button2: translate("common.ok"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            navigation.navigate({ name: "classifyDetailScreen", params: { reload: true } } as never);
-            Dialog.hide();
-          }
-        })
-      } else {
-        console.log("data------------------------------", JSON.stringify(result));
-        Dialog.show({
-          type: ALERT_TYPE.DANGER,
-          title: translate("txtDialog.txt_title_dialog"),
-          textBody: result.result.errorCodes[0].message,
-          button: translate("common.ok"),
-          closeOnOverlayTap: false
-        })
-      }
-    }
-  };
+    };
 
   // console.log("dataCreateProduct----------------------", dataCreateProduct);
   const handleCameraUse = async () => {
@@ -1057,304 +1075,304 @@ export const EditClassify: FC = (item) => {
     })
   };
 
-  const handleSelect = (items: any) => {
-    setSelectedItems(items);
-  };
-  const handleDescribe = () => {
-    setAddDescribe(true);
-  };
-  const handleCloseDescribe = () => {
-    setAddDescribe(false);
-  };
-  // const [isEditing , setIsEditing] = useState(true)
-  const goToChooseSupplierScreen = () => {
-    const listIds = vendor;
-    // console.log('mômmo' , listIds)
-    navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: "edit" } } as never);
-  };
-  return (
-    <FormProvider {...methods}>
-      <View style={styles.ROOT}>
-        <Header
-          type={"AntDesign"}
-          LeftIcon={Images.back}
-          onLeftPress={() => navigation.goBack()}
-          colorIcon={colors.text}
-          headerTx={"createProductScreen.editClassify"}
-          style={{ height: scaleHeight(54) }}
-        />
-        <ScrollView style={{ marginBottom: scaleHeight(10) }}>
-          <View style={{ backgroundColor: "white" }}>
-            <View
-              style={{
-                marginHorizontal: scaleWidth(16),
-                marginVertical: scaleHeight(20),
-              }}>
-              <ImageProduct
-                arrData={imagesNote}
-                uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray, checkUploadSlider, indexItem)}
-                deleteImage={(index, item) => {
-                  handleRemoveImage(index, item);
-                }}
-              />
-              <Controller
-                control={methods.control}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <TextField
-                    // maxLength={maxLenngthPhoneNumber}
-                    keyboardType={null}
-                    labelTx={"productScreen.SKU"}
-                    style={{
-                      marginBottom: scaleHeight(15),
-                      justifyContent: "center",
-                    }}
-                    inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
-                    value={value}
-                    onBlur={onBlur}
-                    defaultValue={methods.watch('SKU')}
-                    RightIconClear={Images.icon_delete2}
-                    error={errors?.SKU?.message}
-                    onClearText={() => onChange("")}
-                    onChangeText={(value) => {
-                      onChange(value)
-                    }}
-                    placeholderTx="productScreen.placeholderSKU"
-                    RightIcon={Images.ic_QR}
-                    editable={false}
-                  // isImportant
-                  />
-                )}
-                // defaultValue={''}
-                name="SKU"
-              // rules={{
-              //   required: "Please input data",
-              // }}
-              />
-              <Controller
-                control={methods.control}
-                render={({ field: { onChange, value, onBlur } }) => (
-                  <TextField
-                    // maxLength={maxLenngthPhoneNumber}
-                    keyboardType={null}
-                    labelTx={"productScreen.productName"}
-                    style={{
-                      marginBottom: scaleHeight(15),
-                      justifyContent: "center",
-                    }}
-                    inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
-                    value={value}
-                    onBlur={onBlur}
-                    // defaultValue={nameProduct}
-                    RightIconClear={Images.icon_delete2}
-                    error={methods.formState.errors.productName?.message}
-                    onClearText={() => onChange("")}
-                    onChangeText={(value) => {
-                      onChange(value);
-                    }}
-                    placeholderTx="productScreen.placeholderProductName"
-                    // RightIcon={Images.ic_QR}
-                    isImportant
-                  />
-                )}
-                // defaultValue={''}
-                name="productName"
-                rules={{
-                  required: "Vui lòng nhập dữ liệu",
-                }}
-              />
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text tx="createProductScreen.canBuy"
-                  style={{
-                    fontSize: fontSize.size13,
-                    marginRight: scaleWidth(10),
-                  }} />
-                <Switch
-                  value={valuePurchase}
+    const handleSelect = (items: any) => {
+        setSelectedItems(items);
+    };
+    const handleDescribe = () => {
+        setAddDescribe(true);
+    };
+    const handleCloseDescribe = () => {
+        setAddDescribe(false);
+    };
+    // const [isEditing , setIsEditing] = useState(true)
+    const goToChooseSupplierScreen = () => {
+        const listIds = vendor;
+        // console.log('mômmo' , listIds)
+        navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: "edit" } } as never);
+    };
+    return (
+        <FormProvider {...methods}>
+            <View style={styles.ROOT}>
+                <Header
+                    type={"AntDesign"}
+                    LeftIcon={Images.back}
+                    onLeftPress={() => navigation.goBack()}
+                    colorIcon={colors.text}
+                    headerTx={"createProductScreen.editClassify"}
+                    style={{ height: scaleHeight(54) }}
                 />
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: scaleHeight(15),
-                  flex: 1,
-                  justifyContent: "space-between",
-                }}>
-                <TouchableOpacity
-                  style={{
-                    borderRadius: 8,
-                    backgroundColor: colors.palette.aliceBlue,
-                    height: scaleHeight(56),
-                    paddingVertical: scaleHeight(8),
-                    paddingHorizontal: scaleWidth(16),
-                    width: "48%",
-                  }}
-                  onPress={() => {
-                    const arr = retailPriceProduct?.map((item) => {
-                      return {
-                        min: item.min.toString(),
-                        price: item.price.toString(),
-                      };
-                    });
-                    setDataModal(arr);
-                    setModalRetailPrice(true);
-                  }}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <View style={{ flex: 1 }}>
-                      <Text
-                        tx={"productScreen.priceRetail"}
-                        style={{
-                          fontWeight: "500",
-                          fontSize: fontSize.size12,
-                          color: colors.palette.dolphin,
-                          lineHeight: scaleHeight(14),
-                        }}
-                      />
-                      {retailPriceProduct?.length > 0 &&
-                        retailPriceProduct?.length !== 1 ? (
-                        <Text
-                          text={convertRetailPrice(retailPriceProduct)}
-                          numberOfLines={1}
-                          style={{
-                            fontWeight: "500",
-                            fontSize: fontSize.size16,
-                            color: colors.palette.nero,
-                            lineHeight: scaleHeight(24),
-                          }}
-                        />
-                      ) : retailPriceProduct?.length > 0 &&
-                        retailPriceProduct?.length === 1 ? (
-                        <Text
-                          text={vendorStore.checkSeparator === "DOTS"
-                            ? formatCurrency(
-                              removeNonNumeric(retailPriceProduct[0]?.price)
-                            )
-                            : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
-                          numberOfLines={1}
-                          style={{
-                            fontWeight: "500",
-                            fontSize: fontSize.size16,
-                            color: colors.palette.nero,
-                            lineHeight: scaleHeight(24),
-                          }}
-                        />
-                      ) : (
-                        <Text
-                          text="0.000 - 0.000"
-                          style={{
-                            fontWeight: "500",
-                            fontSize: fontSize.size16,
-                            color: colors.palette.dolphin,
-                            lineHeight: scaleHeight(24),
-                          }}
-                        />
-                      )}
-                    </View>
-                    <Images.icon_caretRightDown />
-                  </View>
-                </TouchableOpacity>
-                <Controller
-                  control={methods.control}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <TextField
-                      maxLength={20}
-                      keyboardType={"number-pad"}
-                      labelTx={"productScreen.priceCapital"}
-                      labelDolphin
-                      style={{
-                        width: scaleWidth(164),
-                        flex: 1,
-                      }}
-                      inputStyle={{
-                        fontSize: fontSize.size16,
-                        fontWeight: "500",
-                        marginTop: scaleHeight(4),
-                      }}
-                      value={value}
-                      onBlur={onBlur}
-                      valueInput={vendorStore.checkSeparator === "DOTS"
-                        ? formatCurrency(
-                          removeNonNumeric(value)
-                        )
-                        : addCommas(removeNonNumeric(value))}
-                      showRightIcon={false}
-                      // defaultValue={costPriceProduct?.toString()}
-                      onChangeText={(value) => {
-                        onChange(
-                          vendorStore.checkSeparator === "DOTS"
-                            ? formatCurrency(removeNonNumeric(value))
-                            : addCommas(removeNonNumeric(value))
-                        );
-                        // setCostPriceProduct(Number(value));
-                      }}
-                      placeholderTx="productScreen.placeholderPrice"
-                    />
-                  )}
-                  name="costPrice"
-                />
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: scaleHeight(15),
-                  flex: 1,
-                  justifyContent: "space-between",
-                }}>
-                <Controller
-                  control={methods.control}
-                  render={({ field: { onChange, value, onBlur } }) => (
-                    <TextField
-                      maxLength={20}
-                      keyboardType={"number-pad"}
-                      labelTx={"productScreen.priceList"}
-                      labelDolphin
-                      style={{
-                        width: scaleWidth(164),
-                        flex: 1,
-                      }}
-                      inputStyle={{
-                        fontSize: fontSize.size16,
-                        fontWeight: "500",
-                        marginTop: scaleHeight(4),
-                      }}
-                      value={value}
-                      onBlur={onBlur}
-                      valueInput={vendorStore.checkSeparator === "DOTS"
-                        ? formatCurrency(
-                          removeNonNumeric(value)
-                        )
-                        : addCommas(removeNonNumeric(value))}
-                      // defaultValue={listPriceProduct?.toString()}
-                      showRightIcon={false}
-                      onChangeText={(value) => {
-                        onChange(
-                          vendorStore.checkSeparator === "DOTS"
-                            ? formatCurrency(removeNonNumeric(value))
-                            : addCommas(removeNonNumeric(value))
-                        );
-                        // setListPriceProduct(Number(value));
-                      }}
-                      placeholderTx="productScreen.placeholderPrice"
-                    />
-                  )}
-                  name="listPrice"
-                />
-                <TouchableOpacity
-                  style={{
-                    borderRadius: 8,
-                    backgroundColor: colors.palette.aliceBlue,
-                    height: scaleHeight(56),
-                    paddingVertical: scaleHeight(8),
-                    paddingHorizontal: scaleWidth(16),
-                    width: "48%",
-                  }}
-                  onPress={() => {
-                    setModalWholesalePrice(true);
-                    const arr = wholesalePriceProduct?.map((item) => {
-                      return {
-                        min: item.min.toString(),
-                        price: item.price.toString(),
-                      };
-                    });
+                <ScrollView style={{ marginBottom: scaleHeight(10) }}>
+                    <View style={{ backgroundColor: "white" }}>
+                        <View
+                            style={{
+                                marginHorizontal: scaleWidth(16),
+                                marginVertical: scaleHeight(20),
+                            }}>
+                            <ImageProduct
+                                arrData={imagesNote}
+                                uploadImage={(imageArray, checkUploadSlider, indexItem) => uploadImages(imageArray, checkUploadSlider, indexItem)}
+                                deleteImage={(index, item) => {
+                                    handleRemoveImage(index, item);
+                                }}
+                            />
+                            <Controller
+                                control={methods.control}
+                                render={({ field: { onChange, value, onBlur } }) => (
+                                    <TextField
+                                        // maxLength={maxLenngthPhoneNumber}
+                                        keyboardType={null}
+                                        labelTx={"productScreen.SKU"}
+                                        style={{
+                                            marginBottom: scaleHeight(15),
+                                            justifyContent: "center",
+                                        }}
+                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
+                                        value={value}
+                                        onBlur={onBlur}
+                                        defaultValue={methods.watch('SKU')}
+                                        RightIconClear={Images.icon_delete2}
+                                        error={errors?.SKU?.message}
+                                        onClearText={() => onChange("")}
+                                        onChangeText={(value) => {
+                                            onChange(value)
+                                        }}
+                                        placeholderTx="productScreen.placeholderSKU"
+                                        RightIcon={Images.ic_QR}
+                                        editable={false}
+                                    // isImportant
+                                    />
+                                )}
+                                // defaultValue={''}
+                                name="SKU"
+                            // rules={{
+                            //   required: "Please input data",
+                            // }}
+                            />
+                            <Controller
+                                control={methods.control}
+                                render={({ field: { onChange, value, onBlur } }) => (
+                                    <TextField
+                                        // maxLength={maxLenngthPhoneNumber}
+                                        keyboardType={null}
+                                        labelTx={"productScreen.productName"}
+                                        style={{
+                                            marginBottom: scaleHeight(15),
+                                            justifyContent: "center",
+                                        }}
+                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
+                                        value={value}
+                                        onBlur={onBlur}
+                                        // defaultValue={nameProduct}
+                                        RightIconClear={Images.icon_delete2}
+                                        error={methods.formState.errors.productName?.message}
+                                        onClearText={() => onChange("")}
+                                        onChangeText={(value) => {
+                                            onChange(value);
+                                        }}
+                                        placeholderTx="productScreen.placeholderProductName"
+                                        // RightIcon={Images.ic_QR}
+                                        isImportant
+                                    />
+                                )}
+                                // defaultValue={''}
+                                name="productName"
+                                rules={{
+                                    required: "Vui lòng nhập dữ liệu",
+                                }}
+                            />
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <Text tx="createProductScreen.canBuy"
+                                    style={{
+                                        fontSize: fontSize.size13,
+                                        marginRight: scaleWidth(10),
+                                    }} />
+                                <Switch
+                                    value={valuePurchase}
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    marginTop: scaleHeight(15),
+                                    flex: 1,
+                                    justifyContent: "space-between",
+                                }}>
+                                <TouchableOpacity
+                                    style={{
+                                        borderRadius: 8,
+                                        backgroundColor: colors.palette.aliceBlue,
+                                        height: scaleHeight(56),
+                                        paddingVertical: scaleHeight(8),
+                                        paddingHorizontal: scaleWidth(16),
+                                        width: "48%",
+                                    }}
+                                    onPress={() => {
+                                        const arr = retailPriceProduct?.map((item) => {
+                                            return {
+                                                min: item.min.toString(),
+                                                price: item.price.toString(),
+                                            };
+                                        });
+                                        setDataModal(arr);
+                                        setModalRetailPrice(true);
+                                    }}>
+                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                        <View style={{ flex: 1 }}>
+                                            <Text
+                                                tx={"productScreen.priceRetail"}
+                                                style={{
+                                                    fontWeight: "500",
+                                                    fontSize: fontSize.size12,
+                                                    color: colors.palette.dolphin,
+                                                    lineHeight: scaleHeight(14),
+                                                }}
+                                            />
+                                            {retailPriceProduct?.length > 0 &&
+                                                retailPriceProduct?.length !== 1 ? (
+                                                <Text
+                                                    text={convertRetailPrice(retailPriceProduct)}
+                                                    numberOfLines={1}
+                                                    style={{
+                                                        fontWeight: "500",
+                                                        fontSize: fontSize.size16,
+                                                        color: colors.palette.nero,
+                                                        lineHeight: scaleHeight(24),
+                                                    }}
+                                                />
+                                            ) : retailPriceProduct?.length > 0 &&
+                                                retailPriceProduct?.length === 1 ? (
+                                                <Text
+                                                    text={vendorStore.checkSeparator === "DOTS"
+                                                        ? formatCurrency(
+                                                            removeNonNumeric(retailPriceProduct[0]?.price)
+                                                        )
+                                                        : addCommas(removeNonNumeric(retailPriceProduct[0]?.price))}
+                                                    numberOfLines={1}
+                                                    style={{
+                                                        fontWeight: "500",
+                                                        fontSize: fontSize.size16,
+                                                        color: colors.palette.nero,
+                                                        lineHeight: scaleHeight(24),
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Text
+                                                    text="0.000 - 0.000"
+                                                    style={{
+                                                        fontWeight: "500",
+                                                        fontSize: fontSize.size16,
+                                                        color: colors.palette.dolphin,
+                                                        lineHeight: scaleHeight(24),
+                                                    }}
+                                                />
+                                            )}
+                                        </View>
+                                        <Images.icon_caretRightDown />
+                                    </View>
+                                </TouchableOpacity>
+                                <Controller
+                                    control={methods.control}
+                                    render={({ field: { onChange, value, onBlur } }) => (
+                                        <TextField
+                                            maxLength={20}
+                                            keyboardType={"number-pad"}
+                                            labelTx={"productScreen.priceCapital"}
+                                            labelDolphin
+                                            style={{
+                                                width: scaleWidth(164),
+                                                flex: 1,
+                                            }}
+                                            inputStyle={{
+                                                fontSize: fontSize.size16,
+                                                fontWeight: "500",
+                                                marginTop: scaleHeight(4),
+                                            }}
+                                            value={value}
+                                            onBlur={onBlur}
+                                            valueInput={vendorStore.checkSeparator === "DOTS"
+                                                ? formatCurrency(
+                                                    removeNonNumeric(value)
+                                                )
+                                                : addCommas(removeNonNumeric(value))}
+                                            showRightIcon={false}
+                                            // defaultValue={costPriceProduct?.toString()}
+                                            onChangeText={(value) => {
+                                                onChange(
+                                                    vendorStore.checkSeparator === "DOTS"
+                                                        ? formatCurrency(removeNonNumeric(value))
+                                                        : addCommas(removeNonNumeric(value))
+                                                );
+                                                // setCostPriceProduct(Number(value));
+                                            }}
+                                            placeholderTx="productScreen.placeholderPrice"
+                                        />
+                                    )}
+                                    name="costPrice"
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    marginTop: scaleHeight(15),
+                                    flex: 1,
+                                    justifyContent: "space-between",
+                                }}>
+                                <Controller
+                                    control={methods.control}
+                                    render={({ field: { onChange, value, onBlur } }) => (
+                                        <TextField
+                                            maxLength={20}
+                                            keyboardType={"number-pad"}
+                                            labelTx={"productScreen.priceList"}
+                                            labelDolphin
+                                            style={{
+                                                width: scaleWidth(164),
+                                                flex: 1,
+                                            }}
+                                            inputStyle={{
+                                                fontSize: fontSize.size16,
+                                                fontWeight: "500",
+                                                marginTop: scaleHeight(4),
+                                            }}
+                                            value={value}
+                                            onBlur={onBlur}
+                                            valueInput={vendorStore.checkSeparator === "DOTS"
+                                                ? formatCurrency(
+                                                    removeNonNumeric(value)
+                                                )
+                                                : addCommas(removeNonNumeric(value))}
+                                            // defaultValue={listPriceProduct?.toString()}
+                                            showRightIcon={false}
+                                            onChangeText={(value) => {
+                                                onChange(
+                                                    vendorStore.checkSeparator === "DOTS"
+                                                        ? formatCurrency(removeNonNumeric(value))
+                                                        : addCommas(removeNonNumeric(value))
+                                                );
+                                                // setListPriceProduct(Number(value));
+                                            }}
+                                            placeholderTx="productScreen.placeholderPrice"
+                                        />
+                                    )}
+                                    name="listPrice"
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        borderRadius: 8,
+                                        backgroundColor: colors.palette.aliceBlue,
+                                        height: scaleHeight(56),
+                                        paddingVertical: scaleHeight(8),
+                                        paddingHorizontal: scaleWidth(16),
+                                        width: "48%",
+                                    }}
+                                    onPress={() => {
+                                        setModalWholesalePrice(true);
+                                        const arr = wholesalePriceProduct?.map((item) => {
+                                            return {
+                                                min: item.min.toString(),
+                                                price: item.price.toString(),
+                                            };
+                                        });
 
                     setDataModal(arr);
                   }}>

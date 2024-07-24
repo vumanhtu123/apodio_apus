@@ -9,7 +9,7 @@ import { Swipeable } from 'react-native-gesture-handler';
 
 
 
-const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditCategory }: any) => {
+const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditCategory, index }: any) => {
   const renderRightActions = (
     progress: Animated.AnimatedInterpolation,
     dragX: Animated.AnimatedInterpolation,
@@ -20,7 +20,8 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
       extrapolate: 'clamp',
     });
     return (
-      <View style={styles.swipedRow}>
+      <View style={styles.swipedRow}
+      >
         <Animated.View style={[styles.deleteButton, { opacity }]}>
           <TouchableOpacity onPress={() => {
             handleOpenDeleteModal(item.id)
@@ -37,6 +38,7 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
   return (
     <Swipeable renderRightActions={renderRightActions} >
       <TouchableOpacity
+        key={index}
         disabled={isActive}
         style={{
           backgroundColor: "white",
@@ -89,7 +91,7 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
             <View
               style={[
                 stylesItem.titleView,
-                { justifyContent: "center" , maxWidth : scaleWidth(230)  },
+                { justifyContent: "center", maxWidth: scaleWidth(230) },
               ]}>
               <Text numberOfLines={2} style={stylesItem.title}>{item.name}</Text>
               <Text style={stylesItem.description}>
