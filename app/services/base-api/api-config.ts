@@ -70,8 +70,8 @@ const getBaseURL = () => {
 };
 
 const getDomainWarehouse = () => {
-  const domain = CONFIG.API.DEV.URL_WAREHOUSE;
-  console.log('URL warehouse 2', CONFIG.API.DEV.URL_WAREHOUSE)
+  const domain = CONFIG.API.STAGING.URL_WAREHOUSE;
+  console.log('URL warehouse 2',domain )
   return domain
 }
 export interface ApiConfig {

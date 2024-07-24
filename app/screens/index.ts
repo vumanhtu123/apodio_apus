@@ -50,9 +50,9 @@ export * from "./product/editAttribute";
 export * from "./product/editAttributeByEdit";
 export * from "./product/newAttribute";
 export * from "./product/successScreen";
-export * from "./product/edit-product";
+export * from "./product/edit-product-variant/edit-product";
 export * from "./product/editWeight";
-export * from "./product/editClassify";
+export * from "./product/edit-product-variant/editClassify";
 export * from "./product/classify-detail-screen";
 export * from "./debugger/debugger_test";
 
@@ -97,4 +97,5 @@ export * from "./revenue-expenditure/transfer-money/transfer-money-screen";
 export * from "../screens/revenue-expenditure/expense/expense-screen";
 export * from "../screens/revenue-expenditure/revenue/revenue-screen";
 export * from "./revenue-expenditure/filter-revenue-screen";
+export * from "../screens/ware-house/detail-warehouse";
 export * from "./ware-house/create-warehouse/create-warehouse";

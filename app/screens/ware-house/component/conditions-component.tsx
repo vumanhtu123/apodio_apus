@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Button, TouchableOpacity, View } from "react-native";
 import { TextField } from "../../../components";
 import { scaleHeight } from "../../../theme";
 import { stylesWareHouse } from "../style";
 import { translate } from "../../../i18n";
-export const ConditionsComponent = ({ control, errors }: any) => {
-  return (
+export const ConditionsComponent = ({
+  control,
+  errors,
+  conditions,
+  setValue,
+  clearError,
+}: any) => {
+  console.log("check tuvm", conditions);
+  useEffect(() => {
+    setValue("temperature1", "");
+    clearError("temperature1");
+    setValue("temperature2", "");
+    clearError("temperature2");
+    setValue("temperature3", "");
+    clearError("temperature3");
+  }, [conditions]);
+  return conditions ? (
     <View>
       <Controller
         control={control}
@@ -21,6 +36,7 @@ export const ConditionsComponent = ({ control, errors }: any) => {
             placeholder={translate("wareHouse.enterTemperature")}
             style={{ marginBottom: scaleHeight(0) }}
             inputStyle={stylesWareHouse.inputPass}
+            valueTextRight="°C"
             isImportant
             maxLength={20}
             RightIconClear={null}
@@ -35,7 +51,7 @@ export const ConditionsComponent = ({ control, errors }: any) => {
         )}
         name="temperature1"
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 20,
         }}
       />
@@ -60,6 +76,7 @@ export const ConditionsComponent = ({ control, errors }: any) => {
               style={{ marginBottom: scaleHeight(0) }}
               inputStyle={stylesWareHouse.inputPass}
               value={value}
+              valueTextRight="°C"
               // secureTextEntry={false}
               onBlur={onBlur}
               RightIconClear={null}
@@ -72,7 +89,7 @@ export const ConditionsComponent = ({ control, errors }: any) => {
           )}
           name="temperature2"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 20,
           }}
         />
@@ -94,6 +111,7 @@ export const ConditionsComponent = ({ control, errors }: any) => {
               style={{ marginBottom: scaleHeight(0) }}
               inputStyle={stylesWareHouse.inputPass}
               value={value}
+              valueTextRight="°C"
               // secureTextEntry={false}
               onBlur={onBlur}
               RightIconClear={null}
@@ -106,11 +124,11 @@ export const ConditionsComponent = ({ control, errors }: any) => {
           )}
           name="temperature3"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 20,
           }}
         />
       </View>
     </View>
-  );
+  ) : null;
 };

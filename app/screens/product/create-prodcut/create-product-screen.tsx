@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, Linking, TouchableOpacity, View } from "react-native";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
@@ -96,8 +96,6 @@ export const ProductCreateScreen: FC = (item) => {
       wholesalePriceProduct: [],
     },
   });
-  const a = useRef(1);
-  console.log("re-render", a.current++);
 
   const arrBrands = [
     { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -165,7 +163,7 @@ export const ProductCreateScreen: FC = (item) => {
     }
   };
 
-  const editAttribute = () => {
+  const editAttribute = useCallback(() => {
     navigation.navigate({
       name: "editAttribute",
       params: {
@@ -174,7 +172,7 @@ export const ProductCreateScreen: FC = (item) => {
         hasVariantInConfig: hasVariantInConfig,
       },
     } as never);
-  }
+  },[attributeArr, dropdownSelected, hasVariantInConfig])
 
   const getListUnitGroup = async (valueSwitchUnit: boolean) => {
     let unitResult = null;
@@ -271,21 +269,20 @@ export const ProductCreateScreen: FC = (item) => {
       const newArr5 = newArr4.map((item) =>
         item.filter((object) => Object.keys(object).length > 0)
       );
-      console.log('data attribute', newArr5)
       const dataArr = newArr.map((item) => {
         return {
           // id: null,
           name: item,
           imageUrls: imagesNote,
-          costPrice: methods.watch("costPrice"),
-          retailPrice: methods.watch("retailPriceProduct"),
-          listPrice: methods.watch("listPrice"),
-          wholesalePrice: methods.watch("wholesalePriceProduct"),
+          costPrice: methods.getValues("costPrice"),
+          retailPrice: methods.getValues("retailPriceProduct"),
+          listPrice: methods.getValues("listPrice"),
+          wholesalePrice: methods.getValues("wholesalePriceProduct"),
           attributeValues: [],
           weight: {
-            weight: methods.watch(`weight`),
-            weightOriginal: methods.watch(`weightOriginal`),
-            volumeOriginal: methods.watch(`volumeOriginal`),
+            weight: methods.getValues(`weight`),
+            weightOriginal: methods.getValues(`weightOriginal`),
+            volumeOriginal: methods.getValues(`volumeOriginal`),
             uom:
               valueSwitchUnit == false
                 ? uomId
@@ -303,24 +300,19 @@ export const ProductCreateScreen: FC = (item) => {
   const submitAdd = async (data: any) => {
     console.log(data, "1268359812");
     console.log(JSON.stringify(dataCreateProduct));
-    let hasError = false;
-    if (parternValidateSku.test(data.SKU) === true) {
-      hasError = false;
-    } else {
+    if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {
         type: "validate",
         message: "Mã SKU gồm chữ và số",
       });
-      hasError = true;
+      return
     }
-    if (data.productName.trim() !== "") {
-      hasError = false;
-    } else {
+    if (data.productName.trim() === "") {
       methods.setError("productName", {
         type: "validate",
         message: "Vui lòng nhập thông tin",
       });
-      hasError = true;
+      return
     }
     if (uomId.id === "") {
       Toast.show({
@@ -328,7 +320,7 @@ export const ProductCreateScreen: FC = (item) => {
         title: "",
         textBody: translate("txtToats.required_information"),
       });
-      hasError = true;
+      return
     }
     if (addWeight == true) {
       const unit = data.weight?.flatMap((items: any) => items.unit);
@@ -339,6 +331,30 @@ export const ProductCreateScreen: FC = (item) => {
       );
       const checkWeight1 = weight1?.some((item: any) => item?.trim() === "");
       const checkVolume = volume?.some((item: any) => item?.trim() === "");
+
+      const unitVariant = dataCreateProduct.map((items: any) => {
+        return items.weight?.weight?.flatMap((item: any) => item.unit);
+      }).flat()
+      const weight1Variant = dataCreateProduct.map((items: any) => {
+        return items.weight?.weight?.flatMap((item: any) => item.weight1);
+      }).flat()
+      const volumeVariant = dataCreateProduct.map((items: any) => {
+        return items.weight?.weight?.flatMap((item: any) => item.volume);
+      }).flat()
+      const weight1OriginalVariant = dataCreateProduct.map((items: any) => {
+        return items.weight?.weightOriginal
+      })
+      const volumeOriginalVariant = dataCreateProduct.map((items: any) => {
+        return items.weight?.volumeOriginal
+      })
+      const checkUnitVariant = unitVariant?.some(
+        (item: any) => Object.keys(item).length === 0
+      );
+      const checkWeight1Variant = weight1Variant?.some((item: any) => item?.trim() === "");
+      const checkVolumeVariant = volumeVariant?.some((item: any) => item?.trim() === "");
+      const checkWeight1OriginalVariant = weight1OriginalVariant?.some((item: any) => item?.trim() === "");
+      const checkVolumeOriginalVariant = volumeOriginalVariant?.some((item: any) => item?.trim() === "");
+
       if (
         checkUnit == true ||
         checkWeight1 == true ||
@@ -351,185 +367,189 @@ export const ProductCreateScreen: FC = (item) => {
           title: "",
           textBody: translate("txtToats.input_weight"),
         });
-        hasError = true;
-      } else {
-        hasError = false;
+        return
+      }
+
+      if (checkUnitVariant == true || checkVolumeVariant == true || checkWeight1Variant == true || checkVolumeOriginalVariant == true || checkWeight1OriginalVariant == true) {
+        Toast.show({
+          type: ALERT_TYPE.DANGER,
+          title: "",
+          textBody: translate("txtToats.input_weight_variant"),
+        });
+        return
       }
     }
-    if (hasError == true) {
-    } else {
-      const arrDataNew = dataCreateProduct?.map((items: any) => {
-        return {
-          ...items,
-          productPackingLines:
-            items.weight?.weight.length !== 0
-              ? items.weight?.weight?.map((item: any) => {
-                return {
-                  uomGroupLineId: item.unit.id,
-                  amount: item.unit.conversionRate,
-                  volume: formatStringToFloat(item.volume),
-                  weight: formatStringToFloat(item.weight1),
-                };
-              })
-              : [],
-        };
-      });
+    const arrDataNew = dataCreateProduct?.map((items: any) => {
+      return {
+        ...items,
+        productPackingLines:
+          items.weight?.weight.length !== 0
+            ? items.weight?.weight?.map((item: any) => {
+              return {
+                uomGroupLineId: item.unit.id,
+                amount: item.unit.conversionRate,
+                volume: formatStringToFloat(item.volume),
+                weight: formatStringToFloat(item.weight1),
+              };
+            })
+            : [],
+      };
+    });
 
-      const newArr = arrDataNew?.map((item) => {
-        return {
-          name: methods.watch("productName") + " - " + item.name,
-          imageUrls: item.imageUrls,
-          costPrice: formatStringToFloat(item.costPrice),
-          retailPrice: item.retailPrice,
-          listPrice: formatStringToFloat(item.listPrice),
-          wholesalePrice: item.wholesalePrice,
-          attributeValues: item.attributeValues,
-          baseProductPackingLine:
-            item.weight?.weightOriginal?.trim() === "" ||
-              item.weight?.volumeOriginal?.trim() === ""
-              ? {}
-              : valueSwitchUnit === false
-                ? {
-                  uomGroupLineId: null,
-                  amount: 1,
-                  volume: formatStringToFloat(item.weight?.volumeOriginal),
-                  weight: formatStringToFloat(item.weight?.weightOriginal),
-                }
-                : {
-                  uomGroupLineId:
-                    detailUnitGroupData?.originalUnit?.uomGroupLineId,
-                  amount: 1,
-                  volume: formatStringToFloat(item.weight?.volumeOriginal),
-                  weight: formatStringToFloat(item.weight?.weightOriginal),
-                },
-          productPackingLines:
-            item.weight?.weightOriginal?.trim() === "" ||
-              item.weight?.volumeOriginal?.trim() === ""
-              ? []
-              : valueSwitchUnit == false
-                ? []
-                : item?.productPackingLines,
-        };
-      });
-      const dataPrice2 = data.retailPriceProduct.map((item: any) => {
-        return {
-          min: Number(formatNumberByString(item.min.toString())),
-          price: Number(formatNumberByString(item.price)),
-        };
-      });
-      const dataPrice = data.wholesalePriceProduct.map((item: any) => {
-        return {
-          min: Number(formatNumberByString(item.min.toString())),
-          price: Number(formatNumberByString(item.price)),
-        };
-      });
-      const newArr2 = newArr.map((item) => {
-        return {
-          ...item,
-          retailPrice: item.retailPrice?.map((items: any) => {
-            return {
-              ...items,
-              min: Number(formatNumberByString(items.min.toString())),
-              price: Number(formatNumberByString(items.price.toString())),
-            };
-          }),
-          wholesalePrice: item.wholesalePrice?.map((items: any) => {
-            return {
-              ...items,
-              min: Number(formatNumberByString(items.min.toString())),
-              price: Number(formatNumberByString(items.price.toString())),
-            };
-          }),
-          costPrice: Number(formatNumberByString(item.costPrice.toString())),
-          listPrice: Number(formatNumberByString(item.listPrice.toString())),
-        };
-      });
-      // const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
-      console.log(
-        "post-product-data---submitAdd---- : ",
-        JSON.stringify(newArr)
-      );
-      // console.log("submitAdd---------------------:", imagesURLSlider);
-      const packingLine = data.weight?.map((item: any) => {
-        return {
-          uomGroupLineId: item.unit.id,
-          amount: item.unit.conversionRate,
-          volume: formatStringToFloat(item.volume),
-          weight: formatStringToFloat(item.weight1),
-        };
-      });
-      const doneData = {
-        sku: data.SKU === "" ? null : data.SKU,
-        name: data.productName,
-        purchaseOk: valuePurchase,
-        imageUrls: imagesNote,
-        saleOk: true,
-        vendorIds: selectedIds! || [],
-        managementForm: data.brands?.label2,
-        productCategoryId: data.category?.id || null,
-        brandId: data.brand?.id || null,
-        tagIds: data.tags,
-        hasUomGroupInConfig: valueSwitchUnit,
-        uomId: valueSwitchUnit === false ? uomId.id : null,
-        uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
-        hasVariantInConfig:
-          hasVariantInConfig === false
-            ? hasVariantInConfig
-            : !checkArrayIsEmptyOrNull(newArr2),
-        attributeValues: attributeValues,
-        textAttributes: textAttributes,
-        attributeCategoryIds: attributeIds,
-        description: description,
-        productVariants: hasVariantInConfig ? newArr2 : [],
-        retailPrice: dataPrice2,
-        costPrice: Number(formatNumberByString(methods.watch("costPrice"))),
-        listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
-        wholesalePrice: dataPrice,
-        deleteVariantIds: [],
-        baseTemplatePackingLine:
-          data.weightOriginal?.trim() === "" ||
-            data.volumeOriginal?.trim() === ""
+    const newArr = arrDataNew?.map((item) => {
+      return {
+        name: methods.watch("productName") + " - " + item.name,
+        imageUrls: item.imageUrls,
+        costPrice: formatStringToFloat(item.costPrice),
+        retailPrice: item.retailPrice,
+        listPrice: formatStringToFloat(item.listPrice),
+        wholesalePrice: item.wholesalePrice,
+        attributeValues: item.attributeValues,
+        baseProductPackingLine:
+          item.weight?.weightOriginal?.trim() === "" ||
+            item.weight?.volumeOriginal?.trim() === ""
             ? {}
-            : {
-              uomGroupLineId:
-                valueSwitchUnit == false
-                  ? null
-                  : detailUnitGroupData?.originalUnit?.uomGroupLineId,
-              amount: 1,
-              volume: formatStringToFloat(data.volumeOriginal),
-              weight: formatStringToFloat(data.weightOriginal),
-            },
-        productTemplatePackingLines:
-          data.weightOriginal?.trim() === "" ||
-            data.volumeOriginal?.trim() === ""
+            : valueSwitchUnit === false
+              ? {
+                uomGroupLineId: null,
+                amount: 1,
+                volume: formatStringToFloat(item.weight?.volumeOriginal),
+                weight: formatStringToFloat(item.weight?.weightOriginal),
+              }
+              : {
+                uomGroupLineId:
+                  detailUnitGroupData?.originalUnit?.uomGroupLineId,
+                amount: 1,
+                volume: formatStringToFloat(item.weight?.volumeOriginal),
+                weight: formatStringToFloat(item.weight?.weightOriginal),
+              },
+        productPackingLines:
+          item.weight?.weightOriginal?.trim() === "" ||
+            item.weight?.volumeOriginal?.trim() === ""
             ? []
             : valueSwitchUnit == false
               ? []
-              : packingLine,
-        activated: true,
+              : item?.productPackingLines,
       };
-      console.log("Done data create: ", JSON.stringify(doneData));
-      const result = await productStore.postProduct(doneData);
-      console.log("data test---------", JSON.stringify(result));
-      if (result.kind === "ok") {
-        navigation.navigate({
-          name: "successScreen", params: {
-            idProduct: result.result.data.id,
-          }
-        } as never);
-      } else {
-        Dialog.show({
-          type: ALERT_TYPE.DANGER,
-          title: translate("txtDialog.txt_title_dialog"),
-          textBody: result.result.errorCodes[0].message,
-          button: translate("common.ok"),
-          closeOnOverlayTap: false,
-        });
-      }
+    });
+    const dataPrice2 = data.retailPriceProduct.map((item: any) => {
+      return {
+        min: Number(formatNumberByString(item.min.toString())),
+        price: Number(formatNumberByString(item.price)),
+      };
+    });
+    const dataPrice = data.wholesalePriceProduct.map((item: any) => {
+      return {
+        min: Number(formatNumberByString(item.min.toString())),
+        price: Number(formatNumberByString(item.price)),
+      };
+    });
+    const newArr2 = newArr.map((item) => {
+      return {
+        ...item,
+        retailPrice: item.retailPrice?.map((items: any) => {
+          return {
+            ...items,
+            min: Number(formatNumberByString(items.min.toString())),
+            price: Number(formatNumberByString(items.price.toString())),
+          };
+        }),
+        wholesalePrice: item.wholesalePrice?.map((items: any) => {
+          return {
+            ...items,
+            min: Number(formatNumberByString(items.min.toString())),
+            price: Number(formatNumberByString(items.price.toString())),
+          };
+        }),
+        costPrice: Number(formatNumberByString(item.costPrice.toString())),
+        listPrice: Number(formatNumberByString(item.listPrice.toString())),
+      };
+    });
+    // const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
+    console.log(
+      "post-product-data---submitAdd---- : ",
+      JSON.stringify(newArr)
+    );
+    // console.log("submitAdd---------------------:", imagesURLSlider);
+    const packingLine = data.weight?.map((item: any) => {
+      return {
+        uomGroupLineId: item.unit.id,
+        amount: item.unit.conversionRate,
+        volume: formatStringToFloat(item.volume),
+        weight: formatStringToFloat(item.weight1),
+      };
+    });
+    const doneData = {
+      sku: data.SKU === "" ? null : data.SKU,
+      name: data.productName,
+      purchaseOk: valuePurchase,
+      imageUrls: imagesNote,
+      saleOk: true,
+      vendorIds: selectedIds! || [],
+      managementForm: data.brands?.label2,
+      productCategoryId: data.category?.id || null,
+      brandId: data.brand?.id || null,
+      tagIds: data.tags,
+      hasUomGroupInConfig: valueSwitchUnit,
+      uomId: valueSwitchUnit === false ? uomId.id : null,
+      uomGroupId: valueSwitchUnit === false ? null : uomGroupId.id,
+      hasVariantInConfig:
+        hasVariantInConfig === false
+          ? hasVariantInConfig
+          : !checkArrayIsEmptyOrNull(newArr2),
+      attributeValues: attributeValues,
+      textAttributes: textAttributes,
+      attributeCategoryIds: attributeIds,
+      description: description,
+      productVariants: hasVariantInConfig ? newArr2 : [],
+      retailPrice: dataPrice2,
+      costPrice: Number(formatNumberByString(methods.watch("costPrice"))),
+      listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
+      wholesalePrice: dataPrice,
+      deleteVariantIds: [],
+      baseTemplatePackingLine:
+        data.weightOriginal?.trim() === "" ||
+          data.volumeOriginal?.trim() === ""
+          ? {}
+          : {
+            uomGroupLineId:
+              valueSwitchUnit == false
+                ? null
+                : detailUnitGroupData?.originalUnit?.uomGroupLineId,
+            amount: 1,
+            volume: formatStringToFloat(data.volumeOriginal),
+            weight: formatStringToFloat(data.weightOriginal),
+          },
+      productTemplatePackingLines:
+        data.weightOriginal?.trim() === "" ||
+          data.volumeOriginal?.trim() === ""
+          ? []
+          : valueSwitchUnit == false
+            ? []
+            : packingLine,
+      activated: true,
+    };
+    console.log("Done data create: ", JSON.stringify(doneData));
+    const result = await productStore.postProduct(doneData);
+    console.log("data test---------", JSON.stringify(result));
+    if (result.kind === "ok") {
+      navigation.navigate({
+        name: "successScreen", params: {
+          idProduct: result.result.data.id,
+        }
+      } as never);
+    } else {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("txtDialog.txt_title_dialog"),
+        textBody: result.result.errorCodes[0].message,
+        button: translate("common.ok"),
+        closeOnOverlayTap: false,
+      });
     }
   };
 
-  const uploadImages = async (
+  const uploadImages = useCallback(async (
     imageArray: any[],
     checkUploadSlider: boolean,
     indexItem?: number
@@ -584,9 +604,9 @@ export const ProductCreateScreen: FC = (item) => {
     } catch (error) {
       console.error("Error uploading images:", error);
     }
-  };
+  }, [dataCreateProduct, imagesNote])
 
-  const handleSelectUnit = (item: any) => {
+  const handleSelectUnit = useCallback((item: any) => {
     if (valueSwitchUnit) {
       setUomGroupId(item);
       getDetailUnitGroup(item.id);
@@ -598,25 +618,25 @@ export const ProductCreateScreen: FC = (item) => {
       methods.setValue("weightOriginal", "");
       methods.setValue("volumeOriginal", "");
     }
-  }
+  }, [valueSwitchUnit])
 
-  const handleAddNewUnitOrGroup = () => {
+  const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
       navigation.navigate("createConversionGroup" as never);
     } else {
       setModalcreateUnit(true);
     }
-  }
+  }, [valueSwitchUnit])
 
-  const handleSwitchUnit = () => {
+  const handleSwitchUnit = useCallback(() => {
     // setUomGroupId({ id: "", label: "" })
     setValueSwitchUnit(!valueSwitchUnit);
     getListUnitGroup(!valueSwitchUnit);
     methods.setValue("weightOriginal", "");
     methods.setValue("volumeOriginal", "");
-  }
+  }, [valueSwitchUnit])
 
-  const handleRemoveImage = (index: number, url: any) => {
+  const handleRemoveImage = useCallback((index: number, url: any) => {
     let fileName = url.split("/").pop();
     console.log("handleRemoveImage Slider---Root", fileName);
     const indexToRemoveLocal = imagesNote.findIndex(
@@ -627,7 +647,7 @@ export const ProductCreateScreen: FC = (item) => {
       updatedImages.splice(indexToRemoveLocal, 1);
       setImagesNote(updatedImages);
     }
-  };
+  }, [imagesNote])
 
   const goToChooseSupplierScreen = () => {
     const listIds = selectedIds;
@@ -755,7 +775,7 @@ export const ProductCreateScreen: FC = (item) => {
                 >
                   {selectedIds?.length > 0 ? (
                     <Text style={styles.textWeight400Black}>
-                      {selectedIds.length} nhà cung cấp
+                      {selectedIds.length + " " + translate("createProductScreen.supplier")} 
                     </Text>
                   ) : (
                     <Text
@@ -791,7 +811,6 @@ export const ProductCreateScreen: FC = (item) => {
                     onPressChoice={(item: any) => {
                       onChange(item);
                     }}
-                    // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
                   />
                 )}
                 name="brands"
@@ -853,9 +872,10 @@ export const ProductCreateScreen: FC = (item) => {
             uomId={uomId}
             valueSwitchUnit={valueSwitchUnit}
             productName={methods.getValues('productName')}
-            setDataCreateProduct={(arr) => setDataCreateProduct(arr)}
-            setDataGroupAttribute={(arr) => setDataGroupAttribute(arr)}
+            setDataCreateProduct={(arr: any) => setDataCreateProduct(arr)}
+            setDataGroupAttribute={(arr: any) => setDataGroupAttribute(arr)}
             setVariantInConfig={(a) => setVariantInConfig(a)}
+            screen="create"
           />
           {addDescribe ? (
             <View

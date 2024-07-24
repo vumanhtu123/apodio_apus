@@ -588,13 +588,14 @@ export const ProductDetailScreen: FC = (item) => {
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.retailPrice?.map((item) => {
-                      return (
-                        <ProductAttribute
-                          label={item.min}
-                          value={`${formatVND(
-                            formatCurrency(commasToDots(item.price))
-                          )}/${dataClassification.uom?.name ||
-                          dataClassification.uomGroup?.originalUnit?.name
+                        return (
+                          <ProductAttribute
+                            label={formatCurrency(commasToDots(item.min))}
+                            value={`${formatVND(
+                              formatCurrency(commasToDots(item.price))
+                            )}/${
+                              dataClassification.uom?.name ||
+                              dataClassification.uomGroup?.originalUnit?.name
                             }`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
@@ -707,13 +708,14 @@ export const ProductDetailScreen: FC = (item) => {
                   </View>
                   {detailsClassification?.length !== 0
                     ? detailsClassification?.wholesalePrice?.map((item) => {
-                      return (
-                        <ProductAttribute
-                          label={item.min}
-                          value={`${formatVND(
-                            formatCurrency(commasToDots(item.price))
-                          )}/${dataClassification.uom?.name ||
-                          dataClassification.uomGroup?.originalUnit?.name
+                        return (
+                          <ProductAttribute
+                            label={formatCurrency(commasToDots(item.min))}
+                            value={`${formatVND(
+                              formatCurrency(commasToDots(item.price))
+                            )}/${
+                              dataClassification.uom?.name ||
+                              dataClassification.uomGroup?.originalUnit?.name
                             }`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}

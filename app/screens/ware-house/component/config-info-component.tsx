@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Text, TextField } from "../../../components";
@@ -53,7 +53,22 @@ export const ConfigInfoMoreComponent = (props: any) => {
     //   props.onPressChoice(selectedItem);
     toggleModal();
   };
-  return (
+
+  useEffect(() => {
+    props.setValue("longitude", "");
+    props.setValue("latitude", "");
+    props.setValue("longs", "");
+    props.setValue("width", "");
+    props.setValue("height", "");
+    props.setValue("weight", "");
+    props.clearError("longitude");
+    props.clearError("latitude");
+    props.clearError("longs");
+    props.clearError("width");
+    props.clearError("height");
+    props.clearError("weight");
+  }, [props.config]);
+  return props.config ? (
     <View>
       <Controller
         control={props.control}
@@ -61,7 +76,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         // defaultValue={"system_admin"}
         // Account test
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 50,
         }}
         defaultValue={""}
@@ -121,7 +136,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         )}
         name="latitude"
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 50,
         }}
       />
@@ -162,7 +177,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         )}
         name="longs"
         rules={{
-          required: "Please input data",
+          required: "Vui lòng nhập thông tin",
           maxLength: 50,
         }}
       />
@@ -181,8 +196,8 @@ export const ConfigInfoMoreComponent = (props: any) => {
               isImportant
               maxLength={20}
               keyboardType={"numeric"}
-              labelTx={"wareHouse.minimumStorageTemperature"}
-              placeholder={translate("wareHouse.enterTemperature")}
+              labelTx={"wareHouse.width"}
+              placeholder={translate("wareHouse.enterWidth")}
               style={{ marginBottom: scaleHeight(0) }}
               inputStyle={stylesWareHouse.inputPass}
               value={value}
@@ -205,7 +220,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           )}
           name="width"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 50,
           }}
         />
@@ -222,8 +237,8 @@ export const ConfigInfoMoreComponent = (props: any) => {
               isImportant
               maxLength={20}
               keyboardType={"numeric"}
-              labelTx={"wareHouse.standardHumidity"}
-              placeholder={translate("wareHouse.enterHumidity")}
+              labelTx={"wareHouse.height"}
+              placeholder={translate("wareHouse.enterHeight")}
               style={{ marginBottom: scaleHeight(0) }}
               inputStyle={stylesWareHouse.inputPass}
               value={value}
@@ -246,7 +261,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           )}
           name="height"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 50,
           }}
         />
@@ -263,8 +278,8 @@ export const ConfigInfoMoreComponent = (props: any) => {
               isImportant
               maxLength={20}
               keyboardType={"numeric"}
-              labelTx={"wareHouse.standardHumidity"}
-              placeholder={translate("wareHouse.enterHumidity")}
+              labelTx={"wareHouse.foundationLoad"}
+              placeholder={translate("wareHouse.enterFoundationLoad")}
               style={{ marginBottom: scaleHeight(0) }}
               inputStyle={stylesWareHouse.inputPass}
               value={value}
@@ -287,7 +302,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           )}
           name="weight"
           rules={{
-            required: "Please input data",
+            required: "Vui lòng nhập thông tin",
             maxLength: 50,
           }}
         />
@@ -324,5 +339,5 @@ export const ConfigInfoMoreComponent = (props: any) => {
         </View>
       </Modal>
     </View>
-  );
+  ) : null;
 };

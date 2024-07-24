@@ -375,7 +375,7 @@ export const ClassifyDetailScreen: FC = () => {
                   {dataClassification.retailPrice?.map((item: { min: any; price: number; }) => {
                     return (
                       <ProductAttribute
-                        label={item.min}
+                        label={formatCurrency(commasToDots(item.min))}
                         value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
@@ -436,7 +436,7 @@ export const ClassifyDetailScreen: FC = () => {
                   {dataClassification?.wholesalePrice?.map((item: { min: string | undefined; price: any; }) => {
                     return (
                       <ProductAttribute
-                        label={item.min}
+                        label={formatCurrency(commasToDots(item.min))}
                         value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
                         labelStyle={{ color: colors.palette.nero }}
                         textStyle={{ color: colors.palette.radicalRed }}
@@ -652,12 +652,8 @@ export const ClassifyDetailScreen: FC = () => {
           {showDetails && (
             <View style={styles.viewDetails}>
               <View style={styles.viewTitleDetail}>
-                <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
-                  Thuộc tính
-                </Text>
-                <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
-                  Giá trị
-                </Text>
+                <Text tx="createProductScreen.property" style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
+                <Text tx="createProductScreen.value" style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
               </View>
               <View style={styles.viewLine2} />
               {/* <View
