@@ -38,7 +38,7 @@ export const DetailWarehouseScreen: FC<
 
   const getAPI = useStores();
 
-  const { id, state } = props.route.params;
+  const { id, state, name } = props.route.params;
   console.log("====================================");
   console.log("data id", id, state);
   console.log("====================================");
@@ -126,7 +126,7 @@ export const DetailWarehouseScreen: FC<
                   textBody:
                     translate("wareHouse.titleConfirm") +
                     " " +
-                    state +
+                    name +
                     " " +
                     translate("wareHouse.this"),
                   textBodyWarning: translate("wareHouse.warning"),
@@ -153,38 +153,38 @@ export const DetailWarehouseScreen: FC<
                     areaCode: myData?.areaCode,
                     hasAdditionalInfo: myData?.hasAdditionalInfo,
                     additionalInfo: {
-                      latitude: myData?.additionalInfo?.latitude,
-                      longitude: myData?.additionalInfo?.longitude,
-                      height: myData?.additionalInfo?.height,
+                      latitude: myData?.additionalInfo.latitude,
+                      longitude: myData?.additionalInfo.longitude,
+                      height: myData?.additionalInfo.height,
                       heightUom: {
-                        id: myData?.additionalInfo?.heightUom?.id,
-                        name: myData?.additionalInfo?.heightUom?.name,
+                        id: myData?.additionalInfo.heightUom.id,
+                        name: myData?.additionalInfo.heightUom.name,
                       },
                       length: myData?.additionalInfo?.length,
                       lengthUom: {
-                        id: myData?.additionalInfo?.lengthUom?.id,
-                        name: myData?.additionalInfo?.lengthUom?.name,
+                        id: myData?.additionalInfo.lengthUom.id,
+                        name: myData?.additionalInfo.lengthUom.name,
                       },
                       width: myData?.additionalInfo?.width,
                       widthUom: {
-                        id: myData?.additionalInfo?.widthUom?.id,
-                        name: myData?.additionalInfo?.widthUom?.name,
+                        id: myData?.additionalInfo.widthUom.id,
+                        name: myData?.additionalInfo.widthUom.name,
                       },
                       weightCapacity: myData?.additionalInfo?.weightCapacity,
                       weightCapacityUom: {
-                        id: myData?.additionalInfo?.weightCapacityUom?.id,
-                        name: myData?.additionalInfo?.weightCapacityUom?.name,
+                        id: myData?.additionalInfo.weightCapacityUom.id,
+                        name: myData?.additionalInfo.weightCapacityUom.name,
                       },
                       scene: myData?.additionalInfo?.scene,
                     },
                     hasConditionStorage: myData?.hasConditionStorage,
                     conditionStorage: {
                       standardTemperature: String(
-                        myData?.conditionStorage?.standardTemperature
+                        myData?.conditionStorage.standardTemperature
                       ),
-                      minTemperature: myData?.conditionStorage?.minTemperature,
+                      minTemperature: myData?.conditionStorage.minTemperature,
                       standardHumidity:
-                        myData?.conditionStorage?.standardHumidity,
+                        myData?.conditionStorage.standardHumidity,
                     },
                     action: "CREATE",
                     note: "string",
@@ -210,36 +210,36 @@ export const DetailWarehouseScreen: FC<
               areaCode: myData?.areaCode,
               hasAdditionalInfo: myData?.hasAdditionalInfo,
               additionalInfo: {
-                latitude: myData?.additionalInfo?.latitude,
-                longitude: myData?.additionalInfo?.longitude,
-                height: myData?.additionalInfo?.height,
+                latitude: myData?.additionalInfo.latitude,
+                longitude: myData?.additionalInfo.longitude,
+                height: myData?.additionalInfo.height,
                 heightUom: {
-                  id: myData?.additionalInfo?.heightUom?.id,
-                  name: myData?.additionalInfo?.heightUom?.name,
+                  id: myData?.additionalInfo.heightUom.id,
+                  name: myData?.additionalInfo.heightUom.name,
                 },
                 length: myData?.additionalInfo?.length,
                 lengthUom: {
-                  id: myData?.additionalInfo?.lengthUom?.id,
-                  name: myData?.additionalInfo?.lengthUom?.name,
+                  id: myData?.additionalInfo.lengthUom.id,
+                  name: myData?.additionalInfo.lengthUom.name,
                 },
                 width: myData?.additionalInfo?.width,
                 widthUom: {
-                  id: myData?.additionalInfo?.widthUom?.id,
-                  name: myData?.additionalInfo?.widthUom?.name,
+                  id: myData?.additionalInfo.widthUom.id,
+                  name: myData?.additionalInfo.widthUom.name,
                 },
                 weightCapacity: myData?.additionalInfo?.weightCapacity,
                 weightCapacityUom: {
-                  id: myData?.additionalInfo?.weightCapacityUom?.id,
-                  name: myData?.additionalInfo?.weightCapacityUom?.name,
+                  id: myData?.additionalInfo.weightCapacityUom.id,
+                  name: myData?.additionalInfo.weightCapacityUom.name,
                 },
                 scene: myData?.additionalInfo?.scene,
               },
               hasConditionStorage: myData?.hasConditionStorage,
               conditionStorage: {
                 standardTemperature:
-                  myData?.conditionStorage?.standardTemperature,
-                minTemperature: myData?.conditionStorage?.minTemperature,
-                standardHumidity: myData?.conditionStorage?.standardHumidity,
+                  myData?.conditionStorage.standardTemperature,
+                minTemperature: myData?.conditionStorage.minTemperature,
+                standardHumidity: myData?.conditionStorage.standardHumidity,
               },
               action: "CREATE",
               note: "string",

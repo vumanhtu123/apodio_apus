@@ -87,6 +87,8 @@ export const ClassifyDetailScreen: FC = () => {
         }
         // setDataProductTemplate(data.productTemplate)
         setIsChecking(false);
+        getNameAndValue(data.attributeCategory);
+        extractAttributeInfo(data.productTemplate)
       } else {
         //setErrorMessage(response.response.errorCodes[0].message);
         console.error("Failed to fetch detail:", response);
@@ -121,11 +123,11 @@ export const ClassifyDetailScreen: FC = () => {
     return item ? item.label : "";
   };
 
-  const getNameAndValue = () => {
+  const getNameAndValue = (data: any) => {
     const nameAndValue: { name: any; value: any }[] = [];
-    attributeCategory?.forEach((category) => {
-      category.attributeOutputList?.forEach((dto) => {
-        dto.productAttributeValue?.forEach((attrValue) => {
+    data?.forEach((category: any) => {
+      category.attributeOutputList?.forEach((dto: any) => {
+        dto.productAttributeValue?.forEach((attrValue: any) => {
           nameAndValue.push({
             name: dto.name,
             value: attrValue.value,
@@ -154,7 +156,14 @@ export const ClassifyDetailScreen: FC = () => {
   useEffect(() => {
     extractAttributeInfo(dataClassification.productTemplate)
   }, [dataClassification])
-
+  useEffect(() => {
+    if (dataClassification?.wholesalePrice?.length > 0) {
+      setShowWholesalePrice(true);
+    }
+    if (dataClassification?.retailPrice?.length > 0) {
+      setShowRetailPrice(true);
+    }
+  }, [dataClassification]);
 
   console.log('----hasVariant------', hasVariant)
   const deleteProduct = async () => {
@@ -191,14 +200,13 @@ export const ClassifyDetailScreen: FC = () => {
 
   const toggleDetails = () => {
     setShowDetails(!showDetails);
-    getNameAndValue();
-    extractAttributeInfo(dataClassification.productTemplate)
+    // getNameAndValue();
+    // extractAttributeInfo(dataClassification.productTemplate)
     // selectDataClassification()
   };
-  useEffect(() => {
-    getNameAndValue();
-    extractAttributeInfo(dataClassification.productTemplate)
-  }, [])
+  // useEffect(() => {
+  //   console.log('sadasdas', nameValue)
+  // }, [nameValue])
   return (
     <View style={styles.ROOT}>
       <Header
@@ -461,6 +469,56 @@ export const ClassifyDetailScreen: FC = () => {
                 labelTx="detailScreen.unit"
                 value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
               />
+              {dataClassification?.uomGroup ? (
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      marginBottom: scaleHeight(15),
+                    }}>
+
+                    <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size12, color: colors.palette.dolphin, }} />
+                    <Text tx={"createProductScreen.conversionRate"}
+                      style={{ fontSize: fontSize.size12, fontWeight: "600", color: colors.palette.dolphin, }} />
+                  </View>
+                  {dataClassification?.uomGroup?.uomGroupLines?.map((item: any, index: any) => (
+                    <View
+                      key={index}
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        marginBottom: scaleHeight(15),
+                      }}>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Images.ic_arrowDownRight
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                        <Text
+                          style={{
+                            fontSize: fontSize.size12,
+                            marginHorizontal: scaleWidth(6),
+                            color: colors.palette.dolphin,
+                          }}>
+                          {item.unitName}
+                        </Text>
+                      </View>
+                      <Text
+                        style={{
+                          fontSize: fontSize.size12,
+                          fontWeight: "600",
+                          color: colors.palette.dolphin,
+                        }}>
+                        {item.conversionRate} {dataClassification.uomGroup?.originalUnit?.name}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ) : null}
             </View>
           </View>
           {dataClassification.description ? (

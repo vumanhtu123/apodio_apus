@@ -50,9 +50,12 @@ export class ProductApi {
     sort: string,
     isLoadMore: boolean
   ): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+    if (!isLoadMore) {
+      Loading.show({
+        text: 'Loading...',
+      });
+    }
+    // console.log('asdasdas', isLoadMore)
     try {
       console.log("dataa :", page);
       const response: ApiResponse<any> = await this.api.apisauce.get(

@@ -916,6 +916,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             arrData={arrPayment}
             onPressChoice={(item: any) => {
               setPayment(item);
+              console.log('paymentMethods', item)
               orderStore.clearTaxValueAndTaxesInput();
               setArrProduct(orderStore.dataProductAddOrder.slice());
               // getListTax();
