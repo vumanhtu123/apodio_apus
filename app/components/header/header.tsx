@@ -104,8 +104,8 @@ export function Header(props: HeaderProps) {
         )
         }
         {leftText && (
-          <TouchableOpacity onPress={onLeftTextPress} style={{ width: '30%', justifyContent: 'center', }}>
-            <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'center', }} />
+          <TouchableOpacity onPress={onLeftTextPress} style={{ width: '40%', justifyContent: 'center' }}>
+            <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'left', fontSize: fontSize.size16 }} />
           </TouchableOpacity>
         )
         }
