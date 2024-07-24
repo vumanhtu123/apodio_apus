@@ -24,7 +24,7 @@ export class WarehouseAPI {
   ): Promise<any> {
     console.log("value isVisible", isLoadMore);
 
-    if (isLoadMore == true) {
+    if (isLoadMore) {
       Loading.hide();
       try {
         console.log("doandev url warehouse ", this.api.config.url);
