@@ -177,12 +177,12 @@ export class CategoryApi {
     imageUrl: string,
     productCategoryId: number
   ): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const url = `${ApiEndpoint.UPDATE_CATEGORY
-        }?productCategoryId=${encodeURIComponent(productCategoryId)}`;
+        }?id=${encodeURIComponent(productCategoryId)}`;
       const body = { name, imageUrl };
       const response: ApiResponse<any> = await this.api.apisauce.put(url, body);
       console.log("mmm", url);
