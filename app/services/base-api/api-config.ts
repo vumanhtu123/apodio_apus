@@ -9,27 +9,27 @@ import CONFIG from "../../config.json";
 
 const getDomain = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL;
+  const domain = CONFIG.API.DEV.URL;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Domain", domain);
   return domain;
 };
 const getDomainOrder = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL_ORDER;
+  const domain = CONFIG.API.DEV.URL_ORDER;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Domainmm", domain);
   return domain;
 };
 const getDomainAccounting = () => {
-  const domain = CONFIG.API.STAGING.URL_ACCOUNTING;
+  const domain = CONFIG.API.DEV.URL_ACCOUNTING;
   console.log("Domain accounting", domain);
   return domain;
 };
 const getDomainErp = () => {
   const env = CONFIG.ENV;
   //const domain = CONFIG.API.DEV.URL_ERP;
-  const domain = CONFIG.API.STAGING.URL_ERP;
+  const domain = CONFIG.API.DEV.URL_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("ERP", domain);
   return domain;
@@ -37,7 +37,7 @@ const getDomainErp = () => {
 
 const getDomainGetWay = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL_GET_WAY_ERP;
+  const domain = CONFIG.API.DEV.URL_GET_WAY_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Getway", domain);
   return domain;
@@ -45,14 +45,14 @@ const getDomainGetWay = () => {
 
 const getDomainUAA = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.UAA;
-  console.log("URL", CONFIG.API.STAGING.UAA);
+  const domain = CONFIG.API.DEV.UAA;
+  console.log("URL", CONFIG.API.DEV.UAA);
   return domain;
 };
 
 const getDomainUpload = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL_UPLOAD;
+  const domain = CONFIG.API.DEV.URL_UPLOAD;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Upload", domain);
   return domain;
@@ -70,10 +70,10 @@ const getBaseURL = () => {
 };
 
 const getDomainWarehouse = () => {
-  const domain = CONFIG.API.STAGING.URL_WAREHOUSE;
-  console.log('URL warehouse 2',domain )
-  return domain
-}
+  const domain = CONFIG.API.DEV.URL_WAREHOUSE;
+  console.log("URL warehouse 2", domain);
+  return domain;
+};
 export interface ApiConfig {
   /**
    * The URL of the api.
@@ -125,5 +125,5 @@ export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
 
 export const DEFAULT_API_WAREHOUSE: ApiConfig = {
   url: getDomainWarehouse(),
-  timeout: 100000
-}
+  timeout: 100000,
+};
