@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { FC, useEffect, useRef, useState } from "react";
 import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { Header, Text, TextField } from "../../../components";
 import { Styles, stylesWareHouse } from "../style";
 import { scaleHeight, scaleWidth } from "../../../theme";
@@ -20,25 +20,9 @@ export const CreateWareHouseScreen: FC<
 > = observer(function CreateWareHouseScreen(props: any) {
   const api = useStores();
   console.log("props adc", props.route.params);
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    clearErrors,
-    watch,
-  } = useForm({
-    mode: "all",
-  });
 
   const status = useRef(props.route.params.status ?? null);
   const id = useRef(props.route.params.id ?? null);
-  const heightUom = useRef({ value: 0, text: "" });
-  const lengthUom = useRef({ value: 0, text: "" });
-  const widthUom = useRef({ value: 0, text: "" });
-  const weightCapacityUom = useRef({ value: 0, text: "" });
-  const conditions = watch("conditions", false);
-  const config = watch("config", false);
 
   const [listUnit, setListUnit] = useState([]);
   console.log(
@@ -59,82 +43,162 @@ export const CreateWareHouseScreen: FC<
     });
   };
 
-  useEffect(() => {
-    console.log("width uom", lengthUom.current);
-    heightUom.current = props.route.params.additionalInfo?.heightUom;
-    lengthUom.current = props.route.params.additionalInfo?.lengthUom;
-    widthUom.current = props.route.params.additionalInfo?.widthUom;
-    weightCapacityUom.current =
-      props.route.params.additionalInfo?.weightCapacityUom;
-  }, []);
+  const methods = useForm({
+    defaultValues: {
+      nameWareHouse:
+        status.current == "COPY"
+          ? props.route.params.name +
+              "-COPY-" +
+              props.route.params.sequenceCopy ?? ""
+          : props.route.params.name ?? "",
+      codeWareHouse:
+        status.current == "COPY"
+          ? props.route.params.code +
+              "-COPY-" +
+              props.route.params.sequenceCopy ??
+            "" ??
+            ""
+          : String(props.route.params.code ?? ""),
+      addressWareHouse: String(props.route.params.address ?? ""),
+      temperature1: String(
+        props.route.params.conditionStorage?.standardTemperature ?? ""
+      ),
+      temperature2: String(
+        props.route.params.conditionStorage?.minTemperature ?? ""
+      ),
+      temperature3: String(
+        props.route.params.conditionStorage?.standardHumidity ?? ""
+      ),
+      conditions: props.route.params?.hasConditionStorage ? true : false,
+      config: props.route.params?.hasAdditionalInfo ? true : false,
+      latitude: String(props.route.params.additionalInfo?.latitude ?? ""),
+      longitude: String(props.route.params.additionalInfo?.longitude ?? ""),
+      height: String(props.route.params.additionalInfo?.height ?? ""),
+      longs: String(props.route.params.additionalInfo?.length ?? ""),
+      width: String(props.route.params.additionalInfo?.width ?? ""),
+      weight: String(props.route.params.additionalInfo?.weightCapacity ?? ""),
+      lengthUom: {
+        value: props.route.params.additionalInfo?.lengthUom?.id,
+        text: props.route.params.additionalInfo?.lengthUom?.name,
+      },
+      heightUom: {
+        value: props.route.params.additionalInfo?.heightUom?.id,
+        text: props.route.params.additionalInfo?.heightUom?.name,
+      },
+      widthUom: {
+        value: props.route.params.additionalInfo?.widthUom?.id,
+        text: props.route.params.additionalInfo?.widthUom?.name,
+      },
+      weightCapacityUom: {
+        value: props.route.params.additionalInfo?.weightCapacityUom?.id,
+        text: props.route.params.additionalInfo?.weightCapacityUom?.name,
+      },
+    },
+  });
+
+  const {
+    control,
+    formState: { errors },
+    setValue,
+    clearErrors,
+    setError,
+    watch,
+  } = methods;
+
+  const conditions = watch(
+    "conditions",
+    props.route.params?.hasConditionStorage ? true : false
+  );
+  const config = watch(
+    "config",
+    props.route.params?.hasAdditionalInfo ? true : false
+  );
+
+  const lengthUom = watch("lengthUom");
+  const widthUom = watch("widthUom");
+
+  const heightUom = watch("heightUom");
+  const weightCapacityUom = watch("weightCapacityUom");
 
   useEffect(() => {
     handlerDataList();
-    status.current == "COPY"
-      ? setValue(
-          "nameWareHouse",
-          props.route.params.name +
-            "-COPY-" +
-            props.route.params.sequenceCopy ?? ""
-        )
-      : setValue("nameWareHouse", props.route.params.name ?? "");
-    status.current == "COPY"
-      ? setValue(
-          "codeWareHouse",
-          props.route.params.code +
-            "-COPY-" +
-            props.route.params.sequenceCopy ??
-            "" ??
-            ""
-        )
-      : setValue("codeWareHouse", String(props.route.params.code ?? ""));
-    setValue("addressWareHouse", String(props.route.params.address ?? ""));
-    setValue(
-      "latitude",
-      String(props.route.params.additionalInfo?.latitude ?? "")
-    );
-    setValue(
-      "longitude",
-      String(props.route.params.additionalInfo?.longitude ?? "")
-    );
-    setValue("height", String(props.route.params.additionalInfo?.height ?? ""));
-    setValue("longs", String(props.route.params.additionalInfo?.length ?? ""));
-    setValue("width", String(props.route.params.additionalInfo?.width ?? ""));
-    setValue(
-      "temperature1",
-      String(props.route.params.conditionStorage?.standardTemperature ?? "")
-    );
-    setValue(
-      "temperature2",
-      String(props.route.params.conditionStorage?.minTemperature ?? "")
-    );
-    setValue(
-      "temperature3",
-      String(props.route.params.conditionStorage?.standardHumidity ?? "")
-    );
-    setValue(
-      "weight",
-      String(props.route.params.additionalInfo?.weightCapacity ?? "")
-    );
-    setValue(
-      "conditions",
-      props.route.params?.hasConditionStorage ? true : false
-    );
-    setValue("config", props.route.params?.hasAdditionalInfo ? true : false);
   }, [props.route.params]);
 
-  // const [conditions, setConditions] = useState(
-  //   props.route.params.hasConditionStorage ? true : false
-  // );
-  // const [config, setConfig] = useState(
-  //   props.route.params.hasAdditionalInfo ? true : false
-  // );
+  const onPressConditions = () => {
+    setValue("conditions", !conditions);
+    setValue("temperature1", "");
+    clearErrors("temperature1");
+    setValue("temperature2", "");
+    clearErrors("temperature2");
+    setValue("temperature3", "");
+    clearErrors("temperature3");
+  };
+
+  const checkUom = () => {
+    console.log("check error", lengthUom.value);
+    switch (0) {
+      case lengthUom.value:
+        setError("lengthUom", {
+          type: "required",
+          message: "Vui lòng chọn đơn vị tính",
+        });
+        console.log("check error 1", lengthUom.value);
+        break;
+      case widthUom.value:
+        setError("widthUom", {
+          type: "required",
+          message: "Vui lòng chọn đơn vị tính",
+        });
+        console.log("check error 2", lengthUom.value);
+        break;
+      case heightUom.value:
+        setError("heightUom", {
+          type: "required",
+          message: "Vui lòng chọn đơn vị tính",
+        });
+        console.log("check error 3", lengthUom.value);
+        break;
+      case weightCapacityUom.value:
+        setError("weightCapacityUom", {
+          type: "required",
+          message: "Vui lòng chọn đơn vị tính",
+        });
+        console.log("check error 4", lengthUom.value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const onPressConfig = () => {
+    setValue("config", !config);
+    setValue("heightUom", { value: 0, text: "" });
+    setValue("lengthUom", { value: 0, text: "" });
+    setValue("widthUom", { value: 0, text: "" });
+    setValue("weightCapacityUom", { value: 0, text: "" });
+    setValue("longitude", "");
+    setValue("latitude", "");
+    setValue("longs", "");
+    setValue("width", "");
+    setValue("height", "");
+    setValue("weight", "");
+    clearErrors("longitude");
+    clearErrors("latitude");
+    clearErrors("longs");
+    clearErrors("width");
+    clearErrors("height");
+    clearErrors("weight");
+  };
 
   const onSubmit = (data: any) => {
-    // console.log("tuvm test data", data);
+    console.log("tuvm test data", data);
     switch (status.current) {
       case "UPDATE":
         handlerUpdateData(data, id.current);
+        console.log(
+          "check data props",
+          props.route.params.additionalInfo?.heightUom.name
+        );
         break;
       case "COPY":
         onHandleDataCopy(data);
@@ -146,7 +210,7 @@ export const CreateWareHouseScreen: FC<
   };
 
   const handlerUpdateData = (data: any, id: any) => {
-    console.log("update data");
+    console.log("update data", data);
     try {
       api.warehouseStore
         .putUpdateWareHouse(
@@ -164,23 +228,39 @@ export const CreateWareHouseScreen: FC<
               longitude: data.longitude,
               height: data.height,
               heightUom: {
-                id: heightUom.current.value ?? 0,
-                name: heightUom.current.text ?? "",
+                id:
+                  heightUom.value ??
+                  props.route.params.additionalInfo?.heightUom.id,
+                name:
+                  heightUom.text ??
+                  props.route.params.additionalInfo?.heightUom.name,
               },
               length: data.longs,
               lengthUom: {
-                id: lengthUom.current.value ?? 0,
-                name: lengthUom.current.text ?? "",
+                id:
+                  lengthUom.value ??
+                  props.route.params.additionalInfo?.lengthUom.id,
+                name:
+                  lengthUom.text ??
+                  props.route.params.additionalInfo?.lengthUom.name,
               },
               width: data.width,
               widthUom: {
-                id: widthUom.current.value ?? 0,
-                name: widthUom.current.text ?? "",
+                id:
+                  widthUom.value ??
+                  props.route.params.additionalInfo?.widthUom.id,
+                name:
+                  widthUom.text ??
+                  props.route.params.additionalInfo?.widthUom.name,
               },
               weightCapacity: data.weight,
               weightCapacityUom: {
-                id: weightCapacityUom.current.value ?? 0,
-                name: weightCapacityUom.current.text ?? "",
+                id:
+                  weightCapacityUom.value ??
+                  props.route.params.additionalInfo?.weightCapacityUom.id,
+                name:
+                  weightCapacityUom.text ??
+                  props.route.params.additionalInfo?.weightCapacityUom.name,
               },
               scene: "INDOOR",
             },
@@ -258,23 +338,39 @@ export const CreateWareHouseScreen: FC<
             longitude: data.longitude,
             height: data.height,
             heightUom: {
-              id: heightUom.current.value ?? 0,
-              name: heightUom.current.text ?? "",
+              id:
+                heightUom.value ??
+                props.route.params.additionalInfo?.heightUom.id,
+              name:
+                heightUom.text ??
+                props.route.params.additionalInfo?.heightUom.name,
             },
             length: data.longs,
             lengthUom: {
-              id: lengthUom.current.value ?? 0,
-              name: lengthUom.current.text ?? "",
+              id:
+                lengthUom.value ??
+                props.route.params.additionalInfo?.lengthUom.id,
+              name:
+                lengthUom.text ??
+                props.route.params.additionalInfo?.lengthUom.name,
             },
             width: data.width,
             widthUom: {
-              id: widthUom.current.value ?? 0,
-              name: widthUom.current.text ?? "",
+              id:
+                widthUom.value ??
+                props.route.params.additionalInfo?.widthUom.id,
+              name:
+                widthUom.text ??
+                props.route.params.additionalInfo?.widthUom.name,
             },
             weightCapacity: data.weight,
             weightCapacityUom: {
-              id: weightCapacityUom.current.value ?? 0,
-              name: weightCapacityUom.current.text ?? "",
+              id:
+                weightCapacityUom.value ??
+                props.route.params.additionalInfo?.weightCapacityUom.id,
+              name:
+                weightCapacityUom.text ??
+                props.route.params.additionalInfo?.weightCapacityUom.name,
             },
             scene: "INDOOR",
           },
@@ -346,23 +442,39 @@ export const CreateWareHouseScreen: FC<
             longitude: data.longitude,
             height: data.height,
             heightUom: {
-              id: heightUom.current?.value ?? 0,
-              name: heightUom.current?.text ?? "",
+              id:
+                heightUom.value ??
+                props.route.params.additionalInfo?.heightUom.id,
+              name:
+                heightUom.text ??
+                props.route.params.additionalInfo?.heightUom.name,
             },
             length: data.longs,
             lengthUom: {
-              id: lengthUom.current?.value ?? 0,
-              name: lengthUom.current?.text ?? "",
+              id:
+                lengthUom.value ??
+                props.route.params.additionalInfo?.lengthUom.id,
+              name:
+                lengthUom.text ??
+                props.route.params.additionalInfo?.lengthUom.name,
             },
             width: data.width,
             widthUom: {
-              id: widthUom.current?.value ?? 0,
-              name: widthUom.current?.text ?? "",
+              id:
+                widthUom.value ??
+                props.route.params.additionalInfo?.widthUom.id,
+              name:
+                widthUom.text ??
+                props.route.params.additionalInfo?.widthUom.name,
             },
             weightCapacity: data.weight,
             weightCapacityUom: {
-              id: weightCapacityUom.current?.value ?? 0,
-              name: weightCapacityUom.current?.text ?? "",
+              id:
+                weightCapacityUom.value ??
+                props.route.params.additionalInfo?.weightCapacityUom.id,
+              name:
+                weightCapacityUom.text ??
+                props.route.params.additionalInfo?.weightCapacityUom.name,
             },
             scene: "INDOOR",
           },
@@ -418,230 +530,201 @@ export const CreateWareHouseScreen: FC<
   };
 
   return (
-    <View style={Styles.main}>
-      <Header
-        LeftIcon={Images.back}
-        style={{ height: scaleHeight(52) }}
-        headerTx={
-          status.current == "UPDATE"
-            ? "wareHouse.refactorWareHouse"
-            : "wareHouse.createWareHouse"
-        }
-        onLeftPress={() => props.navigation.goBack()}
-      />
-      <View style={stylesWareHouse.containerView}>
-        <ScrollView
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}>
-          <Controller
-            control={control}
-            // Account test setup new pin
-            // defaultValue={"system@123456"}
-            // Account test
-            defaultValue={""}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                keyboardType={null}
-                labelTx={"wareHouse.codeWareHouse"}
-                style={{
-                  marginBottom: scaleHeight(0),
-                  backgroundColor: "#F6F7F9",
-                  borderRadius: 8,
-                }}
-                inputStyle={stylesWareHouse.inputPass}
-                value={value}
-                editable={status.current == "UPDATE" ? false : true}
-                placeholderTx={"wareHouse.enterCodeWareHouse"}
-                // secureTextEntry={false}
-                secureTextEntry={false}
-                onBlur={onBlur}
-                isShowPassword
-                RightIconClear={null}
-                RightIconShow={() => {}}
-                onClearText={() => {}}
-                maxLength={50}
-                onShowPassword={() => {}}
-                error={errors.codeWareHouse?.message ?? ""}
-                onChangeText={(value) => {
-                  onChange(value);
-                }}
-              />
-            )}
-            name="codeWareHouse"
-            rules={{
-              required: "",
-              maxLength: 50,
-              pattern: {
-                value: /^[a-zA-Z0-9-]+$/,
-                message: "Mã chỉ gồm chữ , số và ký tự _",
-              },
-            }}
-          />
+    <FormProvider {...methods}>
+      <View style={Styles.main}>
+        <Header
+          LeftIcon={Images.back}
+          style={{ height: scaleHeight(52) }}
+          headerTx={
+            status.current == "UPDATE"
+              ? "wareHouse.refactorWareHouse"
+              : "wareHouse.createWareHouse"
+          }
+          onLeftPress={() => props.navigation.goBack()}
+        />
+        <View style={stylesWareHouse.containerView}>
+          <ScrollView
+            bounces={false}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}>
+            <Controller
+              control={control}
+              // Account test setup new pin
+              // defaultValue={"system@123456"}
+              // Account test
+              defaultValue={""}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  keyboardType={null}
+                  labelTx={"wareHouse.codeWareHouse"}
+                  style={{
+                    marginBottom: scaleHeight(0),
+                    backgroundColor: "#F6F7F9",
+                    borderRadius: 8,
+                  }}
+                  inputStyle={stylesWareHouse.inputPass}
+                  value={value}
+                  editable={status.current == "UPDATE" ? false : true}
+                  placeholderTx={"wareHouse.enterCodeWareHouse"}
+                  // secureTextEntry={false}
+                  secureTextEntry={false}
+                  onBlur={onBlur}
+                  isShowPassword
+                  RightIconClear={null}
+                  RightIconShow={() => {}}
+                  onClearText={() => {}}
+                  maxLength={50}
+                  onShowPassword={() => {}}
+                  error={errors.codeWareHouse?.message ?? ""}
+                  onChangeText={(value) => {
+                    onChange(value);
+                  }}
+                />
+              )}
+              name="codeWareHouse"
+              rules={{
+                required: "",
+                maxLength: 50,
+                pattern: {
+                  value: /^[a-zA-Z0-9-]+$/,
+                  message: "Mã chỉ gồm chữ , số và ký tự _",
+                },
+              }}
+            />
 
-          <Controller
-            control={control}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                keyboardType={null}
-                labelTx={"wareHouse.nameWareHouse"}
-                style={{
-                  backgroundColor: "#F6F7F9",
-                  borderRadius: 8,
-                  marginVertical: 15,
-                }}
-                inputStyle={stylesWareHouse.inputPass}
-                value={value}
-                placeholderTx={"wareHouse.enterWareHouse"}
-                // secureTextEntry={false}
-                isImportant
-                secureTextEntry={false}
-                onBlur={onBlur}
-                isShowPassword
-                RightIconClear={null}
-                RightIconShow={() => {}}
-                onClearText={() => {}}
-                maxLength={250}
-                onShowPassword={() => {}}
-                error={errors.nameWareHouse?.message ?? ""}
-                onChangeText={(value) => {
-                  onChange(value);
-                }}
-              />
-            )}
-            name="nameWareHouse"
-            rules={{
-              required: "Vui lòng nhập thông tin",
-              maxLength: 250,
-            }}
-          />
-          <Controller
-            control={control}
-            // Account test setup new pin
-            // defaultValue={"system@123456"}
-            // Account test
-            // defaultValue={""}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TextField
-                maxLength={250}
-                keyboardType={null}
-                labelTx={"wareHouse.address"}
-                style={{
-                  marginBottom: scaleHeight(0),
-                  backgroundColor: "#F6F7F9",
-                  borderRadius: 8,
-                }}
-                error={errors.addressWareHouse?.message ?? ""}
-                inputStyle={stylesWareHouse.inputPass}
-                value={value}
-                placeholderTx={"wareHouse.enterAddress"}
-                // secureTextEntry={false}
-                isImportant
-                secureTextEntry={false}
-                onBlur={onBlur}
-                isShowPassword
-                RightIconClear={null}
-                RightIconShow={() => {}}
-                onClearText={() => {}}
-                onShowPassword={() => {}}
-                onChangeText={(value) => {
-                  onChange(value);
-                }}
-              />
-            )}
-            name="addressWareHouse"
-            rules={{
-              required: "Vui lòng nhập thông tin",
-              maxLength: 250,
-            }}
-          />
-          <Controller
-            name="conditions"
-            control={control}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignContent: "center",
-                  marginVertical: scaleHeight(15),
-                }}
-                onPress={() => {
-                  // setConditions(!conditions);
-                  setValue("conditions", !conditions);
-                  console.log(conditions);
-                }}>
-                {conditions ? (
-                  <Images.ic_checkbox marginRight={5} />
-                ) : (
-                  <View style={stylesWareHouse.selected}></View>
-                )}
-                <Text tx="wareHouse.storageConditions"></Text>
-              </TouchableOpacity>
-            )}
-          />
-          {conditions ? (
-            <ConditionsComponent
+            <Controller
               control={control}
-              errors={errors}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  keyboardType={null}
+                  labelTx={"wareHouse.nameWareHouse"}
+                  style={{
+                    backgroundColor: "#F6F7F9",
+                    borderRadius: 8,
+                    marginVertical: 15,
+                  }}
+                  inputStyle={stylesWareHouse.inputPass}
+                  value={value}
+                  placeholderTx={"wareHouse.enterWareHouse"}
+                  // secureTextEntry={false}
+                  isImportant
+                  secureTextEntry={false}
+                  onBlur={onBlur}
+                  isShowPassword
+                  RightIconClear={null}
+                  RightIconShow={() => {}}
+                  onClearText={() => {}}
+                  maxLength={250}
+                  onShowPassword={() => {}}
+                  error={errors.nameWareHouse?.message ?? ""}
+                  onChangeText={(value) => {
+                    onChange(value);
+                  }}
+                />
+              )}
+              name="nameWareHouse"
+              rules={{
+                required: "Vui lòng nhập thông tin",
+                maxLength: 250,
+              }}
+            />
+            <Controller
+              control={control}
+              // Account test setup new pin
+              // defaultValue={"system@123456"}
+              // Account test
+              // defaultValue={""}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextField
+                  maxLength={250}
+                  keyboardType={null}
+                  labelTx={"wareHouse.address"}
+                  style={{
+                    marginBottom: scaleHeight(0),
+                    backgroundColor: "#F6F7F9",
+                    borderRadius: 8,
+                  }}
+                  error={errors.addressWareHouse?.message ?? ""}
+                  inputStyle={stylesWareHouse.inputPass}
+                  value={value}
+                  placeholderTx={"wareHouse.enterAddress"}
+                  // secureTextEntry={false}
+                  isImportant
+                  secureTextEntry={false}
+                  onBlur={onBlur}
+                  isShowPassword
+                  RightIconClear={null}
+                  RightIconShow={() => {}}
+                  onClearText={() => {}}
+                  onShowPassword={() => {}}
+                  onChangeText={(value) => {
+                    onChange(value);
+                  }}
+                />
+              )}
+              name="addressWareHouse"
+              rules={{
+                required: "Vui lòng nhập thông tin",
+                maxLength: 250,
+              }}
+            />
+            <Controller
+              name="conditions"
+              control={control}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    alignContent: "center",
+                    marginVertical: scaleHeight(15),
+                  }}
+                  onPress={() => {
+                    // setConditions(!conditions);
+                    onPressConditions();
+                    console.log(conditions);
+                  }}>
+                  {conditions ? (
+                    <Images.ic_checkbox marginRight={5} />
+                  ) : (
+                    <View style={stylesWareHouse.selected}></View>
+                  )}
+                  <Text tx="wareHouse.storageConditions"></Text>
+                </TouchableOpacity>
+              )}
+            />
+            {conditions ? (
+              <ConditionsComponent
+              // control={control}
+              // errors={errors}
               // conditions={conditions}
-              setValue={setValue}
-              clearError={clearErrors}
-            />
-          ) : null}
-          <Controller
-            name="config"
-            control={control}
-            render={({ field: { onChange, value, onBlur } }) => (
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  alignContent: "center",
-                  marginVertical: scaleHeight(15),
-                }}
-                onPress={() => {
-                  setValue("config", !config);
-                  // setConfig(!config);
-                }}>
-                {config ? (
-                  <Images.ic_checkbox marginRight={5} />
-                ) : (
-                  <View style={stylesWareHouse.selected}></View>
-                )}
-                <Text tx="wareHouse.configInfoMore"></Text>
-              </TouchableOpacity>
-            )}
-          />
-          {config ? (
-            <ConfigInfoMoreComponent
+              // setValue={setValue}
+              // clearError={clearErrors}
+              />
+            ) : null}
+            <Controller
+              name="config"
               control={control}
-              errors={errors}
-              // config={config}
-              setValue={setValue}
-              clearError={clearErrors}
-              list={listUnit}
-              heightUomData={heightUom.current}
-              lengthUomData={lengthUom.current}
-              widthUomData={widthUom.current}
-              weightCapacityUomData={weightCapacityUom.current}
-              heightUom={(item: any) => {
-                heightUom.current = item;
-                console.log("item uom", heightUom.current);
-              }}
-              lengthUom={(item: any) => {
-                lengthUom.current = item;
-                console.log("item length", lengthUom.current);
-              }}
-              widthUom={(item: any) => {
-                widthUom.current = item;
-                console.log("item width", widthUom.current);
-              }}
-              weightCapacityUom={(item: any) => {
-                weightCapacityUom.current = item;
-                console.log("item weight capacity", weightCapacityUom.current);
-              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "row",
+                    alignContent: "center",
+                    marginVertical: scaleHeight(15),
+                  }}
+                  onPress={() => {
+                    onPressConfig();
+                  }}>
+                  {config ? (
+                    <Images.ic_checkbox marginRight={5} />
+                  ) : (
+                    <View style={stylesWareHouse.selected}></View>
+                  )}
+                  <Text tx="wareHouse.configInfoMore"></Text>
+                </TouchableOpacity>
+              )}
             />
-          ) : null}
-          {/* <Controller
+            {config ? <ConfigInfoMoreComponent list={listUnit} /> : null}
+            {/* <Controller
             control={control}
             render={({ field: { onChange, value } }) => (
               <View
@@ -662,29 +745,30 @@ export const CreateWareHouseScreen: FC<
             )}
             name="notifications"
           /> */}
-        </ScrollView>
-        <TouchableOpacity
-          onPress={handleSubmit(onSubmit)}
-          style={{
-            backgroundColor: "#0078D4",
-            alignItems: "center",
-            borderRadius: 10,
-          }}>
-          <Text
-            tx={
-              status.current == "UPDATE"
-                ? "wareHouse.refactor"
-                : "wareHouse.createWareHouse"
-            }
+          </ScrollView>
+          <TouchableOpacity
+            onPress={methods.handleSubmit(onSubmit)}
             style={{
-              fontSize: 14,
-              color: "#FFFFFF",
-              fontWeight: "600",
-              paddingVertical: scaleHeight(12),
-            }}
-          />
-        </TouchableOpacity>
+              backgroundColor: "#0078D4",
+              alignItems: "center",
+              borderRadius: 10,
+            }}>
+            <Text
+              tx={
+                status.current == "UPDATE"
+                  ? "wareHouse.refactor"
+                  : "wareHouse.createWareHouse"
+              }
+              style={{
+                fontSize: 14,
+                color: "#FFFFFF",
+                fontWeight: "600",
+                paddingVertical: scaleHeight(12),
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </FormProvider>
   );
 });

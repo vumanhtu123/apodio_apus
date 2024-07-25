@@ -132,12 +132,12 @@ export interface TextFieldProps extends TextInputProps {
   styleTextError?: StyleProp<TextStyle>;
   styleTextRight?: StyleProp<TextStyle>;
   styleTextLabel?: boolean;
-  valueTextRight?: any;
   isMultiline?: boolean;
   value?: any;
   valueInput?: any;
   valueCurrency?: any;
   iconRight?: any;
+  ValueTextRight?: any;
   valueTextRight1?: any;
 }
 
@@ -179,7 +179,7 @@ export function TextField(props: TextFieldProps) {
     isMultiline,
     valueInput,
     valueCurrency,
-    valueTextRight,
+    ValueTextRight,
     styleTextRight,
     styleTextLabel,
     iconRight,
@@ -394,9 +394,10 @@ export function TextField(props: TextFieldProps) {
             </TouchableOpacity>
           ) : null}
 
-          {valueTextRight !== "" ? (
-            <Text text={valueTextRight} style={styleTextRight}></Text>
-          ) : null}
+          {ValueTextRight !== null
+            ? ValueTextRight
+            : // <Text text={valueTextRight} style={styleTextRight}></Text>
+              null}
           {RightIcon != null ? (
             <TouchableOpacity
               onPress={pressRightIcon}
