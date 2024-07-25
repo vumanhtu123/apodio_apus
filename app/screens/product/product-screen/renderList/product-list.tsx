@@ -1,28 +1,17 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
-import { Images } from '../../../../assets';
-import { Button, Text } from '../../../components';
-import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { styles } from '../styles';
-import CategoryModalFilter from '../component/modal-category';
+import { Images } from '../../../../../assets';
+import { Button, Text } from '../../../../components';
+import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
+import { styles } from '../../styles';
+import CategoryModalFilter from '../../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useStores } from '../../../models';
-const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
+import { useStores } from '../../../../models';
 
-) => {
-    // const Loading = () => (
-    //     <View style={{
-    //         flex: 1,
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //     }}>
-    //         <ActivityIndicator size="large" color="#0000ff" />
-    //     </View>
-    // );
+const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
-    // const [btnTab, setBtnTab] = useState(["Sản phẩm", "Danh mục"]);
     const [showCategory, setShowCategory] = useState(false);
     const [indexItem, setIndexItem] = useState(0);
     const [page, setPage] = useState(0);
@@ -39,20 +28,19 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
     const [nameDirectory, setNameDirectory] = useState("");
     const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
     const [index, setIndex] = useState<any>();
-
-    // const [searchValue, setSearchValue] = useState("");
     const [valueSearchCategory, setValueSearchCategory] = useState("");
+    const isFirstRender = useRef(true);
+
     useFocusEffect(
         useCallback(() => {
             setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
-        }, [viewProduct])
+        }, [productStore.viewProductType])
     );
     useEffect(() => {
         const unsubscribe = navigation.addListener("focus", () => {
             if (productStore.reloadProductScreen === true) {
                 handleGetProduct().then(() => {
                     productStore.setReloadProductScreen(false);
-                    // console.log('ưereewrrew', productStore.reloadProductScreen)
                 });
             }
         });
@@ -85,8 +73,13 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
         setIsLoading(false)
     };
     useEffect(() => {
-        handleSubmitSearch()
+        if (!isFirstRender.current) {
+            console.log('--------------useEffect--------searchValue---------')
+            handleSubmitSearch()
+        }
+
     }, [searchValue])
+
     const handleGetProduct = async (searchValue?: any) => {
         var parseSort = "";
         try {
@@ -106,10 +99,6 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
                 productStore.tagId,
                 parseSort,
                 productStore.isLoadMore
-            );
-            console.log(
-                "first------------------",
-                JSON.stringify(response.response.data.content)
             );
             if (response && response.kind === "ok") {
                 setTotalPagesProduct(response.response.data.totalPages)
@@ -137,33 +126,43 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
         viewProductType(type);
         setPage(0);
     };
-    const viewProductType = (type: any) => {
+    const viewProductType = useCallback(async (type: any) => {
         const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
         setViewProduct(viewType);
         productStore.setViewProductType(viewType);
-    };
+        setDataProduct([]);
+        await handleGetProduct(searchValue);
+    }, [dataProduct]);
     const getValueSearchCategoryFilter = (value: any) => {
         // console.log('first------------', value)
         setValueSearchCategory(value);
     };
-    const [activeTab, setActiveTab] = useState(productStore.statusTab);
     useEffect(() => {
         handleGetCategoryFilter();
     }, [valueSearchCategory]);
+
     useEffect(() => {
-        const fetchData = async () => {
-            setPage(0);
-            setDataProduct([]);
-            await handleGetProduct(searchValue);
-        };
-        fetchData();
-    }, [viewProduct, selectedCategory]);
+        //if (!isFirstRender.current) {
+            console.log('--------------useEffect--------selectedCategory---------')
+            const fetchData = async () => {
+                setPage(0);
+                setDataProduct([]);
+                await handleGetProduct(searchValue);
+            };
+            fetchData();
+        //}
+
+    }, [selectedCategory]);
+
     useEffect(() => {
-        handleGetProduct(searchValue); // Load more
+        if (!isFirstRender.current) {
+            console.log('--------------useEffect--------page---------')
+            if (!isRefreshing) {
+                handleGetProduct(searchValue); // Load more
+            }
+        }
+
     }, [page]);
-    const handleTabPress = (tab: any) => {
-        setActiveTab(tab);
-    };
     const handleEndReached = () => {
         if (!isRefreshing && page <= totalPagesProduct - 1 && !isLoading) {
             productStore.setIsLoadMore(true);
@@ -181,7 +180,6 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
         setDataProduct([]);
         setSelectedCategory(undefined);
         setPage(0);
-        // setSearchValue("");
         onClearSearch();
         setOpenSearch(false);
         setNameDirectory("");
@@ -189,15 +187,12 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
         productStore.setSort([]);
         await handleGetProduct();
         setIsRefreshing(false);
-    }, [onClearSearch]);
+    }, [onClearSearch, handleGetProduct]);
     const refreshCategoryFilter = async () => {
         setIsRefreshingCategory(true);
-        // setPageCategories(0);
-        setValueSearchCategory("");
-        // setOpenSearch(false)
         setDataCategoryFilter([]);
-        // productStore.setSortCategory([]);
-        handleGetCategoryFilter();
+        setValueSearchCategory("");
+        await handleGetCategoryFilter();
         setIsRefreshingCategory(false);
     };
     const renderFooter = () => {
@@ -212,30 +207,32 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
     useEffect(() => {
         productStore.setViewGrid(isGridView);
     }, [isGridView]);
-    useEffect(() => {
-        productStore.setStatusTab(activeTab);
-    }, [activeTab]);
     // const toggleView = () => {
     //     setIsGridView(!isGridView);
     // };
     const handleProductDetail = (idProduct: number, hasVariant: boolean) => {
         productStore.setSelectedProductId(idProduct);
-        navigation.navigate("productDetailScreen", { hasVariant: hasVariant });
+        navigation.navigate({ name: "productDetailScreen", params: { hasVariant: hasVariant } } as never);
     };
     const handleClassifyDetail = (idProduct: number, hasVariant: boolean) => {
         productStore.setSelectedProductId(idProduct);
-        navigation.navigate("classifyDetailScreen", { hasVariant: hasVariant });
+        navigation.navigate({ name: "classifyDetailScreen", params: { hasVariant: hasVariant } } as never);
     };
     const [openSearch, setOpenSearch] = useState(false);
-    const handleOpenSearch = () => {
-        setOpenSearch(!openSearch);
-    };
-    const flatListRef = useRef(null);
+    const flatListRef = useRef<FlatList>(null);
     useEffect(() => {
         if (flatListRef.current) {
             flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
         }
     }, [viewProduct]);
+
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+        }
+    }, []);
+
     return (
         <>
             <TouchableOpacity
@@ -280,7 +277,7 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
                 <View style={styles.containerFilter}>
                     <Button
                         onPress={() =>
-                            navigation.navigate("filterScreen", { activeTab: "product" })
+                            navigation.navigate({ name: "filterScreen", params: { activeTab: "product" } } as never)
                         }
                         style={{ backgroundColor: "none", width: scaleWidth(30), height: scaleHeight(30) }}>
                         <Images.slider_black
@@ -358,4 +355,4 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any
         </>
     );
 };
-export const ProductList = memo(ProductListComponent)
+export const ProductList = ProductListComponent

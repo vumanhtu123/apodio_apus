@@ -12,7 +12,7 @@ export * from "./forgot_password/staff/forgot-pass-staff-screen";
 export * from "./changePass/change-pass";
 export * from "./setting_screen/notification_screen/notification-setting-screen";
 export * from "./notifications/notification-screen";
-export * from "./product/product-screen";
+export * from "./product/product-screen/product-screen";
 export * from "./order/orderDetail/orderDetails";
 export * from "./order/deliveryAddress/deliveryAddress";
 export * from "./order/deliveryAddress/newDelivery";
