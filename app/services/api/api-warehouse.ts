@@ -19,12 +19,12 @@ export class WarehouseAPI {
     size: number,
     page: number,
     search: string,
-    state: string,
+    state: string | undefined,
     isLoadMore: boolean
   ): Promise<any> {
     console.log("value isVisible", isLoadMore);
 
-    if (isLoadMore == true) {
+    if (isLoadMore) {
       Loading.hide();
       try {
         console.log("doandev url warehouse ", this.api.config.url);
