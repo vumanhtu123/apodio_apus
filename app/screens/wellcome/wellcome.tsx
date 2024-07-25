@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, memo} from 'react';
 import {Text, View} from 'react-native';
 import {Images} from '../../../assets/index';
 import {navigate} from '../../../app/navigators';

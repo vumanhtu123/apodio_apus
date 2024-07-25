@@ -8,6 +8,7 @@ import CategoryModalFilter from '../../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
+
 const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
@@ -28,6 +29,8 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any) =
     const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
     const [index, setIndex] = useState<any>();
     const [valueSearchCategory, setValueSearchCategory] = useState("");
+    const isFirstRender = useRef(true);
+
     useFocusEffect(
         useCallback(() => {
             setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
@@ -70,8 +73,13 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any) =
         setIsLoading(false)
     };
     useEffect(() => {
-        handleSubmitSearch()
+        if (!isFirstRender.current) {
+            console.log('--------------useEffect--------searchValue---------')
+            handleSubmitSearch()
+        }
+
     }, [searchValue])
+
     const handleGetProduct = async (searchValue?: any) => {
         var parseSort = "";
         try {
@@ -132,18 +140,28 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any) =
     useEffect(() => {
         handleGetCategoryFilter();
     }, [valueSearchCategory]);
+
     useEffect(() => {
-        const fetchData = async () => {
-            setPage(0);
-            setDataProduct([]);
-            await handleGetProduct(searchValue);
-        };
-        fetchData();
+        //if (!isFirstRender.current) {
+            console.log('--------------useEffect--------selectedCategory---------')
+            const fetchData = async () => {
+                setPage(0);
+                setDataProduct([]);
+                await handleGetProduct(searchValue);
+            };
+            fetchData();
+        //}
+
     }, [selectedCategory]);
+
     useEffect(() => {
-        if (!isRefreshing) {
-            handleGetProduct(searchValue); // Load more
+        if (!isFirstRender.current) {
+            console.log('--------------useEffect--------page---------')
+            if (!isRefreshing) {
+                handleGetProduct(searchValue); // Load more
+            }
         }
+
     }, [page]);
     const handleEndReached = () => {
         if (!isRefreshing && page <= totalPagesProduct - 1 && !isLoading) {
@@ -207,6 +225,14 @@ const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any) =
             flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
         }
     }, [viewProduct]);
+
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+        }
+    }, []);
+
     return (
         <>
             <TouchableOpacity
