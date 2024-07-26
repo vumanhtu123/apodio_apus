@@ -22,7 +22,10 @@
       "URL_UPLOAD": "https://product-manufactor-service.stg.apusplatform.com",
       "URL_ERP": "https://gateway-erp.stg.apusplatform.com/services/resources",
       "URL_GET_WAY_ERP": "https://gateway-erp.stg.apusplatform.com",
-      "UAA": "https://gateway.stg.apusplatform.com/services/uaa"
+      "UAA": "https://gateway.stg.apusplatform.com/services/uaa",
+      "URL_WAREHOUSE": "https://warehouse-service.stg.apusplatform.com",
+      "URL_SUPPLIER": "https://resources-service.stg.apusplatform.com"
+
     },
     "PRODUCT": {
       "URL": "https://product-manufactor-service.stg.apusplatform.com",

@@ -51,11 +51,11 @@ export const ProductDetailScreen: FC = (item) => {
   const [showWholesalePrice, setShowWholesalePrice] = useState(false);
   const [showNCC, setShowNCC] = useState(false);
   const [changeClassification, setChangeClassification] = useState("");
-  const [dataClassification, setDataClassification] = useState({});
+  const [dataClassification, setDataClassification] = useState<any>({});
   const [dataClassificationToEdit, setDataClassificationToEdit] = useState({});
   const [arrImagesProduct, setArrImagesProduct] = useState([]);
   const [arrClassification, setArrClassification] = useState([]);
-  const [detailsClassification, setDetailsClassification] = useState([]);
+  const [detailsClassification, setDetailsClassification] = useState<any>([]);
   const [attributeCategory, setAttributeCategory] = useState([]);
   const [attributeDetailsClassification, setAttributeDetailsClassification] =
     useState([]);
@@ -71,7 +71,6 @@ export const ProductDetailScreen: FC = (item) => {
   const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false);
   const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false);
   const [attributes, setAttributes] = useState<any>([]);
-
   const handleGetDetailProduct = async () => {
     try {
       const response = await productStore.getDetailProduct(productId);
@@ -84,7 +83,7 @@ export const ProductDetailScreen: FC = (item) => {
         console.log("response---getDetailProduct-------", JSON.stringify(data));
         console.log(
           "attributeValues: ",
-          data?.productVariants?.map((item) => item.attributeValues)
+          data?.productVariants?.map((item: { attributeValues: any; }) => item.attributeValues)
         );
         setArrImagesProduct(data.imageUrls);
         setArrClassification(data.productVariants);
@@ -101,7 +100,6 @@ export const ProductDetailScreen: FC = (item) => {
       console.error("Error fetching detail:", error);
     }
   };
-
   useEffect(() => {
     console.log(
       "---------useEffect---------arrClassification------------------",
@@ -124,33 +122,24 @@ export const ProductDetailScreen: FC = (item) => {
         handleGetDetailProduct();
       }
     });
-
     return unsubscribe;
   }, [navigation, reload]);
-  // useEffect(() => {
-  //   function processAttributes(data: any) {
-  //     const processedAttributes = data.attributeCategory?.flatMap(category =>
-  //       category.attributeOutputDtos.flatMap(attr =>
-  //         attr.productAttributeValue.map(val => ({
-  //           name: attr.name,
-  //           value: val.value
-  //         }))
-  //       )
-  //     );
-  //     setAttributes(processedAttributes);
-  //   }
-
-  //   processAttributes(dataClassification);
-  // }, [dataClassification]);
+  const getVolume = () => {
+    if (arrClassification && detailsClassification.baseProductPackingLine?.volume) {
+      return detailsClassification.baseProductPackingLine?.volume;
+    } else {
+      return dataClassification?.baseTemplatePackingLine?.volume;
+    }
+  };
   function extractAttributeInfo(data: any) {
     if (!data.attributeCategory || data.attributeCategory.length === 0) {
       return [];
     }
-    const groupedData = data.attributeCategory?.map((category) => ({
+    const groupedData = data.attributeCategory?.map((category: { name: any; attributeOutputList: any[]; }) => ({
       name: category.name,
       items:
         category.attributeOutputList?.map((attr) => ({
-          value: attr.productAttributeValue.map((val) => val.value),
+          value: attr.productAttributeValue.map((val: any) => val.value),
           name: attr.name,
         })) || [],
     }));
@@ -170,12 +159,20 @@ export const ProductDetailScreen: FC = (item) => {
     const item = arrBrands.find((item) => item.label2 === label2);
     return item ? item.label : "";
   };
+  useEffect(() => {
+    if (detailsClassification?.wholesalePrice?.length > 0) {
+      setShowWholesalePrice(true);
+    }
+    if (detailsClassification?.retailPrice?.length > 0) {
+      setShowRetailPrice(true);
+    }
+  }, [detailsClassification]);
 
   const selectDataClassification = () => {
-    const arrTextfieldAttribute = [];
+    const arrTextfieldAttribute: any[] = [];
 
-    attributeCategory.forEach((items) => {
-      items.attributeOutputList?.forEach((item) => {
+    attributeCategory.forEach((items: any) => {
+      items.attributeOutputList?.forEach((item: { displayType: string; productAttributeValue: any[]; name: any; }) => {
         if (item.displayType === "TEXTFIELD") {
           const newItem = {
             ...item.productAttributeValue[0],
@@ -187,11 +184,11 @@ export const ProductDetailScreen: FC = (item) => {
       });
     });
 
-    const matchingElements = [];
-    attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputList?.forEach((dto) => {
+    const matchingElements: any[] = [];
+    attributeCategory.forEach((itemA: any) => {
+      itemA.attributeOutputList?.forEach((dto: { productAttributeValue: any[]; id: any; }) => {
         dto.productAttributeValue.forEach((attrValueA) => {
-          detailsClassification?.attributeValues?.forEach((itemB) => {
+          detailsClassification?.attributeValues?.forEach((itemB: { productAttributeValueId: any; productAttributeId: any; }) => {
             if (
               attrValueA.id === itemB.productAttributeValueId &&
               dto.id === itemB.productAttributeId
@@ -203,7 +200,7 @@ export const ProductDetailScreen: FC = (item) => {
         });
       });
     });
-    const newArr = detailsClassification?.attributeValues?.map((item) => {
+    const newArr = detailsClassification?.attributeValues?.map((item: { productAttributeId: any; productAttributeValueId: any; }) => {
       const a = matchingElements.filter((items) => {
         if (
           item.productAttributeId === items.productAttributeId &&
@@ -219,10 +216,10 @@ export const ProductDetailScreen: FC = (item) => {
       };
     });
 
-    const matchingElements1 = [];
-    attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputList?.forEach((dto) => {
-        detailsClassification?.attributeValues?.forEach((itemB) => {
+    const matchingElements1: { name: any; id: any; }[] = [];
+    attributeCategory.forEach((itemA: any) => {
+      itemA.attributeOutputList?.forEach((dto: { id: any; name: any; }) => {
+        detailsClassification?.attributeValues?.forEach((itemB: { productAttributeId: any; }) => {
           if (dto.id === itemB.productAttributeId) {
             matchingElements1.push({ name: dto.name, id: dto.id });
           }
@@ -230,7 +227,7 @@ export const ProductDetailScreen: FC = (item) => {
       });
     });
 
-    const newArr1 = newArr?.map((item) => {
+    const newArr1 = newArr?.map((item: { productAttributeId: any; }) => {
       const a = matchingElements1.filter((items) => {
         if (items.id === item.productAttributeId) {
           return items;
@@ -251,11 +248,11 @@ export const ProductDetailScreen: FC = (item) => {
 
     const newArr3 = newArr2
       ? Object.keys(newArr2).map((attributeName) => {
-          return {
-            name: attributeName,
-            items: newArr2[attributeName] || [],
-          };
-        })
+        return {
+          name: attributeName,
+          items: newArr2[attributeName] || [],
+        };
+      })
       : [];
     console.log(
       "---setAttributeDetailsClassification--------------",
@@ -301,6 +298,11 @@ export const ProductDetailScreen: FC = (item) => {
     console.log("first", JSON.stringify(attributes));
     selectDataClassification();
   };
+  function getUnitName(uomGroupLineId: any) {
+    const matchingLine = dataClassification?.uomGroup?.uomGroupLines.find((line: { id: any; }) => line.id === uomGroupLineId);
+    return matchingLine ? matchingLine.unitName : null;
+  }
+  // console.log('firszxczt',getUnitName)
   return (
     <View style={styles.ROOT}>
       <Header
@@ -430,7 +432,7 @@ export const ProductDetailScreen: FC = (item) => {
               }}
               horizontal
               showsHorizontalScrollIndicator={false}>
-              {arrClassification?.map((item, index) => {
+              {arrClassification?.map((item: any, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
@@ -467,7 +469,7 @@ export const ProductDetailScreen: FC = (item) => {
               }}
               horizontal
               showsHorizontalScrollIndicator={false}>
-              {detailsClassification.imageUrls?.map((item, index) => {
+              {detailsClassification.imageUrls?.map((item: any, index: any) => {
                 return (
                   <View key={index}>
                     <TouchableOpacity
@@ -513,15 +515,15 @@ export const ProductDetailScreen: FC = (item) => {
                 label={translate("detailScreen.status")}
                 value={
                   dataClassification.saleOk === true &&
-                  dataClassification.purchaseOk === false
+                    dataClassification.purchaseOk === false
                     ? "Có thể bán"
                     : dataClassification.purchaseOk === true &&
                       dataClassification.saleOk === false
-                    ? "Có thể mua"
-                    : dataClassification.saleOk === true &&
-                      dataClassification.purchaseOk === true
-                    ? "Có thể bán/ Có thể mua"
-                    : null
+                      ? "Có thể mua"
+                      : dataClassification.saleOk === true &&
+                        dataClassification.purchaseOk === true
+                        ? "Có thể bán/ Có thể mua"
+                        : null
                 }
               />
             </View>
@@ -567,36 +569,34 @@ export const ProductDetailScreen: FC = (item) => {
                     />
                   </View>
                   {detailsClassification?.length !== 0
-                    ? detailsClassification?.retailPrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={formatCurrency(commasToDots(item.min))}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                    ? detailsClassification?.retailPrice?.map((item: any) => {
+                      return (
+                        <ProductAttribute
+                          label={formatCurrency(commasToDots(item.min))}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })
-                    : dataClassification?.retailPrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })
+                    : dataClassification?.retailPrice?.map((item: any) => {
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })}
                 </View>
               ) : null}
               <View>
@@ -606,13 +606,12 @@ export const ProductDetailScreen: FC = (item) => {
                   value={
                     detailsClassification?.costPrice > 0
                       ? `${formatVND(
-                          formatCurrency(
-                            commasToDots(detailsClassification?.costPrice)
-                          )
-                        )}/${
-                          dataClassification.uom?.name ||
-                          dataClassification.uomGroup?.originalUnit?.name
-                        }`
+                        formatCurrency(
+                          commasToDots(detailsClassification?.costPrice)
+                        )
+                      )}/${dataClassification.uom?.name ||
+                      dataClassification.uomGroup?.originalUnit?.name
+                      }`
                       : null
                   }
                   textStyle={{ color: colors.palette.radicalRed }}
@@ -630,13 +629,12 @@ export const ProductDetailScreen: FC = (item) => {
                   value={
                     detailsClassification?.listPrice > 0
                       ? `${formatVND(
-                          formatCurrency(
-                            commasToDots(detailsClassification?.listPrice)
-                          )
-                        )}/${
-                          dataClassification.uom?.name ||
-                          dataClassification.uomGroup?.originalUnit?.name
-                        }`
+                        formatCurrency(
+                          commasToDots(detailsClassification?.listPrice)
+                        )
+                      )}/${dataClassification.uom?.name ||
+                      dataClassification.uomGroup?.originalUnit?.name
+                      }`
                       : null
                   }
                   textStyle={{ color: colors.palette.radicalRed }}
@@ -690,36 +688,34 @@ export const ProductDetailScreen: FC = (item) => {
                     />
                   </View>
                   {detailsClassification?.length !== 0
-                    ? detailsClassification?.wholesalePrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={formatCurrency(commasToDots(item.min))}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                    ? detailsClassification?.wholesalePrice?.map((item: { min: any; price: any; }) => {
+                      return (
+                        <ProductAttribute
+                          label={formatCurrency(commasToDots(item.min))}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })
                     : dataClassification?.wholesalePrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={item.min}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                      return (
+                        <ProductAttribute
+                          label={item.min}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
-                            labelStyle={{ color: colors.palette.nero }}
-                            textStyle={{ color: colors.palette.radicalRed }}
-                          />
-                        );
-                      })}
+                          labelStyle={{ color: colors.palette.nero }}
+                          textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                      );
+                    })}
                 </View>
               ) : null}
             </View>
@@ -749,10 +745,59 @@ export const ProductDetailScreen: FC = (item) => {
                   dataClassification.uomGroup?.originalUnit?.name
                 }
               />
+              {dataClassification?.uomGroup ? (
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      marginBottom: scaleHeight(15),
+                    }}>
+
+                    <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size12, color: colors.palette.dolphin, }} />
+                    <Text tx={"createProductScreen.conversionRate"}
+                      style={{ fontSize: fontSize.size12, fontWeight: "600" }} />
+                  </View>
+                  {dataClassification?.uomGroup?.uomGroupLines?.map((item: any, index: any) => (
+                    <View
+                      key={index}
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        marginBottom: scaleHeight(15),
+                      }}>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Images.ic_arrowDownRight
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                        <Text
+                          style={{
+                            fontSize: fontSize.size12,
+                            marginHorizontal: scaleWidth(6),
+                            color: colors.palette.dolphin,
+                          }}>
+                          {item.unitName}
+                        </Text>
+                      </View>
+                      <Text
+                        style={{
+                          fontSize: fontSize.size12,
+                          fontWeight: "600",
+                        }}>
+                        {item.conversionRate} {dataClassification.uomGroup?.originalUnit?.name}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
+              ) : null}
             </View>
           </View>
           {dataClassification?.description !== "" &&
-          dataClassification?.description !== null ? (
+            dataClassification?.description !== null ? (
             <View>
               <View style={styles.viewLine} />
               <View style={styles.viewDescribe}>
@@ -769,9 +814,8 @@ export const ProductDetailScreen: FC = (item) => {
               </View>
             </View>
           ) : null}
-          <View>
-            {arrClassification?.baseProductPackingLine?.volume ||
-            dataClassification?.baseTemplatePackingLine?.volume != null ? (
+          {getVolume() ? (
+            <View>
               <View>
                 <View style={styles.viewLine} />
                 <TouchableOpacity
@@ -799,232 +843,102 @@ export const ProductDetailScreen: FC = (item) => {
                   />
                 </TouchableOpacity>
               </View>
-            ) : null}
-            {showOrHiddenWeight ? (
-              <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
-                <Text
-                  tx="productScreen.weightOriginal"
-                  style={{ fontSize: fontSize.size14, fontWeight: "bold" }}
-                />
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    marginVertical: scaleHeight(9),
-                  }}>
-                  <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
-                    {dataClassification.uomId == null
-                      ? detailProduct?.uomGroupLineOutput?.unitName
-                      : dataClassification?.uom?.name}
-                  </Text>
-                  <View
-                    style={{
-                      flex: 3,
-                      marginHorizontal: scaleWidth(25),
-                      flexDirection: "row",
-                    }}>
-                    <Text
-                      tx={`detailScreen.weight`}
-                      style={[styles.fontSizeWeight]}
-                    />
-                    <Text
-                      style={[
-                        styles.fontSizeWeight,
-                        { marginLeft: scaleWidth(2) },
-                      ]}>
-                      {arrClassification
-                        ? detailsClassification.baseProductPackingLine?.weight
-                        : detailProduct?.weight}{" "}
-                      kg
-                    </Text>
-                  </View>
-                  <View style={{ flex: 3, flexDirection: "row" }}>
-                    <Text
-                      tx="detailScreen.volume"
-                      style={[styles.fontSizeWeight]}
-                    />
-                    <Text
-                      style={[
-                        styles.fontSizeWeight,
-                        { marginLeft: scaleWidth(2) },
-                      ]}>
-                      {arrClassification
-                        ? detailsClassification.baseProductPackingLine?.volume
-                        : detailProduct?.volume}{" "}
-                      m3
-                    </Text>
-                  </View>
-                </View>
-                {arrClassification?.productPackingLines != null ? (
-                  <View>
-                    <View>
-                      <Text
-                        tx="productScreen.weightExchange"
-                        style={{
-                          fontSize: fontSize.size14,
-                          fontWeight: "bold",
-                        }}
-                      />
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          marginBottom: scaleHeight(12),
-                          justifyContent: "space-between",
-                        }}>
-                        <View style={{ flex: 2 }}>
-                          <Text style={[styles.fontSizeWeight, {}]}>
-                            {
-                              detailsClassification.baseProductPackingLine
-                                ?.unitName
-                            }
-                          </Text>
-                          <View
-                            style={{ backgroundColor: "#E7EFFF", height: 1 }}
-                          />
-                          <Text style={[styles.fontSizeWeight, {}]}>
-                            {`${commasToDots(
-                              detailsClassification.baseProductPackingLine
-                                ?.amount
-                            )} ${
-                              dataClassification.uomId == null
-                                ? detailProduct?.uomGroupLineOutput?.unitName
-                                : dataClassification?.uom?.name
-                            }`}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            flex: 3,
-                            marginHorizontal: scaleWidth(25),
-                            flexDirection: "row",
-                            alignItems: "center",
-                          }}>
-                          <Text
-                            tx="detailScreen.weight"
-                            style={[styles.fontSizeWeight]}
-                          />
-                          <Text
-                            style={[
-                              styles.fontSizeWeight,
-                              { marginLeft: scaleWidth(2) },
-                            ]}>
-                            {detailsClassification.productPackingLines?.weight}{" "}
-                            kg
-                          </Text>
-                        </View>
+              {
+                showOrHiddenWeight ?
+                  <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
 
-                        <View
-                          style={{
-                            flex: 3,
-                            alignItems: "center",
-                            flexDirection: "row",
-                          }}>
-                          <Text
-                            tx="detailScreen.volume"
-                            style={[styles.fontSizeWeight]}
-                          />
-                          <Text
-                            style={[
-                              styles.fontSizeWeight,
-                              { marginLeft: scaleWidth(2) },
-                            ]}>
-                            {detailsClassification.productPackingLines?.volume}{" "}
-                            m3
-                          </Text>
-                        </View>
+                    <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
+                      <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
+                        {dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}
+                      </Text>
+                      <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
+                        <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
+                        <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{arrClassification ? detailsClassification.baseProductPackingLine?.weight : detailProduct?.weight} kg</Text>
+                      </View>
+                      <View style={{ flex: 3, flexDirection: 'row' }}>
+                        <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
+                        <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{arrClassification ? detailsClassification.baseProductPackingLine?.volume : detailProduct?.volume} m3</Text>
                       </View>
                     </View>
-                  </View>
-                ) : null}
-                {dataClassification?.templatePackingLines != null &&
-                arrClassification?.productPackingLines == null ? (
-                  <View>
-                    <View>
-                      <Text
-                        tx="productScreen.weightExchange"
-                        style={{
-                          fontSize: fontSize.size14,
-                          fontWeight: "bold",
-                        }}
-                      />
-                      <FlatList
-                        data={dataClassification.templatePackingLines}
-                        renderItem={({ item }) => {
-                          return (
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                marginBottom: scaleHeight(12),
-                                justifyContent: "space-between",
-                              }}>
+                    {arrClassification && detailsClassification?.productPackingLines ? (
+                      <View>
+                        <View>
+                          <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
+                          {detailsClassification.productPackingLines?.map((line: any, index: number) => (
+
+                            <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
                               <View style={{ flex: 2 }}>
                                 <Text style={[styles.fontSizeWeight, {}]}>
-                                  {item.uomGroupLineOutput?.unitName}
+                                  {getUnitName(line?.uomGroupLineId)}
                                 </Text>
                                 <View
-                                  style={{
-                                    backgroundColor: "#E7EFFF",
-                                    height: 1,
-                                  }}
+                                  style={{ backgroundColor: '#E7EFFF', height: 1 }}
                                 />
                                 <Text style={[styles.fontSizeWeight, {}]}>
-                                  {`${commasToDots(item.amount)} ${
-                                    detailProduct?.uomGroupLineOutput?.unitName
-                                  }`}
+                                  {`${commasToDots(line?.amount)} ${dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
                                 </Text>
                               </View>
-                              <View
-                                style={{
-                                  flex: 3,
-                                  marginHorizontal: scaleWidth(25),
-                                  flexDirection: "row",
-                                  alignItems: "center",
-                                }}>
-                                <Text
-                                  tx="detailScreen.weight"
-                                  style={[styles.fontSizeWeight]}
-                                />
-                                <Text
-                                  style={[
-                                    styles.fontSizeWeight,
-                                    { marginLeft: scaleWidth(2) },
-                                  ]}>
-                                  {item.weight} kg
-                                </Text>
+                              {/* <View style={{}} key={index}> */}
+                              <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                                <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                                <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{line.weight} kg</Text>
                               </View>
 
-                              <View
-                                style={{
-                                  flex: 3,
-                                  alignItems: "center",
-                                  flexDirection: "row",
-                                }}>
-                                <Text
-                                  tx="detailScreen.volume"
-                                  style={[styles.fontSizeWeight]}
-                                />
-                                <Text
-                                  style={[
-                                    styles.fontSizeWeight,
-                                    { marginLeft: scaleWidth(2) },
-                                  ]}>
-                                  {item.volume} m3
-                                </Text>
+                              <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                                <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                                <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{line.volume} m3</Text>
                               </View>
+                              {/* </View> */}
                             </View>
-                          );
-                        }}
-                        keyExtractor={(item) => item.id.toString()}
-                        style={{ marginTop: scaleHeight(12) }}
-                      />
-                    </View>
+                          ))}
+                        </View>
+                      </View>
+                    ) :
+                      dataClassification?.templatePackingLines != null && arrClassification?.productPackingLines == null && arrClassification?.productPackingLines ? (
+                        <View>
+                          <View>
+                            <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14, fontWeight: 'bold' }} />
+                            <FlatList
+                              data={dataClassification.templatePackingLines}
+                              renderItem={({ item }) => {
+                                return (
+                                  <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
+                                    <View style={{ flex: 2 }}>
+                                      <Text style={[styles.fontSizeWeight, {}]}>
+                                        {item.uomGroupLineOutput?.unitName}
+                                      </Text>
+                                      <View
+                                        style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                                      />
+                                      <Text style={[styles.fontSizeWeight, {}]}>
+                                        {`${commasToDots(item.amount)} ${detailProduct?.uomGroupLineOutput?.unitName}`}
+                                      </Text>
+                                    </View>
+                                    <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
+                                      <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
+                                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.weight} kg</Text>
+                                    </View>
+                                    <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
+                                      <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
+                                      <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item.volume} m3</Text>
+                                    </View>
+                                  </View>
+                                )
+                              }}
+                              keyExtractor={(item) => item.id.toString()}
+                              style={{ marginTop: scaleHeight(12) }}
+                            />
+                          </View>
+                        </View>
+                      ) : null}
                   </View>
-                ) : null}
-              </View>
-            ) : null}
-          </View>
+                  : null
+              }
+            </View>
+          ) : null}
           {attributeDetailsClassification?.length !== 0 ||
-          attributes?.length !== 0 ? (
+            attributes?.length !== 0 ? (
             <View>
               <View style={styles.viewLine} />
               <TouchableOpacity
@@ -1065,7 +979,7 @@ export const ProductDetailScreen: FC = (item) => {
               <View style={styles.viewLine2} />
               {attributeDetailsClassification.length !== 0 ? (
                 <View>
-                  {attributeDetailsClassification?.map((item, index) => (
+                  {attributeDetailsClassification?.map((item: any, index) => (
                     <View key={index}>
                       <View
                         style={{
@@ -1082,7 +996,7 @@ export const ProductDetailScreen: FC = (item) => {
                         </Text>
                       </View>
                       <View style={styles.viewLine2} />
-                      {item.items?.map((dto) => (
+                      {item.items?.map((dto: { name: string | undefined; value: any; }) => (
                         <View
                           style={{
                             marginTop: scaleHeight(margin.margin_12),
@@ -1095,7 +1009,7 @@ export const ProductDetailScreen: FC = (item) => {
                             }}
                           />
                           {index !==
-                          attributeDetailsClassification?.length - 1 ? (
+                            attributeDetailsClassification?.length - 1 ? (
                             <View style={styles.viewLine2} />
                           ) : null}
                         </View>
@@ -1181,43 +1095,43 @@ export const ProductDetailScreen: FC = (item) => {
                   )}
                 </View>
                 {showNCC === true
-                  ? arrNCC?.map((item) => {
-                      return (
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              paddingVertical: scaleHeight(padding.padding_8),
-                            }}>
-                            <AutoHeightImage
-                              source={{ uri: item?.avatarUrl }}
-                              width={scaleHeight(40)}
-                              height={scaleHeight(40)}
-                              style={{ borderRadius: 40 }}
-                              fallbackSource={Images.imageError}
-                            />
-                            <View
-                              style={{
-                                marginLeft: scaleWidth(6),
-                                justifyContent: "center",
-                              }}>
-                              <Text style={styles.textNameNCC}>
-                                {item?.vendorCode + "- " + item?.vendorName}
-                              </Text>
-                              <Text style={styles.textNameClassification}>
-                                {item?.phoneNumber}
-                              </Text>
-                            </View>
-                          </View>
-                          <View
-                            style={{
-                              height: scaleHeight(1),
-                              backgroundColor: colors.palette.ghostWhite,
-                            }}
+                  ? arrNCC?.map((item: any) => {
+                    return (
+                      <View>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            paddingVertical: scaleHeight(padding.padding_8),
+                          }}>
+                          <AutoHeightImage
+                            source={{ uri: item?.avatarUrl }}
+                            width={scaleHeight(40)}
+                            height={scaleHeight(40)}
+                            style={{ borderRadius: 40 }}
+                            fallbackSource={Images.imageError}
                           />
+                          <View
+                            style={{
+                              marginLeft: scaleWidth(6),
+                              justifyContent: "center",
+                            }}>
+                            <Text style={styles.textNameNCC}>
+                              {item?.vendorCode + "- " + item?.vendorName}
+                            </Text>
+                            <Text style={styles.textNameClassification}>
+                              {item?.phoneNumber}
+                            </Text>
+                          </View>
                         </View>
-                      );
-                    })
+                        <View
+                          style={{
+                            height: scaleHeight(1),
+                            backgroundColor: colors.palette.ghostWhite,
+                          }}
+                        />
+                      </View>
+                    );
+                  })
                   : null}
               </View>
             </View>
@@ -1237,7 +1151,7 @@ export const ProductDetailScreen: FC = (item) => {
                 autoplay={false}
                 ref={refCarousel}
                 loop
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }: any) => (
                   <View>
                     <Image
                       source={{
@@ -1294,14 +1208,14 @@ export const ProductDetailScreen: FC = (item) => {
         onBackdropPress={() => setModalImages1(false)}>
         <View>
           {detailsClassification.imageUrls &&
-          detailsClassification.imageUrls?.length > 0 ? (
+            detailsClassification.imageUrls?.length > 0 ? (
             <View>
               <Carousel
                 data={detailsClassification.imageUrls}
                 autoplay={false}
                 ref={refCarousel}
                 loop
-                renderItem={({ item, index }) => (
+                renderItem={({ item }: any) => (
                   <View>
                     <Image
                       source={{

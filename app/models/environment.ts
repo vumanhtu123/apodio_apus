@@ -1,4 +1,5 @@
 
+
 // import { ApiOrder } from './../services/base-api/api-config-order';
 import {
   Api,
@@ -7,7 +8,8 @@ import {
   ApiUpload,
   ApiOrder,
   ApiAccounting,
-  ApiWarehouse
+  ApiWarehouse,
+  ApiSupplier,
 
 } from "../services/api";
 import { UAA_API } from "../services/base-api/api-config-uaa";
@@ -39,6 +41,7 @@ export class Environment {
     this.apiAccounting = new ApiAccounting();
     this.apiWarehouse = new ApiWarehouse();
     this.apiAccount = new ApiAccounting();
+    this.apiSupplier = new ApiSupplier();
     
     global.api = new Api();
     global.apiErp = new ApiErp();
@@ -48,6 +51,7 @@ export class Environment {
     global.ApiOrder = new ApiOrder();
     global.apiAccount = new ApiAccounting();
     global.apiWarehouse = new ApiWarehouse();
+    global.apiSupplier = new ApiSupplier()
   }
 
   async setup() {
@@ -64,6 +68,7 @@ export class Environment {
     await this.apiAccounting.setup();
     await this.apiWarehouse.setup();
     await this.apiAccount.setup();
+    await this.apiSupplier.setup();
 
     global.api = new Api();
     global.apiErp = new ApiErp();
@@ -75,6 +80,7 @@ export class Environment {
 
     global.apiAccount = new ApiAccounting();
     global.apiWarehouse = new ApiWarehouse();
+    global.apiSupplier = new ApiSupplier()
   }
 
   /**
@@ -94,4 +100,5 @@ export class Environment {
   apiAccounting : ApiAccounting;
   apiOrder: ApiOrder;
   apiWarehouse: ApiWarehouse;
+  apiSupplier: ApiSupplier;
 }

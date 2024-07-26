@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import React from "react";
 import { Styles } from "./style";
@@ -16,46 +16,52 @@ import {
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { Images } from "../../../assets";
 import { styles } from "../account_security/styles";
-import { id } from "date-fns/locale";
+import { da, id } from "date-fns/locale";
 import en from "../../i18n/en";
 import { Style } from "../check-inventory/add-check-inventory/add-check-inventory";
 import Modal_Infor_wareHouse from "./modal/modal_Infor_wareHouse";
 import Modal_Plus from "./modal/modal_plus";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../navigators";
 import { useStores } from "../../models";
 import { number } from "mobx-state-tree/dist/internal";
+import ItemListWareHouse from "./component/item-list-warehouse";
+import { ItemTabar } from "./component/item-tabbar-warehouse";
 
 export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse'>> = observer(
     function WareHouseScreen(props) {
+        const route = useRoute();
+        const reload = route?.params?.reset;
+        // console.log('doandev value', reload);
 
 
-        const [indexTabbar, setIndexTabbar] = useState(en.wareHouse.all)
+        const [indexTabbar, setIndexTabbar] = useState<string | undefined>(undefined)
         const [openInforWareHouse, setOpneInforWareHouse] = useState(false)
         const [openDialogPlus, setOpenDialogPlus] = useState(false)
         const [refreshing, setRefreshing] = useState(false);
-        const [isLoadingMore, setIsLoadingMore] = useState(false);
+        const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
         const [valueSearch, setValueSearch] = useState("");
-        const [myData, setMyData] = useState([]);
-        const [idWarehouse, setIdWarehouse] = useState<number>()
+        const [myData, setMyData] = useState<{}[]>([]);
         const [lengthAll, setLengthAll] = useState<number>()
         const [lengthIsActive, setLengthIsActive] = useState<number>()
         const [lengthSave, setLengthSave] = useState<number>()
         const [isShowSearch, setIsShowSearch] = useState(false)
-
+        const page = useRef(0)
+        const totalPages2 = useRef<any>()
+        const totalElement = useRef<any>()
         const getAPI = useStores()
-
         const size = useRef(10);
+        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
+        console.log('value load more', isLoadingMore);
 
 
-        const dataListTabar = [
+        const dataListTabar = useMemo(() => [
             {
                 id: "1",
                 img: require("../../../assets/Images/ic_WareBook.png"),
                 name: en.wareHouse.wareBook,
                 onPress: () => {
-                    //   Alert.alert('ok 1')
                     props.navigation.navigate("warehouseBook");
                 },
             },
@@ -64,8 +70,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 img: require("../../../assets/Images/ic_Home.png"),
                 name: en.wareHouse.checkWare,
                 onPress: () => {
-                    // Alert.alert('ok 2')
-
                     props.navigation.navigate("inventoryManagenment");
                 },
             },
@@ -74,7 +78,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 img: require("../../../assets/Images/ic_importBook.png"),
                 name: en.wareHouse.importBook,
                 onPress: () => {
-                    //   Alert.alert('ok 3')
                     props.navigation.navigate("importGoodsBook");
                 },
             },
@@ -83,7 +86,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 img: require("../../../assets/Images/ic_outputBook.png"),
                 name: en.wareHouse.outputBook,
                 onPress: () => {
-                    //   Alert.alert('ok 4')
                     props.navigation.navigate("GoodsDeliveryBook");
                 },
             },
@@ -93,78 +95,72 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 name: en.wareHouse.inTem,
                 onPress: () => {
                     Alert.alert("ok 5");
-                    // props.navigation.navigate('inventoryManagenment')
                 },
             },
-        ];
-        const titleTabbar = [
-            {
-                name: en.wareHouse.all,
-                length: lengthAll,
-            },
-            {
-                name: en.wareHouse.isActive,
-                length: lengthIsActive,
-            },
-            {
-                name: en.wareHouse.save,
-                length: lengthSave,
-            },
-        ];
+        ], []);
 
-        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
-
-        const state = () => {
-            if (indexTabbar == en.wareHouse.all) {
-                return undefined
-            } else if (indexTabbar == en.wareHouse.isActive) {
-                return 'APPROVED'
-            } else {
-                return 'ARCHIVED'
-            }
-        }
-        console.log('====================================');
-        console.log('value state', state());
-        console.log('====================================');
-
-        const getListWarehouse = () => {
-
-            getAPI.warehouseStore.getListWareHouse(0, size.current, state(), valueSearch, statusLoadMore).then((data) => {
-                console.log('data doan', data?.content);
-                const dataWarehouse = data?.content.map((item) => {
-                    return {
-                        id: item.id,
-                        code: item.code,
-                        name: item.name,
-                        state: item.state,
-                    };
-                });
-                setMyData(dataWarehouse)
-
-                console.log('doandev', myData);
-
-            });
-        }
-
-        const getAllLength = () => {
-            getAPI.warehouseStore.getListWareHouse().then((data) => {
-                console.log('data length ALL', data?.content);
-                setLengthAll(data?.content.length)
-                const lengthIsActive = data?.content.filter(item => item.state === 'APPROVED').length
-                const lengthSave = data?.content.filter(item => item.state === 'ARCHIVED').length
-                setLengthSave(lengthSave)
-                setLengthIsActive(lengthIsActive)
-            })
-        }
+        const titleTabbar = useMemo(() => [
+            { name: en.wareHouse.all, length: lengthAll, state: undefined },
+            { name: en.wareHouse.isActive, length: lengthIsActive, state: 'APPROVED' },
+            { name: en.wareHouse.save, length: lengthSave, state: 'ARCHIVED' }
+        ], [lengthAll, lengthIsActive, lengthSave]);
+        //     {
+        //         name: en.wareHouse.all,
+        //         length: lengthAll,
+        //     },
+        //     {
+        //         name: en.wareHouse.isActive,
+        //         length: lengthIsActive,
+        //     },
+        //     {
+        //         name: en.wareHouse.save,
+        //         length: lengthSave,
+        //     },
+        // ];
 
 
-
-        const handleRefresh = () => {
+        const getListWarehouse = useCallback(async () => {
+            console.log("chay lan", page.current);
             try {
-                setRefreshing(true);
+                const data = await getAPI.warehouseStore.getListWareHouse(size.current, page.current, indexTabbar, valueSearch, statusLoadMore);
+                if (data?.content != null) {
+                    const dataWarehouse = data.content
+                    if (page.current == 0) {
+                        setMyData(dataWarehouse)
+                    } else {
+                        setMyData((item: any) => [...item, ...dataWarehouse])
+                    }
+                    totalElement.current = data?.totalElements
+                    totalPages2.current = data?.totalPages
+                }
+            } catch (error) {
+                console.error('Error loadMore', error);
+            }
+        }, [getAPI, size, page, valueSearch, statusLoadMore, indexTabbar]);
 
+
+
+        const getNumberState = useCallback(async () => {
+            try {
+                const data = await getAPI.warehouseStore.getNumberState(valueSearch);
+                setLengthAll(data?.data.allQty)
+                setLengthIsActive(data?.data.approvedQty)
+                setLengthSave(data?.data.archiveQty)
+            } catch (error) {
+                console.error('Error getNumberState', error);
+            }
+        }, [getAPI, valueSearch]);
+
+
+        const handleRefresh = async () => {
+            try {
+                // getAPI.warehouseStore.setIsLoadMoreWarehouse(false);
+
+                setRefreshing(true);
+                // getAPI.warehouseStore.reset
                 // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
-                getListWarehouse();
+                page.current = 0
+                await getListWarehouse();
                 // Cập nhật state của danh sách dữ liệu
                 // setmyDataSlectClient(newData);
             } catch (error) {
@@ -174,120 +170,64 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             }
         };
 
-        const handleLoadMore = () => {
-            if (!isLoadingMore) {
-                getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
-                setIsLoadingMore(true);
-                // console.log('====================================');
-                console.log("value loading", isLoadingMore);
-                // console.log('====================================');
-                size.current = size.current + 2;
-                getListWarehouse();
-                console.log("doandev test");
 
-                setTimeout(() => {
-                    setIsLoadingMore(false);
-                }, 3000);
+        const handleLoadMore = async () => {
+            console.log('doan load more');
+            setIsLoadingMore(true)
+
+
+            console.log('pageCurrent1', page.current);
+            console.log('totalPageData', totalPages2.current);
+            console.log('value loadMore', isLoadingMore);
+            try {
+
+                if (
+                    page.current < totalPages2.current - 1
+                ) {
+
+                    console.log("page so lan", page.current);
+                    page.current = page.current + 1;
+                    console.log('pageDoan', page.current);
+                    await getListWarehouse();
+
+                    // setIsLoadingMore(false);
+                    console.log('is value loadMore');
+
+                }
+
+            } catch (error) {
+                console.log('====================================');
+                console.log('Error loadMore', error);
+                console.log('====================================');
+            } finally {
+                setIsLoadingMore(false)
             }
         };
-        const handleSearch = () => {
-            getListWarehouse();
-        };
+        console.log('====================================');
+        console.log('value doan', isLoadingMore);
+        console.log('====================================');
+
 
         useEffect(() => {
-            getAllLength()
+            console.log("---------useEffect---------reload------------------");
+            const unsubscribe = props.navigation.addListener("focus", () => {
+                if (reload === true) {
+                    console.log("---------useEffect---------reload2------------------");
+                    page.current = 0
+                    getListWarehouse()
+                    getNumberState()
+                }
+            });
+
+            return unsubscribe;
+        }, [props.navigation, reload]);
+
+        useEffect(() => {
+            page.current = 0
+
             getListWarehouse()
-
-
-        }, [props.navigation, state()])
-
-        // console.log('====================================');
-        // console.log(dataListTabar[0].img);
-        // console.log('====================================');
-        interface ItemList {
-            id: number;
-            code: string;
-            name: string;
-            state: string;
-            onClick: () => void;
-        }
-
-        const ItemListWareHouse: React.FC<{ item: ItemList }> = ({ item }) => {
-
-            return (
-                <TouchableOpacity style={Styles.itemList}
-                    onPress={() => {
-                        // setIdWarehouse(item.id)
-                        console.log('id select', item.id);
-
-                        props.navigation.navigate('detailWarehouse', { id: item.id })
-                    }}
-                >
-                    <Images.ic_Brick
-                        style={{
-                            width: scaleWidth(40),
-                            height: scaleWidth(40),
-                            borderRadius: scaleHeight(8),
-                            marginRight: scaleWidth(6)
-                        }}
-                    />
-                    <View style={[Styles.flexRow, { flex: 2, alignItems: 'center' }]}>
-                        <View>
-                            <Text style={Styles.txtItemWareHouse}>{item.code}</Text>
-                            <Text style={{ fontSize: scaleWidth(10), fontWeight: '500' }}>{item?.name}</Text>
-
-                        </View>
-
-                        <View>
-                            <Text
-                                style={{
-                                    fontSize: scaleWidth(8),
-                                    fontWeight: "400",
-                                    color: item?.state === "APPROVED" ? colors.navyBlue : "#9EA6B3",
-                                }}>
-                                {item?.state === "APPROVED"
-                                    ? en.wareHouse.isActive
-                                    : en.wareHouse.save}
-                            </Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            );
-        };
-
-        interface Item {
-            id: any;
-            img: any;
-            name: string;
-            onPress: () => void;
-        }
-        const ItemTabar = ({ item }: { item: Item }) => {
-            return (
-                <TouchableOpacity
-                    style={Styles.bodyItemTabar}
-                    onPress={() => {
-                        // console.log('====================================');
-                        // console.log('doann');
-                        // console.log('====================================');
-                        item.onPress();
-                    }}>
-                    <View style={{ alignItems: "center" }}>
-                        <Image
-                            source={item.img}
-                            style={{ width: scaleWidth(16), height: scaleHeight(16) }}
-                        />
-                        <Text
-                            style={{
-                                marginTop: scaleHeight(7),
-                                fontSize: scaleWidth(10),
-                                textAlign: "center",
-                            }}>
-                            {item.name}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            );
-        };
+            getNumberState()
+        }, [indexTabbar]);
 
         return (
             <View
@@ -297,17 +237,24 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     LeftIcon={Images.back}
                     style={{ height: scaleHeight(52) }}
                     leftText="wareHouse.wareHouse"
-                    RightIcon1={Images.ic_QR}
                     RightIcon2={Images.icon_search}
-                    RightIcon={Images.icon_funnel}
                     headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
-                        handleSearch()
+                        page.current = 0
+
+                        getNumberState()
+                        getListWarehouse();
                     }}
-                    onSearchValueChange={(txt: any) => setValueSearch(txt)}
+                    onSearchValueChange={(txt: string) => {
+                        console.log('value search', txt);
+                        setValueSearch(txt)
+                    }}
                     onRightPress2={() => setIsShowSearch(!isShowSearch)}
                     btnRightStyle={{ width: scaleWidth(30), height: scaleHeight(30), marginRight: -10, }}
-                    onLeftPress={() => props.navigation.goBack()}
+                    onLeftPress={() => {
+                        setMyData([])
+                        props.navigation.goBack()
+                    }}
                 />
                 <View>
 
@@ -336,20 +283,19 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                             return (
                                 <TouchableOpacity
                                     style={
-                                        indexTabbar === item.name
+                                        indexTabbar === item.state
                                             ? Styles.styleItemTabarIsclick
                                             : Styles.styleItemTabar
                                     }
                                     key={item.name}
                                     onPress={() => {
-                                        console.log(item.name);
-
-                                        setIndexTabbar(item?.name);
+                                        console.log("type tabbar", item.name);
+                                        setIndexTabbar(item?.state);
                                     }}>
                                     <Text
                                         style={{
                                             color:
-                                                indexTabbar === item.name
+                                                indexTabbar === item.state
                                                     ? colors.palette.navyBlue
                                                     : colors.palette.dolphin,
                                             fontSize: fontSize.size10,
@@ -362,27 +308,38 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     </View>
 
                     <FlatList
-                        style={{}}
+                        style={{ paddingBottom: 50 }}
                         data={myData}
-                        renderItem={({ item }) => <ItemListWareHouse item={item} />}
-                        keyExtractor={(item: any) => item.id.toString()}
+                        renderItem={({ item, index }) => <ItemListWareHouse item={item} />}
+                        keyExtractor={(item: any, index) => item?.id.toString() + index}
                         showsVerticalScrollIndicator={false}
+
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                         }
-                        onEndReached={() => handleLoadMore()}
-                        onEndReachedThreshold={0.3}
-                        ListFooterComponent={() => (
-                            <View>
-                                {myData?.length !== 1 ? (
-                                    <>{isLoadingMore && <ActivityIndicator />}</>
-                                ) : null}
-                            </View>
-                        )}
+                        onEndReached={handleLoadMore}
+                        onEndReachedThreshold={0.5}
+                        ListFooterComponent={() => {
+                            return (
+
+                                <View>
+                                    {
+                                        myData.length !== 1
+                                            ? isLoadingMore
+                                                ? <ActivityIndicator />
+                                                : null
+                                            : null
+                                    }
+                                </View>
+                            );
+                        }}
+                        initialNumToRender={10}
+                        maxToRenderPerBatch={10}
+                        windowSize={5}
                     />
                     <TouchableOpacity
                         style={Styles.btnPlus}
-                        onPress={() => setOpenDialogPlus(!openDialogPlus)}>
+                        onPress={() => props.navigation.navigate("warehouse", { status: "CREATE" })}>
                         <Images.icon_plus style={{ opacity: openDialogPlus ? 0 : 1 }} />
                     </TouchableOpacity>
 
@@ -396,6 +353,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         setIsVisible={() => navigation.navigate("warehouse" as never)}
                     />
                 </View>
-            </View>
+            </View >
         );
     });
