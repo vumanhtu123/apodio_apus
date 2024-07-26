@@ -14,6 +14,7 @@ import { ConfigInfoMoreComponent } from "../component/config-info-component";
 import { useStores } from "../../../models";
 import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
+import { showErrorCSS } from "react-native-svg/lib/typescript/deprecated";
 
 export const CreateWareHouseScreen: FC<
   StackScreenProps<NavigatorParamList, "warehouse">
@@ -25,6 +26,8 @@ export const CreateWareHouseScreen: FC<
   const id = useRef(props.route.params.id ?? null);
 
   const [listUnit, setListUnit] = useState([]);
+  const [showErrors, setShowErrors] = useState(false);
+  const [checkErrorTriggered, setCheckErrorTriggered] = useState(0);
   console.log(
     "status: ",
     JSON.stringify(props.route.params.conditionStorage?.minTemperature)
@@ -135,11 +138,17 @@ export const CreateWareHouseScreen: FC<
     clearErrors("temperature3");
   };
 
+  const onError = (errors) => {
+    console.log("Form validation errors:", errors);
+    setShowErrors(true);
+    setCheckErrorTriggered(prev => prev + 1);
+  };
+
   const checkUom = () => {
     console.log("check error", lengthUom.text);
     switch ("" || undefined) {
       case lengthUom.text:
-        setError("lengthUom", {
+        setError("longs", {
           type: "required",
           message: "Vui lòng chọn đơn vị tính",
         });
@@ -188,6 +197,7 @@ export const CreateWareHouseScreen: FC<
   };
 
   const onValidate = (data: any) => {
+    console.log('-------data------', JSON.stringify(data))
     if (data.config == true) {
       if (
         (data.heightUom.text &&
@@ -196,8 +206,10 @@ export const CreateWareHouseScreen: FC<
           data.weightCapacityUom.text != undefined) ||
         ""
       ) {
+        console.log('----------true---------')
         onSubmit(data);
       } else {
+        console.log('----------else---------')
         methods.handleSubmit(checkUom);
       }
     } else {
@@ -207,21 +219,32 @@ export const CreateWareHouseScreen: FC<
 
   const onSubmit = (data: any) => {
     console.log("tuvm test data", data);
-    switch (status.current) {
-      case "UPDATE":
-        handlerUpdateData(data, id.current);
-        console.log(
-          "check data props",
-          props.route.params.additionalInfo?.heightUom.name
-        );
-        break;
-      case "COPY":
-        onHandleDataCopy(data);
-        break;
-      default:
-        onHandleData(data);
-        break;
+    if (
+      (data.heightUom.text &&
+        data.lengthUom.text &&
+        data.widthUom.text &&
+        data.weightCapacityUom.text != undefined) ||
+      ""
+    ) {
+      switch (status.current) {
+        case "UPDATE":
+          handlerUpdateData(data, id.current);
+          console.log(
+            "check data props",
+            props.route.params.additionalInfo?.heightUom.name
+          );
+          break;
+        case "COPY":
+          onHandleDataCopy(data);
+          break;
+        default:
+          onHandleData(data);
+          break;
+      }
+    }else {
+      setCheckErrorTriggered(prev => prev + 1);
     }
+    
   };
 
   const handlerUpdateData = (data: any, id: any) => {
@@ -738,7 +761,7 @@ export const CreateWareHouseScreen: FC<
                 </TouchableOpacity>
               )}
             />
-            {config ? <ConfigInfoMoreComponent list={listUnit} /> : null}
+            {config ? <ConfigInfoMoreComponent list={listUnit} checkErrorTriggered={checkErrorTriggered} showErrors={showErrors} /> : null}
             {/* <Controller
             control={control}
             render={({ field: { onChange, value } }) => (
@@ -762,7 +785,7 @@ export const CreateWareHouseScreen: FC<
           /> */}
           </ScrollView>
           <TouchableOpacity
-            onPress={methods.handleSubmit(onValidate, checkUom)}
+            onPress={methods.handleSubmit(onSubmit, onError)}
             style={{
               backgroundColor: "#0078D4",
               alignItems: "center",

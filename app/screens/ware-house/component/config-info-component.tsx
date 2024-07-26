@@ -8,12 +8,19 @@ import { translate } from "../../../i18n";
 import { Images } from "../../../../assets";
 import { SelectUom } from "../modal/modal-select-uom";
 
-export const ConfigInfoMoreComponent = (props: any) => {
+interface ItemProps {
+  showErrors: boolean;
+  checkErrorTriggered: number,
+  list: {}[],
+}
+
+export const ConfigInfoMoreComponent = (props: ItemProps) => {
   const {
     control,
     setValue,
     watch,
     clearErrors,
+    setError,
     formState: { errors },
   } = useFormContext();
   const [modalVisible, setModalVisible] = useState(false);
@@ -30,6 +37,46 @@ export const ConfigInfoMoreComponent = (props: any) => {
     setFocusedField(name);
     setModalVisible(!modalVisible);
   };
+
+
+  useEffect(() => {
+    if(props.showErrors) {
+      console.log('-------------props.showErrors----------', props.showErrors)
+      checkUom()
+    }else {
+      console.log('-------------props.showErrors----------', props.showErrors)
+      clearErrors("lengthUom");
+      clearErrors("widthUom");
+      clearErrors("heightUom");
+      clearErrors("weightCapacityUom");
+    }
+  }, [props.showErrors, props.checkErrorTriggered]); 
+
+  console.log('----------errors-----', JSON.stringify(errors))
+  const checkUom = () => {
+    console.log("check error", lengthUom);
+    const handleError = (field: string, message: string) => {
+      setError(field, {
+        type: "required",
+        message: message,
+      });
+      console.log(`check error ${field}`, lengthUom);
+    };
+
+    if (lengthUom.value === 0) {
+      handleError("lengthUom", "Vui lòng chọn đơn vị tính");
+    }
+    if (widthUom.value === 0) {
+      handleError("widthUom", "Vui lòng chọn đơn vị tính");
+    }
+    if (heightUom.value === 0) {
+      handleError("heightUom", "Vui lòng chọn đơn vị tính");
+    }
+    if (weightCapacityUom.value === 0) {
+      handleError("weightCapacityUom", "Vui lòng chọn đơn vị tính");
+    }
+  };
+
 
   const checkTicker = () => {
     switch (focusedField) {
