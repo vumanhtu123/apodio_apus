@@ -28,6 +28,8 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
     const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
     const [index, setIndex] = useState<any>();
     const [valueSearchCategory, setValueSearchCategory] = useState("");
+    const isFirstRender = useRef(true);
+
     useFocusEffect(
         useCallback(() => {
             setIndexItem(productStore.viewProductType === "VIEW_PRODUCT" ? 0 : 1);
@@ -43,7 +45,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         });
         return unsubscribe;
     }, [navigation]);
-    const handleGetCategoryFilter = async () => {
+    const handleGetCategoryFilter = async (valueSearchCategory?: any) => {
         try {
             const response = await categoryStore.getListCategoriesFilter(
                 0,
@@ -51,10 +53,10 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
                 valueSearchCategory
             );
             if (response && response.kind === "ok") {
-                const data = response.response.data.content;
+                const filteredData = response.response.data.content.map(({ id, name }: any) => ({ id, name }));
                 const newElement = { name: "Tất cả danh mục" };
-                data.unshift(newElement);
-                setDataCategoryFilter(data);
+                filteredData.unshift(newElement);
+                setDataCategoryFilter(filteredData);
             } else {
                 console.error("Failed to fetch categories:", response);
             }
@@ -70,8 +72,12 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         setIsLoading(false)
     };
     useEffect(() => {
-        handleSubmitSearch()
+        if (!isFirstRender.current) {
+            handleSubmitSearch()
+        }
+
     }, [searchValue])
+
     const handleGetProduct = async (searchValue?: any) => {
         var parseSort = "";
         try {
@@ -81,7 +87,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
                     productStore.sort[0] +
                     (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
             }
-            // console.log('mmmmmmmzzz', page)
             const response: any = await productStore.getListProduct(
                 page,
                 size,
@@ -125,25 +130,36 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         setDataProduct([]);
         await handleGetProduct(searchValue);
     }, [dataProduct]);
-    const getValueSearchCategoryFilter = (value: any) => {
+    const getValueSearchCategoryFilter = async (value: any) => {
         // console.log('first------------', value)
         setValueSearchCategory(value);
+        await handleGetCategoryFilter(value);
     };
     useEffect(() => {
-        handleGetCategoryFilter();
-    }, [valueSearchCategory]);
+        handleGetCategoryFilter(valueSearchCategory);
+    }, []);
+
     useEffect(() => {
+        //if (!isFirstRender.current) {
+        console.log('--------------useEffect--------selectedCategory---------')
         const fetchData = async () => {
             setPage(0);
             setDataProduct([]);
             await handleGetProduct(searchValue);
         };
         fetchData();
+        //}
+
     }, [selectedCategory]);
+
     useEffect(() => {
-        if (!isRefreshing) {
-            handleGetProduct(searchValue); // Load more
+        if (!isFirstRender.current) {
+            console.log('--------------useEffect--------page---------')
+            if (!isRefreshing) {
+                handleGetProduct(searchValue); // Load more
+            }
         }
+
     }, [page]);
     const handleEndReached = () => {
         if (!isRefreshing && page <= totalPagesProduct - 1 && !isLoading) {
@@ -151,11 +167,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             setPage((prevPage) => prevPage + 1);
         }
     };
-    useEffect(() => {
-        if (index == 0) {
-            refreshProduct();
-        }
-    }, [index]);
+    
     const refreshProduct = useCallback(async () => {
         productStore.setIsLoadMore(true)
         setIsRefreshing(true);
@@ -170,13 +182,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         await handleGetProduct();
         setIsRefreshing(false);
     }, [onClearSearch, handleGetProduct]);
-    const refreshCategoryFilter = async () => {
-        setIsRefreshingCategory(true);
-        setDataCategoryFilter([]);
-        setValueSearchCategory("");
-        await handleGetCategoryFilter();
-        setIsRefreshingCategory(false);
-    };
     const renderFooter = () => {
         if (isRefreshing || page >= totalPagesProduct - 1 || dataProduct.length < 1) return null;
         return (
@@ -207,6 +212,14 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
         }
     }, [viewProduct]);
+
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+        }
+    }, []);
+
     return (
         <>
             <TouchableOpacity
@@ -282,15 +295,11 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             <CategoryModalFilter
                 showCategory={showCategory}
                 setShowCategory={setShowCategory}
-                dataCategory={dataCategoryFilter}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
                 setNameDirectory={setNameDirectory}
                 isSearchBarVisible={openSearch}
                 setIndex={setIndex}
-                onSearchChange={getValueSearchCategoryFilter}
-                isRefreshing={isRefreshingCategory}
-                onRefresh={refreshCategoryFilter}
             />
             <View style={{ alignItems: 'flex-end', paddingHorizontal: scaleWidth(16) }}>
                 <Text style={{ fontSize: fontSize.size12 }}>Tổng số sản phẩm: {Math.min(size * (page + 1), totalElementsProduct)}/{totalElementsProduct}</Text>

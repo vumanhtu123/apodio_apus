@@ -28,7 +28,7 @@ export * from "./promotions/promotions";
 export * from "./product/arrange-product";
 export * from "./product/component/modal-select-filter";
 export * from "./product/product-categories-screen";
-export * from "./product/product-detail-screen";
+export * from "./product/detail-screen/product-detail-screen";
 export * from "./order/orderDetail/orderDetails";
 export * from "./suppliers/screens/suppliers-screen";
 export * from "./product/filter-screen";
@@ -36,7 +36,7 @@ export * from "./product/create-prodcut/create-product-screen";
 
 export * from "./product/arrange-product";
 export * from "./product/product-categories-screen";
-export * from "./product/product-detail-screen";
+export * from "./product/detail-screen/product-detail-screen";
 export * from "./product/choose-vendor-screen";
 export * from "./order/orderDetail/orderDetails";
 export * from "./suppliers/screens/suppliers-screen";

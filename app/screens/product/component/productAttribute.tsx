@@ -6,7 +6,7 @@ import { TxKeyPath } from "../../../i18n";
 
 
 interface ProductAttributeProps {
-  label?: string 
+  label?: any
   labelTx?: TxKeyPath;
   value?: any;
   labelStyle?: StyleProp<TextStyle>;
