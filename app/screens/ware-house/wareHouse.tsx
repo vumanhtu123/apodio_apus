@@ -36,11 +36,11 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         // console.log('doandev value', reload);
 
 
-        const [indexTabbar, setIndexTabbar] = useState(en.wareHouse.all)
+        const [indexTabbar, setIndexTabbar] = useState<string | undefined>(undefined)
         const [openInforWareHouse, setOpneInforWareHouse] = useState(false)
         const [openDialogPlus, setOpenDialogPlus] = useState(false)
         const [refreshing, setRefreshing] = useState(false);
-        const [isLoadingMore, setIsLoadingMore] = useState<boolean>();
+        const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
         const [valueSearch, setValueSearch] = useState("");
         const [myData, setMyData] = useState<{}[]>([]);
         const [lengthAll, setLengthAll] = useState<number>()
@@ -54,6 +54,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const size = useRef(10);
         const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
         console.log('value load more', isLoadingMore);
+
 
         const dataListTabar = useMemo(() => [
             {
@@ -97,61 +98,12 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 },
             },
         ], []);
-        // const dataListTabar = [
-        //     {
-        //         id: "1",
-        //         img: require("../../../assets/Images/ic_WareBook.png"),
-        //         name: en.wareHouse.wareBook,
-        //         onPress: () => {
-        //             //   Alert.alert('ok 1')
-        //             props.navigation.navigate("warehouseBook");
-        //         },
-        //     },
-        //     {
-        //         id: "2",
-        //         img: require("../../../assets/Images/ic_Home.png"),
-        //         name: en.wareHouse.checkWare,
-        //         onPress: () => {
-        //             // Alert.alert('ok 2')
-
-        //             props.navigation.navigate("inventoryManagenment");
-        //         },
-        //     },
-        //     {
-        //         id: "3",
-        //         img: require("../../../assets/Images/ic_importBook.png"),
-        //         name: en.wareHouse.importBook,
-        //         onPress: () => {
-        //             //   Alert.alert('ok 3')
-        //             props.navigation.navigate("importGoodsBook");
-        //         },
-        //     },
-        //     {
-        //         id: "4",
-        //         img: require("../../../assets/Images/ic_outputBook.png"),
-        //         name: en.wareHouse.outputBook,
-        //         onPress: () => {
-        //             //   Alert.alert('ok 4')
-        //             props.navigation.navigate("GoodsDeliveryBook");
-        //         },
-        //     },
-        //     {
-        //         id: "5",
-        //         img: require("../../../assets/Images/in_In.png"),
-        //         name: en.wareHouse.inTem,
-        //         onPress: () => {
-        //             Alert.alert("ok 5");
-        //             // props.navigation.navigate('inventoryManagenment')
-        //         },
-        //     },
-        // ];
 
         const titleTabbar = useMemo(() => [
-            { name: en.wareHouse.all, length: lengthAll },
-            { name: en.wareHouse.isActive, length: lengthIsActive },
-            { name: en.wareHouse.save, length: lengthSave }
+            { name: en.wareHouse.all, length: lengthAll, state: undefined },
+            { name: en.wareHouse.isActive, length: lengthIsActive, state: 'APPROVED' },
+            { name: en.wareHouse.save, length: lengthSave, state: 'ARCHIVED' }
         ], [lengthAll, lengthIsActive, lengthSave]);
-        // const titleTabbar = [
         //     {
         //         name: en.wareHouse.all,
         //         length: lengthAll,
@@ -166,26 +118,11 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         //     },
         // ];
 
-        const checkState = () => {
-            if (indexTabbar == en.wareHouse.all) {
-                console.log('tab select all');
-                // setMyData([])
-                return undefined
 
-            } else if (indexTabbar == en.wareHouse.isActive) {
-                console.log('tab select isActive');
-                // setMyData([])
-                return 'APPROVED'
-            } else {
-                console.log('tab select save');
-                // setMyData([])
-                return 'ARCHIVED'
-            }
-        }
         const getListWarehouse = useCallback(async () => {
             console.log("chay lan", page.current);
             try {
-                const data = await getAPI.warehouseStore.getListWareHouse(size.current, page.current, checkState(), valueSearch, statusLoadMore);
+                const data = await getAPI.warehouseStore.getListWareHouse(size.current, page.current, indexTabbar, valueSearch, statusLoadMore);
                 if (data?.content != null) {
                     const dataWarehouse = data.content
                     if (page.current == 0) {
@@ -199,55 +136,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             } catch (error) {
                 console.error('Error loadMore', error);
             }
-        }, [getAPI, size, page, valueSearch, statusLoadMore, checkState]);
+        }, [getAPI, size, page, valueSearch, statusLoadMore, indexTabbar]);
 
-        // const getListWarehouse = () => {
 
-        //     console.log("chay lan", page.current);
-        //     try {
-        //         getAPI.warehouseStore.getListWareHouse(size.current, page.current, checkState(), valueSearch, statusLoadMore).then((data) => {
-        //             console.log('data doan 1', data);
-        //             if (data?.content != null) {
-        //                 const dataWarehouse = data.content
-        //                 console.log('data doan 2');
-        //                 if (page.current == 0) {
-        //                     setMyData(dataWarehouse)
-        //                     console.log('data doan 3');
-
-        //                 } else {
-        //                     console.log('data doan 4');
-        //                     console.log("Page", page.current);
-
-        //                     setMyData((item: any) => [
-        //                         ...item,
-        //                         ...dataWarehouse
-        //                     ]
-        //                     )
-        //                     // const a = myData.concat(dataWarehouse)
-        //                     // setMyData(a)
-        //                     console.log("My data 5",);
-        //                 }
-        //                 console.log('data doan 6');
-
-        //                 const totalPages = data?.totalPages
-        //                 const totalElementData = data?.totalElements
-        //                 totalElement.current = totalElementData
-        //                 totalPages2.current = totalPages
-
-        //             }
-        //             console.log('data doan 6');
-        //             console.log('totalPage', totalPages2.current);
-        //             console.log('page', page.current);
-        //             console.log('data doan 7', myData);
-        //             // setIsLoadingMore(false)
-        //         });
-        //     } catch (error) {
-        //         console.log('data doan 7')
-        //         console.log('====================================');
-        //         console.log('Error loadMore', error);
-        //         console.log('====================================');
-        //     }
-        // }
 
         const getNumberState = useCallback(async () => {
             try {
@@ -261,15 +152,15 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         }, [getAPI, valueSearch]);
 
 
-        const handleRefresh = () => {
+        const handleRefresh = async () => {
             try {
-                getAPI.warehouseStore.setIsLoadMoreWarehouse(false);
+                // getAPI.warehouseStore.setIsLoadMoreWarehouse(false);
 
                 setRefreshing(true);
-                getAPI.warehouseStore.reset
+                // getAPI.warehouseStore.reset
                 // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
                 page.current = 0
-                getListWarehouse();
+                await getListWarehouse();
                 // Cập nhật state của danh sách dữ liệu
                 // setmyDataSlectClient(newData);
             } catch (error) {
@@ -279,9 +170,11 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             }
         };
 
-        const handleLoadMore = () => {
+
+        const handleLoadMore = async () => {
+            console.log('doan load more');
             setIsLoadingMore(true)
-            getAPI.warehouseStore.setIsLoadMoreWarehouse(true);
+
 
             console.log('pageCurrent1', page.current);
             console.log('totalPageData', totalPages2.current);
@@ -295,18 +188,25 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     console.log("page so lan", page.current);
                     page.current = page.current + 1;
                     console.log('pageDoan', page.current);
-                    getListWarehouse();
-                    setIsLoadingMore(false);
+                    await getListWarehouse();
+
+                    // setIsLoadingMore(false);
+                    console.log('is value loadMore');
+
                 }
-                // setIsLoadingMore(false);
-                console.log('pageCurrent7');
-                setIsLoadingMore(!isLoadingMore)
+
             } catch (error) {
                 console.log('====================================');
                 console.log('Error loadMore', error);
                 console.log('====================================');
+            } finally {
+                setIsLoadingMore(false)
             }
         };
+        console.log('====================================');
+        console.log('value doan', isLoadingMore);
+        console.log('====================================');
+
 
         useEffect(() => {
             console.log("---------useEffect---------reload------------------");
@@ -315,6 +215,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     console.log("---------useEffect---------reload2------------------");
                     page.current = 0
                     getListWarehouse()
+                    getNumberState()
                 }
             });
 
@@ -323,7 +224,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
         useEffect(() => {
             page.current = 0
-            // getAPI.warehouseStore.setIsLoadMoreWarehouse(false)
+
             getListWarehouse()
             getNumberState()
         }, [indexTabbar]);
@@ -340,7 +241,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
                         page.current = 0
-                        setIsLoadingMore(!isLoadingMore)
+
                         getNumberState()
                         getListWarehouse();
                     }}
@@ -382,20 +283,19 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                             return (
                                 <TouchableOpacity
                                     style={
-                                        indexTabbar === item.name
+                                        indexTabbar === item.state
                                             ? Styles.styleItemTabarIsclick
                                             : Styles.styleItemTabar
                                     }
                                     key={item.name}
                                     onPress={() => {
                                         console.log("type tabbar", item.name);
-                                        setIndexTabbar(item?.name);
-
+                                        setIndexTabbar(item?.state);
                                     }}>
                                     <Text
                                         style={{
                                             color:
-                                                indexTabbar === item.name
+                                                indexTabbar === item.state
                                                     ? colors.palette.navyBlue
                                                     : colors.palette.dolphin,
                                             fontSize: fontSize.size10,
@@ -413,21 +313,25 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         renderItem={({ item, index }) => <ItemListWareHouse item={item} />}
                         keyExtractor={(item: any, index) => item?.id.toString() + index}
                         showsVerticalScrollIndicator={false}
+
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                         }
                         onEndReached={handleLoadMore}
                         onEndReachedThreshold={0.5}
                         ListFooterComponent={() => {
-                            return <View>
-                                {
-                                    myData.length !== 1 ?
-                                        <>
-                                            {isLoadingMore ?? <ActivityIndicator />}
-                                        </>
-                                        : null
-                                }
-                            </View>
+                            return (
+
+                                <View>
+                                    {
+                                        myData.length !== 1
+                                            ? isLoadingMore
+                                                ? <ActivityIndicator />
+                                                : null
+                                            : null
+                                    }
+                                </View>
+                            );
                         }}
                         initialNumToRender={10}
                         maxToRenderPerBatch={10}
