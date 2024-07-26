@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { AppStackParamList } from "../../../navigators/app-navigator";
+import { NavigatorParamList, navigate } from "../../../navigators"
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
 import { Button, View } from "react-native";
@@ -15,7 +15,7 @@ import { useStores } from "../../../models";
 import { getAccessToken, setAccessToken } from "../../../utils/storage";
 
 export const SplashScreen1: FC<
-  StackScreenProps<AppStackParamList, "SplashScreen">
+  StackScreenProps<NavigatorParamList, "SplashScreen">
 > = observer(function SplashScreen(props) {
   const auth = useAuth();
   const { authenticationStore } = useStores();

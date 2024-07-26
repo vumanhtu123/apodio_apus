@@ -1,4 +1,4 @@
-import { pagination } from '../../../../screens/introduction/introduction-screen';
+import { pagination } from '../../introduction/introduction-screen';
 import { colors } from '../../../../theme/colors';
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/sort-styles */

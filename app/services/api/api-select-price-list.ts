@@ -1,5 +1,5 @@
 import { ApiResponse } from 'apisauce';
-import { pagination } from './../../screens/introduction/introduction-screen';
+import { pagination } from '../../screens/common/introduction/introduction-screen';
 import { Api } from "../base-api/api";
 import { ApiConfig } from "../base-api/api-config";
 import { ApiUpload } from "../base-api/api_upload";

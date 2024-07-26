@@ -1,19 +1,19 @@
 import React, { FC, useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { StackScreenProps } from "@react-navigation/stack"
-import { NavigatorParamList, navigate } from "../../navigators"
-import { Screen } from "../../../app/components/screen/screen"
-import { Button } from "../../../app/components/button/button"
+import { NavigatorParamList, navigate } from "../../../navigators"
+import { Screen } from "../../../components/screen/screen"
+import { Button } from "../../../components/button/button"
 import { styles } from "./styles"
 import Carousel, { Pagination } from "react-native-snap-carousel"
 import { View, Image, Dimensions, StatusBar } from "react-native"
-import { colors, scaleHeight, scaleWidth } from "../../theme"
+import { colors, scaleHeight, scaleWidth } from "../../../theme"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Images } from '../../../assets'
-import { Text } from "../../components"
+import { Images } from '../../../../assets'
+import { Text } from "../../../components"
 import { useNavigation } from "@react-navigation/native"
-import { setFirstOpenApp } from "../../utils/storage"
-import { useAuth } from "../contexts/auth"
+import { setFirstOpenApp } from "../../../utils/storage"
+import { useAuth } from "../../contexts/auth"
 
 export const IntroductionScreen: FC<StackScreenProps<NavigatorParamList, "introduction">> =
   observer(function IntroductionScreen() {

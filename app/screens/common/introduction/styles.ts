@@ -1,6 +1,6 @@
-import {  palette } from './../../theme/colors';
+import {  palette } from '../../../theme/colors';
 import { Platform, StyleSheet } from "react-native"
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme"
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme"
 
 export const styles = StyleSheet.create({
   ROOT: {

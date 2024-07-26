@@ -16,7 +16,6 @@ import { useBackButtonHandler } from "./navigation-utilities";
 import { AuthProvider } from "../screens/contexts/auth";
 import { Router } from "./router";
 import { AuthStack } from "./auth-navigator";
-import { TermsAgreementsScreen } from "../screens/terms-agreements/terms-agreements-screen";
 import * as Screens from "../screens";
 import { InventoryManagement } from "../screens/check-inventory/inventory-management";
 import { termsAndAgreementsScreen } from "../screens/common/users/termsAndAgreements/termsAndAgreements";
