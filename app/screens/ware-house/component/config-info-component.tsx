@@ -1,83 +1,94 @@
-import React, { useEffect, useState } from "react";
-import { Controller } from "react-hook-form";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import React, { useRef, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { View } from "react-native";
 import { Text, TextField } from "../../../components";
 import { scaleHeight } from "../../../theme";
 import { stylesWareHouse } from "../style";
 import { translate } from "../../../i18n";
 import { Images } from "../../../../assets";
-import Modal from "react-native-modal";
-import { Button } from "../../../components";
+import { SelectUom } from "../modal/modal-select-uom";
 
 export const ConfigInfoMoreComponent = (props: any) => {
+  const {
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext();
+  const a = useRef(0);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<any>([]);
-  const [selectedItems, setSelectedItems] = useState<any>([]);
-  const toggleModal = () => {
+
+  const lengthUom = watch("lengthUom");
+  const widthUom = watch("widthUom");
+
+  const heightUom = watch("heightUom");
+  const weightCapacityUom = watch("weightCapacityUom");
+  console.log("rereder", a.current++);
+
+  const [focusedField, setFocusedField] = useState("");
+
+  const toggleModal = (name?: any) => {
+    setFocusedField(name);
     setModalVisible(!modalVisible);
   };
-  const renderItem = ({ item }: any) => {
-    const isSelected = selectedItem.some(
-      (selectedItem: { value: any }) => selectedItem.value === item.value
-    );
-    return (
-      <View>
-        <View style={{ height: scaleHeight(1), backgroundColor: "#E7EFFF" }} />
-        <TouchableOpacity
-          style={stylesWareHouse.item}
-          onPress={() => handleItemSelect(item)}>
-          <Text style={[stylesWareHouse.itemText]}>{item.text}</Text>
-        </TouchableOpacity>
-      </View>
-    );
+
+  console.log("lengthUom", errors);
+
+  const checkTicker = () => {
+    switch (focusedField) {
+      case "longs":
+        return lengthUom.text;
+      case "width":
+        return widthUom.text;
+      case "height":
+        return heightUom.text;
+      case "weight":
+        return weightCapacityUom.text;
+      default:
+        return "";
+    }
   };
 
   const handleItemSelect = (item: any) => {
-    const isSelected = selectedItem.some(
-      (selectedItem: { value: any }) => selectedItem.value === item.value
-    );
-    if (isSelected) {
-      setSelectedItem(
-        selectedItem.filter(
-          (selectedItem: { value: any }) => selectedItem.value !== item.value
-        )
-      );
-    } else {
-      setSelectedItem([...selectedItem, item]);
+    switch (focusedField) {
+      case "longs":
+        setValue("lengthUom", { value: item.value, text: item.text });
+        console.log("selected length", lengthUom);
+        toggleModal();
+        break;
+      case "width":
+        setValue("widthUom", { value: item.value, text: item.text });
+        toggleModal();
+        break;
+      case "height":
+        setValue("heightUom", { value: item.value, text: item.text });
+        toggleModal();
+        break;
+      case "weight":
+        setValue("weightCapacityUom", { value: item.value, text: item.text });
+        toggleModal();
+        break;
+      default:
+        break;
     }
-    // onPressChoice(selectedItems);
   };
 
-  const onConfirm = () => {
-    setSelectedItems(selectedItem);
-    //   props.onPressChoice(selectedItem);
-    toggleModal();
-  };
+  const errorMessageWeight = "Tuvm";
 
-  useEffect(() => {
-    props.setValue("longitude", "");
-    props.setValue("latitude", "");
-    props.setValue("longs", "");
-    props.setValue("width", "");
-    props.setValue("height", "");
-    props.setValue("weight", "");
-    props.clearError("longitude");
-    props.clearError("latitude");
-    props.clearError("longs");
-    props.clearError("width");
-    props.clearError("height");
-    props.clearError("weight");
-  }, [props.config]);
-  return props.config ? (
+  return (
     <View>
       <Controller
-        control={props.control}
+        control={control}
         // Account test setup new pin
         // defaultValue={"system_admin"}
         // Account test
         rules={{
           required: "Vui lòng nhập thông tin",
           maxLength: 50,
+          pattern: {
+            value: /^\d+(\.\d+)?$/,
+            message: "Nhập số hoặc số thập phân",
+          },
         }}
         defaultValue={""}
         render={({ field: { onChange, value, onBlur } }) => (
@@ -97,7 +108,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
             onClearText={() => {
               onChange("");
             }}
-            error={props.errors.longitude?.message ?? ""}
+            error={errors.longitude?.message ?? ""}
             onChangeText={(value) => {
               onChange(value);
             }}
@@ -106,7 +117,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
         name="longitude"
       />
       <Controller
-        control={props.control}
+        control={control}
         // Account test setup new pin
         // defaultValue={"system_admin"}
         // Account test
@@ -128,7 +139,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
             onClearText={() => {
               onChange("");
             }}
-            error={props.errors.latitude?.message ?? ""}
+            error={errors.latitude?.message ?? ""}
             onChangeText={(value) => {
               onChange(value);
             }}
@@ -138,10 +149,14 @@ export const ConfigInfoMoreComponent = (props: any) => {
         rules={{
           required: "Vui lòng nhập thông tin",
           maxLength: 50,
+          pattern: {
+            value: /^\d+(\.\d+)?$/,
+            message: "Nhập số hoặc số thập phân",
+          },
         }}
       />
       <Controller
-        control={props.control}
+        control={control}
         // Account test setup new pin
         // defaultValue={"system_admin"}
         // Account test
@@ -160,16 +175,28 @@ export const ConfigInfoMoreComponent = (props: any) => {
             isShowPassword
             RightIcon={Images.dropDown}
             styleTextRight={stylesWareHouse.textConfig}
-            valueTextRight="m2"
+            ValueTextRight={
+              <Controller
+                name="lengthUom"
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <Text
+                    text={value.text}
+                    style={stylesWareHouse.textConfig}></Text>
+                )}
+                rules={{
+                  required: "Vui lòng chọn đơn vị tính",
+                }}
+                control={control}></Controller>
+            }
             RightIconClear={null}
             RightIconShow={() => {}}
             onClearText={() => {
               onChange("");
             }}
             pressRightIcon={() => {
-              toggleModal();
+              toggleModal("longs");
             }}
-            error={props.errors.longs?.message ?? ""}
+            error={errors.longs?.message ?? ""}
             onChangeText={(value) => {
               onChange(value);
             }}
@@ -179,6 +206,10 @@ export const ConfigInfoMoreComponent = (props: any) => {
         rules={{
           required: "Vui lòng nhập thông tin",
           maxLength: 50,
+          pattern: {
+            value: /^-?\d+(\.\d+)?$/,
+            message: "Nhập số hoặc số thập phân",
+          },
         }}
       />
       <View
@@ -186,7 +217,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           marginVertical: scaleHeight(15),
         }}>
         <Controller
-          control={props.control}
+          control={control}
           // Account test setup new pin
           // defaultValue={"system_admin"}
           // Account test
@@ -204,15 +235,30 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight="m2"
+              ValueTextRight={
+                <Controller
+                  name="widthUom"
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <Text
+                      text={value.text}
+                      style={stylesWareHouse.textConfig}></Text>
+                  )}
+                  rules={{
+                    required: "Vui lòng chọn đơn vị tính",
+                  }}
+                  control={control}></Controller>
+              }
               styleTextRight={stylesWareHouse.textConfig}
               RightIcon={Images.dropDown}
+              pressRightIcon={() => {
+                toggleModal("width");
+              }}
               RightIconClear={null}
               RightIconShow={() => {}}
               onClearText={() => {
                 onChange("");
               }}
-              error={props.errors.width?.message ?? ""}
+              error={errors.width?.message ?? ""}
               onChangeText={(value) => {
                 onChange(value);
               }}
@@ -222,12 +268,16 @@ export const ConfigInfoMoreComponent = (props: any) => {
           rules={{
             required: "Vui lòng nhập thông tin",
             maxLength: 50,
+            pattern: {
+              value: /^-?\d+(\.\d+)?$/,
+              message: "Nhập số hoặc số thập phân",
+            },
           }}
         />
       </View>
       <View style={{ marginBottom: scaleHeight(15) }}>
         <Controller
-          control={props.control}
+          control={control}
           // Account test setup new pin
           // defaultValue={"system_admin"}
           // Account test
@@ -245,15 +295,30 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight="m2"
+              ValueTextRight={
+                <Controller
+                  name="heightUom"
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <Text
+                      text={value.text}
+                      style={stylesWareHouse.textConfig}></Text>
+                  )}
+                  rules={{
+                    required: "Vui lòng chọn đơn vị tính",
+                  }}
+                  control={control}></Controller>
+              }
               RightIconClear={null}
-              RightIconShow={() => {}}
               styleTextRight={stylesWareHouse.textConfig}
+              RightIconShow={() => {}}
+              pressRightIcon={() => {
+                toggleModal("height");
+              }}
               RightIcon={Images.dropDown}
               onClearText={() => {
                 onChange("");
               }}
-              error={props.errors.height?.message ?? ""}
+              error={errors.height?.message ?? ""}
               onChangeText={(value) => {
                 onChange(value);
               }}
@@ -263,12 +328,17 @@ export const ConfigInfoMoreComponent = (props: any) => {
           rules={{
             required: "Vui lòng nhập thông tin",
             maxLength: 50,
+            pattern: {
+              value: /^\d+(\.\d+)?$/,
+              message: "Nhập số hoặc số thập phân",
+            },
+            validate: heightUom.text == "" ? "" : "",
           }}
         />
       </View>
-      <View style={{ marginBottom: scaleHeight(0) }}>
+      <View style={{ marginBottom: scaleHeight(30) }}>
         <Controller
-          control={props.control}
+          control={control}
           // Account test setup new pin
           // defaultValue={"system_admin"}
           // Account test
@@ -286,15 +356,34 @@ export const ConfigInfoMoreComponent = (props: any) => {
               // secureTextEntry={false}
               onBlur={onBlur}
               isShowPassword
-              valueTextRight="Tấn"
+              ValueTextRight={
+                <Controller
+                  name="weightCapacityUom"
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <Text
+                      text={value.text}
+                      style={stylesWareHouse.textConfig}></Text>
+                  )}
+                  rules={{
+                    required: "Vui lòng chọn đơn vị tính",
+                    pattern: {
+                      value: /^\d+(\.\d+)?$/,
+                      message: "Nhập số hoặc số thập phân",
+                    },
+                  }}
+                  control={control}></Controller>
+              }
               RightIconClear={null}
               RightIconShow={() => {}}
+              pressRightIcon={() => {
+                toggleModal("weight");
+              }}
               styleTextRight={stylesWareHouse.textConfig}
               RightIcon={Images.dropDown}
               onClearText={() => {
                 onChange("");
               }}
-              error={props.errors.weight?.message ?? ""}
+              error={errors.weight?.message}
               onChangeText={(value) => {
                 onChange(value);
               }}
@@ -304,40 +393,24 @@ export const ConfigInfoMoreComponent = (props: any) => {
           rules={{
             required: "Vui lòng nhập thông tin",
             maxLength: 50,
+            pattern: {
+              value: /^\d+(\.\d+)?$/,
+              message: "Nhập số hoặc số thập phân",
+            },
           }}
         />
       </View>
-      <Modal
-        isVisible={modalVisible}
-        onBackdropPress={toggleModal}
-        style={{ margin: 0 }}>
-        <View style={stylesWareHouse.modalContainer}>
-          {/* <Text text={"List"} style={stylesWareHouse.textTitleModal} /> */}
-          <FlatList
-            data={[]}
-            renderItem={renderItem}
-            keyExtractor={(item: any) => item.value}
-            onEndReached={props.loadMore}
-            // keyExtractor={(item) => item.toString()}
-          />
-          <View style={stylesWareHouse.viewModalButton}>
-            <Button
-              onPress={() => {
-                toggleModal();
-              }}
-              tx={"productScreen.cancel"}
-              style={stylesWareHouse.buttonCancel}
-              textStyle={stylesWareHouse.textCancel}
-            />
-            <Button
-              tx={"productScreen.BtnNotificationAccept"}
-              style={stylesWareHouse.buttonAccept}
-              textStyle={stylesWareHouse.textAccept}
-              onPress={(item) => onConfirm()}
-            />
-          </View>
-        </View>
-      </Modal>
+      <SelectUom
+        isSearch
+        required={true}
+        arrData={props.list}
+        dataDefault={checkTicker()}
+        showModal={modalVisible}
+        setShowModal={toggleModal}
+        onPressChoice={(item: any) => {
+          handleItemSelect(item);
+        }}
+      />
     </View>
-  ) : null;
+  );
 };

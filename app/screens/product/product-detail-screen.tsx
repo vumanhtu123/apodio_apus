@@ -51,11 +51,11 @@ export const ProductDetailScreen: FC = (item) => {
   const [showWholesalePrice, setShowWholesalePrice] = useState(false);
   const [showNCC, setShowNCC] = useState(false);
   const [changeClassification, setChangeClassification] = useState("");
-  const [dataClassification, setDataClassification] = useState({});
+  const [dataClassification, setDataClassification] = useState<any>({});
   const [dataClassificationToEdit, setDataClassificationToEdit] = useState({});
   const [arrImagesProduct, setArrImagesProduct] = useState([]);
   const [arrClassification, setArrClassification] = useState([]);
-  const [detailsClassification, setDetailsClassification] = useState([]);
+  const [detailsClassification, setDetailsClassification] = useState<any>([]);
   const [attributeCategory, setAttributeCategory] = useState([]);
   const [attributeDetailsClassification, setAttributeDetailsClassification] =
     useState([]);
@@ -71,7 +71,6 @@ export const ProductDetailScreen: FC = (item) => {
   const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false);
   const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false);
   const [attributes, setAttributes] = useState<any>([]);
-
   const handleGetDetailProduct = async () => {
     try {
       const response = await productStore.getDetailProduct(productId);
@@ -84,7 +83,7 @@ export const ProductDetailScreen: FC = (item) => {
         console.log("response---getDetailProduct-------", JSON.stringify(data));
         console.log(
           "attributeValues: ",
-          data?.productVariants?.map((item) => item.attributeValues)
+          data?.productVariants?.map((item: { attributeValues: any; }) => item.attributeValues)
         );
         setArrImagesProduct(data.imageUrls);
         setArrClassification(data.productVariants);
@@ -101,7 +100,6 @@ export const ProductDetailScreen: FC = (item) => {
       console.error("Error fetching detail:", error);
     }
   };
-
   useEffect(() => {
     console.log(
       "---------useEffect---------arrClassification------------------",
@@ -124,24 +122,8 @@ export const ProductDetailScreen: FC = (item) => {
         handleGetDetailProduct();
       }
     });
-
     return unsubscribe;
   }, [navigation, reload]);
-  // useEffect(() => {
-  //   function processAttributes(data: any) {
-  //     const processedAttributes = data.attributeCategory?.flatMap(category =>
-  //       category.attributeOutputDtos.flatMap(attr =>
-  //         attr.productAttributeValue.map(val => ({
-  //           name: attr.name,
-  //           value: val.value
-  //         }))
-  //       )
-  //     );
-  //     setAttributes(processedAttributes);
-  //   }
-
-  //   processAttributes(dataClassification);
-  // }, [dataClassification]);
   const getVolume = () => {
     if (arrClassification && detailsClassification.baseProductPackingLine?.volume) {
       return detailsClassification.baseProductPackingLine?.volume;
@@ -153,11 +135,11 @@ export const ProductDetailScreen: FC = (item) => {
     if (!data.attributeCategory || data.attributeCategory.length === 0) {
       return [];
     }
-    const groupedData = data.attributeCategory?.map((category) => ({
+    const groupedData = data.attributeCategory?.map((category: { name: any; attributeOutputList: any[]; }) => ({
       name: category.name,
       items:
         category.attributeOutputList?.map((attr) => ({
-          value: attr.productAttributeValue.map((val) => val.value),
+          value: attr.productAttributeValue.map((val: any) => val.value),
           name: attr.name,
         })) || [],
     }));
@@ -189,8 +171,8 @@ export const ProductDetailScreen: FC = (item) => {
   const selectDataClassification = () => {
     const arrTextfieldAttribute: any[] = [];
 
-    attributeCategory.forEach((items) => {
-      items.attributeOutputList?.forEach((item) => {
+    attributeCategory.forEach((items: any) => {
+      items.attributeOutputList?.forEach((item: { displayType: string; productAttributeValue: any[]; name: any; }) => {
         if (item.displayType === "TEXTFIELD") {
           const newItem = {
             ...item.productAttributeValue[0],
@@ -203,10 +185,10 @@ export const ProductDetailScreen: FC = (item) => {
     });
 
     const matchingElements: any[] = [];
-    attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputList?.forEach((dto) => {
+    attributeCategory.forEach((itemA: any) => {
+      itemA.attributeOutputList?.forEach((dto: { productAttributeValue: any[]; id: any; }) => {
         dto.productAttributeValue.forEach((attrValueA) => {
-          detailsClassification?.attributeValues?.forEach((itemB) => {
+          detailsClassification?.attributeValues?.forEach((itemB: { productAttributeValueId: any; productAttributeId: any; }) => {
             if (
               attrValueA.id === itemB.productAttributeValueId &&
               dto.id === itemB.productAttributeId
@@ -218,7 +200,7 @@ export const ProductDetailScreen: FC = (item) => {
         });
       });
     });
-    const newArr = detailsClassification?.attributeValues?.map((item) => {
+    const newArr = detailsClassification?.attributeValues?.map((item: { productAttributeId: any; productAttributeValueId: any; }) => {
       const a = matchingElements.filter((items) => {
         if (
           item.productAttributeId === items.productAttributeId &&
@@ -235,9 +217,9 @@ export const ProductDetailScreen: FC = (item) => {
     });
 
     const matchingElements1: { name: any; id: any; }[] = [];
-    attributeCategory.forEach((itemA) => {
-      itemA.attributeOutputList?.forEach((dto) => {
-        detailsClassification?.attributeValues?.forEach((itemB) => {
+    attributeCategory.forEach((itemA: any) => {
+      itemA.attributeOutputList?.forEach((dto: { id: any; name: any; }) => {
+        detailsClassification?.attributeValues?.forEach((itemB: { productAttributeId: any; }) => {
           if (dto.id === itemB.productAttributeId) {
             matchingElements1.push({ name: dto.name, id: dto.id });
           }
@@ -245,7 +227,7 @@ export const ProductDetailScreen: FC = (item) => {
       });
     });
 
-    const newArr1 = newArr?.map((item) => {
+    const newArr1 = newArr?.map((item: { productAttributeId: any; }) => {
       const a = matchingElements1.filter((items) => {
         if (items.id === item.productAttributeId) {
           return items;
@@ -450,7 +432,7 @@ export const ProductDetailScreen: FC = (item) => {
               }}
               horizontal
               showsHorizontalScrollIndicator={false}>
-              {arrClassification?.map((item, index) => {
+              {arrClassification?.map((item: any, index) => {
                 return (
                   <TouchableOpacity
                     key={index}
@@ -487,7 +469,7 @@ export const ProductDetailScreen: FC = (item) => {
               }}
               horizontal
               showsHorizontalScrollIndicator={false}>
-              {detailsClassification.imageUrls?.map((item, index) => {
+              {detailsClassification.imageUrls?.map((item: any, index: any) => {
                 return (
                   <View key={index}>
                     <TouchableOpacity
@@ -587,22 +569,21 @@ export const ProductDetailScreen: FC = (item) => {
                     />
                   </View>
                   {detailsClassification?.length !== 0
-                    ? detailsClassification?.retailPrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={formatCurrency(commasToDots(item.min))}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                    ? detailsClassification?.retailPrice?.map((item: any) => {
+                      return (
+                        <ProductAttribute
+                          label={formatCurrency(commasToDots(item.min))}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
                         />
                       );
                     })
-                    : dataClassification?.retailPrice?.map((item) => {
+                    : dataClassification?.retailPrice?.map((item: any) => {
                       return (
                         <ProductAttribute
                           label={item.min}
@@ -707,15 +688,14 @@ export const ProductDetailScreen: FC = (item) => {
                     />
                   </View>
                   {detailsClassification?.length !== 0
-                    ? detailsClassification?.wholesalePrice?.map((item) => {
-                        return (
-                          <ProductAttribute
-                            label={formatCurrency(commasToDots(item.min))}
-                            value={`${formatVND(
-                              formatCurrency(commasToDots(item.price))
-                            )}/${
-                              dataClassification.uom?.name ||
-                              dataClassification.uomGroup?.originalUnit?.name
+                    ? detailsClassification?.wholesalePrice?.map((item: { min: any; price: any; }) => {
+                      return (
+                        <ProductAttribute
+                          label={formatCurrency(commasToDots(item.min))}
+                          value={`${formatVND(
+                            formatCurrency(commasToDots(item.price))
+                          )}/${dataClassification.uom?.name ||
+                          dataClassification.uomGroup?.originalUnit?.name
                             }`}
                           labelStyle={{ color: colors.palette.nero }}
                           textStyle={{ color: colors.palette.radicalRed }}
@@ -999,7 +979,7 @@ export const ProductDetailScreen: FC = (item) => {
               <View style={styles.viewLine2} />
               {attributeDetailsClassification.length !== 0 ? (
                 <View>
-                  {attributeDetailsClassification?.map((item, index) => (
+                  {attributeDetailsClassification?.map((item: any, index) => (
                     <View key={index}>
                       <View
                         style={{
@@ -1016,7 +996,7 @@ export const ProductDetailScreen: FC = (item) => {
                         </Text>
                       </View>
                       <View style={styles.viewLine2} />
-                      {item.items?.map((dto) => (
+                      {item.items?.map((dto: { name: string | undefined; value: any; }) => (
                         <View
                           style={{
                             marginTop: scaleHeight(margin.margin_12),
@@ -1115,7 +1095,7 @@ export const ProductDetailScreen: FC = (item) => {
                   )}
                 </View>
                 {showNCC === true
-                  ? arrNCC?.map((item) => {
+                  ? arrNCC?.map((item: any) => {
                     return (
                       <View>
                         <View
@@ -1171,7 +1151,7 @@ export const ProductDetailScreen: FC = (item) => {
                 autoplay={false}
                 ref={refCarousel}
                 loop
-                renderItem={({ item, index }) => (
+                renderItem={({ item, index }: any) => (
                   <View>
                     <Image
                       source={{
@@ -1235,7 +1215,7 @@ export const ProductDetailScreen: FC = (item) => {
                 autoplay={false}
                 ref={refCarousel}
                 loop
-                renderItem={({ item, index }) => (
+                renderItem={({ item }: any) => (
                   <View>
                     <Image
                       source={{
