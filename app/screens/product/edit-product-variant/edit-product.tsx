@@ -47,7 +47,7 @@ export const ProductEditScreen: FC = (item) => {
   const [addDescribe, setAddDescribe] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
-  const [detailUnitGroupData, setDetailUnitGroupData] = useState();
+  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({});
   const [addWeight, setAddWeight] = useState(false);
   const [attributeIds, setAttributeIds] = useState([]);
   const [description, setDescription] = useState("");
@@ -254,7 +254,7 @@ export const ProductEditScreen: FC = (item) => {
       setConstAttributeToEdit(attributeEdit);
       setAttributeToEdit(attributeEdit);
 
-      if (newDataEdit?.baseTemplatePackingLine !== null ) {
+      if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null && newDataEdit?.baseTemplatePackingLine !== null) {
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -785,6 +785,7 @@ export const ProductEditScreen: FC = (item) => {
 
       // Gửi các yêu cầu upload đồng thời và chờ cho đến khi tất cả hoàn thành
       const results = await Promise.all(uploadPromises);
+      console.log('1283591823581')
       let hasNull = results.some((item) => item === null);
       if (!hasNull) {
         console.log("results-------123 : ", JSON.stringify(imagesNote));
@@ -800,6 +801,7 @@ export const ProductEditScreen: FC = (item) => {
       // Xử lý kết quả upload
       results.forEach((result, index) => {
         if (result) {
+          console.log(`Upload image successfully`, JSON.stringify(imageArray[index]));
           console.log(`Upload image ${imageArray[index]} successfully`);
         } else {
           console.log(`Failed to upload image ${imageArray[index]}`);
@@ -864,13 +866,14 @@ export const ProductEditScreen: FC = (item) => {
     navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: "edit" } } as never);
   };
 
-  const editAttribute = useCallback(() => {
+  const editAttribute = () => {
     if (productUsing === true || priceUsing === true) {
       navigation.navigate({
         name: "editAttributeByEdit", params: {
           dataAttribute: attributeToEdit,
           constDataAttribute: constAttributeToEdit,
           dropdownSelected: dropdownToEdit,
+          hasVariantInConfig: hasVariantInConfig
         }
       } as never);
     } else {
@@ -883,7 +886,7 @@ export const ProductEditScreen: FC = (item) => {
         }
       } as never);
     }
-  }, [dropdownToEdit, attributeToEdit, constAttributeToEdit, hasVariantInConfig])
+  }
 
   return (
     <FormProvider {...methods}>
@@ -1071,7 +1074,9 @@ export const ProductEditScreen: FC = (item) => {
             addWeight={addWeight}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
+            isVariantInConfig={isVariantInConfig}
             detailUnitGroupData={detailUnitGroupData}
+            isUsing={productUsing === true || priceUsing === true ? true : false}
             uomId={uomId}
             valueSwitchUnit={valueSwitchUnit}
             productName={methods.getValues('productName')}
@@ -1184,7 +1189,7 @@ export const ProductEditScreen: FC = (item) => {
           </View>
         </ScrollView>
         <DescribeModal
-          title={"productScreen.describe"}
+          titleTx={"productScreen.describe"}
           isVisible={modalDescribe}
           dataDescribe={description}
           setIsVisible={() => setModalDescribe(false)}

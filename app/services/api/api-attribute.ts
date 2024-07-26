@@ -40,7 +40,7 @@ export class AttributeApi {
       text: 'Loading...',
     });
     try {
-        const queryStringParts = categoryIds.map(id => `categoryIds=${id}`);
+        const queryStringParts = categoryIds.map((id: any) => `categoryIds=${id}`);
         const queryString = categoryIds.length !== 0 ? '?' + queryStringParts.join('&'): ''
       const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.LIST_DATA_ATTRIBUTE+ queryString, 
       )

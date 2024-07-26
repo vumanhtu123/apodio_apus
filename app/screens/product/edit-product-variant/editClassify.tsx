@@ -91,7 +91,7 @@ export const EditClassify: FC = (item) => {
                 getDetailUnitGroup(newDataEdit.uomGroupId)
             }
 
-            if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null) {
+            if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null && newDataEdit?.baseTemplatePackingLine !== null ) {
                 setAddWeight(true)
             }
             methods.setValue('costPrice', newDataEdit?.costPrice?.toString())

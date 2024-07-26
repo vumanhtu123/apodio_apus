@@ -103,7 +103,7 @@ const DropdownModal = (props: InputSelectProps) => {
   const handleSearch = (text: any) => {
     setSearch(text);
     if (text) {
-      const newData = arrData.filter((item) => {
+      const newData = arrData.filter((item: any) => {
         const itemData = item.label.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;

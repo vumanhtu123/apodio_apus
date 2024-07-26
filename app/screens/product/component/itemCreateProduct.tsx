@@ -351,8 +351,8 @@ export const ItemGroupPrice = memo(
     detailUnitGroupData: any;
     valueSwitchUnit: boolean;
     arrUnitGroupData: any;
-    uomGroupId: {};
-    uomId: {};
+    uomGroupId: {label: string};
+    uomId: {label: string};
     addUnitOrGroup: ()=> void;
     onChangeSwitch: ()=> void;
     onChangeInput: (item: any)=> void;

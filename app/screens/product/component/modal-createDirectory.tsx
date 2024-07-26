@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Images } from "../../../../assets";
 import { AutoImage, TextField } from "../../../components";
@@ -68,7 +68,7 @@ const CreateDirectoryModal = (props: any) => {
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: translate("txtDialog.txt_title_dialog"),
-          textBody: translate("imageUploadExceedLimitedSize"),
+          textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
           button: translate("common.ok"),
           closeOnOverlayTap: false,
         });
@@ -103,13 +103,14 @@ const CreateDirectoryModal = (props: any) => {
 
     if (permissionStatus === RESULTS.GRANTED) {
       console.log("You can use the camera");
-      const options = {
+      const options: CameraOptions = {
         cameraType: "back",
+        mediaType: "photo",
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
       };
-      launchCamera(options, (response) => {
+      launchCamera(options, (response: any) => {
         console.log("==========> response1233123", response);
         if (response.didCancel) {
           console.log("User cancelled photo picker1");
@@ -153,8 +154,8 @@ const CreateDirectoryModal = (props: any) => {
     console.log(permissionStatus);
 
     if (permissionStatus === RESULTS.GRANTED) {
-      const options = {
-        cameraType: "back",
+      const options: ImageLibraryOptions = {
+        mediaType: "photo",
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
@@ -199,8 +200,8 @@ const CreateDirectoryModal = (props: any) => {
     } else if (permissionStatus === RESULTS.BLOCKED) {
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
-        cameraType: "back",
+      const options: ImageLibraryOptions = {
+        mediaType: 'photo',
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,

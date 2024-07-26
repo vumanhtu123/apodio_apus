@@ -57,15 +57,15 @@ export const ProductCreateScreen: FC = (item) => {
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
   const [detailUnitGroupData, setDetailUnitGroupData] = useState();
   const [description, setDescription] = useState("");
-  const [attributeValues, setAttributeValues] = useState([]);
-  const [attributeIds, setAttributeIds] = useState([]);
-  const [textAttributes, setTextAttributes] = useState([]);
-  const { productStore, unitStore, categoryStore, vendorStore } = useStores();
+  const { productStore, unitStore } = useStores();
   const [dataCreateProduct, setDataCreateProduct] = useState([]);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
   const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: "" });
   const route = useRoute();
+  const textAttributes = useRef([])
+  const attributeValues = useRef([])
+  const attributeIds = useRef([])
   const {
     selectedIds,
     idUnitGroup,
@@ -233,12 +233,12 @@ export const ProductCreateScreen: FC = (item) => {
         }
       });
 
-      setAttributeValues(attributeValueArr);
-      setTextAttributes(textAttributeValueArr);
-      const abc = [
+      attributeValues.current = attributeValueArr
+      textAttributes.current = textAttributeValueArr
+      const attributeIdArr: any = [
         ...new Set(attributeArr?.flatMap((item: any) => item.idGroup)),
       ];
-      setAttributeIds(abc);
+      attributeIds.current = attributeIdArr
 
       const newArr = mapDataDistribute(resultArray);
       const newArr2 = newArr.map((item) => {
@@ -497,9 +497,9 @@ export const ProductCreateScreen: FC = (item) => {
         hasVariantInConfig === false
           ? hasVariantInConfig
           : !checkArrayIsEmptyOrNull(newArr2),
-      attributeValues: attributeValues,
-      textAttributes: textAttributes,
-      attributeCategoryIds: attributeIds,
+      attributeValues: attributeValues.current,
+      textAttributes: textAttributes.current,
+      attributeCategoryIds: attributeIds.current,
       description: description,
       productVariants: hasVariantInConfig ? newArr2 : [],
       retailPrice: dataPrice2,
@@ -868,8 +868,10 @@ export const ProductCreateScreen: FC = (item) => {
             addWeight={addWeight}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
+            isVariantInConfig={isVariantInConfig}
             detailUnitGroupData={detailUnitGroupData}
             uomId={uomId}
+            isUsing={false}
             valueSwitchUnit={valueSwitchUnit}
             productName={methods.getValues('productName')}
             setDataCreateProduct={(arr: any) => setDataCreateProduct(arr)}
@@ -1004,7 +1006,7 @@ export const ProductCreateScreen: FC = (item) => {
           </View>
         </ScrollView>
         <DescribeModal
-          title={"productScreen.describe"}
+          titleTx={"productScreen.describe"}
           isVisible={modalDescribe}
           dataDescribe={description}
           setIsVisible={() => setModalDescribe(false)}

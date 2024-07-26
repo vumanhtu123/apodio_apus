@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Images } from "../../../../assets";
 import { AutoImage, Text, TextField } from "../../../components";
@@ -76,7 +76,6 @@ const EditDirectoryModal = (props: any) => {
   }, [name, imagesNote]);
   const uploadImages = async (imageNote: any) => {
     try {
-      console.log("đâsads", imageNote);
       const { fileSize, uri, type, fileName } = imageNote;
       const checkFileSize = validateFileSize(fileSize);
 
@@ -85,7 +84,7 @@ const EditDirectoryModal = (props: any) => {
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: translate("txtDialog.txt_title_dialog"),
-          textBody: translate("imageUploadExceedLimitedSize"),
+          textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
           button: translate("common.ok"),
           closeOnOverlayTap: false,
         });
@@ -102,9 +101,7 @@ const EditDirectoryModal = (props: any) => {
       // Upload ảnh
       const result = await productStore.uploadImages(formData);
 
-      console.log(`successfully----------`, result);
       if (result) {
-        console.log(`imageNote---------------`, imageNote);
         setImagesNote(result);
       }
 
@@ -125,13 +122,14 @@ const EditDirectoryModal = (props: any) => {
 
     if (permissionStatus === RESULTS.GRANTED) {
       console.log("You can use the camera");
-      const options = {
+      const options: CameraOptions = {
         cameraType: "back",
+        mediaType: 'photo',
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
       };
-      launchCamera(options, (response) => {
+      launchCamera(options, (response: any) => {
         console.log("==========> response1233123", response);
         if (response.didCancel) {
           console.log("User cancelled photo picker1");
@@ -142,7 +140,6 @@ const EditDirectoryModal = (props: any) => {
         } else if (response?.assets[0].uri) {
           const { fileSize, uri, type, fileName } = response?.assets[0];
           const result = { fileSize, uri, type, fileName };
-          console.log("testtt", result);
           uploadImages(result);
           setModalImage(false);
         }
@@ -173,17 +170,16 @@ const EditDirectoryModal = (props: any) => {
 
   const handleLibraryUse = async () => {
     const permissionStatus = await checkLibraryPermission();
-    console.log("ads");
     console.log(permissionStatus);
 
     if (permissionStatus === RESULTS.GRANTED) {
-      const options = {
-        cameraType: "back",
+      const options: ImageLibraryOptions = {
+        mediaType: 'photo',
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
       };
-      launchImageLibrary(options, (response) => {
+      launchImageLibrary(options, (response: any) => {
         console.log("==========> response4564546", response);
         if (response.didCancel) {
           console.log("User cancelled photo picker1");
@@ -195,7 +191,6 @@ const EditDirectoryModal = (props: any) => {
           //xử lý uri ảnh hoặc video
           const { fileSize, uri, type, fileName } = response?.assets[0];
           const result = { fileSize, uri, type, fileName };
-          console.log("testtt", result);
           uploadImages(result);
           setModalImage(false);
         }
@@ -222,8 +217,8 @@ const EditDirectoryModal = (props: any) => {
     } else if (permissionStatus === RESULTS.BLOCKED) {
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
-        cameraType: "back",
+      const options: ImageLibraryOptions = {
+        mediaType: 'photo',
         quality: 1,
         maxHeight: 500,
         maxWidth: 500,
@@ -239,7 +234,6 @@ const EditDirectoryModal = (props: any) => {
         } else if (response?.assets[0].uri) {
           const { fileSize, uri, type, fileName } = response?.assets[0];
           const result = { fileSize, uri, type, fileName };
-          console.log("testtt", result);
           uploadImages(result);
           setModalImage(false);
         }

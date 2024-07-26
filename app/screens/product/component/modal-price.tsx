@@ -17,8 +17,6 @@ import Dialog from "../../../components/dialog/dialog";
 import { TxKeyPath, translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import {
-  colors,
-  fontSize,
   margin,
   padding,
   scaleHeight,
