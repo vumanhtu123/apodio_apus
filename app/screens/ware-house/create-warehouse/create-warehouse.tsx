@@ -242,6 +242,7 @@ export const CreateWareHouseScreen: FC<
           break;
       }
     }else {
+      setShowErrors(true);
       setCheckErrorTriggered(prev => prev + 1);
     }
     
