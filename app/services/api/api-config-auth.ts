@@ -115,6 +115,41 @@ export class AuthApi {
       return { kind: "bad-data" };
     }
   }
+
+  async getOtpForgotPass(
+    otpReceiver: string,
+    receiverType: string
+  ): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.uaa.apisauce.post(
+        ApiEndpoint.GENERATE_OTP,
+        {
+          otpReceiver,
+          receiverType,
+        }
+      );
+      console.log("response", response.data);
+      const data = response.data;
+      // if (!response.ok) {
+      Loading.hide();
+      //   const problem = getGeneralApiProblem(response);
+      //   if (problem) return problem;
+      // }
+      // if (response.data.message == "Success") {
+      //   // hideLoading()
+      //   return { kind: "ok", LoginModelResult: data };
+      // }
+      // return { kind: "bad-data", LoginModelResult: data };
+      return { kind: "ok", data };
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+
   async submitPassword(otp: number, newPassword: string): Promise<any> {
     Loading.show({
       text: "Loading...",
