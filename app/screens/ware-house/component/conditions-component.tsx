@@ -35,13 +35,13 @@ export const ConditionsComponent = (props: any) => {
             onBlur={onBlur}
             error={errors.temperature1?.message ?? ""}
             onChangeText={(value) => {
-              onChange(value);
+              onChange(value.trim());
             }}
           />
         )}
         name="temperature1"
         rules={{
-          required: "Vui lòng nhập thông tin",
+          required: translate("wareHouse.pleaseEnterInformation"),
           maxLength: 20,
           pattern: {
             value: /^-?\d+(\.\d+)?$/,
@@ -71,19 +71,18 @@ export const ConditionsComponent = (props: any) => {
               inputStyle={stylesWareHouse.inputPass}
               value={value}
               ValueTextRight={<Text text="°C"></Text>}
-              // secureTextEntry={false}
               onBlur={onBlur}
               RightIconClear={null}
               RightIconShow={() => {}}
               error={errors.temperature2?.message ?? ""}
               onChangeText={(value) => {
-                onChange(value);
+                onChange(value.trim());
               }}
             />
           )}
           name="temperature2"
           rules={{
-            required: "Vui lòng nhập thông tin",
+            required: translate("wareHouse.pleaseEnterInformation"),
             maxLength: 20,
             pattern: {
               value: /^-?\d+(\.\d+)?$/,
@@ -116,13 +115,13 @@ export const ConditionsComponent = (props: any) => {
               RightIconShow={() => {}}
               error={errors.temperature3?.message ?? ""}
               onChangeText={(value) => {
-                onChange(value);
+                onChange(value.trim());
               }}
             />
           )}
           name="temperature3"
           rules={{
-            required: "Vui lòng nhập thông tin",
+            required: translate("wareHouse.pleaseEnterInformation"),
             maxLength: 20,
             pattern: {
               value: /^-?\d+(\.\d+)?$/,
