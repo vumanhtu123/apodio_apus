@@ -241,6 +241,7 @@ import ic_img_blue from "./Images/ic_img.svg";
 import ic_checkbox from "./Images/Checkbox.svg";
 import ic_bin_white from "./Images/ic_bin.svg";
 import ic_pen_white from "./Images/ic_pen_white.svg"
+import ic_outline_list from "./Images/ic_outline_list.svg"
 
 export const Images = {
   icon_test: _test,
@@ -477,4 +478,5 @@ export const Images = {
   ic_checkbox: ic_checkbox,
   ic_bin_white: ic_bin_white,
   ic_pen_white: ic_pen_white,
+  ic_outline_list: ic_outline_list
 };

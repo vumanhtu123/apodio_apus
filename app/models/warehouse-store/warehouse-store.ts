@@ -11,7 +11,7 @@ import { DataNumberState } from './number-state-model';
 export const WarehouseStoreModal = types
   .model("WarehouseStore")
   .props({
-    isLoadMoreWarehouse: types.optional(types.boolean, false),
+    isLoadMoreWarehouse: types.optional(types.boolean, true),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
