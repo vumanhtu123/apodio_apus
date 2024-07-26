@@ -25,7 +25,7 @@ export class WarehouseAPI {
     state: string | undefined,
     isLoadMore: boolean
   ): Promise<any> {
-    console.log("value isVisible", isLoadMore);
+    console.log("value idLoadMore ------", isLoadMore);
 
     if (isLoadMore) {
       Loading.hide();
