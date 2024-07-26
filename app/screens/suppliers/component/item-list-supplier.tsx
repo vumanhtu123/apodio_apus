@@ -3,7 +3,15 @@ import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../../../components";
 
-const renderItemSupplier = ({ item }: any) => {
+
+interface Item {
+  code: string,
+  name: string,
+  phone: number
+
+}
+
+export const RenderItemSupplierList = ({ item }: any) => {
   return (
     <TouchableOpacity
       style={{
@@ -43,7 +51,8 @@ const renderItemSupplier = ({ item }: any) => {
     </TouchableOpacity>
   );
 };
-export const renderItemSupplier2 = ({ item }: any) => {
+
+export const RenderItemSupplierGrid: React.FC<{ item: Item }> = ({ item }) => {
   return (
     <TouchableOpacity
       style={{
