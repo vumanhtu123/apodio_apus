@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Images } from '../../../../../assets';
 import { Button, Text } from '../../../../components';
@@ -8,7 +8,7 @@ import CategoryModalFilter from '../../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
-const ProductListComponent = ({ searchValue, onClearSearch, isGridView }: any) => {
+const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
     const [showCategory, setShowCategory] = useState(false);
