@@ -26,7 +26,7 @@ import { Styles } from "../styles";
 import data from "../../../../components/svg-icon/data";
 import CustomCalendar from "../../../../components/calendar";
 import moment from "moment";
-import { ModalPay } from "../../component/modalPay";
+import { ModalPay } from "../../component/ModalPay";
 import { ModalExchange } from "../../component/ModalExchange";
 
 export const DetailDebtScreen: FC<

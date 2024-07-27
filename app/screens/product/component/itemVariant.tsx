@@ -28,7 +28,9 @@ interface ItemVariant {
     setAddVariant: (a: boolean) => void;
     setDataGroupAttribute: ([]) => void;
     setVariantInConfig: (a: boolean) => void
-    handleEditAttribute: () => void
+    handleEditAttribute: () => void;
+    isVariantInConfig: boolean;
+    isUsing: boolean;
 }
 
 export const ItemVariant = memo(
@@ -41,7 +43,7 @@ export const ItemVariant = memo(
         const [modalWholesalePrice1, setModalWholesalePrice1] = useState(false);
         const [indexVariant, setIndexVariant] = useState(0);
 
-        const uploadImages =  async (
+        const uploadImages = async (
             imageArray: any[],
             checkUploadSlider: boolean,
             indexItem?: number
@@ -88,6 +90,7 @@ export const ItemVariant = memo(
                 results.forEach((result, index) => {
                     if (result) {
                         console.log(`Upload image ${imageArray[index]} successfully`);
+                        console.log(`Upload image successfully`, JSON.stringify(imageArray[index]));
                     } else {
                         console.log(`Failed to upload image ${imageArray[index]}`);
                     }
@@ -98,14 +101,14 @@ export const ItemVariant = memo(
         }
 
         const handleDeleteProduct = (index: any, id: any) => {
-            if(props.screen === 'create'){
+            if (props.screen === 'create') {
                 const updatedData = [
                     ...props.dataCreateProduct.slice(0, index),
                     ...props.dataCreateProduct.slice(index + 1),
                 ];
                 props.setDataCreateProduct(updatedData);
             }
-            if(props.screen === 'edit'){
+            if (props.screen === 'edit') {
                 console.log('456')
                 Dialog.show({
                     type: ALERT_TYPE.INFO,
@@ -115,58 +118,58 @@ export const ItemVariant = memo(
                     button2: translate("common.confirm"),
                     closeOnOverlayTap: false,
                     onPressButton: async () => {
-                      try {
-                        if (id !== null) {
-                          const checkDelete = await productStore.deleteCheck(id);
-                          console.log(checkDelete, "----------check");
-                          if (checkDelete.result && checkDelete.kind === "ok") {
-                            if (checkDelete.result.data.isUsing === false) {
-                              const updatedData = [
-                                ...props.dataCreateProduct.slice(0, index),
-                                ...props.dataCreateProduct.slice(index + 1),
-                              ];
-                              props.setDataCreateProduct(updatedData);
-                              await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
-                              Dialog.show({
-                                type: ALERT_TYPE.DANGER,
-                                title: translate("txtDialog.txt_title_dialog"),
-                                textBody: checkDelete.result.message,
-                                button: translate("common.ok"),
-                                closeOnOverlayTap: false
-                              })
+                        try {
+                            if (id !== null) {
+                                const checkDelete = await productStore.deleteCheck(id);
+                                console.log(checkDelete, "----------check");
+                                if (checkDelete.result && checkDelete.kind === "ok") {
+                                    if (checkDelete.result.data.isUsing === false) {
+                                        const updatedData = [
+                                            ...props.dataCreateProduct.slice(0, index),
+                                            ...props.dataCreateProduct.slice(index + 1),
+                                        ];
+                                        props.setDataCreateProduct(updatedData);
+                                        await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
+                                        Dialog.show({
+                                            type: ALERT_TYPE.DANGER,
+                                            title: translate("txtDialog.txt_title_dialog"),
+                                            textBody: checkDelete.result.message,
+                                            button: translate("common.ok"),
+                                            closeOnOverlayTap: false
+                                        })
+                                    } else {
+                                        await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
+                                        Dialog.show({
+                                            type: ALERT_TYPE.DANGER,
+                                            title: translate("txtDialog.txt_title_dialog"),
+                                            textBody: checkDelete.result.errorCodes[0].message,
+                                            button: translate("common.ok"),
+                                            closeOnOverlayTap: false
+                                        })
+                                    }
+                                } else {
+                                    await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
+                                    Dialog.show({
+                                        type: ALERT_TYPE.DANGER,
+                                        title: translate("txtDialog.txt_title_dialog"),
+                                        textBody: checkDelete.result.errorCodes[0].message,
+                                        button: translate("common.ok"),
+                                        closeOnOverlayTap: false
+                                    })
+                                    console.error("Failed to fetch categories:", checkDelete.result);
+                                }
                             } else {
-                              await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
-                              Dialog.show({
-                                type: ALERT_TYPE.DANGER,
-                                title: translate("txtDialog.txt_title_dialog"),
-                                textBody: checkDelete.result.errorCodes[0].message,
-                                button: translate("common.ok"),
-                                closeOnOverlayTap: false
-                              })
+                                const updatedData = [
+                                    ...props.dataCreateProduct.slice(0, index),
+                                    ...props.dataCreateProduct.slice(index + 1),
+                                ];
+                                props.setDataCreateProduct(updatedData);
                             }
-                          } else {
-                            await Dialog.hideDialog(); // Chờ dialog ẩn hoàn toàn
-                            Dialog.show({
-                              type: ALERT_TYPE.DANGER,
-                              title: translate("txtDialog.txt_title_dialog"),
-                              textBody: checkDelete.result.errorCodes[0].message,
-                              button: translate("common.ok"),
-                              closeOnOverlayTap: false
-                            })
-                            console.error("Failed to fetch categories:", checkDelete.result);
-                          }
-                        } else {
-                          const updatedData = [
-                            ...props.dataCreateProduct.slice(0, index),
-                            ...props.dataCreateProduct.slice(index + 1),
-                          ];
-                          props.setDataCreateProduct(updatedData);
+                        } catch (error) {
+                            console.error("Error fetching categories:", error);
                         }
-                      } catch (error) {
-                        console.error("Error fetching categories:", error);
-                      }
                     }
-                  })
+                })
             }
         };
 
@@ -206,12 +209,12 @@ export const ItemVariant = memo(
                                 <View style={styles.viewDetails}>
                                     <View style={styles.viewTitleDetail}>
                                         <Text tx="createProductScreen.property"
-                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
+                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }} />
                                         <Text tx="createProductScreen.value"
-                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
+                                            style={{ fontWeight: "600", fontSize: fontSize.size12 }} />
                                     </View>
                                     <View style={styles.viewLine2} />
-                                    {props.dataGroupAttribute?.map((item, index) => (
+                                    {props.dataGroupAttribute?.map((item: any, index) => (
                                         <View key={index}>
                                             <View
                                                 style={{
@@ -445,7 +448,7 @@ export const ItemVariant = memo(
                                                                                 onClearText={() => onChange("")}
                                                                                 valueInput={vendorStore.checkSeparator === "DOTS"
                                                                                     ? formatCurrency(
-                                                                                      removeNonNumeric(value)
+                                                                                        removeNonNumeric(value)
                                                                                     )
                                                                                     : addCommas(removeNonNumeric(value))}
                                                                                 onChangeText={(value) => {
@@ -489,7 +492,7 @@ export const ItemVariant = memo(
                                                                                 onClearText={() => onChange("")}
                                                                                 valueInput={vendorStore.checkSeparator === "DOTS"
                                                                                     ? formatCurrency(
-                                                                                      removeNonNumeric(value)
+                                                                                        removeNonNumeric(value)
                                                                                     )
                                                                                     : addCommas(removeNonNumeric(value))}
                                                                                 onChangeText={(value) => {
@@ -620,7 +623,7 @@ export const ItemVariant = memo(
                                     flexDirection: "row",
                                 }}
                             >
-                                {props.dataCreateProduct.length > 0 ? (
+                                {props.dataCreateProduct.length > 0 || props.dataGroupAttribute.length > 0 ? (
                                     <TouchableOpacity
                                         onPress={props.handleEditAttribute}
                                     // onPress={() => {
@@ -641,30 +644,32 @@ export const ItemVariant = memo(
                                         />
                                     </TouchableOpacity>
                                 ) : null}
-                                {props.dataCreateProduct.length > 0 ? null : (
-                                    <TouchableOpacity onPress={() => props.setAddVariant(false)}>
-                                        <Images.ic_close
-                                            width={scaleWidth(14)}
-                                            height={scaleHeight(14)}
-                                        />
-                                    </TouchableOpacity>
-                                )}
-                                {props.dataGroupAttribute.length > 0 ? (
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            props.setAddVariant(false);
-                                            props.setDataGroupAttribute([]);
-                                            props.setDataCreateProduct([]);
-                                            props.setVariantInConfig(false);
-                                        }}
-                                    >
-                                        <Images.ic_close
-                                            width={scaleWidth(14)}
-                                            height={scaleHeight(14)}
-                                            style={{ marginLeft: 10 }}
-                                        />
-                                    </TouchableOpacity>
-                                ) : null}
+                                {props.isVariantInConfig === true ?
+                                    (props.dataCreateProduct.length === 0 ? (
+                                        <TouchableOpacity onPress={() => props.setAddVariant(false)}>
+                                            <Images.ic_close
+                                                width={scaleWidth(14)}
+                                                height={scaleHeight(14)}
+                                                style={{ marginLeft: 10 }}
+                                            />
+                                        </TouchableOpacity>
+                                    ) : null) :
+                                    (props.dataGroupAttribute.length > 0 && props.isUsing === false ? (
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                props.setAddVariant(false);
+                                                props.setDataGroupAttribute([]);
+                                                props.setDataCreateProduct([]);
+                                                props.setVariantInConfig(false);
+                                            }}
+                                        >
+                                            <Images.ic_close
+                                                width={scaleWidth(14)}
+                                                height={scaleHeight(14)}
+                                                style={{ marginLeft: 10 }}
+                                            />
+                                        </TouchableOpacity>
+                                    ) : null)}
                             </View>
                         </View>
                     </View>

@@ -62,7 +62,7 @@ const ItemConversion = (props: ItemConversionProps) => {
   const [originalUnit, setOriginalUnit] = useState({ label: "" });
   const [data, setData] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState<{}[]>([]);
   const [search, setSearch] = useState("");
 
   const handleSearch = (text: any) => {
