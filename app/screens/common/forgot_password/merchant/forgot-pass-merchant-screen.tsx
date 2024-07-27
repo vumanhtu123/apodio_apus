@@ -141,7 +141,7 @@ export const ForgotPasswordMerchant: FC = observer(
                   onChangeText={(value) => onChange(value)}
                 />
               )}
-              defaultValue={"67075123362"}
+              defaultValue={""}
               name="phonenumber"
               rules={{
                 required: "Please input data",
