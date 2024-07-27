@@ -4,6 +4,7 @@ export const ApiEndpoint = {
   LOG_OUT: "/oauth/logout",
   REFRESH_TOKEN: "/oauth/refresh-token",
   FORGOT_PASSWORD: "/public-api/v1/user/forgot-password",
+  GENERATE_OTP: "/public-api/v1/user/generate-otp",
   RESET_PASSWORD: "/users/",
   CHANGE_PASSWORD: "/users/",
   LIST_PRODUCT: "/product/list",

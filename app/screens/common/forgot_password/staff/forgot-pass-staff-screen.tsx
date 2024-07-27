@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { Button } from "../../../../components/button/button";
 import { Header } from "../../../../components/header/header";
 import { TextField } from "../../../../components/text-field/text-field";
@@ -57,6 +57,7 @@ export const ForgotPasswordStaff: FC<
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     mode: "all",
   });
@@ -75,7 +76,29 @@ export const ForgotPasswordStaff: FC<
     watch("rePassword")
   );
   const onShowOtp = async () => {
-    setIsVisibleDialogOtp(!isVisibleDialogOtp);
+    try {
+      await authenticationStore
+        .forgotPass(valueEmailPhone, "PHONE")
+        .then((item: any) => {
+          console.log("tuvm check success ==1", item);
+          if (item.message == "Success") {
+            setIsVisibleDialogOtp(!isVisibleDialogOtp);
+          } else {
+            Dialog.show({
+              type: ALERT_TYPE.INFO,
+              title: translate("txtDialog.notification"),
+              textBody: item.errorCodes[0].message,
+              button: translate("common.cancel"),
+              closeOnOverlayTap: false,
+              onPressButton: () => {
+                Dialog.hide();
+              },
+            });
+          }
+        });
+    } catch (e: any) {
+      console.log("forgot pass tuvm", e.message);
+    }
   };
 
   const handleSuccessModalClose = () => {
@@ -139,9 +162,24 @@ export const ForgotPasswordStaff: FC<
       await authenticationStore
         .submitPassword(Number(otp), valuePassConfirm)
         .then((item: any) => {
-          console.log("tuvm check success ==", item.errorCodes[0].message);
+          console.log("tuvm check success ==", item);
           if (item.message == "Success") {
-            console.log("success tuvm forgot");
+            Dialog.show({
+              type: ALERT_TYPE.INFO,
+              title: translate("txtDialog.notification"),
+              textBody: item.message,
+              button: translate("common.ok"),
+              closeOnOverlayTap: false,
+              onHide() {
+                setValue("valueEmailPhone", "");
+                setValue("passwordNew", "");
+                setValue("passwordConfirm", "");
+                setIsShowPass(!isShowPass);
+                setIsButton(!isButton);
+                setIsVisibleDialogOtp(!isVisibleDialogOtp);
+              },
+            });
+            console.log("success tuvm forgot", item);
           } else {
             Dialog.show({
               type: ALERT_TYPE.INFO,
@@ -150,7 +188,7 @@ export const ForgotPasswordStaff: FC<
               button: translate("common.cancel"),
               closeOnOverlayTap: false,
               onPressButton: () => {
-                setIsVisibleDialogOtp(false);
+                setIsVisibleDialogOtp(!isVisibleDialogOtp);
                 Dialog.hide();
               },
             });

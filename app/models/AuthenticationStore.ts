@@ -98,6 +98,23 @@ export const AuthenticationStoreModel = types
       }
     }),
 
+    getOtp: flow(function* (otpReceiver: string, receiverType: string) {
+      const authApi = new AuthApi(
+        store.environment.apiGetWay,
+        store.environment.apiUaa
+      );
+      console.log("otp receiver : ", otpReceiver);
+      const result: any = yield authApi.getOtpForgotPass(otpReceiver, "EMAIL");
+      console.log("tuvm result", JSON.stringify(result));
+      if (result.kind === "ok") {
+        console.log("result forgot get otp", JSON.stringify(result));
+        return result.data;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result.data;
+      }
+    }),
+
     logout: flow(function* () {
       const authApi = new AuthApi(
         store.environment.apiGetWay,

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { View } from "react-native";
 import { Text, TextField } from "../../../components";
@@ -8,14 +8,21 @@ import { translate } from "../../../i18n";
 import { Images } from "../../../../assets";
 import { SelectUom } from "../modal/modal-select-uom";
 
-export const ConfigInfoMoreComponent = (props: any) => {
+interface ItemProps {
+  showErrors: boolean;
+  checkErrorTriggered: number,
+  list: {}[],
+}
+
+export const ConfigInfoMoreComponent = (props: ItemProps) => {
   const {
     control,
     setValue,
     watch,
+    clearErrors,
+    setError,
     formState: { errors },
   } = useFormContext();
-  const a = useRef(0);
   const [modalVisible, setModalVisible] = useState(false);
 
   const lengthUom = watch("lengthUom");
@@ -23,7 +30,6 @@ export const ConfigInfoMoreComponent = (props: any) => {
 
   const heightUom = watch("heightUom");
   const weightCapacityUom = watch("weightCapacityUom");
-  console.log("rereder", a.current++);
 
   const [focusedField, setFocusedField] = useState("");
 
@@ -32,7 +38,45 @@ export const ConfigInfoMoreComponent = (props: any) => {
     setModalVisible(!modalVisible);
   };
 
-  console.log("lengthUom", errors);
+
+  useEffect(() => {
+    if(props.showErrors) {
+      console.log('-------------props.showErrors----------', props.showErrors)
+      checkUom()
+    }else {
+      console.log('-------------props.showErrors----------', props.showErrors)
+      clearErrors("lengthUom");
+      clearErrors("widthUom");
+      clearErrors("heightUom");
+      clearErrors("weightCapacityUom");
+    }
+  }, [props.showErrors, props.checkErrorTriggered]); 
+
+  console.log('----------errors-----', JSON.stringify(errors))
+  const checkUom = () => {
+    console.log("check error", lengthUom);
+    const handleError = (field: string, message: string) => {
+      setError(field, {
+        type: "required",
+        message: message,
+      });
+      console.log(`check error ${field}`, lengthUom);
+    };
+
+    if (lengthUom.value === 0) {
+      handleError("lengthUom", "Vui lòng chọn đơn vị tính");
+    }
+    if (widthUom.value === 0) {
+      handleError("widthUom", "Vui lòng chọn đơn vị tính");
+    }
+    if (heightUom.value === 0) {
+      handleError("heightUom", "Vui lòng chọn đơn vị tính");
+    }
+    if (weightCapacityUom.value === 0) {
+      handleError("weightCapacityUom", "Vui lòng chọn đơn vị tính");
+    }
+  };
+
 
   const checkTicker = () => {
     switch (focusedField) {
@@ -50,21 +94,26 @@ export const ConfigInfoMoreComponent = (props: any) => {
   };
 
   const handleItemSelect = (item: any) => {
+    console.log("selected");
     switch (focusedField) {
       case "longs":
+        clearErrors("lengthUom");
         setValue("lengthUom", { value: item.value, text: item.text });
         console.log("selected length", lengthUom);
         toggleModal();
         break;
       case "width":
+        clearErrors("widthUom");
         setValue("widthUom", { value: item.value, text: item.text });
         toggleModal();
         break;
       case "height":
+        clearErrors("heightUom");
         setValue("heightUom", { value: item.value, text: item.text });
         toggleModal();
         break;
       case "weight":
+        clearErrors("weightCapacityUom");
         setValue("weightCapacityUom", { value: item.value, text: item.text });
         toggleModal();
         break;
@@ -72,8 +121,6 @@ export const ConfigInfoMoreComponent = (props: any) => {
         break;
     }
   };
-
-  const errorMessageWeight = "Tuvm";
 
   return (
     <View>
@@ -86,7 +133,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           required: "Vui lòng nhập thông tin",
           maxLength: 50,
           pattern: {
-            value: /^\d+(\.\d+)?$/,
+            value: /^-?\d+(\.\d+)?$/,
             message: "Nhập số hoặc số thập phân",
           },
         }}
@@ -110,7 +157,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
             }}
             error={errors.longitude?.message ?? ""}
             onChangeText={(value) => {
-              onChange(value);
+              onChange(value.trim());
             }}
           />
         )}
@@ -141,7 +188,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
             }}
             error={errors.latitude?.message ?? ""}
             onChangeText={(value) => {
-              onChange(value);
+              onChange(value.trim());
             }}
           />
         )}
@@ -150,7 +197,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           required: "Vui lòng nhập thông tin",
           maxLength: 50,
           pattern: {
-            value: /^\d+(\.\d+)?$/,
+            value: /^\-?\d+(\.\d+)?$/,
             message: "Nhập số hoặc số thập phân",
           },
         }}
@@ -196,9 +243,9 @@ export const ConfigInfoMoreComponent = (props: any) => {
             pressRightIcon={() => {
               toggleModal("longs");
             }}
-            error={errors.longs?.message ?? ""}
+            error={errors.longs?.message ?? errors.lengthUom?.message}
             onChangeText={(value) => {
-              onChange(value);
+              onChange(value.trim());
             }}
           />
         )}
@@ -207,7 +254,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
           required: "Vui lòng nhập thông tin",
           maxLength: 50,
           pattern: {
-            value: /^-?\d+(\.\d+)?$/,
+            value: /^\d+(\.\d+)?$/,
             message: "Nhập số hoặc số thập phân",
           },
         }}
@@ -258,9 +305,9 @@ export const ConfigInfoMoreComponent = (props: any) => {
               onClearText={() => {
                 onChange("");
               }}
-              error={errors.width?.message ?? ""}
+              error={errors.width?.message ?? errors.widthUom?.message}
               onChangeText={(value) => {
-                onChange(value);
+                onChange(value.trim());
               }}
             />
           )}
@@ -269,7 +316,7 @@ export const ConfigInfoMoreComponent = (props: any) => {
             required: "Vui lòng nhập thông tin",
             maxLength: 50,
             pattern: {
-              value: /^-?\d+(\.\d+)?$/,
+              value: /^\d+(\.\d+)?$/,
               message: "Nhập số hoặc số thập phân",
             },
           }}
@@ -318,9 +365,9 @@ export const ConfigInfoMoreComponent = (props: any) => {
               onClearText={() => {
                 onChange("");
               }}
-              error={errors.height?.message ?? ""}
+              error={errors.height?.message ?? errors.heightUom?.message}
               onChangeText={(value) => {
-                onChange(value);
+                onChange(value.trim());
               }}
             />
           )}
@@ -332,7 +379,6 @@ export const ConfigInfoMoreComponent = (props: any) => {
               value: /^\d+(\.\d+)?$/,
               message: "Nhập số hoặc số thập phân",
             },
-            validate: heightUom.text == "" ? "" : "",
           }}
         />
       </View>
@@ -383,9 +429,11 @@ export const ConfigInfoMoreComponent = (props: any) => {
               onClearText={() => {
                 onChange("");
               }}
-              error={errors.weight?.message}
+              error={
+                errors.weight?.message ?? errors.weightCapacityUom?.message
+              }
               onChangeText={(value) => {
-                onChange(value);
+                onChange(value.trim());
               }}
             />
           )}

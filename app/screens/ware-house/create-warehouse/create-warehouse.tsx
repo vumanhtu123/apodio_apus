@@ -25,6 +25,8 @@ export const CreateWareHouseScreen: FC<
   const id = useRef(props.route.params.id ?? null);
 
   const [listUnit, setListUnit] = useState([]);
+  const [showErrors, setShowErrors] = useState(false);
+  const [checkErrorTriggered, setCheckErrorTriggered] = useState(0);
   console.log(
     "status: ",
     JSON.stringify(props.route.params.conditionStorage?.minTemperature)
@@ -44,6 +46,7 @@ export const CreateWareHouseScreen: FC<
   };
 
   const methods = useForm({
+    mode: "all",
     defaultValues: {
       nameWareHouse:
         status.current == "COPY"
@@ -101,7 +104,6 @@ export const CreateWareHouseScreen: FC<
     formState: { errors },
     setValue,
     clearErrors,
-    setError,
     watch,
   } = methods;
 
@@ -134,40 +136,10 @@ export const CreateWareHouseScreen: FC<
     clearErrors("temperature3");
   };
 
-  const checkUom = () => {
-    console.log("check error", lengthUom.value);
-    switch (0) {
-      case lengthUom.value:
-        setError("lengthUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-        console.log("check error 1", lengthUom.value);
-        break;
-      case widthUom.value:
-        setError("widthUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-        console.log("check error 2", lengthUom.value);
-        break;
-      case heightUom.value:
-        setError("heightUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-        console.log("check error 3", lengthUom.value);
-        break;
-      case weightCapacityUom.value:
-        setError("weightCapacityUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-        console.log("check error 4", lengthUom.value);
-        break;
-      default:
-        break;
-    }
+  const onError = (errors: any) => {
+    console.log("Form validation errors:", errors);
+    setShowErrors(true);
+    setCheckErrorTriggered((prev) => prev + 1);
   };
 
   const onPressConfig = () => {
@@ -188,24 +160,38 @@ export const CreateWareHouseScreen: FC<
     clearErrors("width");
     clearErrors("height");
     clearErrors("weight");
+    clearErrors("heightUom");
+    clearErrors("lengthUom");
+    clearErrors("widthUom");
+    clearErrors("weightCapacityUom");
   };
 
   const onSubmit = (data: any) => {
-    console.log("tuvm test data", data);
-    switch (status.current) {
-      case "UPDATE":
-        handlerUpdateData(data, id.current);
-        console.log(
-          "check data props",
-          props.route.params.additionalInfo?.heightUom.name
-        );
-        break;
-      case "COPY":
-        onHandleDataCopy(data);
-        break;
-      default:
-        onHandleData(data);
-        break;
+    if (
+      (data.heightUom.text &&
+        data.lengthUom.text &&
+        data.widthUom.text &&
+        data.weightCapacityUom.text != undefined) ||
+      ""
+    ) {
+      switch (status.current) {
+        case "UPDATE":
+          handlerUpdateData(data, id.current);
+          console.log(
+            "check data props",
+            props.route.params.additionalInfo?.heightUom.name
+          );
+          break;
+        case "COPY":
+          onHandleDataCopy(data);
+          break;
+        default:
+          onHandleData(data);
+          break;
+      }
+    } else {
+      setShowErrors(true);
+      setCheckErrorTriggered((prev) => prev + 1);
     }
   };
 
@@ -215,36 +201,36 @@ export const CreateWareHouseScreen: FC<
       api.warehouseStore
         .putUpdateWareHouse(
           {
-            name: data.nameWareHouse,
-            code: data.codeWareHouse ?? "",
+            name: data?.nameWareHouse ?? "",
+            code: data?.codeWareHouse ?? "",
             companyId: 0,
             branchId: 0,
             sourceProductType: "INTERNAL",
-            address: data.addressWareHouse,
+            address: data?.addressWareHouse ?? "",
             areaCode: "string",
             hasAdditionalInfo: config,
             additionalInfo: {
-              latitude: data.latitude,
-              longitude: data.longitude,
-              height: data.height,
+              latitude: data?.latitude ?? "",
+              longitude: data?.longitude ?? "",
+              height: data?.height ?? "",
               heightUom: {
                 id:
                   heightUom.value ??
                   props.route.params.additionalInfo?.heightUom.id,
                 name:
-                  heightUom.text ??
+                  heightUom?.text ??
                   props.route.params.additionalInfo?.heightUom.name,
               },
-              length: data.longs,
+              length: data?.longs ?? "",
               lengthUom: {
                 id:
-                  lengthUom.value ??
+                  lengthUom?.value ??
                   props.route.params.additionalInfo?.lengthUom.id,
                 name:
-                  lengthUom.text ??
+                  lengthUom?.text ??
                   props.route.params.additionalInfo?.lengthUom.name,
               },
-              width: data.width,
+              width: data?.width ?? "",
               widthUom: {
                 id:
                   widthUom.value ??
@@ -253,22 +239,22 @@ export const CreateWareHouseScreen: FC<
                   widthUom.text ??
                   props.route.params.additionalInfo?.widthUom.name,
               },
-              weightCapacity: data.weight,
+              weightCapacity: data?.weight ?? "",
               weightCapacityUom: {
                 id:
-                  weightCapacityUom.value ??
+                  weightCapacityUom?.value ??
                   props.route.params.additionalInfo?.weightCapacityUom.id,
                 name:
-                  weightCapacityUom.text ??
+                  weightCapacityUom?.text ??
                   props.route.params.additionalInfo?.weightCapacityUom.name,
               },
               scene: "INDOOR",
             },
             hasConditionStorage: conditions,
             conditionStorage: {
-              standardTemperature: data.temperature1,
-              minTemperature: data.temperature2,
-              standardHumidity: data.temperature3,
+              standardTemperature: data?.temperature1,
+              minTemperature: data?.temperature2,
+              standardHumidity: data?.temperature3,
             },
             action: "UPDATE",
             note: "string",
@@ -330,7 +316,7 @@ export const CreateWareHouseScreen: FC<
           companyId: 0,
           branchId: 0,
           sourceProductType: "INTERNAL",
-          address: data.addressWareHouse,
+          address: data?.addressWareHouse ?? "",
           areaCode: "string",
           hasAdditionalInfo: config,
           additionalInfo: {
@@ -434,13 +420,13 @@ export const CreateWareHouseScreen: FC<
           companyId: 0,
           branchId: 0,
           sourceProductType: "INTERNAL",
-          address: data.addressWareHouse,
+          address: data?.addressWareHouse ?? "",
           areaCode: "string",
           hasAdditionalInfo: config,
           additionalInfo: {
-            latitude: data.latitude,
-            longitude: data.longitude,
-            height: data.height,
+            latitude: data?.latitude,
+            longitude: data?.longitude,
+            height: data?.height,
             heightUom: {
               id:
                 heightUom.value ??
@@ -449,7 +435,7 @@ export const CreateWareHouseScreen: FC<
                 heightUom.text ??
                 props.route.params.additionalInfo?.heightUom.name,
             },
-            length: data.longs,
+            length: data?.longs,
             lengthUom: {
               id:
                 lengthUom.value ??
@@ -458,7 +444,7 @@ export const CreateWareHouseScreen: FC<
                 lengthUom.text ??
                 props.route.params.additionalInfo?.lengthUom.name,
             },
-            width: data.width,
+            width: data?.width,
             widthUom: {
               id:
                 widthUom.value ??
@@ -467,7 +453,7 @@ export const CreateWareHouseScreen: FC<
                 widthUom.text ??
                 props.route.params.additionalInfo?.widthUom.name,
             },
-            weightCapacity: data.weight,
+            weightCapacity: data?.weight,
             weightCapacityUom: {
               id:
                 weightCapacityUom.value ??
@@ -480,9 +466,9 @@ export const CreateWareHouseScreen: FC<
           },
           hasConditionStorage: conditions,
           conditionStorage: {
-            standardTemperature: data.temperature1,
-            minTemperature: data.temperature2,
-            standardHumidity: data.temperature3,
+            standardTemperature: data?.temperature1,
+            minTemperature: data?.temperature2,
+            standardHumidity: data?.temperature3,
           },
           action: "CREATE",
           note: "string",
@@ -577,7 +563,7 @@ export const CreateWareHouseScreen: FC<
                   onShowPassword={() => {}}
                   error={errors.codeWareHouse?.message ?? ""}
                   onChangeText={(value) => {
-                    onChange(value);
+                    onChange(value.trimStart());
                   }}
                 />
               )}
@@ -587,7 +573,7 @@ export const CreateWareHouseScreen: FC<
                 maxLength: 50,
                 pattern: {
                   value: /^[a-zA-Z0-9-]+$/,
-                  message: "Mã chỉ gồm chữ , số và ký tự _",
+                  message: translate("wareHouse.messageError"),
                 },
               }}
             />
@@ -618,13 +604,13 @@ export const CreateWareHouseScreen: FC<
                   onShowPassword={() => {}}
                   error={errors.nameWareHouse?.message ?? ""}
                   onChangeText={(value) => {
-                    onChange(value);
+                    onChange(value.trimStart());
                   }}
                 />
               )}
               name="nameWareHouse"
               rules={{
-                required: "Vui lòng nhập thông tin",
+                required: translate("wareHouse.pleaseEnterInformation"),
                 maxLength: 250,
               }}
             />
@@ -658,13 +644,13 @@ export const CreateWareHouseScreen: FC<
                   onClearText={() => {}}
                   onShowPassword={() => {}}
                   onChangeText={(value) => {
-                    onChange(value);
+                    onChange(value.trimStart());
                   }}
                 />
               )}
               name="addressWareHouse"
               rules={{
-                required: "Vui lòng nhập thông tin",
+                required: translate("wareHouse.pleaseEnterInformation"),
                 maxLength: 250,
               }}
             />
@@ -723,7 +709,13 @@ export const CreateWareHouseScreen: FC<
                 </TouchableOpacity>
               )}
             />
-            {config ? <ConfigInfoMoreComponent list={listUnit} /> : null}
+            {config ? (
+              <ConfigInfoMoreComponent
+                list={listUnit}
+                checkErrorTriggered={checkErrorTriggered}
+                showErrors={showErrors}
+              />
+            ) : null}
             {/* <Controller
             control={control}
             render={({ field: { onChange, value } }) => (
@@ -747,7 +739,7 @@ export const CreateWareHouseScreen: FC<
           /> */}
           </ScrollView>
           <TouchableOpacity
-            onPress={methods.handleSubmit(onSubmit)}
+            onPress={methods.handleSubmit(onSubmit, onError)}
             style={{
               backgroundColor: "#0078D4",
               alignItems: "center",

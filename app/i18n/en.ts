@@ -962,6 +962,8 @@ const en = {
     this: "này không ?",
     messengerSucces: "Bạn đã lưu trữ kho hàng thành công",
     messengerFail: "Lỗi xóa kho hàng",
+    messageError: "Code consists of only letters, numbers and the character _",
+    pleaseEnterInformation: "Vui lòng nhập thông tin",
   },
 
   GoodsExportBook: {
