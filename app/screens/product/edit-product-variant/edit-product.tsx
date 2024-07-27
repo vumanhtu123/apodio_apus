@@ -47,21 +47,21 @@ export const ProductEditScreen: FC = (item) => {
   const [addDescribe, setAddDescribe] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
-  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({});
+  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
   const [addWeight, setAddWeight] = useState(false);
-  const [attributeIds, setAttributeIds] = useState([]);
+  const [attributeIds, setAttributeIds] = useState<number[]>([]);
   const [description, setDescription] = useState("");
-  const [attributeValues, setAttributeValues] = useState([]);
-  const [textAttributes, setTextAttributes] = useState([]);
+  const [attributeValues, setAttributeValues] = useState<{}[]>([]);
+  const [textAttributes, setTextAttributes] = useState<{}[]>([]);
   const [modalcreateUnit, setModalcreateUnit] = useState(false);
   const [arrIdOrigin, setArrIdOrigin] = useState([]);
   const [vendor, setVendor] = useState([]);
-  const [attributeToEdit, setAttributeToEdit] = useState([]);
-  const [constAttributeToEdit, setConstAttributeToEdit] = useState([]);
-  const [dropdownToEdit, setDropdownToEdit] = useState([]);
+  const [attributeToEdit, setAttributeToEdit] = useState<{}[]>([]);
+  const [constAttributeToEdit, setConstAttributeToEdit] = useState<{}[]>([]);
+  const [dropdownToEdit, setDropdownToEdit] = useState<{}[]>([]);
   const [defaultTags, setDefaultTags] = useState([]);
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{}[]>([]);
   const [productUsing, setProductUsing] = useState(false);
   const [priceUsing, setPriceUsing] = useState(false);
   const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
@@ -291,7 +291,7 @@ export const ProductEditScreen: FC = (item) => {
           return { text: items.name, value: items.id };
         }
       );
-      const abc = [...new Set(newDataEdit?.attributeCategory?.flatMap((item: any) => item.id))]
+      const abc: any = [...new Set(newDataEdit?.attributeCategory?.flatMap((item: any) => item.id))]
       setAttributeIds(abc)
       const newArr1 = newArr?.map((item: { value: any }) => item.value);
       setDefaultTags(newArr);
@@ -396,6 +396,7 @@ export const ProductEditScreen: FC = (item) => {
       const uomId = {
         id: data.originalUnit.id,
         label: data.originalUnit.name,
+        uomGroupLineId: data.originalUnit.uomGroupLineId,
       };
       setUomId(uomId);
     } else {
@@ -465,7 +466,7 @@ export const ProductEditScreen: FC = (item) => {
 
       setAttributeValues(attributeValueArr);
       setTextAttributes(textAttributeValueArr);
-      const abc = [...new Set(attributeArr?.flatMap((item: any) => item.idGroup))]
+      const abc: any = [...new Set(attributeArr?.flatMap((item: any) => item.idGroup))]
       setAttributeIds(abc)
 
       const newArr = mapDataDistribute(resultArray);
@@ -514,10 +515,10 @@ export const ProductEditScreen: FC = (item) => {
         };
       });
 
-      newArr5.forEach((item, index) => (dataArr[index].attributeValues = item));
+      newArr5.forEach((item: any, index) => (dataArr[index].attributeValues = item));
 
       const bMap = new Map(
-        dataOldCreateProduct.map((item) => [item.name.trim(), item])
+        dataOldCreateProduct.map((item: {name: any}) => [item.name.trim(), item])
       );
 
       const updatedA = dataArr.map((item) => {

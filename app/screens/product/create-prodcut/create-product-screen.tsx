@@ -42,6 +42,7 @@ import {
   ItemUnit,
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
+import { DetailUnitGroupResult } from "../../../models/unit/deatl-unit-group-model";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -55,10 +56,10 @@ export const ProductCreateScreen: FC = (item) => {
   const [addWeight, setAddWeight] = useState(false);
   const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
-  const [detailUnitGroupData, setDetailUnitGroupData] = useState();
+  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
   const [description, setDescription] = useState("");
   const { productStore, unitStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{}[]>([]);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
   const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: "" });
@@ -291,7 +292,7 @@ export const ProductCreateScreen: FC = (item) => {
         };
       });
 
-      newArr5.forEach((item, index) => (dataArr[index].attributeValues = item));
+      newArr5.forEach((item: any, index: any) => (dataArr[index].attributeValues = item));
       setDataCreateProduct(dataArr);
       console.log('data variants', JSON.stringify(dataArr))
     }
@@ -444,7 +445,7 @@ export const ProductCreateScreen: FC = (item) => {
         price: Number(formatNumberByString(item.price)),
       };
     });
-    const newArr2 = newArr.map((item) => {
+    const newArr2 = newArr.map((item: any) => {
       return {
         ...item,
         retailPrice: item.retailPrice?.map((items: any) => {

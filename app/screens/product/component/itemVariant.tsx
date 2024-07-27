@@ -214,7 +214,7 @@ export const ItemVariant = memo(
                                             style={{ fontWeight: "600", fontSize: fontSize.size12 }} />
                                     </View>
                                     <View style={styles.viewLine2} />
-                                    {props.dataGroupAttribute?.map((item, index) => (
+                                    {props.dataGroupAttribute?.map((item: any, index) => (
                                         <View key={index}>
                                             <View
                                                 style={{
