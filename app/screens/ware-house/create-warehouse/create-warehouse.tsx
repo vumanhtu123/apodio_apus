@@ -14,7 +14,6 @@ import { ConfigInfoMoreComponent } from "../component/config-info-component";
 import { useStores } from "../../../models";
 import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
-import { showErrorCSS } from "react-native-svg/lib/typescript/deprecated";
 
 export const CreateWareHouseScreen: FC<
   StackScreenProps<NavigatorParamList, "warehouse">
@@ -105,7 +104,6 @@ export const CreateWareHouseScreen: FC<
     formState: { errors },
     setValue,
     clearErrors,
-    setError,
     watch,
   } = methods;
 
@@ -138,38 +136,10 @@ export const CreateWareHouseScreen: FC<
     clearErrors("temperature3");
   };
 
-  const onError = (errors) => {
+  const onError = (errors: any) => {
     console.log("Form validation errors:", errors);
     setShowErrors(true);
-    setCheckErrorTriggered(prev => prev + 1);
-  };
-
-  const checkUom = () => {
-    console.log("check error", lengthUom.text);
-    switch ("" || undefined) {
-      case lengthUom.text:
-        setError("longs", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      case widthUom.text:
-        setError("widthUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      case heightUom.text:
-        setError("heightUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      case weightCapacityUom.text:
-        setError("weightCapacityUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      default:
-        break;
-    }
+    setCheckErrorTriggered((prev) => prev + 1);
   };
 
   const onPressConfig = () => {
@@ -196,29 +166,7 @@ export const CreateWareHouseScreen: FC<
     clearErrors("weightCapacityUom");
   };
 
-  const onValidate = (data: any) => {
-    console.log('-------data------', JSON.stringify(data))
-    if (data.config == true) {
-      if (
-        (data.heightUom.text &&
-          data.lengthUom.text &&
-          data.widthUom.text &&
-          data.weightCapacityUom.text != undefined) ||
-        ""
-      ) {
-        console.log('----------true---------')
-        onSubmit(data);
-      } else {
-        console.log('----------else---------')
-        methods.handleSubmit(checkUom);
-      }
-    } else {
-      checkUom();
-    }
-  };
-
   const onSubmit = (data: any) => {
-    console.log("tuvm test data", data);
     if (
       (data.heightUom.text &&
         data.lengthUom.text &&
@@ -241,10 +189,10 @@ export const CreateWareHouseScreen: FC<
           onHandleData(data);
           break;
       }
-    }else {
-      setCheckErrorTriggered(prev => prev + 1);
+    } else {
+      setShowErrors(true);
+      setCheckErrorTriggered((prev) => prev + 1);
     }
-    
   };
 
   const handlerUpdateData = (data: any, id: any) => {
@@ -761,7 +709,13 @@ export const CreateWareHouseScreen: FC<
                 </TouchableOpacity>
               )}
             />
-            {config ? <ConfigInfoMoreComponent list={listUnit} checkErrorTriggered={checkErrorTriggered} showErrors={showErrors} /> : null}
+            {config ? (
+              <ConfigInfoMoreComponent
+                list={listUnit}
+                checkErrorTriggered={checkErrorTriggered}
+                showErrors={showErrors}
+              />
+            ) : null}
             {/* <Controller
             control={control}
             render={({ field: { onChange, value } }) => (
