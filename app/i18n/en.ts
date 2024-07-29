@@ -8,6 +8,7 @@ const en = {
     listCompany: "Danh sách công ty",
     filter: " Bộ lọc",
     saveChange: "Lưu thay đổi",
+    save: "Lưu",
     edit: "Sửa",
     create: "Tạo",
     continue: "Tiếp tục",
@@ -602,6 +603,7 @@ const en = {
     dayBirth: "Ngày sinh",
     personalIdentification: "Số giấy tờ định danh cá nhân",
     placeholderPersonalIdentification: "Nhập số giấy tờ",
+    addSupplier: "Thêm nhà cung cấp",
   },
   debtScreen: {
     receivables: "Phải thu",
@@ -824,6 +826,12 @@ const en = {
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
+    addNewAttributeGroup: "Thêm nhóm thuộc tính",
+    addNewAttribute: "Thêm thuộc tính",
+    inputNameAttributeGroup: "Nhập tên nhóm thuộc tính",
+    inputNameAttribute: "Nhập tên thuộc tính",
+    createAttributeInGroup: "Tạo thuộc tính trong nhóm",
+    enterValue: "Nhập giá trị",
   },
   filterScreen: {
     new: "Mới nhất",

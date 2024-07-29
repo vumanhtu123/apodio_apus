@@ -1,0 +1,121 @@
+import { Dimensions, StyleSheet } from "react-native";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
+
+export const styles = StyleSheet.create({
+    viewItemFlatListModal: {
+      width: scaleWidth(16),
+      height: scaleHeight(16),
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: "#ccc",
+      justifyContent: "center",
+      alignItems: "center",
+      marginHorizontal: scaleWidth(6),
+    },
+    ROOT: { flex: 1, backgroundColor: colors.palette.neutral100 },
+    viewBody: {
+      paddingHorizontal: scaleWidth(16),
+      paddingVertical: scaleHeight(16),
+      position: "absolute",
+      left: 0,
+      right: 0,
+      bottom: scaleHeight(54),
+    },
+    viewGroupButton: {
+      position: "absolute",
+      bottom: scaleHeight(20),
+      marginHorizontal: scaleWidth(margin.margin_16),
+      flexDirection: "row",
+      // justifyContent: 'space-between',
+    },
+    viewButtonCancel: {
+      height: scaleHeight(48),
+      backgroundColor: colors.palette.neutral100,
+      borderWidth: 1,
+      borderColor: colors.palette.veryLightGrey,
+      width: "48%",
+      borderRadius: 8,
+      marginRight: "4%",
+    },
+    viewButtonConfirm: {
+      height: scaleHeight(48),
+      backgroundColor: colors.palette.navyBlue,
+      width: "48%",
+      borderRadius: 8,
+    },
+    viewModal: {
+      height: Dimensions.get("screen").height * 0.4,
+      backgroundColor: colors.palette.neutral100,
+      borderRadius: 8,
+      paddingVertical: scaleHeight(padding.padding_12),
+      paddingHorizontal: scaleWidth(padding.padding_16),
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+    viewItemAttribute: {
+      flexDirection: "row",
+      alignItems: "center",
+      height: scaleHeight(34),
+      borderBottomWidth: 1,
+      borderBottomColor: "#E7EFFF",
+    },
+    viewDataAttribute: {
+      flexDirection: "row",
+      alignItems: "center",
+      borderRadius: 4,
+      paddingVertical: scaleHeight(6),
+      paddingHorizontal: scaleWidth(8),
+      backgroundColor: colors.palette.aliceBlue,
+      marginRight: scaleWidth(8),
+    },
+    textButtonCancel: {
+      color: colors.palette.dolphin,
+      fontWeight: "700",
+      fontSize: fontSize.size14,
+      lineHeight: scaleHeight(24),
+    },
+    textAttribute: {
+      fontWeight: "400",
+      fontSize: fontSize.size10,
+      color: colors.palette.dolphin,
+    },
+    viewLineSwitchUnit: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginTop: scaleHeight(8),
+      marginBottom: scaleHeight(15),
+    },
+    textWeight400Dolphin: {
+      fontSize: fontSize.size13,
+      fontWeight: "400",
+      marginLeft: scaleWidth(8),
+  
+      color: "black",
+    },
+    textNero600: {
+      fontWeight: "600",
+      fontSize: fontSize.size12,
+      color: colors.palette.nero,
+      marginTop: scaleHeight(15),
+    },
+    viewIconDeleteLine: {
+      height: scaleHeight(20),
+      width: scaleWidth(20),
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textNavy600: {
+      marginLeft: scaleWidth(6),
+      fontWeight: "600",
+      fontSize: fontSize.size12,
+      color: colors.palette.navyBlue,
+    },
+    groupButtonModal: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: scaleHeight(margin.margin_10),
+    },
+  });
+  

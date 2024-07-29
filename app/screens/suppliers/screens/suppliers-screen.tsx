@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { FC, useEffect, useState } from "react";
-import { Alert, FlatList, Platform, TouchableOpacity, View } from "react-native";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, Platform, RefreshControl, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
@@ -18,22 +18,40 @@ import { ScrollView } from "react-native-gesture-handler";
 import SelectFilterModal from "../../product/component/modal-select-filter";
 import ModalCreateSuppliers from "../component/modal-create-supplier";
 import { RenderItemSupplierGrid, RenderItemSupplierList } from "../component/item-list-supplier";
+import { useStores } from "../../../models";
+import { UserStatus } from "../../../utils/const";
+import ListSupplierScreen from "./list-supplier-screen";
 
 export const SuppliersScreen: FC = () => {
   const navigation = useNavigation();
   const [typeNoti, setTypeNoti] = useState(["Tất cả", "Hà Nội"]);
-  const [indexItem, setIndexItem] = useState(0);
   const [btnTab, setBtnTab] = useState(["Nhà cung cấp", "Nhóm NCC"]);
   const [activeTab, setActiveTab] = useState("product");
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleOpenSearch, setIsVisibleOpenSearch] = useState(false);
+  const [isVisible, setIsVisible] = useState(false)
   const [isVisibleAddSupplier, setIsVisibleAddSupplier] = useState(false)
-  const [statusHidden, setStatusHidden] = useState(false)
-  // console.log("doannnn", isVisibleAddSupplier);
-
-  const [typeFilter, setTypeFilter] = useState("");
+  const [statusHidden, setStatusHidden] = useState(true)
+  const [valueIsLoadMore, setValueIsLoadMore] = useState(false)
+  const [isLoadMore, setIsLoadMore] = useState<boolean>()
   const [dataCategory, setDataCategory] = useState<any>([]);
   const [showCategory, setShowCategory] = useState(false);
   const [showTextCategory, setShowTextCategory] = useState<string>(" Danh mục");
+  const [valuerSearch, setValuerSearch] = useState('')
+  const { supplierStore } = useStores();
+  const [myDataSupplier, setMyDataSupplier] = useState<{}[]>([])
+  const [myDataSupplierGroup, setMyDataSupplierGroup] = useState<{}[]>([])
+
+
+  const page = useRef(0)
+  const size = useRef(13)
+  const totalPage = useRef<number | undefined>()
+  const totalElement = useRef<number>()
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+
+  const pageSupplier = useRef(0)
+  const sizeSupplier = useRef(13)
+
 
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
@@ -49,12 +67,6 @@ export const SuppliersScreen: FC = () => {
     { name: "tuvm4" },
   ];
 
-  const openFilter = () => { };
-
-  useEffect(() => {
-    setDataCategory(data);
-  }, []);
-
   const openTypeFilter = () => {
     setStatusHidden(!statusHidden)
   };
@@ -63,6 +75,84 @@ export const SuppliersScreen: FC = () => {
     setIsVisibleAddSupplier(!isVisibleAddSupplier)
   }
   console.log("value list", statusHidden);
+
+
+
+  console.log("33333", myDataSupplier);
+
+  const getListSupplierGroup = async () => {
+    const ListSupplierGroup = await supplierStore.getListSupplierGroup(size.current, page.current, valuerSearch, valueIsLoadMore)
+
+    if (ListSupplierGroup?.content != null) {
+      if (page.current == 0) {
+        setMyDataSupplierGroup(ListSupplierGroup.content)
+      } else {
+        setMyDataSupplierGroup((data) =>
+          [...data,
+          ...ListSupplierGroup.content]
+        )
+      }
+      totalPage.current = ListSupplierGroup.totalPages
+      totalElement.current = ListSupplierGroup.totalElements
+    }
+
+  }
+  const handleRefresh = () => {
+    try {
+      setIsRefreshing(true)
+      page.current = 0
+      getListSupplierGroup()
+    } catch (error) {
+      console.log("Refresh Error", error);
+    }
+
+  }
+
+
+  const handleLoadMore = () => {
+    setValueIsLoadMore(true)
+    setIsLoadMore(true)
+    try {
+      if (page.current < Number(totalPage.current)) {
+
+        page.current = page.current + 1
+
+        getListSupplierGroup()
+      }
+    } catch (error) {
+      console.log("Load more error", error);
+
+    } finally {
+      // setIsLoadMore(false)
+    }
+  }
+
+
+
+  useEffect(() => {
+    // console.log("length data ", myDataSupplier.length);
+
+    if (myDataSupplierGroup.length == totalElement.current) {
+      setIsLoadMore(false)
+
+    } else {
+      setIsLoadMore(false)
+    }
+
+  }, [myDataSupplierGroup.length])
+
+  useEffect(() => {
+    setIsRefreshing(false)
+  }, [myDataSupplierGroup, myDataSupplier])
+
+  useEffect(() => {
+    getListSupplierGroup()
+
+    // setDataCategory(data);
+  }, []);
+  console.log("value load more 1", isLoadMore);
+  console.log("value search", valuerSearch);
+
 
   return (
     <View style={styles.ROOT}>
@@ -76,9 +166,14 @@ export const SuppliersScreen: FC = () => {
         RightIcon={statusHidden ? Images.ic_outline_list : Images.ic_grid}
         RightIcon1={isVisible ? Images.icon_close : Images.icon_funnel}
         RightIcon2={isVisible ? Images.icon_close : Images.search}
-        headerInput={isVisible}
-
+        headerInput={isVisibleOpenSearch}
+        onSearchValueChange={(txt: any) => { setValuerSearch(txt) }}
+        handleOnSubmitSearch={() => {
+          page.current = 0
+          getListSupplierGroup()
+        }}
         onRightPress1={() => navigation.navigate("filterScreen" as never)}
+        onRightPress2={() => setIsVisibleOpenSearch(!isVisibleOpenSearch)}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
         style={{ height: scaleHeight(54) }}
@@ -92,14 +187,7 @@ export const SuppliersScreen: FC = () => {
       <View style={styles.ROOT}>
         <View style={styles.rowBtnTab}>
           <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#E6E7EA",
-              borderRadius: 8,
-              padding: 3,
-              marginTop: 20,
-              justifyContent: "center",
-            }}>
+            style={styles.StyleTab}>
             {btnTab.map((item, index) => {
               return (
                 <TouchableOpacity
@@ -129,33 +217,18 @@ export const SuppliersScreen: FC = () => {
           onPress={() => {
             setShowCategory(true);
           }}
-          style={{
-            borderRadius: 4,
-            paddingHorizontal: 7,
-            paddingVertical: 8,
-            marginVertical: 12,
-            alignSelf: "flex-end",
-            borderWidth: 1,
-            borderColor: "#0078D4",
-            flexDirection: "row",
-            marginRight: 20,
-          }}>
+          style={styles.btnDropDowCategory}>
           <Text
             // tx="productScreen.directory"
             text={showTextCategory}
-            style={{
-              color: "#0078D4",
-              textAlign: "center",
-              fontWeight: "400",
-              fontSize: fontSize.size10,
-              marginRight: scaleWidth(10),
-            }}
+            style={styles.textDropDow}
           />
           <Images.iconDownBlue
             width={scaleWidth(14)}
             height={scaleHeight(14)}
           />
         </TouchableOpacity>
+        {/* modal dropDown   */}
         <Modal
           isVisible={showCategory}
           onBackdropPress={() => setShowCategory(false)}
@@ -186,6 +259,7 @@ export const SuppliersScreen: FC = () => {
                   style={{
                     paddingVertical: scaleHeight(padding.padding_12),
                     paddingHorizontal: scaleWidth(padding.padding_12),
+
                     //   backgroundColor:
                     //     selectedCategory === item.id
                     //       ? colors.palette.navyBlue
@@ -207,21 +281,42 @@ export const SuppliersScreen: FC = () => {
             })}
           </ScrollView>
         </Modal>
-        <View style={{ flex: 1 }}>
-          <FlatList
-            data={dataSuppliers}
-            showsVerticalScrollIndicator={false}
-            // refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshNotifications} title="ok" />}
-            keyExtractor={(item, index) => item.id.toString() + index}
-            // onEndReached={handleEndReached}
-            onEndReachedThreshold={0.8}
-            // ListFooterComponent={renderFooter}
-            numColumns={statusHidden ? 1 : 2}
-            key={statusHidden ? 'grid' : 'list'}
-            columnWrapperStyle={null}
-            renderItem={({ item }) => statusHidden ? <RenderItemSupplierList item={item} /> : <RenderItemSupplierGrid item={item} />}
-          />
-        </View>
+
+        {
+          activeTab == "product" ?
+            <ListSupplierScreen valueSearch={valuerSearch} />
+            :
+            <View style={{ flex: 1 }}>
+              <FlatList
+
+                data={myDataSupplierGroup}
+                showsVerticalScrollIndicator={false}
+                // refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshNotifications} title="ok" />}
+                keyExtractor={(item, index) => item.id.toString() + index}
+                // onEndReached={handleEndReached}
+                // ListFooterComponent={renderFooter}
+                numColumns={statusHidden ? 1 : 2}
+                key={statusHidden ? 'grid' : 'list'}
+                columnWrapperStyle={null}
+                renderItem={({ item }) => statusHidden ? <RenderItemSupplierList item={item} /> : <RenderItemSupplierGrid item={item} />}
+                refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+                ListFooterComponent={() => {
+                  return (
+                    <View>
+                      {
+                        isLoadMore ? null
+                          : <ActivityIndicator />
+                      }
+                    </View>
+                  )
+                }}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
+
+              />
+            </View>
+        }
+
       </View>
 
       <TouchableOpacity
@@ -229,26 +324,16 @@ export const SuppliersScreen: FC = () => {
           console.log("abc");
           navigation.navigate("orderDetailsSupplier" as never);
         }}
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: 30,
-          position: "absolute",
-          paddingHorizontal: scaleWidth(18),
-          paddingVertical: scaleHeight(8),
-          backgroundColor: colors.palette.navyBlue,
-          bottom: Platform.OS === "ios" ? scaleHeight(20) : scaleHeight(5),
-          right: scaleWidth(16),
-        }}>
+        style={styles.btnAdd}>
         <Images.icon_plus
           width={scaleWidth(16)}
           height={scaleHeight(16)}
           style={{ marginRight: 6, marginTop: 2 }}
         />
-        <Text style={{ color: "white", fontSize: fontSize.size14 }}>
-          Thêm nhà cung cấp
-        </Text>
+        <Text style={{ color: "white", fontSize: fontSize.size14 }}
+          tx={"NCCScreen.addSupplier"}
+        />
+
       </TouchableOpacity>
       {/* <SelectFilterModal
         isVisible={true}

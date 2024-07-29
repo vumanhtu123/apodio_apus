@@ -16,6 +16,49 @@ export interface Root {
   
   export interface Content {
     id: number
+    avatarUrl?: string
+    code: string
+    name: string
+    merchantName: any
+    email?: string
+    phoneNumber: string
+    address?: string
+    isCompany: boolean
+    country?: string
+    region?: string
+    city?: string
+    district?: string
+    ward?: string
+    activated?: boolean
+    isCustomer: any
+    isVendor: boolean
+    isMerchant?: boolean
+    isB2c?: boolean
+    isOem?: boolean
+    isPaymentPartner?: boolean
+    isShippingPartner?: boolean
+    isB2b?: boolean
+    isAnotherPartner?: boolean
+    partnerTags: PartnerTag[]
+    businessSector: any
+    dayRequest: any
+    request: any
+    status?: string
+    createdBy: string
+    vendorActivated?: boolean
+    oemActivated?: boolean
+    b2cActivated?: boolean
+    anotherActivated?: boolean
+    shippingActivated?: boolean
+    paymentActivated?: boolean
+    merchantActivated?: boolean
+    b2bActivated?: boolean
+    reason: any
+    isHaveDeliveryAddress: boolean
+  }
+  
+  export interface PartnerTag {
+    id: number
     code: string
     name: string
     description?: string
@@ -23,13 +66,13 @@ export interface Root {
     createdAt?: string
     createdBy?: string
     isCustomer: any
-    isVendor: boolean
-    isMerchant: any
-    isB2b: any
-    isB2c: any
-    isOem: any
-    isPaymentPartner: any
-    isShippingPartner: any
-    isAnotherPartner: any
+    isVendor?: boolean
+    isMerchant?: boolean
+    isB2b?: boolean
+    isB2c?: boolean
+    isOem?: boolean
+    isPaymentPartner?: boolean
+    isShippingPartner?: boolean
+    isAnotherPartner?: boolean
   }
   

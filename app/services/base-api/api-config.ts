@@ -70,14 +70,14 @@ const getBaseURL = () => {
 
 const getDomainWarehouse = () => {
   const domain = CONFIG.API.STAGING.URL_WAREHOUSE;
-  console.log('URL warehouse 2',domain )
-  return domain
-}
+  console.log("URL warehouse 2", domain);
+  return domain;
+};
 const getDomainSupplier = () => {
   const domain = CONFIG.API.STAGING.URL_SUPPLIER;
   console.log("URL Supplier", domain);
-  return domain
-}
+  return domain;
+};
 export interface ApiConfig {
   /**
    * The URL of the api.
@@ -129,10 +129,10 @@ export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
 
 export const DEFAULT_API_WAREHOUSE: ApiConfig = {
   url: getDomainWarehouse(),
-  timeout: 100000
-}
+  timeout: 100000,
+};
 
 export const DEFAULT_API_SUPPLIER: ApiConfig = {
   url: getDomainSupplier(),
-  timeout: 100000
-}
+  timeout: 100000,
+};

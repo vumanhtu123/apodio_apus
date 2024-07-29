@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { FC, useRef, useState } from "react";
 import React, {
-  Alert,
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
@@ -12,8 +11,8 @@ import React, {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Header, Text, TextField } from "../../components";
-import { Images } from "../../../assets";
+import { Button, Header, Text, TextField } from "../../../components";
+import { Images } from "../../../../assets";
 import { useNavigation } from "@react-navigation/native";
 import {
   colors,
@@ -22,12 +21,12 @@ import {
   padding,
   scaleHeight,
   scaleWidth,
-} from "../../theme";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+} from "../../../theme";
+import { Controller, useForm } from "react-hook-form";
 import Modal from "react-native-modal";
-import { useStores } from "../../models";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
-import { translate } from "../../i18n";
+import { useStores } from "../../../models";
+import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
+import { translate } from "../../../i18n";
 
 export const NewAttribute: FC = observer(function NewAttribute(props) {
   const navigation = useNavigation();
@@ -38,16 +37,16 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
   } = useForm();
 
   const [isNameAttribute, setIsNameAttribute] = useState(true);
-  const [nameGroupAttribute, setNameGroupAttribute] = useState({});
+  const [nameGroupAttribute, setNameGroupAttribute] = useState<any>({});
   const [isAttribute, setIsAttribute] = useState(false);
   const [nameAttribute, setNameAttribute] = useState<{}[]>([]);
   const [name, setName] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [dataAttribute, setDataAttribute] = useState<{}[]>([]);
   const [idAttribute, setIdAttribute] = useState("");
-  const [dataCheckbox, setDataCheckbox] = useState([]);
-  const [inputText, setInputText] = useState([]);
-  const [errorText, setErrorText] = useState('')
+  const [dataCheckbox, setDataCheckbox] = useState<{value: string, idItem: number}[]>([]);
+  const [inputText, setInputText] = useState<string[]>([]);
+  const [errorText, setErrorText] = useState<string | undefined>('')
   const { attributeStore } = useStores();
 
   function generateRandomString(length: any) {
@@ -62,8 +61,8 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
   }
 
   function extractAndRemove(items: any, condition: any) {
-    const extractedItems = items.filter((item) => condition(item));
-    const retainedItems = items.filter((item) => !condition(item));
+    const extractedItems = items.filter((item: any) => condition(item));
+    const retainedItems = items.filter((item: any) => !condition(item));
     items.length = 0;
     items.push(...retainedItems);
     return extractedItems;
@@ -75,16 +74,14 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         type: ALERT_TYPE.DANGER,
         title: '',
         textBody: translate('txtToats.required_value_null'),
-    
-    })
+      })
     } else {
-      if (nameAttribute.some(item => item.name.trim() === name.trim())) {
+      if (nameAttribute.some((item: any) => item.name.trim() === name.trim())) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: '',
           textBody: translate('txtToats.cannot_create_duplicate'),
-      
-      })
+        })
       } else {
         const id = generateRandomString(8);
         const nameArr = [{ name: name, id: id }];
@@ -106,29 +103,28 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       }
     }
   };
+
   const addDataAttribute = (data: any, index: any) => {
     if (dataCheckbox.length === 0 || dataCheckbox[dataCheckbox.length - 1]?.value.trim() === "") {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: '',
         textBody: translate('txtToats.required_value_null'),
-    
-    })
+      })
     } else {
       const newArr = extractAndRemove(
         dataCheckbox,
-        (item) => item.idItem === data
+        (item: any) => item.idItem === data
       );
       const dataAdd = newArr[newArr.length - 1];
-      const newArray = dataAttribute.map((obj) => {
+      const newArray = dataAttribute.map((obj: any) => {
         if (obj.id === data) {
-          if (obj.productAttributeValues.some(dto => dto.value === dataAdd.value)) {
+          if (obj.productAttributeValues.some((dto: any) => dto.value === dataAdd.value)) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
               title: '',
               textBody: translate('txtToats.cannot_create_duplicate'),
-          
-          })
+            })
           } else {
             const newValues = obj.productAttributeValues.concat(dataAdd);
             return { ...obj, productAttributeValues: newValues };
@@ -137,21 +133,21 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         return obj;
       });
       setDataAttribute(newArray);
-      inputText.splice(index, 1, "");
+      inputText.splice([index, 1, ""] as never);
       setInputText(inputText);
     }
   };
 
   const deleteNameAttributeById = (id: any) => {
-    const nameArr = nameAttribute.filter((obj) => obj.id !== id);
+    const nameArr = nameAttribute.filter((obj: any) => obj.id !== id);
     setNameAttribute(nameArr);
-    const newArray = dataAttribute.filter((obj) => obj.id !== id);
+    const newArray = dataAttribute.filter((obj: any) => obj.id !== id);
     setDataAttribute(newArray);
   };
 
   const deleteAttribute = (index: any, data: any, data1: any) => {
     data.splice(index, 1);
-    const newArray = dataAttribute.map((obj) => {
+    const newArray = dataAttribute.map((obj: any) => {
       if (obj.id === data1.idItem) {
         return { ...obj, productAttributeValues: data };
       }
@@ -166,8 +162,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         type: ALERT_TYPE.DANGER,
         title: '',
         textBody: translate('txtToats.required_information'),
-    
-    })
+      })
     }
     else {
       try {
@@ -188,8 +183,8 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
   };
 
   const handleSave = async () => {
-    const newArr = dataAttribute.map(({ id, ...rest }) => rest);
-    const updateArr = newArr.map((item) => {
+    const newArr = dataAttribute.map(({ id, ...rest }: any) => rest);
+    const updateArr = newArr.map((item: any) => {
       if (item.displayType === "Checkbox") {
         return {
           ...item,
@@ -206,43 +201,40 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
     const endArr = updateArr.map((item) => ({
       ...item,
       productAttributeValues: item?.productAttributeValues?.map(
-        ({ idItem, ...rest }) => rest
+        ({ idItem, ...rest }: any) => rest
       ),
     }));
-    try {
-      const response = await attributeStore.createAttributeDataGroup(
-        endArr,
-        nameGroupAttribute.id
-      );
-      if (response && response.kind === "ok") {
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("productScreen.Notification"),
-          textBody: translate("newAttribute.newAttributeDialog"),
-          button2: translate("productScreen.BtnNotificationAccept"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            navigation.goBack()
-            Dialog.hide();
-          }
+    const response = await attributeStore.createAttributeDataGroup(
+      endArr,
+      nameGroupAttribute.id
+    );
+    if (response && response.kind === "ok") {
+      Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: translate("newAttribute.newAttributeDialog"),
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          navigation.goBack()
+          Dialog.hide();
+        }
       })
-      } else {
-        Dialog.show({
-          type: ALERT_TYPE.DANGER,
-          title: translate("txtDialog.txt_title_dialog"),
-          textBody: response.response.errorCodes[0].message,
-          button: translate("common.ok"),
-          closeOnOverlayTap: false
+    } else {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("txtDialog.txt_title_dialog"),
+        textBody: response.response.errorCodes[0].message,
+        button: translate("common.ok"),
+        closeOnOverlayTap: false
       })
-        console.error("Failed to fetch categories11111111:", response.response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error("Failed to fetch categories11111111:", response.response.message);
     }
   };
+
   const handleSaveAndChange = async () => {
-    const newArr = dataAttribute.map(({ id, ...rest }) => rest);
-    const updateArr = newArr.map((item) => {
+    const newArr = dataAttribute.map(({ id, ...rest }: any) => rest);
+    const updateArr = newArr.map((item: any) => {
       if (item.displayType === "Checkbox") {
         return {
           ...item,
@@ -256,52 +248,49 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       }
       return item;
     });
-    const endArr = updateArr?.map((item) => ({
+    const endArr = updateArr?.map((item: any) => ({
       ...item,
       productAttributeValues: item?.productAttributeValues?.map(
-        ({ idItem, ...rest }) => rest
+        ({ idItem, ...rest }: any) => rest
       ),
     }));
-    try {
-      const response = await attributeStore.createAttributeDataGroup(
-        endArr,
-        nameGroupAttribute.id
-      );
-      // console.log('first')
-      if (response && response.kind === "ok") {
-        Dialog.show({
-          type: ALERT_TYPE.INFO,
-          title: translate("productScreen.Notification"),
-          textBody: translate("newAttribute.newAttributeDialog"),
-          button2: translate("productScreen.BtnNotificationAccept"),
-          closeOnOverlayTap: false,
-          onPressButton: () => {
-            navigation.navigate("addAttribute" as never, {
+    const response = await attributeStore.createAttributeDataGroup(
+      endArr,
+      nameGroupAttribute.id
+    );
+    if (response && response.kind === "ok") {
+      Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: translate("newAttribute.newAttributeDialog"),
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          navigation.navigate({
+            name: "addAttribute", params: {
               data: {
                 value: nameGroupAttribute.id,
                 text: nameGroupAttribute.name,
               },
-            })
-            Dialog.hide();
-          }
+            }
+          } as never)
+          Dialog.hide();
+        }
       })
-      } else {
-        Dialog.show({
-          type: ALERT_TYPE.DANGER,
-          title: translate("txtDialog.txt_title_dialog"),
-          textBody: response.response.errorCodes[0].message,
-          button: translate("common.ok"),
-          closeOnOverlayTap: false
+    } else {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: translate("txtDialog.txt_title_dialog"),
+        textBody: response.response.errorCodes[0].message,
+        button: translate("common.ok"),
+        closeOnOverlayTap: false
       })
-        console.error("Failed to fetch categories:", response);
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error("Failed to fetch categories:", response);
     }
   };
 
   const onPressModal = (data: any) => {
-    const newArray = dataAttribute.map((obj) => {
+    const newArray = dataAttribute.map((obj: any) => {
       if (obj.id === idAttribute) {
         return { ...obj, displayType: data.item, productAttributeValues: [] };
       }
@@ -312,12 +301,13 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
   };
 
   const arrDataType = ["Checkbox", "Textfield"];
+  
   return (
     <View style={styles.ROOT}>
       <Header
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
-        headerText={isNameAttribute === true ? "Thêm nhóm thuộc tính" : "Thêm thuộc tính"}
+        headerTx={isNameAttribute === true ? "createProductScreen.addNewAttributeGroup" : "createProductScreen.addNewAttribute"}
         style={{ height: scaleHeight(52) }}
       />
       <KeyboardAvoidingView
@@ -325,13 +315,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}>
         {isNameAttribute === true ? (
           <View
-            style={{
-              // flex: 1,/
-              // height : 100,
-              marginHorizontal: scaleWidth(16),
-              marginTop: scaleHeight(20),
-              // marginBottom: scaleHeight(20),
-            }}>
+            style={styles.viewScreen}>
             <Controller
               control={control}
               render={({ field: { onChange, value, onBlur } }) => (
@@ -350,12 +334,11 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                     onChange(value)
                     setErrorText('')
                   }}
-                  // styleError = {{}}
                   onClearText={() => onChange("")}
                   RightIconClear={Images.icon_delete2}
                   multiline={true}
                   labelTx={"productScreen.nameGroupAttribute"}
-                  placeholder={"Nhập tên nhóm thuộc tính"}
+                  placeholderTx={"createProductScreen.inputNameAttributeGroup"}
                   placeholderTextColor={colors.palette.nero}
                   isImportant={true}
                   error={errorText}
@@ -367,10 +350,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
           </View>
         ) : (
           <View
-            style={{
-              marginTop: scaleHeight(margin.margin_20),
-              marginHorizontal: scaleWidth(margin.margin_16),
-            }}>
+            style={styles.viewScreen}>
             <Text
               text={nameGroupAttribute.name}
               style={styles.textNameAttribute}
@@ -380,29 +360,18 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                 onPress={() => setIsAttribute(true)}
                 style={{ flexDirection: "row" }}>
                 <Images.icon_add />
-                <Text
-                  text="Tạo thuộc tính trong nhóm"
+                <Text tx="createProductScreen.createAttributeInGroup"
                   style={styles.textAddAttribute}
                 />
               </TouchableOpacity>
             ) : (
               <View>
                 <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    borderBottomColor: "#DFE0EB",
-                    borderBottomWidth: scaleHeight(1),
-                  }}>
+                  style={styles.viewLineNameGroupAttribute}>
                   <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      marginRight: scaleWidth(4),
-                    }}>
+                    style={styles.viewNameGroupAttribute}>
                     {nameAttribute.length > 0
-                      ? nameAttribute.map((item) => {
+                      ? nameAttribute.map((item: any) => {
                         return (
                           <View
                             style={styles.viewDataAttribute}
@@ -435,12 +404,12 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                           Platform.OS === "ios" ? scaleHeight(4) : 0,
                         minWidth: scaleWidth(100),
                       }}
-                      placeholder={'Nhập tên thuộc tính'}
+                      placeholder={translate('createProductScreen.inputNameAttribute')}
                       value={name}
                       onChangeText={(text) => setName(text)}
                       onSubmitEditing={() => addAttribute()}
                       blurOnSubmit={false}
-                      // multiline={true}
+                    // multiline={true}
                     />
                   </View>
                   <TouchableOpacity onPress={() => addAttribute()}>
@@ -448,15 +417,11 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                   </TouchableOpacity>
                 </View>
                 {dataAttribute.length > 0
-                  ? dataAttribute.map((item, index) => {
+                  ? dataAttribute.map((item: any, index: any) => {
                     return (
                       <View
                         key={item.id}
-                        style={{
-                          flexDirection: "row",
-                          marginTop: scaleHeight(15),
-                          alignItems: "center",
-                        }}>
+                        style={styles.viewLineAttribute}>
                         <TouchableOpacity
                           onPress={() => deleteNameAttributeById(item.id)}>
                           <Images.icon_minusCircle />
@@ -477,12 +442,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                         <View style={styles.viewDataType}>
                           <Text
                             text={item.displayType}
-                            style={{
-                              fontWeight: "400",
-                              fontSize: fontSize.size10,
-                              color: colors.palette.nero,
-                              flex: 1,
-                            }}
+                            style={styles.textNero400}
                           />
                           <TouchableOpacity
                             onPress={() => {
@@ -493,23 +453,9 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                           </TouchableOpacity>
                         </View>
                         <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            borderBottomColor: "#DFE0EB",
-                            borderBottomWidth: scaleHeight(1),
-                            paddingBottom: scaleHeight(2),
-                          }}>
+                          style={styles.viewAddDataAttribute}>
                           {item.displayType === "Textfield" ? null : (
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                maxWidth:
-                                  (Dimensions.get("screen").width -
-                                    scaleWidth(32)) *
-                                  0.5,
-                              }}>
+                            <View style={styles.viewAddDataCheckbox}>
                               <ScrollView
                                 horizontal
                                 style={{
@@ -559,9 +505,9 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                                     minWidth: scaleWidth(160),
                                   }}
                                   value={inputText[index]}
-                                  placeholder={'Nhập giá trị'}
+                                  placeholder={translate('createProductScreen.enterValue')}
                                   onChangeText={(text) => {
-                                    inputText.splice(index, 1, text);
+                                    inputText.splice([index, 1, text] as never);
                                     setInputText(inputText);
                                     const newObj = {
                                       idItem: item.id,
@@ -573,7 +519,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                                   }}
                                   onSubmitEditing={() => addDataAttribute(item.id, index)}
                                   blurOnSubmit={false}
-                                  />
+                                />
                               </ScrollView>
                             </View>
                           )}
@@ -618,12 +564,12 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
         <View style={styles.viewGroupButton}>
           <Button
             onPress={() => handleSave()}
-            text="Lưu"
+            tx="common.save"
             style={styles.viewButtonCancel}
             textStyle={styles.textButtonCancel}
           />
           <Button
-            text="Lưu và tiếp tục"
+            tx="common.saveAndContinue"
             style={styles.viewButtonConfirm}
             textStyle={[
               styles.textButtonCancel,
@@ -633,7 +579,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
           />
         </View>
       ) : null}
-      <Modal isVisible={isModal} style={{margin: 0}}>
+      <Modal isVisible={isModal} style={{ margin: 0 }}>
         <View style={styles.viewModal}>
           <Text
             text={"DataType"}
@@ -672,7 +618,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                 </View>
               );
             }}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(index) => index.toString()}
           />
         </View>
       </Modal>
@@ -759,5 +705,47 @@ const styles = StyleSheet.create({
     lineHeight: scaleHeight(16.94),
     color: colors.palette.nero,
     marginBottom: scaleHeight(15),
+  },
+  viewScreen: {
+    marginTop: scaleHeight(20),
+    marginHorizontal: scaleWidth(16),
+  },
+  textNero400: {
+    fontWeight: "400",
+    fontSize: fontSize.size10,
+    color: colors.palette.nero,
+    flex: 1,
+  },
+  viewLineNameGroupAttribute: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomColor: "#DFE0EB",
+    borderBottomWidth: scaleHeight(1),
+  },
+  viewNameGroupAttribute: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginRight: scaleWidth(4),
+  },
+  viewLineAttribute: {
+    flexDirection: "row",
+    marginTop: scaleHeight(15),
+    alignItems: "center",
+  },
+  viewAddDataAttribute: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomColor: "#DFE0EB",
+    borderBottomWidth: scaleHeight(1),
+    paddingBottom: scaleHeight(2),
+  },
+  viewAddDataCheckbox: {
+    flexDirection: "row",
+    alignItems: "center",
+    maxWidth:
+      (Dimensions.get("screen").width -
+        scaleWidth(32)) *
+      0.5,
   },
 });
