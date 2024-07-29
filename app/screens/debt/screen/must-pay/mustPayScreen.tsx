@@ -20,7 +20,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Styles } from "../styles";
 import { ItemListMustPay } from "../../component/itemListMustPay";
 import en from "../../../../i18n/en";
-import { ModalFilter } from "../../component/ModalFilter";
+import { ModalFilter } from "../../component/modalFilter2";
 
 export const MustPayScreen: FC<
   StackScreenProps<NavigatorParamList, "mustPay">

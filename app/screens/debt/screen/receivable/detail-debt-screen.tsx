@@ -27,7 +27,7 @@ import {
   formatVND,
 } from "../../../../utils/validate";
 import ItemDetailDebt from "./item-detail-debt";
-import { ModalPayReceivable } from "../../component/ModalPayReceivable";
+import { ModalPayReceivable } from "../../component/modalPayReceivable2";
 
 export const DetailReceivable: FC<
   StackScreenProps<NavigatorParamList, "detailReceivable">
