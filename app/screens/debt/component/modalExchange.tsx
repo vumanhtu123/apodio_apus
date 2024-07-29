@@ -15,7 +15,7 @@ import { Text, TextField } from "../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { Images } from "../../../../assets";
 import { Row } from "../../../components/Row";
-import ItemListExChange from "./itemListExChange2";
+import ItemListExChange from "./itemListExChange";
 import { useNavigation } from "@react-navigation/native";
 
 interface propModal {
