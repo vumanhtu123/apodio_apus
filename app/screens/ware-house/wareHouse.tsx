@@ -286,8 +286,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                 </View>
                             );
                         }}
-                        initialNumToRender={10}
-                        maxToRenderPerBatch={10}
+                        initialNumToRender={13}
+                        maxToRenderPerBatch={13}
                         windowSize={5}
                     />
                     <TouchableOpacity

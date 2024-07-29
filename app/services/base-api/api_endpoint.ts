@@ -87,4 +87,5 @@ export const ApiEndpoint = {
   DELETE_WAREHOUSE: "/api/v1/sale/stock-warehouse",
   NUMBER_STATE: "/api/v1/sale/stock-warehouse/warehouse-number",
   GET_LIST_SUPPLIER: "/api/v1/vendor/partner-tag/list",
+  GET_LIST_SUPPLIER_GROUP: "/api/v1/vendor/partners/list"
 };

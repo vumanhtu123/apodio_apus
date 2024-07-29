@@ -46,7 +46,7 @@ const getDomainGetWay = () => {
 const getDomainUAA = () => {
   const env = CONFIG.ENV;
   const domain = CONFIG.API.STAGING.UAA;
-  console.log("URL", CONFIG.API.DEV.UAA);
+  console.log("URL", CONFIG.API.STAGING.UAA);
   return domain;
 };
 

@@ -11,6 +11,7 @@ import { DashBoardStoreModel } from "../dashboard-store/dashborad-store";
 import { UserStoreModal } from "../users-store/users-store";
 import { CompanyStoreModel } from "../company-info-store/company-store";
 import { WarehouseStoreModal } from "../warehouse-store/warehouse-store";
+import { SupplierStore } from "../supplier-store/supplier-store";
 
 /**
  * A RootStore model.
@@ -27,7 +28,8 @@ export const RootStoreModel = types.model("RootStore").props({
   dashBoardStore: types.optional(DashBoardStoreModel,{}), 
   userStore : types.optional(UserStoreModal, {}),
   companyStore : types.optional(CompanyStoreModel, {}),
-  warehouseStore: types.optional(WarehouseStoreModal,{})
+  warehouseStore: types.optional(WarehouseStoreModal,{}),
+  supplierStore: types.optional(SupplierStore,{})
 });
 
 /**
