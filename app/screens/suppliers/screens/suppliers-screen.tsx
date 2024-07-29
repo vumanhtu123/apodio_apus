@@ -12,12 +12,12 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { renderItemSupplier2 } from "../component/item-list-supplier";
 import { styles } from "../styles/styles";
 import { dataSuppliers } from "../styles/data";
 import { ScrollView } from "react-native-gesture-handler";
 import SelectFilterModal from "../../product/component/modal-select-filter";
 import ModalCreateSuppliers from "../component/modal-create-supplier";
+import { RenderItemSupplierGrid, RenderItemSupplierList } from "../component/item-list-supplier";
 
 export const SuppliersScreen: FC = () => {
   const navigation = useNavigation();
@@ -27,6 +27,7 @@ export const SuppliersScreen: FC = () => {
   const [activeTab, setActiveTab] = useState("product");
   const [isVisible, setIsVisible] = useState(false);
   const [isVisibleAddSupplier, setIsVisibleAddSupplier] = useState(false)
+  const [statusHidden, setStatusHidden] = useState(false)
   // console.log("doannnn", isVisibleAddSupplier);
 
   const [typeFilter, setTypeFilter] = useState("");
@@ -55,25 +56,28 @@ export const SuppliersScreen: FC = () => {
   }, []);
 
   const openTypeFilter = () => {
-    setIsVisible(!true);
+    setStatusHidden(!statusHidden)
   };
 
   const handleIsAddSupplier = () => {
     setIsVisibleAddSupplier(!isVisibleAddSupplier)
   }
+  console.log("value list", statusHidden);
+
   return (
     <View style={styles.ROOT}>
       <Header
-        onRightPress={openTypeFilter}
+        onRightPress={() => openTypeFilter()}
         type={"AntDesign"}
         LeftIcon={Images.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Nhà cung cấp`}
-        RightIcon={Images.icon_funnel}
-        RightIcon1={isVisible ? Images.icon_close : Images.search}
+        RightIcon={statusHidden ? Images.ic_outline_list : Images.ic_grid}
+        RightIcon1={isVisible ? Images.icon_close : Images.icon_funnel}
         RightIcon2={isVisible ? Images.icon_close : Images.search}
         headerInput={isVisible}
+
         onRightPress1={() => navigation.navigate("filterScreen" as never)}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
@@ -208,13 +212,14 @@ export const SuppliersScreen: FC = () => {
             data={dataSuppliers}
             showsVerticalScrollIndicator={false}
             // refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshNotifications} title="ok" />}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item, index) => item.id.toString() + index}
             // onEndReached={handleEndReached}
             onEndReachedThreshold={0.8}
             // ListFooterComponent={renderFooter}
-            numColumns={2}
+            numColumns={statusHidden ? 1 : 2}
+            key={statusHidden ? 'grid' : 'list'}
             columnWrapperStyle={null}
-            renderItem={renderItemSupplier2}
+            renderItem={({ item }) => statusHidden ? <RenderItemSupplierList item={item} /> : <RenderItemSupplierGrid item={item} />}
           />
         </View>
       </View>

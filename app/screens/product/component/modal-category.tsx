@@ -27,7 +27,6 @@ const CategoryModalFilter = ({
   selectedCategory,
   setSelectedCategory,
   setNameDirectory,
-  setIndex,
 }: any) => {
   const inputRef = useRef<TextInput | null>(null);
   const [showLoading, setShowLoading] = useState(false);
@@ -92,7 +91,7 @@ const CategoryModalFilter = ({
         setSelectedCategory(item.id);
         setNameDirectory(item.name);
         setShowCategory(false);
-        setIndex(index);
+        // setIndex(index);
       }}
       style={{
         paddingVertical: scaleHeight(padding.padding_12),

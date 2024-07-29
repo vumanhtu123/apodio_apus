@@ -1,10 +1,10 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
 import React from 'react'
-import { Images } from '../../../../assets';
 import { colors, scaleHeight, scaleWidth } from '../../../theme';
 import { Styles } from '../style';
 import { useNavigation } from '@react-navigation/native';
 import en from '../../../i18n/en';
+import FastImage from 'react-native-fast-image';
 
 interface ItemList {
     id: number;
@@ -25,15 +25,26 @@ const ItemListWareHouse: React.FC<{ item: ItemList }> = ({ item }) => {
                 navigation.navigate({ name: 'detailWarehouse', params: { id: item.id, state: item.state, name: item.name } } as never)
             }}
         >
-            <Images.ic_Brick
+            <ImageBackground
+              style={{
+                width: scaleWidth(60),
+                height: scaleHeight(60),
+              }}
+              imageStyle={{ borderRadius: 8 }}
+              source={require("../../../../assets/Images/no_images.png")}>
+              <FastImage
                 style={{
-                    width: scaleWidth(40),
-                    height: scaleWidth(40),
-                    borderRadius: scaleHeight(8),
-                    marginRight: scaleWidth(6)
+                  width: scaleWidth(60),
+                  height: scaleHeight(60),
+                  borderRadius: 8,
                 }}
-            />
-            <View style={[Styles.flexRow, { flex: 2, alignItems: 'center', }]}>
+                source={{
+                  uri: '',
+                  cache: FastImage.cacheControl.immutable,
+                }}
+              />
+            </ImageBackground>
+            <View style={[Styles.flexRow, { flex: 2, alignItems: 'center', marginLeft: 20 }]}>
                 <View style={{ flex: 1 }}>
                     <Text style={Styles.txtItemWareHouse}>{item.code}</Text>
                     <Text style={{ fontSize: scaleWidth(10), fontWeight: '500' }}>{item?.name}</Text>

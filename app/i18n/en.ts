@@ -758,6 +758,7 @@ const en = {
     productTittle: "Sản phẩm",
     refactorCategories: "Chỉnh sửa danh mục",
     addPriceRange: "Thêm khoảng giá",
+    totalProduct: 'Tổng số sản phẩm:'
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -952,9 +953,11 @@ const en = {
     warning:
       " Lưu ý : Kho sẽ chuyển trạng thái lưu trữ , bạn không thể thực hiện hành động nhập sau khi lưu trữ",
     titleConfirm: "Bạn có chắc muốn lưu trữ kho",
-    this: "này không",
-    messengerSucces: "Bạn đã xóa kho hàng thành công",
+    this: "này không ?",
+    messengerSucces: "Bạn đã lưu trữ kho hàng thành công",
     messengerFail: "Lỗi xóa kho hàng",
+    messageError: "Code consists of only letters, numbers and the character _",
+    pleaseEnterInformation: "Vui lòng nhập thông tin",
   },
 
   GoodsExportBook: {

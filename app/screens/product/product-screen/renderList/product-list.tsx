@@ -8,6 +8,7 @@ import CategoryModalFilter from '../../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
+import { translate } from '../../../../i18n/translate';
 const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
@@ -16,18 +17,14 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
     const [page, setPage] = useState(0);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [isRefreshingCategory, setIsRefreshingCategory] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<any>();
     const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
     const [totalElementsProduct, setTotalElementsProduct] = useState<any>(0);
-    const [dataCategoryFilter, setDataCategoryFilter] = useState<any>([]);
     const [dataProduct, setDataProduct] = useState<any>([]);
-    const { categoryStore, productStore } = useStores();
+    const { productStore } = useStores();
     const [size, setSize] = useState(20);
     const [nameDirectory, setNameDirectory] = useState("");
     const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
-    const [index, setIndex] = useState<any>();
-    const [valueSearchCategory, setValueSearchCategory] = useState("");
     const isFirstRender = useRef(true);
 
     useFocusEffect(
@@ -45,25 +42,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         });
         return unsubscribe;
     }, [navigation]);
-    const handleGetCategoryFilter = async (valueSearchCategory?: any) => {
-        try {
-            const response = await categoryStore.getListCategoriesFilter(
-                0,
-                100,
-                valueSearchCategory
-            );
-            if (response && response.kind === "ok") {
-                const filteredData = response.response.data.content.map(({ id, name }: any) => ({ id, name }));
-                const newElement = { name: "Tất cả danh mục" };
-                filteredData.unshift(newElement);
-                setDataCategoryFilter(filteredData);
-            } else {
-                console.error("Failed to fetch categories:", response);
-            }
-        } catch (error) {
-            console.error("Error fetching categories:", error);
-        }
-    };
     const handleSubmitSearch = async () => {
         setIsLoading(true)
         setPage(0);
@@ -130,18 +108,10 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         setDataProduct([]);
         await handleGetProduct(searchValue);
     }, [dataProduct]);
-    const getValueSearchCategoryFilter = async (value: any) => {
-        // console.log('first------------', value)
-        setValueSearchCategory(value);
-        await handleGetCategoryFilter(value);
-    };
-    useEffect(() => {
-        handleGetCategoryFilter(valueSearchCategory);
-    }, []);
+
 
     useEffect(() => {
         //if (!isFirstRender.current) {
-        console.log('--------------useEffect--------selectedCategory---------')
         const fetchData = async () => {
             setPage(0);
             setDataProduct([]);
@@ -154,12 +124,10 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
 
     useEffect(() => {
         if (!isFirstRender.current) {
-            console.log('--------------useEffect--------page---------')
             if (!isRefreshing) {
                 handleGetProduct(searchValue); // Load more
             }
         }
-
     }, [page]);
     const handleEndReached = () => {
         if (!isRefreshing && page <= totalPagesProduct - 1 && !isLoading) {
@@ -167,21 +135,21 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             setPage((prevPage) => prevPage + 1);
         }
     };
-    
+
     const refreshProduct = useCallback(async () => {
         productStore.setIsLoadMore(true)
         setIsRefreshing(true);
         setDataProduct([]);
         setSelectedCategory(undefined);
-        setPage(0);
         onClearSearch();
         setOpenSearch(false);
         setNameDirectory("");
-        productStore.setTagId(0);
+        setPage(0);
+        productStore.setTagId(0);  
         productStore.setSort([]);
         await handleGetProduct();
         setIsRefreshing(false);
-    }, [onClearSearch, handleGetProduct]);
+    }, [onClearSearch]);
     const renderFooter = () => {
         if (isRefreshing || page >= totalPagesProduct - 1 || dataProduct.length < 1) return null;
         return (
@@ -190,13 +158,9 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             </View>
         );
     };
-
     useEffect(() => {
         productStore.setViewGrid(isGridView);
     }, [isGridView]);
-    // const toggleView = () => {
-    //     setIsGridView(!isGridView);
-    // };
     const handleProductDetail = (idProduct: number, hasVariant: boolean) => {
         productStore.setSelectedProductId(idProduct);
         navigation.navigate({ name: "productDetailScreen", params: { hasVariant: hasVariant } } as never);
@@ -299,10 +263,9 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
                 setSelectedCategory={setSelectedCategory}
                 setNameDirectory={setNameDirectory}
                 isSearchBarVisible={openSearch}
-                setIndex={setIndex}
             />
             <View style={{ alignItems: 'flex-end', paddingHorizontal: scaleWidth(16) }}>
-                <Text style={{ fontSize: fontSize.size12 }}>Tổng số sản phẩm: {Math.min(size * (page + 1), totalElementsProduct)}/{totalElementsProduct}</Text>
+                <Text style={{ fontSize: fontSize.size12 }}>{translate("productScreen.totalProduct")} {Math.min(size * (page + 1), totalElementsProduct)}/{totalElementsProduct}</Text>
             </View>
             <View style={styles.containerProduct}>
                 <FlatList

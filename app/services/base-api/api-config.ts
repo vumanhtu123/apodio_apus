@@ -28,7 +28,6 @@ const getDomainAccounting = () => {
 };
 const getDomainErp = () => {
   const env = CONFIG.ENV;
-  //const domain = CONFIG.API.DEV.URL_ERP;
   const domain = CONFIG.API.STAGING.URL_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("ERP", domain);
@@ -72,6 +71,11 @@ const getBaseURL = () => {
 const getDomainWarehouse = () => {
   const domain = CONFIG.API.STAGING.URL_WAREHOUSE;
   console.log('URL warehouse 2',domain )
+  return domain
+}
+const getDomainSupplier = () => {
+  const domain = CONFIG.API.STAGING.URL_SUPPLIER;
+  console.log("URL Supplier", domain);
   return domain
 }
 export interface ApiConfig {
@@ -125,5 +129,10 @@ export const DEFAULT_API_CONFIG_ACCOUNTING: ApiConfig = {
 
 export const DEFAULT_API_WAREHOUSE: ApiConfig = {
   url: getDomainWarehouse(),
+  timeout: 100000
+}
+
+export const DEFAULT_API_SUPPLIER: ApiConfig = {
+  url: getDomainSupplier(),
   timeout: 100000
 }

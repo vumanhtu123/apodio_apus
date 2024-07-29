@@ -1,9 +1,7 @@
-import { id } from "date-fns/locale";
 import { values } from "mobx";
 import { flow, types } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { WarehouseAPI } from "../../services/api/api-warehouse";
-import { reset } from "i18n-js";
 import { ResponseWarehouse } from "./warehouse-model";
 import { DataDetailWarehouse } from "./detail-warehouse-model";
 import { DataNumberState } from "./number-state-model";
@@ -13,6 +11,7 @@ export const WarehouseStoreModal = types
   .model("WarehouseStore")
   .props({
     isLoadMoreWarehouse: types.optional(types.boolean, false),
+    // errors: types.optional(types.map(types.string), {}),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
