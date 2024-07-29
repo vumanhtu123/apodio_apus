@@ -32,7 +32,7 @@ interface DescribeModalProps {
   isVisible: boolean;
   setIsVisible: () => void;
   title?: string;
-  titleTx?: TxKeyPath | {};
+  titleTx?: TxKeyPath;
   onCancel: () => void;
   onConfirm: (value: any) => void;
   dataDescribe: string;
@@ -72,7 +72,7 @@ const DescribeModal = (props: DescribeModalProps) => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
         style={stylesDescribe.keyboardView}>
         <View style={stylesDescribe.viewTittle}>
-          <Text style={stylesDescribe.textTittle} tx={actualTitle} />
+          <Text style={stylesDescribe.textTittle} text={actualTitle} />
           <View style={stylesDescribe.viewTextField}>
             <Controller
               control={control}
@@ -107,7 +107,7 @@ const DescribeModal = (props: DescribeModalProps) => {
               onPress={() => onCancel()}
               tx={"common.cancel"}
               style={stylesDescribe.styleButtonCancel}
-              textStyle={stylesDescribe.styleButtonCancel}
+              textStyle={stylesDescribe.textButtonCancel}
             />
             <Button
               tx={"common.confirm"}

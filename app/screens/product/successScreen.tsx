@@ -4,14 +4,13 @@ import { Images } from "../../../assets/index";
 import { Text } from "../../components/text/text";
 import { fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
-import { navigate } from "../../navigators";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useStores } from "../../models";
 
 export const SuccessScreen: FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { idProduct } = route.params || undefined;
+  const { idProduct }: any = route.params || undefined;
   const { productStore } = useStores();
   return (
     <View style={styles.ROOT}>
@@ -44,8 +43,8 @@ export const SuccessScreen: FC = () => {
             navigation.reset({
               index: 1,
               routes: [
-                { name: "productScreen" as any },
-                { name: "ProductCreateScreen" as any },
+                { name: "productScreen" as never } ,
+                { name: "ProductCreateScreen" as never },
               ],
             })
           }

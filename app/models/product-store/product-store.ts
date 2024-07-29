@@ -10,6 +10,7 @@ import { Content, ProductResult } from "./product-store-model";
 import { ProductApi } from "../../services/api/api-product";
 import { productData } from "../add-product-props";
 import { UploadApi } from "../../services/api/api_upload_image";
+import { ProductDetailResult } from "./product-detail-modal";
 
 export const ProductStoreModel = types
   .model("ProductStore")
@@ -240,7 +241,7 @@ export const ProductStoreModel = types
     }),
     getDetailProduct: flow(function* (id: number) {
       const productApi = new ProductApi(self.environment.api);
-      const result: ProductResult = yield productApi.getDetailProduct(id);
+      const result: ProductDetailResult = yield productApi.getDetailProduct(id);
       if (result.kind === "ok") {
         return result;
       } else {

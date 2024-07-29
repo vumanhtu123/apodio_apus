@@ -33,13 +33,13 @@ import { ItemGroupPrice } from "../component/itemCreateProduct";
 
 export const EditClassify: FC = (item) => {
     const route = useRoute();
-    const reload = route?.params?.reload;
+    // const reload = route?.params?.reload;
     const navigation = useNavigation();
     const [imagesNote, setImagesNote] = useState<any>([]);
     const [valuePurchase, setValuePurchase] = useState(false);
     const [valueSwitchUnit, setValueSwitchUnit] = useState(true);
     const [addDescribe, setAddDescribe] = useState(false);
-    const [detailUnitGroupData, setDetailUnitGroupData] = useState();
+    const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
     const [addWeight, setAddWeight] = useState(false);
     const [description, setDescription] = useState("");
     const [vendor, setVendor] = useState([]);
@@ -91,7 +91,7 @@ export const EditClassify: FC = (item) => {
                 getDetailUnitGroup(newDataEdit.uomGroupId)
             }
 
-            if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null) {
+            if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null && newDataEdit?.baseTemplatePackingLine !== null ) {
                 setAddWeight(true)
             }
             methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -146,6 +146,7 @@ export const EditClassify: FC = (item) => {
             const uomId = {
                 id: data.originalUnit.id,
                 label: data.originalUnit.name,
+                uomGroupLineId: data.originalUnit.uomGroupLineId,
             };
             setUomId(uomId);
         } else {

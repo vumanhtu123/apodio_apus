@@ -104,7 +104,6 @@ export const CreateWareHouseScreen: FC<
     formState: { errors },
     setValue,
     clearErrors,
-    setError,
     watch,
   } = methods;
 
@@ -137,7 +136,7 @@ export const CreateWareHouseScreen: FC<
     clearErrors("temperature3");
   };
 
-  const onError = (errors) => {
+  const onError = (errors: any) => {
     console.log("Form validation errors:", errors);
     if(config){
       setShowErrors(true);
@@ -173,7 +172,6 @@ export const CreateWareHouseScreen: FC<
   
 
   const onSubmit = (data: any) => {
-    console.log("tuvm test data", data);
     if (
       (data.heightUom.text &&
         data.lengthUom.text &&
@@ -202,7 +200,6 @@ export const CreateWareHouseScreen: FC<
       setCheckErrorTriggered(prev => prev + 1);
       }
     }
-    
   };
 
   const handlerUpdateData = (data: any, id: any) => {

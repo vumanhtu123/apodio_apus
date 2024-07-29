@@ -143,7 +143,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="productScreen.outOfStock"
+                  tx="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -152,7 +152,7 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="productScreen.stocking"
+                  tx="productScreen.stocking"
                 />
               )
             ) : viewProduct === "VIEW_VARIANT" &&
@@ -161,7 +161,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="productScreen.outOfStock"
+                  tx="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -170,7 +170,7 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="productScreen.stocking"
+                  tx="productScreen.stocking"
                 />
               )
             ) : null}
@@ -371,7 +371,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="productScreen.outOfStock"
+                  tx="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -380,7 +380,7 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="productScreen.stocking"
+                  tx="productScreen.stocking"
                 />
               )
             ) : viewProduct === "VIEW_VARIANT" &&
@@ -389,7 +389,7 @@ const RenderOrderItem = ({
                 <Text
                   numberOfLines={1}
                   style={[stylesItem.amount, { fontStyle: "italic" }]}
-                  text="productScreen.outOfStock"
+                  tx="productScreen.outOfStock"
                 />
               ) : (
                 <Text
@@ -398,7 +398,7 @@ const RenderOrderItem = ({
                     stylesItem.amount,
                     { color: colors.palette.malachite, fontStyle: "italic" },
                   ]}
-                  text="productScreen.stocking"
+                  tx="productScreen.stocking"
                 />
               )
             ) : null}

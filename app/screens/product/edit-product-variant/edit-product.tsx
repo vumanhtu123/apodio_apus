@@ -47,21 +47,21 @@ export const ProductEditScreen: FC = (item) => {
   const [addDescribe, setAddDescribe] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
-  const [detailUnitGroupData, setDetailUnitGroupData] = useState();
+  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
   const [addWeight, setAddWeight] = useState(false);
-  const [attributeIds, setAttributeIds] = useState([]);
+  const [attributeIds, setAttributeIds] = useState<number[]>([]);
   const [description, setDescription] = useState("");
-  const [attributeValues, setAttributeValues] = useState([]);
-  const [textAttributes, setTextAttributes] = useState([]);
+  const [attributeValues, setAttributeValues] = useState<{}[]>([]);
+  const [textAttributes, setTextAttributes] = useState<{}[]>([]);
   const [modalcreateUnit, setModalcreateUnit] = useState(false);
   const [arrIdOrigin, setArrIdOrigin] = useState([]);
   const [vendor, setVendor] = useState([]);
-  const [attributeToEdit, setAttributeToEdit] = useState([]);
-  const [constAttributeToEdit, setConstAttributeToEdit] = useState([]);
-  const [dropdownToEdit, setDropdownToEdit] = useState([]);
+  const [attributeToEdit, setAttributeToEdit] = useState<{}[]>([]);
+  const [constAttributeToEdit, setConstAttributeToEdit] = useState<{}[]>([]);
+  const [dropdownToEdit, setDropdownToEdit] = useState<{}[]>([]);
   const [defaultTags, setDefaultTags] = useState([]);
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{}[]>([]);
   const [productUsing, setProductUsing] = useState(false);
   const [priceUsing, setPriceUsing] = useState(false);
   const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
@@ -254,7 +254,7 @@ export const ProductEditScreen: FC = (item) => {
       setConstAttributeToEdit(attributeEdit);
       setAttributeToEdit(attributeEdit);
 
-      if (newDataEdit?.baseTemplatePackingLine !== null ) {
+      if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null && newDataEdit?.baseTemplatePackingLine !== null) {
         setAddWeight(true)
       }
       methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -291,7 +291,7 @@ export const ProductEditScreen: FC = (item) => {
           return { text: items.name, value: items.id };
         }
       );
-      const abc = [...new Set(newDataEdit?.attributeCategory?.flatMap((item: any) => item.id))]
+      const abc: any = [...new Set(newDataEdit?.attributeCategory?.flatMap((item: any) => item.id))]
       setAttributeIds(abc)
       const newArr1 = newArr?.map((item: { value: any }) => item.value);
       setDefaultTags(newArr);
@@ -396,6 +396,7 @@ export const ProductEditScreen: FC = (item) => {
       const uomId = {
         id: data.originalUnit.id,
         label: data.originalUnit.name,
+        uomGroupLineId: data.originalUnit.uomGroupLineId,
       };
       setUomId(uomId);
     } else {
@@ -465,7 +466,7 @@ export const ProductEditScreen: FC = (item) => {
 
       setAttributeValues(attributeValueArr);
       setTextAttributes(textAttributeValueArr);
-      const abc = [...new Set(attributeArr?.flatMap((item: any) => item.idGroup))]
+      const abc: any = [...new Set(attributeArr?.flatMap((item: any) => item.idGroup))]
       setAttributeIds(abc)
 
       const newArr = mapDataDistribute(resultArray);
@@ -514,10 +515,10 @@ export const ProductEditScreen: FC = (item) => {
         };
       });
 
-      newArr5.forEach((item, index) => (dataArr[index].attributeValues = item));
+      newArr5.forEach((item: any, index) => (dataArr[index].attributeValues = item));
 
       const bMap = new Map(
-        dataOldCreateProduct.map((item) => [item.name.trim(), item])
+        dataOldCreateProduct.map((item: {name: any}) => [item.name.trim(), item])
       );
 
       const updatedA = dataArr.map((item) => {
@@ -785,6 +786,7 @@ export const ProductEditScreen: FC = (item) => {
 
       // Gửi các yêu cầu upload đồng thời và chờ cho đến khi tất cả hoàn thành
       const results = await Promise.all(uploadPromises);
+      console.log('1283591823581')
       let hasNull = results.some((item) => item === null);
       if (!hasNull) {
         console.log("results-------123 : ", JSON.stringify(imagesNote));
@@ -800,6 +802,7 @@ export const ProductEditScreen: FC = (item) => {
       // Xử lý kết quả upload
       results.forEach((result, index) => {
         if (result) {
+          console.log(`Upload image successfully`, JSON.stringify(imageArray[index]));
           console.log(`Upload image ${imageArray[index]} successfully`);
         } else {
           console.log(`Failed to upload image ${imageArray[index]}`);
@@ -864,13 +867,14 @@ export const ProductEditScreen: FC = (item) => {
     navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: "edit" } } as never);
   };
 
-  const editAttribute = useCallback(() => {
+  const editAttribute = () => {
     if (productUsing === true || priceUsing === true) {
       navigation.navigate({
         name: "editAttributeByEdit", params: {
           dataAttribute: attributeToEdit,
           constDataAttribute: constAttributeToEdit,
           dropdownSelected: dropdownToEdit,
+          hasVariantInConfig: hasVariantInConfig
         }
       } as never);
     } else {
@@ -883,7 +887,7 @@ export const ProductEditScreen: FC = (item) => {
         }
       } as never);
     }
-  }, [dropdownToEdit, attributeToEdit, constAttributeToEdit, hasVariantInConfig])
+  }
 
   return (
     <FormProvider {...methods}>
@@ -1071,7 +1075,9 @@ export const ProductEditScreen: FC = (item) => {
             addWeight={addWeight}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
+            isVariantInConfig={isVariantInConfig}
             detailUnitGroupData={detailUnitGroupData}
+            isUsing={productUsing === true || priceUsing === true ? true : false}
             uomId={uomId}
             valueSwitchUnit={valueSwitchUnit}
             productName={methods.getValues('productName')}
@@ -1184,7 +1190,7 @@ export const ProductEditScreen: FC = (item) => {
           </View>
         </ScrollView>
         <DescribeModal
-          title={"productScreen.describe"}
+          titleTx={"productScreen.describe"}
           isVisible={modalDescribe}
           dataDescribe={description}
           setIsVisible={() => setModalDescribe(false)}

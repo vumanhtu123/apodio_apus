@@ -32,7 +32,11 @@ import { useStores } from "../../../../models";
 import { TYPE_SELECT_IMAGE } from "../../../../utils/enum";
 // import { changeLanguage } from "../../../i18n"
 // import { formatPhoneNumber, validateFileSize } from "../../../utils/validate"
-import { clear, getAccessToken, setAccessToken } from "../../../../utils/storage";
+import {
+  clear,
+  getAccessToken,
+  setAccessToken,
+} from "../../../../utils/storage";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 // import { hideLoading, showLoading } from "../../../utils/toast"
@@ -50,6 +54,7 @@ import {
   TabScreenProps,
 } from "../../../../navigators/bottom-navigation";
 import { TextField } from "../../../../components";
+import { changeLanguage } from "../../../../i18n";
 // import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors"
 // import { UsersScreen } from "../users/view/users-screen"
 //
@@ -119,7 +124,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
 
     const navigation = useNavigation();
     const [isVisibleFeedback, setIsVisibleFeedback] = useState(false);
-    const [selectLanguage, setSelectLanguage] = useState("");
+    const [selectLanguage, setSelectLanguage] = useState(false);
     const { top } = useSafeAreaInsets();
     const [data, setData] = useState();
     const [showLanguage, setShowLanguage] = useState(false);
@@ -143,6 +148,14 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     // useEffect(() => {
     //   getData()
     // }, [])
+
+    const _onChangeLanguage = useCallback(
+      (value: any) => {
+        console.log("onChangeLanguage", value);
+        value === true ? changeLanguage("fr") : changeLanguage("en");
+      },
+      [selectLanguage]
+    );
 
     const options = {
       includeBase64: false,
@@ -416,7 +429,10 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
-              onPress={() => setSelectLanguage(!selectLanguage)}>
+              onPress={() => {
+                setSelectLanguage(!selectLanguage);
+                _onChangeLanguage(!selectLanguage);
+              }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
                   <Images.icon_VietNam />
@@ -438,6 +454,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               }}
               onPress={() => {
                 setSelectLanguage(!selectLanguage);
+                _onChangeLanguage(!selectLanguage);
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
@@ -485,9 +502,9 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 authenticationStore.logout();
                 navigation.reset({
                   index: 0,
-                  routes: [{ name: 'SplashScreen' }],
+                  routes: [{ name: "SplashScreen" }],
                 });
-               // navigation.navigate("SplashScreen" as never);
+                // navigation.navigate("SplashScreen" as never);
               }}>
               <Text
                 tx="inforMerchant.logout"
