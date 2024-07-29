@@ -2,14 +2,12 @@ import { TouchableOpacity, View, } from 'react-native'
 import React, { FC, useState } from 'react'
 import Modal from 'react-native-modal'
 import { Styles } from '../screen/styles'
-import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme'
+import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme'
 import { Text, TextField } from '../../../components'
 import { Images } from '../../../../assets'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 import { Controller, useForm } from 'react-hook-form'
 import en from '../../../i18n/en'
-import { InputSelect } from '../../../components/input-select/inputSelect'
-import { id } from 'date-fns/locale'
 interface propsModal {
     isVisible?: boolean,
     setIsVisible?: any,

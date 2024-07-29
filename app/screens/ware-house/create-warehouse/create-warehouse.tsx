@@ -1,20 +1,19 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { navigate, NavigatorParamList } from "../../../navigators";
+import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useRef, useState } from "react";
-import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { Header, Text, TextField } from "../../../components";
 import { Styles, stylesWareHouse } from "../style";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { scaleHeight } from "../../../theme";
 import { Images } from "../../../../assets";
 import { ConditionsComponent } from "../component/conditions-component";
 import { ConfigInfoMoreComponent } from "../component/config-info-component";
 import { useStores } from "../../../models";
 import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
-import { showErrorCSS } from "react-native-svg/lib/typescript/deprecated";
 
 export const CreateWareHouseScreen: FC<
   StackScreenProps<NavigatorParamList, "warehouse">
@@ -140,37 +139,12 @@ export const CreateWareHouseScreen: FC<
 
   const onError = (errors) => {
     console.log("Form validation errors:", errors);
-    setShowErrors(true);
-    setCheckErrorTriggered(prev => prev + 1);
-  };
-
-  const checkUom = () => {
-    console.log("check error", lengthUom.text);
-    switch ("" || undefined) {
-      case lengthUom.text:
-        setError("longs", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      case widthUom.text:
-        setError("widthUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      case heightUom.text:
-        setError("heightUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      case weightCapacityUom.text:
-        setError("weightCapacityUom", {
-          type: "required",
-          message: "Vui lòng chọn đơn vị tính",
-        });
-      default:
-        break;
+    if(config){
+      setShowErrors(true);
+      setCheckErrorTriggered(prev => prev + 1);
     }
   };
+
 
   const onPressConfig = () => {
     setValue("config", !config);
@@ -196,26 +170,7 @@ export const CreateWareHouseScreen: FC<
     clearErrors("weightCapacityUom");
   };
 
-  const onValidate = (data: any) => {
-    console.log('-------data------', JSON.stringify(data))
-    if (data.config == true) {
-      if (
-        (data.heightUom.text &&
-          data.lengthUom.text &&
-          data.widthUom.text &&
-          data.weightCapacityUom.text != undefined) ||
-        ""
-      ) {
-        console.log('----------true---------')
-        onSubmit(data);
-      } else {
-        console.log('----------else---------')
-        methods.handleSubmit(checkUom);
-      }
-    } else {
-      checkUom();
-    }
-  };
+  
 
   const onSubmit = (data: any) => {
     console.log("tuvm test data", data);
@@ -242,8 +197,10 @@ export const CreateWareHouseScreen: FC<
           break;
       }
     }else {
+      if(config){
       setShowErrors(true);
       setCheckErrorTriggered(prev => prev + 1);
+      }
     }
     
   };
@@ -763,27 +720,7 @@ export const CreateWareHouseScreen: FC<
               )}
             />
             {config ? <ConfigInfoMoreComponent list={listUnit} checkErrorTriggered={checkErrorTriggered} showErrors={showErrors} /> : null}
-            {/* <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginVertical: 15,
-                }}>
-                <Text tx="wareHouse.defaultWareHouse"></Text>
-                <Switch
-                  thumbColor="#0178D4"
-                  trackColor={{ false: "#C8C8C8", true: "#C8C8C8" }}
-                  onValueChange={onChange}
-                  value={value}
-                />
-              </View>
-            )}
-            name="notifications"
-          /> */}
+            
           </ScrollView>
           <TouchableOpacity
             onPress={methods.handleSubmit(onSubmit, onError)}
