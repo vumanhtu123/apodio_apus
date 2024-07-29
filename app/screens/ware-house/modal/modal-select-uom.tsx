@@ -121,8 +121,6 @@ export const SelectUom = (props: any) => {
     showModal,
     setShowModal,
   } = props;
-  const title = titleText || (titleTx && translate(titleTx)) || "";
-  const hint = hintText || (hintTx && translate(hintTx)) || "";
   const _ = require("lodash");
   const [data, setData] = useState("");
   const [dataChoice, setDataChoice] = useState({});
@@ -261,7 +259,7 @@ export const SelectUom = (props: any) => {
                         const dataChoiceItem = arrData.filter(
                           (i: any) => i.text !== item.text
                         );
-                        setFilteredData(dataChoiceItem);
+                        // setFilteredData(dataChoiceItem);
                         // console.log(data , 'dsadasd')
                       }}>
                       {isShowCheckBox ? (

@@ -22,11 +22,6 @@ export const OpenAppStack = () => {
         options={{ gestureEnabled: false }}
         component={IntroductionScreen}
       />
-      {/* <Stack.Screen
-        name="termsAgreements"
-        options={{ gestureEnabled: false }}
-        component={TermsAgreementsScreen}
-      /> */}
     </Stack.Navigator>
   );
 };

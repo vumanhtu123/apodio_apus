@@ -11,7 +11,7 @@ import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notificati
 import { translate } from "../../../i18n/translate"
 import { checkCameraPermission, checkLibraryPermission, requestCameraPermission, requestLibraryPermission } from "../../../utils/requesPermissions"
 import { RESULTS } from "react-native-permissions"
-import { launchCamera, launchImageLibrary } from "react-native-image-picker"
+import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from "react-native-image-picker"
 
 interface ImageProduct {
     arrData: any
@@ -39,13 +39,14 @@ export default function ImageProduct(props: ImageProduct) {
         if (permissionStatus === RESULTS.GRANTED) {
             console.log("You can use the camera");
 
-            const options = {
+            const options: CameraOptions = {
                 cameraType: "back",
+                mediaType: 'photo',
                 quality: 1,
                 maxHeight: 500,
                 maxWidth: 500,
             };
-            launchCamera(options, (response) => {
+            launchCamera(options, (response: any) => {
                 console.log("==========> response1233123", response);
                 if (response.didCancel) {
                     console.log("User cancelled photo picker1");
@@ -98,8 +99,8 @@ export default function ImageProduct(props: ImageProduct) {
         console.log(permissionStatus);
 
         if (permissionStatus === RESULTS.GRANTED) {
-            const options = {
-                cameraType: "back",
+            const options: ImageLibraryOptions = {
+                mediaType: 'photo',
                 quality: 1,
                 maxHeight: 500,
                 maxWidth: 500,
@@ -151,8 +152,8 @@ export default function ImageProduct(props: ImageProduct) {
 
             console.log("Permission blocked, you need to enable it from settings");
         } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-            const options = {
-                cameraType: "back",
+            const options: ImageLibraryOptions = {
+                mediaType: 'photo',
                 quality: 1,
                 maxHeight: 500,
                 maxWidth: 500,
@@ -168,7 +169,7 @@ export default function ImageProduct(props: ImageProduct) {
                     console.log("User cancelled photo picker1");
                 } else if (response?.assets && response.assets.length > 0) {
                     const selectedAssets = response.assets.map((asset) => asset);
-                    if (selectedAssets.length + imagesNote.length > 6) {
+                    if (selectedAssets.length + arrData.length > 6) {
                         Toast.show({
                             type: ALERT_TYPE.DANGER,
                             title: "",
@@ -337,6 +338,7 @@ export default function ImageProduct(props: ImageProduct) {
                                 autoplay={false}
                                 ref={refCarousel}
                                 loop
+                                vertical={false}
                                 renderItem={({ item, index }: any) => (
                                     <View>
                                         <Image
@@ -352,9 +354,9 @@ export default function ImageProduct(props: ImageProduct) {
                                 itemWidth={Dimensions.get("window").width - 32}
                                 firstItem={activeSlide}
                                 onSnapToItem={(index) => setActiveSlide(index)}
-                                lockScrollWhileSnapping={true}
-                                enableMomentum={false}
-                                decelerationRate={0.5}
+                                // lockScrollWhileSnapping={true}
+                                // enableMomentum={false}
+                                // decelerationRate={0.5}
                             />
                             <Pagination
                                 dotsLength={

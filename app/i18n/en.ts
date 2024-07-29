@@ -8,6 +8,7 @@ const en = {
     listCompany: "Danh sách công ty",
     filter: " Bộ lọc",
     saveChange: "Lưu thay đổi",
+    save: "Lưu",
     edit: "Sửa",
     create: "Tạo",
     continue: "Tiếp tục",
@@ -824,6 +825,12 @@ const en = {
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",
+    addNewAttributeGroup: "Thêm nhóm thuộc tính",
+    addNewAttribute: "Thêm thuộc tính",
+    inputNameAttributeGroup: "Nhập tên nhóm thuộc tính",
+    inputNameAttribute: "Nhập tên thuộc tính",
+    createAttributeInGroup: "Tạo thuộc tính trong nhóm",
+    enterValue: "Nhập giá trị",
   },
   filterScreen: {
     new: "Mới nhất",
@@ -956,6 +963,8 @@ const en = {
     this: "này không ?",
     messengerSucces: "Bạn đã lưu trữ kho hàng thành công",
     messengerFail: "Lỗi xóa kho hàng",
+    messageError: "Code consists of only letters, numbers and the character _",
+    pleaseEnterInformation: "Vui lòng nhập thông tin",
   },
 
   GoodsExportBook: {

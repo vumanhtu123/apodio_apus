@@ -1,14 +1,14 @@
 import { createBottomTabNavigator, BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import React from "react"
 import { Platform, TouchableOpacity, View, ViewStyle } from "react-native"
-import { DashBoardScreen, ProductScreen, OrderScreen, AccountScreen } from "../screens"
+import { DashBoardScreen, ProductScreen, OrderScreen } from "../screens"
 import { CommonActions, CompositeScreenProps } from "@react-navigation/native"
 import {NavigatorParamList, AppStackScreenProps} from './app-navigator';
 import { SvgIcon, Text } from "../components"
 import { colors } from "../theme"
 import { fontSize, scaleHeight, scaleWidth } from "../theme/dimension"
 import { Images } from '../../assets'
-import { UserScreen } from "../screens/users/view/users-screen"
+import { UserScreen } from "../screens/common/users/view/users-screen"
 
 export type BottomParamList = {
   home: undefined
