@@ -7,7 +7,7 @@ import { Text } from "../../../components";
 interface Item {
   code: string,
   name: string,
-  phone: number
+  phoneNumber: number
 
 }
 
@@ -34,14 +34,14 @@ export const RenderItemSupplierList = ({ item }: any) => {
             alignItems: "center",
             justifyContent: "center",
           }}>
-          <Text style={{ fontSize: fontSize.size10, color: "#0078D4" }}>
+          <Text style={{ fontSize: fontSize.size10, color: "#0078D4", textAlign: 'center' }}>
             {item.code}
           </Text>
         </View>
         <View style={{ marginHorizontal: 6 }}>
           <Text style={{ fontSize: fontSize.size10 }}>{item.name}</Text>
           <Text style={{ fontSize: fontSize.size10, color: "#747475" }}>
-            {item.phone}
+            {item.phoneNumber}
           </Text>
         </View>
       </View>
@@ -99,7 +99,7 @@ export const RenderItemSupplierGrid: React.FC<{ item: Item }> = ({ item }) => {
               alignSelf: "center",
             }}></Text>
           <Text
-            text={item.phone}
+            text={item.phoneNumber}
             style={{
               fontSize: fontSize.size10,
               color: "#747475",

@@ -51,7 +51,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const totalPages2 = useRef<any>()
         const totalElement = useRef<any>()
         const getAPI = useStores()
-        const size = useRef(10);
+        const size = useRef(13);
         const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
         console.log('value load more', isLoadingMore);
 
@@ -333,8 +333,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                 </View>
                             );
                         }}
-                        initialNumToRender={10}
-                        maxToRenderPerBatch={10}
+                        initialNumToRender={13}
+                        maxToRenderPerBatch={13}
                         windowSize={5}
                     />
                     <TouchableOpacity
