@@ -252,6 +252,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                     }
                                     key={item.name}
                                     onPress={() => {
+                                        getAPI.warehouseStore.setIsLoadMoreWarehouse(false)
+
                                         console.log("type tabbar", item.name);
                                         setIndexTabbar(item?.state);
                                     }}>
