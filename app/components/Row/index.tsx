@@ -1,6 +1,6 @@
 import React from "react"
 import { TouchableOpacity, View, ViewStyle } from "react-native"
-import { scaleHeight } from "../../theme"
+import { scaleHeight } from "../../app-purchase/theme"
 
 type JustifyTypes =
   | "flex-start"

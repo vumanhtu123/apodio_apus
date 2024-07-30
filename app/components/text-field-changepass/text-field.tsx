@@ -17,8 +17,8 @@ import {
   scaleHeight,
   scaleWidth,
   spacing,
-} from "../../theme";
-import { translate, TxKeyPath } from "../../i18n";
+} from "../../app-purchase/theme";
+import { translate, TxKeyPath } from "../../app-purchase/i18n";
 import { Text } from "../text/text";
 
 // the base styling for the container

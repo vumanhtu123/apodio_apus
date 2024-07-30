@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { colors, scaleHeight, scaleWidth } from "../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../app-purchase/theme";
 import { Text } from "../text/text";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextField } from "../text-field/text-field";

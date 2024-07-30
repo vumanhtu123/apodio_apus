@@ -1,5 +1,5 @@
 import { TextStyle, ViewStyle } from "react-native";
-import { TxKeyPath } from "../../i18n";
+import { TxKeyPath } from "../../app-purchase/i18n";
 
 export interface InputSelectProps {
   titleText?: string;

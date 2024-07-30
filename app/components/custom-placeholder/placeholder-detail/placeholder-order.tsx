@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
-import { margin, scaleHeight, scaleWidth } from '../../../theme'
+import { margin, scaleHeight, scaleWidth } from '../../../app-purchase/theme'
 
 export const PlaceholderOrder = () => {
     return (

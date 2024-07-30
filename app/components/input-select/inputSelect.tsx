@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { Images } from "../../../assets/index";
-import { translate } from "../../i18n";
+import { translate } from "../../app-purchase/i18n";
 import {
   colors,
   fontSize,
@@ -24,7 +24,7 @@ import {
   padding,
   scaleHeight,
   scaleWidth,
-} from "../../theme";
+} from "../../app-purchase/theme";
 import { Text } from "../text/text";
 import { InputSelectProps } from "./inputSelect.props";
 

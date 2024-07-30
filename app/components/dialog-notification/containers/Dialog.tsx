@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ACTION, ALERT_TYPE, ENV } from '../config';
 import { Color, getImage } from '../service';
-import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
+import { fontSize, scaleHeight, scaleWidth } from '../../../app-purchase/theme';
 import { Loading } from './Loading';
 
 export type IConfigDialog = {

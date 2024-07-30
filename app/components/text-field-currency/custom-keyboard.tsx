@@ -5,7 +5,7 @@ import {
   scaleHeight,
   scaleWidth,
   spacing,
-} from "../../theme";
+} from "../../app-purchase/theme";
 import { Modal, View, TouchableOpacity, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 interface CustomKeyboardModalProps {

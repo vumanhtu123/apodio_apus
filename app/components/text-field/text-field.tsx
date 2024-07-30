@@ -21,8 +21,8 @@ import {
   scaleHeight,
   scaleWidth,
   spacing,
-} from "../../theme";
-import { translate, TxKeyPath } from "../../i18n";
+} from "../../app-purchase/theme";
+import { translate, TxKeyPath } from "../../app-purchase/i18n";
 import { SvgIcon } from "../svg-icon";
 import { Images } from "../../../assets";
 import { Text } from "../text/text";

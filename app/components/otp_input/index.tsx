@@ -1,4 +1,4 @@
-import {colors} from '../../theme';
+import {colors} from '../../app-purchase/theme';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Dimensions,

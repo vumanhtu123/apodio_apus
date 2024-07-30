@@ -1,6 +1,6 @@
 import * as React from "react"
 import { ActivityIndicator, TextStyle, View, ViewStyle , Modal, StyleSheet} from "react-native"
-import { colors } from "../../theme"
+import { colors } from "../../app-purchase/theme"
 import { Text } from "../"
 // import Modal from "react-native-modal"
 

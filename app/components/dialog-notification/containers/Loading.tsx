@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, TextStyle, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
-import { colors } from '../../../theme';
+import { colors } from '../../../app-purchase/theme';
 import { Text } from '../../../components/text/text';
 
 export type IConfigLoading = {

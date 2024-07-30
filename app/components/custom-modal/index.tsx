@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
-import { colors, margin, scaleHeight, scaleWidth } from "../../theme"
+import { colors, margin, scaleHeight, scaleWidth } from "../../app-purchase/theme"
 import Modal from 'react-native-modal'
 
 
