@@ -45,7 +45,10 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const totalElement = useRef<any>()
         const getAPI = useStores()
         const size = useRef(20);
-        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
+        const a = useRef(0)
+        console.log('re-render', a.current++)
+
+        console.log("value index tabar", indexTabbar);
 
 
         const dataListTabar = useMemo(() => [
@@ -97,10 +100,12 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             { name: en.wareHouse.save, length: lengthSave, state: 'ARCHIVED' }
         ], [lengthAll, lengthIsActive, lengthSave]);
 
-        const getListWarehouse = useCallback(async () => {
-            console.log("chay lan", page.current);
+        const getListWarehouse = async () => {
+            console.log("chay lan a", page.current);
+            console.log('index trong get list', indexTabbar);
+
             try {
-                const data = await getAPI.warehouseStore.getListWareHouse(size.current, page.current, indexTabbar, valueSearch, statusLoadMore);
+                const data = await getAPI.warehouseStore.getListWareHouse(size.current, page.current, indexTabbar, valueSearch, getAPI.warehouseStore.isLoadMoreWarehouse);
                 if (data?.content != null) {
                     const dataWarehouse = data.content
                     if (page.current == 0) {
@@ -114,7 +119,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             } catch (error) {
                 console.error('Error loadMore', error);
             }
-        }, [getAPI, size, page, valueSearch, statusLoadMore, indexTabbar]);
+        };
 
 
 
@@ -127,7 +132,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             } catch (error) {
                 console.error('Error getNumberState', error);
             }
-        }, [getAPI, valueSearch]);
+        }, [valueSearch]);
 
 
         const handleRefresh = async () => {
@@ -149,7 +154,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
         const handleLoadMore = useCallback(async () => {
             console.log('doan load more');
+            console.log(indexTabbar);
             setIsLoadingMore(true);
+            getAPI.warehouseStore.setIsLoadMoreWarehouse(true)
             try {
                 if (page.current < totalPages2.current - 1) {
                     page.current = page.current + 1;
@@ -160,7 +167,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             } finally {
                 setIsLoadingMore(false);
             }
-        }, []);
+        }, [indexTabbar])
 
         useEffect(() => {
             const unsubscribe = props.navigation.addListener("focus", () => {
@@ -176,7 +183,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         }, [props.navigation, reload]);
 
         useEffect(() => {
+            setMyData([])
             page.current = 0
+            console.log('index thay doi ');
 
             getListWarehouse()
             getNumberState()
@@ -206,6 +215,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     btnRightStyle={{ width: scaleWidth(30), height: scaleHeight(30), marginRight: -10, }}
                     onLeftPress={() => {
                         setMyData([])
+                        getAPI.warehouseStore.reset()
                         props.navigation.goBack()
                     }}
                 />
@@ -265,13 +275,15 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         data={myData}
                         renderItem={({ item, index }) => <ItemListWareHouse item={item} />}
                         keyExtractor={(item: any, index) => item?.id.toString() + index}
-                        showsVerticalScrollIndicator={false}
+                        showsVerticalScrollIndicator={true}
 
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                         }
-                        onEndReached={handleLoadMore}
-                        onEndReachedThreshold={0.5}
+                        onEndReached={() => {
+                            handleLoadMore()
+                        }}
+                        // onEndReachedThreshold={0.5}
                         ListFooterComponent={() => {
                             return (
 
@@ -286,9 +298,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                 </View>
                             );
                         }}
-                        initialNumToRender={13}
-                        maxToRenderPerBatch={13}
-                        windowSize={5}
+                    // initialNumToRender={13}
+                    // maxToRenderPerBatch={13}
+                    // windowSize={5}
                     />
                     <TouchableOpacity
                         style={Styles.btnPlus}
