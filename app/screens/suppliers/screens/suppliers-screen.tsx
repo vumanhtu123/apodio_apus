@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, Platform, RefreshControl, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, NativeSyntheticEvent, Platform, RefreshControl, TextInputSubmitEditingEventData, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
@@ -45,17 +45,11 @@ export const SuppliersScreen: FC = () => {
   const [valueSearchSupplierGroup, setValueSearchSupplierGroup] = useState("")
 
 
-
   const page = useRef(0)
   const size = useRef(13)
   const totalPage = useRef<number | undefined>()
   const totalElement = useRef<number>()
-  const [isRefreshing, setIsRefreshing] = useState(false)
   const [statusSearch, setStatusSearch] = useState<boolean>()
-
-
-  const pageSupplier = useRef(0)
-  const sizeSupplier = useRef(13)
 
 
   const handleTabPress = (tab: any) => {
@@ -79,10 +73,20 @@ export const SuppliersScreen: FC = () => {
   const handleIsAddSupplier = () => {
     setIsVisibleAddSupplier(!isVisibleAddSupplier)
   }
+
+  // const handleSearchSupplier = (text: string) => {
+  //   // const newValue = text != null ? text.toString : ""
+
+  //   setValueSearchSupplier(text)
+  // }
+  console.log('value search 123', valueSearchSupplier);
+
+  // const handleSearchSupplierGroup = (text: string) => {
+  //   // const newValue = text != null ? text.toString : ""
+  //   setValueSearchSupplierGroup(text)
+  // }
+
   console.log("value list", statusHidden);
-
-
-
   console.log("33333", myDataSupplier);
 
   const getListSupplierGroup = async () => {
@@ -103,6 +107,7 @@ export const SuppliersScreen: FC = () => {
 
   }
 
+
   console.log("value load more 1", isLoadMore);
   console.log("value search", valuerSearch);
 
@@ -120,12 +125,12 @@ export const SuppliersScreen: FC = () => {
         RightIcon1={isVisible ? Images.icon_close : Images.icon_funnel}
         RightIcon2={isVisible ? Images.icon_close : Images.search}
         headerInput={isVisibleOpenSearch}
-        searchValue={activeTab == "supplier" ? valueSearchSupplier : valueSearchSupplierGroup}
-        onSearchValueChange={(txt: any) => { setValuerSearch(txt) }}
-        handleOnSubmitSearch={() => {
+        onSearchValueChange={(txt: any) => { }}
+        handleOnSubmitSearch={(value: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
+          console.log('doandev1 213213', value.nativeEvent.text);
+          activeTab == "supplier" ? setValueSearchSupplier(value.nativeEvent.text) : setValueSearchSupplierGroup(value.nativeEvent.text)
           // page.current = 0
           // getListSupplierGroup()
-          setStatusSearch(true)
           console.log("doan search");
 
         }}
@@ -241,9 +246,9 @@ export const SuppliersScreen: FC = () => {
 
         {
           activeTab == "supplier" ?
-            <ListSupplierScreen valueSearch={valuerSearch} isSearch={statusSearch} />
+            <ListSupplierScreen valueSearch={valueSearchSupplier} isSearch={statusSearch} />
             :
-            <ListSuppliersGroupScreen />
+            <ListSuppliersGroupScreen valueSearch={valueSearchSupplierGroup} />
         }
 
       </View>

@@ -21,7 +21,11 @@ import { RenderItemSupplierGrid, RenderItemSupplierList } from "../component/ite
 import { useStores } from "../../../models";
 import { UserStatus } from "../../../utils/const";
 import ListSupplierScreen from "./list-supplier-screen";
-const ListSuppliersGroupScreen = () => {
+interface Props {
+    valueSearch: string,
+
+}
+const ListSuppliersGroupScreen = (props: Props) => {
     const navigation = useNavigation();
 
     const [statusHidden, setStatusHidden] = useState(true)
@@ -40,12 +44,8 @@ const ListSuppliersGroupScreen = () => {
     const totalElement = useRef<number>()
     const [isRefreshing, setIsRefreshing] = useState(false)
 
-
-    const pageSupplier = useRef(0)
-    const sizeSupplier = useRef(13)
-
     const getListSupplierGroup = async () => {
-        const ListSupplierGroup = await supplierStore.getListSupplierGroup(size.current, page.current, valuerSearch, valueIsLoadMore)
+        const ListSupplierGroup = await supplierStore.getListSupplierGroup(size.current, page.current, props.valueSearch, valueIsLoadMore)
 
         if (ListSupplierGroup?.content != null) {
             if (page.current == 0) {
@@ -109,10 +109,12 @@ const ListSuppliersGroupScreen = () => {
     }, [myDataSupplierGroup, myDataSupplier])
 
     useEffect(() => {
+        page.current = 0
+
         getListSupplierGroup()
 
         // setDataCategory(data);
-    }, []);
+    }, [props.valueSearch]);
 
     return (
         <View style={{ flex: 1 }}>

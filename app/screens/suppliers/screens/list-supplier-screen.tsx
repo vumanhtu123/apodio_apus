@@ -50,7 +50,7 @@ const ListSupplierScreen = (props: PROPS) => {
     const getListSupplier = async () => {
         const ListSupplier = await supplierStore.getListSupplier(pageSupplier.current, sizeSupplier.current, props.valueSearch, valueIsLoadMore)
 
-        console.log('333333333', ListSupplier?.data.content);
+        console.log('333333333', ListSupplier);
 
         if (ListSupplier != null) {
             if (pageSupplier.current == 0) {
@@ -86,9 +86,12 @@ const ListSupplierScreen = (props: PROPS) => {
     }, [myDataSupplierGroup, myDataSupplier])
 
     useEffect(() => {
+        console.log('list moi');
+        pageSupplier.current = 0
+
         getListSupplier()
         // setDataCategory(data);
-    }, [props.isSearch]);
+    }, [props.valueSearch]);
 
     const handleRefreshSupplier = () => {
         try {
@@ -148,7 +151,7 @@ const ListSupplierScreen = (props: PROPS) => {
                     )
                 }}
                 onEndReached={() => handleLoadMoreSupplier()}
-                onEndReachedThreshold={0.5}
+                // onEndReachedThreshold={0.5}
                 initialNumToRender={13}
                 maxToRenderPerBatch={13}
                 windowSize={5}
