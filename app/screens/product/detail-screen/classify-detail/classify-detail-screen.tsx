@@ -36,6 +36,9 @@ import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import SupplierList from "./render/supplier-detail";
 import ProductAttributes from "./render/attribute-detail";
+import ProductDetails from "./render/product-detail-render";
+import { styles } from "./styles";
+import ProductWeightDetails from "./render/weight-detal";
 // import ProductAttribute from "./componet/productAttribute";
 
 export const ClassifyDetailScreen: FC = () => {
@@ -43,17 +46,13 @@ export const ClassifyDetailScreen: FC = () => {
   const route = useRoute<any>();
   const reload = route?.params?.reload;
   const [showDetails, setShowDetails] = useState(false);
-  const [showRetailPrice, setShowRetailPrice] = useState(false);
-  const [showWholesalePrice, setShowWholesalePrice] = useState(false);
   const [dataClassification, setDataClassification] = useState<any>({});
   const [arrImagesProduct, setArrImagesProduct] = useState<any>([]);
   const [detailsClassification, setDetailsClassification] = useState<any>([]);
-  const [attributeCategory, setAttributeCategory] = useState([]);
   const [attributeDetailsClassification, setAttributeDetailsClassification] =
     useState([]);
   const [arrNCC, setArrNCC] = useState([]);
   const [modalImages, setModalImages] = useState(false);
-  const [modalImages1, setModalImages1] = useState(false);
   const { productStore } = useStores();
   const { productId } = productStore;
   const refCarousel = useRef(null);
@@ -72,7 +71,6 @@ export const ClassifyDetailScreen: FC = () => {
         setDetailProduct(data.baseProductPackingLine);
         setDataClassification(data);
         setArrImagesProduct(data.imageUrls);
-        setAttributeCategory(data.attributeCategory);
         setArrNCC(data.vendors);
         if (data.productVariants !== undefined) {
           setDetailsClassification(data.productVariants[0]);
@@ -128,7 +126,7 @@ export const ClassifyDetailScreen: FC = () => {
     setNameValue(nameAndValue);
     // return nameAndValue;
   };
-  function extractAttributeInfo(data: any) {
+  const extractAttributeInfo = (data: any) => {
     if (!data?.attributeCategory || data?.attributeCategory.length === 0) {
       return [];
     }
@@ -146,14 +144,7 @@ export const ClassifyDetailScreen: FC = () => {
   useEffect(() => {
     extractAttributeInfo(dataClassification.productTemplate)
   }, [dataClassification])
-  useEffect(() => {
-    if (dataClassification?.wholesalePrice?.length > 0) {
-      setShowWholesalePrice(true);
-    }
-    if (dataClassification?.retailPrice?.length > 0) {
-      setShowRetailPrice(true);
-    }
-  }, [dataClassification]);
+
 
   const deleteProduct = async () => {
     const result = await productStore.deleteClassify(productId);
@@ -184,11 +175,6 @@ export const ClassifyDetailScreen: FC = () => {
       })
     }
   };
-
-  const toggleDetails = () => {
-    setShowDetails(!showDetails);
-    console.log('czxx', attributes)
-  };
   return (
     <View style={styles.ROOT}>
       <Header
@@ -218,21 +204,16 @@ export const ClassifyDetailScreen: FC = () => {
         }}
       />
       <SafeAreaView style={{ flex: 1 }}>
-        {/* <Screen style={{ flex: 1, marginBottom: scaleHeight(64) }} preset="fixed" > */}
         <ScrollView
-          style={{
-            marginVertical: scaleHeight(margin.margin_12),
-          }}
+          style={{ marginVertical: scaleHeight(margin.margin_12), }}
           showsVerticalScrollIndicator={false}>
           <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: scaleWidth(margin.margin_16),
-            }}>
+            style={{ flexDirection: "row", marginHorizontal: scaleWidth(margin.margin_16), }}>
             <Text
               tx="detailScreen.information"
               style={{ fontSize: fontSize.size14, fontWeight: "500", flex: 1 }} />
           </View>
+          {/* list ảnh  */}
           {arrImagesProduct?.length > 0 ? (
             <ScrollView
               style={{
@@ -259,250 +240,30 @@ export const ClassifyDetailScreen: FC = () => {
               })}
             </ScrollView>
           ) : null}
+          {/* check 3d */}
           {!isChecking && dataClassification?.scene?.url !== "" ? (
             <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginLeft: scaleWidth(16),
-              }}
+              style={{ flexDirection: "row", alignItems: "center", marginLeft: scaleWidth(16), }}
               onPress={() =>
                 navigation.navigate({
                   name: "view3D", params: {
                     scene: dataClassification?.scene?.url,
                   }
                 } as never)
-                // console.log('first' ,)
               }>
               <Images.ic_3d
                 width={scaleWidth(20)}
                 height={scaleHeight(20)}
-                style={{
-                  transform: [{ rotate: showDetails ? "180deg" : "0deg" }],
-                }}
               />
               <Text
                 tx="productScreen.Perspective"
-                style={{
-                  fontSize: fontSize.size12,
-                  marginLeft: 6,
-                  color: "#0078d4",
-                }}></Text>
+                style={{ fontSize: fontSize.size12, marginLeft: 6, color: "#0078d4" }}>
+              </Text>
             </TouchableOpacity>
           ) : null}
-          <View style={{ marginHorizontal: scaleWidth(margin.margin_16) }}>
-            <View style={{ marginTop: 20 }}>
-              <ProductAttribute
-                labelTx="detailScreen.productCode"
-                value={dataClassification.sku}
-              />
-              <ProductAttribute
-                labelTx="detailScreen.nameProduct"
-                value={dataClassification.name}
-              />
-              <ProductAttribute
-                labelTx="detailScreen.status"
-                value={
-                  dataClassification.saleOk === true &&
-                    dataClassification.purchaseOk === false
-                    ? "Có thể bán"
-                    : dataClassification.purchaseOk === true &&
-                      dataClassification.saleOk === false
-                      ? "Có thể mua"
-                      : dataClassification.saleOk === true &&
-                        dataClassification.purchaseOk === true
-                        ? "Có thể bán/ Có thể mua"
-                        : null
-                }
-              />
-            </View>
-            <View>
-              <TouchableOpacity
-                style={styles.viewCaret}
-                onPress={() => setShowRetailPrice(!showRetailPrice)}>
-                <Text
-                  tx={"productDetail.retailPrice"}
-                  style={[
-                    styles.textDolphin12,
-                    {
-                      marginRight: scaleWidth(margin.margin_4),
-                    },
-                  ]}
-                />
-                {showRetailPrice === false ? (
-                  <Images.icon_caretRightDown />
-                ) : (
-                  <Images.icon_caretUp />
-                )}
-              </TouchableOpacity>
-              {showRetailPrice === true ? (
-                <View style={{ paddingLeft: scaleWidth(padding.padding_16) }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      flex: 1,
-                      marginBottom: scaleHeight(margin.margin_10),
-                    }}>
-                    <Text
-                      tx="detailScreen.minimumPurchase"
-                      style={[
-                        styles.textDolphin12,
-                        {
-                          flex: 1,
-                        },
-                      ]}
-                    />
-                    <Text tx="detailScreen.priceProduct" style={styles.textDolphin12} />
-                  </View>
-                  {dataClassification.retailPrice?.map((item: { min: any; price: number; }) => {
-                    return (
-                      <ProductAttribute
-                        label={formatCurrency(commasToDots(item.min))}
-                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
-                        labelStyle={{ color: colors.palette.nero }}
-                        textStyle={{ color: colors.palette.radicalRed }}
-                      />
-                    );
-                  })}
-                </View>
-              ) : null}
-              <View>
-                <ProductAttribute
-                  labelTx="productScreen.priceCapital"
-                  value={dataClassification?.costPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
-                  textStyle={{ color: colors.palette.radicalRed }}
-                />
-                <ProductAttribute
-                  labelTx="productScreen.priceList"
-                  value={dataClassification?.listPrice > 0 ? `${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}` : null}
-                  textStyle={{ color: colors.palette.radicalRed }}
-                />
-              </View>
-              <TouchableOpacity
-                style={styles.viewCaret}
-                onPress={() => setShowWholesalePrice(!showWholesalePrice)}>
-                <Text
-                  tx={"productDetail.wholesalePrice"}
-                  style={[
-                    styles.textDolphin12,
-                    {
-                      marginRight: scaleWidth(margin.margin_4),
-                    },
-                  ]}
-                />
-                {showWholesalePrice === false ? (
-                  <Images.icon_caretRightDown />
-                ) : (
-                  <Images.icon_caretUp />
-                )}
-              </TouchableOpacity>
-              {showWholesalePrice === true ? (
-                <View style={{ paddingLeft: scaleWidth(padding.padding_16) }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      flex: 1,
-                      marginBottom: scaleHeight(margin.margin_10),
-                    }}>
-                    <Text
-                      tx="detailScreen.minimumPurchase"
-                      style={[
-                        styles.textDolphin12,
-                        {
-                          flex: 1,
-                        },
-                      ]}
-                    />
-                    <Text tx="detailScreen.priceProduct" style={styles.textDolphin12} />
-                  </View>
-                  {dataClassification?.wholesalePrice?.map((item: { min: string | undefined; price: any; }) => {
-                    return (
-                      <ProductAttribute
-                        label={formatCurrency(commasToDots(item.min))}
-                        value={`${formatVND(formatCurrency(commasToDots(item.price)))}/${dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}`}
-                        labelStyle={{ color: colors.palette.nero }}
-                        textStyle={{ color: colors.palette.radicalRed }}
-                      />
-                    );
-                  })}
-                </View>
-              ) : null}
-            </View>
-            <View>
-              <ProductAttribute
-                labelTx="inforMerchant.Category"
-                value={dataClassification.productCategory?.name}
-              />
-              <ProductAttribute
-                labelTx="detailScreen.brand"
-                value={dataClassification.brand?.name}
-              />
-              <ProductAttribute
-                labelTx="detailScreen.tag"
-                value={dataClassification.productTags
-                  ?.map((item: { name: any; }) => item.name)
-                  .join(", ")}
-              />
-              <ProductAttribute
-                labelTx="detailScreen.management"
-                value={getLabelByList(dataClassification.managementForm)}
-              />
-              <ProductAttribute
-                labelTx="detailScreen.unit"
-                value={dataClassification.uom?.name || dataClassification.uomGroup?.originalUnit?.name}
-              />
-              {dataClassification?.uomGroup ? (
-                <View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginBottom: scaleHeight(15),
-                    }}>
-
-                    <Text tx={"createProductScreen.conversion"} style={{ fontSize: fontSize.size12, color: colors.palette.dolphin, }} />
-                    <Text tx={"createProductScreen.conversionRate"}
-                      style={{ fontSize: fontSize.size12, fontWeight: "600", color: colors.palette.dolphin, }} />
-                  </View>
-                  {dataClassification?.uomGroup?.uomGroupLines?.map((item: any, index: any) => (
-                    <View
-                      key={index}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: scaleHeight(15),
-                      }}>
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Images.ic_arrowDownRight
-                          width={scaleWidth(14)}
-                          height={scaleHeight(14)}
-                        />
-                        <Text
-                          style={{
-                            fontSize: fontSize.size12,
-                            marginHorizontal: scaleWidth(6),
-                            color: colors.palette.dolphin,
-                          }}>
-                          {item.unitName}
-                        </Text>
-                      </View>
-                      <Text
-                        style={{
-                          fontSize: fontSize.size12,
-                          fontWeight: "600",
-                          color: colors.palette.dolphin,
-                        }}>
-                        {item.conversionRate} {dataClassification.uomGroup?.originalUnit?.name}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-              ) : null}
-            </View>
-          </View>
+          {/* chi tiết thuộc tính  */}
+          <ProductDetails dataClassification={dataClassification} getLabelByList={getLabelByList} />
+          {/* mô tả  */}
           {dataClassification.description ? (
             <View>
               <View style={styles.viewLine} />
@@ -520,97 +281,14 @@ export const ClassifyDetailScreen: FC = () => {
               </View>
             </View>
           ) : null}
-          {dataClassification?.baseProductPackingLine?.volume || dataClassification?.productPackingLines?.length > 0 ? (
-            <View>
-              <View style={styles.viewLine} />
-              <TouchableOpacity
-                style={[styles.viewWeight, { flex: 1, padding: scaleWidth(16) }]}
-
-                onPress={() => setShowOrHiddenWeight(!showOrHiddenWeight)}
-              >
-                <Text tx="productScreen.weight"
-                  style={{ fontSize: fontSize.size12, color: colors.navyBlue, marginRight: scaleWidth(5) }}
-                />
-                <Images.icon_caretDownBlue
-                  width={scaleWidth(16)}
-                  height={scaleHeight(16)}
-                  style={{ transform: [{ rotate: showOrHiddenWeight ? '180deg' : '0deg' }], }} />
-              </TouchableOpacity>
-            </View>
-          ) : null}
-          {
-            showOrHiddenWeight ?
-              <View style={{ paddingHorizontal: scaleWidth(16), flex: 1 }}>
-
-                <Text tx="productScreen.weightOriginal" style={{ fontSize: fontSize.size14 }} />
-                {/* <FlatList
-                  data={detailProduct}
-                  renderItem={({ item }) => {
-                    return ( */}
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: scaleHeight(9) }}>
-                  <Text style={[styles.fontSizeWeight, { flex: 2 }]}>
-                    {dataClassification.uom == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}
-                  </Text>
-                  <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row' }}>
-                    <Text tx={`detailScreen.weight`} style={[styles.fontSizeWeight]} />
-                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.weight} kg</Text>
-                  </View>
-                  <View style={{ flex: 3, flexDirection: 'row' }}>
-                    <Text tx="detailScreen.volume" style={[styles.fontSizeWeight]} />
-                    <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{detailProduct?.volume} m3</Text>
-                  </View>
-                </View>
-                {/* )
-                  }}
-                  keyExtractor={(item) => item.id.toString()}
-                /> */}
-                {dataClassification.productPackingLines.length > 0 ? (
-                  <View>
-                    <Text tx="productScreen.weightExchange" style={{ fontSize: fontSize.size14 }} />
-                    <FlatList
-                      data={dataClassification.productPackingLines}
-                      renderItem={({ item }) => {
-                        return (
-                          <View style={{ flexDirection: 'row', marginBottom: scaleHeight(12), justifyContent: 'space-between' }}>
-                            <View style={{ flex: 2 }}>
-                              <Text style={[styles.fontSizeWeight, {}]}>
-                                {item.uomGroupLineOutput?.unitName}
-                              </Text>
-                              <View
-                                style={{ backgroundColor: '#E7EFFF', height: 1 }}
-                              />
-                              <Text style={[styles.fontSizeWeight, {}]}>
-                                {`${commasToDots(item.amount)} ${dataClassification.uom == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
-                              </Text>
-                            </View>
-
-                            <View style={{ flex: 3, marginHorizontal: scaleWidth(25), flexDirection: 'row', alignItems: 'center' }}>
-                              <Text tx="detailScreen.weight" style={[styles.fontSizeWeight,]} />
-                              <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.weight} kg</Text>
-                            </View>
-
-                            <View style={{ flex: 3, alignItems: 'center', flexDirection: 'row' }}>
-                              <Text tx="detailScreen.volume" style={[styles.fontSizeWeight,]} />
-                              <Text style={[styles.fontSizeWeight, { marginLeft: scaleWidth(2) }]}>{item?.volume} m3</Text>
-                            </View>
-                          </View>
-                        )
-                      }}
-                      keyExtractor={(item) => item.id.toString()}
-                      style={{ marginTop: scaleHeight(12) }}
-                    />
-                  </View>
-                ) : null}
-
-              </View>
-              : null
-          }
-
+          {/* chi tiết trọng tải  */}
+          <ProductWeightDetails dataClassification={dataClassification} detailProduct={detailProduct} />
+          {/* chi tiết nhà cung cấp */}
           <ProductAttributes
             dataClassification={dataClassification}
             nameValue={nameValue}
             attributeDetailsClassification={attributeDetailsClassification}
-            attributes={attributes} showDetails={showDetails} />
+            attributes={attributes} />
           <SupplierList arrNCC={arrNCC} />
         </ScrollView>
       </SafeAreaView>
@@ -669,154 +347,6 @@ export const ClassifyDetailScreen: FC = () => {
           ) : null}
         </View>
       </Modal>
-      <Modal isVisible={modalImages1} onBackdropPress={() => setModalImages1(false)}>
-        <View >
-          {detailsClassification.imageUrls && detailsClassification.imageUrls.length > 0 ? (
-            <View >
-              <Carousel
-                data={detailsClassification.imageUrls}
-                autoplay={false}
-                ref={refCarousel}
-                loop
-                renderItem={({ item, index }: any) => (
-                  <View>
-                    <Image
-                      source={{
-                        uri: item,
-                      }}
-                      defaultSource={Images.imageError}
-                      resizeMode='cover'
-                      style={{ height: scaleHeight(416), width: scaleWidth(294), borderRadius: 16, alignSelf: 'center' }}>
-                    </Image>
-                  </View>
-                )}
-                sliderWidth={Dimensions.get("window").width - 32}
-                itemWidth={Dimensions.get("window").width - 32}
-                firstItem={activeSlide}
-                onSnapToItem={(index) => setActiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
-              />
-              <Pagination
-                dotsLength={detailsClassification.imageUrls.length > 0 && detailsClassification.imageUrls.length}
-                activeDotIndex={activeSlide}
-                dotStyle={{
-                  borderRadius: 8,
-                  height: scaleHeight(14),
-                  width: scaleWidth(14),
-                  borderColor: colors.palette.neutral100,
-                  borderWidth: 2,
-                }}
-                dotColor={'#BBB9B9'}
-                inactiveDotColor={'#BBB9B9'}
-                inactiveDotOpacity={1}
-                inactiveDotScale={1}
-                inactiveDotStyle={{
-                  width: scaleWidth(8),
-                  height: scaleHeight(8),
-                  borderRadius: 5,
-                  borderColor: '#BBB9B9',
-                  borderWidth: 2,
-                }}
-              />
-            </View>
-          ) : null}
-        </View>
-      </Modal>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  ROOT: {
-    backgroundColor: "#Ffffff",
-    flex: 1,
-  },
-  titleHeader: {
-    justifyContent: "flex-start",
-    paddingLeft: 5,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  textNameClassification: {
-    fontWeight: "400",
-    fontSize: fontSize.size10,
-    lineHeight: scaleHeight(12.1),
-    color: colors.palette.dolphin,
-  },
-  textDolphin12: {
-    fontWeight: "400",
-    fontSize: fontSize.size12,
-    color: colors.palette.dolphin,
-  },
-  viewNameClassification: {
-    width: scaleWidth(125),
-    height: scaleHeight(56),
-    borderRadius: 8,
-    borderWidth: 1,
-    backgroundColor: colors.palette.aliceBlue,
-    marginRight: scaleWidth(margin.margin_10),
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: scaleHeight(padding.padding_8),
-    paddingHorizontal: scaleWidth(padding.padding_8),
-  },
-  viewImage: {
-    width: scaleWidth(72),
-    height: scaleHeight(72),
-    borderRadius: 10,
-    marginRight: 12,
-  },
-  viewCaret: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: scaleHeight(margin.margin_10),
-  },
-  viewDescribe: {
-    marginHorizontal: scaleWidth(margin.margin_16),
-    backgroundColor: colors.palette.neutral100,
-    paddingVertical: scaleHeight(padding.padding_20),
-  },
-  textTitle: {
-    fontWeight: "700",
-    fontSize: fontSize.size12,
-    lineHeight: scaleHeight(14.52),
-    color: colors.palette.neutral900,
-    marginBottom: scaleHeight(margin.margin_12),
-  },
-  textNameNCC: {
-    marginBottom: scaleHeight(2),
-    fontWeight: "500",
-    fontSize: fontSize.size10,
-    color: colors.palette.nero,
-  },
-  viewLine: { height: scaleHeight(12), backgroundColor: "#F3F4F9" },
-  viewDetails: {
-    marginVertical: scaleHeight(margin.margin_10),
-    marginHorizontal: scaleWidth(margin.margin_16),
-    borderRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    shadowColor: "#3A43E5",
-    shadowOpacity: 0.25,
-    backgroundColor: colors.palette.neutral100,
-  },
-  viewTitleDetail: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: scaleHeight(margin.margin_12),
-    marginBottom: scaleHeight(padding.padding_12),
-    paddingHorizontal: scaleWidth(padding.padding_12),
-  },
-  viewLine2: {
-    borderWidth: scaleHeight(1),
-    borderColor: colors.palette.ghostWhite,
-  },
-  viewWeight: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  fontSizeWeight: {
-    color: palette.dolphin, fontSize: fontSize.size12,
-  }
-});

@@ -90,4 +90,4 @@ const SupplierList: React.FC<SupplierListProps> = ({ arrNCC }) => {
     );
 };
 
-export default SupplierList;
+export default React.memo(SupplierList);

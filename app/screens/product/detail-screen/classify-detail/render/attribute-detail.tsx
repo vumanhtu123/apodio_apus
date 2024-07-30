@@ -7,7 +7,6 @@ import ProductAttribute from '../../../component/productAttribute';
 import { Images } from '../../../../../../assets';
 
 interface ProductAttributesProps {
-    showDetails: boolean;
     dataClassification: any;
     nameValue: any[];
     attributeDetailsClassification: any[];
@@ -98,4 +97,4 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({
     );
 };
 
-export default ProductAttributes;
+export default React.memo(ProductAttributes);

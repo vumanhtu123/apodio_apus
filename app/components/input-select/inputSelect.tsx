@@ -1,19 +1,22 @@
-import React, { useCallback, useEffect, useLayoutEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  TextBase,
   TextInput,
   TextStyle,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  ViewStyle,
+  ViewStyle
 } from "react-native";
-import { InputSelectProps } from "./inputSelect.props";
+import Modal from "react-native-modal";
+import { Images } from "../../../assets/index";
+import { translate } from "../../i18n";
 import {
   colors,
   fontSize,
@@ -22,13 +25,8 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../theme";
-import { translate } from "../../i18n";
 import { Text } from "../text/text";
-import { useState } from "react";
-import { Images } from "../../../assets/index";
-import Modal from "react-native-modal";
-import { Controller, useForm } from "react-hook-form";
-import { useFocusEffect } from "@react-navigation/native";
+import { InputSelectProps } from "./inputSelect.props";
 
 const ROOT: ViewStyle = {
   borderRadius: 8,
@@ -80,9 +78,17 @@ const TEXTLABELFLATLIST: TextStyle = {
   //fontWeight: '500',
   fontSize: fontSize.size14,
   lineHeight: scaleHeight(24),
-  color: colors.palette.nero,
+  color: colors.palette.dolphin,
   marginVertical: scaleHeight(margin.margin_8),
 };
+const TEXTLABELHL: TextStyle = {
+  fontWeight: '600',
+  fontSize: fontSize.size14,
+  lineHeight: scaleHeight(24),
+  color: colors.palette.black,
+  marginVertical: scaleHeight(margin.margin_8),
+};
+
 const VIEWLINE: ViewStyle = {
   height: scaleHeight(1),
   width: "100%",
@@ -115,23 +121,22 @@ export function InputSelect(props: InputSelectProps) {
   const hint = hintText || (hintTx && translate(hintTx)) || "";
   const _ = require("lodash");
   const [data, setData] = useState("");
-  const [dataChoice, setDataChoice] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [filteredData, setFilteredData] = useState(arrData);
   const [loading, setLoading] = useState(false);
-  const { control, reset, setValue, getValues, handleSubmit, formState: { errors }, clearErrors } = useForm();
-  
+  const { control, reset, formState: { errors }, clearErrors, watch } = useForm();
+  const searchValue = watch('searchData');
   const handleSearch = (text: any) => {
     if (text) {
-      const dataChoiceItem = arrData.filter((item) => item.label !== data);
-      const newData = dataChoiceItem.filter((item) => {
+      const dataChoiceItem = arrData.filter((item: any) => item.label !== data);
+      const newData = dataChoiceItem.filter((item: any) => {
         const itemData = item.label.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
       setFilteredData(newData);
     } else {
-      const dataChoiceItem = arrData.filter((item) => item.label !== data);
+      const dataChoiceItem = arrData.filter((item: any) => item.label !== data);
       setFilteredData(dataChoiceItem);
     }
   };
@@ -145,25 +150,30 @@ export function InputSelect(props: InputSelectProps) {
 
   useFocusEffect(
     useCallback(() => {
-        reset();
-        clearErrors();
+      reset();
+      clearErrors();
     }, [showModal])
-)
-
+  )
+  const highlightText = (text: string, highlight: string) => {
+    if (!highlight?.trim()) {
+      return <Text style={TEXTLABELFLATLIST}>{text}</Text>;
+    }
+    const regex = new RegExp(`(${highlight})`, 'gi');
+    const parts = text.split(regex);
+    return (
+      <>
+        {parts.map((part, i) =>
+          regex.test(part) ? (
+            <Text key={i} style={TEXTLABELHL}>{part}</Text>
+          ) : (
+            <Text style={TEXTLABELFLATLIST} key={i}>{part}</Text>
+          )
+        )}
+      </>
+    );
+  };
   useEffect(() => {
-    // if (
-    //   dataDefault !== undefined &&
-    //   dataDefault !== null &&
-    //   dataDefault !== ""
-    // ) {
-    //   console.log("dataDefault---------------------------", dataDefault);
-    //   const dataChoiceItem = arrData.filter(
-    //     (item) => item.label !== dataDefault
-    //   );
-    //   setFilteredData(dataChoiceItem);
-    // } else {
     setFilteredData(arrData);
-    // }
   }, [arrData]);
 
   return (
@@ -237,25 +247,25 @@ export function InputSelect(props: InputSelectProps) {
                   <Controller
                     control={control}
                     render={({ field: { onChange, value, onBlur } }) => (
-                        <TextInput
-                            placeholder="Tìm kiếm..."
-                            style={{
-                              fontSize: fontSize.size16,
-                              fontWeight: "400",
-                              paddingVertical: 0,
-                              flex: 1
-                            }}
-                            value={value}
-                            onBlur={onBlur}
-                            onChangeText={(text) =>{
-                              onChange(text)
-                              handleSearch(text)
-                            }}
-                            multiline={true}
-                        />)}
+                      <TextInput
+                        placeholder="Tìm kiếm..."
+                        style={{
+                          fontSize: fontSize.size16,
+                          fontWeight: "400",
+                          paddingVertical: 0,
+                          flex: 1
+                        }}
+                        value={value}
+                        onBlur={onBlur}
+                        onChangeText={(text) => {
+                          onChange(text)
+                          handleSearch(text)
+                        }}
+                        multiline={true}
+                      />)}
                     defaultValue={''}
                     name='searchData'
-                />
+                  />
                 </View>
               ) : null}
               <FlatList
@@ -286,7 +296,8 @@ export function InputSelect(props: InputSelectProps) {
                           {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
                           {data === item.label && <Images.icon_checkBox />}
                         </View>) : null}
-                        <Text text={item.label} style={TEXTLABELFLATLIST} />
+                        {/* <Text text={item.label} style={TEXTLABELFLATLIST} /> */}
+                        {highlightText(item.label, searchValue)}
                       </TouchableOpacity>
                       <View style={VIEWLINE}></View>
                     </View>
