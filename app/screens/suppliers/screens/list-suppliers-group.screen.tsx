@@ -20,52 +20,78 @@ import ModalCreateSuppliers from "../component/modal-create-supplier";
 import { RenderItemSupplierGrid, RenderItemSupplierList } from "../component/item-list-supplier";
 import { useStores } from "../../../models";
 import { UserStatus } from "../../../utils/const";
-
-interface PROPS {
+import ListSupplierScreen from "./list-supplier-screen";
+interface Props {
     valueSearch: string,
-    isSearch: boolean | undefined
 
 }
-
-const ListSupplierScreen = (props: PROPS) => {
+const ListSuppliersGroupScreen = (props: Props) => {
     const navigation = useNavigation();
+
     const [statusHidden, setStatusHidden] = useState(true)
     const [valueIsLoadMore, setValueIsLoadMore] = useState(false)
     const [isLoadMore, setIsLoadMore] = useState<boolean>()
+
+    const [valuerSearch, setValuerSearch] = useState('')
     const { supplierStore } = useStores();
     const [myDataSupplier, setMyDataSupplier] = useState<{}[]>([])
     const [myDataSupplierGroup, setMyDataSupplierGroup] = useState<{}[]>([])
 
 
+    const page = useRef(0)
+    const size = useRef(13)
     const totalPage = useRef<number | undefined>()
     const totalElement = useRef<number>()
     const [isRefreshing, setIsRefreshing] = useState(false)
 
+    const getListSupplierGroup = async () => {
+        const ListSupplierGroup = await supplierStore.getListSupplierGroup(size.current, page.current, props.valueSearch, valueIsLoadMore)
 
-    const pageSupplier = useRef(0)
-    const sizeSupplier = useRef(13)
-
-    console.log("value search component", props.valueSearch);
-
-    const getListSupplier = async () => {
-        const ListSupplier = await supplierStore.getListSupplier(pageSupplier.current, sizeSupplier.current, props.valueSearch, valueIsLoadMore)
-
-        console.log('333333333', ListSupplier);
-
-        if (ListSupplier != null) {
-            if (pageSupplier.current == 0) {
-                setMyDataSupplier(ListSupplier.data.content)
+        if (ListSupplierGroup?.content != null) {
+            if (page.current == 0) {
+                setMyDataSupplierGroup(ListSupplierGroup.content)
             } else {
-                setMyDataSupplier((data) => [
-                    ...data,
-                    ...ListSupplier.data.content
-                ])
+                setMyDataSupplierGroup((data) =>
+                    [...data,
+                    ...ListSupplierGroup.content]
+                )
             }
-
-            totalPage.current = ListSupplier.data.totalPages
+            totalPage.current = ListSupplierGroup.totalPages
+            totalElement.current = ListSupplierGroup.totalElements
         }
 
     }
+
+    const handleLoadMore = () => {
+        setValueIsLoadMore(true)
+        setIsLoadMore(true)
+        try {
+            if (page.current < Number(totalPage.current)) {
+
+                page.current = page.current + 1
+
+                getListSupplierGroup()
+            }
+        } catch (error) {
+            console.log("Load more error", error);
+
+        } finally {
+            // setIsLoadMore(false)
+        }
+    }
+
+
+    const handleRefresh = () => {
+        try {
+            setIsRefreshing(true)
+            page.current = 0
+            getListSupplierGroup()
+        } catch (error) {
+            console.log("Refresh Error", error);
+        }
+
+    }
+
     useEffect(() => {
         // console.log("length data ", myDataSupplier.length);
 
@@ -78,58 +104,23 @@ const ListSupplierScreen = (props: PROPS) => {
 
     }, [myDataSupplierGroup.length])
 
-
-
-
     useEffect(() => {
         setIsRefreshing(false)
     }, [myDataSupplierGroup, myDataSupplier])
 
     useEffect(() => {
-        console.log('list moi');
-        pageSupplier.current = 0
+        page.current = 0
 
-        getListSupplier()
+        getListSupplierGroup()
+
         // setDataCategory(data);
     }, [props.valueSearch]);
 
-    const handleRefreshSupplier = () => {
-        try {
-            setIsRefreshing(true)
-            pageSupplier.current = 0
-            getListSupplier()
-        } catch (error) {
-            console.log("Refresh Supplier Error ", error);
-        }
-
-    }
-    console.log("page ", pageSupplier.current, "total page", totalPage.current);
-
-    const handleLoadMoreSupplier = () => {
-        console.log("dang load more");
-
-        setValueIsLoadMore(true)
-        setIsLoadMore(true)
-        try {
-            if (pageSupplier.current < Number(totalPage.current)) {
-
-                pageSupplier.current = pageSupplier.current + 1
-
-                getListSupplier()
-            }
-        } catch (error) {
-            console.log("Load more error", error);
-
-        } finally {
-            setIsLoadMore(false)
-        }
-    }
-
     return (
-        <View style={{ flex: 1, }}>
+        <View style={{ flex: 1 }}>
             <FlatList
 
-                data={myDataSupplier}
+                data={myDataSupplierGroup}
                 showsVerticalScrollIndicator={false}
                 // refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshNotifications} title="ok" />}
                 keyExtractor={(item, index) => item.id.toString() + index}
@@ -139,7 +130,7 @@ const ListSupplierScreen = (props: PROPS) => {
                 key={statusHidden ? 'grid' : 'list'}
                 columnWrapperStyle={null}
                 renderItem={({ item }) => statusHidden ? <RenderItemSupplierList item={item} /> : <RenderItemSupplierGrid item={item} />}
-                refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefreshSupplier} />}
+                refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
                 ListFooterComponent={() => {
                     return (
                         <View>
@@ -150,15 +141,12 @@ const ListSupplierScreen = (props: PROPS) => {
                         </View>
                     )
                 }}
-                onEndReached={() => handleLoadMoreSupplier()}
-                // onEndReachedThreshold={0.5}
-                initialNumToRender={13}
-                maxToRenderPerBatch={13}
-                windowSize={5}
-            />
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
 
+            />
         </View>
     )
 }
 
-export default ListSupplierScreen
+export default ListSuppliersGroupScreen

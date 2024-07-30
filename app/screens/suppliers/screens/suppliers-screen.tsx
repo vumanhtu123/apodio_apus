@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Alert, FlatList, Platform, RefreshControl, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, FlatList, NativeSyntheticEvent, Platform, RefreshControl, TextInputSubmitEditingEventData, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
@@ -21,12 +21,13 @@ import { RenderItemSupplierGrid, RenderItemSupplierList } from "../component/ite
 import { useStores } from "../../../models";
 import { UserStatus } from "../../../utils/const";
 import ListSupplierScreen from "./list-supplier-screen";
+import ListSuppliersGroupScreen from "./list-suppliers-group.screen";
 
 export const SuppliersScreen: FC = () => {
   const navigation = useNavigation();
   const [typeNoti, setTypeNoti] = useState(["Tất cả", "Hà Nội"]);
   const [btnTab, setBtnTab] = useState(["Nhà cung cấp", "Nhóm NCC"]);
-  const [activeTab, setActiveTab] = useState("product");
+  const [activeTab, setActiveTab] = useState("supplier");
   const [isVisibleOpenSearch, setIsVisibleOpenSearch] = useState(false);
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleAddSupplier, setIsVisibleAddSupplier] = useState(false)
@@ -40,17 +41,15 @@ export const SuppliersScreen: FC = () => {
   const { supplierStore } = useStores();
   const [myDataSupplier, setMyDataSupplier] = useState<{}[]>([])
   const [myDataSupplierGroup, setMyDataSupplierGroup] = useState<{}[]>([])
+  const [valueSearchSupplier, setValueSearchSupplier] = useState("")
+  const [valueSearchSupplierGroup, setValueSearchSupplierGroup] = useState("")
 
 
   const page = useRef(0)
   const size = useRef(13)
   const totalPage = useRef<number | undefined>()
   const totalElement = useRef<number>()
-  const [isRefreshing, setIsRefreshing] = useState(false)
-
-
-  const pageSupplier = useRef(0)
-  const sizeSupplier = useRef(13)
+  const [statusSearch, setStatusSearch] = useState<boolean>()
 
 
   const handleTabPress = (tab: any) => {
@@ -74,10 +73,20 @@ export const SuppliersScreen: FC = () => {
   const handleIsAddSupplier = () => {
     setIsVisibleAddSupplier(!isVisibleAddSupplier)
   }
+
+  // const handleSearchSupplier = (text: string) => {
+  //   // const newValue = text != null ? text.toString : ""
+
+  //   setValueSearchSupplier(text)
+  // }
+  console.log('value search 123', valueSearchSupplier);
+
+  // const handleSearchSupplierGroup = (text: string) => {
+  //   // const newValue = text != null ? text.toString : ""
+  //   setValueSearchSupplierGroup(text)
+  // }
+
   console.log("value list", statusHidden);
-
-
-
   console.log("33333", myDataSupplier);
 
   const getListSupplierGroup = async () => {
@@ -97,59 +106,8 @@ export const SuppliersScreen: FC = () => {
     }
 
   }
-  const handleRefresh = () => {
-    try {
-      setIsRefreshing(true)
-      page.current = 0
-      getListSupplierGroup()
-    } catch (error) {
-      console.log("Refresh Error", error);
-    }
-
-  }
 
 
-  const handleLoadMore = () => {
-    setValueIsLoadMore(true)
-    setIsLoadMore(true)
-    try {
-      if (page.current < Number(totalPage.current)) {
-
-        page.current = page.current + 1
-
-        getListSupplierGroup()
-      }
-    } catch (error) {
-      console.log("Load more error", error);
-
-    } finally {
-      // setIsLoadMore(false)
-    }
-  }
-
-
-
-  useEffect(() => {
-    // console.log("length data ", myDataSupplier.length);
-
-    if (myDataSupplierGroup.length == totalElement.current) {
-      setIsLoadMore(false)
-
-    } else {
-      setIsLoadMore(false)
-    }
-
-  }, [myDataSupplierGroup.length])
-
-  useEffect(() => {
-    setIsRefreshing(false)
-  }, [myDataSupplierGroup, myDataSupplier])
-
-  useEffect(() => {
-    getListSupplierGroup()
-
-    // setDataCategory(data);
-  }, []);
   console.log("value load more 1", isLoadMore);
   console.log("value search", valuerSearch);
 
@@ -167,10 +125,14 @@ export const SuppliersScreen: FC = () => {
         RightIcon1={isVisible ? Images.icon_close : Images.icon_funnel}
         RightIcon2={isVisible ? Images.icon_close : Images.search}
         headerInput={isVisibleOpenSearch}
-        onSearchValueChange={(txt: any) => { setValuerSearch(txt) }}
-        handleOnSubmitSearch={() => {
-          page.current = 0
-          getListSupplierGroup()
+        onSearchValueChange={(txt: any) => { }}
+        handleOnSubmitSearch={(value: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
+          console.log('doandev1 213213', value.nativeEvent.text);
+          activeTab == "supplier" ? setValueSearchSupplier(value.nativeEvent.text) : setValueSearchSupplierGroup(value.nativeEvent.text)
+          // page.current = 0
+          // getListSupplierGroup()
+          console.log("doan search");
+
         }}
         onRightPress1={() => navigation.navigate("filterScreen" as never)}
         onRightPress2={() => setIsVisibleOpenSearch(!isVisibleOpenSearch)}
@@ -192,18 +154,18 @@ export const SuppliersScreen: FC = () => {
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    handleTabPress(index === 0 ? "product" : "category")
+                    handleTabPress(index === 0 ? "supplier" : "supplierGroup")
                   }
                   key={index}
                   style={[
                     styles.buttonProduct,
-                    activeTab === (index === 0 ? "product" : "category") &&
+                    activeTab === (index === 0 ? "supplier" : "supplierGroup") &&
                     styles.activeButton,
                   ]}>
                   <Text
                     style={[
                       styles.buttonText,
-                      activeTab === (index === 0 ? "product" : "category") &&
+                      activeTab === (index === 0 ? "supplier" : "supplierGroup") &&
                       styles.activeButtonText,
                     ]}>
                     {item}
@@ -283,38 +245,10 @@ export const SuppliersScreen: FC = () => {
         </Modal>
 
         {
-          activeTab == "product" ?
-            <ListSupplierScreen valueSearch={valuerSearch} />
+          activeTab == "supplier" ?
+            <ListSupplierScreen valueSearch={valueSearchSupplier} isSearch={statusSearch} />
             :
-            <View style={{ flex: 1 }}>
-              <FlatList
-
-                data={myDataSupplierGroup}
-                showsVerticalScrollIndicator={false}
-                // refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshNotifications} title="ok" />}
-                keyExtractor={(item, index) => item.id.toString() + index}
-                // onEndReached={handleEndReached}
-                // ListFooterComponent={renderFooter}
-                numColumns={statusHidden ? 1 : 2}
-                key={statusHidden ? 'grid' : 'list'}
-                columnWrapperStyle={null}
-                renderItem={({ item }) => statusHidden ? <RenderItemSupplierList item={item} /> : <RenderItemSupplierGrid item={item} />}
-                refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-                ListFooterComponent={() => {
-                  return (
-                    <View>
-                      {
-                        isLoadMore ? null
-                          : <ActivityIndicator />
-                      }
-                    </View>
-                  )
-                }}
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.5}
-
-              />
-            </View>
+            <ListSuppliersGroupScreen valueSearch={valueSearchSupplierGroup} />
         }
 
       </View>
