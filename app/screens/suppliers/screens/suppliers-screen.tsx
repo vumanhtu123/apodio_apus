@@ -21,12 +21,13 @@ import { RenderItemSupplierGrid, RenderItemSupplierList } from "../component/ite
 import { useStores } from "../../../models";
 import { UserStatus } from "../../../utils/const";
 import ListSupplierScreen from "./list-supplier-screen";
+import ListSuppliersGroupScreen from "./list-suppliers-group.screen";
 
 export const SuppliersScreen: FC = () => {
   const navigation = useNavigation();
   const [typeNoti, setTypeNoti] = useState(["Tất cả", "Hà Nội"]);
   const [btnTab, setBtnTab] = useState(["Nhà cung cấp", "Nhóm NCC"]);
-  const [activeTab, setActiveTab] = useState("product");
+  const [activeTab, setActiveTab] = useState("supplier");
   const [isVisibleOpenSearch, setIsVisibleOpenSearch] = useState(false);
   const [isVisible, setIsVisible] = useState(false)
   const [isVisibleAddSupplier, setIsVisibleAddSupplier] = useState(false)
@@ -40,6 +41,9 @@ export const SuppliersScreen: FC = () => {
   const { supplierStore } = useStores();
   const [myDataSupplier, setMyDataSupplier] = useState<{}[]>([])
   const [myDataSupplierGroup, setMyDataSupplierGroup] = useState<{}[]>([])
+  const [valueSearchSupplier, setValueSearchSupplier] = useState("")
+  const [valueSearchSupplierGroup, setValueSearchSupplierGroup] = useState("")
+
 
 
   const page = useRef(0)
@@ -47,6 +51,7 @@ export const SuppliersScreen: FC = () => {
   const totalPage = useRef<number | undefined>()
   const totalElement = useRef<number>()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [statusSearch, setStatusSearch] = useState<boolean>()
 
 
   const pageSupplier = useRef(0)
@@ -97,59 +102,7 @@ export const SuppliersScreen: FC = () => {
     }
 
   }
-  const handleRefresh = () => {
-    try {
-      setIsRefreshing(true)
-      page.current = 0
-      getListSupplierGroup()
-    } catch (error) {
-      console.log("Refresh Error", error);
-    }
 
-  }
-
-
-  const handleLoadMore = () => {
-    setValueIsLoadMore(true)
-    setIsLoadMore(true)
-    try {
-      if (page.current < Number(totalPage.current)) {
-
-        page.current = page.current + 1
-
-        getListSupplierGroup()
-      }
-    } catch (error) {
-      console.log("Load more error", error);
-
-    } finally {
-      // setIsLoadMore(false)
-    }
-  }
-
-
-
-  useEffect(() => {
-    // console.log("length data ", myDataSupplier.length);
-
-    if (myDataSupplierGroup.length == totalElement.current) {
-      setIsLoadMore(false)
-
-    } else {
-      setIsLoadMore(false)
-    }
-
-  }, [myDataSupplierGroup.length])
-
-  useEffect(() => {
-    setIsRefreshing(false)
-  }, [myDataSupplierGroup, myDataSupplier])
-
-  useEffect(() => {
-    getListSupplierGroup()
-
-    // setDataCategory(data);
-  }, []);
   console.log("value load more 1", isLoadMore);
   console.log("value search", valuerSearch);
 
@@ -167,10 +120,14 @@ export const SuppliersScreen: FC = () => {
         RightIcon1={isVisible ? Images.icon_close : Images.icon_funnel}
         RightIcon2={isVisible ? Images.icon_close : Images.search}
         headerInput={isVisibleOpenSearch}
+        searchValue={activeTab == "supplier" ? valueSearchSupplier : valueSearchSupplierGroup}
         onSearchValueChange={(txt: any) => { setValuerSearch(txt) }}
         handleOnSubmitSearch={() => {
-          page.current = 0
-          getListSupplierGroup()
+          // page.current = 0
+          // getListSupplierGroup()
+          setStatusSearch(true)
+          console.log("doan search");
+
         }}
         onRightPress1={() => navigation.navigate("filterScreen" as never)}
         onRightPress2={() => setIsVisibleOpenSearch(!isVisibleOpenSearch)}
@@ -192,18 +149,18 @@ export const SuppliersScreen: FC = () => {
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    handleTabPress(index === 0 ? "product" : "category")
+                    handleTabPress(index === 0 ? "supplier" : "supplierGroup")
                   }
                   key={index}
                   style={[
                     styles.buttonProduct,
-                    activeTab === (index === 0 ? "product" : "category") &&
+                    activeTab === (index === 0 ? "supplier" : "supplierGroup") &&
                     styles.activeButton,
                   ]}>
                   <Text
                     style={[
                       styles.buttonText,
-                      activeTab === (index === 0 ? "product" : "category") &&
+                      activeTab === (index === 0 ? "supplier" : "supplierGroup") &&
                       styles.activeButtonText,
                     ]}>
                     {item}
@@ -283,38 +240,10 @@ export const SuppliersScreen: FC = () => {
         </Modal>
 
         {
-          activeTab == "product" ?
-            <ListSupplierScreen valueSearch={valuerSearch} />
+          activeTab == "supplier" ?
+            <ListSupplierScreen valueSearch={valuerSearch} isSearch={statusSearch} />
             :
-            <View style={{ flex: 1 }}>
-              <FlatList
-
-                data={myDataSupplierGroup}
-                showsVerticalScrollIndicator={false}
-                // refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshNotifications} title="ok" />}
-                keyExtractor={(item, index) => item.id.toString() + index}
-                // onEndReached={handleEndReached}
-                // ListFooterComponent={renderFooter}
-                numColumns={statusHidden ? 1 : 2}
-                key={statusHidden ? 'grid' : 'list'}
-                columnWrapperStyle={null}
-                renderItem={({ item }) => statusHidden ? <RenderItemSupplierList item={item} /> : <RenderItemSupplierGrid item={item} />}
-                refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-                ListFooterComponent={() => {
-                  return (
-                    <View>
-                      {
-                        isLoadMore ? null
-                          : <ActivityIndicator />
-                      }
-                    </View>
-                  )
-                }}
-                onEndReached={handleLoadMore}
-                onEndReachedThreshold={0.5}
-
-              />
-            </View>
+            <ListSuppliersGroupScreen />
         }
 
       </View>
