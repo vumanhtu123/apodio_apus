@@ -26,9 +26,11 @@ export class WarehouseAPI {
     isLoadMore: boolean
   ): Promise<any> {
     console.log("value idLoadMore ------", isLoadMore);
+    console.log("state ------", state);
+
 
     if (isLoadMore) {
-      Loading.hide();
+   
       try {
         console.log("doandev url warehouse ", this.api.config.url);
         const response: ApiResponse<
@@ -44,17 +46,17 @@ export class WarehouseAPI {
           }
         );
         const result = response.data;
-        console.log("====================================");
-        console.log("my data warehouse", result);
-        console.log("====================================");
-        Loading.hide();
+        // console.log("====================================");
+        // console.log("my data warehouse", result);
+        // console.log("====================================");
+       
         if (result?.data != null) {
           return result;
         } else {
           return result?.errorCodes;
         }
       } catch (error) {
-        Loading.hide();
+      
         return { kind: "bad-data", result: error };
       }
     } else {
@@ -76,9 +78,9 @@ export class WarehouseAPI {
           }
         );
         const result = response.data;
-        console.log("====================================");
-        console.log("my data warehouse", result);
-        console.log("====================================");
+        // console.log("====================================");
+        // console.log("my data warehouse", result);
+        // console.log("====================================");
         Loading.hide();
         if (result?.data != null) {
           return result;
