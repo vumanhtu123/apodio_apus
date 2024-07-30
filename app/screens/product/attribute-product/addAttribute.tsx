@@ -19,7 +19,7 @@ import {
 } from "../../../components/dialog-notification";
 import { FormProvider, useForm } from "react-hook-form";
 import { ItemAttribute } from "./itemAttribute";
-import { styles } from "./styles";
+import { styles } from "../styles";
 
 export const AddAttribute: FC = observer(function AddAttribute(props) {
   const navigation = useNavigation();
