@@ -116,6 +116,26 @@ export class AuthApi {
     }
   }
 
+  async submitChange(oldPassword: string, newPassword: string): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<BaseResponse<any, ErrorCode>> =
+        await this.uaa.apisauce.put(ApiEndpoint.PUT_CHANGE_PASS, {
+          oldPassword,
+          newPassword,
+        });
+      Loading.hide();
+      console.log("response", response.data);
+      const data = response.data;
+      return data;
+    } catch (e) {
+      Loading.hide();
+      return { kind: "bad-data" };
+    }
+  }
+
   async getOtpForgotPass(
     otpReceiver: string,
     receiverType: string
