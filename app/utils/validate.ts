@@ -56,7 +56,7 @@ export const showDate = (item: any, index: number, data: any[]) => {
 };
 
 export const convertRetailPrice = (data: any) => {
-  const prices = data.map(item => Number(formatNumberByString(item.price.toString())));
+  const prices = data.map((item: {price: any}) => Number(formatNumberByString(item.price.toString())));
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
   const minPriceToString = formatCurrency(minPrice)
@@ -65,7 +65,7 @@ export const convertRetailPrice = (data: any) => {
 }
 export const convertAttributeRetailPrice = (data: any, indexVariant: any) => {
   const retailPriceProduct = data[indexVariant].retailPrice;
-  const prices = retailPriceProduct.map(item => Number(formatNumberByString(item.price.toString())));
+  const prices = retailPriceProduct.map((item: {price: any}) => Number(formatNumberByString(item.price.toString())));
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
   const minPriceToString = formatCurrency(minPrice);
@@ -74,7 +74,7 @@ export const convertAttributeRetailPrice = (data: any, indexVariant: any) => {
 }
 export const convertAttributeWholesalePrice = (data: any, indexVariant: any) => {
   const wholesalePriceProduct = data[indexVariant].wholesalePrice;
-  const prices = wholesalePriceProduct.map(item => Number(formatNumberByString(item.price.toString())));
+  const prices = wholesalePriceProduct.map((item: {price: any}) => Number(formatNumberByString(item.price.toString())));
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
   const minPriceToString = formatCurrency(minPrice);
@@ -82,7 +82,7 @@ export const convertAttributeWholesalePrice = (data: any, indexVariant: any) => 
   return `${minPriceToString} - ${maxPriceToString}`;
 }
 export const convertWholesalePrice = (data: any) => {
-  const prices = data.map(item => Number(formatNumberByString(item.price.toString())));
+  const prices = data.map((item: {price: any}) => Number(formatNumberByString(item.price.toString())));
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
   const minPriceToString = formatCurrency(minPrice)
@@ -565,7 +565,7 @@ export function additiveInverseArray(arr: number[]) {
 
 
 export function groupedTaxValues(products: []) {
-  products.reduce((acc, product) => {
+  products.reduce((acc: any, product: any) => {
     const vatValue = product.VAT.value;
     if (acc[vatValue]) {
       acc[vatValue].taxValue += product.taxValue;

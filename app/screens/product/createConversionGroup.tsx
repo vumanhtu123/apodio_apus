@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import {
-  Alert,
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
@@ -13,7 +12,6 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import WebView from "react-native-webview";
 import { Images } from "../../../assets";
 import {
   colors,
@@ -34,17 +32,15 @@ import {
   ALERT_TYPE,
   Dialog,
   Toast,
-  Loading,
 } from "../../components/dialog-notification";
 import { translate } from "../../i18n/translate";
 import UnitModal from "./component/modal-unit";
-import { CustomModal } from "../../components/custom-modal";
 
 export const CreateConversionGroup: FC = observer(
   function CreateConversionGroup(props) {
     const paddingTop = useSafeAreaInsets().top;
     const route = useRoute();
-    const editScreen = route?.params?.editScreen;
+    const {editScreen}: any = route?.params;
     const navigation = useNavigation();
     const { unitStore } = useStores();
     const [originalUnit, setOriginalUnit] = useState({ id: 0, label: "" });
@@ -52,7 +48,7 @@ export const CreateConversionGroup: FC = observer(
     const [arrData, setData] = useState([] as any);
     const [showModal, setShowModal] = useState(false);
     const [showModalDVT, setShowModalDVT] = useState(false);
-    const [filteredData, setFilteredData] = useState([]);
+    const [filteredData, setFilteredData] = useState<{id: number, label: string}[]>([]);
     const [search, setSearch] = useState("");
     const [indexConversion, setIndexConversion] = useState(0);
     const [disabledSelect, setDisabledSelect] = useState(false);
@@ -62,7 +58,7 @@ export const CreateConversionGroup: FC = observer(
       setSearch(text);
       if (text) {
         const dataChoiceItem = arrData.filter(
-          (item) => item.label !== dataUnit
+          (item: {label: string}) => item.label !== dataUnit
         );
         const newData = dataChoiceItem.filter((item: { label: string }) => {
           const itemData = item.label.toUpperCase();
@@ -73,7 +69,7 @@ export const CreateConversionGroup: FC = observer(
         setFilteredData(newData);
       } else {
         const dataChoiceItem = arrData.filter(
-          (item) => item.label !== dataUnit
+          (item: {label: string}) => item.label !== dataUnit
         );
         setFilteredData(dataChoiceItem);
       }
@@ -105,21 +101,21 @@ export const CreateConversionGroup: FC = observer(
     const DVTWatch = watch("DVT");
     const groupNameWatch = watch("groupName");
 
-    const goBackToProductCreateScreen = (id: string, name: string) => {
+    const goBackToProductCreateScreen = (id: number, name: string) => {
       if (editScreen === true) {
-        navigation.navigate("ProductEditScreen", {
+        navigation.navigate({name: "ProductEditScreen", params: {
           idUnitGroup: id,
           nameUnitGroup: name,
           goBackConversionGroup: true,
           resetData: false,
-        });
+        }} as never);
       } else {
-        navigation.navigate("ProductCreateScreen", {
+        navigation.navigate({name: "ProductCreateScreen", params: {
           idUnitGroup: id,
           nameUnitGroup: name,
           goBackConversionGroup: true,
           resetData: false,
-        });
+        }} as never);
       }
     };
 
@@ -161,6 +157,7 @@ export const CreateConversionGroup: FC = observer(
 
     const createUnitGroupLine = async (params: any, saveLocal: boolean) => {
       const unitResult = await unitStore.createUnitGroupLine(params);
+      console.log('du lieu tra ve', unitResult)
       if (unitResult && unitResult.kind === "ok") {
         Dialog.hide();
         const data = unitResult.result.data;
@@ -262,7 +259,7 @@ export const CreateConversionGroup: FC = observer(
         <Header
           LeftIcon={Images.back}
           onLeftPress={() => navigation.goBack()}
-          headerText="Tạo nhóm quy đổi"
+          headerTx="createProductScreen.createUnitGroup"
           style={{ height: scaleHeight(52) }}
         />
         <View
@@ -298,11 +295,11 @@ export const CreateConversionGroup: FC = observer(
             required={true}
             arrData={arrData}
             dataDefault={originalUnit.label}
-            onPressChoice={(item) => {
+            onPressChoice={(item: {label: string, id: number}) => {
               setDataUnit(item.label);
               setOriginalUnit(item);
               setFilteredData((prevItems) =>
-                prevItems.filter((i) => i.label !== item.label)
+                prevItems.filter((i: {label: string}) => i.label !== item.label)
               );
             }}
             disabled={disabledSelect}
@@ -624,7 +621,7 @@ export const CreateConversionGroup: FC = observer(
                                 // flex: 1,
                                 marginTop: scaleHeight(margin.margin_10),
                               }}
-                              renderItem={({ item }) => {
+                              renderItem={({ item }: any) => {
                                 return (
                                   <View>
                                     <TouchableOpacity
@@ -632,7 +629,7 @@ export const CreateConversionGroup: FC = observer(
                                         setDataUnit(item.label);
                                         setFilteredData((prevItems) =>
                                           prevItems.filter(
-                                            (i) => i.label !== item.label
+                                            (i: any) => i.label !== item.label
                                           )
                                         );
                                         setValue(
@@ -665,9 +662,8 @@ export const CreateConversionGroup: FC = observer(
             </ScrollView>
           </View>
         </View>
-
         <UnitModal
-          title={"productScreen.createUnit"}
+          titleTx={"productScreen.createUnit"}
           isVisible={showModalDVT}
           setIsVisible={() => setShowModalDVT(false)}
           onSave={(data) => {
@@ -685,7 +681,6 @@ export const CreateConversionGroup: FC = observer(
             getListUnit();
           }}
         />
-
         <View
           style={{
             flexDirection: "row",
@@ -753,7 +748,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   textLabelFlatList: {
-    fontWeight: "500",
+    // fontWeight: "500",
     fontSize: fontSize.size16,
     lineHeight: scaleHeight(24),
     color: colors.palette.nero,

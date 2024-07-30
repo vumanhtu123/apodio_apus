@@ -730,7 +730,7 @@ const en = {
     addLineWeight: "Thêm tải trọng cho các ĐVT quy đổi",
     conversionRate: "Ty le quy doi",
     enterConversionCode: "nhap ma quy doi",
-    enterRatio: "nhap ty le",
+    enterRatio: "nhập tỉ lệ",
     search: "Search...",
     searchCategories: "Tìm kiếm danh mục",
     enterDescription: "Nhập mô tả",
@@ -821,6 +821,7 @@ const en = {
     volume: "Thể tích",
     select_unit: "Chọn đơn vị",
     editClassify: "Chỉnh sửa phân loại",
+    createUnitGroup: "Tạo nhóm quy đổi",
     notificationAddAllInfoProduct:
       "Bạn đã thêm tất cả thông tin khác của sản phẩm",
     errorMessage: "Đã có lỗi xảy ra. Vui lòng thử lại!",

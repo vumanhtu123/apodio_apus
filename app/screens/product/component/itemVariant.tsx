@@ -17,11 +17,11 @@ import PriceModal from './modal-price';
 interface ItemVariant {
     addVariant: boolean;
     productName: string;
-    dataCreateProduct: {}[];
+    dataCreateProduct: {imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[];
     dataGroupAttribute: {}[];
     valueSwitchUnit: boolean;
     addWeight: boolean;
-    detailUnitGroupData: {};
+    detailUnitGroupData: {originalUnit: string, uomGroupLines: {}[]};
     uomId: {};
     screen: string;
     setDataCreateProduct: ([]) => void;

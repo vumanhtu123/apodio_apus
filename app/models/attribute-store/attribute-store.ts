@@ -6,8 +6,6 @@ import {
   types,
 } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
-import { OderApi } from "../../services/api/api-oder";
-import { HomeApi } from "../../services/api/api-home";
 import { AttributeApi } from "../../services/api/api-attribute";
 import { AttributeResult } from "./list-attribute-model";
 import { AttributeDataResult } from "./data-attribute-model";
@@ -56,7 +54,6 @@ export const AttributeStoreModel = types
     ) {
       const attributeApi = new AttributeApi(self.environment.api);
       const result: AttributeResult = yield attributeApi.getListAttribute(page, size, activated);
-      // console.log('resulttt' , result)
       if (result.kind === "ok") {
         return result;
       } else {
@@ -68,7 +65,6 @@ export const AttributeStoreModel = types
       const attributeApi = new AttributeApi(self.environment.api);
       const result: AttributeDataResult =
         yield attributeApi.getListDataAttribute(categoryIds);
-      console.log("resulttt", result);
       if (result.kind === "ok") {
         return result;
       } else {
@@ -82,7 +78,6 @@ export const AttributeStoreModel = types
       const result: AttributeNameResult = yield attributeApi.createAttributeGroup(
         name
       );
-      // console.log('resulttt' , result)
       if (result.kind === "ok") {
         return result;
       } else {
@@ -95,7 +90,6 @@ export const AttributeStoreModel = types
       const attributeApi = new AttributeApi(self.environment.api);
       const result: AttributeDataGroupResult =
         yield attributeApi.createAttributeDataGroup(dataAttribute, id);
-       console.log('resulttt2' , result)
       if (result.kind === "ok") {
         return result;
       } else {

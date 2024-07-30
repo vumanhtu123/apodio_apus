@@ -280,7 +280,7 @@ const ItemOriginal = observer((item: ItemOriginal) => {
               onBlur={onBlur}
               RightIconClear={null}
               RightIconShow={null}
-              valueTextRight="Kg"
+              ValueTextRight={<Text text="Kg"></Text>}
               styleTextRight={stylesWeight.textFieldOriginal}
               error={""}
               onClearText={() => {
@@ -315,7 +315,7 @@ const ItemOriginal = observer((item: ItemOriginal) => {
             onBlur={onBlur}
             RightIconClear={null}
             RightIconShow={null}
-            valueTextRight="m3"
+            ValueTextRight={<Text text="m3"></Text>}
             styleTextRight={stylesWeight.textFieldVolumeOriginal}
             error={""}
             onClearText={() => {
@@ -410,7 +410,7 @@ const ItemConversion = observer((item: InputSelectProps) => {
               onBlur={onBlur}
               RightIconClear={null}
               RightIconShow={null}
-              valueTextRight="Kg"
+              ValueTextRight={<Text text="Kg"></Text>}
               styleTextRight={stylesWeight.textFieldWeight}
               error={""}
               onClearText={() => {
@@ -444,7 +444,7 @@ const ItemConversion = observer((item: InputSelectProps) => {
               onBlur={onBlur}
               RightIconClear={null}
               RightIconShow={null}
-              valueTextRight="m3"
+              ValueTextRight={<Text text="m3"></Text>}
               styleTextRight={stylesWeight.textFieldVolume}
               error={""}
               onClearText={() => {

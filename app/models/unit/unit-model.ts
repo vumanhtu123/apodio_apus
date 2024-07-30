@@ -23,4 +23,4 @@ export interface DataContent {
     name: string
 }
 
-export type UnitResult = { kind: "ok", result: RootUnit } | { kind: "bad-data", result: RootUnit };
+export type UnitResult = { kind: "ok", result: RootUnit } | { kind: "bad-data", result: RootUnit } | { kind: "bad-data", result: any};

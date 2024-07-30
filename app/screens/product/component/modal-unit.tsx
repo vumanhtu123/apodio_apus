@@ -12,7 +12,7 @@ interface UnitModalProps {
   isVisible: boolean;
   setIsVisible: () => void;
   title?: string;
-  titleTx?: TxKeyPath | {};
+  titleTx?: TxKeyPath;
   onSave: (value: any) => void;
   onSaveAndChange: (value: any) => void;
 }
@@ -27,7 +27,7 @@ const UnitModal = (props: UnitModalProps) => {
     const [textError, setTextError] = useState('');
     const [showLoading, setShowLoading] = useState(false);
 
-    const createUnitName = useCallback(async (onclickSave) => {
+    const createUnitName = useCallback(async (onclickSave: any) => {
         setShowLoading(true);
         const name = getValues('unit');
         const unitResult = await unitStore.createUnitName(name);
@@ -65,7 +65,7 @@ const UnitModal = (props: UnitModalProps) => {
         }, [isVisible, reset, clearErrors])
     );
 
-    const onError = useCallback((errors) => {
+    const onError = useCallback((errors: any) => {
         if (errors.unit) {
             setTextError(errors.unit.message);
         }
@@ -83,7 +83,7 @@ const UnitModal = (props: UnitModalProps) => {
                 lineHeight: scaleHeight(24),
                 color: colors.palette.nero,
                 marginVertical: scaleHeight(margin.margin_16)
-            }} tx={actualTitle} />
+            }} text={actualTitle} />
             <View style={{
                 flexDirection: 'row', alignItems: 'center',
             }}>

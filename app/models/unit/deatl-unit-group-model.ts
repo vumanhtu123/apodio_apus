@@ -18,6 +18,7 @@ export interface Data {
 export interface OriginalUnit {
   id: number
   name: string
+  uomGroupLineId: number
 }
 
 export interface UomGroupLine {
@@ -33,4 +34,4 @@ export interface UomGroupLine {
 }
 
 
-export type DetailUnitGroupResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root };
+export type DetailUnitGroupResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root } | { kind: "bad-data", result: any};
