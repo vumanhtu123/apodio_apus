@@ -10,6 +10,7 @@ import { SelectUom } from "../modal/modal-select-uom";
 
 interface ItemProps {
   showErrors: boolean;
+  // isConfig: boolean;
   checkErrorTriggered: number,
   list: {}[],
 }
@@ -41,10 +42,8 @@ export const ConfigInfoMoreComponent = (props: ItemProps) => {
 
   useEffect(() => {
     if(props.showErrors) {
-      console.log('-------------props.showErrors----------', props.showErrors)
       checkUom()
     }else {
-      console.log('-------------props.showErrors----------', props.showErrors)
       clearErrors("lengthUom");
       clearErrors("widthUom");
       clearErrors("heightUom");
@@ -52,31 +51,24 @@ export const ConfigInfoMoreComponent = (props: ItemProps) => {
     }
   }, [props.showErrors, props.checkErrorTriggered]); 
 
-  console.log('----------errors-----', JSON.stringify(errors))
   const checkUom = () => {
-    console.log("check error", lengthUom);
-    const handleError = (field: string, message: string) => {
-      setError(field, {
-        type: "required",
-        message: message,
-      });
-      console.log(`check error ${field}`, lengthUom);
-    };
-
-    if (lengthUom.value === 0) {
-      handleError("lengthUom", "Vui lòng chọn đơn vị tính");
-    }
-    if (widthUom.value === 0) {
-      handleError("widthUom", "Vui lòng chọn đơn vị tính");
-    }
-    if (heightUom.value === 0) {
-      handleError("heightUom", "Vui lòng chọn đơn vị tính");
-    }
-    if (weightCapacityUom.value === 0) {
-      handleError("weightCapacityUom", "Vui lòng chọn đơn vị tính");
-    }
+    const uoms = [
+      { field: "lengthUom", value: lengthUom.value },
+      { field: "widthUom", value: widthUom.value },
+      { field: "heightUom", value: heightUom.value },
+      { field: "weightCapacityUom", value: weightCapacityUom.value },
+    ];
+  
+    uoms.forEach(uom => {
+      if (uom.value === 0) {
+        setError(uom.field, {
+          type: "required",
+          message: "Vui lòng chọn đơn vị tính",
+        });
+        console.log(`check error ${uom.field}`, uom.value);
+      }
+    });
   };
-
 
   const checkTicker = () => {
     switch (focusedField) {

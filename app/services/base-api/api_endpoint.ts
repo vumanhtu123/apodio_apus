@@ -82,9 +82,10 @@ export const ApiEndpoint = {
   GET_LIST_WAREHOUSE: "/api/v1/sale/stock-warehouse/list",
   GET_DETAIL_WAREHOUSE: "/api/v1/sale/stock-warehouse",
   POST_STOCK_WAREHOUSE: "/api/v1/sale/stock-warehouse",
-
+  PUT_CHANGE_PASS: "/api/v1/user/change-password",
   PUT_STOCK_WAREHOUSE: "/api/v1/sale/stock-warehouse",
   DELETE_WAREHOUSE: "/api/v1/sale/stock-warehouse",
   NUMBER_STATE: "/api/v1/sale/stock-warehouse/warehouse-number",
   GET_LIST_SUPPLIER: "/api/v1/vendor/partner-tag/list",
+  GET_LIST_SUPPLIER_GROUP: "/api/v1/vendor/partners/list",
 };

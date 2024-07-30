@@ -31,7 +31,7 @@ export const WarehouseStoreModal = types
       page: number,
       state: string | undefined,
       search: string,
-      isLoadMore?: boolean
+      isLoadMore : boolean
     ) {
       try {
         const warehouseAPI = new WarehouseAPI(
@@ -46,10 +46,10 @@ export const WarehouseStoreModal = types
             state,
             isLoadMore
           );
-        console.log(
-          "WarehouseResult-------------",
-          JSON.stringify(result.data)
-        );
+        // console.log(
+        //   "WarehouseResult-------------",
+        //   JSON.stringify(result.data)
+        // );
 
         return result.data;
       } catch (error) {

@@ -28,7 +28,7 @@ export * from "./promotions/promotions";
 export * from "./product/arrange-product";
 export * from "./product/component/modal-select-filter";
 export * from "./product/product-categories-screen";
-export * from "./product/product-detail-screen";
+export * from "./product/detail-screen/product-detail/product-detail-screen";
 export * from "./order/orderDetail/orderDetails";
 export * from "./suppliers/screens/suppliers-screen";
 export * from "./product/filter-screen";
@@ -36,7 +36,7 @@ export * from "./product/create-prodcut/create-product-screen";
 
 export * from "./product/arrange-product";
 export * from "./product/product-categories-screen";
-export * from "./product/product-detail-screen";
+export * from "./product/detail-screen/product-detail/product-detail-screen";
 export * from "./product/choose-vendor-screen";
 export * from "./order/orderDetail/orderDetails";
 export * from "./suppliers/screens/suppliers-screen";
@@ -52,7 +52,7 @@ export * from "./product/successScreen";
 export * from "./product/edit-product-variant/edit-product";
 export * from "./product/editWeight";
 export * from "./product/edit-product-variant/editClassify";
-export * from "./product/classify-detail-screen";
+export * from "./product/detail-screen/classify-detail/classify-detail-screen";
 export * from "./debugger/debugger_test";
 
 export * from "../screens/common/users/inforMechant/introduction2";

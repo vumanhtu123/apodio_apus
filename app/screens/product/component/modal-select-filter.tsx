@@ -44,7 +44,7 @@ const SelectFilterModal = (props: any) => {
   const handleSort = () => {
     const selectedType = data[selectedIndex].type;
     setType(selectedType);
-    navigation.navigate({name: "arrangeProduct", params: { selectedType }}as never);
+    navigation.navigate({ name: "arrangeProduct", params: { selectedType } } as never);
     setIsVisible(false);
   };
   return (

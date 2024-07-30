@@ -603,6 +603,7 @@ const en = {
     dayBirth: "Ngày sinh",
     personalIdentification: "Số giấy tờ định danh cá nhân",
     placeholderPersonalIdentification: "Nhập số giấy tờ",
+    addSupplier: "Thêm nhà cung cấp",
   },
   debtScreen: {
     receivables: "Phải thu",
@@ -759,6 +760,7 @@ const en = {
     productTittle: "Sản phẩm",
     refactorCategories: "Chỉnh sửa danh mục",
     addPriceRange: "Thêm khoảng giá",
+    totalProduct: 'Tổng số sản phẩm:'
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",

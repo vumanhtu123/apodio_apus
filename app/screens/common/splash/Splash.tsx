@@ -1,11 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { NavigatorParamList, navigate } from "../../../navigators"
+import { NavigatorParamList } from "../../../navigators"
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
-import { Button, View } from "react-native";
-import { styles } from "../login/styles";
+import { View } from "react-native";
 import { LinearGradient } from "react-native-linear-gradient";
-import { colors, spacing } from "../../../theme";
+import { colors } from "../../../theme";
 import LottieView from "lottie-react-native";
 import { Images } from "../../../../assets/index";
 import { Text } from "../../../components/text/text";

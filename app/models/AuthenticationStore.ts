@@ -169,6 +169,21 @@ export const AuthenticationStoreModel = types
       }
     }),
 
+    changePassword: flow(function* (oldPassword: string, newPassword: string) {
+      const authApi = new AuthApi(
+        store.environment.apiGetWay,
+        store.environment.apiUaa
+      );
+      const result: any = yield authApi.submitChange(oldPassword, newPassword);
+      if (result.kind === "ok") {
+        console.log("result change pass", JSON.stringify(result));
+        return result;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
+
     getRefreshToken: flow(function* (refreshToken: string) {
       const authApi = new AuthApi(
         store.environment.apiGetWay,

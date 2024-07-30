@@ -142,4 +142,44 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: fontSize.size10,
   },
+  StyleTab: {
+    flexDirection: "row",
+    backgroundColor: "#E6E7EA",
+    borderRadius: 8,
+    padding: 3,
+    marginTop: scaleWidth(20),
+    justifyContent: "center",
+  },
+  btnDropDowCategory :{
+    borderRadius: 4,
+    paddingHorizontal: 7,
+    paddingVertical: 8,
+    marginVertical: 12,
+    alignSelf: "flex-end",
+    borderWidth: 1,
+    borderColor: "#0078D4",
+    flexDirection: "row",
+    marginRight: 20,
+
+  },
+  textDropDow: {
+    color: "#0078D4",
+    textAlign: "center",
+    fontWeight: "400",
+    fontSize: fontSize.size10,
+    marginRight: scaleWidth(10),
+  },
+
+  btnAdd: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
+    position: "absolute",
+    paddingHorizontal: scaleWidth(18),
+    paddingVertical: scaleHeight(8),
+    backgroundColor: colors.palette.navyBlue,
+    bottom: Platform.OS === "ios" ? scaleHeight(20) : scaleHeight(5),
+    right: scaleWidth(16),
+  }
 });

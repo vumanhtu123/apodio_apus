@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import React from "react";
 import { Styles } from "./style";
@@ -8,24 +8,19 @@ import {
     ActivityIndicator,
     Alert,
     FlatList,
-    Image,
     RefreshControl,
     TouchableOpacity,
     View,
 } from "react-native";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { Images } from "../../../assets";
-import { styles } from "../account_security/styles";
-import { da, id } from "date-fns/locale";
 import en from "../../i18n/en";
-import { Style } from "../check-inventory/add-check-inventory/add-check-inventory";
 import Modal_Infor_wareHouse from "./modal/modal_Infor_wareHouse";
 import Modal_Plus from "./modal/modal_plus";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../navigators";
 import { useStores } from "../../models";
-import { number } from "mobx-state-tree/dist/internal";
 import ItemListWareHouse from "./component/item-list-warehouse";
 import { ItemTabar } from "./component/item-tabbar-warehouse";
 
@@ -33,8 +28,6 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
     function WareHouseScreen(props) {
         const route = useRoute();
         const reload = route?.params?.reset;
-        // console.log('doandev value', reload);
-
 
         const [indexTabbar, setIndexTabbar] = useState<string | undefined>(undefined)
         const [openInforWareHouse, setOpneInforWareHouse] = useState(false)
@@ -51,9 +44,11 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         const totalPages2 = useRef<any>()
         const totalElement = useRef<any>()
         const getAPI = useStores()
-        const size = useRef(10);
-        const statusLoadMore = getAPI.warehouseStore.isLoadMoreWarehouse;
-        console.log('value load more', isLoadingMore);
+        const size = useRef(20);
+        const a = useRef(0)
+        console.log('re-render', a.current++)
+
+        console.log("value index tabar", indexTabbar);
 
 
         const dataListTabar = useMemo(() => [
@@ -104,25 +99,13 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             { name: en.wareHouse.isActive, length: lengthIsActive, state: 'APPROVED' },
             { name: en.wareHouse.save, length: lengthSave, state: 'ARCHIVED' }
         ], [lengthAll, lengthIsActive, lengthSave]);
-        //     {
-        //         name: en.wareHouse.all,
-        //         length: lengthAll,
-        //     },
-        //     {
-        //         name: en.wareHouse.isActive,
-        //         length: lengthIsActive,
-        //     },
-        //     {
-        //         name: en.wareHouse.save,
-        //         length: lengthSave,
-        //     },
-        // ];
 
+        const getListWarehouse = async () => {
+            console.log("chay lan a", page.current);
+            console.log('index trong get list', indexTabbar);
 
-        const getListWarehouse = useCallback(async () => {
-            console.log("chay lan", page.current);
             try {
-                const data = await getAPI.warehouseStore.getListWareHouse(size.current, page.current, indexTabbar, valueSearch, statusLoadMore);
+                const data = await getAPI.warehouseStore.getListWareHouse(size.current, page.current, indexTabbar, valueSearch, getAPI.warehouseStore.isLoadMoreWarehouse);
                 if (data?.content != null) {
                     const dataWarehouse = data.content
                     if (page.current == 0) {
@@ -136,7 +119,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             } catch (error) {
                 console.error('Error loadMore', error);
             }
-        }, [getAPI, size, page, valueSearch, statusLoadMore, indexTabbar]);
+        };
 
 
 
@@ -149,13 +132,12 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             } catch (error) {
                 console.error('Error getNumberState', error);
             }
-        }, [getAPI, valueSearch]);
+        }, [valueSearch]);
 
 
         const handleRefresh = async () => {
             try {
                 // getAPI.warehouseStore.setIsLoadMoreWarehouse(false);
-
                 setRefreshing(true);
                 // getAPI.warehouseStore.reset
                 // Gọi API hoặc thực hiện các tác vụ cần thiết để lấy dữ liệu mới
@@ -170,46 +152,24 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
             }
         };
 
-
-        const handleLoadMore = async () => {
+        const handleLoadMore = useCallback(async () => {
             console.log('doan load more');
-            setIsLoadingMore(true)
-
-
-            console.log('pageCurrent1', page.current);
-            console.log('totalPageData', totalPages2.current);
-            console.log('value loadMore', isLoadingMore);
+            console.log(indexTabbar);
+            setIsLoadingMore(true);
+            getAPI.warehouseStore.setIsLoadMoreWarehouse(true)
             try {
-
-                if (
-                    page.current < totalPages2.current - 1
-                ) {
-
-                    console.log("page so lan", page.current);
+                if (page.current < totalPages2.current - 1) {
                     page.current = page.current + 1;
-                    console.log('pageDoan', page.current);
                     await getListWarehouse();
-
-                    // setIsLoadingMore(false);
-                    console.log('is value loadMore');
-
                 }
-
             } catch (error) {
-                console.log('====================================');
-                console.log('Error loadMore', error);
-                console.log('====================================');
+                // Handle the error if necessary
             } finally {
-                setIsLoadingMore(false)
+                setIsLoadingMore(false);
             }
-        };
-        console.log('====================================');
-        console.log('value doan', isLoadingMore);
-        console.log('====================================');
-
+        }, [indexTabbar])
 
         useEffect(() => {
-            console.log("---------useEffect---------reload------------------");
             const unsubscribe = props.navigation.addListener("focus", () => {
                 if (reload === true) {
                     console.log("---------useEffect---------reload2------------------");
@@ -223,7 +183,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
         }, [props.navigation, reload]);
 
         useEffect(() => {
+            setMyData([])
             page.current = 0
+            console.log('index thay doi ');
 
             getListWarehouse()
             getNumberState()
@@ -253,6 +215,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     btnRightStyle={{ width: scaleWidth(30), height: scaleHeight(30), marginRight: -10, }}
                     onLeftPress={() => {
                         setMyData([])
+                        getAPI.warehouseStore.reset()
                         props.navigation.goBack()
                     }}
                 />
@@ -289,6 +252,8 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                     }
                                     key={item.name}
                                     onPress={() => {
+                                        getAPI.warehouseStore.setIsLoadMoreWarehouse(false)
+
                                         console.log("type tabbar", item.name);
                                         setIndexTabbar(item?.state);
                                     }}>
@@ -312,13 +277,15 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         data={myData}
                         renderItem={({ item, index }) => <ItemListWareHouse item={item} />}
                         keyExtractor={(item: any, index) => item?.id.toString() + index}
-                        showsVerticalScrollIndicator={false}
+                        showsVerticalScrollIndicator={true}
 
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
                         }
-                        onEndReached={handleLoadMore}
-                        onEndReachedThreshold={0.5}
+                        onEndReached={() => {
+                            handleLoadMore()
+                        }}
+                        // onEndReachedThreshold={0.5}
                         ListFooterComponent={() => {
                             return (
 
@@ -333,9 +300,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                 </View>
                             );
                         }}
-                        initialNumToRender={10}
-                        maxToRenderPerBatch={10}
-                        windowSize={5}
+                    // initialNumToRender={13}
+                    // maxToRenderPerBatch={13}
+                    // windowSize={5}
                     />
                     <TouchableOpacity
                         style={Styles.btnPlus}
@@ -350,7 +317,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
 
                     <Modal_Plus
                         // isVisible={openDialogPlus}
-                        setIsVisible={() => navigation.navigate("warehouse" as never)}
+                        setIsVisible={() => props.navigation.navigate("warehouse" as never)}
                     />
                 </View>
             </View >

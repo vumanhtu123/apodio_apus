@@ -1,13 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { navigate, NavigatorParamList } from "../../../navigators";
+import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useRef, useState } from "react";
-import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { Header, Text, TextField } from "../../../components";
 import { Styles, stylesWareHouse } from "../style";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { scaleHeight } from "../../../theme";
 import { Images } from "../../../../assets";
 import { ConditionsComponent } from "../component/conditions-component";
 import { ConfigInfoMoreComponent } from "../component/config-info-component";
@@ -138,9 +138,12 @@ export const CreateWareHouseScreen: FC<
 
   const onError = (errors: any) => {
     console.log("Form validation errors:", errors);
-    setShowErrors(true);
-    setCheckErrorTriggered((prev) => prev + 1);
+    if(config){
+      setShowErrors(true);
+      setCheckErrorTriggered(prev => prev + 1);
+    }
   };
+
 
   const onPressConfig = () => {
     setValue("config", !config);
@@ -166,6 +169,8 @@ export const CreateWareHouseScreen: FC<
     clearErrors("weightCapacityUom");
   };
 
+  
+
   const onSubmit = (data: any) => {
     if (
       (data.heightUom.text &&
@@ -189,9 +194,11 @@ export const CreateWareHouseScreen: FC<
           onHandleData(data);
           break;
       }
-    } else {
+    }else {
+      if(config){
       setShowErrors(true);
-      setCheckErrorTriggered((prev) => prev + 1);
+      setCheckErrorTriggered(prev => prev + 1);
+      }
     }
   };
 
@@ -709,34 +716,8 @@ export const CreateWareHouseScreen: FC<
                 </TouchableOpacity>
               )}
             />
-            {config ? (
-              <ConfigInfoMoreComponent
-                list={listUnit}
-                checkErrorTriggered={checkErrorTriggered}
-                showErrors={showErrors}
-              />
-            ) : null}
-            {/* <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginVertical: 15,
-                }}>
-                <Text tx="wareHouse.defaultWareHouse"></Text>
-                <Switch
-                  thumbColor="#0178D4"
-                  trackColor={{ false: "#C8C8C8", true: "#C8C8C8" }}
-                  onValueChange={onChange}
-                  value={value}
-                />
-              </View>
-            )}
-            name="notifications"
-          /> */}
+            {config ? <ConfigInfoMoreComponent list={listUnit} checkErrorTriggered={checkErrorTriggered} showErrors={showErrors} /> : null}
+            
           </ScrollView>
           <TouchableOpacity
             onPress={methods.handleSubmit(onSubmit, onError)}
