@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FlatList,
   RefreshControl,
@@ -19,48 +19,71 @@ import { Images } from "../../../../assets";
 import { CustomModal } from "../../../components/custom-modal";
 import { stylesCategory } from "../styles";
 import { translate } from "../../../i18n";
+import { useStores } from "../../../models";
 
 const CategoryModalFilter = ({
   showCategory,
   setShowCategory,
-  dataCategory,
   selectedCategory,
   setSelectedCategory,
   setNameDirectory,
-  isSearchBarVisible,
-  setIndex,
-  setPage,
-  onSearchChange,
-  isRefreshing,
-  onRefresh,
 }: any) => {
   const inputRef = useRef<TextInput | null>(null);
-  const [search, setSearch] = useState("");
   const [showLoading, setShowLoading] = useState(false);
+  const { categoryStore } = useStores();
+  const [dataCategoryFilter, setDataCategoryFilter] = useState<any>([]);
+  const [isRefreshingCategory, setIsRefreshingCategory] = useState(false);
+  const [valueSearchCategory, setValueSearchCategory] = useState("");
+
   const handleSearch = (text: any) => {
-    setSearch(text);
-    // onSearchChange(text); // Gọi hàm callback để cập nhật state ở component cha
+    setValueSearchCategory(text);
   };
   const handleOnSubmitSearch = () => {
-    // setShowLoading(true);
-    if (onSearchChange) {
-      onSearchChange(search);
-    }
-    // setShowLoading(false);
-  };
-  const refresh = () => {
     setShowLoading(true);
-    setSearch("");
-    // setShowLoading(true)
-    onRefresh()
+    setDataCategoryFilter([]);
+    handleGetCategoryFilter(valueSearchCategory)
       .then((result: any) => {
         setShowLoading(false);
-      })
-      .catch((error: any) => {
+      }).catch((error: any) => {
         setShowLoading(false);
       });
+    // }
   };
-
+  const refreshCategoryFilter = async () => {
+    setIsRefreshingCategory(true);
+    setShowLoading(true);
+    setValueSearchCategory("");
+    setDataCategoryFilter([]);
+    await handleGetCategoryFilter()
+      .then((result: any) => {
+        setShowLoading(false);
+      }).catch((error: any) => {
+        setShowLoading(false);
+      });
+    setIsRefreshingCategory(false);
+  };
+  useEffect(() => {
+    handleGetCategoryFilter()
+  }, [])
+  const handleGetCategoryFilter = async (valueSearchCategory?: any) => {
+    try {
+      const response = await categoryStore.getListCategoriesFilter(
+        0,
+        100,
+        valueSearchCategory
+      );
+      if (response && response.kind === "ok") {
+        const filteredData = response.response.data.content.map(({ id, name }: any) => ({ id, name }));
+        const newElement = { name: "Tất cả danh mục" };
+        filteredData.unshift(newElement);
+        setDataCategoryFilter(filteredData);
+      } else {
+        console.error("Failed to fetch categories:", response);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
   const renderItem = ({ item, index }: any) => (
     <TouchableOpacity
       key={index}
@@ -68,7 +91,7 @@ const CategoryModalFilter = ({
         setSelectedCategory(item.id);
         setNameDirectory(item.name);
         setShowCategory(false);
-        setIndex(index);
+        // setIndex(index);
       }}
       style={{
         paddingVertical: scaleHeight(padding.padding_12),
@@ -98,23 +121,12 @@ const CategoryModalFilter = ({
       setIsVisible={setShowCategory}
       isHideKeyBoards={showCategory}
       isVisibleLoading={showLoading}
-      // style={{ height: '40%' }}
     >
       <View
         style={{
           borderColor: colors.palette.veryLightGrey,
-          // backgroundColor: colors.palette.neutral100,
           height: scaleHeight(350),
         }}>
-        <TextRN style={stylesCategory.textRN} />
-        <View style={stylesCategory.viewTextCategory}>
-          <Text
-            tx={"inforMerchant.Category"}
-            style={stylesCategory.textCategory}
-          />
-        </View>
-        <View
-          style={{ height: scaleHeight(1), backgroundColor: "#E7EFFF" }}></View>
         <View>
           <View style={stylesCategory.viewIconSearch}>
             <Images.icon_searchBlack />
@@ -124,7 +136,7 @@ const CategoryModalFilter = ({
             style={stylesCategory.textInput}
             textAlign="left"
             onChangeText={(text) => handleSearch(text)}
-            value={search}
+            value={valueSearchCategory}
             placeholder={translate("productScreen.searchCategories")}
             enterKeyHint="search"
             onSubmitEditing={handleOnSubmitSearch}
@@ -132,14 +144,13 @@ const CategoryModalFilter = ({
           />
         </View>
         <View
-        // style={{ height: '40%' }}
         >
           <FlatList
-            data={dataCategory}
+            data={dataCategoryFilter}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             refreshControl={
-              <RefreshControl refreshing={isRefreshing} onRefresh={refresh} />
+              <RefreshControl refreshing={isRefreshingCategory} onRefresh={refreshCategoryFilter} />
             }
           />
         </View>

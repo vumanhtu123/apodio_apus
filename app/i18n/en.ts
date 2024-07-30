@@ -760,6 +760,7 @@ const en = {
     productTittle: "Sản phẩm",
     refactorCategories: "Chỉnh sửa danh mục",
     addPriceRange: "Thêm khoảng giá",
+    totalProduct: 'Tổng số sản phẩm:'
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
