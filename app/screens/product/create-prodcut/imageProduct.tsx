@@ -197,7 +197,6 @@ export default function ImageProduct(props: ImageProduct) {
                             onPress={() => {
                                 if (arrData.length < 6) {
                                     handleLibraryUse()
-                                    // useLibrary()
                                     productStore.setImagesLimit(arrData.length)
                                 } else {
                                     Toast.show({
@@ -217,7 +216,6 @@ export default function ImageProduct(props: ImageProduct) {
                             onPress={() => {
                                 if (arrData.length < 6) {
                                     handleCameraUse() 
-                                    // useCamera()
                                 } else {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
@@ -279,7 +277,6 @@ export default function ImageProduct(props: ImageProduct) {
                             onPress={() => {
                                 if (arrData.length < 6) {
                                     handleLibraryUse()
-                                    // useLibrary()
                                     productStore.setImagesLimit(arrData.length)
                                 } else {
                                     Toast.show({
@@ -304,7 +301,6 @@ export default function ImageProduct(props: ImageProduct) {
                             onPress={() => {
                                 if (arrData.length < 6) {
                                     handleCameraUse() 
-                                    // useCamera()
                                 } else {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
@@ -354,9 +350,6 @@ export default function ImageProduct(props: ImageProduct) {
                                 itemWidth={Dimensions.get("window").width - 32}
                                 firstItem={activeSlide}
                                 onSnapToItem={(index) => setActiveSlide(index)}
-                                // lockScrollWhileSnapping={true}
-                                // enableMomentum={false}
-                                // decelerationRate={0.5}
                             />
                             <Pagination
                                 dotsLength={

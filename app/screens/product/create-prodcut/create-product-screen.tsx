@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import { FlatList, Linking, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Images } from "../../../../assets/index";
 import { Header } from "../../../components/header/header";
 import { Text } from "../../../components/text/text";
@@ -42,7 +42,6 @@ import {
   ItemUnit,
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
-import { DetailUnitGroupResult } from "../../../models/unit/deatl-unit-group-model";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -59,14 +58,15 @@ export const ProductCreateScreen: FC = (item) => {
   const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
   const [description, setDescription] = useState("");
   const { productStore, unitStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState<{}[]>([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[]>([]);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
-  const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
-  const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: "" });
+  const [uomGroupId, setUomGroupId] = useState({ id: 0, label: "" });
+  const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
   const route = useRoute();
   const textAttributes = useRef([])
   const attributeValues = useRef([])
   const attributeIds = useRef([])
+
   const {
     selectedIds,
     idUnitGroup,
@@ -220,7 +220,7 @@ export const ProductCreateScreen: FC = (item) => {
       const attributeValueArr: any = [];
       const textAttributeValueArr: any = [];
       const a = attributeArr.slice();
-      a.forEach((item: { productAttributeId: any; id: any; value: any }) => {
+      a.forEach((item: { productAttributeId: any, id: any, value: any }) => {
         if ("id" in item) {
           attributeValueArr.push({
             productAttributeId: item.productAttributeId,
@@ -315,7 +315,7 @@ export const ProductCreateScreen: FC = (item) => {
       });
       return
     }
-    if (uomId.id === "") {
+    if (uomId.id === 0) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
@@ -467,11 +467,7 @@ export const ProductCreateScreen: FC = (item) => {
       };
     });
     // const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
-    console.log(
-      "post-product-data---submitAdd---- : ",
-      JSON.stringify(newArr)
-    );
-    // console.log("submitAdd---------------------:", imagesURLSlider);
+    
     const packingLine = data.weight?.map((item: any) => {
       return {
         uomGroupLineId: item.unit.id,
@@ -623,7 +619,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
-      navigation.navigate("createConversionGroup" as never);
+      navigation.navigate({name: "createConversionGroup", params: {editScreen: false}} as never);
     } else {
       setModalcreateUnit(true);
     }
@@ -1018,7 +1014,7 @@ export const ProductCreateScreen: FC = (item) => {
           }}
         />
         <UnitModal
-          title={"productScreen.createUnit"}
+          titleTx={"productScreen.createUnit"}
           isVisible={modalcreateUnit}
           setIsVisible={() => setModalcreateUnit(false)}
           onSave={(data) => {

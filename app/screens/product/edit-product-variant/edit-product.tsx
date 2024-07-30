@@ -61,7 +61,7 @@ export const ProductEditScreen: FC = (item) => {
   const [dropdownToEdit, setDropdownToEdit] = useState<{}[]>([]);
   const [defaultTags, setDefaultTags] = useState([]);
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState<{}[]>([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[]>([]);
   const [productUsing, setProductUsing] = useState(false);
   const [priceUsing, setPriceUsing] = useState(false);
   const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
@@ -84,7 +84,7 @@ export const ProductEditScreen: FC = (item) => {
       }, category: {}
     }
   })
-  const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: "" });
+  const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
   const [uomGroupId, setUomGroupId] = useState({ id: "", label: "" });
   const {
     selectedIds,
@@ -550,7 +550,7 @@ export const ProductEditScreen: FC = (item) => {
       methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
       return
     }
-    if (uomId.id === "") {
+    if (uomId.id === 0) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
@@ -743,7 +743,6 @@ export const ProductEditScreen: FC = (item) => {
         }
       })
     } else {
-      console.log("data------------------------------", JSON.stringify(result));
       Dialog.show({
         type: ALERT_TYPE.DANGER,
         title: translate("txtDialog.txt_title_dialog"),
@@ -786,7 +785,6 @@ export const ProductEditScreen: FC = (item) => {
 
       // Gửi các yêu cầu upload đồng thời và chờ cho đến khi tất cả hoàn thành
       const results = await Promise.all(uploadPromises);
-      console.log('1283591823581')
       let hasNull = results.some((item) => item === null);
       if (!hasNull) {
         console.log("results-------123 : ", JSON.stringify(imagesNote));
@@ -802,7 +800,6 @@ export const ProductEditScreen: FC = (item) => {
       // Xử lý kết quả upload
       results.forEach((result, index) => {
         if (result) {
-          console.log(`Upload image successfully`, JSON.stringify(imageArray[index]));
           console.log(`Upload image ${imageArray[index]} successfully`);
         } else {
           console.log(`Failed to upload image ${imageArray[index]}`);
@@ -829,7 +826,7 @@ export const ProductEditScreen: FC = (item) => {
 
   const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
-      navigation.navigate("createConversionGroup" as never);
+      navigation.navigate({name: "createConversionGroup", params: {editScreen: true}} as never);
     } else {
       setModalcreateUnit(true);
     }
@@ -1201,7 +1198,7 @@ export const ProductEditScreen: FC = (item) => {
           }}
         />
         <UnitModal
-          title={"productScreen.createUnit"}
+          titleTx={"productScreen.createUnit"}
           isVisible={modalcreateUnit}
           setIsVisible={() => setModalcreateUnit(false)}
           onSave={(data) => {

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from "react";
 import {
   Animated,
   Platform,
@@ -10,17 +10,16 @@ import {
   View,
   ViewStyle,
   Text as TextRN,
-} from 'react-native';
+} from "react-native";
 import {
   colors,
   fontSize,
   scaleHeight,
   scaleWidth,
   spacing,
-} from '../../theme';
-import {translate, TxKeyPath} from '../../i18n';
-import {Text} from '../text/text';
-import {SvgIcon} from '../svg-icon';
+} from "../../theme";
+import { translate, TxKeyPath } from "../../i18n";
+import { Text } from "../text/text";
 
 // the base styling for the container
 const CONTAINER: ViewStyle = {
@@ -36,7 +35,7 @@ const INPUT: TextStyle = {
   color: colors.palette.nero,
   minHeight: 50,
   fontSize: 16,
-  paddingTop: Platform.OS === 'android' ? 16 : 16,
+  paddingTop: Platform.OS === "android" ? 16 : 16,
   paddingHorizontal: scaleWidth(16),
   // backgroundColor: color.palette.white,
   flex: 1,
@@ -46,13 +45,13 @@ const INPUT_CHANGE_PASS: TextStyle = {
   color: colors.palette.nero,
   minHeight: 50,
   fontSize: 16,
-  paddingTop: Platform.OS === 'android' ? 8 : 12,
+  paddingTop: Platform.OS === "android" ? 8 : 12,
   // paddingHorizontal: scaleWidth(16),
   // backgroundColor: color.palette.white,
   flex: 1,
 };
 // currently we have no presets, but that changes quickly when you build your app.
-const PRESETS: {[name: string]: ViewStyle} = {
+const PRESETS: { [name: string]: ViewStyle } = {
   default: {},
 };
 
@@ -80,12 +79,12 @@ export interface TextFieldProps extends TextInputProps {
   /**
    * Optional container style overrides useful for margins & padding.
    */
-  style?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>;
 
   /**
    * Optional style overrides for the input.
    */
-  inputStyle?: StyleProp<TextStyle>
+  inputStyle?: StyleProp<TextStyle>;
 
   /**
    * Various look & feels.
@@ -117,7 +116,7 @@ export function TextFieldPass(props: TextFieldProps) {
     placeholder,
     labelTx,
     label,
-    preset = 'default',
+    preset = "default",
     style: styleOverride,
     inputStyle: inputStyleOverride,
     forwardedRef,
@@ -154,7 +153,7 @@ export function TextFieldPass(props: TextFieldProps) {
   };
 
   return (
-    <View style={{marginBottom: scaleHeight(5)}}>
+    <View style={{ marginBottom: scaleHeight(5) }}>
       <View
         style={[
           containerStyles,
@@ -168,35 +167,37 @@ export function TextFieldPass(props: TextFieldProps) {
           preset="fieldLabel"
           tx={labelTx}
           style={{
-            position: 'absolute',
+            position: "absolute",
             left: isTL38 ? scaleWidth(50) : 0,
-            top: !isFocused && value === '' ? 15 : 0,
-            fontSize: !isFocused && value === '' ? 15 : 12,
-            fontWeight: '500',
-            color: !isFocused ? '#84888D' : colors.palette.dolphin,
+            top: !isFocused && value === "" ? 15 : 0,
+            fontSize: !isFocused && value === "" ? 15 : 12,
+            fontWeight: "500",
+            color: !isFocused ? "#84888D" : colors.palette.dolphin,
             paddingHorizontal: scaleWidth(16),
-            marginTop: isFocused && value === '' ? 3 : 3,
+            marginTop: isFocused && value === "" ? 3 : 3,
           }}
           //@ts-ignore
           text={
             <TextRN>
               {label}
-              <TextRN style={{color: 'red'}}>{isImportant ? ' *' : ''}</TextRN>
+              <TextRN style={{ color: "red" }}>
+                {isImportant ? " *" : ""}
+              </TextRN>
             </TextRN>
           }
         />
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}>
           {isTL38 ? (
             <Text
               style={{
-                fontWeight: '700',
+                fontWeight: "700",
                 fontSize: 16,
-                color: value ? '#242426' : '#545456',
+                color: value ? "#242426" : "#545456",
                 marginLeft: scaleWidth(15),
                 marginTop: scaleWidth(value ? 10 : 0),
               }}
@@ -208,7 +209,7 @@ export function TextFieldPass(props: TextFieldProps) {
             placeholder={actualPlaceholder}
             // underlineColorAndroid={color.transparent}
             placeholderTextColor={colors.palette.dolphin}
-            style={[inputStyles, {paddingBottom: 60, marginBottom: -50}]}
+            style={[inputStyles, { paddingBottom: 60, marginBottom: -50 }]}
             ref={forwardedRef ? forwardedRef : focus}
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -216,13 +217,18 @@ export function TextFieldPass(props: TextFieldProps) {
             keyboardType={keyboardType}
             // multiline={false}
           />
-          <View style={{flexDirection: 'row', paddingRight: scaleWidth(16)}}>
+          <View
+            style={{
+              flexDirection: "row",
+              paddingRight: scaleWidth(16),
+              alignItems: "center",
+            }}>
             {isShowPassword && value ? (
               <TouchableOpacity onPress={onShowPassword}>
                 <RightIconShow />
               </TouchableOpacity>
             ) : null}
-            <View style={{width: scaleWidth(10)}} />
+            <View style={{ width: scaleWidth(10) }} />
             {value ? (
               <TouchableOpacity
                 onPress={() => {

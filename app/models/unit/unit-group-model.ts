@@ -23,4 +23,4 @@ export interface Content {
   name: string
 }
 
-export type UnitGroupResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root };
+export type UnitGroupResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root } | { kind: "bad-data", result: any};

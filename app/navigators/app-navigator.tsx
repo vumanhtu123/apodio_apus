@@ -4,7 +4,12 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import { NavigationContainer, StackActions } from "@react-navigation/native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+  StackActions,
+} from "@react-navigation/native";
 import {
   createStackNavigator,
   StackScreenProps,
@@ -12,7 +17,6 @@ import {
 } from "@react-navigation/stack";
 import React from "react";
 import { MainBottomTab } from "./bottom-navigation";
-import { useBackButtonHandler } from "./navigation-utilities";
 import { AuthProvider } from "../screens/contexts/auth";
 import { Router } from "./router";
 import { AuthStack } from "./auth-navigator";
@@ -29,9 +33,12 @@ import { CreateExportGoods } from "../screens/goods-delivery-book/Create-Export-
 import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
-
-
-
+import { useColorScheme } from "react-native";
+import {
+  navigationRef,
+  useBackButtonHandler,
+} from "../navigators/navigation-utilities";
+import { MyDrawer } from "./drawer-navigator";
 
 // import { CardStyleInterpolators } from "@react-navigation/stack";
 
@@ -266,16 +273,13 @@ export const AppStack = () => {
       <Stack.Screen name="detailDebt" component={Screens.DetailDebtScreen} />
       <Stack.Screen name="receivable" component={Screens.ReceivableScreen} />
 
-      <Stack.Screen name="detailWarehouse" component={Screens.DetailWarehouseScreen} />
+      <Stack.Screen
+        name="detailWarehouse"
+        component={Screens.DetailWarehouseScreen}
+      />
 
-      <Stack.Screen
-        name="addRevenueScreen"
-        component={Screens.RevenueScreen}
-      />
-      <Stack.Screen
-        name="expenseScreen"
-        component={Screens.ExpenseScreen}
-      />
+      <Stack.Screen name="addRevenueScreen" component={Screens.RevenueScreen} />
+      <Stack.Screen name="expenseScreen" component={Screens.ExpenseScreen} />
       <Stack.Screen
         name="detailReceivable"
         component={Screens.DetailReceivable}
@@ -536,27 +540,29 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()
-  useBackButtonHandler(canExit);
-
-  // return (
-  //   <NavigationContainer
-  //     ref={navigationRef}
-  //     theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-  //     {...props}
-  //   >
-  //     <AppStack />
-  //   </NavigationContainer>
-  // )
+  const colorScheme = useColorScheme();
+  // useBackButtonHandler(canExit);
+  useBackButtonHandler((routeName) => exitRoutes.includes(routeName));
 
   return (
-    <AuthProvider>
-      <Router {...props} />
-    </AuthProvider>
+    <NavigationContainer
+      ref={navigationRef}
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+      {...props}>
+      {/* <AppStack /> */}
+      <MyDrawer />
+    </NavigationContainer>
   );
+
+  // return (
+  //   <AuthProvider>
+  //     <Router {...props} />
+  //   </AuthProvider>
+  // );
 };
 
 AppNavigator.displayName = "AppNavigator";
