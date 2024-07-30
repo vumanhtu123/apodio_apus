@@ -45,7 +45,7 @@ export const EditClassify: FC = (item) => {
     const [vendor, setVendor] = useState([]);
     const { productStore, unitStore } = useStores();
     const methods = useForm({ defaultValues: { productName: '', costPrice: '', listPrice: '', SKU: '', weight: [], weightOriginal: '', volumeOriginal: '', retailPriceProduct: [], wholesalePriceProduct: [] } })
-    const [uomId, setUomId] = useState({ id: "", label: "", uomGroupLineId: "" });
+    const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
     const {
         selectedIds,
         dataEdit,
@@ -61,11 +61,6 @@ export const EditClassify: FC = (item) => {
     useEffect(() => {
         setVendor(selectedIds);
     }, [selectedIds]);
-    useEffect(() => {
-        console.log('first', nameValue)
-        console.log('first2', attributes)
-        console.log('first3', dataEdit)
-    }, []);
 
     const arrBrands = [
         { id: 3746, label: "Mặc định", label2: "DEFAULT" },
@@ -160,7 +155,7 @@ export const EditClassify: FC = (item) => {
             methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
             return
         }
-        if (uomId.id === "") {
+        if (uomId.id === 0) {
             Toast.show({
                 type: ALERT_TYPE.DANGER,
                 title: "",
@@ -237,7 +232,6 @@ export const EditClassify: FC = (item) => {
                 }
             })
         } else {
-            console.log("data------------------------------", JSON.stringify(result));
             Dialog.show({
                 type: ALERT_TYPE.DANGER,
                 title: translate("txtDialog.txt_title_dialog"),
@@ -280,9 +274,7 @@ export const EditClassify: FC = (item) => {
             const results = await Promise.all(uploadPromises);
             let hasNull = results.some((item) => item === null);
             if (!hasNull) {
-                console.log("results-------123 : ", JSON.stringify(imagesNote));
                     setImagesNote([...imagesNote, ...results]);
-                
             }
             // Xử lý kết quả upload
             results.forEach((result, index) => {
@@ -299,7 +291,6 @@ export const EditClassify: FC = (item) => {
 
     const handleRemoveImage = (index: number, url: string) => {
         let fileName = url.split("/").pop();
-        console.log("handleRemoveImage Slider---Root", fileName);
         const indexToRemoveLocal = imagesNote.findIndex(
             (item: string) => item.split("/").pop() === fileName
         );

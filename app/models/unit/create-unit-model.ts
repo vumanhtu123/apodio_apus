@@ -13,4 +13,4 @@ export interface Data {
   name: string
 }
 
-export type CreateUnitResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root };
+export type CreateUnitResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root } | { kind: "bad-data", result: any};
