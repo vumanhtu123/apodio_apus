@@ -9,6 +9,7 @@ import { colors, scaleHeight, scaleWidth } from "../../app-purchase/theme";
 const { height } = Dimensions.get("window");
 import { StyleSheet } from "react-native";
 import { Svgs } from "../../../assets/svgs";
+import  Images  from "../../../assets/index";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MainBottomTab } from "./bottom-navigation";
 import { AppStack } from "./app-navigator";
@@ -161,7 +162,7 @@ export function CustomDrawerContent(props: any) {
         </View>
         <View style={styles.containerImage2}>
           <Image
-            source={require("../../../assets/Images/banner.png")}
+            source={Images.banner}
             style={{ width: 225, height: 130 }}
           />
         </View>
