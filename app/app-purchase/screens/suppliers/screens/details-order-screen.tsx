@@ -3,7 +3,7 @@ import { FC } from "react";
 import { View } from "react-native";
 import { styles } from "../styles/styles";
 import { Header } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation } from "@react-navigation/native";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { AppStackScreenProps } from "../../../navigators";
@@ -29,7 +29,7 @@ export const DetailsOrderScreen: FC<
       <Header
         // onRightPress={openTypeFilter}
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Chi tiết đơn hàng`}

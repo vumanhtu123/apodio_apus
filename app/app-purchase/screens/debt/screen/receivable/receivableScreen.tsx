@@ -19,7 +19,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../../theme";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import LinearGradient from "react-native-linear-gradient";
 import { Styles } from "../styles";
 import en from "../../../../i18n/en";
@@ -212,10 +212,10 @@ export const ReceivableScreen: FC<
   return (
     <View style={{ flex: 1 }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         leftText="dashboard.debt"
         style={{ height: scaleHeight(52) }}
-        RightIcon1={Images.ic_calender_white}
+        RightIcon1={Svgs.ic_calender_white}
         onLeftPress={() => {
           props.navigation.goBack();
         }}

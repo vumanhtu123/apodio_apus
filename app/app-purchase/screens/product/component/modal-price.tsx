@@ -11,7 +11,7 @@ import {
   ViewStyle,
 } from "react-native";
 import Modal from "react-native-modal";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Button, Text, TextField } from "../../../../components";
 import Dialog from "../../../../components/dialog/dialog";
 import { TxKeyPath, translate } from "../../../i18n";
@@ -243,7 +243,7 @@ const PriceModal = observer((props: PriceModalProps) => {
                   />
                   {fields?.length > 1 ? (
                     <TouchableOpacity onPress={() => remove(index)}>
-                      <Images.icon_delete2
+                      <Svgs.icon_delete2
                         style={{ marginBottom: scaleHeight(8) }}
                       />
                     </TouchableOpacity>
@@ -262,7 +262,7 @@ const PriceModal = observer((props: PriceModalProps) => {
               }
             }}
             style={stylesModalPrice.buttonAdd}>
-            <Images.icon_add />
+            <Svgs.icon_add />
             <Text
               tx="productScreen.addPriceRange"
               style={stylesModalPrice.textAdd}

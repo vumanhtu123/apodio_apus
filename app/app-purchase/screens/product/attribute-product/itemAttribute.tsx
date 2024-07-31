@@ -2,7 +2,7 @@ import { memo, useState } from 'react';
 import React, { Dimensions, FlatList, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { Button, Switch, Text } from '../../../../components';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { translate } from '../../../i18n';
 import Modal from "react-native-modal";
 import { useNavigation } from '@react-navigation/native';
@@ -51,7 +51,7 @@ export const ItemAttribute = memo(
                     >
                         <View style={styles.viewItemFlatListModal}>
                             {isSelected && (
-                                <Images.icon_checkBox
+                                <Svgs.icon_checkBox
                                 // width={scaleWidth(16)}
                                 // height={scaleHeight(16)}
                                 />
@@ -89,7 +89,7 @@ export const ItemAttribute = memo(
                                                         style={styles.viewIconDeleteLine}
                                                         onPress={() => props.deleteLineAttribute(items)}
                                                     >
-                                                        <Images.icon_minusCircle />
+                                                        <Svgs.icon_minusCircle />
                                                     </TouchableOpacity>}
                                                 <Text
                                                     text={items.item.name}
@@ -158,7 +158,7 @@ export const ItemAttribute = memo(
                                                                                         { marginRight: scaleWidth(4) },
                                                                                     ]}
                                                                                 />
-                                                                                <Images.icon_delete2
+                                                                                <Svgs.icon_delete2
                                                                                     width={scaleWidth(10)}
                                                                                     height={scaleHeight(10)}
                                                                                 />
@@ -197,7 +197,7 @@ export const ItemAttribute = memo(
                                                                 props.setIdAttributeModal(items.item.id);
                                                             }}
                                                         >
-                                                            <Images.icon_caretRightDown />
+                                                            <Svgs.icon_caretRightDown />
                                                         </TouchableOpacity>
                                                     </View>
                                                 ) : (
@@ -324,7 +324,7 @@ export const ItemAttribute = memo(
                             }}
                             style={{ flexDirection: "row", marginVertical: scaleHeight(10) }}
                         >
-                            <Images.icon_add />
+                            <Svgs.icon_add />
                             <Text tx="addAttribute.addAttribute" style={styles.textNavy600} />
                         </TouchableOpacity>
                         : null}

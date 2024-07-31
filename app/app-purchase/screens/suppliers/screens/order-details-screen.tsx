@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { styles } from "../styles/styles";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { AppStackScreenProps, navigationRef } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import {
@@ -22,7 +22,7 @@ export const OrderDetailsScreen: FC<
       <View>
         <Header
           type={"AntDesign"}
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           // colorIcon={colors.text}
           headerText={`Chi tiết đơn hàng`}
@@ -91,7 +91,7 @@ export const OrderDetailsScreen: FC<
                   paddingHorizontal: 102,
                   paddingVertical: 7,
                 }}>
-                <Images.icon_plus_blue
+                <Svgs.icon_plus_blue
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                   style={{ marginRight: 6, marginTop: 2, color: "#0078D4" }}
@@ -122,7 +122,7 @@ export const OrderDetailsScreen: FC<
                 paddingTop: 15,
                 alignItems: "center",
               }}>
-              <Images.icon_gear />
+              <Svgs.icon_gear />
               <View
                 style={{
                   borderRadius: 4,

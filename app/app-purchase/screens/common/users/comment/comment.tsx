@@ -3,7 +3,7 @@ import { Header } from "../../../../../components/header/header";
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Text } from "../../../../../components/text/text";
 import ModelSenSuccess from "./ModelSendSuccess";
 import { useNavigation } from "@react-navigation/native";

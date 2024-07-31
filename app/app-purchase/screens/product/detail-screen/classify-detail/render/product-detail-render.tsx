@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../../../theme';
 import ProductAttribute from '../../../component/productAttribute';
-import { Images } from '../../../../../../../assets';
+import { Svgs } from '../../../../../../../assets/svgs';
 import { styles } from '../styles';
 import { Text } from '../../../../../../components';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
@@ -56,9 +56,9 @@ const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
             ]}
           />
           {showRetailPrice === false ? (
-            <Images.icon_caretRightDown />
+            <Svgs.icon_caretRightDown />
           ) : (
-            <Images.icon_caretUp />
+            <Svgs.icon_caretUp />
           )}
         </TouchableOpacity>
         {showRetailPrice === true ? (
@@ -117,9 +117,9 @@ const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
             ]}
           />
           {showWholesalePrice === false ? (
-            <Images.icon_caretRightDown />
+            <Svgs.icon_caretRightDown />
           ) : (
-            <Images.icon_caretUp />
+            <Svgs.icon_caretUp />
           )}
         </TouchableOpacity>
         {showWholesalePrice === true ? (
@@ -202,7 +202,7 @@ const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
                 }}>
                 <View
                   style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Images.ic_arrowDownRight
+                  <Svgs.ic_arrowDownRight
                     width={scaleWidth(14)}
                     height={scaleHeight(14)}
                   />

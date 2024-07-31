@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { styles } from "../styles/styles";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { navigationRef, NavigatorParamList } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { TouchableOpacity, View } from "react-native";
@@ -52,7 +52,7 @@ export const DetailsSupplierScreen: FC<
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigationRef.goBack()}
         colorIcon={colors.text}
         headerText={`Chi tiết nhà cung cấp`}

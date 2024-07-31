@@ -13,7 +13,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Styles } from "./styles";
 import {
   commasToDots,
@@ -62,7 +62,7 @@ export const MoneyManagementScreen: FC<
   return (
     <View style={{ flex: 1 }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="revenueAndExpenditure.moneyManagement"
         style={{ height: scaleHeight(52) }}
         onLeftPress={() => props.navigation.goBack()}
@@ -71,7 +71,7 @@ export const MoneyManagementScreen: FC<
         <TouchableOpacity
           style={Styles.btnTransferMoney}
           onPress={() => props.navigation.navigate("transferMoneyScreen")}>
-          <Images.ic_ArrowsLeftRight />
+          <Svgs.ic_ArrowsLeftRight />
           <Text
             tx="revenueAndExpenditure.transferMoney"
             style={{ marginLeft: scaleWidth(6) }}
@@ -96,7 +96,7 @@ export const MoneyManagementScreen: FC<
         <TouchableOpacity
           style={Styles.btnAddFunds}
           onPress={() => OpenModalCreateFunds()}>
-          <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} />
+          <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} />
           <Text
             tx="revenueAndExpenditure.addFunds"
             style={{ fontSize: fontSize.size14, color: colors.palette.white }}

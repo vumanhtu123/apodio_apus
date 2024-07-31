@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC } from "react";
 import { TouchableOpacity, View } from "react-native";
 import WebView from "react-native-webview";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -24,7 +24,7 @@ export const View3D: FC = observer(function View3D(props) {
           top: scaleHeight(15),
           left: scaleWidth(16),
         }}>
-        <Images.icon_deleteBlue />
+        <Svgs.icon_deleteBlue />
       </TouchableOpacity>
     </View>
   );

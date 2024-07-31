@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View, ViewStyle } from "react-native";
 import { Text, TextField } from "../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import Modal from "react-native-modal";
 import { Numpad } from "./component/num-pad-component";
 

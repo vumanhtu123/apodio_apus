@@ -1,6 +1,6 @@
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
-import { Images } from '../../../../../../assets';
+import { Svgs } from '../../../../../../assets/svgs';
 import { Button, Text } from '../../../../../components';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
@@ -189,7 +189,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             <TouchableOpacity
                 onPress={() => navigation.navigate("ProductCreateScreen" as never)}
                 style={styles.btnCreateProduct}>
-                <Images.ic_addProduct
+                <Svgs.ic_addProduct
                     width={scaleWidth(50)}
                     height={scaleHeight(50)}
                 />
@@ -231,7 +231,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
                             navigation.navigate({ name: "filterScreen", params: { activeTab: "product" } } as never)
                         }
                         style={{ backgroundColor: "none", width: scaleWidth(30), height: scaleHeight(30) }}>
-                        <Images.slider_black
+                        <Svgs.slider_black
                             width={scaleWidth(16)}
                             height={scaleHeight(16)}
                         />
@@ -248,7 +248,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
                             {nameDirectory}
                         </Text>
                         <View style={{ marginRight: scaleWidth(8) }}>
-                            <Images.iconDownBlue
+                            <Svgs.iconDownBlue
                                 width={scaleWidth(14)}
                                 height={scaleHeight(14)}
                             />

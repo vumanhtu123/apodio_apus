@@ -18,7 +18,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { Button, TextField } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
 import AutoHeightImage from "react-native-auto-height-image";
 import { translate } from "../../../i18n/translate";
@@ -128,7 +128,7 @@ export default function ItemListProduct(props: AddProduct) {
             top: scaleHeight(8),
             zIndex: 1,
           }}>
-          <Images.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
+          <Svgs.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
         </TouchableOpacity>}
       <View
         style={{
@@ -186,7 +186,7 @@ export default function ItemListProduct(props: AddProduct) {
                   setPriceId(props.id)
                   setModalPriceUnit(true)
                 }}>
-                {isEdit === 'edit' ? null : <Images.icon_edit />}
+                {isEdit === 'edit' ? null : <Svgs.icon_edit />}
               </TouchableOpacity>
             ) : null}
             <Text
@@ -205,7 +205,7 @@ export default function ItemListProduct(props: AddProduct) {
           {VAT != undefined ? (
             <View style={{ flexDirection: "column", marginTop: 6 }}>
               <View style={{ flexDirection: "row" }}>
-                <Images.ic_tag />
+                <Svgs.ic_tag />
                 <Text
                   numberOfLines={1}
                   style={{
@@ -238,7 +238,7 @@ export default function ItemListProduct(props: AddProduct) {
                   marginVertical: 6,
                   alignItems: "center",
                 }}>
-                <Images.ic_plus_orange />
+                <Svgs.ic_plus_orange />
                 <Text
                   style={{
                     fontSize: 10,
@@ -261,7 +261,7 @@ export default function ItemListProduct(props: AddProduct) {
                 setModalPrice(true)
               }}>
                 <View style={{ flexDirection: "row" }}>
-                  <Images.icon_plusGreen />
+                  <Svgs.icon_plusGreen />
                   <Text
                     style={{
                       fontSize: 10,
@@ -339,7 +339,7 @@ export default function ItemListProduct(props: AddProduct) {
                 </Text>
                 {props.disabled === true ? null :
                   <TouchableOpacity onPress={() => setModalPrice(true)}>
-                    <Images.icon_edit />
+                    <Svgs.icon_edit />
                   </TouchableOpacity>}
               </View>
           ) : null}
@@ -383,7 +383,7 @@ export default function ItemListProduct(props: AddProduct) {
                 marginHorizontal: scaleWidth(margin.margin_6),
                 alignItems: "center",
               }}>
-              <Images.icon_minus />
+              <Svgs.icon_minus />
             </TouchableOpacity>}
           <Text
             style={{
@@ -401,7 +401,7 @@ export default function ItemListProduct(props: AddProduct) {
               marginHorizontal: scaleWidth(margin.margin_6),
               alignContent: "center",
             }}>
-            <Images.icon_plusGreen />
+            <Svgs.icon_plusGreen />
           </TouchableOpacity>}
         </View>
       </View>

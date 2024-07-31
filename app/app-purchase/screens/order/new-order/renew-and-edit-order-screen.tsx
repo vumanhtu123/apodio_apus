@@ -17,7 +17,7 @@ import {
   Text,
   TextField,
 } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
@@ -1000,7 +1000,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => {
           handleBack();
           navigation.goBack();
@@ -1072,7 +1072,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                   navigation.navigate("addProductOrder" as never);
                   selectProduct();
                 }}>
-                <Images.icon_add />
+                <Svgs.icon_add />
                 <Text
                   tx={"order.addProduct"}
                   style={styles.textButtonListProduct}
@@ -1200,7 +1200,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       color: "#242424",
                       marginRight: 6,
                     }}></Text>
-                  {screen === "edit" ? null : <Images.icon_caretRight2 />}
+                  {screen === "edit" ? null : <Svgs.icon_caretRight2 />}
                 </View>
                 {countRef.current.toString() ===
                   translate("order.DEDUCTION_OF_LIABILITIES") ? (screen === 'edit' ? null :
@@ -1264,7 +1264,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                 alignItems: "center",
               }}>
               <TouchableOpacity onPress={() => setDesiredDate(false)}>
-                <Images.icon_deleteDolphin />
+                <Svgs.icon_deleteDolphin />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setIsSortByDate(true)}
@@ -1273,7 +1273,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                   alignItems: "center",
                   marginLeft: scaleWidth(margin.margin_8),
                 }}>
-                <Images.icon_calendar />
+                <Svgs.icon_calendar />
                 <Text
                   style={[
                     styles.textDate,
@@ -1285,7 +1285,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       markedDatesS === "" ? new Date() : markedDatesS
                     ).format("MMMM DD, YYYY")}
                 </Text>
-                <Images.icon_caretDownBlue />
+                <Svgs.icon_caretDownBlue />
               </TouchableOpacity>
             </View>
           ) : null}
@@ -1300,7 +1300,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             ]}
           />
           <View style={styles.viewMoreInformation}>
-            <Images.icon_gear
+            <Svgs.icon_gear
               style={{ marginRight: scaleWidth(margin.margin_4) }}
             />
             {note === false || isDeposit === false || desiredDate === false ? (
@@ -1499,7 +1499,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                       }
                     } as never);
                   }}>
-                  <Images.icon_edit
+                  <Svgs.icon_edit
                     style={{ marginRight: scaleWidth(margin.margin_6) }}
                   />
                 </TouchableOpacity>}

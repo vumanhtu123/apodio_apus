@@ -6,7 +6,7 @@ import { useStores } from "../../models"
 import { TouchableOpacity, View } from "react-native"
 import React from "react"
 import { Header } from "../../../components/header/header"
-import { Images } from "../../../../assets"
+import { Svgs } from "../../../../assets/svgs"
 import { colors, scaleHeight } from "../../theme"
 import { Text } from "../../../components"
 import { Styles } from "./styles"
@@ -43,7 +43,7 @@ export const FilterSelectApplicablePriceList: FC<StackScreenProps<NavigatorParam
             <View style={{ flex: 1 }}>
                 <Header
                     headerTx="selectClient.filter"
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => props.navigation.goBack()}
 
                 />

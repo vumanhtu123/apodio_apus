@@ -1,6 +1,6 @@
 import React, {FC, memo} from 'react';
 import {Text, View} from 'react-native';
-import {Images} from '../../../../../assets/index';
+import {Svgs} from '../../../../../assets/svgs';
 import {navigate} from '../../../../app-purchase/navigators';
 
 export const WellComeScreen: FC = () => {
@@ -16,7 +16,7 @@ export const WellComeScreen: FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Images.icon_Logo1 />
+      <Svgs.icon_Logo1 />
     </View>
   );
 };

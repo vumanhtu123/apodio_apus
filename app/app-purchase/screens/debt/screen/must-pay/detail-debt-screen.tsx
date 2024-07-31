@@ -18,7 +18,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../../theme";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import en from "../../../../i18n/en";
 import React from "react";
 import LinearGradient from "react-native-linear-gradient";
@@ -171,13 +171,13 @@ export const DetailDebtScreen: FC<
     <View style={{ flex: 1 }}>
       <Header
         style={{ height: scaleHeight(52) }}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="debtScreen.detailDebtSupplier"
         onLeftPress={() => {
           props.navigation.goBack();
         }}
         titleStyle={Styles.textHeader}
-        RightIcon={Images.ic_calender_white}
+        RightIcon={Svgs.ic_calender_white}
         onRightPress={() => {
           setIsSortByDate(!isSortByDate);
         }}
@@ -347,7 +347,7 @@ export const DetailDebtScreen: FC<
                         setKeyToPass("pay");
                         setIsVisiblePay(!isVisiblePay);
                       }}>
-                      <Images.ic_pay_hand
+                      <Svgs.ic_pay_hand
                         width={scaleWidth(17)}
                         height={scaleHeight(17)}
                       />
@@ -366,7 +366,7 @@ export const DetailDebtScreen: FC<
                       }}>
                       <Text tx="debtScreen.exChange" style={Styles.label} />
                       <View style={{ flexDirection: "row" }}>
-                        <Images.ic_messenger />
+                        <Svgs.ic_messenger />
                         <Text
                           style={[
                             Styles.styleOrder,
@@ -416,7 +416,7 @@ export const DetailDebtScreen: FC<
               setKeyToPass("PayTotal");
               setIsVisiblePay(!isVisiblePay);
             }}>
-            <Images.ic_pay_hand
+            <Svgs.ic_pay_hand
               width={scaleWidth(24)}
               height={scaleHeight(24)}
             />

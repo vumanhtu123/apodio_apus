@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
@@ -310,7 +310,7 @@ export const EditClassify: FC = (item) => {
             <View style={styles.ROOT}>
                 <Header
                     type={"AntDesign"}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => navigation.goBack()}
                     colorIcon={colors.text}
                     headerTx={"createProductScreen.editClassify"}
@@ -341,14 +341,14 @@ export const EditClassify: FC = (item) => {
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                                         value={value}
                                         onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
+                                        RightIconClear={Svgs.icon_delete2}
                                         error={methods.formState.errors?.SKU?.message}
                                         onClearText={() => onChange("")}
                                         onChangeText={(value) => {
                                             onChange(value)
                                         }}
                                         placeholderTx="productScreen.placeholderSKU"
-                                        RightIcon={Images.ic_QR}
+                                        RightIcon={Svgs.ic_QR}
                                         editable={false}
                                     />
                                 )}
@@ -368,7 +368,7 @@ export const EditClassify: FC = (item) => {
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                                         value={value}
                                         onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
+                                        RightIconClear={Svgs.icon_delete2}
                                         error={methods.formState.errors.productName?.message}
                                         onClearText={() => onChange("")}
                                         onChangeText={(value) => {
@@ -416,7 +416,7 @@ export const EditClassify: FC = (item) => {
                                         <Text tx={"createProductScreen.noSelectSupplier"}
                                             style={styles.textWeight400Dolphin} />
                                     )}
-                                    <Images.icon_caretRight
+                                    <Svgs.icon_caretRight
                                         width={scaleWidth(16)}
                                         height={scaleHeight(16)}
                                     />
@@ -477,7 +477,7 @@ export const EditClassify: FC = (item) => {
                                             style={styles.viewLineSwitchUnit}>
                                             <View
                                                 style={{ flexDirection: "row", alignItems: "center" }}>
-                                                <Images.ic_arrowDownRight
+                                                <Svgs.ic_arrowDownRight
                                                     width={scaleWidth(14)}
                                                     height={scaleHeight(14)}
                                                 />
@@ -564,7 +564,7 @@ export const EditClassify: FC = (item) => {
                                     style={styles.viewAttribute}
                                     onPress={toggleDetails}>
                                     <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5), fontSize: fontSize.size12 }} />
-                                    <Images.iconDownBlue
+                                    <Svgs.iconDownBlue
                                         width={scaleWidth(16)}
                                         height={scaleHeight(16)}
                                         style={{

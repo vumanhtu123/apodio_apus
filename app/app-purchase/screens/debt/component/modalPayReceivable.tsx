@@ -4,7 +4,7 @@ import Modal from 'react-native-modal'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme'
 import { Text, TextField } from '../../../../components'
-import { Images } from '../../../../../assets'
+import { Svgs } from '../../../../../assets/svgs'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 import { Controller, useForm } from 'react-hook-form'
 import en from '../../../i18n/en'
@@ -75,7 +75,7 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
                     <TouchableOpacity
                         onPress={setIsVisible}
                     >
-                        <Images.ic_x />
+                        <Svgs.ic_x />
                     </TouchableOpacity>
 
                 </View>

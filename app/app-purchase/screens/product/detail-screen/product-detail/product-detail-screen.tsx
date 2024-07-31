@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Header } from "../../../../../components/header/header";
 import { Text } from "../../../../../components/text/text";
 import {
@@ -261,14 +261,14 @@ export const ProductDetailScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={translate("productScreen.detailsProduct")}
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
-        RightIcon2={screen === "seeDetail" ? null : Images.icon_trashWhite}
-        RightIcon1={screen === "seeDetail" ? null : Images.icon_editWhite}
+        RightIcon2={screen === "seeDetail" ? null : Svgs.icon_trashWhite}
+        RightIcon1={screen === "seeDetail" ? null : Svgs.icon_editWhite}
         onRightPress1={() =>
           navigation.navigate({
             name: "ProductEditScreen",
@@ -412,11 +412,11 @@ export const ProductDetailScreen: FC = () => {
                   </Text>
                   {showNCC === true ? (
                     <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>
-                      <Images.icon_caretUp />
+                      <Svgs.icon_caretUp />
                     </TouchableOpacity>
                   ) : (
                     <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>
-                      <Images.icon_caretRightDown />
+                      <Svgs.icon_caretRightDown />
                     </TouchableOpacity>
                   )}
                 </View>
@@ -434,7 +434,7 @@ export const ProductDetailScreen: FC = () => {
                             width={scaleHeight(40)}
                             height={scaleHeight(40)}
                             style={{ borderRadius: 40 }}
-                            fallbackSource={Images.imageError}
+                            fallbackSource={Svgs.imageError}
                           />
                           <View
                             style={{
@@ -483,7 +483,7 @@ export const ProductDetailScreen: FC = () => {
                       source={{
                         uri: item,
                       }}
-                      defaultSource={Images.imageError}
+                      defaultSource={Svgs.imageError}
                       resizeMode="cover"
                       style={{
                         height: scaleHeight(416),
@@ -547,7 +547,7 @@ export const ProductDetailScreen: FC = () => {
                       source={{
                         uri: item,
                       }}
-                      defaultSource={Images.imageError}
+                      defaultSource={Svgs.imageError}
                       resizeMode="cover"
                       style={{
                         height: scaleHeight(416),

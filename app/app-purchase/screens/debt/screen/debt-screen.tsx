@@ -7,7 +7,7 @@ import { TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Styles } from "./styles";
@@ -18,7 +18,7 @@ export const DebtScreen: FC<StackScreenProps<NavigatorParamList, "debt">> = obse
             <View style={{ flex: 1 }}>
                 <Header
                     style={{ height: scaleHeight(52) }}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="dashboard.debt"
                     onLeftPress={() => props.navigation.goBack()}
                 />
@@ -36,14 +36,14 @@ export const DebtScreen: FC<StackScreenProps<NavigatorParamList, "debt">> = obse
                         <TouchableOpacity style={Styles.bodyItem}
                             onPress={() => props.navigation.navigate('receivable')}
                         >
-                            <Images.ic_receivables />
+                            <Svgs.ic_receivables />
                             <Text tx="debtScreen.receivables" style={Styles.upcase}></Text>
                             <Text style={Styles.weightText}>939.000đ</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={Styles.bodyItem}
                             onPress={() => props.navigation.navigate('mustPay')}
                         >
-                            <Images.ic_toPay />
+                            <Svgs.ic_toPay />
                             <Text tx="debtScreen.mustPay" style={Styles.upcase}></Text>
                             <Text style={Styles.weightText}>939.000đ</Text>
                         </TouchableOpacity>

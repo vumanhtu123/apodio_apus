@@ -6,7 +6,7 @@ import { StyleSheet, View } from "react-native";
 import React from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Header } from "../../../../../components";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import { scaleHeight, scaleWidth } from "../../../../theme";
 import { Text } from "../../../../../components";
 import { Dimensions } from 'react-native';
@@ -92,7 +92,7 @@ export const InfoAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount"
                 <Header
                     headerTx="inforMerchant.InforMerChant"
                     style={{ height: 52 }}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => props.navigation.goBack()}
 
                 />

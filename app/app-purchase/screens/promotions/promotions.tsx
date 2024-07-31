@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
 import { Dimensions, FlatList, Image, TextInput, TouchableOpacity, View } from "react-native"
 import { Button, Header, Text, TextField } from "../../../components"
-import { Images } from "../../../../assets"
+import { Svgs } from "../../../../assets/svgs"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../theme"
 import { styles } from "./styles"
@@ -179,7 +179,7 @@ export const Promotions: FC = observer(
                 backgroundColor: colors.palette.aliceBlue,
             }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => navigation.goBack()}
                     headerTx={'order.confirm'}
                     style={{ height: scaleHeight(52), }}
@@ -195,7 +195,7 @@ export const Promotions: FC = observer(
                                     onBlur={onBlur}
                                     value={value}
                                     onChangeText={(value) => onChange(value)}
-                                    RightIconClear={Images.icon_delete2}
+                                    RightIconClear={Svgs.icon_delete2}
                                     onClearText={() => onChange('')}
                                     placeholderTx={'order.promotionHint'}
                                     style={{
@@ -265,8 +265,8 @@ export const Promotions: FC = observer(
                                         }}>
                                         {isFocus.includes(item.item.code)
                                             ?
-                                            <Images.icon_choose /> :
-                                            <Images.icon_plusCircle />
+                                            <Svgs.icon_choose /> :
+                                            <Svgs.icon_plusCircle />
                                         }
                                     </TouchableOpacity> :
                                     <View style={{

@@ -1,7 +1,7 @@
 import { LinearGradient } from "react-native-linear-gradient"
 import React, { useState } from "react"
 import { Platform, TextInput, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
-import { Images } from "../../../assets/index"
+import { Svgs } from "../../../assets/svgs"
 import { translate } from "../../app-purchase/i18n"
 import { colors, fontSize, scaleHeight, scaleWidth, spacing } from "../../app-purchase/theme"
 import { Button } from "../button/button"
@@ -123,7 +123,7 @@ export function Header(props: HeaderProps) {
             }}
             >
               <View style={{ position: 'absolute', zIndex: 100, left: scaleWidth(8) }}>
-                <Images.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
+                <Svgs.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
               </View>
               <TextInput
                 style={{
@@ -238,7 +238,7 @@ export function Header(props: HeaderProps) {
         </View>
 
         <View style={LOGO}>
-          <Images.icon_logoHome />
+          <Svgs.icon_logoHome />
         </View>
       </LinearGradient>
       {headerInput && (
@@ -248,7 +248,7 @@ export function Header(props: HeaderProps) {
           style={{ height: scaleHeight(45), flexDirection: 'row', alignItems: 'center', justifyContent: RightIconTextInput ? 'space-evenly' : 'center', }}
         >
           <View style={{ position: 'absolute', zIndex: 100, left: scaleWidth(25) }}>
-            <Images.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
+            <Svgs.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
           </View>
           <TextInput
             style={{

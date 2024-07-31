@@ -7,7 +7,7 @@ import React, { FC, useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Header, Text } from "../../../../components";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useStores } from "../../../models";
 
 export const FilterOrderScreen: FC = (item) => {
@@ -98,7 +98,7 @@ export const FilterOrderScreen: FC = (item) => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Bộ lọc`}

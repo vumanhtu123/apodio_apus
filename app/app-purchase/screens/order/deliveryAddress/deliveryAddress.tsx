@@ -9,7 +9,7 @@ import React, {
   View,
 } from "react-native";
 import { Button, Header, Switch, Text, TextField } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { styles } from "./styles";
 import {
@@ -75,7 +75,7 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
   return (
     <View style={styles.ROOT}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         headerTx={"order.changeDeliveryAddress"}
         style={{ height: scaleHeight(54) }}
@@ -114,7 +114,7 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
                                   dataEdit: item.item, screen: 'edit'
                                 }}as never)
                               }>
-                              <Images.icon_edit
+                              <Svgs.icon_edit
                                 style={{
                                   marginLeft: scaleWidth(margin.margin_4),
                                 }}
@@ -214,7 +214,7 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
                         width: "20%",
                       }}>
                       {addressChoice === item.item.id ? (
-                        <Images.icon_checkGreen width={17} height={13} />
+                        <Svgs.icon_checkGreen width={17} height={13} />
                       ) : null}
                     </View>
                   </View>
@@ -236,7 +236,7 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
             onPress={() => navigation.navigate({name: "newDelivery" as never, params: {
               dataEdit: undefined, screen: 'new'
             }} as never)}>
-            <Images.icon_add width={14} height={14} />
+            <Svgs.icon_add width={14} height={14} />
             <Text tx={"order.addAddress"} style={styles.textAddAddress} />
           </TouchableOpacity>
         </View>

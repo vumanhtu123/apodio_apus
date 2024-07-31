@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, Platform, RefreshControl, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
 import {

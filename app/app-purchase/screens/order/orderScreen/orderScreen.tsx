@@ -29,7 +29,7 @@ import {
   TabScreenProps,
 } from "../../../navigators/bottom-navigation";
 import { NavigatorParamList, navigate } from "../../../navigators";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import moment from "moment";
 import { Text } from '../../../../components/text/text';
@@ -243,8 +243,8 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
           titleStyle={styles.textHeader}
           // LeftIcon={Images.back}
           // onLeftPress={() => navigation.goBack()}
-          RightIcon={Images.ic_calender_white}
-          RightIcon1={openSearch ? Images.icon_close : Images.search}
+          RightIcon={Svgs.ic_calender_white}
+          RightIcon1={openSearch ? Svgs.icon_close : Svgs.search}
           headerInput={openSearch}
           onRightPress={toggleModalDate}
           onRightPress1={handleOpenSearch}
@@ -401,7 +401,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
             navigation.navigate("newOrder" as never);
           }}
           style={styles.btnShowModal}>
-          <Images.icon_addOrder />
+          <Svgs.icon_addOrder />
         </TouchableOpacity>
       </View>
     );

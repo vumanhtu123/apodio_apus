@@ -5,7 +5,7 @@ import ProductAttribute from '../../../component/productAttribute';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../../../theme';
 import { styles } from '../styles';
 import { Text } from '../../../../../../components';
-import { Images } from '../../../../../../../assets';
+import { Svgs } from '../../../../../../../assets/svgs';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
 import { translate } from '../../../../../i18n/translate';
 
@@ -90,9 +90,9 @@ const ProductDetailsSection = ({
                         ]}
                     />
                     {showRetailPrice === false ? (
-                        <Images.icon_caretRightDown />
+                        <Svgs.icon_caretRightDown />
                     ) : (
-                        <Images.icon_caretUp />
+                        <Svgs.icon_caretUp />
                     )}
                 </TouchableOpacity>
                 {showRetailPrice === true ? (
@@ -209,9 +209,9 @@ const ProductDetailsSection = ({
                         ]}
                     />
                     {showWholesalePrice === false ? (
-                        <Images.icon_caretRightDown />
+                        <Svgs.icon_caretRightDown />
                     ) : (
-                        <Images.icon_caretUp />
+                        <Svgs.icon_caretUp />
                     )}
                 </TouchableOpacity>
                 {showWholesalePrice === true ? (
@@ -319,7 +319,7 @@ const ProductDetailsSection = ({
                                 }}>
                                 <View
                                     style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <Images.ic_arrowDownRight
+                                    <Svgs.ic_arrowDownRight
                                         width={scaleWidth(14)}
                                         height={scaleHeight(14)}
                                     />

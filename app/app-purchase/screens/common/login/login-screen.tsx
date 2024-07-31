@@ -17,7 +17,7 @@ import {
 import { useStores } from "../../../models";
 import { colors, palette, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { LinearGradient } from "react-native-linear-gradient";
 import { getAccessToken } from "../../../utils/storage";
 
@@ -66,11 +66,11 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
       colors={[colors.palette.navyBlue, colors.palette.malibu]}
       style={styles.ROOT}>
       <View style={styles.viewBackground}>
-        <Images.icon_backgroundLogin />
+        <Svgs.icon_backgroundLogin />
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.viewImage}>
-          <Images.icon_Logo1 />
+          <Svgs.icon_Logo1 />
         </View>
       </TouchableWithoutFeedback>
       <KeyboardAvoidingView
@@ -90,7 +90,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
                 style={{ marginBottom: scaleHeight(10) }}
                 value={value}
                 onBlur={onBlur}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 error={""}
                 onClearText={() => {
                   onChange("");
@@ -129,9 +129,9 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
                 secureTextEntry={isShowPassword}
                 onBlur={onBlur}
                 isShowPassword
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 RightIconShow={
-                  isShowPassword ? Images.icon_eye : Images.icon_unEye
+                  isShowPassword ? Svgs.icon_eye : Svgs.icon_unEye
                 }
                 onClearText={() => {
                   authenticationStore.setErrorMessage("");
@@ -188,7 +188,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               activeOpacity={1}
               // onPress={() => _onChangeLanguage(LANGUAGE.TIMOLESTE)}
               style={styles.viewFlag}>
-              <Images.icon_VietNam />
+              <Svgs.icon_VietNam />
               <Text style={styles.textFlag} tx={"loginScreen.vietNam"} />
             </TouchableOpacity>
             {/* <View style={{ width: scaleWidth(50) }} /> */}

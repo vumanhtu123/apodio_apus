@@ -8,9 +8,11 @@ import { Text } from "../../components";
 import { colors, scaleHeight, scaleWidth } from "../../app-purchase/theme";
 const { height } = Dimensions.get("window");
 import { StyleSheet } from "react-native";
-import { Images } from "../../../assets/index";
+import { Svgs } from "../../../assets/svgs";
+import  Images  from "../../../assets/index";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MainBottomTab } from "./bottom-navigation";
+import { AppStack } from "./app-navigator";
 export function CustomDrawerContent(props: any) {
   const [selectBuy, setSelectBuy] = useState(true);
   function select() {
@@ -19,34 +21,34 @@ export function CustomDrawerContent(props: any) {
   const dataTop = [
     {
       textTittle: "menuDrawer.inforMerchant",
-      imageIcon: Images.icon_info,
+      imageIcon: Svgs.icon_info,
     },
     {
       textTittle: "menuDrawer.securityAccount",
-      imageIcon: Images.icon_security,
+      imageIcon: Svgs.icon_security,
     },
     {
       textTittle: "menuDrawer.changePass",
-      imageIcon: Images.icon_pass,
+      imageIcon: Svgs.icon_pass,
     },
     {
       textTittle: "menuDrawer.settingNoti",
-      imageIcon: Images.icon_noti,
+      imageIcon: Svgs.icon_noti,
     },
   ];
 
   const dataBottom = [
     {
       textTittle: "menuDrawer.introduct",
-      imageIcon: Images.icon_introduct,
+      imageIcon: Svgs.icon_introduct,
     },
     {
       textTittle: "menuDrawer.feedback",
-      imageIcon: Images.icon_feedback,
+      imageIcon: Svgs.icon_feedback,
     },
     {
       textTittle: "menuDrawer.logout",
-      imageIcon: Images.icon_logout,
+      imageIcon: Svgs.icon_logout,
     },
   ];
   return (
@@ -97,7 +99,7 @@ export function CustomDrawerContent(props: any) {
                 style={
                   selectBuy == true ? styles.circle : styles.circleInactive
                 }>
-                <Images.icon_Box width={24} height={24} />
+                <Svgs.icon_Box width={24} height={24} />
               </View>
               <Text
                 style={
@@ -118,7 +120,7 @@ export function CustomDrawerContent(props: any) {
                 style={
                   selectBuy == false ? styles.circle : styles.circleInactive
                 }>
-                <Images.icon_Store width={24} height={24} />
+                <Svgs.icon_Store width={24} height={24} />
               </View>
               <Text
                 style={
@@ -147,20 +149,20 @@ export function CustomDrawerContent(props: any) {
             width={20}
             height={20}
           /> */}
-          <Images.icon_VietNam width={57} height={57} />
+          <Svgs.icon_VietNam width={57} height={57} />
           <View style={{ flexDirection: "column" }}>
             <Text style={styles.tittleCompany}>{props.nameCompany}</Text>
             <View style={styles.containerInfo}>
               <Text style={styles.textInfoCompany} tx="menuDrawer.inforStore" />
               <View style={styles.containerImage}>
-                <Images.icon_caretRight width={10} height={10} />
+                <Svgs.icon_caretRight width={10} height={10} />
               </View>
             </View>
           </View>
         </View>
         <View style={styles.containerImage2}>
           <Image
-            source={require("../../../assets/Images/banner.png")}
+            source={Images.banner}
             style={{ width: 225, height: 130 }}
           />
         </View>
@@ -204,9 +206,14 @@ export function MyDrawer() {
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
       {/* Các Screen của bạn */}
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="home"
         component={MainBottomTab}
+        options={{ headerShown: false }}
+      /> */}
+      <Drawer.Screen
+        name="app"
+        component={AppStack}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>

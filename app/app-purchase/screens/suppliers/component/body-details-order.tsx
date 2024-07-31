@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, View } from "react-native";
 import { Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
 
 export const BodyDetailsOrder = (data: any) => {
@@ -61,7 +61,7 @@ export const BodyDetailsOrder = (data: any) => {
                         flexDirection: "row",
                         alignItems: "center",
                       }}>
-                      <Images.ic_tag />
+                      <Svgs.ic_tag />
                       <Text style={{ fontSize: 10, fontWeight: "400" }}>
                         {" "}
                         Thuế VAT{" "}
@@ -135,7 +135,7 @@ export const PromotionList = (data: any) => {
         {dataPromotion.map((data: any) => {
           return (
             <View style={{ flexDirection: "row", marginTop: 10 }}>
-              <Images.ic_tag />
+              <Svgs.ic_tag />
               <Text
                 style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
                 {"  "}

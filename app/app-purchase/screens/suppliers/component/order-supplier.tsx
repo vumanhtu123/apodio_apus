@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, scaleWidth } from "../../../theme";
 
 export const OrderSupplier = (item: any) => {
@@ -58,7 +58,7 @@ export const OrderSupplier = (item: any) => {
           elevation: 0.5,
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Images.ClipboardText />
+          <Svgs.ClipboardText />
           <Text
             style={{
               color: "#747475",
@@ -83,7 +83,7 @@ export const OrderSupplier = (item: any) => {
             paddingVertical: 8,
             alignItems: "center",
           }}>
-          <Images.ClipboardText />
+          <Svgs.ClipboardText />
           <Text
             style={{
               color: "#747475",
@@ -103,7 +103,7 @@ export const OrderSupplier = (item: any) => {
           </Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Images.icon_chart />
+          <Svgs.icon_chart />
           <Text
             style={{
               color: "#747475",

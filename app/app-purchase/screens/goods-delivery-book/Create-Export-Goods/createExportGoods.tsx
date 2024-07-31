@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import React, { useState } from "react"
 import { FC } from "react"
 import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View } from "react-native"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { NavigatorParamList } from "../../../navigators"
 import { colors, palette, scaleHeight, scaleWidth } from "../../../theme"
 import { Header, Text } from "../../../../components"
@@ -121,7 +121,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                                     <TouchableOpacity style={{ position: 'absolute', bottom: 0, end: 0 }}
                                         onPress={() => setQuantity(1)}
                                     >
-                                        <Images.ic_btnAddSquare
+                                        <Svgs.ic_btnAddSquare
                                         />
                                     </TouchableOpacity>
                                 ) : (
@@ -130,7 +130,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                                             style={Styles.btnMinus}
                                             onPress={() => setQuantity(quantity - 1)}
                                         >
-                                            <Images.ic_minus />
+                                            <Svgs.ic_minus />
                                         </TouchableOpacity>
                                         <Text
                                             style={{ flex: 1, textAlign: 'center' }}
@@ -139,7 +139,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                                             style={Styles.btnMinus}
                                             onPress={() => setQuantity(quantity + 1)}
                                         >
-                                            <Images.icon_plusGreen  />
+                                            <Svgs.icon_plusGreen  />
                                         </TouchableOpacity>
                                     </View>
                                 )
@@ -154,10 +154,10 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     leftText="GoodsExportBook.exportGoods"
-                    RightIcon={Images.ic_QR}
-                    RightIcon1={Images.icon_search}
+                    RightIcon={Svgs.ic_QR}
+                    RightIcon1={Svgs.icon_search}
                     style={{ height: scaleHeight(52), }}
                     btnRightStyle={{ width: 30, height: 30, }}
                     onLeftPress={() => props.navigation.goBack()}
@@ -166,7 +166,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                 <View style={{ flex: 1, paddingTop: scaleHeight(20), paddingHorizontal: scaleWidth(16) }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ marginRight: scaleWidth(8) }}>
-                            <Images.squaresFour />
+                            <Svgs.squaresFour />
                         </View>
                         {titleTabar.map((item, index) => {
                             return (
@@ -202,7 +202,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                         onPress={() => props.navigation.navigate('createDeliveNote')}
                     >
                         <View style={{ flexDirection: 'row', }}>
-                            <Images.ic_ShoopingCar />
+                            <Svgs.ic_ShoopingCar />
                             <View style={{ position: 'absolute', start: scaleWidth(7), top: scaleWidth(-5) }}>
                                 <View style={{ width: scaleWidth(15), height: scaleHeight(15), backgroundColor: 'red', borderRadius: scaleWidth(14), borderWidth: 1, borderColor: '#FFFFFF' }}>
                                     <Text style={{ alignSelf: 'center', fontSize: 9, color: '#FFF' }}>1</Text>

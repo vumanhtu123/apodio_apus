@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import React, { FC, useState } from "react"
 import { FlatList, Platform, TouchableOpacity, View } from "react-native"
-import { Images } from "../../../../assets/index"
+import { Svgs } from "../../../../assets/svgs"
 import { Header } from '../../../components/header/header'
 import { Text } from "../../../components/text/text"
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../theme"
@@ -71,7 +71,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                         </View>
                     </View>
                     <TouchableOpacity>
-                        <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
+                        <Svgs.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
                     </TouchableOpacity>
                 </TouchableOpacity>
             )
@@ -109,12 +109,12 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
             <View style={styles.ROOT}>
                 <Header
                     type={"AntDesign"}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={goBack}
                     colorIcon={colors.text}
                     headerTx="ClientScreen.client"
-                    RightIcon={Images.icon_funnel}
-                    RightIcon1={openSearch ? Images.icon_close : Images.search}
+                    RightIcon={Svgs.icon_funnel}
+                    RightIcon1={openSearch ? Svgs.icon_close : Svgs.search}
                     headerInput={openSearch}
                     onRightPress={openTypeFilter}
                     onRightPress1={handleOpenSearch}
@@ -163,7 +163,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                     {openSearch &&
                         <View style={styles.rowNotiType}>
                             <TouchableOpacity onPress={() => console.log('ok')} style={{ marginRight: scaleWidth(8) }}>
-                                <Images.squaresFour width={20} height={20} />
+                                <Svgs.squaresFour width={20} height={20} />
                             </TouchableOpacity>
                             {typeNoti.map((item, index) => {
                                 return (
@@ -219,7 +219,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                     bottom: Platform.OS === 'ios' ? scaleHeight(20) : scaleHeight(5),
                                     right: scaleWidth(16)
                                 }}>
-                                    <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
+                                    <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
                                     <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Thêm khách hàng</Text>
                                 </TouchableOpacity>
                             </View>
@@ -243,7 +243,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                 }}
                                     onPress={() => setOpenCreateGroup(!OpenCreateGroup)}
                                 >
-                                    <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
+                                    <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
                                     <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Tạo nhóm</Text>
                                 </TouchableOpacity>
                             </View>

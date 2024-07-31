@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 
 export const HeaderOrderDetails = (props: any) => {
   return (
@@ -80,7 +80,7 @@ export const SubHeader = (props: any) => {
         alignItems: "center",
         backgroundColor: "white",
       }}>
-      <Images.avatar />
+      <Svgs.avatar />
       <Text
         style={{
           fontSize: 12,

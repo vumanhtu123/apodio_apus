@@ -8,7 +8,7 @@ import DropdownModal from './multiSelect';
 import { Controller, useFormContext } from 'react-hook-form';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { addCommas, convertRetailPrice, convertWholesalePrice, formatCurrency, removeNonNumeric } from '../../../utils/validate';
 import PriceModal from './modal-price';
 
@@ -186,7 +186,7 @@ export const ItemGroupPrice = memo(
                       />
                     )}
                   </View>
-                  <Images.icon_caretRightDown />
+                  <Svgs.icon_caretRightDown />
                 </View>
               </TouchableOpacity>
             )}
@@ -302,7 +302,7 @@ export const ItemGroupPrice = memo(
                       />
                     )}
                   </View>
-                  <Images.icon_caretRightDown />
+                  <Svgs.icon_caretRightDown />
                 </View>
               </TouchableOpacity>
             )}
@@ -415,7 +415,7 @@ export const ItemUnit = memo(
                   style={{ flexDirection: "row", alignItems: "center" }}
                   onPress={props.addUnitOrGroup}
                 >
-                  <Images.ic_plusCircleBlue
+                  <Svgs.ic_plusCircleBlue
                     width={scaleWidth(14)}
                     height={scaleHeight(14)}
                   />
@@ -458,7 +458,7 @@ export const ItemUnit = memo(
                       <View
                         style={{ flexDirection: "row", alignItems: "center" }}
                       >
-                        <Images.ic_arrowDownRight
+                        <Svgs.ic_arrowDownRight
                           width={scaleWidth(14)}
                           height={scaleHeight(14)}
                         />

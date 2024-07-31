@@ -12,7 +12,7 @@ import {
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Modal from "react-native-modal";
 import { RESULTS } from "react-native-permissions";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import { AutoImage, Text, TextField } from "../../../../../components";
 import {
   ALERT_TYPE,
@@ -310,7 +310,7 @@ const EditDirectoryModal = (props: any) => {
               <TouchableOpacity
                 onPress={handleLibraryUse}
                 style={styles.handlerLibUse}>
-                <Images.ic_addImages
+                <Svgs.ic_addImages
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -318,7 +318,7 @@ const EditDirectoryModal = (props: any) => {
               <TouchableOpacity
                 onPress={handleCameraUse}
                 style={styles.handlerCameraUse}>
-                <Images.ic_camera
+                <Svgs.ic_camera
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -340,7 +340,7 @@ const EditDirectoryModal = (props: any) => {
                   top: scaleHeight(5),
                 }}
                 onPress={() => handleRemoveImage()}>
-                <Images.circle_close
+                <Svgs.circle_close
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -358,7 +358,7 @@ const EditDirectoryModal = (props: any) => {
                 onPress={handleLibraryUse}
                 style={styles.handleLibUse2}>
                 <View style={styles.viewIcAdd}>
-                  <Images.ic_addImages
+                  <Svgs.ic_addImages
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -374,7 +374,7 @@ const EditDirectoryModal = (props: any) => {
                 onPress={handleCameraUse}
                 style={styles.handleCameraUse2}>
                 <View style={styles.viewIcCamera}>
-                  <Images.ic_camera
+                  <Svgs.ic_camera
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -408,7 +408,7 @@ const EditDirectoryModal = (props: any) => {
                 }}
                 value={name} // Ensure this uses the local state
                 onBlur={onBlur}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 error={errors?.nameEditCategory?.message}
                 onClearText={() => {
                   onChange(""); // Clear the form value

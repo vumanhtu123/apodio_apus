@@ -4,7 +4,7 @@ import { SvgIcon } from '../../../../components/svg-icon/index';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { navigate } from '../../../navigators';
 import { useNavigation } from '@react-navigation/native';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { TextField } from '../../../../components';
 import { Controller, useForm } from 'react-hook-form';
 import { InputSelect } from '../../../../components/input-select/inputSelect';
@@ -12,7 +12,7 @@ import { translate } from '../../../i18n/translate';
 
 const RadioButton = ({ selected, onPress }: any) => (
     <TouchableOpacity style={styles.radioButton} onPress={onPress}>
-        {selected && <Images.icon_check
+        {selected && <Svgs.icon_check
             width={scaleWidth(16)}
             height={scaleHeight(16)}
         />}
@@ -177,7 +177,7 @@ const ModalCreateSuppliers = (props: any) => {
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
                                         value={value}
                                         onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
+                                        RightIconClear={Svgs.icon_delete2}
                                         error={errors?.suplierId?.message}
                                         onClearText={() => onChange('')}
                                         onChangeText={value => onChange(value)}
@@ -205,7 +205,7 @@ const ModalCreateSuppliers = (props: any) => {
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
                                         value={value}
                                         onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
+                                        RightIconClear={Svgs.icon_delete2}
                                         error={errors?.nameSuppliers?.message}
                                         onClearText={() => onChange('')}
                                         onChangeText={value => onChange(value)}
@@ -264,7 +264,7 @@ const ModalCreateSuppliers = (props: any) => {
                                                 inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
                                                 value={value}
                                                 onBlur={onBlur}
-                                                RightIconClear={Images.icon_delete2}
+                                                RightIconClear={Svgs.icon_delete2}
                                                 error={errors?.[item.name]?.message}
                                                 onClearText={() => onChange('')}
                                                 onChangeText={value => onChange(value)}
@@ -330,7 +330,7 @@ const ModalCreateSuppliers = (props: any) => {
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
                                         value={value}
                                         onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
+                                        RightIconClear={Svgs.icon_delete2}
                                         error={errors?.nameSuppliers?.message}
                                         onClearText={() => onChange('')}
                                         onChangeText={value => onChange(value)}

@@ -6,7 +6,7 @@ import { View } from "react-native";
 import { LinearGradient } from "react-native-linear-gradient";
 import { colors } from "../../../theme";
 import LottieView from "lottie-react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components/text/text";
 import React from "react";
 import { useAuth } from "../../contexts/auth";
@@ -42,7 +42,7 @@ export const SplashScreen1: FC<
           alignItems: "center",
           justifyContent: "center",
         }}>
-        <Images.ic_logofull style={{ width: 248, height: 178 }} />
+        <Svgs.ic_logofull style={{ width: 248, height: 178 }} />
       </View>
 
       <View style={{ width: "100%", height: "25%", alignItems: "center" }}>

@@ -4,7 +4,7 @@ import { FC } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
 import { Text } from "../../../../components"
 import { colors, fontSize, scaleWidth } from "../../../theme"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { Styles } from "../screen/styles"
 
 interface ItemData {
@@ -45,14 +45,14 @@ const ItemListExChange: FC<ItemProps> = ({ item, onClickLike, onClickComment }) 
 
                     </View>
                     <View style={[Styles.flexRow, { marginLeft: scaleWidth(12), alignItems: 'center' }]}>
-                        <Images.ic_comment
+                        <Svgs.ic_comment
                             width={scaleWidth(12)}
                         />
                         <Text style={{ fontSize: fontSize.size12, color: colors.palette.dolphin }} tx="debtScreen.comment" />
                     </View>
                 </View>
                 <TouchableOpacity>
-                    <Images.ic_Like />
+                    <Svgs.ic_Like />
                 </TouchableOpacity>
             </View>
         </View>

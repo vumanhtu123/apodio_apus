@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
 
 // import IconSelected from '../../assets/icons/icon_selected.svg'
@@ -97,7 +97,7 @@ const SelectTypeModal = (props: DialogSelectType) => {
                                       : ''}
                         </Text>
                         {selectedIndex === index ? (
-                          <Images.icon_check
+                          <Svgs.icon_check
                             width={scaleWidth(16)}
                             height={scaleHeight(16)}
                           />

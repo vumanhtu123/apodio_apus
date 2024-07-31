@@ -5,7 +5,7 @@ import { Text, TextField } from "../../../../components";
 import { scaleHeight } from "../../../theme";
 import { stylesWareHouse } from "../style";
 import { translate } from "../../../i18n";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { SelectUom } from "../modal/modal-select-uom";
 
 interface ItemProps {
@@ -212,7 +212,7 @@ export const ConfigInfoMoreComponent = (props: ItemProps) => {
             value={value}
             onBlur={onBlur}
             isShowPassword
-            RightIcon={Images.dropDown}
+            RightIcon={Svgs.dropDown}
             styleTextRight={stylesWareHouse.textConfig}
             ValueTextRight={
               <Controller
@@ -288,7 +288,7 @@ export const ConfigInfoMoreComponent = (props: ItemProps) => {
                   control={control}></Controller>
               }
               styleTextRight={stylesWareHouse.textConfig}
-              RightIcon={Images.dropDown}
+              RightIcon={Svgs.dropDown}
               pressRightIcon={() => {
                 toggleModal("width");
               }}
@@ -353,7 +353,7 @@ export const ConfigInfoMoreComponent = (props: ItemProps) => {
               pressRightIcon={() => {
                 toggleModal("height");
               }}
-              RightIcon={Images.dropDown}
+              RightIcon={Svgs.dropDown}
               onClearText={() => {
                 onChange("");
               }}
@@ -417,7 +417,7 @@ export const ConfigInfoMoreComponent = (props: ItemProps) => {
                 toggleModal("weight");
               }}
               styleTextRight={stylesWareHouse.textConfig}
-              RightIcon={Images.dropDown}
+              RightIcon={Svgs.dropDown}
               onClearText={() => {
                 onChange("");
               }}

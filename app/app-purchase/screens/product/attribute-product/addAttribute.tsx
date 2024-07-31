@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { Button, Header, Switch, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
@@ -375,7 +375,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
     <FormProvider {...methods}>
       <View style={styles.ROOT}>
         <Header
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           headerTx="addAttribute.header"
           style={{ height: scaleHeight(52) }}

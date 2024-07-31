@@ -7,7 +7,7 @@ import React from "react";
 import { Header, Text } from "../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { Image } from "react-native-svg";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { styles } from "./styles";
 
 
@@ -230,9 +230,9 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
             <View style={{ flex: 1 }}>
 
                 <Header
-                    LeftIcon={Images.back}
-                    RightIcon1={Images.icon_search}
-                    RightIconAndTextBelow={Images.ic_dowload}
+                    LeftIcon={Svgs.back}
+                    RightIcon1={Svgs.icon_search}
+                    RightIconAndTextBelow={Svgs.ic_dowload}
                     textBelowIconRight={"Báo cáo"}
                     widthRightIcon={scaleWidth(15)}
                     heightRightIcon={scaleHeight(15)}
@@ -262,7 +262,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
 
                             }}
                         >
-                            <Images.ic_Feilter />
+                            <Svgs.ic_Feilter />
 
                         </TouchableOpacity>
 

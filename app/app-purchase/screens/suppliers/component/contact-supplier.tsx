@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FlatList, Image, TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { dataContact } from "../styles/data";
 
 export const ContactSupplier = () => {
@@ -86,7 +86,7 @@ const ItemContact = (item: any) => {
             {item.name ?? "Chị Nguyễn Lan Hương"}
           </Text>
           <TouchableOpacity>
-            <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
+            <Svgs.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
           </TouchableOpacity>
         </View>
         <Text

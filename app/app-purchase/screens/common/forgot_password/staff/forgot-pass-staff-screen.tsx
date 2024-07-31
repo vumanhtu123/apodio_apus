@@ -22,7 +22,7 @@ import {
 } from "../../../../theme/validate";
 import { styles } from "./styles";
 import DialogSuccessUnSuccess from "../../../../../components/dialog-success-unsuccess.tsx/index";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useStores } from "../../../../models";
 import { AuthParamList } from "../../../../navigators/auth-navigator";
@@ -204,7 +204,7 @@ export const ForgotPasswordStaff: FC<
       {/* <DialogLoading visible={loading} /> */}
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="demoPodcastListScreen.forgotPasswordMerchant.forgotPassword"
@@ -228,7 +228,7 @@ export const ForgotPasswordStaff: FC<
               }}
               value={value}
               onBlur={onBlur}
-              RightIconClear={Images.icon_delete2}
+              RightIconClear={Svgs.icon_delete2}
               error={""}
               onClearText={() => {
                 onChange("");
@@ -276,9 +276,9 @@ export const ForgotPasswordStaff: FC<
                   secureTextEntry={isShowPassword}
                   onBlur={onBlur}
                   isShowPassword
-                  RightIconClear={Images.icon_delete2}
+                  RightIconClear={Svgs.icon_delete2}
                   RightIconShow={
-                    isShowPassword ? Images.icon_eye : Images.icon_unEye
+                    isShowPassword ? Svgs.icon_eye : Svgs.icon_unEye
                   }
                   onClearText={() => {
                     onChange("");
@@ -316,9 +316,9 @@ export const ForgotPasswordStaff: FC<
                     secureTextEntry={isShowPassword1}
                     onBlur={onBlur}
                     isShowPassword
-                    RightIconClear={Images.icon_delete2}
+                    RightIconClear={Svgs.icon_delete2}
                     RightIconShow={
-                      isShowPassword1 ? Images.icon_eye : Images.icon_unEye
+                      isShowPassword1 ? Svgs.icon_eye : Svgs.icon_unEye
                     }
                     onClearText={() => {
                       onChange("");
@@ -411,7 +411,7 @@ export const ForgotPasswordStaff: FC<
           transparent={true}
           visible={isUnsuccessModalVisible}>
           <DialogSuccessUnSuccess
-            imgPath={Images.ic_error}
+            imgPath={Svgs.ic_error}
             content={"forgotPassStore.messageError"}
             onPress={() => {
               handleUnsuccessModalClose();
@@ -437,7 +437,7 @@ export const ForgotPasswordStaff: FC<
           transparent={true}
           visible={isSuccessModalVisible}>
           <DialogSuccessUnSuccess
-            imgPath={Images.ic_success}
+            imgPath={Svgs.ic_success}
             content={"You already forgot password successfully. Thank you!."}
             onPress={() => {
               handleSuccessModalClose();

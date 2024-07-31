@@ -12,7 +12,7 @@ import React from "react";
 import { FilterAppBarComponent } from "./component/filter-appbar";
 import { Text } from "../../../components";
 import { translate } from "../../i18n";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { ItemRevenue } from "./component/item-list-renvenue";
 import { RefactorMoneyModal } from "./refactor-money-modal";
@@ -105,7 +105,7 @@ export const ListRevenueScreen: FC<
             top: Platform.OS === "ios" ? scaleHeight(44) : scaleHeight(0),
             right: 0,
           }}>
-          <Images.icon_logoHome />
+          <Svgs.icon_logoHome />
         </View>
         <View
           style={{
@@ -133,7 +133,7 @@ export const ListRevenueScreen: FC<
             }}
           />
           <TouchableOpacity onPress={() => { }}>
-            <Images.icon_search />
+            <Svgs.icon_search />
           </TouchableOpacity>
         </View>
         <View style={{ backgroundColor: "white" }}>
@@ -169,7 +169,7 @@ export const ListRevenueScreen: FC<
             <TouchableOpacity style={{ flexDirection: "row" }}
               onPress={() => props.navigation.navigate('moneyManagement')}
             >
-              <Images.ic_Chartbar />
+              <Svgs.ic_Chartbar />
               <Text
                 style={{
                   color: "#0078D4",
@@ -246,7 +246,7 @@ export const ListRevenueScreen: FC<
           }}
 
         >
-          <Images.ic_arrow_up />
+          <Svgs.ic_arrow_up />
           <Text
             tx={"analysis.amountExpenditure"}
             style={{
@@ -269,7 +269,7 @@ export const ListRevenueScreen: FC<
           }}
           onPress={() => props.navigation.navigate('addRevenueScreen')}
         >
-          <Images.ic_arrow_down />
+          <Svgs.ic_arrow_down />
           <Text
             tx={"analysis.amountRevenue"}
             style={{
@@ -337,7 +337,7 @@ const ItemSum = () => {
           borderRadius: 6,
           flexDirection: "row",
         }}>
-        <Images.ic_money_down style={{ marginLeft: scaleWidth(5) }} />
+        <Svgs.ic_money_down style={{ marginLeft: scaleWidth(5) }} />
 
         <View style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
           <Text
@@ -366,7 +366,7 @@ const ItemSum = () => {
           borderRadius: 6,
           flexDirection: "row",
         }}>
-        <Images.ic_money_up style={{ marginLeft: scaleWidth(5) }} />
+        <Svgs.ic_money_up style={{ marginLeft: scaleWidth(5) }} />
         <View style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
           <Text
             tx={"analysis.totalRevenue"}
