@@ -13,6 +13,7 @@ import { OpenAppStack } from "./open-app-navigator";
 import { ButtonProvider } from "../screens/contexts/button_context";
 import { FloatingButton } from "../../components/float-button/FloattingButton";
 import { hideLoading, showLoading } from "../utils/toast";
+import { MyDrawer } from "./drawer-navigator";
 
 // interface NavigationProps
 //   extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
@@ -30,7 +31,7 @@ export const Router = (props: any) => {
       return <AuthStack />;
     } else if (redirect === 2) {
       hideLoading();
-      return <AppStack />;
+      return <MyDrawer />;
     }
     hideLoading();
     return <OpenAppStack />;
