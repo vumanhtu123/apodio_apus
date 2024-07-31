@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
 
@@ -48,7 +48,7 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
                                 <Text style={{ fontSize: scaleWidth(16) }}>Chọn kiểu khách hàng </Text>
                             </View>
                             <View style={{ alignItems: "center", justifyContent: 'center' }}>
-                                <Images.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showFindClient ? '180deg' : '0deg' }] }} />
+                                <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showFindClient ? '180deg' : '0deg' }] }} />
                             </View>
                         </TouchableOpacity>
 
@@ -68,7 +68,7 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
                                             </Text>
                                             {
                                                 selectFindClient === optionIndex ? (
-                                                    <Images.ic_tick />
+                                                    <Svgs.ic_tick />
                                                 ) : null
                                             }
                                         </View>

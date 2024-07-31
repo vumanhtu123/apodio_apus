@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react"
 import { ImageBackground, TouchableOpacity, View } from "react-native"
 import { styles } from "./styles"
 import { useNavigation, useRoute } from "@react-navigation/native"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { Header, Text } from "../../../../components"
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme"
 import { useStores } from "../../../models"
@@ -30,7 +30,7 @@ export const OrderSuccess: FC = () => {
         }}>
             <View>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="order.createOrderSuccess"
                     style={{ height: scaleWidth(52) }}
                     onLeftPress={() => navigation.goBack()}
@@ -54,7 +54,7 @@ export const OrderSuccess: FC = () => {
                     resizeMode="cover"
                 >
                     <View style={{ alignItems: 'center', marginTop: scaleWidth(50) }}>
-                        <Images.ic_Frame width={scaleWidth(219)} height={scaleHeight(171)} />
+                        <Svgs.ic_Frame width={scaleWidth(219)} height={scaleHeight(171)} />
                     </View>
                     <View style={{ alignItems: 'center', marginTop: scaleWidth(30) }}>
                         {/* <Text tx={screen === 'edit' ? 'successScreen.editSuccess' : "successScreen.labelSuccess"} style={{ fontSize: fontSize.size18, fontWeight: '700', marginTop: scaleHeight(40), marginBottom: scaleHeight(10) }} /> */}

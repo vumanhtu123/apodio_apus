@@ -13,7 +13,7 @@ import {
 import { View, FlatList, Touchable, TouchableOpacity } from "react-native";
 import { Text, TextField } from "../../../../components";
 import { Controller, useForm } from "react-hook-form";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Row } from "../../../../components/Row";
 import ItemListExChange from "./itemListExChange";
 import { useNavigation } from "@react-navigation/native";
@@ -150,12 +150,12 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
                 }}>
                 /
               </Text>
-              <Images.ic_S width={scaleWidth(13)} />
+              <Svgs.ic_S width={scaleWidth(13)} />
             </View>
 
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <TouchableOpacity>
-                <Images.ic_smile />
+                <Svgs.ic_smile />
               </TouchableOpacity>
               <TouchableOpacity
                 style={{

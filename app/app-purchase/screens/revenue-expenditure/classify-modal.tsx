@@ -10,7 +10,7 @@ import {
 import { Text, TextField } from "../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../theme";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { CustomModal } from "../../../components/custom-modal";
 
 interface Input {
@@ -54,7 +54,7 @@ export const ClassifyModal = (props: Input) => {
         <View style={styles.viewContainer}></View>
         <View style={styles.viewHeader}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Images.ic_pen />
+            <Svgs.ic_pen />
             <Text tx="analysis.refactorMoney" style={styles.textUpdate}></Text>
           </View>
           <Text tx={"analysis.classify"} style={styles.textClassify}></Text>
@@ -85,7 +85,7 @@ export const ClassifyModal = (props: Input) => {
                       left: scaleWidth(Platform.OS === "android" ? 10 : 15),
                       top: scaleHeight(19),
                     }}>
-                    <Images.ic_search />
+                    <Svgs.ic_search />
                   </View>
                 }
                 keyboardType={null}
@@ -103,7 +103,7 @@ export const ClassifyModal = (props: Input) => {
               />
             )}></Controller>
           <View style={styles.viewIconPlus}>
-            <Images.icon_plus />
+            <Svgs.icon_plus />
           </View>
         </View>
         <Text tx="analysis.listClassify" style={styles.textTittleList}></Text>

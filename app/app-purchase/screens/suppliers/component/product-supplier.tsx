@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { styles } from "../styles/styles";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { AppStackScreenProps, navigationRef } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { FlatList, RefreshControl, TouchableOpacity, View } from "react-native";

@@ -12,7 +12,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import {
   colors,
   fontSize,
@@ -257,7 +257,7 @@ export const CreateConversionGroup: FC = observer(
     return (
       <View style={{ backgroundColor: colors.palette.neutral100, flex: 1 }}>
         <Header
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           headerTx="createProductScreen.createUnitGroup"
           style={{ height: scaleHeight(52) }}
@@ -311,7 +311,7 @@ export const CreateConversionGroup: FC = observer(
               marginBottom: scaleHeight(margin.margin_15),
               flexDirection: "row",
             }}>
-            <Images.icon_plusCircleBlue />
+            <Svgs.icon_plusCircleBlue />
             <Text
               tx={"productScreen.createDVT"}
               style={{
@@ -461,7 +461,7 @@ export const CreateConversionGroup: FC = observer(
                               tx="productScreen.selectDVT"
                             />
                           )}
-                          <Images.icon_caretRightDown />
+                          <Svgs.icon_caretRightDown />
                         </TouchableOpacity>
                         <View
                           style={{
@@ -549,7 +549,7 @@ export const CreateConversionGroup: FC = observer(
                       <TouchableOpacity
                         onPress={() => remove(index)}
                         style={{ marginLeft: scaleWidth(7) }}>
-                        <Images.icon_minusCircle />
+                        <Svgs.icon_minusCircle />
                       </TouchableOpacity>
                     ) : (
                       <View style={{ width: scaleWidth(12) }} />
@@ -596,7 +596,7 @@ export const CreateConversionGroup: FC = observer(
                                     justifyContent: "center",
                                     marginLeft: scaleWidth(8),
                                   }}>
-                                  <Images.icon_searchBlack
+                                  <Svgs.icon_searchBlack
                                     width={scaleWidth(18)}
                                     height={scaleHeight(18)}
                                   />

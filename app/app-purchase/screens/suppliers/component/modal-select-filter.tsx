@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/native";
 import React, { FC, useEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
@@ -143,7 +143,7 @@ export const FilterSupplierScreen: FC = (item) => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Bộ lọc`}

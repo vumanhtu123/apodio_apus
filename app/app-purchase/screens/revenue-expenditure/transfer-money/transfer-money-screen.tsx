@@ -14,7 +14,7 @@ import {
 import { Header, Text } from "../../../../components";
 import { Color } from "../../../../components/dialog-notification/service";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { observer } from "mobx-react-lite";
 import en from "../../../i18n/en";
 import { CustomModal } from "../../../../components/custom-modal";
@@ -50,7 +50,7 @@ export const TransferMoneyScreen: FC<
   return (
     <View style={Styles.Root}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="revenueAndExpenditure.transferMoney"
         style={{ height: scaleHeight(52) }}
         onLeftPress={() => props.navigation.goBack()}
@@ -112,7 +112,7 @@ export const TransferMoneyScreen: FC<
               style={Styles.txtBtnNTN}
             />
           </View>
-          <Images.dropDown />
+          <Svgs.dropDown />
         </TouchableOpacity>
 
         <View style={{ flexDirection: "row", marginBottom: margin.margin_20 }}>

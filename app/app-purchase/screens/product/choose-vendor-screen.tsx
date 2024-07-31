@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import FastImage from "react-native-fast-image";
-import { Images } from "../../../../assets/index";
+import { Svgs } from "../../../../assets/svgs";
 import { Header } from "../../../components/header/header";
 import { TextField } from "../../../components/text-field/text-field";
 import { Text } from "../../../components/text/text";
@@ -78,12 +78,12 @@ export const ChooseVendorScreen: FC = () => {
   const RadioButton = ({ selected, onPress }: any) => (
     <TouchableOpacity onPress={onPress}>
       {selected ? (
-        <Images.icon_checkCircle
+        <Svgs.icon_checkCircle
           width={scaleWidth(30)}
           height={scaleHeight(30)}
         />
       ) : (
-        <Images.ic_plusCircle width={scaleWidth(30)} height={scaleHeight(30)} />
+        <Svgs.ic_plusCircle width={scaleWidth(30)} height={scaleHeight(30)} />
       )}
     </TouchableOpacity>
   );
@@ -191,7 +191,7 @@ export const ChooseVendorScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="vendorScreen.header"
@@ -223,7 +223,7 @@ export const ChooseVendorScreen: FC = () => {
                 inputStyle={{ fontSize: fontSize.size12, fontWeight: "500" }}
                 value={searchText}
                 onBlur={onBlur}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 error={errors?.productName?.message}
                 onClearText={async () => {
                   setSearchText("");
@@ -234,7 +234,7 @@ export const ChooseVendorScreen: FC = () => {
                 onSubmitEditing={handleSubmitSearch}
                 enablesReturnKeyAutomatically
                 placeholderTx="chooseSupplierScreen.placeholderSearch"
-                RightIcon={Images.ic_searchBlue}
+                RightIcon={Svgs.ic_searchBlue}
                 // isImportant
               />
             )}
@@ -300,7 +300,7 @@ export const ChooseVendorScreen: FC = () => {
                   {selectedCount}
                 </Text>
               </View>
-              <Images.ic_shopping
+              <Svgs.ic_shopping
                 width={scaleWidth(20)}
                 height={scaleHeight(20)}
                 style={{ marginRight: 6, marginTop: 2 }}

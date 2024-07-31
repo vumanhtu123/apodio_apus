@@ -4,7 +4,7 @@ import { View, Text as TextRN, TouchableOpacity, Image } from "react-native"
 import Modal from "react-native-modal"
 import { styles } from "./modal-create-supplier"
 import { Text, TextField } from "../../../../components"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme"
 import { InputSelect } from "../../../../components/input-select/inputSelect"
 import { Controller, useForm } from "react-hook-form"
@@ -66,7 +66,7 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
 
                 />
                 <View style={styles.imageWithBorder}>
-                    <Images.ic_BIDV
+                    <Svgs.ic_BIDV
 
                     />
                 </View>
@@ -102,7 +102,7 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                                 fontSize: fontSize.size16,
                                 fontWeight: "500",
                             }}
-                            RightIconClear={Images.icon_delete2}
+                            RightIconClear={Svgs.icon_delete2}
                             onChangeText={(value) => onChange(value)}
                             onClearText={() => onChange("")}
                             error={errors.AcountNumber?.message}
@@ -121,7 +121,7 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                             placeholderTx={"NCCScreen.enterAccountName"}
                             value={value}
                             onBlur={onBlur}
-                            RightIconClear={Images.icon_delete2}
+                            RightIconClear={Svgs.icon_delete2}
                             onChangeText={(txt) => onChange(txt)}
                             onClearText={() => onChange("")}
                             style={{

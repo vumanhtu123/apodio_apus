@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Button, Header, Text, TextField } from "../../../../components";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import {
@@ -343,7 +343,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
     return (
         <View style={{ backgroundColor: colors.palette.white, flex: 1 }}>
             <Header
-                LeftIcon={Images.back}
+                LeftIcon={Svgs.back}
                 onLeftPress={() => navigation.goBack()}
                 style={{ height: scaleHeight(52) }}
                 headerTx={"order.sendInvoice"}
@@ -381,7 +381,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
                                         value={value}
                                         onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
+                                        RightIconClear={Svgs.icon_delete2}
                                         error={errors?.invoiceCode?.message}
                                         onClearText={() => onChange('')}
                                         onChangeText={value => { onChange(value), setInvoiceCode(value) }}
@@ -426,7 +426,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         inputStyle={{ fontSize: fontSize.size16, fontWeight: '500' }}
                                         value={value}
                                         onBlur={onBlur}
-                                        RightIconClear={Images.icon_delete2}
+                                        RightIconClear={Svgs.icon_delete2}
                                         error={errors?.symbol?.message}
                                         onClearText={() => onChange('')}
                                         onChangeText={value => {
@@ -468,7 +468,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         }
                                         onBlur={onBlur}
                                         // RightIconClear={Images.icon_delete2}/
-                                        RightIcon={Images.icon_CalenderBlank}
+                                        RightIcon={Svgs.icon_CalenderBlank}
                                         error={errors?.invoiceCreateDate?.message}
                                         onClearText={() => onChange('')}
                                         onChangeText={value => onChange(value)}
@@ -500,7 +500,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                     onBlur={onBlur}
                                     value={value}
                                     // RightIconClear={Images.icon_delete2}/
-                                    RightIcon={Images.icon_CalenderBlank}
+                                    RightIcon={Svgs.icon_CalenderBlank}
                                     pressRightIcon={() => {
                                         toggleModalDateEnd(),
                                             setChoiseCalendar(2)

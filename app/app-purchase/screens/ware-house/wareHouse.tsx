@@ -13,7 +13,7 @@ import {
     View,
 } from "react-native";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import en from "../../i18n/en";
 import Modal_Infor_wareHouse from "./modal/modal_Infor_wareHouse";
 import Modal_Plus from "./modal/modal_plus";
@@ -196,10 +196,10 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 style={Styles.main}
             >
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     style={{ height: scaleHeight(52) }}
                     leftText="wareHouse.wareHouse"
-                    RightIcon2={Images.icon_search}
+                    RightIcon2={Svgs.icon_search}
                     headerInput={isShowSearch}
                     handleOnSubmitSearch={() => {
                         page.current = 0
@@ -240,7 +240,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                             marginBottom: scaleHeight(12),
                         }}>
                         <View style={{ marginRight: scaleWidth(8) }}>
-                            <Images.squaresFour />
+                            <Svgs.squaresFour />
                         </View>
                         {titleTabbar.map((item, index) => {
                             return (
@@ -307,7 +307,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                     <TouchableOpacity
                         style={Styles.btnPlus}
                         onPress={() => props.navigation.navigate("warehouse", { status: "CREATE" })}>
-                        <Images.icon_plus style={{ opacity: openDialogPlus ? 0 : 1 }} />
+                        <Svgs.icon_plus style={{ opacity: openDialogPlus ? 0 : 1 }} />
                     </TouchableOpacity>
 
                     <Modal_Infor_wareHouse

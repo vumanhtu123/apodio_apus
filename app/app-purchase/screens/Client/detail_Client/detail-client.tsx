@@ -5,7 +5,7 @@ import { FC ,} from "react";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, padding, scaleHeight, scaleWidth } from "../../../theme";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -63,7 +63,7 @@ export const detailClientScrent: FC<StackScreenProps<AppStackParamList, "detailC
                 <View style={{ zIndex: 0 }}>
                     <Header
                         headerTx="ClientScreen.detailClient"
-                        LeftIcon={Images.back}
+                        LeftIcon={Svgs.back}
                         titleStyle={{ alignSelf: 'flex-start' }}
                         style={{ height: scaleHeight(73), }}
                         onLeftPress={() => props.navigation.goBack()}
@@ -103,7 +103,7 @@ export const detailClientScrent: FC<StackScreenProps<AppStackParamList, "detailC
 
                     <View style={{ padding:14, flexDirection:'row', justifyContent:'space-between' }}>
                         <View style={{flexDirection:'row'}}>
-                        <Images.icon_calendar width={14} height={14}/>
+                        <Svgs.icon_calendar width={14} height={14}/>
                         <Text
                         style={{ fontSize: scaleWidth(10), fontWeight: "400", marginHorizontal:6}}
                         >Đặt lịch nhắc nợ tự động</Text>

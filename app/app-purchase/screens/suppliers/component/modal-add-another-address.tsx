@@ -4,7 +4,7 @@ import Modal from "react-native-modal";
 import { styles } from "./modal-create-supplier";
 import { Text, TextField } from "../../../../components";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 
@@ -209,7 +209,7 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 error={errors?.nameSuppliers?.message}
                                 onClearText={() => onChange("")}
                                 onChangeText={(value) => onChange(value)}

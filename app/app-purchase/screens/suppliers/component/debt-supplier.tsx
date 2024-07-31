@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, Modal, TouchableOpacity, View } from "react-native";
 import { Button, Text, TextField } from "../../../../components";
 import { scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 
@@ -67,7 +67,7 @@ export const DebtSupplier = (item: any) => {
           elevation: 0.5,
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Images.ClipboardText />
+          <Svgs.ClipboardText />
           <Text
             tx="suppliers.Bought"
             style={{
@@ -91,7 +91,7 @@ export const DebtSupplier = (item: any) => {
             paddingVertical: 8,
             alignItems: "center",
           }}>
-          <Images.ClipboardText />
+          <Svgs.ClipboardText />
           <Text
             tx="suppliers.deDebt"
             style={{
@@ -110,7 +110,7 @@ export const DebtSupplier = (item: any) => {
           </Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Images.icon_chart />
+          <Svgs.icon_chart />
           <Text
             tx="suppliers.debtLimit"
             style={{
@@ -321,7 +321,7 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
               fontWeight: "600",
             }}></Text>
           <TouchableOpacity onPress={() => setIsVisible(false)}>
-            <Images.ic_x />
+            <Svgs.ic_x />
           </TouchableOpacity>
         </View>
         <Text
@@ -343,7 +343,7 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
               style={{}}
               value={value}
               onBlur={onBlur}
-              RightIconClear={Images.icon_delete2}
+              RightIconClear={Svgs.icon_delete2}
               error={""}
               onClearText={() => {
                 onChange("");

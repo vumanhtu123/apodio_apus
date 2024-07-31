@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 import { translate } from "../../../i18n";
@@ -33,7 +33,7 @@ export const FilterAppBarComponent = (props: any) => {
             onPress={() => {
               props.onShowCalender();
             }}>
-            <Images.icon_calendar />
+            <Svgs.icon_calendar />
           </TouchableOpacity>
         </View>
         {props.date !== null ? (
@@ -44,7 +44,7 @@ export const FilterAppBarComponent = (props: any) => {
                 onPress={() => {
                   props.clear();
                 }}>
-                <Images.ic_x />
+                <Svgs.ic_x />
               </TouchableOpacity>
             </View>
           </View>
@@ -67,7 +67,7 @@ export const FilterAppBarComponent = (props: any) => {
         )}
       </View>
       <View style={{}}>
-        <Images.icon_searchBlack color="black" />
+        <Svgs.icon_searchBlack color="black" />
       </View>
     </View>
   );

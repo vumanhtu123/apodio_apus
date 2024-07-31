@@ -14,7 +14,7 @@ import { SvgIcon } from "../../../../components/svg-icon/index";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { navigate } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text, TextField } from "../../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
@@ -222,7 +222,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   }}
                   value={value}
                   onBlur={onBlur}
-                  RightIconClear={Images.icon_delete2}
+                  RightIconClear={Svgs.icon_delete2}
                   error={errors?.nameSuppliers?.message}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => onChange(value)}
@@ -261,7 +261,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   }}
                   onClearText={() => onChange("")}
                   onChangeText={() => onChange}
-                  RightIconClear={Images.icon_delete2}
+                  RightIconClear={Svgs.icon_delete2}
                   error={errors?.phoneNumber?.message}
                   placeholder="Ví dụ: 0909448877"
                   isImportant
@@ -292,7 +292,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
               style={styles.headerTitle}
               tx="NCCScreen.moreInformation"
             ></Text>
-            <Images.dropDown />
+            <Svgs.dropDown />
           </TouchableOpacity>
 
           {showMore && (
@@ -324,7 +324,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                           }}
                           value={value}
                           onBlur={onBlur}
-                          RightIconClear={Images.icon_delete2}
+                          RightIconClear={Svgs.icon_delete2}
                           error={errors?.[item.name]?.message}
                           onClearText={() => onChange("")}
                           onChangeText={(value) => onChange(value)}
@@ -417,7 +417,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                       }}
                       value={value}
                       onBlur={onBlur}
-                      RightIconClear={Images.icon_delete2}
+                      RightIconClear={Svgs.icon_delete2}
                       error={errors?.nameSuppliers?.message}
                       onClearText={() => onChange("")}
                       onChangeText={(value) => onChange(value)}
@@ -441,10 +441,10 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   />
                 </TouchableOpacity>
                 <View style={[styles.flexRow, { alignItems: "center" }]}>
-                  <Images.ic_minusCircle style={{ marginRight: 8 }} />
+                  <Svgs.ic_minusCircle style={{ marginRight: 8 }} />
                   <View style={styles.stylesCard}>
                     <View style={{ marginRight: 8 }}>
-                      <Images.ic_Truck />
+                      <Svgs.ic_Truck />
                     </View>
                     <View style={{ flex: 1 }}>
                       <View
@@ -456,7 +456,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                         <Text style={styles.styleTextBold}>
                           Địa chỉ giao hàng
                         </Text>
-                        <Images.ic_pen />
+                        <Svgs.ic_pen />
                       </View>
                       <Text style={styles.textSize}>
                         24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam
@@ -485,10 +485,10 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   <Text style={styles.addAnother} tx="NCCScreen.addBank" />
                 </TouchableOpacity>
                 <View style={[styles.flexRow, { alignItems: "center" }]}>
-                  <Images.ic_minusCircle style={{ marginRight: 8 }} />
+                  <Svgs.ic_minusCircle style={{ marginRight: 8 }} />
                   <View style={styles.stylesCard}>
                     <View style={{ marginRight: 8 }}>
-                      <Images.ic_BIDV />
+                      <Svgs.ic_BIDV />
                     </View>
                     <View style={{ flex: 1 }}>
                       <View
@@ -498,7 +498,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                         ]}
                       >
                         <Text style={styles.textSize}>Ngân hàng: BIDV</Text>
-                        <Images.ic_pen />
+                        <Svgs.ic_pen />
                       </View>
                       <Text style={styles.textSize}>
                         Số tài khoản: 1231231155151
@@ -528,10 +528,10 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   <Text style={styles.addAnother} tx="NCCScreen.addContactPersonInformation" />
                 </TouchableOpacity>
                 <View style={[styles.flexRow, { alignItems: "center" }]}>
-                  <Images.ic_minusCircle style={{ marginRight: 8 }} />
+                  <Svgs.ic_minusCircle style={{ marginRight: 8 }} />
                   <View style={styles.stylesCard}>
                     <View style={{ marginRight: 8 }}>
-                      <Images.img_Girl />
+                      <Svgs.img_Girl />
                     </View>
                     <View style={{ flex: 1 }}>
                       <View
@@ -541,7 +541,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                         ]}
                       >
                         <Text style={styles.textSize}>Chị Nguyễn Lan Hương</Text>
-                        <Images.ic_pen />
+                        <Svgs.ic_pen />
                       </View>
 
                       <Text style={styles.textSize}>

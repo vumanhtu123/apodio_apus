@@ -11,7 +11,7 @@ import { scaleWidth, padding, scaleHeight, colors } from "../../../theme";
 import { Text, TextField } from "../../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { validatePhoneStartsWith } from "../../../utils/validate";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { styles } from "../../account_security/styles";
 
 interface ModalCreateGroup {

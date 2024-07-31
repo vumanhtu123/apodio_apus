@@ -1,6 +1,6 @@
 import React, { Dimensions, FlatList, Image, Linking, TouchableOpacity, View } from "react-native"
 import { scaleHeight, scaleWidth } from "../../../theme"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { styles } from "./styles"
 import { AutoImage, Text } from "../../../../components"
 import Modal from "react-native-modal/dist/modal";
@@ -207,7 +207,7 @@ export default function ImageProduct(props: ImageProduct) {
                                 }
                             }}
                             style={styles.btnLibrary}>
-                            <Images.ic_addImages
+                            <Svgs.ic_addImages
                                 width={scaleWidth(16)}
                                 height={scaleHeight(16)}
                             />
@@ -225,7 +225,7 @@ export default function ImageProduct(props: ImageProduct) {
                                 }
                             }}
                             style={styles.btnCamera}>
-                            <Images.ic_camera
+                            <Svgs.ic_camera
                                 width={scaleWidth(16)}
                                 height={scaleHeight(16)}
                             />
@@ -256,7 +256,7 @@ export default function ImageProduct(props: ImageProduct) {
                                         top: scaleHeight(5),
                                     }}
                                     onPress={() => deleteImage(index, item)}>
-                                    <Images.circle_close
+                                    <Svgs.circle_close
                                         width={scaleWidth(16)}
                                         height={scaleHeight(16)}
                                     />
@@ -289,7 +289,7 @@ export default function ImageProduct(props: ImageProduct) {
                             }}
                             style={styles.viewBtnCamera}>
                             <View style={styles.btnCamera2}>
-                                <Images.ic_addImages
+                                <Svgs.ic_addImages
                                     width={scaleWidth(16)}
                                     height={scaleHeight(16)}
                                 />
@@ -312,7 +312,7 @@ export default function ImageProduct(props: ImageProduct) {
                             }}
                             style={styles.viewBtnLibrary}>
                             <View style={styles.btnCamera2}>
-                                <Images.ic_camera
+                                <Svgs.ic_camera
                                     width={scaleWidth(16)}
                                     height={scaleHeight(16)}
                                 />
@@ -341,7 +341,7 @@ export default function ImageProduct(props: ImageProduct) {
                                             source={{
                                                 uri: item,
                                             }}
-                                            defaultSource={Images.imageError}
+                                            defaultSource={Svgs.imageError}
                                             resizeMode="cover"
                                             style={styles.viewItemCarousel}></Image>
                                     </View>

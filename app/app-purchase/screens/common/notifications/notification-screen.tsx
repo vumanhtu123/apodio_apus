@@ -13,7 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import {colors, fontSize, scaleHeight} from '../../../theme';
 import {styles, stylesItem} from './styles';
 import moment from 'moment';
-import {Images} from '../../../../../assets/index';
+import {Svgs} from '../../../../../assets/svgs';
 
 const notifications = [
   {
@@ -171,7 +171,7 @@ export const NotificationScreen: FC = () => {
 
   const renderImage = (product: any, item: any) => {
     if (product === 'MERCHANT_ORDER') {
-      return <Image source={Images.ic_RequestCard} style={{width: 50, height: 50}} />
+      return <Image source={Svgs.ic_RequestCard} style={{width: 50, height: 50}} />
     } else if (product === 'PROMOTION') {
       return (
         <Image
@@ -180,9 +180,9 @@ export const NotificationScreen: FC = () => {
         />
       );
     } else if (product === 'MERCHANT_REQUEST_CASH') {
-      return <Image source={Images.ic_RequestCard} style={{width: 50, height: 50}} />
+      return <Image source={Svgs.ic_RequestCard} style={{width: 50, height: 50}} />
     } else if (product === 'MERCHANT_TRANSACTION') {
-      return <Image source={Images.ic_bank} style={{width: 50, height: 50}} />
+      return <Image source={Svgs.ic_bank} style={{width: 50, height: 50}} />
     }
   };
 
@@ -217,11 +217,11 @@ export const NotificationScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={'AntDesign'}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Notification(${dataNotiCount})`}
-        RightIcon={Images.ic_checkNotification}
+        RightIcon={Svgs.ic_checkNotification}
         onRightPress={() => console.log('ok')}
         widthRightIcon={28}
         heightRightIcon={28}

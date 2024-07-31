@@ -3,7 +3,7 @@ import { Header } from "../../../../../components/header/header";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { TextInput, View } from "react-native";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Text } from "../../../../../components/text/text";
 import React from "react";
 import { NavigatorParamList } from "../../../../navigators/app-navigator";
@@ -19,7 +19,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                
                     <Header
                     style={{height:52}}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="inforMerchant.faq"
                     onLeftPress={() => props.navigation.goBack()}
                     /> 
@@ -33,7 +33,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                     />
 
                     <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4 }}>
-                        <Images.ic_search/>
+                        <Svgs.ic_search/>
                         <TextInput
                             
                             placeholder="Gõ từ khóa để tìm kiếm"
@@ -54,7 +54,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                             placeholder="Lorem ipsum dolor sit amet consectetur"
                             style={{  padding: 10, borderRadius: 5 }}
                         />
-                        <Images.ic_plus/>
+                        <Svgs.ic_plus/>
                     </View>   
 
                     <View style={{height:1, borderWidth:1, borderColor:"#F6F7FB"}} />
@@ -65,7 +65,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                             placeholder="Mattis nisl massa quis in et"
                             style={{  padding: 10, borderRadius: 5 }}
                         />
-                        <Images.ic_minus/>
+                        <Svgs.ic_minus/>
                     </View>
 
                     <View style={{height:1, borderWidth:1, borderColor:"#F6F7FB"}} />
@@ -82,7 +82,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                             placeholder="Mattis nisl massa quis in et"
                             style={{  padding: 10, borderRadius: 5 }}
                         />
-                        <Images.ic_plus/>
+                        <Svgs.ic_plus/>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4,justifyContent:'space-between' }}>
                         <TextInput
@@ -90,7 +90,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                             placeholder="Mattis nisl massa quis in et"
                             style={{  padding: 10, borderRadius: 5 }}
                         />
-                        <Images.ic_plus/>
+                        <Svgs.ic_plus/>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4,justifyContent:'space-between' }}>
                         <TextInput
@@ -98,7 +98,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                             placeholder="Mattis nisl massa quis in et"
                             style={{  padding: 10, borderRadius: 5 }}
                         />
-                        <Images.ic_plus/>
+                        <Svgs.ic_plus/>
                     </View>
                 
                 </View>

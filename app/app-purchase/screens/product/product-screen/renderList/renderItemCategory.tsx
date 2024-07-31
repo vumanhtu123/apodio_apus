@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View, ImageBackground, Animated, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { scaleHeight, scaleWidth } from '../../../../theme';
-import { Images } from '../../../../../../assets';
+import { Svgs } from '../../../../../../assets/svgs';
 import { stylesItem } from '../../styles';
 import { Text } from '../../../../../components';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -23,7 +23,7 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
           <TouchableOpacity onPress={() => {
             handleOpenDeleteModal(item.id)
           }} style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <Images.icon_trashWhite
+            <Svgs.icon_trashWhite
               width={scaleWidth(16)}
               height={scaleHeight(16)}
             />
@@ -55,7 +55,7 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
               alignItems: "center",
             }}>
             <View style={{}}>
-              <Images.arrowsOutCardinal
+              <Svgs.arrowsOutCardinal
                 width={scaleWidth(16)}
                 height={scaleHeight(16)}
               />
@@ -106,7 +106,7 @@ const RenderCategoryItem = ({ item, isActive, handleOpenDeleteModal, handleEditC
               />
             </TouchableOpacity> */}
             <TouchableOpacity onPress={() => handleEditCategory(item)} style={{ alignItems: 'center', justifyContent: 'center', width: scaleWidth(30), height: scaleHeight(30) }}>
-              <Images.icon_edit
+              <Svgs.icon_edit
                 width={scaleWidth(16)}
                 height={scaleHeight(16)}
               />

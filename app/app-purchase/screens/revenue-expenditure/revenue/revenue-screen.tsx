@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { StackScreenProps } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../../navigators";
 import { Header, Text, TextField } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import {
   colors,
   fontSize,
@@ -63,7 +63,7 @@ export const RevenueScreen: FC<
   return (
     <View style={Styles.Root}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="analysis.revenue2"
         style={{ height: scaleHeight(52) }}
         onLeftPress={() => props.navigation.goBack()}
@@ -71,7 +71,7 @@ export const RevenueScreen: FC<
       <TouchableOpacity
         style={Styles.calendarDay}
         onPress={() => toggleModalDate()}>
-        <Images.icon_calendar />
+        <Svgs.icon_calendar />
         <Text
           style={{
             color: colors.palette.navyBlue,
@@ -86,7 +86,7 @@ export const RevenueScreen: FC<
           }}>
           {timeStart}
         </Text>
-        <Images.icon_caretDownBlue />
+        <Svgs.icon_caretDownBlue />
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -180,7 +180,7 @@ export const RevenueScreen: FC<
                     style={Styles.txtBtnNTN}
                   />
                 </View>
-                <Images.dropDown />
+                <Svgs.dropDown />
               </TouchableOpacity>
               <View
                 style={{
@@ -209,7 +209,7 @@ export const RevenueScreen: FC<
                     style={Styles.txtBtnNTN}
                   />
                 </View>
-                <Images.dropDown />
+                <Svgs.dropDown />
               </TouchableOpacity>
               <View
                 style={{
@@ -249,7 +249,7 @@ export const RevenueScreen: FC<
                     style={Styles.txtBtnNTN}
                   />
                 </View>
-                <Images.dropDown />
+                <Svgs.dropDown />
               </TouchableOpacity>
 
               {/* Ghi chú */}
@@ -275,7 +275,7 @@ export const RevenueScreen: FC<
                     style={Styles.txtBtnNTN}
                   />
                 </View>
-                <Images.dropDown />
+                <Svgs.dropDown />
               </TouchableOpacity>
               <View
                 style={{
@@ -304,7 +304,7 @@ export const RevenueScreen: FC<
                     style={Styles.txtBtnNTN}
                   />
                 </View>
-                <Images.dropDown />
+                <Svgs.dropDown />
               </TouchableOpacity>
               <View
                 style={{
@@ -344,7 +344,7 @@ export const RevenueScreen: FC<
                     style={Styles.txtBtnNTN}
                   />
                 </View>
-                <Images.dropDown />
+                <Svgs.dropDown />
               </TouchableOpacity>
 
               {/* Người giao dịch    */}
@@ -362,7 +362,7 @@ export const RevenueScreen: FC<
                     style={Styles.txtBtnNTN}
                   />
                 </View>
-                <Images.dropDown />
+                <Svgs.dropDown />
               </TouchableOpacity>
 
               {/* Ghi chú */}
@@ -385,7 +385,7 @@ export const RevenueScreen: FC<
           marginBottom: scaleWidth(15),
         }}>
         <TouchableOpacity style={Styles.img}>
-          <Images.ic_img_blue />
+          <Svgs.ic_img_blue />
         </TouchableOpacity>
         <TouchableOpacity style={Styles.btnCreate}>
           <Text tx="common.create" style={Styles.textCreate} />

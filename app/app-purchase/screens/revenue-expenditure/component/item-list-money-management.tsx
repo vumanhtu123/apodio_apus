@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { FC } from "react";
 import { Styles } from "../money-management/styles";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import {
   colors,
   fontSize,
@@ -41,9 +41,9 @@ const ItemListMoneyManagement: FC<Item> = ({
   return (
     <View style={Styles.ItemMoneyManagement}>
       {index === data.length - 1 ? (
-        <Images.ic_MinusCircleRed style={{ marginRight: margin.margin_6 }} />
+        <Svgs.ic_MinusCircleRed style={{ marginRight: margin.margin_6 }} />
       ) : (
-        <Images.ic_MinusCircleGray style={{ marginRight: margin.margin_6 }} />
+        <Svgs.ic_MinusCircleGray style={{ marginRight: margin.margin_6 }} />
       )}
       <View
         style={{
@@ -71,7 +71,7 @@ const ItemListMoneyManagement: FC<Item> = ({
         </View>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={onClickItemPen}>
-            <Images.ic_pen
+            <Svgs.ic_pen
               style={{ marginRight: margin.margin_6 }}
               width={scaleWidth(15)}
               height={scaleHeight(15)}
@@ -79,7 +79,7 @@ const ItemListMoneyManagement: FC<Item> = ({
           </TouchableOpacity>
 
           <TouchableOpacity onPress={onClickItemArrowsOutCardinal}>
-            <Images.arrowsOutCardinal />
+            <Svgs.arrowsOutCardinal />
           </TouchableOpacity>
         </View>
       </View>

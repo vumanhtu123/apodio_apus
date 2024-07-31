@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { View,TouchableOpacity, StyleSheet, Platform, Alert } from "react-native";
 import React from "react";
 import { Header, Text } from '../../../components';
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { FlashList } from "@shopify/flash-list";
 import CustomCalendar from "../../../components/calendar";
@@ -144,11 +144,11 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     style={{ height: scaleHeight(51) }}
                     headerInputCenter={true}
                     textBelowIconRightSearch={true}
-                    RightIconTextInputCenter={Images.ic_dowload}
+                    RightIconTextInputCenter={Svgs.ic_dowload}
                     onLeftPress={() => props.navigation.goBack()}
                 />
 
@@ -179,7 +179,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
 
                                         }}
                                     >
-                                        <Images.ic_Calender_gray />
+                                        <Svgs.ic_Calender_gray />
                                     </TouchableOpacity>
 
 
@@ -295,7 +295,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
 
                             :
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                                <Images.img_not_init />
+                                <Svgs.img_not_init />
                                 <Text tx='GoodsExportBook.notCreateExportGoods' />
                             </View>
                     }
@@ -316,7 +316,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
 
                         }}
                     >
-                        <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
+                        <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
                         <Text style={{ color: 'white', fontSize: fontSize.size14 }} tx='ImprotGoodsBook.createImportGoods' ></Text>
                     </TouchableOpacity>
 

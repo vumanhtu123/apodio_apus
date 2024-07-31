@@ -24,7 +24,7 @@ import {
 } from "../../app-purchase/theme";
 import { translate, TxKeyPath } from "../../app-purchase/i18n";
 import { SvgIcon } from "../svg-icon";
-import { Images } from "../../../assets";
+import { Svgs } from "../../../assets/svgs";
 import { Text } from "../text/text";
 
 // the base styling for the container

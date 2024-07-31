@@ -3,7 +3,7 @@ import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../.
 import { Text } from "../../../../components/text/text";
 import { Dimensions, FlatList, Image, Linking, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import { Button } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import Modal from 'react-native-modal'
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useStores } from "../../../models";
@@ -170,7 +170,7 @@ export default function ImagesGroup(props: ImagesGroup) {
           }
         }}
           style={{ width: scaleWidth(68), height: scaleHeight(44) }}>
-          <Images.imageUpload />
+          <Svgs.imageUpload />
         </TouchableOpacity>
         :
         <View style={{
@@ -188,7 +188,7 @@ export default function ImagesGroup(props: ImagesGroup) {
               position: 'absolute', right: scaleWidth(-6),
               top: scaleHeight(-6), zIndex: 1
             }} >
-            <Images.icon_delete2 />
+            <Svgs.icon_delete2 />
           </TouchableOpacity>
           <TouchableOpacity onPress={(arrData) => setIsModal(true)}
             style={{
@@ -197,7 +197,7 @@ export default function ImagesGroup(props: ImagesGroup) {
               top: scaleHeight(13),
               left: scaleWidth(24)
             }} >
-            <Images.icon_zoom />
+            <Svgs.icon_zoom />
           </TouchableOpacity>
 
           {arrData?.length >= 3 ? <View style={{ flexDirection: 'row', }}>
@@ -207,7 +207,7 @@ export default function ImagesGroup(props: ImagesGroup) {
                   borderTopLeftRadius: 8,
                   borderBottomLeftRadius: 8
                 }}
-                defaultSource={Images.imageError}
+                defaultSource={Svgs.imageError}
                 source={{ uri: arrData[0] }} />
             </View>
             <View style={{ marginLeft: scaleWidth(1) }}>
@@ -215,13 +215,13 @@ export default function ImagesGroup(props: ImagesGroup) {
                 style={{
                   borderTopRightRadius: 8, marginBottom: scaleHeight(1)
                 }}
-                defaultSource={Images.imageError}
+                defaultSource={Svgs.imageError}
                 source={{ uri: arrData[1] }} />
               <Image height={scaleHeight(21)} width={scaleWidth(24)}
                 style={{
                   borderBottomRightRadius: 8,
                 }}
-                defaultSource={Images.imageError}
+                defaultSource={Svgs.imageError}
                 source={{ uri: arrData[2] }} />
             </View>
           </View> : arrData?.length === 2 ?
@@ -233,13 +233,13 @@ export default function ImagesGroup(props: ImagesGroup) {
                   borderBottomLeftRadius: 8,
                   marginRight: scaleWidth(1),
                 }}
-                defaultSource={Images.imageError}
+                defaultSource={Svgs.imageError}
                 source={{ uri: arrData[0] }} />
               <Image height={scaleHeight(42)} width={scaleWidth(32)}
                 style={{
                   borderTopRightRadius: 8, borderBottomRightRadius: 8
                 }}
-                defaultSource={Images.imageError}
+                defaultSource={Svgs.imageError}
                 source={{ uri: arrData[1] }} />
             </View>
             : arrData?.length === 1 ? <View >
@@ -247,7 +247,7 @@ export default function ImagesGroup(props: ImagesGroup) {
                 style={{
                   borderRadius: 8
                 }}
-                defaultSource={Images.imageError}
+                defaultSource={Svgs.imageError}
                 source={{ uri: arrData[0] }} />
             </View> : null}
         </View>}
@@ -268,13 +268,13 @@ export default function ImagesGroup(props: ImagesGroup) {
                       right: scaleWidth(40), top: scaleHeight(8)
                     }}
                       onPress={() => onPressDelete1()}>
-                      <Images.icon_delete2 width={scaleWidth(26)} height={scaleHeight(26)} />
+                      <Svgs.icon_delete2 width={scaleWidth(26)} height={scaleHeight(26)} />
                     </TouchableOpacity>
                     <Image
                       source={{
                         uri: item,
                       }}
-                      defaultSource={Images.imageError}
+                      defaultSource={Svgs.imageError}
 
                       resizeMode='cover'
                       style={{ height: scaleHeight(416), width: scaleWidth(294), borderRadius: 16, alignSelf: 'center' }}>
@@ -344,7 +344,7 @@ export default function ImagesGroup(props: ImagesGroup) {
               // marginTop : scaleHeight(10),
               alignItems: 'center'
             }} >
-              <Images.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
+              <Svgs.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
               <Text text="Tải ảnh lên" style={{
                 fontWeight: '600', fontSize: fontSize.size14,
                 lineHeight: scaleHeight(24), color: colors.palette.navyBlue, marginLeft: scaleWidth(6)

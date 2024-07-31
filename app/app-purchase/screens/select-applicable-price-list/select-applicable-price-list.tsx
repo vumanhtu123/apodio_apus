@@ -14,7 +14,7 @@ import {
 import { ScreenStackProps } from "react-native-screens";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../components";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import { number } from "mobx-state-tree/dist/internal";
@@ -129,10 +129,10 @@ export const SelectApplicablePriceList: FC<
     <View style={{ flex: 1 }}>
       <Header
         headerTx="selectPriceListApply.selectPriceListApply"
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => props.navigation.goBack()}
-        RightIcon={Images.icon_funnel}
-        RightIcon1={Images.icon_search}
+        RightIcon={Svgs.icon_funnel}
+        RightIcon1={Svgs.icon_search}
         style={{ height: scaleWidth(52) }}
         headerInput={isShowSearch}
         handleOnSubmitSearch={() => {

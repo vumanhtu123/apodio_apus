@@ -15,7 +15,7 @@ import {
   ViewStyle
 } from "react-native";
 import Modal from "react-native-modal";
-import { Images } from "../../../assets/index";
+import { Svgs } from "../../../assets/svgs";
 import { translate } from "../../app-purchase/i18n";
 import {
   colors,
@@ -215,7 +215,7 @@ export function InputSelect(props: InputSelectProps) {
                 // marginTop: 5,  để cho item mũi tên đi xuống ra giữa khi comment lại
               }
             }>
-            <Images.dropDown />
+            <Svgs.dropDown />
           </View>
         )}
       </TouchableOpacity>
@@ -239,7 +239,7 @@ export function InputSelect(props: InputSelectProps) {
                 <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
-                      <Images.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
+                      <Svgs.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
                     </TouchableOpacity>
                     {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
                   </View>
@@ -294,7 +294,7 @@ export function InputSelect(props: InputSelectProps) {
                         }}>
                         {isShowCheckBox ? (<View style={styles.radioButton}>
                           {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
-                          {data === item.label && <Images.icon_checkBox />}
+                          {data === item.label && <Svgs.icon_checkBox />}
                         </View>) : null}
                         {/* <Text text={item.label} style={TEXTLABELFLATLIST} /> */}
                         {highlightText(item.label, searchValue)}

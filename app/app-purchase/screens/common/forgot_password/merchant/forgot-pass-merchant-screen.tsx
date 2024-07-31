@@ -28,7 +28,7 @@ import SelectTypeModal from "./modal-select-type";
 import { styles } from "./styles";
 import VerificationCodeModal from "../../../../../components/dialog-otp/dialog.otp";
 import DialogSuccessUnSuccess from "../../../../../components/dialog-success-unsuccess.tsx/index";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 
 export const ForgotPasswordMerchant: FC = observer(
   function ForgotPasswordMerchant() {
@@ -105,7 +105,7 @@ export const ForgotPasswordMerchant: FC = observer(
         <StatusBar translucent backgroundColor={"transparent"} />
         <Header
           type={"AntDesign"}
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           colorIcon={colors.text}
           headerTx="demoPodcastListScreen.forgotPasswordMerchant.forgotPassword"
@@ -135,7 +135,7 @@ export const ForgotPasswordMerchant: FC = observer(
                   }}
                   value={value}
                   onBlur={onBlur}
-                  RightIconClear={Images.icon_delete}
+                  RightIconClear={Svgs.icon_delete}
                   error={errors?.phonenumber?.message}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => onChange(value)}
@@ -182,7 +182,7 @@ export const ForgotPasswordMerchant: FC = observer(
                   style={[styles.selectText, { color: "#242426" }]}
                 />
               </View>
-              <Images.dropDown />
+              <Svgs.dropDown />
             </Button>
             {/* <Controller
               control={control}

@@ -10,7 +10,7 @@ import React from "react";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components/text/text";
 import { TxKeyPath } from "../../../i18n";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 
 interface ViewInfoProp {
   tx?: TxKeyPath;
@@ -52,7 +52,7 @@ export default function ViewInfo(props: ViewInfoProp) {
           style={VIEWOPENSTORE}>
           <Text style={TEXTBALANCE} tx={"dashboard.storeInformation"} />
           <View style={DOWN}>
-            <Images.icon_arrowRight />
+            <Svgs.icon_arrowRight />
           </View>
         </TouchableOpacity>
       </View>

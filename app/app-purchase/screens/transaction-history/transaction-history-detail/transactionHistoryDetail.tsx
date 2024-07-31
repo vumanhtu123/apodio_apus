@@ -4,7 +4,7 @@ import { FC } from "react";
 import { ImageBackground, StyleSheet, View, Image, ScrollView, Dimensions} from "react-native";
 import { Styles } from "../style";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -59,7 +59,7 @@ export const TransactionHistoryDetial: FC = observer(
             <View style={Styles.main}>
                 <Header
                     headerTx="tranSacTionHistory.transactionHistoryDetail"
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     style={{ height: scaleHeight(52), zIndex: 2 }}
                     onLeftPress={() => props.navigation.goBack()}                    
                 />
@@ -78,7 +78,7 @@ export const TransactionHistoryDetial: FC = observer(
 
                     <View style={{ width: width, position: 'absolute', zIndex: 2, alignItems: 'center' }}>
                         <View style={Styles.flexRowNoJustyfy}>
-                            <Images.ic_billPay />
+                            <Svgs.ic_billPay />
                             <View style={{ width: '81%', marginLeft: scaleWidth(6), justifyContent: 'space-evenly', }}>
                                 <Text tx="tranSacTionHistory.paymentOder" />
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -86,7 +86,7 @@ export const TransactionHistoryDetial: FC = observer(
                                         <Text style={{ marginRight: 5 }}>
                                             ID: 200113566777
                                         </Text>
-                                        <Images.ic_coppyID />
+                                        <Svgs.ic_coppyID />
                                     </View>
                                     <Text style={{ color: '#ED1F43', }}>
                                         -12.000.000đ

@@ -5,7 +5,7 @@ import { View, ScrollView } from "react-native";
 import { styles } from "./styles";
 import { colors, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Controller, useForm } from "react-hook-form";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components/text/text";
 import { SvgIcon } from "../../../../components/svg-icon";
 import { TextFieldPass } from "../../../../components/text-field-changepass/text-field";
@@ -62,12 +62,12 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
         style={styles.header}
         titleStyle={styles.textHeader}
         headerTx={"changePass.changePass"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => props.navigation.goBack()}
       />
       <Screen>
         <View style={styles.viewLogo}>
-          <Images.logoChangePass />
+          <Svgs.logoChangePass />
         </View>
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -123,9 +123,9 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                       isShowPassword
                       onShowPassword={() => setIsShowOldPass(!isShowOldPass)}
                       RightIconShow={
-                        isShowOldPass ? Images.icon_eye : Images.icon_unEye
+                        isShowOldPass ? Svgs.icon_eye : Svgs.icon_unEye
                       }
-                      RightIconClear={Images.icon_delete2}
+                      RightIconClear={Svgs.icon_delete2}
                       onClearText={() => onChange("")}
                       onChangeText={(value) => onChange(value)}
                     />
@@ -207,9 +207,9 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                       isShowPassword
                       onShowPassword={() => setIsShowNewPass(!isShowNewPass)}
                       RightIconShow={
-                        isShowNewPass ? Images.icon_eye : Images.icon_unEye
+                        isShowNewPass ? Svgs.icon_eye : Svgs.icon_unEye
                       }
-                      RightIconClear={Images.icon_delete2}
+                      RightIconClear={Svgs.icon_delete2}
                       onClearText={() => onChange("")}
                       onChangeText={(value) => {
                         onChange(value);
@@ -292,9 +292,9 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                         setIsShowReNewPass(!isShowReNewPass)
                       }
                       RightIconShow={
-                        isShowReNewPass ? Images.icon_eye : Images.icon_unEye
+                        isShowReNewPass ? Svgs.icon_eye : Svgs.icon_unEye
                       }
-                      RightIconClear={Images.icon_delete2}
+                      RightIconClear={Svgs.icon_delete2}
                       onClearText={() => onChange("")}
                       onChangeText={(value) => {
                         onChange(value);

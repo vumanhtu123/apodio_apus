@@ -25,7 +25,7 @@ import {
 } from "../../../theme";
 import { translate } from "../../../i18n";
 import { Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 
 const ROOT: ViewStyle = {
   borderRadius: 8,
@@ -201,7 +201,7 @@ export const SelectUom = (props: any) => {
                       justifyContent: "center",
                       marginLeft: scaleWidth(8),
                     }}>
-                    <Images.icon_searchBlack
+                    <Svgs.icon_searchBlack
                       width={scaleWidth(18)}
                       height={scaleHeight(18)}
                     />
@@ -265,7 +265,7 @@ export const SelectUom = (props: any) => {
                       {isShowCheckBox ? (
                         <View style={RADIOBUTTON}>
                           {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
-                          {data === item.text && <Images.icon_checkBox />}
+                          {data === item.text && <Svgs.icon_checkBox />}
                         </View>
                       ) : null}
                       <Text text={item.text} style={TEXTLABELFLATLIST} />

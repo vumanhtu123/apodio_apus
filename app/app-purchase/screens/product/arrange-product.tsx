@@ -10,7 +10,7 @@ import {
 import { AutoImage } from "../../../components/auto-image/auto-image";
 import { Button } from "../../../components/button/button";
 import { Screen } from "../../../components/screen/screen";
-import { Images } from "../../../../assets/index";
+import { Svgs } from "../../../../assets/svgs";
 import { Header } from "../../../components/header/header";
 import { Text } from "../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
@@ -194,7 +194,7 @@ export const ArrangeProduct: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Sắp xếp sản phẩm `}
@@ -244,7 +244,7 @@ export const ArrangeProduct: FC = () => {
           <TouchableOpacity
             onPress={openCategoryModal}
             style={{ marginRight: scaleWidth(8) }}>
-            <Images.squaresFour width={20} height={20} />
+            <Svgs.squaresFour width={20} height={20} />
           </TouchableOpacity>
           {typeNoti.map((item, index) => {
             return (

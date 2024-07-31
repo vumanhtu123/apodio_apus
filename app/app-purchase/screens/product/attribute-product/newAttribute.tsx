@@ -12,7 +12,7 @@ import React, {
   View,
 } from "react-native";
 import { Button, Header, Text, TextField } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation } from "@react-navigation/native";
 import {
   colors,
@@ -305,7 +305,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
   return (
     <View style={styles.ROOT}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         headerTx={isNameAttribute === true ? "createProductScreen.addNewAttributeGroup" : "createProductScreen.addNewAttribute"}
         style={{ height: scaleHeight(52) }}
@@ -335,7 +335,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                     setErrorText('')
                   }}
                   onClearText={() => onChange("")}
-                  RightIconClear={Images.icon_delete2}
+                  RightIconClear={Svgs.icon_delete2}
                   multiline={true}
                   labelTx={"productScreen.nameGroupAttribute"}
                   placeholderTx={"createProductScreen.inputNameAttributeGroup"}
@@ -359,7 +359,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
               <TouchableOpacity
                 onPress={() => setIsAttribute(true)}
                 style={{ flexDirection: "row" }}>
-                <Images.icon_add />
+                <Svgs.icon_add />
                 <Text tx="createProductScreen.createAttributeInGroup"
                   style={styles.textAddAttribute}
                 />
@@ -389,7 +389,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                               onPress={() =>
                                 deleteNameAttributeById(item.id)
                               }>
-                              <Images.icon_delete2
+                              <Svgs.icon_delete2
                                 width={scaleWidth(10)}
                                 height={scaleHeight(10)}
                               />
@@ -413,7 +413,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                     />
                   </View>
                   <TouchableOpacity onPress={() => addAttribute()}>
-                    <Images.icon_plusCircleBlue />
+                    <Svgs.icon_plusCircleBlue />
                   </TouchableOpacity>
                 </View>
                 {dataAttribute.length > 0
@@ -424,7 +424,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                         style={styles.viewLineAttribute}>
                         <TouchableOpacity
                           onPress={() => deleteNameAttributeById(item.id)}>
-                          <Images.icon_minusCircle />
+                          <Svgs.icon_minusCircle />
                         </TouchableOpacity>
                         <Text
                           text={item.name}
@@ -449,7 +449,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                               setIsModal(true);
                               setIdAttribute(item.id);
                             }}>
-                            <Images.icon_caretRightDown />
+                            <Svgs.icon_caretRightDown />
                           </TouchableOpacity>
                         </View>
                         <View
@@ -487,7 +487,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                                                 items
                                               )
                                             }>
-                                            <Images.icon_delete2
+                                            <Svgs.icon_delete2
                                               width={scaleWidth(6)}
                                               height={scaleHeight(10)}
                                             />
@@ -528,7 +528,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                               onPress={() =>
                                 addDataAttribute(item.id, index)
                               }>
-                              <Images.icon_plusCircleBlue />
+                              <Svgs.icon_plusCircleBlue />
                             </TouchableOpacity>
                           )}
                         </View>

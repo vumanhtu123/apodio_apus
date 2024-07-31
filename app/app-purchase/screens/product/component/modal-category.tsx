@@ -15,7 +15,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { CustomModal } from "../../../../components/custom-modal";
 import { stylesCategory } from "../styles";
 import { translate } from "../../../i18n";
@@ -129,7 +129,7 @@ const CategoryModalFilter = ({
         }}>
         <View>
           <View style={stylesCategory.viewIconSearch}>
-            <Images.icon_searchBlack />
+            <Svgs.icon_searchBlack />
           </View>
           <TextInput
             ref={inputRef}

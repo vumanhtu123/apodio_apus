@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text as TextRN, View } from 'react-native';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { useNavigation } from '@react-navigation/native';
-import { Images } from '../../../../../../assets';
+import { Svgs } from '../../../../../../assets/svgs';
 import ModalCreateClientFromNumber from './modal-create-client';
 import Modal from 'react-native-modal'
 import en from '../../../../i18n/en';
@@ -18,7 +18,7 @@ interface ModalProps {
 
 const RadioButton = ({ selected, onPress }: any) => (
     <TouchableOpacity style={styles.radioButton} onPress={onPress}>
-        {selected && <Images.icon_check
+        {selected && <Svgs.icon_check
             width={scaleWidth(16)}
             height={scaleHeight(16)}
         />}
@@ -118,7 +118,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowSortOption}>
                             <Text style={styles.groupTitle} tx='ClientScreen.sortBy'></Text>
-                            <Images.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showSortOption ? '180deg' : '0deg' }], }} />
+                            <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showSortOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showSortOption && (
                             <>
@@ -131,7 +131,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
                                     >
                                         <Text style={styles.optionText}>{item.label}</Text>
                                         {selectedOptionIndex === optionIndex ? (
-                                            <Images.icon_check
+                                            <Svgs.icon_check
                                                 width={scaleWidth(16)}
                                                 height={scaleHeight(16)}
                                             />
@@ -149,7 +149,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowGroupOption}>
                             <Text style={styles.groupTitle}>Nhóm khách hàng</Text>
-                            <Images.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showGroupOption ? '180deg' : '0deg' }], }} />
+                            <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showGroupOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showGroupOption && (
                             <>

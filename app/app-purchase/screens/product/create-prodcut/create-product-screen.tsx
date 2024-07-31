@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
 import {
@@ -666,7 +666,7 @@ export const ProductCreateScreen: FC = (item) => {
       <View style={styles.ROOT}>
         <Header
           type={"AntDesign"}
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           colorIcon={colors.text}
           headerTx={"productScreen.create_product"}
@@ -698,7 +698,7 @@ export const ProductCreateScreen: FC = (item) => {
                     inputStyle={styles.textTextField}
                     value={value}
                     onBlur={onBlur}
-                    RightIconClear={Images.icon_delete2}
+                    RightIconClear={Svgs.icon_delete2}
                     error={methods.formState.errors.SKU?.message}
                     onClearText={() => onChange("")}
                     onChangeText={(value) => {
@@ -724,7 +724,7 @@ export const ProductCreateScreen: FC = (item) => {
                     inputStyle={styles.textTextField}
                     value={value}
                     onBlur={onBlur}
-                    RightIconClear={Images.icon_delete2}
+                    RightIconClear={Svgs.icon_delete2}
                     error={methods.formState.errors.productName?.message}
                     onClearText={() => {
                       onChange("");
@@ -780,7 +780,7 @@ export const ProductCreateScreen: FC = (item) => {
                       style={styles.textWeight400Dolphin}
                     />
                   )}
-                  <Images.icon_caretRight
+                  <Svgs.icon_caretRight
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -839,7 +839,7 @@ export const ProductCreateScreen: FC = (item) => {
                     methods.setValue("weight", []);
                   }}
                 >
-                  <Images.icon_deleteDolphin />
+                  <Svgs.icon_deleteDolphin />
                 </TouchableOpacity>
                 <ItemWeight
                   dataUnitGroup={
@@ -895,7 +895,7 @@ export const ProductCreateScreen: FC = (item) => {
                           setModalDescribe(true);
                         }}
                       >
-                        <Images.icon_edit
+                        <Svgs.icon_edit
                           style={{ marginLeft: scaleWidth(8) }}
                           width={scaleWidth(14)}
                           height={scaleHeight(14)}
@@ -911,7 +911,7 @@ export const ProductCreateScreen: FC = (item) => {
                       flexDirection: "row",
                     }}
                   >
-                    <Images.ic_close
+                    <Svgs.ic_close
                       width={scaleWidth(14)}
                       height={scaleHeight(14)}
                     />
@@ -923,7 +923,7 @@ export const ProductCreateScreen: FC = (item) => {
                       style={{ flexDirection: "row", alignItems: "center" }}
                       onPress={() => setModalDescribe(true)}
                     >
-                      <Images.ic_plusCircleBlue
+                      <Svgs.ic_plusCircleBlue
                         width={scaleWidth(14)}
                         height={scaleHeight(14)}
                       />
@@ -949,7 +949,7 @@ export const ProductCreateScreen: FC = (item) => {
               />
               <View>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Images.icon_gear
+                  <Svgs.icon_gear
                     width={scaleWidth(20)}
                     height={scaleHeight(20)}
                   />

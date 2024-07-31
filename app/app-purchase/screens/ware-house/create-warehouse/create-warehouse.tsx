@@ -8,7 +8,7 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { Header, Text, TextField } from "../../../../components";
 import { Styles, stylesWareHouse } from "../style";
 import { scaleHeight } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { ConditionsComponent } from "../component/conditions-component";
 import { ConfigInfoMoreComponent } from "../component/config-info-component";
 import { useStores } from "../../../models";
@@ -526,7 +526,7 @@ export const CreateWareHouseScreen: FC<
     <FormProvider {...methods}>
       <View style={Styles.main}>
         <Header
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           style={{ height: scaleHeight(52) }}
           headerTx={
             status.current == "UPDATE"
@@ -677,7 +677,7 @@ export const CreateWareHouseScreen: FC<
                     console.log(conditions);
                   }}>
                   {conditions ? (
-                    <Images.ic_checkbox marginRight={5} />
+                    <Svgs.ic_checkbox marginRight={5} />
                   ) : (
                     <View style={stylesWareHouse.selected}></View>
                   )}
@@ -708,7 +708,7 @@ export const CreateWareHouseScreen: FC<
                     onPressConfig();
                   }}>
                   {config ? (
-                    <Images.ic_checkbox marginRight={5} />
+                    <Svgs.ic_checkbox marginRight={5} />
                   ) : (
                     <View style={stylesWareHouse.selected}></View>
                   )}

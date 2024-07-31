@@ -4,7 +4,7 @@ import React, { FC, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { NavigatorParamList } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, colors, scaleWidth } from "../../../theme";
 import { Header } from "../../../../components";
 
@@ -24,7 +24,7 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="checkInventory.createInventorySeets"
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => navigation.goBack()}
@@ -45,9 +45,9 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                             style={{ flexDirection: 'row', marginTop: scaleHeight(24), marginBottom: scaleHeight(20) }}
                         >
                             <View style={{ zIndex: 1 }}>
-                                <Images.ic_Brick />
+                                <Svgs.ic_Brick />
                                 <View style={{ zIndex: 2, position: 'absolute', top: scaleHeight(-6), start: scaleWidth(-2) }}>
-                                    <Images.ic_Xcircle />
+                                    <Svgs.ic_Xcircle />
                                 </View>
                             </View>
 
@@ -65,7 +65,7 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}
                                         // onPress={() => handleDecrement()}
                                         >
-                                            <Images.ic_minus />
+                                            <Svgs.ic_minus />
                                         </TouchableOpacity>
                                         <Text style={{ flex: 1, textAlign: 'center' }}>
                                             {/* {itemCounts[item.id] || item.quantity} */}
@@ -75,7 +75,7 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                                         // onPress={() => handleIncrement()}
 
                                         >
-                                            <Images.icon_plusGreen />
+                                            <Svgs.icon_plusGreen />
                                         </TouchableOpacity>
                                     </View>
                                     <View>
@@ -121,7 +121,7 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                             <Text style={Style.txtGroup2}>
                                 Ghi Chú
                             </Text>
-                            <Images.icon_image />
+                            <Svgs.icon_image />
                         </View>
 
                     </View>
@@ -129,7 +129,7 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                 
                 <View style={Style.notification}>
 
-                    <Images.ic_Xcicle_Red />
+                    <Svgs.ic_Xcicle_Red />
                     <Text style={{ fontSize: scaleWidth(12), color: colors.palette.radicalRed, }}>
                         Số lượng tồn kho sản phẩm phải lớn hơn hoặc bằng số lượng trong đơn xuất hàng
                     </Text>

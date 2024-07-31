@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { Screen } from "../../../components/screen/screen";
-import { Images } from "../../../../assets/index";
+import { Svgs } from "../../../../assets/svgs";
 import { Header } from "../../../components/header/header";
 import { Text } from "../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
@@ -79,7 +79,7 @@ export const ProductCategoriesScreen: FC = observer(() => {
                                 uri: "https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g",
                             }}
                         /> */}
-                <Images.logoApodioWhite
+                <Svgs.logoApodioWhite
                   width={scaleWidth(80)}
                   height={scaleHeight(57)}
                 />
@@ -128,7 +128,7 @@ export const ProductCategoriesScreen: FC = observer(() => {
                                 uri: "https://vcdn1-dulich.vnecdn.net/2021/07/16/1-1626437591.jpg?w=460&h=0&q=100&dpr=2&fit=crop&s=i2M2IgCcw574LT-bXFY92g",
                             }}
                         /> */}
-              <Images.logoShop
+              <Svgs.logoShop
                 width={scaleWidth(27.63)}
                 height={scaleHeight(29.75)}
               />
@@ -155,7 +155,7 @@ export const ProductCategoriesScreen: FC = observer(() => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={translate("productScreen.listCategories")}

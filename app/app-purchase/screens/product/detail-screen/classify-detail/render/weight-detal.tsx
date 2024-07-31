@@ -3,7 +3,7 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../../theme';
 import { Text } from '../../../../../../components';
-import { Images } from '../../../../../../../assets';
+import { Svgs } from '../../../../../../../assets/svgs';
 import { commasToDots } from '../../../../../utils/validate';
 
 const ProductWeightDetails = ({ dataClassification, detailProduct }: any) => {
@@ -21,7 +21,7 @@ const ProductWeightDetails = ({ dataClassification, detailProduct }: any) => {
                         <Text tx="productScreen.weight"
                             style={{ fontSize: fontSize.size12, color: colors.navyBlue, marginRight: scaleWidth(5) }}
                         />
-                        <Images.icon_caretDownBlue
+                        <Svgs.icon_caretDownBlue
                             width={scaleWidth(16)}
                             height={scaleHeight(16)}
                             style={{ transform: [{ rotate: showOrHiddenWeight ? '180deg' : '0deg' }] }} />

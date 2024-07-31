@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View, Image } from "react-native";
 import { Text } from "../../../../components";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { translate } from "i18n-js";
 
 export const InfoDetails = () => {
@@ -100,7 +100,7 @@ export const InfoAddress = () => {
           flexDirection: "row",
           alignItems: "center",
         }}>
-        <Images.ic_location width={14} height={14} />
+        <Svgs.ic_location width={14} height={14} />
         <Text
           style={{ fontWeight: "400", fontSize: 12, marginLeft: 5 }}
           text="24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam"></Text>
@@ -111,7 +111,7 @@ export const InfoAddress = () => {
           alignItems: "center",
           marginVertical: 15,
         }}>
-        <Images.ic_oto width={30} height={30} />
+        <Svgs.ic_oto width={30} height={30} />
         <View style={{ flexDirection: "column", marginLeft: 8 }}>
           <Text
             tx="suppliers.deliveryAddress"
@@ -126,7 +126,7 @@ export const InfoAddress = () => {
               flexDirection: "row",
               alignItems: "center",
             }}>
-            <Images.ic_location width={14} height={14} />
+            <Svgs.ic_location width={14} height={14} />
             <Text
               style={{ fontWeight: "400", fontSize: 12 }}
               text="24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam"></Text>
@@ -140,7 +140,7 @@ export const InfoAddress = () => {
           alignItems: "center",
           marginVertical: 15,
         }}>
-        <Images.ic_oto width={30} height={30} />
+        <Svgs.ic_oto width={30} height={30} />
         <View style={{ flexDirection: "column", marginLeft: 8 }}>
           <Text
             tx="suppliers.storageAddress"
@@ -155,7 +155,7 @@ export const InfoAddress = () => {
               flexDirection: "row",
               alignItems: "center",
             }}>
-            <Images.ic_location width={14} height={14} />
+            <Svgs.ic_location width={14} height={14} />
             <Text
               style={{ fontWeight: "400", fontSize: 12 }}
               text="24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam"></Text>

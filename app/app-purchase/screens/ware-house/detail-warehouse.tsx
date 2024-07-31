@@ -4,7 +4,7 @@ import { NavigatorParamList } from "../../navigators";
 import { observer } from "mobx-react-lite";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import {
   colors,
   fontSize,
@@ -108,12 +108,12 @@ export const DetailWarehouseScreen: FC<
   return (
     <View style={{ flex: 1 }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         style={{ height: scaleHeight(52) }}
         leftText="wareHouse.detailWarehouse"
-        RightIcon1={state !== "ARCHIVED" ? Images.ic_pen_white : null}
-        RightIcon2={state !== "ARCHIVED" ? Images.ic_bin_white : null}
-        RightIcon={Images.icon_copy}
+        RightIcon1={state !== "ARCHIVED" ? Svgs.ic_pen_white : null}
+        RightIcon2={state !== "ARCHIVED" ? Svgs.ic_bin_white : null}
+        RightIcon={Svgs.icon_copy}
         onLeftPress={() => props.navigation.goBack()}
         onRightPress2={
           state !== "ARCHIVED"
@@ -301,7 +301,7 @@ export const DetailWarehouseScreen: FC<
                 }}
                 tx="wareHouse.storageConditions"
               />
-              <Images.icon_caretUp
+              <Svgs.icon_caretUp
                 style={{ transform: [{ rotate: box1 ? "180deg" : "0deg" }] }}
               />
             </TouchableOpacity>
@@ -365,7 +365,7 @@ export const DetailWarehouseScreen: FC<
                 }}
                 tx="wareHouse.additionalInformation"
               />
-              <Images.icon_caretUp
+              <Svgs.icon_caretUp
                 style={{ transform: [{ rotate: box2 ? "180deg" : "0deg" }] }}
               />
             </TouchableOpacity>

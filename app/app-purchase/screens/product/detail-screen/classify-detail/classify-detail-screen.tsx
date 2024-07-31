@@ -11,7 +11,7 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Header } from "../../../../../components/header/header";
 import { Text } from "../../../../../components/text/text";
 import {
@@ -179,7 +179,7 @@ export const ClassifyDetailScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="detailScreen.headerClassify"
@@ -187,9 +187,9 @@ export const ClassifyDetailScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
-        RightIcon={Images.icon_editWhite}
+        RightIcon={Svgs.icon_editWhite}
         onRightPress={() => navigation.navigate({ name: 'EditClassify', params: { dataEdit: dataClassification, typeVariant: 'variant', nameValue: nameValue, attributes: attributes } } as never)}
-        RightIcon1={Images.icon_trashWhite}
+        RightIcon1={Svgs.icon_trashWhite}
         onRightPress1={() => {
           Dialog.show({
             type: ALERT_TYPE.INFO,
@@ -251,7 +251,7 @@ export const ClassifyDetailScreen: FC = () => {
                   }
                 } as never)
               }>
-              <Images.ic_3d
+              <Svgs.ic_3d
                 width={scaleWidth(20)}
                 height={scaleHeight(20)}
               />
@@ -307,7 +307,7 @@ export const ClassifyDetailScreen: FC = () => {
                       source={{
                         uri: item,
                       }}
-                      defaultSource={Images.imageError}
+                      defaultSource={Svgs.imageError}
                       resizeMode='cover'
                       style={{ height: scaleHeight(416), width: scaleWidth(294), borderRadius: 16, alignSelf: 'center' }}>
                     </Image>

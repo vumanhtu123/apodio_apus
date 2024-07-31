@@ -10,7 +10,7 @@ import { useStores } from '../../../models';
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme';
 import { addCommas, formatCurrency, formatNumberByString, removeNonNumeric } from '../../../utils/validate';
 import { TextFieldCurrency } from '../../../../components/text-field-currency/text-field-currency';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { CustomModal } from '../../../../components/custom-modal';
 const { width, height } = Dimensions.get('screen');
 

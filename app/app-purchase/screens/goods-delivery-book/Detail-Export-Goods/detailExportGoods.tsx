@@ -7,7 +7,7 @@ import { ScreenProps } from "react-native-screens";
 import { NavigatorParamList } from "../../../navigators";
 import { Header, Text } from "../../../../components";
 import { colors, palette, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 
 
 
@@ -102,8 +102,8 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
         return (
             <View>
                 <Header
-                    RightIcon1={Images.ic_bin}
-                    LeftIcon={Images.back}
+                    RightIcon1={Svgs.ic_bin}
+                    LeftIcon={Svgs.back}
                     widthRightIcon={scaleWidth(16)}
                     heightRightIcon={scaleHeight(16)}
                     headerTx="GoodsExportBook.shippingDetails"
@@ -136,13 +136,13 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_PaperPlaneTilt />
+                                <Svgs.ic_PaperPlaneTilt />
                                 <Text tx="GoodsExportBook.submitBallot" style={{ marginLeft: 4, color: colors.palette.navyBlue, fontWeight: "600" }} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue, backgroundColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_dowload />
+                                <Svgs.ic_dowload />
                                 <Text tx="GoodsExportBook.dowloadBallot" style={{ marginLeft: 4, color: colors.palette.white, fontWeight: "600" }} />
                             </TouchableOpacity>
                         </View>
@@ -167,7 +167,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                                     paddingHorizontal: scaleWidth(6),
                                     borderRadius: scaleWidth(2)
                                 }} tx="GoodsExportBook.collapse"></Text>
-                                <Images.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
+                                <Svgs.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
 
                             </TouchableOpacity>
 

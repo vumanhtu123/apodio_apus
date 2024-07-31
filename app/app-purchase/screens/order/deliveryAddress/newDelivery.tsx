@@ -12,7 +12,7 @@ import React, {
 } from "react-native";
 import { Button, Header, Switch, Text, TextField } from "../../../../components";
 import { styles } from "./styles";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import {
   colors,
@@ -342,7 +342,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         headerTx={screen === 'new' ? "order.newDelivery" : 'order.editDelivery'}
         style={{ height: scaleHeight(54) }}
@@ -379,7 +379,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                   onChange(filteredValue)
                 }}
                 onClearText={() => onChange("")}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 isImportant={true}
                 error={errors?.phone?.message}
               />
@@ -442,7 +442,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
                 onClearText={() => onChange("")}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 isImportant={true}
                 error={errors?.address?.message}
               // defaultValue={dataEdit !== undefined ? dataEdit.address : ''}
