@@ -208,13 +208,13 @@ export const Style = StyleSheet.create({
         paddingVertical: scaleHeight(10),
         paddingHorizontal: scaleWidth(16),
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         marginVertical: scaleHeight(15)
 
     },
     styleGroup2: {
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         paddingVertical: scaleHeight(12),
         paddingHorizontal: scaleWidth(16),
         marginBottom: scaleHeight(15),
@@ -234,7 +234,7 @@ export const Style = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         marginTop: 10,
-        borderColor: '#F4F4F4',
+        borderColor: colors.whiteSmoke,
         alignItems: 'center',
         justifyContent: 'space-evenly'
 
@@ -263,7 +263,7 @@ export const Style = StyleSheet.create({
 
     },
     stylesBtnBottom: {
-       backgroundColor:'#FFF',
+       backgroundColor:colors.white,
        padding:scaleWidth(16),
        flexDirection:'row',
        justifyContent:'space-between'
@@ -274,7 +274,7 @@ export const Style = StyleSheet.create({
         borderWidth:1,
         borderRadius:7,
         padding:scaleWidth(12),
-        backgroundColor:'#FFF',
+        backgroundColor:colors.white,
         alignItems:'center',
        
         borderColor:colors.palette.navyBlue,

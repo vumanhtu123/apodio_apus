@@ -3,7 +3,7 @@ import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View, FlatList, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Button, Text } from '../../../../../components';
 import { Svgs } from '../../../../../../assets/svgs';
-import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
+import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import RenderCategoryItem from './renderItemCategory';
 import Dialog from '../../../../../components/dialog/dialog';
@@ -163,7 +163,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
           <Text
             tx="productScreen.filter"
             style={{
-              color: '#000000',
+              color: colors.black,
               textAlign: 'center',
               fontWeight: '400',
               fontSize: fontSize.size12,
@@ -208,14 +208,14 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
           borderColor: "#d5d5d5",
           borderRadius: 8,
         }}
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
       />
       <Dialog
         isVisible={isDeleteFailModalVisible}
         title={"productScreen.Notification"}
         errorMessage={errorMessage}
         titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
         onPressAccept={() => setIsDeleteFailModalVisible(false)}
       />
       <CreateDirectoryModal

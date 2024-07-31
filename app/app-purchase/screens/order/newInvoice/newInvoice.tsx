@@ -395,7 +395,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                             // }}
                             />
                         </View>
-                        <Text tx="ClientScreen.client" style={{ fontSize: fontSize.size12, color: '#747475' }} />
+                        <Text tx="ClientScreen.client" style={{ fontSize: fontSize.size12, color: colors.dolphin }} />
                         <Text text={data.partner?.name} style={{ fontSize: fontSize.size16, fontWeight: '600' }} />
                         {/* <View style={{ marginVertical: scaleHeight(15) }}>
                             <InputSelect
@@ -458,7 +458,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                             marginBottom: scaleHeight(5),
                                             justifyContent: 'center',
                                         }}
-                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: '#000000' }}
+                                        inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: colors.black }}
                                         value={value}
                                         valueInput={minDateS ? moment(minDateS).format("DD/MM/YYYY") : ''}
                                         pressRightIcon={() => {
@@ -495,7 +495,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                                         marginBottom: scaleHeight(5),
                                         justifyContent: 'center',
                                     }}
-                                    inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: '#000000' }}
+                                    inputStyle={{ fontSize: fontSize.size16, fontWeight: '500', color: colors.black }}
                                     valueInput={minDateE ? moment(minDateE).format("DD/MM/YYYY") : ''}
                                     onBlur={onBlur}
                                     value={value}

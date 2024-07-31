@@ -600,7 +600,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
                   <View
                     style={{
                       height: scaleHeight(1),
-                      backgroundColor: "#E7EFFF",
+                      backgroundColor: colors.solitude2,
                     }}
                   />
                   <TouchableOpacity
@@ -677,7 +677,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: scaleWidth(5),
     width: (Dimensions.get("screen").width - scaleWidth(32)) * 0.2,
-    borderBottomColor: "#DFE0EB",
+    borderBottomColor: colors.quartz,
     borderBottomWidth: scaleHeight(1),
     paddingVertical: scaleHeight(5),
   },
@@ -719,7 +719,7 @@ const styles = StyleSheet.create({
   viewLineNameGroupAttribute: {
     flexDirection: "row",
     alignItems: "center",
-    borderBottomColor: "#DFE0EB",
+    borderBottomColor: colors.quartz,
     borderBottomWidth: scaleHeight(1),
   },
   viewNameGroupAttribute: {
@@ -736,7 +736,7 @@ const styles = StyleSheet.create({
   viewAddDataAttribute: {
     flexDirection: "row",
     alignItems: "center",
-    borderBottomColor: "#DFE0EB",
+    borderBottomColor: colors.quartz,
     borderBottomWidth: scaleHeight(1),
     paddingBottom: scaleHeight(2),
   },

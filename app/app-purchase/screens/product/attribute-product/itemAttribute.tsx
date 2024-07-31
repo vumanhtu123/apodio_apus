@@ -41,7 +41,7 @@ export const ItemAttribute = memo(
             );
             return (
                 <View>
-                    <View style={{ height: scaleHeight(1), backgroundColor: "#E7EFFF" }} />
+                    <View style={{ height: scaleHeight(1), backgroundColor: colors.solitude2 }} />
                     <TouchableOpacity
                         style={{
                             paddingVertical: 10,
@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
         height: scaleHeight(16),
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: "#ccc",
+        borderColor: colors.veryLightGrey2,
         justifyContent: "center",
         alignItems: "center",
         marginHorizontal: scaleWidth(6),
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         height: scaleHeight(34),
         borderBottomWidth: 1,
-        borderBottomColor: "#E7EFFF",
+        borderBottomColor: colors.solitude2,
     },
     viewDataAttribute: {
         flexDirection: "row",

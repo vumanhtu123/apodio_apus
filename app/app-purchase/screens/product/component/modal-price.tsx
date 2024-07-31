@@ -17,6 +17,7 @@ import Dialog from "../../../../components/dialog/dialog";
 import { TxKeyPath, translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import {
+  colors,
   margin,
   padding,
   scaleHeight,
@@ -305,14 +306,14 @@ const PriceModal = observer((props: PriceModalProps) => {
           titleBTN1="productScreen.cancel"
           titleBTN2="productScreen.BtnNotificationAccept"
           styleBTN1={stylesModalPrice.styleBTN1}
-          styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+          styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
         />
         <Dialog
           isVisible={modalNotify}
           title={"productScreen.Notification"}
           content={"productScreen.NotifyModal"}
           titleBTN2="productScreen.BtnNotificationAccept"
-          styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+          styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
           onPressAccept={() => setModalNotify(false)}
         />
         <Dialog
@@ -320,7 +321,7 @@ const PriceModal = observer((props: PriceModalProps) => {
           title={"productScreen.Notification"}
           content={"productScreen.validateMin"}
           titleBTN2="productScreen.BtnNotificationAccept"
-          styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+          styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
           onPressAccept={() => setModalError(false)}
         />
       </KeyboardAvoidingView>

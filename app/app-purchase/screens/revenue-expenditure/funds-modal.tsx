@@ -53,7 +53,7 @@ export const FundsModal = (props: Input) => {
         <View
           style={{
             height: 5,
-            backgroundColor: "#C7C7C7",
+            backgroundColor: colors.veryLightGrey1,
             borderRadius: 100,
             marginHorizontal: 142,
           }}></View>
@@ -69,7 +69,7 @@ export const FundsModal = (props: Input) => {
             <Text
               tx="analysis.refactorMoney"
               style={{
-                color: "#0078D4",
+                color: colors.navyBlue,
                 fontSize: 12,
                 fontWeight: "400",
               }}></Text>
@@ -77,7 +77,7 @@ export const FundsModal = (props: Input) => {
           <Text
             tx={"revenueAndExpenditure.funds"}
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 14,
               fontWeight: "700",
               marginHorizontal: scaleWidth(110),
@@ -98,7 +98,7 @@ export const FundsModal = (props: Input) => {
         </View>
         <View
           style={{
-            backgroundColor: "#E7EFFF",
+            backgroundColor: colors.solitude2,
             borderWidth: 0.19,
           }}></View>
         <View style={{ flexDirection: "row" }}>
@@ -121,7 +121,7 @@ export const FundsModal = (props: Input) => {
                 }
                 keyboardType={null}
                 labelTx={"analysis.nameMoney"}
-                txColor="#747475"
+                txColor=colors.dolphin
                 style={{
                   backgroundColor: "transparent",
                   borderWidth: 1,
@@ -142,7 +142,7 @@ export const FundsModal = (props: Input) => {
             )}></Controller>
           <View
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               borderRadius: 8,
               padding: 10,
               alignSelf: "center",
@@ -155,7 +155,7 @@ export const FundsModal = (props: Input) => {
           style={{
             fontWeight: "400",
             fontSize: 14,
-            color: "#747475",
+            color: colors.dolphin,
           }}></Text>
         <FlatList
           numColumns={3}
@@ -181,10 +181,10 @@ export const FundsModal = (props: Input) => {
           }}
           renderItem={({ item, index }) => {
             const backgroundColor =
-              item.id === selectedItem ? "#EFF8FF" : "#F6F7F9";
+              item.id === selectedItem ? colors.aliceBlue2 : colors.aliceBlue;
             const borderColor =
-              item.id === selectedItem ? "#0078D4" : "#C8C8C8";
-            const textColor = item.id === selectedItem ? "#0078D4" : "#747475";
+              item.id === selectedItem ? colors.navyBlue : colors.veryLightGrey;
+            const textColor = item.id === selectedItem ? colors.navyBlue : colors.dolphin;
             const textWeight = item.id === selectedItem ? "600" : "400";
             return (
               <TouchableOpacity

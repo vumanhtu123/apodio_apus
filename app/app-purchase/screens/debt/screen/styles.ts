@@ -5,7 +5,7 @@ import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../.
 export  const Styles = StyleSheet.create({
     bodyCard :{
         width:'92%',
-        backgroundColor:'#FFF',
+        backgroundColor:colors.white,
         padding: padding.padding_16,
         borderRadius: scaleWidth(8),
         // marginHorizontal: scaleWidth(16),
@@ -17,7 +17,7 @@ export  const Styles = StyleSheet.create({
     },
     bodyCardMusPay : {
         width:'92%',
-        backgroundColor:'#FFF',
+        backgroundColor:colors.white,
         padding: padding.padding_16,
         borderRadius: scaleWidth(8),
         // marginHorizontal: scaleWidth(16),
@@ -48,23 +48,23 @@ export  const Styles = StyleSheet.create({
     sizeTitle: {
         fontSize: fontSize.size12,
         fontWeight: "400",
-        color:"#FFFFFF"
+        color:colors.white
         
     },
     sizeTitleUnSelect: {
         fontSize: fontSize.size12,
         fontWeight: "400",
-        color:"#747475"
+        color:colors.dolphin
     },
     sizeContent: {
         fontSize: fontSize.size12,
         fontWeight: "600",
-        color:"#FFFFFF"
+        color:colors.white
     },
     sizeContentUnSelect: {
         fontSize: fontSize.size12,
         fontWeight: "600",
-        color:"#242424"
+        color:colors.nero
     },
     numberInItemUnSelect: {
         fontSize: fontSize.size12,
@@ -73,7 +73,7 @@ export  const Styles = StyleSheet.create({
     },
     modalView: {
         width: '100%',
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         paddingHorizontal: scaleWidth(15),
         paddingVertical: scaleWidth(10),
         borderTopLeftRadius: margin.border_top_left_radius,
@@ -83,7 +83,7 @@ export  const Styles = StyleSheet.create({
     horizontalLine: {
         width:'100%',
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         marginBottom: 18,
     },
@@ -91,7 +91,7 @@ export  const Styles = StyleSheet.create({
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -101,7 +101,7 @@ export  const Styles = StyleSheet.create({
     styleBtnSwipe:{ 
         flexDirection: 'row', 
         flex: 1, 
-        backgroundColor: '#EDEDEE', 
+        backgroundColor: colors.lavender, 
         borderRadius: 8, 
         padding: scaleHeight(2) 
     },
@@ -171,7 +171,7 @@ export  const Styles = StyleSheet.create({
         paddingHorizontal: scaleWidth(16),
         paddingVertical:scaleHeight(10),
         borderRadius: scaleWidth(8), 
-        backgroundColor:'#FFF'
+        backgroundColor:colors.white
     }, 
     styleBtnPay: {
         paddingHorizontal: scaleWidth(8),
@@ -181,7 +181,7 @@ export  const Styles = StyleSheet.create({
     },
     styleLine: { 
         height: 1, 
-        backgroundColor: '#F6F7FB', 
+        backgroundColor: colors.ghostWhite, 
         marginVertical: scaleWidth(10) 
     }, 
     fontSize10:{ 
@@ -191,7 +191,7 @@ export  const Styles = StyleSheet.create({
     bodyItemNCC: {
         borderRadius: scaleWidth(8),
         marginVertical: scaleWidth(5),
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         paddingVertical: scaleWidth(11),
     }
     

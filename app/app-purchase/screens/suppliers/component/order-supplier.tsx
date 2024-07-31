@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 
 export const OrderSupplier = (item: any) => {
   const [onclick, setOnclick] = useState(0);
@@ -26,7 +26,7 @@ export const OrderSupplier = (item: any) => {
             style={{
               fontSize: 12,
               fontWeight: "500",
-              color: onclick == 0 ? "#0078D4" : "#242424",
+              color: onclick == 0 ? colors.navyBlue : colors.nero,
             }}>
             Tất cả
           </Text>
@@ -42,7 +42,7 @@ export const OrderSupplier = (item: any) => {
             style={{
               fontSize: 12,
               fontWeight: "500",
-              color: onclick == 1 ? "#0078D4" : "#242424",
+              color: onclick == 1 ? colors.navyBlue : colors.nero,
             }}>
             Tháng này
           </Text>
@@ -61,7 +61,7 @@ export const OrderSupplier = (item: any) => {
           <Svgs.ClipboardText />
           <Text
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
@@ -70,7 +70,7 @@ export const OrderSupplier = (item: any) => {
           </Text>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 12,
               fontWeight: "400",
             }}>
@@ -86,7 +86,7 @@ export const OrderSupplier = (item: any) => {
           <Svgs.ClipboardText />
           <Text
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
@@ -95,7 +95,7 @@ export const OrderSupplier = (item: any) => {
           </Text>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 12,
               fontWeight: "400",
             }}>
@@ -106,7 +106,7 @@ export const OrderSupplier = (item: any) => {
           <Svgs.icon_chart />
           <Text
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
@@ -115,7 +115,7 @@ export const OrderSupplier = (item: any) => {
           </Text>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 12,
               fontWeight: "400",
             }}>
@@ -127,7 +127,7 @@ export const OrderSupplier = (item: any) => {
             style={{
               fontSize: 12,
               fontWeight: "400",
-              color: "#747475",
+              color: colors.dolphin,
               paddingVertical: 8,
             }}>
             Chưa có đơn hàng cho NCC này
@@ -136,7 +136,7 @@ export const OrderSupplier = (item: any) => {
       </View>
       <View
         style={{
-          backgroundColor: "#0078D4",
+          backgroundColor: colors.navyBlue,
           borderRadius: 4,
           width: 77,
           height: 24,
@@ -179,7 +179,7 @@ const ItemOrder = (item: any) => {
     <View
       style={{
         flexDirection: "column",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.white,
         borderRadius: 8,
         paddingVertical: 10,
         paddingHorizontal: 16,
@@ -190,10 +190,10 @@ const ItemOrder = (item: any) => {
           justifyContent: "space-between",
         }}>
         <View style={{ flexDirection: "column", alignSelf: "flex-end" }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: "#242424" }}>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
             {item.name ?? "Nguyễn Hà Dung"}
           </Text>
-          <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
+          <Text style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
             {item.date ?? "ĐH_21090930 - 13:56 01/03/2024 "}
           </Text>
         </View>
@@ -217,37 +217,37 @@ const ItemOrder = (item: any) => {
       </View>
       <View
         style={{
-          backgroundColor: "#F6F7FB",
+          backgroundColor: colors.ghostWhite,
           height: 1,
           marginVertical: 12,
         }}></View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "column" }}>
-          <Text style={{ color: "#747475", fontSize: 10, fontWeight: "400" }}>
+          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}>
             Số lượng sản phẩm:
           </Text>
           <Text
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 10,
               fontWeight: "400",
               marginVertical: 8,
             }}>
             Tổng tiền hàng:
           </Text>
-          <Text style={{ color: "#747475", fontSize: 10, fontWeight: "400" }}>
+          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}>
             Chiết khấu:
           </Text>
           <Text
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 10,
               fontWeight: "400",
               marginVertical: 8,
             }}>
             Tổng thuế
           </Text>
-          <Text style={{ color: "#747475", fontSize: 10, fontWeight: "400" }}>
+          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}>
             Tổng tiền cần thanh toán:
           </Text>
           <Text
@@ -261,7 +261,7 @@ const ItemOrder = (item: any) => {
           </Text>
         </View>
         <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-          <Text style={{ color: "#242424", fontSize: 10, fontWeight: "400" }}>
+          <Text style={{ color: colors.nero, fontSize: 10, fontWeight: "400" }}>
             {item.size ?? "7"}
           </Text>
           <Text

@@ -86,7 +86,7 @@ const ProductWeightDetails = ({
                                                         {getUnitName(line?.uomGroupLineId)}
                                                     </Text>
                                                     <View
-                                                        style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                                                        style={{ backgroundColor: colors.solitude2, height: 1 }}
                                                     />
                                                     <Text style={[styles.fontSizeWeight, {}]}>
                                                         {`${commasToDots(line?.amount)} ${dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
@@ -122,7 +122,7 @@ const ProductWeightDetails = ({
                                                                     {item.uomGroupLineOutput?.unitName}
                                                                 </Text>
                                                                 <View
-                                                                    style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                                                                    style={{ backgroundColor: colors.solitude2, height: 1 }}
                                                                 />
                                                                 <Text style={[styles.fontSizeWeight, {}]}>
                                                                     {`${commasToDots(item.amount)} ${detailProduct?.uomGroupLineOutput?.unitName}`}

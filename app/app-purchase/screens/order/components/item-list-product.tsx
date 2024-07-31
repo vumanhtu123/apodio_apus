@@ -211,7 +211,7 @@ export default function ItemListProduct(props: AddProduct) {
                   style={{
                     fontSize: 10,
                     fontWeight: "400",
-                    color: "#242424",
+                    color: colors.nero,
                     marginHorizontal: 4,
                     maxWidth: scaleWidth(100)
                   }}>
@@ -223,7 +223,7 @@ export default function ItemListProduct(props: AddProduct) {
                     fontSize: 10,
                     fontWeight: "400",
                     fontStyle: "italic",
-                    color: "#F4AD22",
+                    color: colors.yellow,
                   }}>
                   {formatVND(formatCurrency(commasToDots(valueVAT)))}
                 </Text>
@@ -243,7 +243,7 @@ export default function ItemListProduct(props: AddProduct) {
                   style={{
                     fontSize: 10,
                     fontWeight: "600",
-                    color: "#F4AD22",
+                    color: colors.yellow,
                     marginHorizontal: 2,
                     fontStyle: "italic",
                   }}>
@@ -266,7 +266,7 @@ export default function ItemListProduct(props: AddProduct) {
                     style={{
                       fontSize: 10,
                       fontWeight: "600",
-                      color: "#00CC6A",
+                      color: colors.malachite,
                       marginHorizontal: 2,
                       fontStyle: "italic",
                     }}>
@@ -296,7 +296,7 @@ export default function ItemListProduct(props: AddProduct) {
               //                 fontWeight: "400",
               //                 height: scaleHeight(16),
               //                 alignContent: "center",
-              //                 borderColor: "#F6F7FB",
+              //                 borderColor: colors.ghostWhite,
               //                 padding: 0,
               //                 paddingBottom: 2,
               //                 paddingLeft: 4,
@@ -308,7 +308,7 @@ export default function ItemListProduct(props: AddProduct) {
               //               keyboardType="numeric"
               //               maxLength={3}
               //               placeholder={translate("order.input_texas")}
-              //               placeholderTextColor={"#747475"}
+              //               placeholderTextColor={colors.dolphin}
               //               onChangeText={(newText) => {
               //                 // inputDiscount(newText);
               //                 onChange(newText)
@@ -348,7 +348,7 @@ export default function ItemListProduct(props: AddProduct) {
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
               fontStyle: "italic",
               marginVertical: 6,
             }}>

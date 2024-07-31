@@ -418,7 +418,7 @@ export function getDateToday() {
   markedDates[today] = {
     startingDay: true,
     color: colors.palette.navyBlue,
-    textColor: "#FFFFFF",
+    textColor: colors.white,
   };
   console.log("-----state.getDateToday", markedDates);
   return markedDates;
@@ -447,7 +447,7 @@ export function getDateTodayOneDate() {
   markedDates[today] = {
     selected: true,
     selectedColor: colors.palette.navyBlue,
-    selectedTextColor: "#FFFFFF",
+    selectedTextColor: colors.white,
   };
   console.log("-----state.getDateToday", markedDates);
   return markedDates;
@@ -462,7 +462,7 @@ export function getDateLast7days() {
   markedDates[dateLast7days] = {
     startingDay: true,
     color: colors.palette.navyBlue,
-    textColor: "#FFFFFF",
+    textColor: colors.white,
   };
   let range = endDate.diff(startDate, "days");
   for (let i = 1; i <= range; i++) {
@@ -471,13 +471,13 @@ export function getDateLast7days() {
     if (i < range) {
       markedDates[tempDate] = {
         color: colors.palette.gray,
-        textColor: "#000000",
+        textColor: colors.black,
       };
     } else {
       markedDates[tempDate] = {
         endingDay: true,
         color: colors.palette.navyBlue,
-        textColor: "#FFFFFF",
+        textColor: colors.white,
       };
     }
   }
@@ -496,7 +496,7 @@ export function getOfMonthdays() {
   markedDates[startOfMonth] = {
     startingDay: true,
     color: colors.palette.navyBlue,
-    textColor: "#FFFFFF",
+    textColor: colors.white,
   };
   let range = endDate.diff(startDate, "days");
   for (let i = 1; i <= range; i++) {
@@ -505,13 +505,13 @@ export function getOfMonthdays() {
     if (i < range) {
       markedDates[tempDate] = {
         color: colors.palette.gray,
-        textColor: "#000000",
+        textColor: colors.black,
       };
     } else {
       markedDates[tempDate] = {
         endingDay: true,
         color: colors.palette.navyBlue,
-        textColor: "#FFFFFF",
+        textColor: colors.white,
       };
     }
   }

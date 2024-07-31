@@ -11,7 +11,7 @@ import {
 
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: "#Ffffff",
+    backgroundColor: colors.white,
     flex: 1,
   },
   animatedButton: {
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   rowBtnTab: {
     flexDirection: "row",
-    backgroundColor: "#E6E7EA",
+    backgroundColor: colors.solitude1,
     borderRadius: 8,
     padding: scaleWidth(2),
   },
@@ -40,8 +40,8 @@ export const styles = StyleSheet.create({
     paddingVertical: scaleHeight(4),
   },
   activeButton: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -51,8 +51,8 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   activeButtonCategory: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: -2,
       height: 2,
@@ -65,14 +65,14 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size13,
     // lineHeight: 20,
     fontWeight: "700",
-    color: "#747475",
+    color: colors.dolphin,
     textAlign: "center",
   },
   activeButtonText: {
-    color: "#0078D4",
+    color: colors.navyBlue,
   },
   discount: {
-    backgroundColor: "#FF0000",
+    backgroundColor: colors.red,
     alignItems: "center",
     justifyContent: "center",
     width: scaleWidth(32),
@@ -139,12 +139,12 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
   },
   tabButtonActive: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#0078D4",
+    backgroundColor: colors.white,
+    borderColor: colors.navyBlue,
   },
   tabButtonInactive: {
-    backgroundColor: "#F4F4F4",
-    borderColor: "#c8c8c8",
+    backgroundColor: colors.whiteSmoke,
+    borderColor: colors.veryLightGrey,
   },
   tabText: {
     textAlign: "center",
@@ -152,10 +152,10 @@ export const styles = StyleSheet.create({
     fontSize: fontSize.size10,
   },
   tabTextActive: {
-    color: "#0078D4",
+    color: colors.navyBlue,
   },
   tabTextInactive: {
-    color: "#747475",
+    color: colors.dolphin,
   },
   containerFilter: {
     marginRight: scaleHeight(16),
@@ -167,13 +167,13 @@ export const styles = StyleSheet.create({
     paddingVertical: scaleHeight(8),
     marginLeft: scaleWidth(5),
     borderWidth: 1,
-    borderColor: "#0078D4",
+    borderColor: colors.navyBlue,
     flexDirection: "row",
     width: scaleWidth(110),
     justifyContent: "space-between",
   },
   textBtnFilter: {
-    color: "#0078D4",
+    color: colors.navyBlue,
     textAlign: "center",
     fontWeight: "400",
     fontSize: fontSize.size10,
@@ -193,7 +193,7 @@ export const styles = StyleSheet.create({
     zIndex: 1,
     right: scaleWidth(16),
     borderRadius: 40,
-    backgroundColor: "#0078D4",
+    backgroundColor: colors.navyBlue,
   },
 });
 
@@ -214,7 +214,7 @@ export const stylesItem = StyleSheet.create({
     marginBottom: scaleHeight(10),
   },
   title: {
-    color: "#242426",
+    color: colors.jaguar,
     fontSize: fontSize.size10,
     fontWeight: "700",
   },
@@ -236,17 +236,17 @@ export const stylesItem = StyleSheet.create({
 export const stylesWeight = StyleSheet.create({
   viewParent: {
     flexDirection: "column",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
   },
   textTittle: {
-    color: "#242424",
+    color: colors.nero,
     fontWeight: "700",
     fontSize: 14,
   },
   textOriginal: {
     fontSize: fontSize.size12,
     fontWeight: "400",
-    color: "#242424",
+    color: colors.nero,
     marginVertical: scaleHeight(15),
   },
   viewCheckList: {
@@ -255,12 +255,12 @@ export const stylesWeight = StyleSheet.create({
     marginVertical: scaleHeight(10),
   },
   textWeightConversion: {
-    color: "#242424",
+    color: colors.nero,
     fontSize: 12,
     fontWeight: "400",
   },
   textAddLine: {
-    color: "#0078D4",
+    color: colors.navyBlue,
     fontSize: fontSize.size12,
     fontWeight: "400",
   },
@@ -271,19 +271,19 @@ export const stylesWeight = StyleSheet.create({
     marginRight: scaleWidth(6),
   },
   textItemOriginal: {
-    color: "#000000",
+    color: colors.black,
     fontSize: 12,
     fontWeight: "400",
     width: scaleWidth(80),
   },
   textFieldOriginal: {
-    color: "#747475",
+    color: colors.dolphin,
     fontSize: 12,
     fontWeight: "500",
     marginTop: scaleHeight(20),
   },
   textFieldVolumeOriginal: {
-    color: "#747475",
+    color: colors.dolphin,
     fontSize: 12,
     fontWeight: "500",
     marginTop: scaleHeight(20),
@@ -291,7 +291,7 @@ export const stylesWeight = StyleSheet.create({
   viewItemConversion: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     // marginHorizontal: 6,
   },
   viewItemConversion2: {
@@ -313,7 +313,7 @@ export const stylesWeight = StyleSheet.create({
   },
   viewLine: {
     height: 1,
-    backgroundColor: "#DFE0EB",
+    backgroundColor: colors.quartz,
     marginBottom: 3,
   },
   textConversion: {
@@ -323,13 +323,13 @@ export const stylesWeight = StyleSheet.create({
     width: "90%",
   },
   textFieldWeight: {
-    color: "#747475",
+    color: colors.dolphin,
     fontSize: 12,
     fontWeight: "500",
     marginTop: scaleHeight(20),
   },
   textFieldVolume: {
-    color: "#747475",
+    color: colors.dolphin,
     fontSize: 12,
     fontWeight: "500",
     marginTop: scaleHeight(20),
@@ -341,7 +341,7 @@ export const stylesCategory = StyleSheet.create({
     textAlign: "center",
     width: scaleWidth(68),
     height: scaleHeight(5),
-    backgroundColor: "#C7C7C7",
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     // marginTop: scaleHeight(8),
     alignSelf: "center",
@@ -378,7 +378,7 @@ export const stylesCreateDirectory = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 8,
     paddingHorizontal: scaleWidth(10),
     paddingVertical: scaleHeight(7),
@@ -388,7 +388,7 @@ export const stylesCreateDirectory = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 8,
     paddingHorizontal: scaleWidth(10),
     paddingVertical: scaleHeight(7),
@@ -407,7 +407,7 @@ export const stylesCreateDirectory = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     marginRight: scaleWidth(10),
     borderRadius: 8,
   },
@@ -421,7 +421,7 @@ export const stylesCreateDirectory = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 8,
   },
   viewIcCamera: {
@@ -443,7 +443,7 @@ export const stylesCreateDirectory = StyleSheet.create({
     borderWidth: 1,
     marginRight: scaleWidth(12),
     borderRadius: 10,
-    borderColor: "#c8c8c8",
+    borderColor: colors.veryLightGrey,
   },
   handleSubmit: {
     width: scaleWidth(166),
@@ -451,7 +451,7 @@ export const stylesCreateDirectory = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
-    backgroundColor: "#0078d4",
+    backgroundColor: colors.navyBlue,
   },
 });
 

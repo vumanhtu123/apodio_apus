@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   },
 
   textForgot: {
-    color: "#3F91FF",
+    color: colors.dodgerBlue2,
     fontSize: fontSize.size14,
     fontWeight: "700",
     lineHeight: 24,

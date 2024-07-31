@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { colors } from '../../../app-purchase/theme';
 
 const WINDOWS = Dimensions.get('window');
 const WIDTH = WINDOWS.width;
@@ -41,7 +42,7 @@ const ENV = {
     overlay: {
       ios: 'black',
       android: ['@android:color/background_dark', '@android:color/background_dark'],
-      default: ['#000000', '#000000'],
+      default: [colors.black, colors.black],
     },
     success: {
       ios: 'systemBlue',

@@ -10,7 +10,7 @@ import {
 
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: "#F2F2F2",
+    backgroundColor: colors.gray,
     flex: 1,
     justifyContent: "space-between",
   },
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     marginBottom: scaleHeight(10),
   },
   title: {
-    color: "#242426",
+    color: colors.jaguar,
     fontSize: fontSize.size10,
     fontWeight: "700",
   },
@@ -56,8 +56,8 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   activeButton: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -67,8 +67,8 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   activeButtonCategory: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: -2,
       height: 2,
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#747475",
+    color: colors.dolphin,
     textAlign: "center",
   },
   activeButtonText: {
@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
     fontWeight: "700",
   },
   discount: {
-    backgroundColor: "#FF0000",
+    backgroundColor: colors.red,
     alignItems: "center",
     justifyContent: "center",
     width: scaleWidth(32),
@@ -144,7 +144,7 @@ export const styles = StyleSheet.create({
   },
   StyleTab: {
     flexDirection: "row",
-    backgroundColor: "#E6E7EA",
+    backgroundColor: colors.solitude1,
     borderRadius: 8,
     padding: 3,
     marginTop: scaleWidth(20),
@@ -157,13 +157,13 @@ export const styles = StyleSheet.create({
     marginVertical: 12,
     alignSelf: "flex-end",
     borderWidth: 1,
-    borderColor: "#0078D4",
+    borderColor: colors.navyBlue,
     flexDirection: "row",
     marginRight: 20,
 
   },
   textDropDow: {
-    color: "#0078D4",
+    color: colors.navyBlue,
     textAlign: "center",
     fontWeight: "400",
     fontSize: fontSize.size10,

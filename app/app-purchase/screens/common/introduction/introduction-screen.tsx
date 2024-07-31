@@ -62,7 +62,7 @@ export const IntroductionScreen: FC<
             // backgroundColor:'pink' ,
             marginRight: 10,
             alignItems: "flex-end",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: colors.white,
           }}
           textStyle={styles.textSkip}
         />
@@ -87,7 +87,7 @@ export const IntroductionScreen: FC<
 
       <Button
         style={{
-          backgroundColor: "#0078D4",
+          backgroundColor: colors.navyBlue,
           borderRadius: 8,
           marginBottom: scaleHeight(bottom + 14),
           marginHorizontal: scaleWidth(18),

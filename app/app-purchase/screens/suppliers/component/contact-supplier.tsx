@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FlatList, Image, TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataContact } from "../styles/data";
 
@@ -10,7 +10,7 @@ export const ContactSupplier = () => {
     <View style={{ flexDirection: "column", justifyContent: "center" }}>
       <View
         style={{
-          backgroundColor: "#0078D4",
+          backgroundColor: colors.navyBlue,
           borderRadius: 4,
           width: 77,
           height: 24,
@@ -61,7 +61,7 @@ const ItemContact = (item: any) => {
         style={{
           width: 40,
           height: 40,
-          backgroundColor: "#EFF8FF",
+          backgroundColor: colors.aliceBlue2,
           borderRadius: 50,
           alignItems: "center",
           justifyContent: "center",
@@ -80,7 +80,7 @@ const ItemContact = (item: any) => {
           <Text
             style={{
               fontSize: fontSize.size12,
-              color: "#242424",
+              color: colors.nero,
               fontWeight: "400",
             }}>
             {item.name ?? "Chị Nguyễn Lan Hương"}
@@ -97,18 +97,18 @@ const ItemContact = (item: any) => {
           }}>
           {item.office ?? "Trưởng phòng kinh doanh"}
         </Text>
-        <Text style={{ fontSize: fontSize.size12, color: "#242424" }}>
+        <Text style={{ fontSize: fontSize.size12, color: colors.nero }}>
           {item.phone ?? "0982 876 118"}
         </Text>
         <Text
           style={{
             fontSize: fontSize.size12,
-            color: "#242424",
+            color: colors.nero,
             marginVertical: 5,
           }}>
           {item.email ?? "nguyenlanhuong@gmail.com"}
         </Text>
-        <Text style={{ fontSize: fontSize.size12, color: "#242424" }}>
+        <Text style={{ fontSize: fontSize.size12, color: colors.nero }}>
           {item.uuid ?? "0013010274646"}
         </Text>
       </View>

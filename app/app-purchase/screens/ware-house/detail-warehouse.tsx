@@ -309,7 +309,7 @@ export const DetailWarehouseScreen: FC<
               <View
                 style={{
                   paddingHorizontal: scaleHeight(16),
-                  backgroundColor: "#FFF",
+                  backgroundColor: colors.white,
                 }}>
                 <View>
                   <Text
@@ -373,7 +373,7 @@ export const DetailWarehouseScreen: FC<
               <View
                 style={{
                   paddingHorizontal: scaleHeight(16),
-                  backgroundColor: "#FFF",
+                  backgroundColor: colors.white,
                 }}>
                 <View>
                   <Text tx="wareHouse.longitude" style={Styles.value} />

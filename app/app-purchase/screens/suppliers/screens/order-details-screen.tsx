@@ -64,7 +64,7 @@ export const OrderDetailsScreen: FC<
                 }}
               />
               <Text
-                style={{ fontSize: 12, fontWeight: "600", color: "#242424" }}>
+                style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
                 Công ty TNHH Một thành viên Apodio
               </Text>
             </View>
@@ -81,7 +81,7 @@ export const OrderDetailsScreen: FC<
             }}>
             <View
               style={{
-                borderColor: "#0078D4",
+                borderColor: colors.navyBlue,
                 borderWidth: 1,
                 borderRadius: 8,
               }}>
@@ -94,10 +94,10 @@ export const OrderDetailsScreen: FC<
                 <Svgs.icon_plus_blue
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
-                  style={{ marginRight: 6, marginTop: 2, color: "#0078D4" }}
+                  style={{ marginRight: 6, marginTop: 2, color: colors.navyBlue }}
                 />
                 <Text
-                  style={{ fontSize: 14, fontWeight: "600", color: "#0078D4" }}>
+                  style={{ fontSize: 14, fontWeight: "600", color: colors.navyBlue }}>
                   Chọn sản phẩm
                 </Text>
               </View>
@@ -113,7 +113,7 @@ export const OrderDetailsScreen: FC<
               marginHorizontal: 16,
               marginTop: 15,
             }}>
-            <Text style={{ color: "#000000", fontSize: 14, fontWeight: "600" }}>
+            <Text style={{ color: colors.black, fontSize: 14, fontWeight: "600" }}>
               Thông tin thêm
             </Text>
             <View
@@ -126,7 +126,7 @@ export const OrderDetailsScreen: FC<
               <View
                 style={{
                   borderRadius: 4,
-                  borderColor: "#0078D4",
+                  borderColor: colors.navyBlue,
                   borderWidth: 1,
                   marginHorizontal: 8,
                 }}>
@@ -134,7 +134,7 @@ export const OrderDetailsScreen: FC<
                   style={{
                     fontSize: 10,
                     fontWeight: "400",
-                    color: "#0078D4",
+                    color: colors.navyBlue,
                     paddingVertical: 6,
                     paddingHorizontal: 8,
                   }}>
@@ -158,17 +158,17 @@ export const OrderDetailsScreen: FC<
             marginHorizontal: 16,
             paddingVertical: 12,
           }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: "#242424" }}>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
             Tổng cộng
           </Text>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: "#242424" }}>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
             0đ
           </Text>
         </View>
         <View
           style={{
             borderRadius: 8,
-            backgroundColor: "#0078D4",
+            backgroundColor: colors.navyBlue,
             alignItems: "center",
             marginHorizontal: 16,
           }}>
@@ -176,7 +176,7 @@ export const OrderDetailsScreen: FC<
             style={{
               fontSize: 14,
               fontWeight: "600",
-              color: "#FFFFFF",
+              color: colors.white,
               marginVertical: 12,
             }}>
             Đặt hàng
@@ -203,7 +203,7 @@ const AddressOrder = () => {
         style={{
           fontSize: 12,
           fontWeight: "600",
-          color: "#242424",
+          color: colors.nero,
         }}>
         Địa chỉ nhận hàng
       </Text>
@@ -217,7 +217,7 @@ const AddressOrder = () => {
           style={{
             borderRadius: 50,
             borderWidth: 1,
-            borderColor: "#DFE0EB",
+            borderColor: colors.quartz,
             alignSelf: "center",
             padding: 2,
           }}>
@@ -226,7 +226,7 @@ const AddressOrder = () => {
               borderRadius: 50,
               width: 16,
               height: 16,
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               alignSelf: "center",
             }}></View>
         </View>
@@ -234,7 +234,7 @@ const AddressOrder = () => {
           style={{
             fontSize: 12,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
             paddingHorizontal: 8,
           }}>
           Nhận hàng tại kho nhà máy
@@ -249,7 +249,7 @@ const AddressOrder = () => {
           style={{
             borderRadius: 50,
             borderWidth: 1,
-            borderColor: "#DFE0EB",
+            borderColor: colors.quartz,
             alignSelf: "flex-start",
             padding: 2,
           }}>
@@ -258,7 +258,7 @@ const AddressOrder = () => {
               borderRadius: 50,
               width: 16,
               height: 16,
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
             }}></View>
         </View>
         <View>
@@ -266,7 +266,7 @@ const AddressOrder = () => {
             style={{
               fontSize: 12,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
               paddingHorizontal: 8,
             }}>
             Nhận hàng tại địa chỉ cụ thể
@@ -275,7 +275,7 @@ const AddressOrder = () => {
             style={{
               fontSize: 12,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
               paddingHorizontal: 8,
               paddingVertical: 8,
             }}>
@@ -285,7 +285,7 @@ const AddressOrder = () => {
             style={{
               fontSize: 12,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
               paddingHorizontal: 8,
             }}>
             85 Hàng Bài, Hoàn Kiếm, Hà Nội

@@ -76,7 +76,7 @@ export function VerificationCodeModal(props: VerificationProps) {
               maxWidth: "80%",
               textAlign: "center",
               fontSize: 14,
-              color: "#84888D",
+              color: colors.aluminium,
               marginBottom: 18,
               marginHorizontal: 28,
               alignSelf: "center",
@@ -85,7 +85,7 @@ export function VerificationCodeModal(props: VerificationProps) {
             <Text
               text={" +" + props.numberPhone.toString()}
               style={{
-                color: "#323232",
+                color: colors.nightRider1,
                 fontWeight: "700",
               }}></Text>
           </Text>
@@ -128,7 +128,7 @@ export function VerificationCodeModal(props: VerificationProps) {
                     <Text
                       style={[
                         styles.textResend,
-                        { color: secondss === 0 ? "#3F91FF" : "#3F91FF80" },
+                        { color: secondss === 0 ? colors.dodgerBlue2 : "#3F91FF80" },
                       ]}
                       text="Resend"
                     />
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     marginBottom: 23,
     height: 48,
     borderRadius: 8,
-    backgroundColor: "#F4AD22",
+    backgroundColor: colors.yellow,
   },
   textButton: {
     fontSize: 14,
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: colors.dodgerBlue1,
   },
   textStyle: {
     color: "white",
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: 68,
     height: 5,
-    backgroundColor: "#C7C7C7",
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: "center",
   },
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: "center",
-    color: "#323232",
+    color: colors.nightRider1,
     fontSize: 18,
     marginTop: 23,
     marginBottom: 14,
@@ -256,15 +256,15 @@ const styles = StyleSheet.create({
   },
   selectType: {
     fontSize: 14,
-    color: "#323232",
+    color: colors.nightRider1,
   },
   cancel: {
     fontSize: 14,
-    color: "#FF0000",
+    color: colors.red,
   },
   horizontalLine: {
     height: 1,
-    backgroundColor: "#E7EFFF",
+    backgroundColor: colors.solitude2,
     marginTop: 18,
     marginBottom: 14,
   },
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   },
   buttonCancel: {
     height: 44,
-    backgroundColor: "#F2F2F2",
+    backgroundColor: colors.gray,
     borderRadius: 8,
     width: "49%",
   },
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 52,
     paddingVertical: 12,
     fontSize: 14,
-    color: "#FFFFFF",
+    color: colors.white,
     textAlign: "center",
     fontWeight: "700",
   },

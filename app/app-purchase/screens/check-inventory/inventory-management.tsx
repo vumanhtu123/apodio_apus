@@ -173,7 +173,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                                     paddingVertical: scaleHeight(13),
                                     paddingHorizontal: scaleWidth(16),
                                     borderBottomWidth: 1,
-                                    borderColor: isCLickTabBar === index ? colors.palette.navyBlue : '#FFF', backgroundColor: '#FFF'
+                                    borderColor: isCLickTabBar === index ? colors.palette.navyBlue : colors.white, backgroundColor: colors.white
 
                                 }}
 
@@ -197,7 +197,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                     <TouchableOpacity
                         style={{
                             borderRadius: 8,
-                            backgroundColor: '#D9DADD',
+                            backgroundColor: colors.hawkesBlue,
                             width: scaleWidth(32),
                             height: scaleHeight(36),
                             marginHorizontal: scaleWidth(16),
@@ -218,7 +218,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                     <View style={{
                         // width:scaleWidth(260),
                         // height:scaleHeight(32), 
-                        backgroundColor: '#D9DADD',
+                        backgroundColor: colors.hawkesBlue,
                         borderRadius: 8,
                         justifyContent: 'space-evenly',
                         flexDirection: 'row',
@@ -230,7 +230,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             paddingVertical: (scaleHeight(8)),
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: selectCalendar === 1 ? "#FFF" : "#D9DADD",
+                            backgroundColor: selectCalendar === 1 ? colors.white : colors.hawkesBlue,
                             borderRadius: 8
                         }}
                             onPress={() => {
@@ -245,7 +245,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             paddingHorizontal: (scaleWidth(12)),
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: selectCalendar === 2 ? "#FFF" : "#D9DADD",
+                            backgroundColor: selectCalendar === 2 ? colors.white : colors.hawkesBlue,
                             borderRadius: 8
                         }}
                             onPress={() => {
@@ -260,7 +260,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             paddingHorizontal: (scaleWidth(12)),
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: selectCalendar === 3 ? "#FFF" : "#D9DADD",
+                            backgroundColor: selectCalendar === 3 ? colors.white : colors.hawkesBlue,
                             borderRadius: 8
                         }}
                             onPress={() => {
@@ -286,7 +286,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                                 renderItem={({ item }) => {
                                     return (
                                         <View style={{
-                                            backgroundColor: '#FFF',
+                                            backgroundColor: colors.white,
                                             borderRadius: 8,
                                             paddingVertical: scaleHeight(10),
                                             paddingHorizontal: scaleWidth(16),
@@ -297,14 +297,14 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
 
                                         >
                                             <View>
-                                                <Text style={{ fontSize: 12, fontWeight: '600', color: '#333' }}>{item.id}</Text>
+                                                <Text style={{ fontSize: 12, fontWeight: '600', color: colors.nightRider }}>{item.id}</Text>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     <Text style={Styles.stylesTextTime} >{item.time} </Text>
                                                     <Text style={Styles.stylesTextTime}> {item.date}</Text>
                                                 </View>
                                             </View>
-                                            <View style={{ backgroundColor: item.status === 'Đã thanh toán' ? '#DAFBDF' : '#FFEFF0', height: 14, paddingHorizontal: 8, paddingVertical: 2 }}>
-                                                <Text style={{ fontSize: 8, color: item.status === 'Đã thanh toán' ? '#00CC6A' : 'red' }}>
+                                            <View style={{ backgroundColor: item.status === 'Đã thanh toán' ? colors.greenTea : colors.redExDG, height: 14, paddingHorizontal: 8, paddingVertical: 2 }}>
+                                                <Text style={{ fontSize: 8, color: item.status === 'Đã thanh toán' ? colors.malachite : 'red' }}>
                                                     {item.status}
                                                 </Text>
 

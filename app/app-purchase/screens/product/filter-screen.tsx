@@ -113,10 +113,10 @@ export const FilterScreen: FC = (item) => {
         onPress={() => handleTagPress(item.id)}
         key={item.id}
         style={{
-          backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
+          backgroundColor: isSelected ? colors.aliceBlue2 : colors.aliceBlue,
           borderRadius: 10,
           borderWidth: isSelected ? 1 : 0,
-          borderColor: isSelected ? "#0078D4" : "#c8c8c8",
+          borderColor: isSelected ? colors.navyBlue : colors.veryLightGrey,
           flex: 1 / 3,
           marginBottom: 10,
           width: scaleWidth(109),
@@ -126,7 +126,7 @@ export const FilterScreen: FC = (item) => {
         }}>
         <Text
           style={{
-            color: isSelected ? "#0078D4" : colors.palette.dolphin,
+            color: isSelected ? colors.navyBlue : colors.palette.dolphin,
             textAlign: "center",
             fontWeight: "400",
             fontSize: fontSize.size10,
@@ -165,10 +165,10 @@ export const FilterScreen: FC = (item) => {
                   onPress={() => handleTimePress(item.sort)}
                   key={index}
                   style={{
-                    backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
+                    backgroundColor: isSelected ? colors.aliceBlue2 : colors.aliceBlue,
                     borderRadius: 10,
                     borderWidth: isSelected ? 1 : 0,
-                    borderColor: isSelected ? "#0078D4" : "#c8c8c8",
+                    borderColor: isSelected ? colors.navyBlue : colors.veryLightGrey,
                     marginRight: scaleWidth(12),
                     width: scaleWidth(165),
                     height: scaleHeight(38),
@@ -176,7 +176,7 @@ export const FilterScreen: FC = (item) => {
                   }}>
                   <Text
                     style={{
-                      color: isSelected ? "#0078D4" : colors.palette.dolphin,
+                      color: isSelected ? colors.navyBlue : colors.palette.dolphin,
                       textAlign: "center",
                       fontWeight: "400",
                       fontSize: fontSize.size14,
@@ -208,10 +208,10 @@ export const FilterScreen: FC = (item) => {
                   onPress={() => handleNamePress(item.sort)}
                   key={index}
                   style={{
-                    backgroundColor: isSelected ? "#eff8ff" : "#F6F7F9",
+                    backgroundColor: isSelected ? colors.aliceBlue2 : colors.aliceBlue,
                     borderRadius: 10,
                     borderWidth: isSelected ? 1 : 0,
-                    borderColor: isSelected ? "#0078D4" : "#c8c8c8",
+                    borderColor: isSelected ? colors.navyBlue : colors.veryLightGrey,
                     marginRight: scaleWidth(12),
                     width: scaleWidth(165),
                     height: scaleHeight(38),
@@ -219,7 +219,7 @@ export const FilterScreen: FC = (item) => {
                   }}>
                   <Text
                     style={{
-                      color: isSelected ? "#0078D4" : colors.palette.dolphin,
+                      color: isSelected ? colors.navyBlue : colors.palette.dolphin,
                       textAlign: "center",
                       fontWeight: "400",
                       fontSize: fontSize.size14,
@@ -272,7 +272,7 @@ export const FilterScreen: FC = (item) => {
             alignItems: "center",
             borderWidth: 1,
             borderRadius: 10,
-            borderColor: "#c8c8c8",
+            borderColor: colors.veryLightGrey,
           }}>
           <Text tx="common.cancel" style={{ fontSize: fontSize.size14 }} />
         </TouchableOpacity>
@@ -284,7 +284,7 @@ export const FilterScreen: FC = (item) => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-            backgroundColor: "#0078d4",
+            backgroundColor: colors.navyBlue,
           }}>
           <Text
             tx="common.confirm"
@@ -298,7 +298,7 @@ export const FilterScreen: FC = (item) => {
 };
 const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: "#Ffffff",
+    backgroundColor: colors.white,
     flex: 1,
   },
 });

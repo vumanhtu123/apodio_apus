@@ -67,7 +67,7 @@ export class Loading extends React.Component<IProps, IState> {
       return (
         <View style={[styles.overlay, isDark ? styles.darkOverlay : styles.lightOverlay]}>
           <ActivityIndicator size={'large'} color="#2A6FA8" />
-          {/* <ActivityIndicator size="large" color={isDark ? '#ffffff' : '#000000'} /> */}
+          {/* <ActivityIndicator size="large" color={isDark ? colors.white : colors.black} /> */}
           {data?.text ? <Text style={[styles.text, data.textStyle]}>{data.text}</Text> : null}
         </View>
       );

@@ -242,7 +242,7 @@ export const NotificationScreen: FC = () => {
               }}
               key={index}
               style={{
-                backgroundColor: index == indexItem ? '#FFF0F0' : '#F4F4F4',
+                backgroundColor: index == indexItem ? colors.whiteSmoke1 : colors.whiteSmoke,
                 borderRadius: 8,
                 paddingHorizontal: 8,
                 paddingVertical: 8,
@@ -250,7 +250,7 @@ export const NotificationScreen: FC = () => {
               }}>
               <Text
                 style={{
-                  color: index == indexItem ? '#0078D4' : '#263238',
+                  color: index == indexItem ? colors.navyBlue : colors.oxfordBlue,
                   textAlign: 'center',
                   fontWeight: '700',
                   fontSize: fontSize.size14,
@@ -296,7 +296,7 @@ export const NotificationScreen: FC = () => {
                     </Text>
                     <Text
                       style={{
-                        color: '#848688',
+                        color: colors.aluminium1,
                         fontSize: fontSize.size12,
                         lineHeight: 24,
                       }}>

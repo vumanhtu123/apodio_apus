@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1b1b1b',
     paddingVertical: 5,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    borderTopColor: colors.veryLightGrey2,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',

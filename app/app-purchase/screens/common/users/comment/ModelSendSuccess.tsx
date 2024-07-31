@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
+import { colors } from '../../../../theme';
 
 // interface CustomModalProps {
 //   visible: boolean;
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   closeButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.dodgerBlue1,
     borderRadius: 5,
     padding: 10,
     elevation: 2,

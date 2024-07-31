@@ -13,7 +13,7 @@ export const Styles = StyleSheet.create({
     },
     boxHeader: { 
         marginTop: scaleHeight(5), 
-        backgroundColor: '#FFF', 
+        backgroundColor: colors.white, 
         paddingVertical: padding.padding_10, 
         paddingHorizontal: padding.padding_32, 
         marginBottom: margin.margin_15 

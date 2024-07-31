@@ -1,5 +1,5 @@
 import React from "react";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
 
@@ -29,18 +29,18 @@ export const RenderItemSupplierList = ({ item }: any) => {
           style={{
             width: 40,
             height: 40,
-            backgroundColor: "#EFF8FF",
+            backgroundColor: colors.aliceBlue2,
             borderRadius: 50,
             alignItems: "center",
             justifyContent: "center",
           }}>
-          <Text style={{ fontSize: fontSize.size10, color: "#0078D4", textAlign: 'center' }}>
+          <Text style={{ fontSize: fontSize.size10, color: colors.navyBlue, textAlign: 'center' }}>
             {item.code}
           </Text>
         </View>
         <View style={{ marginHorizontal: 6 }}>
           <Text style={{ fontSize: fontSize.size10 }}>{item.name}</Text>
-          <Text style={{ fontSize: fontSize.size10, color: "#747475" }}>
+          <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>
             {item.phoneNumber}
           </Text>
         </View>
@@ -75,7 +75,7 @@ export const RenderItemSupplierGrid: React.FC<{ item: Item }> = ({ item }) => {
           style={{
             width: 40,
             height: 40,
-            backgroundColor: "#EFF8FF",
+            backgroundColor: colors.aliceBlue2,
             borderRadius: 50,
             alignItems: "center",
             justifyContent: "center",
@@ -85,7 +85,7 @@ export const RenderItemSupplierGrid: React.FC<{ item: Item }> = ({ item }) => {
             text={item.code}
             style={{
               fontSize: fontSize.size10,
-              color: "#0078D4",
+              color: colors.navyBlue,
               textAlign: "center",
               alignSelf: "center",
             }}></Text>
@@ -102,7 +102,7 @@ export const RenderItemSupplierGrid: React.FC<{ item: Item }> = ({ item }) => {
             text={item.phoneNumber}
             style={{
               fontSize: fontSize.size10,
-              color: "#747475",
+              color: colors.dolphin,
               textAlign: "center",
               alignSelf: "center",
             }}></Text>

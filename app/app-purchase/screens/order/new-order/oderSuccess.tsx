@@ -58,7 +58,7 @@ export const OrderSuccess: FC = () => {
                     </View>
                     <View style={{ alignItems: 'center', marginTop: scaleWidth(30) }}>
                         {/* <Text tx={screen === 'edit' ? 'successScreen.editSuccess' : "successScreen.labelSuccess"} style={{ fontSize: fontSize.size18, fontWeight: '700', marginTop: scaleHeight(40), marginBottom: scaleHeight(10) }} /> */}
-                        <Text tx={screen === 'edit' ? 'successScreen.editTitleSuccess' : "successScreen.titleSuccessOrder"} style={{ fontSize: fontSize.size14, fontWeight: '500', color: '#84888D' }} />
+                        <Text tx={screen === 'edit' ? 'successScreen.editTitleSuccess' : "successScreen.titleSuccessOrder"} style={{ fontSize: fontSize.size14, fontWeight: '500', color: colors.aluminium }} />
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{ fontSize: fontSize.size14 }}>
                                 #{code}
@@ -119,9 +119,9 @@ export const OrderSuccess: FC = () => {
                     }} style={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                        borderRadius: scaleWidth(10), borderColor: '#c8c8c8',
+                        borderRadius: scaleWidth(10), borderColor: colors.veryLightGrey,
                         paddingVertical: scaleHeight(12),
-                        backgroundColor: '#0078d4'
+                        backgroundColor: colors.navyBlue
                     }}>
                         <Text tx="successScreen.btnCreateOrder" style={{ fontSize: fontSize.size14, color: 'white', fontWeight: '600' }} />
                     </TouchableOpacity>}
@@ -131,7 +131,7 @@ export const OrderSuccess: FC = () => {
                         navigation.navigate("orderDetails" as never)
                     }}
                     style={{ justifyContent: 'center', alignItems: 'center', marginTop: scaleHeight(15) }}>
-                    <Text tx="successScreen.btnDetailOrder" style={{ fontSize: fontSize.size14, color: '#0078D4', fontWeight: '700' }} />
+                    <Text tx="successScreen.btnDetailOrder" style={{ fontSize: fontSize.size14, color: colors.navyBlue, fontWeight: '700' }} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => {
@@ -139,7 +139,7 @@ export const OrderSuccess: FC = () => {
                         navigation.navigate('mainBottom' as never)
                     }}
                     style={{ justifyContent: 'center', alignItems: 'center', marginTop: scaleHeight(15), marginBottom: scaleHeight(30) }}>
-                    <Text tx="successScreen.btnBack" style={{ fontSize: fontSize.size14, color: '#0078D4', fontWeight: '700' }} />
+                    <Text tx="successScreen.btnBack" style={{ fontSize: fontSize.size14, color: colors.navyBlue, fontWeight: '700' }} />
                 </TouchableOpacity>
             </View>
         </View >

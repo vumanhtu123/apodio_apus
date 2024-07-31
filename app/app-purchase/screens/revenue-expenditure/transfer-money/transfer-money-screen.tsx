@@ -143,7 +143,7 @@ export const TransferMoneyScreen: FC<
                   ? colors.palette.navyBlue
                   : colors.palette.veryLightGrey,
               backgroundColor:
-                isSelect === "back" ? colors.palette.navyBlue : "#FFF",
+                isSelect === "back" ? colors.palette.navyBlue : colors.white,
             },
           ]}
           onPress={() => {
@@ -159,7 +159,7 @@ export const TransferMoneyScreen: FC<
             Styles.BtnBottom,
             {
               backgroundColor:
-                isSelect === "update" ? colors.palette.navyBlue : "#FFF",
+                isSelect === "update" ? colors.palette.navyBlue : colors.white,
               borderColor:
                 isSelect === "update"
                   ? colors.palette.navyBlue
@@ -183,7 +183,7 @@ export const TransferMoneyScreen: FC<
           style={{
             width: scaleWidth(68),
             height: scaleHeight(5),
-            backgroundColor: "#C7C7C7",
+            backgroundColor: colors.veryLightGrey1,
             borderRadius: margin.margin_8,
             marginBottom: scaleWidth(25),
             alignSelf: "center",
@@ -236,7 +236,7 @@ export const TransferMoneyScreen: FC<
                     ? colors.palette.navyBlue
                     : colors.palette.veryLightGrey,
                 backgroundColor:
-                  isSelect === "back" ? colors.palette.navyBlue : "#FFF",
+                  isSelect === "back" ? colors.palette.navyBlue : colors.white,
               },
             ]}
             onPress={() => {
@@ -252,7 +252,7 @@ export const TransferMoneyScreen: FC<
               Styles.BtnBottom,
               {
                 backgroundColor:
-                  isSelect === "update" ? colors.palette.navyBlue : "#FFF",
+                  isSelect === "update" ? colors.palette.navyBlue : colors.white,
                 borderColor:
                   isSelect === "update"
                     ? colors.palette.navyBlue
@@ -278,7 +278,7 @@ export const TransferMoneyScreen: FC<
 const Styles = StyleSheet.create({
   Root: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
   },
   Main: {
     flex: 1,
@@ -298,10 +298,10 @@ const Styles = StyleSheet.create({
   styleText: {
     fontSize: fontSize.size14,
     fontWeight: "600",
-    color: "#FFF",
+    color: colors.white,
   },
   textSize14: {
-    color: "#747475",
+    color: colors.dolphin,
     fontWeight: "400",
     fontSize: fontSize.size14,
   },
@@ -330,7 +330,7 @@ const Styles = StyleSheet.create({
   horizontalLine: {
     width: "100%",
     height: 1,
-    backgroundColor: "#E7EFFF",
+    backgroundColor: colors.solitude2,
     marginTop: scaleHeight(18),
     marginBottom: 18,
   },

@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 
 export const HeaderInfo = (item: any) => {
@@ -18,13 +18,13 @@ export const HeaderInfo = (item: any) => {
         style={{
           width: 40,
           height: 40,
-          backgroundColor: "#EFF8FF",
+          backgroundColor: colors.aliceBlue2,
           borderRadius: 50,
           alignItems: "center",
           justifyContent: "center",
           marginRight: 10,
         }}>
-        <Text style={{ fontSize: fontSize.size10, color: "#0078D4" }}>
+        <Text style={{ fontSize: fontSize.size10, color: colors.navyBlue }}>
           {item.code ?? "ABC"}
         </Text>
       </View>
@@ -34,7 +34,7 @@ export const HeaderInfo = (item: any) => {
             flexDirection: "row",
             justifyContent: "space-between",
           }}>
-          <Text style={{ fontSize: fontSize.size10, color: "#747475" }}>
+          <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>
             {item.id ?? "NCC0000001"}
           </Text>
           <TouchableOpacity>
@@ -49,7 +49,7 @@ export const HeaderInfo = (item: any) => {
           }}>
           {item.name ?? "Công ty TNHH MTV Mặt Trời Hồng"}
         </Text>
-        <Text style={{ fontSize: fontSize.size12, color: "#242424" }}>
+        <Text style={{ fontSize: fontSize.size12, color: colors.nero }}>
           {item.phone ?? "0344911322"}
         </Text>
       </View>

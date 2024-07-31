@@ -22,7 +22,7 @@ interface ItemDetail {
 
 const ItemDetailDebt: FC<ItemDetail> = ({ item }) => {
     return (
-        <View style={{ backgroundColor: '#FFF' }}>
+        <View style={{ backgroundColor: colors.white }}>
             <Text style={Styles.fontSize10}>
                 {item.day}
             </Text>
