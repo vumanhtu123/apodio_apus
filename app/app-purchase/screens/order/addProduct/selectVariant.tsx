@@ -10,7 +10,7 @@ import React, {
   View,
 } from "react-native";
 import { AutoImage, Button, Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
@@ -624,7 +624,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   return (
     <View style={styles.ROOT}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         style={{ height: scaleHeight(54) }}
         headerText={`${detailProduct.sku}` + "/Chọn biến thể"}
@@ -747,7 +747,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           .filter((items: any) => items.isSelect === true)
           .length === 0 ? 0.6 : 1
         }}>
-        <Images.ic_ShoopingCar />
+        <Svgs.ic_ShoopingCar />
         <Text
           tx={"order.addToCart"}
           style={{
@@ -776,7 +776,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                       source={{
                         uri: item,
                       }}
-                      defaultSource={Images.imageError}
+                      defaultSource={Svgs.imageError}
                       resizeMode="cover"
                       style={{
                         height: scaleHeight(416),

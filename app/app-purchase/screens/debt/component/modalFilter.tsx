@@ -5,7 +5,7 @@ import Modal from 'react-native-modal'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme'
 import { Text } from '../../../../components'
-import { Images } from '../../../../../assets'
+import { Svgs } from '../../../../../assets/svgs'
 
 
 interface propsModal {
@@ -65,7 +65,7 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
 
                 <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text tx='debtScreen.nameProviders'></Text>
-                    <Images.ic_tick />
+                    <Svgs.ic_tick />
                 </TouchableOpacity>
 
                 <View style={Styles.horizontalLine} />

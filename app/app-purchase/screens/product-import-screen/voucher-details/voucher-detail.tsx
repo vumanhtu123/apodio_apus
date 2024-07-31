@@ -6,7 +6,7 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import ReactNativeModal from "react-native-modal";
 
 
@@ -16,11 +16,11 @@ export const VoucherDetail: FC<StackScreenProps<NavigatorParamList,"voucherDetai
         return(
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="detailPallot.ballotDetail"
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => props.navigation.goBack()}
-                    RightIconAndTextBelow={Images.ic_dowload}
+                    RightIconAndTextBelow={Svgs.ic_dowload}
                     // titleMiddleStyle={{backgroundColor:'blue'}}
                     widthRightIcon={scaleWidth(15)}
                     heightRightIcon={scaleHeight(15)}
@@ -67,13 +67,13 @@ export const VoucherDetail: FC<StackScreenProps<NavigatorParamList,"voucherDetai
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_PaperPlaneTilt />
+                                <Svgs.ic_PaperPlaneTilt />
                                 <Text tx="GoodsExportBook.submitBallot" style={{ marginLeft: 4, color: colors.palette.navyBlue, fontWeight: "600" }} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue, backgroundColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_In />
+                                <Svgs.ic_In />
                                 <Text tx="detailPallot.inPallot" style={{ marginLeft: 4, color: colors.palette.white, fontWeight: "600" }} />
                             </TouchableOpacity>
                         </View>

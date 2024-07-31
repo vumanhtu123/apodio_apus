@@ -18,7 +18,7 @@ import {
 } from "../../../theme";
 import { Text } from "../../../../components/text/text";
 import { TxKeyPath, translate } from "../../../i18n";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import Modal from "react-native-modal";
 import { Button } from "../../../../components";
 
@@ -148,7 +148,7 @@ const DropdownModal = (props: InputSelectProps) => {
           onPress={() => handleItemSelect(item)}>
           <View style={styles.radioButton}>
             {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
-            {isSelected && <Images.icon_checkBox />}
+            {isSelected && <Svgs.icon_checkBox />}
           </View>
           <Text style={[styles.itemText]}>{item.text}</Text>
         </TouchableOpacity>
@@ -188,7 +188,7 @@ const DropdownModal = (props: InputSelectProps) => {
                     <Text style={styles.selectedItemText}>{item?.text}</Text>
                     {disable === true ? null : (
                       <TouchableOpacity onPress={() => handleRemoveItem(item)}>
-                        <Images.ic_close
+                        <Svgs.ic_close
                           width={scaleWidth(14)}
                           height={scaleHeight(14)}
                         />
@@ -204,7 +204,7 @@ const DropdownModal = (props: InputSelectProps) => {
         </View>
         {disable === true ? null : (
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Images.dropDown />
+            <Svgs.dropDown />
           </View>
         )}
       </TouchableOpacity>

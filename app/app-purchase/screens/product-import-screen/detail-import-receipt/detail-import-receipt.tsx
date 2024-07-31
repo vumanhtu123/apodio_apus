@@ -6,7 +6,7 @@ import { FlatList, Image, StyleSheet, TouchableOpacity, View, ScrollView, Modal,
 import React from "react";
 import { Header, Text } from "../../../../components";
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import Styles from "./Styles";
 
 
@@ -110,12 +110,12 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
         return (
             <ScrollView>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="ImprotGoodsBook.detailImportReceipt"
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => props.navigation.goBack()}
-                    RightIcon1={Images.ic_bin}
-                    RightIcon2={Images.icon_printer}
+                    RightIcon1={Svgs.ic_bin}
+                    RightIcon2={Svgs.icon_printer}
                     onRightPress1={() => {
                         // Alert.alert("ok")
                         setisVisibleDeleteReceipt(!isVisibleDeleteReceipt)
@@ -181,13 +181,13 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_PaperPlaneTilt />
+                                <Svgs.ic_PaperPlaneTilt />
                                 <Text tx="GoodsExportBook.submitBallot" style={{ marginLeft: 4, color: colors.palette.navyBlue, fontWeight: "600" }} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue, backgroundColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_dowload />
+                                <Svgs.ic_dowload />
                                 <Text tx="GoodsExportBook.dowloadBallot" style={{ marginLeft: 4, color: colors.palette.white, fontWeight: "600" }} />
                             </TouchableOpacity>
                         </View>
@@ -198,7 +198,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                         <Text tx="ImprotGoodsBook.supplier" style={{ fontWeight: '600' }} />
                         <View style={[{ alignItems: 'center', paddingVertical: scaleHeight(10), flexDirection: 'row' }]}>
 
-                            <Images.ic_avatar />
+                            <Svgs.ic_avatar />
                             <Text style={Styles.txtGroup2} tx="ImprotGoodsBook.note" />
 
                         </View>
@@ -224,7 +224,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                     paddingHorizontal: scaleWidth(6),
                                     borderRadius: scaleWidth(2)
                                 }} tx="GoodsExportBook.collapse"></Text>
-                                <Images.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
+                                <Svgs.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
 
                             </TouchableOpacity>
 
@@ -324,7 +324,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                 </Text>
                             </View>
 
-                            <Images.img_test />
+                            <Svgs.img_test />
                         </View>
                     </View>
                 </View>
@@ -341,7 +341,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                 <TouchableOpacity
                                     onPress={() => setisVisibleDeleteReceipt(!isVisibleDeleteReceipt)}
                                 >
-                                    <Images.ic_x />
+                                    <Svgs.ic_x />
                                 </TouchableOpacity>
 
                             </View>

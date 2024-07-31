@@ -6,7 +6,7 @@ import { Dimensions, ImageBackground, ScrollView, TouchableOpacity, View } from 
 import FastImage from "react-native-fast-image";
 import { Button, Header, Text } from "../../../../components";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../../app-purchase/theme";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
@@ -134,10 +134,10 @@ export const OrderDetails: FC = observer(
             return (
                 <View style={{ flexDirection: 'column', alignItems: 'center', paddingVertical: scaleHeight(12) }}>
                     <View style={{}}>
-                        {item.complete ? <Images.icon_checkGreen width={scaleWidth(13)} height={scaleHeight(13)} /> :
+                        {item.complete ? <Svgs.icon_checkGreen width={scaleWidth(13)} height={scaleHeight(13)} /> :
                             <View style={{ width: scaleWidth(13), height: scaleHeight(13), alignItems: 'center', justifyContent: 'center' }}>
 
-                                <Images.ic_dot width={scaleWidth(5)} height={scaleHeight(5)} />
+                                <Svgs.ic_dot width={scaleWidth(5)} height={scaleHeight(5)} />
                             </View>
                         }
                     </View>
@@ -164,13 +164,13 @@ export const OrderDetails: FC = observer(
             <View style={{ flex: 1 }}>
                 <Header
                     type={"AntDesign"}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => navigation.goBack()}
                     colorIcon={colors.text}
                     headerTx={'order.orderDetail'}
-                    RightIcon1={Images.icon_copy}
+                    RightIcon1={Svgs.icon_copy}
                     TitleIcon1="order.copy"
-                    RightIcon={stateAllow.isAllowCancel ? Images.icon_editWhite : null}
+                    RightIcon={stateAllow.isAllowCancel ? Svgs.icon_editWhite : null}
                     TitleIcon="common.edit"
                     // RightIcon2={Images.icon_printer}
                     // TitleIcon2="order.printInvoice"
@@ -415,7 +415,7 @@ export const OrderDetails: FC = observer(
                                                     <Text text={item.timePayment} style={styles.textContent} />
                                                 </View>
                                                 <View style={styles.viewLineCash}>
-                                                    <Images.icon_ellipse />
+                                                    <Svgs.icon_ellipse />
                                                 </View>
                                                 <View style={styles.viewTextCash}>
                                                     <Text tx={item.paymentPopUpResponse?.paymentMethod === 'CASH' ? 'orderDetailScreen.cash' : ''} style={[styles.textContent, { flex: 1 }]} />
@@ -446,7 +446,7 @@ export const OrderDetails: FC = observer(
                                                     <Text text={dataPayment.paymentResponses[dataPayment.paymentResponses.length - 1]?.timePayment} style={styles.textContent} />
                                                 </View>
                                                 <View style={styles.viewLineCash}>
-                                                    <Images.icon_ellipse />
+                                                    <Svgs.icon_ellipse />
                                                 </View>
                                                 <View style={[styles.viewTextCash]}>
                                                     <Text tx={dataPayment.paymentMethod === 'CASH' ? 'orderDetailScreen.cash' : ''} style={[styles.textContent, { flex: 1 }]} />
@@ -480,7 +480,7 @@ export const OrderDetails: FC = observer(
                                             />
                                         </View>
                                         <View style={styles.viewLineCash}>
-                                            <Images.icon_ellipse />
+                                            <Svgs.icon_ellipse />
                                         </View>
                                         <View style={styles.viewTextCash}>
                                             <Text tx={'orderDetailScreen.debt'} style={[styles.textContent, { flex: 1 }]} />

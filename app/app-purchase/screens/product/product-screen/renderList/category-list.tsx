@@ -2,7 +2,7 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View, FlatList, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Button, Text } from '../../../../../components';
-import { Images } from '../../../../../../assets';
+import { Svgs } from '../../../../../../assets/svgs';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import RenderCategoryItem from './renderItemCategory';
@@ -145,7 +145,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
   return (
     <View style={{ flex: 1 }}>
       <Button onPress={openDirectoryModal} style={styles.btnCreateCategory}>
-        <Images.icon_plus width={scaleWidth(24)} height={scaleHeight(24)} style={{ margin: 8 }} />
+        <Svgs.icon_plus width={scaleWidth(24)} height={scaleHeight(24)} style={{ margin: 8 }} />
       </Button>
       <View
         style={{
@@ -170,7 +170,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
               marginRight: scaleWidth(6),
             }}
           />
-          <Images.slider_black width={scaleWidth(16)} height={scaleHeight(16)} />
+          <Svgs.slider_black width={scaleWidth(16)} height={scaleHeight(16)} />
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>

@@ -19,7 +19,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../../theme";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Styles } from "../styles";
 import {
   commasToDots,
@@ -104,7 +104,7 @@ export const DetailReceivable: FC<
   return (
     <View style={{ flex: 1 }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="debtScreen.detailDebt"
         onLeftPress={() => props.navigation.goBack()}
         style={{ height: scaleHeight(52) }}
@@ -137,7 +137,7 @@ export const DetailReceivable: FC<
           <View style={Styles.styleLine} />
           <View style={Styles.flexRow}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Images.ic_Calender_gray />
+              <Svgs.ic_Calender_gray />
               <Text
                 tx="debtScreen.setAutomaticCalender"
                 style={{ marginLeft: 2, fontSize: fontSize.size12 }}
@@ -162,7 +162,7 @@ export const DetailReceivable: FC<
               alignItems: "center",
             },
           ]}>
-          <Images.ic_avatar />
+          <Svgs.ic_avatar />
           <View>
             <Text style={{ fontWeight: "600", fontSize: fontSize.size12 }}>
               Công ty TNHH Mặt trời hồng

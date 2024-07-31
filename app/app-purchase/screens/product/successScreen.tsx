@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../assets/index";
+import { Svgs } from "../../../../assets/svgs";
 import { Text } from "../../../components/text/text";
 import { fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
@@ -15,7 +15,7 @@ export const SuccessScreen: FC = () => {
   return (
     <View style={styles.ROOT}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Images.ic_checkCircleBlue
+        <Svgs.ic_checkCircleBlue
           width={scaleWidth(98)}
           height={scaleHeight(98)}
         />

@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, View, ImageBackground } from "react-native";
 import FastImage from "react-native-fast-image";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles/styles";
 import { Text } from "../../../../components";
@@ -40,7 +40,7 @@ const RenderProductItem = ({
           }}>
           {viewProduct === "VIEW_VARIANT" && item.scene?.url !== "" ? (
             <TouchableOpacity>
-              <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+              <Svgs.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -122,7 +122,7 @@ const RenderProductItem = ({
           }}>
           {viewProduct === "VIEW_VARIANT" && item.scene?.url !== "" ? (
             <TouchableOpacity>
-              <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+              <Svgs.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
             </TouchableOpacity>
           ) : null}
         </View>

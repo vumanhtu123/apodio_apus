@@ -8,7 +8,7 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
@@ -351,7 +351,7 @@ const ItemConversion = observer((item: InputSelectProps) => {
               item.onRestore(item.fields, item.index);
               item.remove(item.index);
             }}>
-            <Images.minus_ic
+            <Svgs.minus_ic
               style={{
                 marginRight: 4,
               }}

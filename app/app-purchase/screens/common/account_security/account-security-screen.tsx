@@ -20,7 +20,7 @@ import { Text } from '../../../../components/text/text';
 import { SvgIcon } from '../../../../components/svg-icon/index';
 import SelectTypeModal from './modal-select-type';
 // import {icSuccess} from '../../theme/images';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 
 
 export const AccountSecurity: FC = observer(function AccountSecurity() {
@@ -55,7 +55,7 @@ export const AccountSecurity: FC = observer(function AccountSecurity() {
       <StatusBar translucent backgroundColor={'transparent'} />
       <Header
         type={'AntDesign'}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="demoPodcastListScreen.accountSecurity.accountSecurity"

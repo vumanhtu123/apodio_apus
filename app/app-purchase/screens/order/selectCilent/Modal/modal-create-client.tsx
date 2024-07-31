@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../../theme";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
 import Modal from 'react-native-modal'
@@ -231,7 +231,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         }}
                         isImportant
                         placeholder="VD 01231254"
-                        RightIconClear={Images.icon_delete2}
+                        RightIconClear={Svgs.icon_delete2}
                         error={errors?.phoneNumber?.message} // Thay đổi chỗ này
                     />
                 )}
@@ -270,7 +270,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                         }}
                         isImportant
                         placeholder={en.ClientScreen.example}
-                        RightIconClear={Images.icon_delete2}
+                        RightIconClear={Svgs.icon_delete2}
                         error={errors?.NameClient?.message}
                     />
                 )}

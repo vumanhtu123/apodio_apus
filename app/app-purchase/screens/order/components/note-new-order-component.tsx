@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Linking, Platform, TouchableOpacity, View } from "react-native";
 import { AutoImage, Text, TextField } from "../../../../components";
 import { styles } from "../new-order/styles";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import Modal from "react-native-modal";
 import { colors, padding, scaleHeight, scaleWidth } from "../../../theme";
 import ImagesGroup from "../../product/component/imageGroup";

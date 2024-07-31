@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import { colors, scaleHeight, scaleWidth } from "../../../theme"
 import { FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { Header, Text } from "../../../../components"
 
 
@@ -123,7 +123,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                                     <TouchableOpacity style={{ position: 'absolute', bottom: 0, end: 0 }}
                                         onPress={() => setQuantity(1)}
                                     >
-                                        <Images.ic_btnAddSquare
+                                        <Svgs.ic_btnAddSquare
                                         />
                                     </TouchableOpacity>
                                 ) : (
@@ -132,7 +132,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                                             style={Styles.btnMinus}
                                             onPress={() => setQuantity(quantity - 1)}
                                         >
-                                            <Images.ic_minus />
+                                            <Svgs.ic_minus />
                                         </TouchableOpacity>
                                         <Text
                                             style={{ flex: 1, textAlign: 'center' }}
@@ -141,7 +141,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                                             style={Styles.btnMinus}
                                             onPress={() => setQuantity(quantity + 1)}
                                         >
-                                            <Images.icon_plusGreen />
+                                            <Svgs.icon_plusGreen />
                                         </TouchableOpacity>
                                     </View>
                                 )
@@ -156,10 +156,10 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     leftText="ImprotGoodsBook.ImportGoods"
-                    RightIcon={Images.ic_QR}
-                    RightIcon1={Images.icon_search}
+                    RightIcon={Svgs.ic_QR}
+                    RightIcon1={Svgs.icon_search}
                     style={{ height: scaleHeight(52), }}
                     btnRightStyle={{ width: 30, height: 30, }}
                     onLeftPress={() => props.navigation.goBack()}
@@ -199,7 +199,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ marginRight: scaleWidth(8) }}>
-                            <Images.squaresFour />
+                            <Svgs.squaresFour />
                         </View>
                         {titleTabar.map((item, index) => {
                             return (
@@ -235,7 +235,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                             onPress={() => props.navigation.navigate('createGoodsReceipt')}
                         >
                             <View style={{ flexDirection: 'row', }}>
-                                <Images.ic_ShoopingCar />
+                                <Svgs.ic_ShoopingCar />
                                 <View style={{ position: 'absolute', start: scaleWidth(7), top: scaleWidth(-5) }}>
                                     <View style={{ width: scaleWidth(15), height: scaleHeight(15), backgroundColor: 'red', borderRadius: scaleWidth(14), borderWidth: 1, borderColor: '#FFFFFF' }}>
                                         <Text style={{ alignSelf: 'center', fontSize: 9, color: '#FFF' }}>1</Text>

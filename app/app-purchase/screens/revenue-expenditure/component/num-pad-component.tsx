@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 
@@ -12,9 +12,9 @@ interface InputNumpad {
 export const Numpad = (props: InputNumpad) => {
   const line1 = [
     "C",
-    <Images.ic_divide width={scaleWidth(20)} height={scaleHeight(20)} />,
+    <Svgs.ic_divide width={scaleWidth(20)} height={scaleHeight(20)} />,
     "X",
-    <Images.ic_delete_calculator />,
+    <Svgs.ic_delete_calculator />,
   ];
   const line2 = ["1", "2", "3", "+"];
   const line3 = ["4", "5", "6", "-"];

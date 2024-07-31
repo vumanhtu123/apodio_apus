@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { styles } from './styles';
 
-import { Images } from '../../../../../assets/index';
+import { Svgs } from '../../../../../assets/svgs';
 import { Header } from '../../../../components/header/header';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Button, Text } from '../../../../components';
@@ -157,7 +157,7 @@ export const PrintInvoiceScreen: FC = observer(
                 <Header
                     headerTx={'printInvoiceScreen.printInvoice'}
                     type={"AntDesign"}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => navigation.goBack()}
                     style={styles.header}
                     titleStyle={styles.textHeader}

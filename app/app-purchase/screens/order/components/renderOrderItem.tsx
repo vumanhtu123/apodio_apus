@@ -6,7 +6,7 @@ import {
   StyleSheet,
 } from "react-native";
 import FastImage from "react-native-fast-image";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import {
   colors,
   fontSize,
@@ -180,7 +180,7 @@ const RenderOrderItem = ({
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
-                  <Images.icon_plus_blue2 />
+                  <Svgs.icon_plus_blue2 />
                 </TouchableOpacity>
               )
             ) : (
@@ -226,7 +226,7 @@ const RenderOrderItem = ({
                   //     : false
                   // }
                   style={{ width: "30%", alignItems: "center" }}>
-                  <Images.icon_minus />
+                  <Svgs.icon_minus />
                 </TouchableOpacity>
                 <Text
                   style={{
@@ -251,7 +251,7 @@ const RenderOrderItem = ({
                         : false
                   }
                   style={{ width: "30%", alignItems: "center" }}>
-                  <Images.icon_plusGreen />
+                  <Svgs.icon_plusGreen />
                 </TouchableOpacity>
               </View>
             )}
@@ -295,7 +295,7 @@ const RenderOrderItem = ({
           }}>
           {viewProduct === "VIEW_VARIANT" && item.upc !== null ? (
             <TouchableOpacity>
-              <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+              <Svgs.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -408,7 +408,7 @@ const RenderOrderItem = ({
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
-                  <Images.icon_plus_blue2 />
+                  <Svgs.icon_plus_blue2 />
                 </TouchableOpacity>
               )
             ) : (
@@ -454,7 +454,7 @@ const RenderOrderItem = ({
                   //     : false
                   // }
                   style={{ width: "15%", alignItems: "center" }}>
-                  <Images.icon_minus />
+                  <Svgs.icon_minus />
                 </TouchableOpacity>
                 <Text
                   style={{
@@ -479,7 +479,7 @@ const RenderOrderItem = ({
                         : false
                   }
                   style={{ width: "15%", alignItems: "center" }}>
-                  <Images.icon_plusGreen />
+                  <Svgs.icon_plusGreen />
                 </TouchableOpacity>
               </View>
             )}

@@ -14,7 +14,7 @@ import {
 import { StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../../theme";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Styles } from "../styles";
@@ -89,13 +89,13 @@ export const MustPayScreen: FC<
     <View style={{ flex: 1 }}>
       <Header
         style={{ height: scaleHeight(52) }}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="debtScreen.toPaydebt"
         onLeftPress={() => {
           props.navigation.goBack();
         }}
-        RightIcon={Images.ic_calender_white}
-        RightIcon1={Images.ic_slider}
+        RightIcon={Svgs.ic_calender_white}
+        RightIcon1={Svgs.ic_slider}
         btnRightStyle={{}}
         headerInput={true}
         searchText={en.NCCScreen.nameSuppliers}
@@ -158,7 +158,7 @@ export const MustPayScreen: FC<
       ) : (
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <Images.img_not_init />
+          <Svgs.img_not_init />
           <Text tx="debtScreen.notThing" style={{ color: "#848688" }} />
         </View>
       )}

@@ -4,7 +4,7 @@ import { styles } from '../styles';
 import { Text } from '../../../../../../components';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../../../theme';
 import ProductAttribute from '../../../component/productAttribute';
-import { Images } from '../../../../../../../assets';
+import { Svgs } from '../../../../../../../assets/svgs';
 
 interface ProductAttributesProps {
     dataClassification: any;
@@ -37,7 +37,7 @@ const ProductAttributes: React.FC<ProductAttributesProps> = ({
                         onPress={toggleDetails} 
                     >
                         <Text tx="detailScreen.detailProperty" style={{ color: colors.palette.navyBlue, marginRight: scaleWidth(5), fontSize: fontSize.size12 }} />
-                        <Images.iconDownBlue
+                        <Svgs.iconDownBlue
                             width={scaleWidth(16)}
                             height={scaleHeight(16)}
                             style={{ transform: [{ rotate: showDetails ? "180deg" : "0deg" }] }}

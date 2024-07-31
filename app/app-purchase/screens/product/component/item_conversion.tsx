@@ -11,7 +11,7 @@ import {
   ViewStyle,
 } from "react-native";
 import Modal from "react-native-modal";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components";
 import Dialog from "../../../../components/dialog/dialog";
 import {
@@ -205,7 +205,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                       marginHorizontal: scaleWidth(5),
                     }}>
                     <Text style={{ flex: 1 }} text={originalUnit.label} />
-                    <Images.icon_caretRightDown />
+                    <Svgs.icon_caretRightDown />
                   </TouchableOpacity>
                   <Controller
                     control={control}
@@ -259,7 +259,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                 <TouchableOpacity
                   onPress={() => remove(index)}
                   style={{ marginLeft: scaleWidth(7) }}>
-                  <Images.icon_minusCircle />
+                  <Svgs.icon_minusCircle />
                 </TouchableOpacity>
               ) : (
                 <View style={{ width: scaleWidth(12) }} />

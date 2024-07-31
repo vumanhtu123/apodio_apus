@@ -5,7 +5,7 @@ import ItemWeight from './component/weight-component';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Header, Text } from '../../../components';
-import { Images } from '../../../../assets';
+import { Svgs } from '../../../../assets/svgs';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../theme';
 import { commasToDots, formatCurrency, formatNumberFloat } from '../../utils/validate';
 import { ALERT_TYPE, Toast } from '../../../components/dialog-notification';
@@ -62,7 +62,7 @@ export const EditWeight: FC = observer(
             <FormProvider {...methods}>
                 <View style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
                     <Header
-                        LeftIcon={Images.back}
+                        LeftIcon={Svgs.back}
                         onLeftPress={() => navigation.goBack()}
                         headerTx='productScreen.editWeight'
                         style={{ height: scaleHeight(54) }}

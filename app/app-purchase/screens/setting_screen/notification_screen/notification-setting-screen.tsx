@@ -13,7 +13,7 @@ import {
   Switch,
   View,
 } from 'react-native';
-import {Images} from '../../../../../assets/index';
+import {Svgs} from '../../../../../assets/svgs';
 import {Text} from '../../../../components/text/text';
 import {colors, scaleHeight} from '../../../theme';
 import {styles} from './styles';
@@ -46,7 +46,7 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
       <StatusBar translucent backgroundColor={'transparent'} />
       <Header
         type={'AntDesign'}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="demoPodcastListScreen.notificationSetting.notificationSetting"

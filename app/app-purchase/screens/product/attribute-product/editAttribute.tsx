@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import { View } from "react-native";
 import { Button, Header } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
@@ -430,7 +430,7 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
     <FormProvider {...methods}>
       <View style={styles.ROOT}>
         <Header
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           headerText={translate("productScreen.updateAttribute")}
           style={{ height: scaleHeight(52) }}

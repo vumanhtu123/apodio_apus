@@ -3,7 +3,7 @@ import { FC, memo, useCallback, useState } from 'react';
 import React, { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Text, TextField } from '../../../../components';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../models';
 import ProductAttribute from './productAttribute';
@@ -294,7 +294,7 @@ export const ItemVariant = memo(
                                                                         style={{ marginRight: scaleWidth(6) }}
                                                                         onPress={() => handleDeleteProduct(index, item.id)}
                                                                     >
-                                                                        <Images.ic_minusCircle
+                                                                        <Svgs.ic_minusCircle
                                                                             width={scaleWidth(14)}
                                                                             height={scaleHeight(14)}
                                                                         />
@@ -357,7 +357,7 @@ export const ItemVariant = memo(
                                                                                 { color: colors.nero },
                                                                             ]}
                                                                         />
-                                                                        <Images.icon_edit />
+                                                                        <Svgs.icon_edit />
                                                                     </TouchableOpacity>
                                                                 ) : null}
                                                                 <View
@@ -424,7 +424,7 @@ export const ItemVariant = memo(
                                                                                     />
                                                                                 )}
                                                                             </View>
-                                                                            <Images.icon_caretRightDown />
+                                                                            <Svgs.icon_caretRightDown />
                                                                         </View>
                                                                     </TouchableOpacity>
                                                                     <Controller
@@ -443,7 +443,7 @@ export const ItemVariant = memo(
                                                                                 }}
                                                                                 value={value}
                                                                                 onBlur={onBlur}
-                                                                                RightIconClear={Images.icon_delete2}
+                                                                                RightIconClear={Svgs.icon_delete2}
                                                                                 // error={errors?.priceRetail?.message}
                                                                                 onClearText={() => onChange("")}
                                                                                 valueInput={vendorStore.checkSeparator === "DOTS"
@@ -487,7 +487,7 @@ export const ItemVariant = memo(
                                                                                 }}
                                                                                 value={value}
                                                                                 onBlur={onBlur}
-                                                                                RightIconClear={Images.icon_delete2}
+                                                                                RightIconClear={Svgs.icon_delete2}
                                                                                 // error={errors?.priceRetail?.message}
                                                                                 onClearText={() => onChange("")}
                                                                                 valueInput={vendorStore.checkSeparator === "DOTS"
@@ -573,7 +573,7 @@ export const ItemVariant = memo(
                                                                                 />
                                                                             )}
                                                                         </View>
-                                                                        <Images.icon_caretRightDown />
+                                                                        <Svgs.icon_caretRightDown />
                                                                     </View>
                                                                 </TouchableOpacity>
                                                             </View>
@@ -597,7 +597,7 @@ export const ItemVariant = memo(
                                                     navigation.navigate("addAttribute" as never)
                                                 }
                                             >
-                                                <Images.ic_plusBlue
+                                                <Svgs.ic_plusBlue
                                                     width={scaleWidth(16)}
                                                     height={scaleHeight(16)}
                                                 />
@@ -637,7 +637,7 @@ export const ItemVariant = memo(
                                     //     } as never);
                                     // }}
                                     >
-                                        <Images.icon_edit
+                                        <Svgs.icon_edit
                                             // style={{ marginRight: scaleWidth(8) }}
                                             width={scaleWidth(14)}
                                             height={scaleHeight(14)}
@@ -647,7 +647,7 @@ export const ItemVariant = memo(
                                 {props.isVariantInConfig === true ?
                                     (props.dataCreateProduct.length === 0 ? (
                                         <TouchableOpacity onPress={() => props.setAddVariant(false)}>
-                                            <Images.ic_close
+                                            <Svgs.ic_close
                                                 width={scaleWidth(14)}
                                                 height={scaleHeight(14)}
                                                 style={{ marginLeft: 10 }}
@@ -663,7 +663,7 @@ export const ItemVariant = memo(
                                                 props.setVariantInConfig(false);
                                             }}
                                         >
-                                            <Images.ic_close
+                                            <Svgs.ic_close
                                                 width={scaleWidth(14)}
                                                 height={scaleHeight(14)}
                                                 style={{ marginLeft: 10 }}

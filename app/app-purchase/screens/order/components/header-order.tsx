@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components";
 import { useNavigation } from "@react-navigation/native";
 import { OnProgressEvent } from "react-native-fast-image";
@@ -50,7 +50,7 @@ export const HeaderOrder = (data: InputData) => {
             alignItems: "center",
             alignContent: "center",
           }}>
-          <Images.ic_avatar_order />
+          <Svgs.ic_avatar_order />
           {data.data.name !== "" ? (
             <Text
               text={data.data.name}
@@ -72,7 +72,7 @@ export const HeaderOrder = (data: InputData) => {
           )}
         </View>
         {data.disabled === true ? null :
-          <Images.icon_caretRight2 />
+          <Svgs.icon_caretRight2 />
         }
       </View>
     </TouchableOpacity>
@@ -125,7 +125,7 @@ export const PriceList = (data: PriceData) => {
             }}></Text>
         )}
       </View>
-      {data.disabled === true ? null : <Images.icon_caretRight2 />}
+      {data.disabled === true ? null : <Svgs.icon_caretRight2 />}
     </TouchableOpacity>
   );
 };
@@ -195,7 +195,7 @@ export const AddressOrder = (data: AddressData) => {
               }}></Text>
           )}
         </View>
-        <Images.icon_caretRight2 />
+        <Svgs.icon_caretRight2 />
       </View>
     </TouchableOpacity>
   );

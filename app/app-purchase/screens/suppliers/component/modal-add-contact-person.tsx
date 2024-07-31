@@ -5,7 +5,7 @@ import { View, Text as TextRN, TouchableOpacity, Image, ScrollView } from "react
 import Modal from "react-native-modal"
 import { styles } from "./modal-create-supplier"
 import { Text, TextField } from "../../../../components"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme"
 import { InputSelect } from "../../../../components/input-select/inputSelect"
 import { Controller, useForm } from "react-hook-form"
@@ -94,11 +94,11 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                             <TouchableOpacity
                                 style={{ marginBottom: 10 }}
                             >
-                                <Images.img_addImg />
+                                <Svgs.img_addImg />
                             </TouchableOpacity>
 
                             <TouchableOpacity>
-                                <Images.img_Camera />
+                                <Svgs.img_Camera />
                             </TouchableOpacity>
 
                         </View>
@@ -111,7 +111,7 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                                     top: 5,
                                     zIndex: 2
                                 }}>
-                                    <Images.ic_Xcircle />
+                                    <Svgs.ic_Xcircle />
                                 </TouchableOpacity>
 
                                 <Image
@@ -157,7 +157,7 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                                     fontSize: fontSize.size16,
                                     fontWeight: "500",
                                 }}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 onChangeText={(value) => onChange(value)}
                                 onClearText={() => onChange("")}
                                 error={errors.name?.message}
@@ -183,7 +183,7 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                                     fontSize: fontSize.size16,
                                     fontWeight: "500",
                                 }}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 onChangeText={(value) => onChange(value)}
                                 onClearText={() => onChange("")}
                                 error={errors.Position?.message}
@@ -216,9 +216,9 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                                 placeholder={"dd/mm/yyyy"}
                                 value={value}
                                 onBlur={onBlur}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 onChangeText={(txt) => onChange(txt)}
-                                RightIcon={Images.ic_Calender_gray}
+                                RightIcon={Svgs.ic_Calender_gray}
                                 onClearText={() => onChange("")}
                                 style={{
                                     marginBottom: scaleWidth(15)
@@ -245,9 +245,9 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                                 placeholderTx={"NCCScreen.enterPhone"}
                                 value={value}
                                 onBlur={onBlur}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 onChangeText={(txt) => onChange(txt)}
-                                RightIcon={Images.ic_Calender_gray}
+                                RightIcon={Svgs.ic_Calender_gray}
                                 onClearText={() => onChange("")}
                                 style={{
                                     marginBottom: scaleWidth(15)
@@ -274,7 +274,7 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                                 placeholderTx={"NCCScreen.placeholderEmail"}
                                 value={value}
                                 onBlur={onBlur}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 onChangeText={(txt) => onChange(txt)}
 
                                 onClearText={() => onChange("")}
@@ -303,7 +303,7 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
                                 placeholderTx={"NCCScreen.placeholderPersonalIdentification"}
                                 value={value}
                                 onBlur={onBlur}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 onChangeText={(txt) => onChange(txt)}
 
                                 onClearText={() => onChange("")}

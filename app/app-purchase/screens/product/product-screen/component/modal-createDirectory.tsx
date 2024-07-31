@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import { AutoImage, TextField } from "../../../../../components";
 import { CustomModal } from "../../../../../components/custom-modal";
 import {
@@ -274,7 +274,7 @@ const CreateDirectoryModal = (props: any) => {
               <TouchableOpacity
                 onPress={handleLibraryUse}
                 style={stylesCreateDirectory.handleLib}>
-                <Images.ic_addImages
+                <Svgs.ic_addImages
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -282,7 +282,7 @@ const CreateDirectoryModal = (props: any) => {
               <TouchableOpacity
                 onPress={handleCameraUse}
                 style={stylesCreateDirectory.handleCamera}>
-                <Images.ic_camera
+                <Svgs.ic_camera
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -296,7 +296,7 @@ const CreateDirectoryModal = (props: any) => {
               <TouchableOpacity
                 style={stylesCreateDirectory.viewClose}
                 onPress={() => handleRemoveImage()}>
-                <Images.circle_close
+                <Svgs.circle_close
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -311,7 +311,7 @@ const CreateDirectoryModal = (props: any) => {
                 onPress={handleLibraryUse}
                 style={stylesCreateDirectory.handleLib2}>
                 <View style={stylesCreateDirectory.viewAddImage}>
-                  <Images.ic_addImages
+                  <Svgs.ic_addImages
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -324,7 +324,7 @@ const CreateDirectoryModal = (props: any) => {
                 onPress={handleCameraUse}
                 style={stylesCreateDirectory.handleCamera2}>
                 <View style={stylesCreateDirectory.viewIcCamera}>
-                  <Images.ic_camera
+                  <Svgs.ic_camera
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -353,7 +353,7 @@ const CreateDirectoryModal = (props: any) => {
                 isImportant={true}
                 value={value}
                 onBlur={onBlur}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 error={errors?.nameCategory?.message}
                 onClearText={() => {
                   onChange("");

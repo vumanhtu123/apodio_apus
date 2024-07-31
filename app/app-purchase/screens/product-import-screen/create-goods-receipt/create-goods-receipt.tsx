@@ -4,7 +4,7 @@ import React, { FC, useState } from "react";
 import { FlatList, Modal, StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import { NavigatorParamList } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, colors, scaleWidth } from "../../../theme";
 import { Header, Text } from "../../../../components";
 import { UserStatus } from "../../../utils/const";
@@ -40,7 +40,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="ImprotGoodsBook.createGoodsReceipt"
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => navigation.goBack()}
@@ -91,9 +91,9 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                             style={{ flexDirection: 'row', marginTop: scaleHeight(24), marginBottom: scaleHeight(20) }}
                         >
                             <View style={{ zIndex: 1 }}>
-                                <Images.ic_Brick />
+                                <Svgs.ic_Brick />
                                 <View style={{ zIndex: 2, position: 'absolute', top: scaleHeight(-6), start: scaleWidth(-2) }}>
-                                    <Images.ic_Xcircle />
+                                    <Svgs.ic_Xcircle />
                                 </View>
                             </View>
 
@@ -111,7 +111,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}
                                         // onPress={() => handleDecrement()}
                                         >
-                                            <Images.ic_minus />
+                                            <Svgs.ic_minus />
                                         </TouchableOpacity>
                                         <Text style={{ flex: 1, textAlign: 'center' }}>
                                             {/* {itemCounts[item.id] || item.quantity} */}
@@ -121,7 +121,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                         // onPress={() => handleIncrement()}
 
                                         >
-                                            <Images.icon_plusGreen />
+                                            <Svgs.icon_plusGreen />
                                         </TouchableOpacity>
                                     </View>
                                     <View>
@@ -139,7 +139,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <View style={[Style.flexRow, { alignItems: 'center', paddingVertical: 20 }]}>
                             <Text style={Style.txtGroup2} tx="ImprotGoodsBook.note" />
 
-                            <Images.ic_system_uico />
+                            <Svgs.ic_system_uico />
                         </View>
 
                     </View>
@@ -168,7 +168,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                 <Text style={{ color: colors.palette.navyBlue }}>
                                     0
                                 </Text>
-                                <Images.ic_pen />
+                                <Svgs.ic_pen />
                             </View>
 
                         </View>
@@ -178,7 +178,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
 
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                                <Images.ic_pen />
+                                <Svgs.ic_pen />
                             </View>
 
                         </View>
@@ -189,7 +189,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <View style={[Style.flexRow, { alignItems: 'center', }]}>
                             <Text style={Style.txtGroup2} tx="ImprotGoodsBook.note" />
 
-                            <Images.icon_image />
+                            <Svgs.icon_image />
                         </View>
 
                     </View>
@@ -232,7 +232,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                 <TouchableOpacity
                                     onPress={() => setisVisibleConfimImportGoods(!isVisibleConfimImportGoods)}
                                 >
-                                    <Images.ic_x />
+                                    <Svgs.ic_x />
                                 </TouchableOpacity>
 
                             </View>

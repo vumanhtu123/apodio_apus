@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 
 export const HeaderInfo = (item: any) => {
   return (
@@ -38,7 +38,7 @@ export const HeaderInfo = (item: any) => {
             {item.id ?? "NCC0000001"}
           </Text>
           <TouchableOpacity>
-            <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
+            <Svgs.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
           </TouchableOpacity>
         </View>
         <Text

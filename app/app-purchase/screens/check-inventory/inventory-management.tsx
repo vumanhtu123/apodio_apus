@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Header } from "../../../components";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { FlashList } from "@shopify/flash-list";
 import { UserStatus } from "../../utils/const";
@@ -153,11 +153,11 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
         return (
             <View style={{ flex: 1, }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="checkInventory.manageInventorySheets"
                     headerInput={true}
                     style={{ height: scaleHeight(55) }}
-                    RightIconTextInput={Images.ic_dowload}
+                    RightIconTextInput={Svgs.ic_dowload}
                     onLeftPress={() => props.navigation.goBack()}
 
                 />
@@ -211,7 +211,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
 
                         }}
                     >
-                        <Images.ic_Calender_gray />
+                        <Svgs.ic_Calender_gray />
                     </TouchableOpacity>
 
 
@@ -320,7 +320,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                 {
                     !dataListInventory && (
                         <View style={{ alignItems: 'center', marginTop: scaleHeight(80), flex: 1, }}>
-                            <Images.img_not_init />
+                            <Svgs.img_not_init />
                             <Text >
                                 Chưa có phiếu kiểm kho nào được tạo
                             </Text>
@@ -346,7 +346,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
 
                     }}
                 >
-                    <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
+                    <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
                     <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Tạo phiếu kiểm kho</Text>
                 </TouchableOpacity>
 

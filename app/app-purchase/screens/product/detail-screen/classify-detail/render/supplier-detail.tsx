@@ -4,7 +4,7 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { styles } from "../styles";
 import { colors, margin, padding, scaleHeight, scaleWidth } from "../../../../../theme";
 import { Text } from "../../../../../../components";
-import { Images } from "../../../../../../../assets";
+import { Svgs } from "../../../../../../../assets/svgs";
 
 interface SupplierListProps {
     arrNCC: any[];
@@ -42,7 +42,7 @@ const SupplierList: React.FC<SupplierListProps> = ({ arrNCC }) => {
                                 setShowNCC(!showNCC)
                                 console.log('ádsadwer', arrNCC)
                             }}>
-                                {showNCC ? <Images.icon_caretUp /> : <Images.icon_caretRightDown />}
+                                {showNCC ? <Svgs.icon_caretUp /> : <Svgs.icon_caretRightDown />}
                             </TouchableOpacity>
                         </View>
                         {showNCC &&
@@ -59,7 +59,7 @@ const SupplierList: React.FC<SupplierListProps> = ({ arrNCC }) => {
                                                 width={scaleHeight(40)}
                                                 height={scaleHeight(40)}
                                                 style={{ borderRadius: 40 }}
-                                                fallbackSource={Images.imageError}
+                                                fallbackSource={Svgs.imageError}
                                             />
                                             <View
                                                 style={{

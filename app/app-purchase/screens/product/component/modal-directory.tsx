@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 import { translate } from "../../../i18n";
@@ -45,7 +45,7 @@ const CategoryModal = (props: CategoryModalProps) => {
       }}
       style={[styles.categoryItem]}>
       <View>
-        <Images.logoChangePass width={50} height={50} />
+        <Svgs.logoChangePass width={50} height={50} />
       </View>
       <View style={styles.titleView}>
         <Text style={styles.title}>{item.name}</Text>

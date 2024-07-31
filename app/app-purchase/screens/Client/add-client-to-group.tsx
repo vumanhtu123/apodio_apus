@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite"
 import { AppStackParamList, navigate } from "../../navigators"
 import { StackScreenProps } from "@react-navigation/stack"
 import { Header } from "../../../components"
-import { Images } from "../../../../assets"
+import { Svgs } from "../../../../assets/svgs"
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../theme"
 
 
@@ -101,7 +101,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
                         onPress={() => handleCheckboxPress(item.id)}
                     >
                         <Text style={Styles.checkboxText}>
-                            {itemsChecked.includes(item.id) ? <Images.icon_check/> : null}
+                            {itemsChecked.includes(item.id) ? <Svgs.icon_check/> : null}
                         </Text>
                     </TouchableOpacity>
 
@@ -114,7 +114,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     style={{ height: 56 }}
                     headerInputCenter={true}
                     onLeftPress={() => props.navigation.goBack()}

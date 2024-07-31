@@ -5,7 +5,7 @@ import { useStores } from '../../../models';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import FastImage from 'react-native-fast-image';
 import { Text } from '../../../../components';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import Modal from 'react-native-modal'
 import { commasToDots, formatCurrency, formatNumber, formatVND, removeNonNumeric } from '../../../utils/validate';
@@ -74,7 +74,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text text={item.name}
                             style={[styles.textName, { color: item.isSelect === true ? colors.palette.navyBlue : colors.nero }]} />
-                        {item.isSelect === true ? <Images.icon_checkCircleBlue /> : null}
+                        {item.isSelect === true ? <Svgs.icon_checkCircleBlue /> : null}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3) }}>
                         <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.orderAccordingly'} />
@@ -90,7 +90,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             }}
                             style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.text400Nero10} text={item.saleUom?.name} />
-                            <Images.icon_caretRightDown />
+                            <Svgs.icon_caretRightDown />
                         </TouchableOpacity>
                         {item.uomId === item.saleUom?.id ? null :
                             <View style={{ width: '34%'}}>
@@ -108,13 +108,13 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     onPress={() => handleMinusPrice(item)}
                                     style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
                                 >
-                                    <Images.icon_minus />
+                                    <Svgs.icon_minus />
                                 </TouchableOpacity>
                                 <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
                                 <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlusPrice(item)}
                                     style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
                                 >
-                                    <Images.icon_plusGreen />
+                                    <Svgs.icon_plusGreen />
                                 </TouchableOpacity>
                             </View>
                             <View >
@@ -147,7 +147,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             flex: 1
                         }} />
                         <TouchableOpacity onPress={() => setIsModal(false)}>
-                            <Images.icon_deleteDolphin />
+                            <Svgs.icon_deleteDolphin />
                         </TouchableOpacity>
                     </View>
                     <InputSelect
@@ -205,7 +205,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text text={item.name}
                             style={[styles.textName, { color: item.isSelect === true ? colors.palette.navyBlue : colors.nero }]} />
-                        {item.isSelect === true ? <Images.icon_checkCircleBlue /> : null}
+                        {item.isSelect === true ? <Svgs.icon_checkCircleBlue /> : null}
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: scaleHeight(3), width: '100%' }}>
                         <Text style={[styles.text400Nero10, { marginRight: scaleWidth(6) }]} tx={'order.orderAccordingly'} />
@@ -221,7 +221,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             }}
                             style={{ marginHorizontal: scaleWidth(6), flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={styles.text400Nero10} text={item.saleUom?.name} />
-                            <Images.icon_caretRightDown />
+                            <Svgs.icon_caretRightDown />
                         </TouchableOpacity>
                         {item.uomId === item.saleUom?.id ? null :
                             <View style={{ width: '34%'}} >
@@ -237,13 +237,13 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     onPress={() => handleMinus(item)}
                                     style={{ width: '25%', alignItems: 'center', opacity: item.amount === 0 ? 0.5 : 1 }}
                                 >
-                                    <Images.icon_minus />
+                                    <Svgs.icon_minus />
                                 </TouchableOpacity>
                                 <Text style={{ width: '50%', textAlign: 'center', }} >{item.amount}</Text>
                                 <TouchableOpacity disabled={item.amount === item.quantityInventory ? true : false} onPress={() => handlePlus(item)}
                                     style={{ width: '25%', alignItems: 'center', opacity: item.amount === item.quantityInventory ? 0.5 : 1 }}
                                 >
-                                    <Images.icon_plusGreen />
+                                    <Svgs.icon_plusGreen />
                                 </TouchableOpacity>
                             </View>
                             <View >
@@ -267,7 +267,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                                     setCheck(true)
 
                                 }}>
-                                    <Images.icon_edit />
+                                    <Svgs.icon_edit />
                                 </TouchableOpacity>
                             </View> :
                                 <TouchableOpacity
@@ -293,7 +293,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                             flex: 1
                         }} />
                         <TouchableOpacity onPress={() => setIsModal(false)}>
-                            <Images.icon_deleteDolphin />
+                            <Svgs.icon_deleteDolphin />
                         </TouchableOpacity>
                     </View>
                     <InputSelect

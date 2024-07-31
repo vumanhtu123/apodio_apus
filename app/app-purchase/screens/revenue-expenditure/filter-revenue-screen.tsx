@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
 import { Header, Text } from "../../../components";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleWidth } from "../../theme";
 import { styles } from "./styles/styles-filter";
 import CustomCalendarWarehouseBook from "../warehouse-book/calendar-warehouse-book/customCalendarWarehouseBook";
@@ -132,7 +132,7 @@ export const FilterRevenueScreen: FC<
   return (
     <View style={{ flex: 1 }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="warehouseBook.filter"
         onLeftPress={() => {
           navigation.goBack();
@@ -233,7 +233,7 @@ export const FilterRevenueScreen: FC<
                 />
 
                 <View style={{ transform: [{ rotate: "180deg" }] }}>
-                  <Images.dropDown />
+                  <Svgs.dropDown />
                 </View>
               </View>
             </View>
@@ -278,7 +278,7 @@ export const FilterRevenueScreen: FC<
                 />
 
                 <View style={{ transform: [{ rotate: "180deg" }] }}>
-                  <Images.dropDown />
+                  <Svgs.dropDown />
                 </View>
               </View>
             </View>
@@ -381,7 +381,7 @@ export const FilterRevenueScreen: FC<
                 style={styles.stytleTitle}
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Images.ic_downLoadBlue />
+                <Svgs.ic_downLoadBlue />
 
                 <Text
                   tx="warehouseBook.downloadNow"
