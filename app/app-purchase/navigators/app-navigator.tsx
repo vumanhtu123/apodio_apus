@@ -545,23 +545,23 @@ export const AppNavigator = (props: NavigationProps) => {
   // useBackButtonHandler(canExit);
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName));
 
-  return (
-    <AuthProvider>
-      <NavigationContainer
-        ref={navigationRef}
-        theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        {...props}>
-        {/* <AppStack /> */}
-        <MyDrawer />
-      </NavigationContainer>
-    </AuthProvider>
-  );
-
   // return (
   //   <AuthProvider>
-  //     <Router {...props} />
+  //     <NavigationContainer
+  //       ref={navigationRef}
+  //       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+  //       {...props}>
+  //       {/* <AppStack /> */}
+  //       <MyDrawer />
+  //     </NavigationContainer>
   //   </AuthProvider>
   // );
+
+  return (
+    <AuthProvider>
+      <Router {...props} />
+    </AuthProvider>
+  );
 };
 
 AppNavigator.displayName = "AppNavigator";
