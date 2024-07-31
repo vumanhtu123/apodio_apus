@@ -11,6 +11,7 @@ import { StyleSheet } from "react-native";
 import { Images } from "../../../assets/index";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MainBottomTab } from "./bottom-navigation";
+import { AppStack } from "./app-navigator";
 export function CustomDrawerContent(props: any) {
   const [selectBuy, setSelectBuy] = useState(true);
   function select() {
@@ -204,9 +205,14 @@ export function MyDrawer() {
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
       {/* Các Screen của bạn */}
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="home"
         component={MainBottomTab}
+        options={{ headerShown: false }}
+      /> */}
+      <Drawer.Screen
+        name="app"
+        component={AppStack}
         options={{ headerShown: false }}
       />
     </Drawer.Navigator>
