@@ -9,10 +9,12 @@ import { colors, scaleHeight, scaleWidth } from "../../app-purchase/theme";
 const { height } = Dimensions.get("window");
 import { StyleSheet } from "react-native";
 import { Svgs } from "../../../assets/svgs";
-import  Images  from "../../../assets/index";
+import Images from "../../../assets/index";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { MainBottomTab } from "./bottom-navigation";
 import { AppStack } from "./app-navigator";
+import { OpenAppStack } from "./open-app-navigator";
+import { AuthStack } from "./auth-navigator";
 export function CustomDrawerContent(props: any) {
   const [selectBuy, setSelectBuy] = useState(true);
   function select() {
@@ -161,10 +163,7 @@ export function CustomDrawerContent(props: any) {
           </View>
         </View>
         <View style={styles.containerImage2}>
-          <Image
-            source={Images.banner}
-            style={{ width: 225, height: 130 }}
-          />
+          <Image source={Images.banner} style={{ width: 225, height: 130 }} />
         </View>
         {dataTop.map((index) => (
           <ItemDrawer
@@ -206,11 +205,21 @@ export function MyDrawer() {
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
       {/* Các Screen của bạn */}
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="home"
         component={MainBottomTab}
         options={{ headerShown: false }}
-      /> */}
+      />
+      <Drawer.Screen
+        name="app1"
+        component={AuthStack}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="app2"
+        component={OpenAppStack}
+        options={{ headerShown: false }}
+      />
       <Drawer.Screen
         name="app"
         component={AppStack}

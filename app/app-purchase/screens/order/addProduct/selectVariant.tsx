@@ -30,6 +30,7 @@ import { useStores } from "../../../models";
 import { ItemSelectVariant } from "../components/itemSelectVariant";
 import { styles } from "./styles";
 import PriceModal from "../components/modal-price";
+import Images from "../../../../../assets/index";
 
 export const SelectVariant: FC = observer(function SelectVariant() {
   const navigation = useNavigation();
@@ -60,7 +61,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         console.log("response---getDetailProduct-------", data);
         setArrImagesProduct(data.imageUrls);
       } else {
-        console.error("Failed to fetch detail:", response.response.errorCodes[0].message);
+        console.error(
+          "Failed to fetch detail:",
+          response.response.errorCodes[0].message
+        );
       }
     } catch (error) {
       console.error("Error fetching detail:", error);
@@ -83,173 +87,8 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   };
 
   const getDataVariantPrice = async () => {
-      const response: OrderVariantResult =
-        await orderStore.getListOrderVariantPrice(
-          page,
-          size,
-          undefined,
-          undefined,
-          [],
-          "",
-          orderStore.isLoadMore,
-          undefined,
-          productTemplateId,
-          Number(orderStore.dataPriceListSelected.id)
-        );
-      console.log(
-        "data variant ///////",
-        JSON.stringify(response.response.data.content)
-      );
-      if (response && response.kind === "ok") {
-        setTotalPagesProduct(response.response.data.totalPages);
-        const aMap = new Map(
-          orderStore.dataProductAddOrder.map((item) => [item.id, item])
-        );
-        console.log("////////////////", response.response.data.totalPages);
-        if (page === 0) {
-          const newArr = response.response.data.content.map((items: any) => {
-            if (items.saleUom === null) {
-              return {
-                ...items,
-                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
-              };
-            } else {
-            if (items.uomId === items.saleUom?.id) {
-              return {
-                ...items,
-                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-              };
-            } else {
-              const newObject = items.uomGroup.uomGroupLineItems.filter(
-                (item: any) => item.uomId === items.saleUom?.id
-              );
-              const newAmount = Math.ceil(
-                items.minQuantity / newObject[0].conversionRate
-              );
-              return {
-                ...items,
-                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                isSelect: false,
-                conversionRate: newObject[0].conversionRate,
-                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-              };
-            }
-          }
-          });
-          const newArr2 = await Promise.all(
-            newArr.map(async (items: any) => {
-              const dataGetPrice = {
-                productCategoryId: items.productTemplate.productCategoryId,
-                productTemplateId: items.productTemplate.id,
-                productId: items.id,
-                priceListId: Number(orderStore.dataPriceListSelected.id),
-                quantity: items.amount * items.conversionRate,
-              };
-              const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, unitPrice: newPrice };
-            })
-          );
-          const newArr1 = newArr2.map((item) => {
-            if (aMap.has(item.id)) {
-              return {
-                ...item,
-                isSelect: true,
-                amount: aMap.get(item.id).amount,
-                price: aMap.get(item.id).price,
-                unitPrice: aMap.get(item.id).unitPrice,
-                conversionRate: aMap.get(item.id).conversionRate,
-                saleUom: aMap.get(item.id).saleUom,
-                originAmount: aMap.get(item.id).originAmount,
-                taxValue: aMap.get(item.id).taxValue,
-                VAT: aMap.get(item.id).VAT,
-              };
-            }
-            return item;
-          });
-          setDataVariant(newArr1);
-        } else {
-          const newArr = response.response.data.content.map((items: any) => {
-            if (items.saleUom === null) {
-              return {
-                ...items,
-                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
-              };
-            } else {
-            if (items.uomId === items.saleUom?.id) {
-              return {
-                ...items,
-                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-              };
-            } else {
-              const newObject = items.uomGroup.uomGroupLineItems.filter(
-                (item: any) => item.uomId === items.saleUom?.id
-              );
-              const newAmount = Math.ceil(
-                items.minQuantity / newObject[0].conversionRate
-              );
-              return {
-                ...items,
-                amount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-                isSelect: false,
-                conversionRate: newObject[0].conversionRate,
-                originAmount: items.quantityInventory>=items.minQuantity ? items.minQuantity: 0,
-              };
-            }
-          }
-          });
-          const newArr2 = await Promise.all(
-            newArr.map(async (items: any) => {
-              const dataGetPrice = {
-                productCategoryId: items.productTemplate.productCategoryId,
-                productTemplateId: items.productTemplate.id,
-                productId: items.id,
-                priceListId: Number(orderStore.dataPriceListSelected.id),
-                quantity: items.amount * items.conversionRate,
-              };
-              const newPrice = await getPriceVariant(dataGetPrice);
-              return { ...items, unitPrice: newPrice };
-            })
-          );
-          const newArr1 = newArr2.map((item: any) => {
-            if (aMap.has(item.id)) {
-              return {
-                ...item,
-                isSelect: true,
-                amount: aMap.get(item.id).amount,
-                price: aMap.get(item.id).price,
-                unitPrice: aMap.get(item.id).unitPrice,
-                conversionRate: aMap.get(item.id).conversionRate,
-                saleUom: aMap.get(item.id).saleUom,
-                originAmount: aMap.get(item.id).originAmount,
-                taxValue: aMap.get(item.id).taxValue,
-                VAT: aMap.get(item.id).VAT,
-              };
-            }
-            return item;
-          });
-          setDataVariant((prevProducts: any) => [...prevProducts, ...newArr1]);
-        }
-      } else {
-        console.error("Failed to fetch variant:", response);
-      }
-  };
-
-  const getDataVariant = async () => {
-      const response: OrderVariantResult = await orderStore.getListOrderVariant(
+    const response: OrderVariantResult =
+      await orderStore.getListOrderVariantPrice(
         page,
         size,
         undefined,
@@ -258,125 +97,338 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         "",
         orderStore.isLoadMore,
         undefined,
-        productTemplateId
+        productTemplateId,
+        Number(orderStore.dataPriceListSelected.id)
       );
-      console.log(
-        "data variant ///////",
-        JSON.stringify(response.response.data.content)
+    console.log(
+      "data variant ///////",
+      JSON.stringify(response.response.data.content)
+    );
+    if (response && response.kind === "ok") {
+      setTotalPagesProduct(response.response.data.totalPages);
+      const aMap = new Map(
+        orderStore.dataProductAddOrder.map((item) => [item.id, item])
       );
-      if (response && response.kind === "ok") {
-        setTotalPagesProduct(response.response.data.totalPages);
-        const aMap = new Map(
-          orderStore.dataProductAddOrder.map((item) => [item.id, item])
+      console.log("////////////////", response.response.data.totalPages);
+      if (page === 0) {
+        const newArr = response.response.data.content.map((items: any) => {
+          if (items.saleUom === null) {
+            return {
+              ...items,
+              amount:
+                items.quantityInventory >= items.minQuantity
+                  ? items.minQuantity
+                  : 0,
+              isSelect: false,
+              conversionRate: 1,
+              originAmount:
+                items.quantityInventory >= items.minQuantity
+                  ? items.minQuantity
+                  : 0,
+              saleUom: {
+                id: items.uomGroup.uomOriginId,
+                name: items.uomGroup.uomOriginName,
+              },
+            };
+          } else {
+            if (items.uomId === items.saleUom?.id) {
+              return {
+                ...items,
+                amount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+              };
+            } else {
+              const newObject = items.uomGroup.uomGroupLineItems.filter(
+                (item: any) => item.uomId === items.saleUom?.id
+              );
+              const newAmount = Math.ceil(
+                items.minQuantity / newObject[0].conversionRate
+              );
+              return {
+                ...items,
+                amount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+                isSelect: false,
+                conversionRate: newObject[0].conversionRate,
+                originAmount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+              };
+            }
+          }
+        });
+        const newArr2 = await Promise.all(
+          newArr.map(async (items: any) => {
+            const dataGetPrice = {
+              productCategoryId: items.productTemplate.productCategoryId,
+              productTemplateId: items.productTemplate.id,
+              productId: items.id,
+              priceListId: Number(orderStore.dataPriceListSelected.id),
+              quantity: items.amount * items.conversionRate,
+            };
+            const newPrice = await getPriceVariant(dataGetPrice);
+            return { ...items, unitPrice: newPrice };
+          })
         );
-        console.log("////////////////", response.response.data.totalPages);
-        if (page === 0) {
-          const newArr = response.response.data.content.map((items: any) => {
-            if (items.saleUom === null) {
-              return {
-                ...items,
-                amount: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: 0,
-                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
-              };
-            } else {
-            if (items.uomId === items.saleUom?.id) {
-              return {
-                ...items,
-                amount: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: 0,
-              };
-            } else {
-              const newObject = items.uomGroup.uomGroupLineItems.filter(
-                (item: any) => item.uomId === items.saleUom?.id
-              );
-              return {
-                ...items,
-                amount: 0,
-                isSelect: false,
-                conversionRate: newObject[0].conversionRate,
-                originAmount: 0,
-              };
-            }
+        const newArr1 = newArr2.map((item) => {
+          if (aMap.has(item.id)) {
+            return {
+              ...item,
+              isSelect: true,
+              amount: aMap.get(item.id).amount,
+              price: aMap.get(item.id).price,
+              unitPrice: aMap.get(item.id).unitPrice,
+              conversionRate: aMap.get(item.id).conversionRate,
+              saleUom: aMap.get(item.id).saleUom,
+              originAmount: aMap.get(item.id).originAmount,
+              taxValue: aMap.get(item.id).taxValue,
+              VAT: aMap.get(item.id).VAT,
+            };
           }
-          });
-          const newArr1 = newArr.map((item: any) => {
-            if (aMap.has(item.id)) {
-              return {
-                ...item,
-                isSelect: true,
-                amount: aMap.get(item.id).amount,
-                unitPrice: aMap.get(item.id).unitPrice,
-                conversionRate: aMap.get(item.id).conversionRate,
-                saleUom: aMap.get(item.id).saleUom,
-                originAmount: aMap.get(item.id).originAmount,
-                taxValue: aMap.get(item.id).taxValue,
-                VAT: aMap.get(item.id).VAT,
-              };
-            }
-            return item;
-          });
-          setDataVariant(newArr1);
-        } else {
-          const newArr = response.response.data.content.map((items: any) => {
-            if (items.saleUom === null) {
-              return {
-                ...items,
-                amount: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: 0,
-                saleUom: {id: items.uomGroup.uomOriginId, name: items.uomGroup.uomOriginName},
-              };
-            } else {
-            if (items.uomId === items.saleUom?.id) {
-              return {
-                ...items,
-                amount: 0,
-                isSelect: false,
-                conversionRate: 1,
-                originAmount: 0,
-              };
-            } else {
-              const newObject = items.uomGroup.uomGroupLineItems.filter(
-                (item: any) => item.uomId === items.saleUom?.id
-              );
-              return {
-                ...items,
-                amount: 0,
-                isSelect: false,
-                conversionRate: newObject[0].conversionRate,
-                originAmount: 0,
-              };
-            }
-          }
-          });
-          const newArr1 = newArr.map((item: any) => {
-            if (aMap.has(item.id)) {
-              return {
-                ...item,
-                isSelect: true,
-                amount: aMap.get(item.id).amount,
-                price: aMap.get(item.id).price,
-                unitPrice: aMap.get(item.id).unitPrice,
-                conversionRate: aMap.get(item.id).conversionRate,
-                saleUom: aMap.get(item.id).saleUom,
-                originAmount: aMap.get(item.id).originAmount,
-                taxValue: aMap.get(item.id).taxValue,
-                VAT: aMap.get(item.id).VAT,
-              };
-            }
-            return item;
-          });
-          setDataVariant((prevProducts: any) => [...prevProducts, ...newArr1]);
-        }
+          return item;
+        });
+        setDataVariant(newArr1);
       } else {
-        console.error("Failed to fetch variant:", response);
+        const newArr = response.response.data.content.map((items: any) => {
+          if (items.saleUom === null) {
+            return {
+              ...items,
+              amount:
+                items.quantityInventory >= items.minQuantity
+                  ? items.minQuantity
+                  : 0,
+              isSelect: false,
+              conversionRate: 1,
+              originAmount:
+                items.quantityInventory >= items.minQuantity
+                  ? items.minQuantity
+                  : 0,
+              saleUom: {
+                id: items.uomGroup.uomOriginId,
+                name: items.uomGroup.uomOriginName,
+              },
+            };
+          } else {
+            if (items.uomId === items.saleUom?.id) {
+              return {
+                ...items,
+                amount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+              };
+            } else {
+              const newObject = items.uomGroup.uomGroupLineItems.filter(
+                (item: any) => item.uomId === items.saleUom?.id
+              );
+              const newAmount = Math.ceil(
+                items.minQuantity / newObject[0].conversionRate
+              );
+              return {
+                ...items,
+                amount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+                isSelect: false,
+                conversionRate: newObject[0].conversionRate,
+                originAmount:
+                  items.quantityInventory >= items.minQuantity
+                    ? items.minQuantity
+                    : 0,
+              };
+            }
+          }
+        });
+        const newArr2 = await Promise.all(
+          newArr.map(async (items: any) => {
+            const dataGetPrice = {
+              productCategoryId: items.productTemplate.productCategoryId,
+              productTemplateId: items.productTemplate.id,
+              productId: items.id,
+              priceListId: Number(orderStore.dataPriceListSelected.id),
+              quantity: items.amount * items.conversionRate,
+            };
+            const newPrice = await getPriceVariant(dataGetPrice);
+            return { ...items, unitPrice: newPrice };
+          })
+        );
+        const newArr1 = newArr2.map((item: any) => {
+          if (aMap.has(item.id)) {
+            return {
+              ...item,
+              isSelect: true,
+              amount: aMap.get(item.id).amount,
+              price: aMap.get(item.id).price,
+              unitPrice: aMap.get(item.id).unitPrice,
+              conversionRate: aMap.get(item.id).conversionRate,
+              saleUom: aMap.get(item.id).saleUom,
+              originAmount: aMap.get(item.id).originAmount,
+              taxValue: aMap.get(item.id).taxValue,
+              VAT: aMap.get(item.id).VAT,
+            };
+          }
+          return item;
+        });
+        setDataVariant((prevProducts: any) => [...prevProducts, ...newArr1]);
       }
+    } else {
+      console.error("Failed to fetch variant:", response);
+    }
+  };
+
+  const getDataVariant = async () => {
+    const response: OrderVariantResult = await orderStore.getListOrderVariant(
+      page,
+      size,
+      undefined,
+      undefined,
+      [],
+      "",
+      orderStore.isLoadMore,
+      undefined,
+      productTemplateId
+    );
+    console.log(
+      "data variant ///////",
+      JSON.stringify(response.response.data.content)
+    );
+    if (response && response.kind === "ok") {
+      setTotalPagesProduct(response.response.data.totalPages);
+      const aMap = new Map(
+        orderStore.dataProductAddOrder.map((item) => [item.id, item])
+      );
+      console.log("////////////////", response.response.data.totalPages);
+      if (page === 0) {
+        const newArr = response.response.data.content.map((items: any) => {
+          if (items.saleUom === null) {
+            return {
+              ...items,
+              amount: 0,
+              isSelect: false,
+              conversionRate: 1,
+              originAmount: 0,
+              saleUom: {
+                id: items.uomGroup.uomOriginId,
+                name: items.uomGroup.uomOriginName,
+              },
+            };
+          } else {
+            if (items.uomId === items.saleUom?.id) {
+              return {
+                ...items,
+                amount: 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount: 0,
+              };
+            } else {
+              const newObject = items.uomGroup.uomGroupLineItems.filter(
+                (item: any) => item.uomId === items.saleUom?.id
+              );
+              return {
+                ...items,
+                amount: 0,
+                isSelect: false,
+                conversionRate: newObject[0].conversionRate,
+                originAmount: 0,
+              };
+            }
+          }
+        });
+        const newArr1 = newArr.map((item: any) => {
+          if (aMap.has(item.id)) {
+            return {
+              ...item,
+              isSelect: true,
+              amount: aMap.get(item.id).amount,
+              unitPrice: aMap.get(item.id).unitPrice,
+              conversionRate: aMap.get(item.id).conversionRate,
+              saleUom: aMap.get(item.id).saleUom,
+              originAmount: aMap.get(item.id).originAmount,
+              taxValue: aMap.get(item.id).taxValue,
+              VAT: aMap.get(item.id).VAT,
+            };
+          }
+          return item;
+        });
+        setDataVariant(newArr1);
+      } else {
+        const newArr = response.response.data.content.map((items: any) => {
+          if (items.saleUom === null) {
+            return {
+              ...items,
+              amount: 0,
+              isSelect: false,
+              conversionRate: 1,
+              originAmount: 0,
+              saleUom: {
+                id: items.uomGroup.uomOriginId,
+                name: items.uomGroup.uomOriginName,
+              },
+            };
+          } else {
+            if (items.uomId === items.saleUom?.id) {
+              return {
+                ...items,
+                amount: 0,
+                isSelect: false,
+                conversionRate: 1,
+                originAmount: 0,
+              };
+            } else {
+              const newObject = items.uomGroup.uomGroupLineItems.filter(
+                (item: any) => item.uomId === items.saleUom?.id
+              );
+              return {
+                ...items,
+                amount: 0,
+                isSelect: false,
+                conversionRate: newObject[0].conversionRate,
+                originAmount: 0,
+              };
+            }
+          }
+        });
+        const newArr1 = newArr.map((item: any) => {
+          if (aMap.has(item.id)) {
+            return {
+              ...item,
+              isSelect: true,
+              amount: aMap.get(item.id).amount,
+              price: aMap.get(item.id).price,
+              unitPrice: aMap.get(item.id).unitPrice,
+              conversionRate: aMap.get(item.id).conversionRate,
+              saleUom: aMap.get(item.id).saleUom,
+              originAmount: aMap.get(item.id).originAmount,
+              taxValue: aMap.get(item.id).taxValue,
+              VAT: aMap.get(item.id).VAT,
+            };
+          }
+          return item;
+        });
+        setDataVariant((prevProducts: any) => [...prevProducts, ...newArr1]);
+      }
+    } else {
+      console.error("Failed to fetch variant:", response);
+    }
   };
 
   useEffect(() => {
@@ -409,7 +461,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         if (Number(items.amount) >= Number(items.minQuantity)) {
           return { ...data, isSelect: !data.isSelect };
         } else {
-          return { ...data, isSelect: false }
+          return { ...data, isSelect: false };
         }
       } else {
         return items;
@@ -423,7 +475,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         if (items.amount !== 0) {
           return { ...data, isSelect: !data.isSelect };
         } else {
-          return { ...data, isSelect: false }
+          return { ...data, isSelect: false };
         }
       } else {
         return items;
@@ -512,7 +564,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     });
     setDataVariant(newArr2);
   };
-  
+
   const handlePlusPrice = async (data: any) => {
     const newArr1 = await Promise.all(
       dataVariant.slice().map(async (items) => {
@@ -558,31 +610,31 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     const newArr2 = await Promise.all(
       newArr1.map(async (items: any) => {
         if (items.id === data.id) {
-            const dataGetPrice = {
-              productCategoryId: data.productTemplate.productCategoryId,
-              productTemplateId: data.productTemplate.id,
-              productId: data.id,
-              priceListId: Number(orderStore.dataPriceListSelected.id),
-              quantity: data.amount - 1,
+          const dataGetPrice = {
+            productCategoryId: data.productTemplate.productCategoryId,
+            productTemplateId: data.productTemplate.id,
+            productId: data.id,
+            priceListId: Number(orderStore.dataPriceListSelected.id),
+            quantity: data.amount - 1,
+          };
+          const newPrice = await getPriceVariant(dataGetPrice);
+          if (data.amount - 1 < items.minQuantity) {
+            return {
+              ...items,
+              unitPrice: newPrice,
+              amount: data.amount - 1,
+              isSelect: false,
+              originAmount: data.amount - 1,
             };
-            const newPrice = await getPriceVariant(dataGetPrice);
-            if (data.amount - 1 < items.minQuantity) {
-              return {
-                ...items,
-                unitPrice: newPrice,
-                amount: data.amount - 1,
-                isSelect: false,
-                originAmount: (data.amount - 1),
-              };
-            } else {
-              return {
-                ...items,
-                unitPrice: newPrice,
-                amount: data.amount - 1,
-                isSelect: true,
-                originAmount: (data.amount - 1),
-              };
-            }
+          } else {
+            return {
+              ...items,
+              unitPrice: newPrice,
+              amount: data.amount - 1,
+              isSelect: true,
+              originAmount: data.amount - 1,
+            };
+          }
         } else {
           return items;
         }
@@ -607,7 +659,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         return items;
       }
     });
-    console.log('dsadassa0',newArr1)
+    console.log("dsadassa0", newArr1);
     setDataVariant(newArr1);
   };
   const addVariantToCart = () => {
@@ -637,7 +689,12 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             style={styles.textDetailInfor}
           />
           <TouchableOpacity
-            onPress={() => navigation.navigate({name: "productDetailScreen" as never, params: { screen: 'seeDetail' }}as never)}>
+            onPress={() =>
+              navigation.navigate({
+                name: "productDetailScreen" as never,
+                params: { screen: "seeDetail" },
+              } as never)
+            }>
             <Text tx={"order.seeDetail"} style={styles.textViewInfo} />
           </TouchableOpacity>
         </View>
@@ -676,12 +733,18 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             }}>
             <AutoImage
               style={styles.viewImageSelectVariant}
-              source={require("../../../../../assets/Images/no_images.png")}
+              source={Images.noImages}
             />
           </View>
         )}
-        <ProductAttribute labelTx="detailScreen.productCode" value={detailProduct.sku} />
-        <ProductAttribute labelTx="detailScreen.nameProduct" value={detailProduct.name} />
+        <ProductAttribute
+          labelTx="detailScreen.productCode"
+          value={detailProduct.sku}
+        />
+        <ProductAttribute
+          labelTx="detailScreen.nameProduct"
+          value={detailProduct.name}
+        />
         <View
           style={{
             flexDirection: "row",
@@ -691,7 +754,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <Text
               text={dataVariant.length.toString()}
-              style={[styles.textViewInfo, { color: colors.nero, marginRight: scaleWidth(3) }]}
+              style={[
+                styles.textViewInfo,
+                { color: colors.nero, marginRight: scaleWidth(3) },
+              ]}
             />
             <Text
               tx="createProductScreen.productClassification"
@@ -701,7 +767,10 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text
               tx="common.selected"
-              style={[styles.textViewInfo, { color: colors.nero, marginRight: scaleWidth(3) }]}
+              style={[
+                styles.textViewInfo,
+                { color: colors.nero, marginRight: scaleWidth(3) },
+              ]}
             />
             <Text
               text={dataVariant
@@ -731,9 +800,12 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       </View>
       <TouchableOpacity
         onPress={() => addVariantToCart()}
-        disabled={dataVariant
-          .filter((items: any) => items.isSelect === true)
-          .length === 0 ? true : false}
+        disabled={
+          dataVariant.filter((items: any) => items.isSelect === true).length ===
+          0
+            ? true
+            : false
+        }
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -743,9 +815,11 @@ export const SelectVariant: FC = observer(function SelectVariant() {
           marginBottom: scaleHeight(20),
           borderRadius: 8,
           justifyContent: "center",
-          opacity: dataVariant
-          .filter((items: any) => items.isSelect === true)
-          .length === 0 ? 0.6 : 1
+          opacity:
+            dataVariant.filter((items: any) => items.isSelect === true)
+              .length === 0
+              ? 0.6
+              : 1,
         }}>
         <Svgs.ic_ShoopingCar />
         <Text

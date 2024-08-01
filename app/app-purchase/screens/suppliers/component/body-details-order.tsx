@@ -3,6 +3,7 @@ import { Image, View } from "react-native";
 import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
+import Images from "../../../../../assets/index";
 import { colors } from "../../../theme";
 
 export const BodyDetailsOrder = (data: any) => {
@@ -32,7 +33,7 @@ export const BodyDetailsOrder = (data: any) => {
               }}>
               <View style={{ flexDirection: "row" }}>
                 <Image
-                  source={require("../../../../../assets/Images/Avatar.png")}
+                  source={Images.iconAVT}
                   style={{
                     width: 48,
                     height: 48,
@@ -121,7 +122,8 @@ export const PromotionList = (data: any) => {
         borderRadius: 8,
       }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Khuyến mại
         </Text>
         <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
@@ -191,7 +193,8 @@ export const InfoPayment = () => {
         justifyContent: "space-between",
       }}>
       <View style={{ flexDirection: "column" }}>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Tổng tiền hàng
         </Text>
         <Text
@@ -203,7 +206,8 @@ export const InfoPayment = () => {
           }}>
           Chiết khấu:
         </Text>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Khuyến mại:
         </Text>
         <Text
@@ -215,7 +219,8 @@ export const InfoPayment = () => {
           }}>
           Tổng tiền thuế:
         </Text>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Tổng thanh toán:
         </Text>
       </View>
@@ -280,7 +285,7 @@ export const Notes = () => {
         </Text>
       </View>
       <Image
-        source={require("../../../../../assets/Images/Avatar.png")}
+        source={Images.iconAVT}
         style={{
           width: 48,
           height: 48,

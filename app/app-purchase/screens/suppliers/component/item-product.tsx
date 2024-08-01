@@ -5,6 +5,7 @@ import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles/styles";
 import { Text } from "../../../../components";
+import Images from "../../../../../assets/index";
 
 const RenderProductItem = ({
   item,
@@ -57,7 +58,7 @@ const RenderProductItem = ({
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
               }}
-              source={require("../../../../../assets/Images/no_images.png")}>
+              source={Images.noImages}>
               <FastImage
                 style={{
                   width: scaleWidth(107),
@@ -72,7 +73,7 @@ const RenderProductItem = ({
                       : "",
                   cache: FastImage.cacheControl.immutable,
                 }}
-                defaultSource={require("../../../../../assets/Images/no_images.png")}
+                defaultSource={Images.noImages}
               />
             </ImageBackground>
           </View>
@@ -138,7 +139,7 @@ const RenderProductItem = ({
                 height: scaleHeight(70),
               }}
               imageStyle={{ borderRadius: 8 }}
-              source={require("../../../../../assets/Images/no_images.png")}>
+              source={Images.noImages}>
               <FastImage
                 style={{
                   width: scaleWidth(70),

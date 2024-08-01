@@ -4,6 +4,7 @@ import { Text } from "../../../../components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { translate } from "i18n-js";
+import Images from "../../../../../assets/index";
 
 export const InfoDetails = () => {
   return (
@@ -186,7 +187,7 @@ export const InfoBank = () => {
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
           style={{ width: 42, height: 42 }}
-          source={require("../../../../../assets/icons/logo_default.png")}></Image>
+          source={Images.logoDefault}></Image>
         <View style={{ flexDirection: "column", marginLeft: 8 }}>
           <View style={{ flexDirection: "row" }}>
             <Text

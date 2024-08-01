@@ -127,7 +127,8 @@ export const ClassifyModal = (props: Input) => {
               item.id === selectedItem ? colors.aliceBlue2 : colors.aliceBlue;
             const borderColor =
               item.id === selectedItem ? colors.navyBlue : colors.veryLightGrey;
-            const textColor = item.id === selectedItem ? colors.navyBlue : colors.dolphin;
+            const textColor =
+              item.id === selectedItem ? colors.navyBlue : colors.dolphin;
             const textWeight = item.id === selectedItem ? "600" : "400";
             return (
               <TouchableOpacity

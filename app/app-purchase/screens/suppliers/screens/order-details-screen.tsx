@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import Images from "../../../../../assets/index";
 
 export const OrderDetailsScreen: FC<
   AppStackScreenProps<"orderDetailsSupplier">
@@ -56,7 +57,7 @@ export const OrderDetailsScreen: FC<
                 marginHorizontal: 16,
               }}>
               <Image
-                source={require("../../../../../assets/Images/Avatar.png")}
+                source={Images.iconAVT}
                 style={{
                   width: 48,
                   height: 48,
