@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 import { translate } from "../../../i18n";
 
@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: scaleWidth(9),
   },
   viewDate: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: scaleHeight(7),
     shadowColor: "black",
     shadowOpacity: 0.2,
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
   textDate: {
     fontSize: 12,
     fontWeight: "400",
-    color: "#0078D4",
+    color: colors.navyBlue,
     marginHorizontal: scaleWidth(12),
   },
   viewNoDate: {
@@ -132,7 +132,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: scaleWidth(9),
   },
   itemSelector: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: scaleHeight(7),
     shadowColor: "black",
     shadowOpacity: 0.2,
@@ -141,7 +141,7 @@ export const styles = StyleSheet.create({
   textItem: {
     fontSize: 12,
     fontWeight: "400",
-    color: "#242424",
+    color: colors.nero,
     textAlign: "center",
     marginHorizontal: scaleWidth(12),
     marginVertical: scaleHeight(7),

@@ -150,7 +150,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
               <Text
                 style={{
                   fontSize: scaleHeight(10),
-                  color: "#FFF",
+                  color: colors.white,
                 }}>
                 Truy cập
               </Text>
@@ -163,7 +163,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
     };
 
     return (
-      <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <View style={{ flex: 1, backgroundColor: colors.white }}>
         <Header
           headerTx="common.listCompany"
           style={{ height: scaleHeight(52) }}

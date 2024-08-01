@@ -3,7 +3,7 @@ import {colors, fontSize, scaleHeight, scaleWidth} from '../../../theme';
 
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: '#F2F2F2',
+    backgroundColor: colors.gray,
     flex: 1,
   },
   body: {
@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
 
 export const stylesItem = StyleSheet.create({
   content: {
-    color: '#747475',
+    color: colors.dolphin,
     fontSize: fontSize.size12,
     lineHeight: 22,
     marginHorizontal: 16,
@@ -67,12 +67,12 @@ export const stylesItem = StyleSheet.create({
     textAlign: 'left',
   },
   contentView: {
-    backgroundColor: '#F2F2F2',
+    backgroundColor: colors.gray,
     height: 1,
     marginTop: 12,
   },
   dot: {
-    backgroundColor: '#F4AD22',
+    backgroundColor: colors.yellow,
     borderRadius: 30,
     height: 8,
     position: 'absolute',
@@ -87,14 +87,14 @@ export const stylesItem = StyleSheet.create({
     width: 49,
   },
   item: {
-    backgroundColor: '#FFFFFF',
-    borderBottomColor: '#DFE0EB',
+    backgroundColor: colors.white,
+    borderBottomColor: colors.quartz,
     borderRadius: 18,
     marginHorizontal: 16,
     marginTop: 14,
   },
   title: {
-    color: '#242426',
+    color: colors.jaguar,
     fontSize: fontSize.size14,
     fontWeight: '700',
     lineHeight: 24,

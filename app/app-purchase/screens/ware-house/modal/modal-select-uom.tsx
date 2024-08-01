@@ -91,7 +91,7 @@ const RADIOBUTTON: ViewStyle = {
   height: scaleHeight(18),
   borderRadius: 3,
   borderWidth: 1,
-  borderColor: "#ccc",
+  borderColor: colors.veryLightGrey2,
   justifyContent: "center",
   alignItems: "center",
   marginRight: scaleWidth(6),
@@ -191,7 +191,7 @@ export const SelectUom = (props: any) => {
                 style={{
                   flexDirection: "row",
                   borderWidth: 1,
-                  borderColor: "#53A0F6",
+                  borderColor: colors.cornflowerBlue,
                   borderRadius: 4,
                   paddingVertical: scaleHeight(5),
                 }}>
@@ -206,7 +206,7 @@ export const SelectUom = (props: any) => {
                       height={scaleHeight(18)}
                     />
                   </TouchableOpacity>
-                  {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
+                  {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : colors.navyBlue , marginLeft : scaleWidth(8)}}></View> */}
                 </View>
 
                 <Controller

@@ -217,7 +217,7 @@ export const SelectClientScreen: FC<
                   <View
                     style={Styles.icCodeItem}>
                     <Text
-                      style={{ fontSize: fontSize.size10, color: "#0078D4" }}>
+                      style={{ fontSize: fontSize.size10, color: colors.navyBlue }}>
                       {item.code}
                     </Text>
                   </View>
@@ -226,7 +226,7 @@ export const SelectClientScreen: FC<
                       {item.name}
                     </Text>
                     <Text
-                      style={{ fontSize: fontSize.size10, color: "#747475" }}>
+                      style={{ fontSize: fontSize.size10, color: colors.dolphin }}>
                       {item.phoneNumber}
                     </Text>
                   </View>

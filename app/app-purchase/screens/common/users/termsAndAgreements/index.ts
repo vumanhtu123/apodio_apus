@@ -1,5 +1,6 @@
 
 import { StyleSheet } from "react-native"
+import { colors } from "../../../../theme"
 
 export const Styles = StyleSheet.create({
 
@@ -10,7 +11,7 @@ export const Styles = StyleSheet.create({
 
     body: {
         
-        backgroundColor:'#FFFFFF',
+        backgroundColor: colors.white,
         padding:10,
         borderRadius:8
     }

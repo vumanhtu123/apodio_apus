@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   horView: {
     height: scaleHeight(140),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     // marginHorizontal: scaleWidth(16),
     borderRadius: 14,
     flexDirection: 'row',
@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   },
   horTextMenu:{
     fontSize: fontSize.size12,
-    color: '#263238',
+    color: colors.oxfordBlue,
     fontWeight: '500',
     alignSelf:"center",
     textAlign:"center",
@@ -148,7 +148,7 @@ export const styles = StyleSheet.create({
   },
   viewID: {
     alignContent: "center",
-    backgroundColor: "#3F91FF",
+    backgroundColor: colors.dodgerBlue2,
     borderRadius: 5,
     justifyContent: "center",
     paddingHorizontal: scaleWidth(10),
@@ -174,7 +174,7 @@ export const styles = StyleSheet.create({
   },
   viewLineModal: {
     alignSelf: "center",
-    backgroundColor: "#C7C7C7",
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 5,
     height: 5,
     marginBottom:scaleHeight(25),
@@ -214,7 +214,7 @@ export const styles = StyleSheet.create({
   
   },
   divider: {
-    backgroundColor: '#F2F2F2',
+    backgroundColor: colors.gray,
     height: 1,
     marginLeft: 31,
     marginRight: 15,
@@ -248,13 +248,13 @@ export const styles = StyleSheet.create({
   //   paddingBottom: 10,
   // },
   text: {
-    color: '#323232',
+    color: colors.nightRider1,
     fontSize: 16,
     paddingLeft: 24,
     paddingTop: 9,
   },
   line: {
-    backgroundColor: '#E7EFFF',
+    backgroundColor: colors.solitude2,
     height: 1,
     marginTop: 9,
   },
@@ -283,7 +283,7 @@ export const styles = StyleSheet.create({
   },
   user: {
     alignItems:"center",
-    backgroundColor: '#3F91FF',
+    backgroundColor: colors.dodgerBlue2,
     borderRadius: 3,
     height: 16,
     justifyContent: 'center',
@@ -307,7 +307,7 @@ export const styles = StyleSheet.create({
   },
   boxId: {
     alignSelf:"center",
-    backgroundColor: '#3F91FF',
+    backgroundColor: colors.dodgerBlue2,
     borderRadius: 5,
     height: 26,
     justifyContent: 'center',
@@ -322,14 +322,14 @@ export const styles = StyleSheet.create({
   },
   textBody: {
     alignSelf: 'center',
-    color: '#323232',
+    color: colors.nightRider1,
     fontSize: fontSize.size14,
     fontWeight: '500',
     marginLeft: 10,
   },
   version: {
     alignSelf: 'center',
-    color:'#84888D',
+    color:colors.aluminium,
     marginVertical: 20,
     marginBottom:36
   },

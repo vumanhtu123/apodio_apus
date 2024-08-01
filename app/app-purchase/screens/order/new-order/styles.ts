@@ -143,7 +143,7 @@ export const styles = StyleSheet.create({
     width: scaleWidth(16),
     height: scaleHeight(16),
     borderWidth: 1,
-    borderColor: "#DFE0EB",
+    borderColor: colors.quartz,
     justifyContent: "center",
     alignItems: "center",
     marginRight: scaleWidth(margin.margin_6),

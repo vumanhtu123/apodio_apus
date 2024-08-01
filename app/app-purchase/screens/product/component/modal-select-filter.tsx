@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { SvgIcon } from "../../../../components/svg-icon/index";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { navigate } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
 import { translate } from "../../../i18n";
@@ -51,7 +51,7 @@ const SelectFilterModal = (props: any) => {
     <Modal animationType="slide" transparent={true} visible={isVisible}>
       <View style={styles.container}>
         <TouchableOpacity onPress={handleSort} style={styles.buttonSort}>
-          <Text style={{ color: "#0078d4" }}>
+          <Text style={{ color: colors.navyBlue }}>
             {translate("productScreen.sort")}
           </Text>
         </TouchableOpacity>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     paddingHorizontal: 20,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: scaleWidth(68),
     height: scaleHeight(5),
-    backgroundColor: "#C7C7C7",
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: "center",
     // marginBottom : 20,
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: colors.whisper,
   },
   optionText: {
     fontSize: 16,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.veryLightGrey2,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 6,
-    backgroundColor: "#0078d4",
+    backgroundColor: colors.navyBlue,
   },
   buttonSort: {
     position: "absolute",
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     height: scaleHeight(24),
     alignItems: "center",
     justifyContent: "center",
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 5,
   },
 });

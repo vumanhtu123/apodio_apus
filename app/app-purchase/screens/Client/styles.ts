@@ -4,7 +4,7 @@ import { colors, fontSize, palette, scaleHeight, scaleWidth } from "../../theme"
 
 export const styles = StyleSheet.create({
     ROOT: {
-        backgroundColor: '#F2F2F2',
+        backgroundColor: colors.gray,
        
         flex: 1,
     },
@@ -28,8 +28,8 @@ export const styles = StyleSheet.create({
         borderRadius: 8
     },
     activeButton: {
-        backgroundColor: '#fff',
-        shadowColor: '#000',
+        backgroundColor: colors.white,
+        shadowColor: colors.black,
         shadowOffset: {
             width: 0,
             height: 2,
@@ -39,8 +39,8 @@ export const styles = StyleSheet.create({
         elevation: 5,
     },
     activeButtonCategory: {
-        backgroundColor: '#fff',
-        shadowColor: '#000',
+        backgroundColor: colors.white,
+        shadowColor: colors.black,
         shadowOffset: {
             width: -2,
             height: 2,
@@ -52,14 +52,14 @@ export const styles = StyleSheet.create({
     buttonText: {
         fontSize: 14,
         fontWeight: '700',
-        color: '#747475',
+        color: colors.dolphin,
         textAlign: 'center',
     },
     activeButtonText: {
-        color: '#0078D4',
+        color: colors.navyBlue,
     },
     discount: {
-        backgroundColor: '#FF0000',
+        backgroundColor: colors.red,
         alignItems: 'center',
         justifyContent: 'center',
         width: scaleWidth(32),

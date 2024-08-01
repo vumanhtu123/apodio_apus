@@ -190,7 +190,7 @@ export default function ItemWeight(props: ItemWeight) {
           }}>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: fontSize.size14,
               fontWeight: "400",
             }}
@@ -214,7 +214,7 @@ export default function ItemWeight(props: ItemWeight) {
               }}>
               <Text
                 style={{
-                  color: "#0078D4",
+                  color: colors.navyBlue,
                   fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}

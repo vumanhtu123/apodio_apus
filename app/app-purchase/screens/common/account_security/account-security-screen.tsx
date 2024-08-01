@@ -96,7 +96,7 @@ export const AccountSecurity: FC = observer(function AccountSecurity() {
           <View
             style={[
               styles.button,
-              {backgroundColor: colors.palette.white, borderColor: '#F4AD22', marginTop:scaleHeight(10)},
+              {backgroundColor: colors.palette.white, borderColor: colors.yellow, marginTop:scaleHeight(10)},
             ]}>
             <View >
               <Text
@@ -106,18 +106,18 @@ export const AccountSecurity: FC = observer(function AccountSecurity() {
               />
               <Text
                 text={'chỉ có hiệu lực với thiết bị này'}
-                style={[styles.selectText, { color: '#84888D' }]}
+                style={[styles.selectText, { color: colors.aluminium }]}
               />
             </View>
             <Switch
               trackColor={{ false: colors.palette.dolphin, true: colors.palette.dolphin }}
-              thumbColor={isEnabled ? '#0178d4' : '#f4f3f4'}
+              thumbColor={isEnabled ? colors.navyBlue : colors.selago}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={isEnabled}
             />
           </View>
-          <View style={{ borderWidth:1,borderColor:'#F6F7FB', marginHorizontal:8}}/>
+          <View style={{ borderWidth:1,borderColor:colors.ghostWhite, marginHorizontal:8}}/>
           <Button
             onPress={() => {
               setIsVisible(!isVisible);
@@ -125,7 +125,7 @@ export const AccountSecurity: FC = observer(function AccountSecurity() {
             }}
             style={[
               styles.button,
-              {backgroundColor: colors.palette.white, borderColor: '#F4AD22'},
+              {backgroundColor: colors.palette.white, borderColor: colors.yellow},
             ]}>
             <View>
               <Text
@@ -148,7 +148,7 @@ export const AccountSecurity: FC = observer(function AccountSecurity() {
                               ? '15 minutes'
                               : ''
                 }
-                style={[styles.selectText, { color: '#84888D' }]}
+                style={[styles.selectText, { color: colors.aluminium }]}
               />
             </View>
             <SvgIcon

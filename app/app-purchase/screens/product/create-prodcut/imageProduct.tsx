@@ -1,5 +1,5 @@
 import React, { Dimensions, FlatList, Image, Linking, TouchableOpacity, View } from "react-native"
-import { scaleHeight, scaleWidth } from "../../../theme"
+import { colors, scaleHeight, scaleWidth } from "../../../theme"
 import { Svgs } from "../../../../../assets/svgs"
 import { styles } from "./styles"
 import { AutoImage, Text } from "../../../../components"
@@ -357,8 +357,8 @@ export default function ImageProduct(props: ImageProduct) {
                                 }
                                 activeDotIndex={activeSlide}
                                 dotStyle={styles.paginationDotStyle}
-                                dotColor={"#BBB9B9"}
-                                inactiveDotColor={"#BBB9B9"}
+                                dotColor={colors.silver}
+                                inactiveDotColor={colors.silver}
                                 inactiveDotOpacity={1}
                                 inactiveDotScale={1}
                                 inactiveDotStyle={styles.paginationInactiveDotStyle}

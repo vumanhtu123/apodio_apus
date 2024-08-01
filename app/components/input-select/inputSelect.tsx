@@ -236,12 +236,12 @@ export function InputSelect(props: InputSelectProps) {
             <View style={VIEWMODAL}>
               {/* <Text text="chon ly do" /> */}
               {isSearch ? (
-                <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
+                <View style={{ flexDirection: "row", borderWidth: 1, borderColor: colors.cornflowerBlue, borderRadius: 4, paddingVertical: scaleHeight(5) }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
                       <Svgs.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
                     </TouchableOpacity>
-                    {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
+                    {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : colors.navyBlue , marginLeft : scaleWidth(8)}}></View> */}
                   </View>
 
                   <Controller
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     height: scaleHeight(18),
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.veryLightGrey2,
     justifyContent: "center",
     alignItems: "center",
     marginRight: scaleWidth(6),

@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginBottom: 23,
     height: 48,
     borderRadius: 8,
-    backgroundColor: '#F4AD22',
+    backgroundColor: colors.yellow,
   },
   textButton: {
     fontSize: 14,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.dodgerBlue1,
   },
   textStyle: {
     color: 'white',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: 68,
     height: 5,
-    backgroundColor: '#C7C7C7',
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: 'center',
   },
@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    color: '#323232',
+    color: colors.nightRider1,
     fontWeight: '700',
     marginBottom: 10,
   },
   text2: {
     textAlign: 'center',
-    color: '#84888D',
+    color: colors.aluminium,
     marginTop: 3,
     marginHorizontal: 16,
   },
@@ -142,6 +142,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginHorizontal: 14,
     marginBottom: 15,
-    // backgroundColor : '#FFFFFF',
+    // backgroundColor : colors.white,
   },
 });

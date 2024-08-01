@@ -87,7 +87,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   fontSize: 18,
                   fontWeight: "700",
                   lineHeight: 24,
-                  color: "#323232",
+                  color: colors.nightRider1,
                   paddingLeft: 5,
                   paddingBottom: 20,
                 }}
@@ -171,7 +171,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   fontSize: 18,
                   fontWeight: "700",
                   lineHeight: 24,
-                  color: "#323232",
+                  color: colors.nightRider1,
                   paddingLeft: 5,
                   paddingBottom: 20,
                 }}
@@ -238,7 +238,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   : errors?.newPass?.message
               }`}
               style={{
-                color: "#FF0000",
+                color: colors.red,
                 alignItems: "center",
                 fontSize: 12,
                 paddingTop: 5,
@@ -254,7 +254,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   fontSize: 18,
                   fontWeight: "700",
                   lineHeight: 24,
-                  color: "#323232",
+                  color: colors.nightRider1,
                   paddingLeft: 5,
                   paddingBottom: 20,
                 }}
@@ -325,7 +325,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   : errors?.reNewPass?.message
               }`}
               style={{
-                color: "#FF0000",
+                color: colors.red,
                 alignItems: "center",
                 fontSize: 12,
                 paddingTop: 5,

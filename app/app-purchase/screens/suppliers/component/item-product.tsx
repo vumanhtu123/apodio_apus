@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View, ImageBackground } from "react-native";
 import FastImage from "react-native-fast-image";
 import { Svgs } from "../../../../../assets/svgs";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles/styles";
 import { Text } from "../../../../components";
 
@@ -117,7 +117,7 @@ const RenderProductItem = ({
             position: "absolute",
             top: scaleHeight(56),
             right: scaleWidth(6),
-            backgroundColor: "#F6F7F9",
+            backgroundColor: colors.aliceBlue,
             zIndex: 1,
           }}>
           {viewProduct === "VIEW_VARIANT" && item.scene?.url !== "" ? (

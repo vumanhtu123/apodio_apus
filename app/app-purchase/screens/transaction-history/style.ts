@@ -15,7 +15,7 @@ export const Styles = StyleSheet.create({
         padding:scaleWidth(14), 
         justifyContent:'space-between', 
         flexDirection:'row',
-         backgroundColor:'#FFFFFF'
+         backgroundColor:colors.white
     },
     ItemList:{
         
@@ -46,7 +46,7 @@ export const Styles = StyleSheet.create({
         // backgroundColor:'blue'        
     },
     textDate: {
-        color: '#848688',
+        color: colors.aluminium1,
         fontSize: scaleWidth(14),
         fontWeight: "400",
     },
@@ -60,7 +60,7 @@ export const Styles = StyleSheet.create({
         width: scaleWidth(350),
         height: scaleHeight(491),
         borderRadius:30,
-        // backgroundColor:'#FFFFFF'
+        // backgroundColor:colors.white
        
 
     
@@ -75,7 +75,7 @@ export const Styles = StyleSheet.create({
         paddingLeft: 16,
         paddingTop: 12,
         fontSize: scaleWidth(14),
-        color: '#84888D',
+        color: colors.aluminium,
     },
     rowStaff:{
         flexDirection: 'row',
@@ -85,7 +85,7 @@ export const Styles = StyleSheet.create({
         paddingRight: scaleWidth(16),
         paddingTop: scaleHeight(12),
         fontSize: scaleWidth(14),
-        color: '#323232',
+        color: colors.nightRider1,
         maxWidth: '70%',
         fontWeight: '700',
     },

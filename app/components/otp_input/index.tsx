@@ -47,7 +47,7 @@ const OTPInput = ({
       activeOpacity={0.1}
       // eslint-disable-next-line react-native/no-inline-styles
       style={{
-        backgroundColor: '#F2F2F2',
+        backgroundColor: colors.gray,
         justifyContent: 'center',
         alignItems: 'center',
         height: 49,
@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
     marginHorizontal: '15%',
   },
   circle: {
-    color: '#858992',
+    color: colors.lightGrey,
     width: 14,
     height: 14,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#858992',
-    backgroundColor: '#858992',
+    borderColor: colors.lightGrey,
+    backgroundColor: colors.lightGrey,
     marginHorizontal: '4%',
   },
   filledCircle: {

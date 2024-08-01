@@ -32,7 +32,7 @@ export const TransactionHistoryDetial: FC = observer(
         const DataItem = ({ title, value, currency, image, color, titleFw, titleColor }: any) => {
             return (
                 <View style={Styles.viewData}>
-                    <Text style={[Styles.textTitle, { fontWeight: titleFw ? titleFw : '400', color: titleColor ? titleColor : '#84888D' }]}
+                    <Text style={[Styles.textTitle, { fontWeight: titleFw ? titleFw : '400', color: titleColor ? titleColor : colors.aluminium }]}
                         tx={title}
                     />
 
@@ -88,17 +88,17 @@ export const TransactionHistoryDetial: FC = observer(
                                         </Text>
                                         <Svgs.ic_coppyID />
                                     </View>
-                                    <Text style={{ color: '#ED1F43', }}>
+                                    <Text style={{ color: colors.alizarin, }}>
                                         -12.000.000đ
                                     </Text>
                                 </View>
                             </View>
                         </View>
 
-                        <View style={{ width: '91.5%', paddingVertical: scaleWidth(8), paddingHorizontal: scaleWidth(16), backgroundColor: '#EFF8FF', justifyContent: 'space-between', marginVertical: scaleHeight(16), }}>
+                        <View style={{ width: '91.5%', paddingVertical: scaleWidth(8), paddingHorizontal: scaleWidth(16), backgroundColor: colors.aliceBlue2, justifyContent: 'space-between', marginVertical: scaleHeight(16), }}>
 
                             <Text tx="tranSacTionHistory.transactionHistoryDetail"
-                                style={{ color: '#0078D4', fontWeight: '700', textTransform: 'uppercase' }}
+                                style={{ color: colors.navyBlue, fontWeight: '700', textTransform: 'uppercase' }}
                             />
 
 
@@ -108,36 +108,36 @@ export const TransactionHistoryDetial: FC = observer(
                             <DataItem
                                 title="tranSacTionHistory.transactionType"
                                 value={dataFake[0].transactionType}
-                                color='#242424'
+                                color={colors.nero}
 
                             />
                             <DataItem
                                 title="tranSacTionHistory.merchantPhone"
                                 value={dataFake[0].merchanPhone}
-                                color='#242424'
+                                color={colors.nero}
                             />
                             <DataItem
                                 title="tranSacTionHistory.merchantName"
                                 value={dataFake[0].merchanName}
-                                color='#242424'
+                                color={colors.nero}
                             />
                             <DataItem
                                 title="tranSacTionHistory.status"
                                 value={dataFake[0].merchanName}
-                                color='#242424'
+                                color={colors.nero}
                             />
                             <DataItem
                                 title="tranSacTionHistory.transactionTime"
                                 value={dataFake[0].time}
-                                color='#242424'
+                                color={colors.nero}
                             />
                         </View>
 
 
-                        <View style={{ width: '91.5%', paddingVertical: scaleWidth(8), paddingHorizontal: scaleWidth(16), backgroundColor: '#EFF8FF', justifyContent: 'space-between', marginVertical: scaleHeight(16), }}>
+                        <View style={{ width: '91.5%', paddingVertical: scaleWidth(8), paddingHorizontal: scaleWidth(16), backgroundColor: colors.aliceBlue2, justifyContent: 'space-between', marginVertical: scaleHeight(16), }}>
 
                             <Text tx="tranSacTionHistory.paymentDetail"
-                                style={{ color: '#0078D4', fontWeight: '700', textTransform: 'uppercase' }}
+                                style={{ color: colors.navyBlue, fontWeight: '700', textTransform: 'uppercase' }}
                             />
 
                         </View>
@@ -146,17 +146,17 @@ export const TransactionHistoryDetial: FC = observer(
                             <DataItem
                                 title="tranSacTionHistory.amount"
                                 value={dataFake[0].amount}
-                                color='#ED1F43'
+                                color={colors.alizarin}
                             />
                             <DataItem
                                 title="tranSacTionHistory.fee"
                                 value={dataFake[0].fee}
-                                color='#ED1F43'
+                                color={colors.alizarin}
                             />
                             <DataItem
                                 title="tranSacTionHistory.totalAmount"
                                 value={dataFake[0].totalAmount}
-                                color='#ED1F43'
+                                color={colors.alizarin}
                             />
 
                         </View>

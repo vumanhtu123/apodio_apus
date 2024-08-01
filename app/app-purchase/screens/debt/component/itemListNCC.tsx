@@ -54,7 +54,7 @@ const ItemListNCC: FC<ItemNCC> = ({ item, isVisible, setIsVisible }) => {
                 <TouchableOpacity style={Styles.styleBtnPay}
                     onPress={() => setIsVisible(!isVisible)}
                 >
-                    <Text style={{ fontSize: fontSize.size12, color: '#FFF' }}
+                    <Text style={{ fontSize: fontSize.size12, color: colors.white }}
                         tx="debtScreen.pay2"
                     ></Text>
                 </TouchableOpacity>

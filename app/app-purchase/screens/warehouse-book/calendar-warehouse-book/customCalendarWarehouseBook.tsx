@@ -132,7 +132,7 @@ const CustomCalendarWarehouseBook = (props:any) => {
         newMarkedDates[day.dateString] = {
           selected: true,
           selectedColor: colors.palette.navyBlue,
-          selectedTextColor: '#FFFFFF',
+          selectedTextColor: colors.white,
         };
         setMarkedDates(newMarkedDates);
         setIsStartDatePicked(true);
@@ -147,7 +147,7 @@ const CustomCalendarWarehouseBook = (props:any) => {
           newMarkedDates[day.dateString] = {
             startingDay: true,
             color: colors.palette.navyBlue,
-            textColor: '#FFFFFF',
+            textColor: colors.white,
           };
           setMarkedDates(newMarkedDates);
           setIsStartDatePicked(true);
@@ -171,14 +171,14 @@ const CustomCalendarWarehouseBook = (props:any) => {
                 //@ts-ignore
                 newMarkedDates[tempDate] = {
                   color: colors.palette.gray,
-                  textColor: '#000000',
+                  textColor: colors.black,
                 };
               } else {
                 //@ts-ignore
                 newMarkedDates[tempDate] = {
                   endingDay: true,
                   color: colors.palette.navyBlue,
-                  textColor: '#FFFFFF',
+                  textColor: colors.white,
                   fontWeight: '700',
                 };
               }
@@ -195,7 +195,7 @@ const CustomCalendarWarehouseBook = (props:any) => {
             newMarkedDates[day.dateString] = {
               startingDay: true,
               color: colors.palette.navyBlue,
-              textColor: '#FFFFFF',
+              textColor: colors.white,
             };
             setMarkedDates(newMarkedDates);
             setIsStartDatePicked(true);

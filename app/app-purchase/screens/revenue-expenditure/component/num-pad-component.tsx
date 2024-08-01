@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { Svgs } from "../../../../../assets/svgs";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 
 interface InputNumpad {
@@ -42,7 +42,7 @@ export const Numpad = (props: InputNumpad) => {
                     style={{
                       // paddingHorizontal: scaleWidth(34),
                       // paddingVertical: scaleHeight(12),
-                      color: "#242424",
+                      color: colors.nero,
                       textAlign: "center",
                     }}>
                     {item}
@@ -73,14 +73,14 @@ export const Numpad = (props: InputNumpad) => {
                 style={[
                   styles.viewTextItem2,
                   {
-                    backgroundColor: item == "+" ? "#E7EAED" : "#FFFFFF",
+                    backgroundColor: item == "+" ? "#E7EAED" : colors.white,
                     borderWidth: item == "+" ? 0 : 0.2,
                   },
                 ]}>
                 {item.toString() ? (
                   <Text
                     style={{
-                      color: "#242424",
+                      color: colors.nero,
                     }}>
                     {item}
                   </Text>
@@ -110,14 +110,14 @@ export const Numpad = (props: InputNumpad) => {
                 style={[
                   styles.viewTextItem3,
                   {
-                    backgroundColor: item == "-" ? "#E7EAED" : "#FFFFFF",
+                    backgroundColor: item == "-" ? "#E7EAED" : colors.white,
                     borderWidth: item == "-" ? 0 : 0.2,
                   },
                 ]}>
                 {item.toString() ? (
                   <Text
                     style={{
-                      color: "#242424",
+                      color: colors.nero,
                     }}>
                     {item}
                   </Text>
@@ -147,14 +147,14 @@ export const Numpad = (props: InputNumpad) => {
                 style={[
                   styles.viewTextItem4,
                   {
-                    backgroundColor: item == "=" ? "#E7EAED" : "#FFFFFF",
+                    backgroundColor: item == "=" ? "#E7EAED" : colors.white,
                     borderWidth: item == "=" ? 0 : 0.2,
                   },
                 ]}>
                 {item.toString() ? (
                   <Text
                     style={{
-                      color: "#242424",
+                      color: colors.nero,
                     }}>
                     {item}
                   </Text>
@@ -185,14 +185,14 @@ export const Numpad = (props: InputNumpad) => {
                 style={[
                   styles.viewTextItem5,
                   {
-                    backgroundColor: item == "OK" ? "#0078D4" : "#FFFFFF",
+                    backgroundColor: item == "OK" ? colors.navyBlue : colors.white,
                     borderWidth: item == "+" ? 0 : 0.2,
                   },
                 ]}>
                 {item.toString() ? (
                   <Text
                     style={{
-                      color: item == "OK" ? "white" : "#242424",
+                      color: item == "OK" ? "white" : colors.nero,
                     }}>
                     {item}
                   </Text>

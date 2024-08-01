@@ -16,6 +16,7 @@ import {
   _textStyle,
 } from "./Keypad.style";
 import { BACKSPACE_KEYPAD } from "./ModernKeyboard";
+import { colors } from "../../app-purchase/theme";
 
 type CustomTextStyleProp = StyleProp<TextStyle> | Array<StyleProp<TextStyle>>;
 type CustomImageStyleProp =
@@ -42,10 +43,10 @@ const Keypad: React.FC<KeypadProps> = ({
   size = 75,
   outerBackgroundColor = "transparent",
   outerActiveBackgroundColor = "rgba(0, 173, 255, 0.1)",
-  buttonColor = "#fff",
+  buttonColor = colors.white,
   buttonActiveColor = "#00ADFF",
-  textColor = "#000",
-  textActiveColor = "#fff",
+  textColor = colors.black,
+  textActiveColor = colors.white,
   backspaceStyle,
   backspaceImageSource = require("./local-assets/backspace.png"),
   textStyle,

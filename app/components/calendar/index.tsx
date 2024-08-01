@@ -176,7 +176,7 @@ const CustomCalendar = React.memo((props: any) => {
           [day.dateString]: {
             selected: true,
             selectedColor: colors.palette.navyBlue,
-            selectedTextColor: "#FFFFFF",
+            selectedTextColor: colors.white,
           },
         });
         setIsStartDatePicked(true);
@@ -190,7 +190,7 @@ const CustomCalendar = React.memo((props: any) => {
             [day.dateString]: {
               startingDay: true,
               color: colors.palette.navyBlue,
-              textColor: "#FFFFFF",
+              textColor: colors.white,
             },
           });
           setIsStartDatePicked(true);
@@ -213,13 +213,13 @@ const CustomCalendar = React.memo((props: any) => {
               if (i < range) {
                 newMarkedDates[tempDate] = {
                   color: colors.palette.gray,
-                  textColor: "#000000",
+                  textColor: colors.black,
                 };
               } else {
                 newMarkedDates[tempDate] = {
                   endingDay: true,
                   color: colors.palette.navyBlue,
-                  textColor: "#FFFFFF",
+                  textColor: colors.white,
                   fontWeight: "700",
                 };
               }
@@ -235,7 +235,7 @@ const CustomCalendar = React.memo((props: any) => {
               [day.dateString]: {
                 startingDay: true,
                 color: colors.palette.navyBlue,
-                textColor: "#FFFFFF",
+                textColor: colors.white,
               },
             });
             setIsStartDatePicked(true);
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   doneButtonText: {
     alignSelf: "center",
     fontSize: 14,
-    color: "#FFFFFF",
+    color: colors.white,
     fontWeight: "700",
   },
 });

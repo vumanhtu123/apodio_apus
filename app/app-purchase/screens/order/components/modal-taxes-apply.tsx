@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 
@@ -41,7 +41,7 @@ export const ModalTaxes = (data: InputSelect) => {
         <View
           style={{
             height: scaleHeight(5),
-            backgroundColor: "#C7C7C7",
+            backgroundColor: colors.veryLightGrey1,
             marginTop: scaleHeight(8),
             marginHorizontal: scaleWidth(137),
             borderRadius: 100,
@@ -50,7 +50,7 @@ export const ModalTaxes = (data: InputSelect) => {
         <Text
           tx="order.taxes_apply"
           style={{
-            color: "#242424",
+            color: colors.nero,
             fontWeight: "700",
             fontSize: fontSize.size14,
             marginHorizontal: scaleWidth(24),
@@ -59,7 +59,7 @@ export const ModalTaxes = (data: InputSelect) => {
         <View
           style={{
             height: 1,
-            backgroundColor: "#E7EFFF",
+            backgroundColor: colors.solitude2,
             marginTop: scaleHeight(18),
             marginHorizontal: scaleWidth(15),
           }}
@@ -76,7 +76,7 @@ export const ModalTaxes = (data: InputSelect) => {
             console.log("name", name);
           }}
           styleView={{
-            backgroundColor: "#F6F7F9",
+            backgroundColor: colors.aliceBlue,
             paddingHorizontal: scaleWidth(15),
             paddingVertical: scaleHeight(8),
             marginVertical: scaleHeight(22),
@@ -96,7 +96,7 @@ export const ModalTaxes = (data: InputSelect) => {
               backgroundColor: "white",
               borderRadius: 8,
               borderWidth: 1,
-              borderColor: "#c8c8c8",
+              borderColor: colors.veryLightGrey,
               alignItems: 'center',
               paddingHorizontal: scaleWidth(55),
               paddingVertical: scaleWidth(12),
@@ -108,7 +108,7 @@ export const ModalTaxes = (data: InputSelect) => {
             <Text
               tx="order.back"
               style={{
-                color: "#747475",
+                color: colors.dolphin,
                 fontSize: fontSize.size14,
                 fontWeight: "600",
                 textAlign : 'center',
@@ -122,7 +122,7 @@ export const ModalTaxes = (data: InputSelect) => {
               console.log("item b", name);
             }}
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               borderRadius: 8,
               alignItems :'center',
               paddingHorizontal: scaleWidth(55),

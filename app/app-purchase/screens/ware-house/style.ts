@@ -18,7 +18,7 @@ export const Styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 1,
-    // backgroundColor:'#FFF' ,
+    // backgroundColor:colors.white ,
     marginTop: scaleHeight(12),
     marginHorizontal: scaleWidth(16),
     marginBottom: scaleHeight(20),
@@ -30,7 +30,7 @@ export const Styles = StyleSheet.create({
     paddingHorizontal: scaleWidth(10),
     paddingTop: scaleWidth(10),
     paddingBottom: scaleWidth(19),
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: scaleWidth(8),
     marginRight: scaleWidth(8),
   },
@@ -54,14 +54,14 @@ export const Styles = StyleSheet.create({
     marginTop: scaleHeight(12),
     marginBottom: scaleHeight(12),
     padding: scaleWidth(15),
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: 8,
   },
   line: {
     marginVertical: scaleHeight(16),
     borderWidth: 1,
     width: "100%",
-    borderColor: "#E7EFFF",
+    borderColor: colors.solitude2,
   },
   headerSection: {
     justifyContent: "center",
@@ -118,14 +118,14 @@ export const Styles = StyleSheet.create({
     flexDirection: "row",
     padding: scaleHeight(6),
     borderRadius: scaleWidth(8),
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     marginBottom: scaleHeight(12),
     alignItems: "center",
   },
   box: {
     paddingVertical: scaleWidth(20),
     paddingHorizontal: scaleHeight(16),
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
   },
   label: {
     fontWeight: "400",
@@ -139,12 +139,12 @@ export const Styles = StyleSheet.create({
   box2: {
     paddingVertical: scaleWidth(20),
     paddingHorizontal: scaleHeight(16),
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     flexDirection: "row",
     marginTop: scaleHeight(12),
   },
   styleBtnCancel: {
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     flex: 1,
     alignItems: "center",
     padding: scaleWidth(padding.padding_14),
@@ -188,7 +188,7 @@ export const stylesWareHouse = StyleSheet.create({
   textConfig: {
     fontSize: fontSize.size14,
     fontWeight: "400",
-    color: "#747475",
+    color: colors.dolphin,
     marginHorizontal: scaleWidth(5),
   },
   modalContainer: {

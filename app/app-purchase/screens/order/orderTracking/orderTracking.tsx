@@ -89,13 +89,13 @@ export const OrderTracking: FC = observer(
                         <Text text={item.time} style={index === 0 ? styles.textInformation : styles.textDate} />
                     </View>
                     <View style={{ width: '12%', justifyContent: 'center', alignItems: 'center' }}>
-                        {index === 0 ? <View style={{ width: scaleWidth(1), height: '20%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: '#D5D5D6', height: '10%' }} />}
+                        {index === 0 ? <View style={{ width: scaleWidth(1), height: '20%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: colors.quartz1, height: '10%' }} />}
                         {item.status === null ? (index === 0 ? <Svgs.icon_ellipse_tracking_blue /> : <Svgs.icon_ellipse_tracking />) :
                             item.status === "Đặt hàng" ? (index === 0 ? <Svgs.icon_order_success_blue /> : <Svgs.icon_order_success />) :
                                 item.status === "Chờ lấy hàng" ? (index === 0 ? <Svgs.icon_pickup_blue /> : <Svgs.icon_pickup />) :
                                     (index === 0 ? <Svgs.icon_deliveryBlue /> : <Svgs.icon_delivery />)
                         }
-                        {index === data.length - 1 ? <View style={{ width: scaleWidth(1), height: '75%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: '#D5D5D6', height: '75%' }} />}
+                        {index === data.length - 1 ? <View style={{ width: scaleWidth(1), height: '75%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: colors.quartz1, height: '75%' }} />}
                     </View>
                     <View style={{
                         width: '67%', paddingBottom: scaleHeight(15),
