@@ -14,6 +14,7 @@ const en = {
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     selected: "Đã chọn",
+    emptyList : 'Không tìm thấy dữ liệu'
     // @demo remove-current-line
   },
   messageError: {

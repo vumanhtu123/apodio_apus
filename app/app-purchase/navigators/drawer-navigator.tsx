@@ -205,7 +205,7 @@ export function MyDrawer() {
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}>
       {/* Các Screen của bạn */}
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="home"
         component={MainBottomTab}
         options={{ headerShown: false }}
@@ -219,7 +219,7 @@ export function MyDrawer() {
         name="app2"
         component={OpenAppStack}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Drawer.Screen
         name="app"
         component={AppStack}
