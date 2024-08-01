@@ -234,7 +234,7 @@ export const SelectApplicablePriceList: FC<
                       {item.name}
                     </Text>
                     <Text
-                      style={{ fontSize: fontSize.size10, color: "#747475" }}>
+                      style={{ fontSize: fontSize.size10, color: colors.dolphin }}>
                       {item.priceListCategory}
                     </Text>
                   </View>

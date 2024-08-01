@@ -8,8 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Svgs } from '../../../../../assets/svgs';
-import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { Text } from '../../../../components';
+import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 
 // import IconSelected from '../../assets/icons/icon_selected.svg'
 const { width, height } = Dimensions.get('screen');
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     marginBottom: 23,
     height: 48,
     borderRadius: 8,
-    backgroundColor: '#F4AD22',
+    backgroundColor: colors.yellow,
   },
 
   textStyle: {
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: 68, // Kích thước chiều rộng 68dp
     height: 5, // Kích thước chiều cao 5dp
-    backgroundColor: '#C7C7C7',
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: 'center',
   },
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: 'center',
-    color: '#323232',
+    color: colors.nightRider1,
     fontSize: fontSize.size14,
     lineHeight: scaleHeight(24),
   },
@@ -180,18 +179,18 @@ const styles = StyleSheet.create({
   selectType: {
     fontSize: fontSize.size14,
     lineHeight: scaleHeight(24),
-    color: '#323232',
+    color: colors.nightRider1,
     fontWeight: '700',
   },
   cancel: {
     fontSize: fontSize.size14,
-    color: '#FF0000',
+    color: colors.red,
     fontWeight: '700',
     lineHeight: scaleHeight(24),
   },
   horizontalLine: {
     height: 1,
-    backgroundColor: '#E7EFFF',
+    backgroundColor: colors.solitude2,
     marginTop: 18,
     marginBottom: 14,
   },

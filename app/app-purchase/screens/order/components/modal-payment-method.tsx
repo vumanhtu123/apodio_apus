@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { margin, scaleHeight, scaleWidth, fontSize } from "../../../theme";
+import { margin, scaleHeight, scaleWidth, fontSize, colors } from "../../../theme";
 import { Text } from "../../../../components";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
@@ -36,7 +36,7 @@ export const ModalPayment = (data: InputSelect) => {
         <View
           style={{
             height: 5,
-            backgroundColor: "#C7C7C7",
+            backgroundColor: colors.veryLightGrey1,
             marginTop: scaleHeight(8),
             marginHorizontal: scaleWidth(137),
             borderRadius: 100,
@@ -45,7 +45,7 @@ export const ModalPayment = (data: InputSelect) => {
         <Text
           tx={data.isPayment === true ? "order.payment_method" : "order.advance_payment_method"}
           style={{
-            color: "#242424",
+            color: colors.nero,
             fontWeight: "700",
             fontSize: fontSize.size14,
             marginHorizontal: scaleWidth(24),
@@ -84,7 +84,7 @@ export const ModalPayment = (data: InputSelect) => {
               backgroundColor: "white",
               borderRadius: 8,
               borderWidth: 1,
-              borderColor: "#c8c8c8",
+              borderColor: colors.veryLightGrey,
               alignItems: 'center',
               paddingHorizontal: scaleWidth(55),
               paddingVertical: scaleWidth(12),
@@ -94,7 +94,7 @@ export const ModalPayment = (data: InputSelect) => {
             <Text
               tx="order.cancel"
               style={{
-                color: "#747475",
+                color: colors.dolphin,
                 fontSize: fontSize.size14,
                 fontWeight: "600",
                 textAlign: 'center',
@@ -110,7 +110,7 @@ export const ModalPayment = (data: InputSelect) => {
               data.onSave();
             }}
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               borderRadius: 8,
               alignItems: 'center',
               paddingHorizontal: scaleWidth(55),
@@ -154,7 +154,7 @@ const Item_Payment = (data: InputItem) => {
       <View
         style={{
           height: 1,
-          backgroundColor: "#E7EFFF",
+          backgroundColor: colors.solitude2,
           marginVertical: scaleHeight(16),
         }}
       />
@@ -177,7 +177,7 @@ const Item_Payment = (data: InputItem) => {
             style={{
               borderRadius: 50,
               borderWidth: 1,
-              borderColor: "#DFE0EB",
+              borderColor: colors.quartz,
               alignSelf: "center",
               padding: 2,
             }}>
@@ -190,7 +190,7 @@ const Item_Payment = (data: InputItem) => {
                   data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
                     ? "white" : data.index === data.length - 1 && data.debt.debtAmount === 0 ? "white"
                       : data.id == data.index
-                        ? "#0078D4"
+                        ? colors.navyBlue
                         : "white",
                 alignSelf: "center",
               }}></View>
@@ -203,10 +203,10 @@ const Item_Payment = (data: InputItem) => {
                 fontWeight: "500",
                 color:
                   data.index === data.length - 1 && data.debt.isHaveDebtLimit === false
-                    ? "#DFE0EB" : data.index === data.length - 1 && data.debt.debtAmount === 0 ? "#DFE0EB"
+                    ? colors.quartz : data.index === data.length - 1 && data.debt.debtAmount === 0 ? colors.quartz
                       : data.index !== data.length - 1 && data.debt.isHaveDebtLimit === true
-                        ? "#242424"
-                        : "#242424",
+                        ? colors.nero
+                        : colors.nero,
               }}></Text>
             {data.index === data.length - 1 && data.debt.isHaveDebtLimit === true && data.debt.debtAmount !== 0 ? (
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -215,14 +215,14 @@ const Item_Payment = (data: InputItem) => {
                   style={{
                     fontWeight: "400",
                     fontSize: fontSize.size12,
-                    color: "#747475",
+                    color: colors.dolphin,
                     alignContent: "center",
                   }}></Text>
                 <Text
                   style={{
                     fontSize: fontSize.size12,
                     fontWeight: "400",
-                    color: "#FF0000",
+                    color: colors.red,
                   }}>
                   {formatVND(formatCurrency(commasToDots(data.debt.debtAmount))) ?? 0}
                   <Text
@@ -230,7 +230,7 @@ const Item_Payment = (data: InputItem) => {
                     style={{
                       fontWeight: "400",
                       fontSize: fontSize.size12,
-                      color: "#747475",
+                      color: colors.dolphin,
                       alignContent: "center",
                     }}>
                   </Text>

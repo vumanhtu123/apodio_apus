@@ -172,7 +172,7 @@ export function TextFieldPass(props: TextFieldProps) {
             top: !isFocused && value === "" ? 15 : 0,
             fontSize: !isFocused && value === "" ? 15 : 12,
             fontWeight: "500",
-            color: !isFocused ? "#84888D" : colors.palette.dolphin,
+            color: !isFocused ? colors.aluminium : colors.palette.dolphin,
             paddingHorizontal: scaleWidth(16),
             marginTop: isFocused && value === "" ? 3 : 3,
           }}
@@ -197,7 +197,7 @@ export function TextFieldPass(props: TextFieldProps) {
               style={{
                 fontWeight: "700",
                 fontSize: 16,
-                color: value ? "#242426" : "#545456",
+                color: value ? colors.jaguar : "#545456",
                 marginLeft: scaleWidth(15),
                 marginTop: scaleWidth(value ? 10 : 0),
               }}

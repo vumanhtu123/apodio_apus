@@ -14,6 +14,7 @@ const en = {
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     selected: "Đã chọn",
+    emptyList : 'Không tìm thấy dữ liệu'
     // @demo remove-current-line
   },
   messageError: {
@@ -767,7 +768,7 @@ const en = {
     addLineWeight: "Thêm tải trọng cho các ĐVT quy đổi",
     conversionRate: "Ty le quy doi",
     enterConversionCode: "nhap ma quy doi",
-    enterRatio: "nhập tỉ lệ",
+    enterRatio: "Nhập tỉ lệ",
     search: "Search...",
     searchCategories: "Tìm kiếm danh mục",
     enterDescription: "Nhập mô tả",

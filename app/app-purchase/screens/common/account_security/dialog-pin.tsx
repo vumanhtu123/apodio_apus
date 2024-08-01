@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: scaleWidth(68),
     height: scaleHeight(5),
-    backgroundColor: '#C7C7C7',
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: 'center',
   },

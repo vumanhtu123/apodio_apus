@@ -66,7 +66,6 @@ import avatarError from "./Images/avatarError.png";
 import icon_ellipse from "./Images/icon_ellipse.svg";
 import icon_checkGreen from "./Images/icon_checkGreen.svg";
 import logoApodioWhite from "./Images/Apodio-logo-white.svg";
-// import icon_edit from "./Images/icon_edit.svg"
 import icon_funnel from "./Images/icon_funnel.svg";
 import icon_searchBlack from "./Images/icon_searchBlack.svg";
 import logoShop from "./Images/logoShop.svg";
@@ -90,10 +89,6 @@ import ic_search from "./Images/ic_search.svg";
 import ic_plus from "./Images/ic_plus.svg";
 import ic_minus from "./Images/ic_minus.svg";
 import imageError from "./Images/imageError.png";
-
-// import icon_add from "./Images/icon_add.svg";
-// import icon_caretRightDown from "./Images/icon_caretRightDown.svg";
-// import icon_checkCircle from "./Images/icon_checkCircle.svg";
 import ic_exampel from "./Images/ic_addExempel.svg";
 import icon_add from "./Images/icon_add.svg";
 import icon_caretRightDown from "./Images/icon_caretRightDown.svg";

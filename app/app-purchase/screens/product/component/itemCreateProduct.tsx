@@ -29,29 +29,39 @@ export const ItemMoreInformation = memo(
     const [dataBrand, setDataBrand] = useState<{}[]>([])
     const [dataTagConvert, setDataTagConvert] = useState<{}[]>([]);
     const [dataCategory, setDataCategory] = useState<any>([]);
-
+    const [size, setSize] = useState<any>();
     const getListBrand = async () => {
       const data = await productStore.getListBrand();
+      console.log('firstád', data)
       const newArr = data.result.data.content.map((item: any) => {
         return { label: item.name, id: item.id };
       })
       setDataBrand(newArr);
     };
 
-    const getListCategory = async () => {
-      const data = await categoryStore.getListCategoriesModal(0, 200);
-      console.log("get list category", data);
+    const getListCategory = async (searchValue?: any) => {
+      const data = await categoryStore.getListCategoriesModal(0, 200, searchValue);
+      console.log("get list category ", data);
       // setTotalPage(data.response.data.totalPages)
+      setSize(data.response.data.totalPages)
       // if (page === 0) {
       const newArr = data.response.data.content.map((item: { name: any; id: any }) => {
         return { label: item.name, id: item.id };
       });
       setDataCategory(newArr);
-      // } else {
-      //   setDataCategory(prevData => [...prevData, ...data.response.data.content]);
-      // }
     };
+    const searchCategory = (searchValue: any) => {
+      // console.log('sadsadsa', searchValue)
+      getListCategory(searchValue)
+    }
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
+    const refreshCategory = async () => {
+      setIsRefreshing(true)
+      setDataCategory([])
+      await getListCategory()
+      setIsRefreshing(false)
+    }
     const getListTags = async () => {
       const data = await productStore.getListTagProduct();
       setDataTagConvert(
@@ -82,7 +92,12 @@ export const ItemMoreInformation = memo(
                 isSearch
                 required={false}
                 arrData={dataCategory}
+                handleOnSubmitSearch={searchCategory}
+                onRefresh={refreshCategory}
                 dataDefault={value?.label ?? ''}
+                isRefreshing={isRefreshing}
+                setIsRefreshing={setIsRefreshing}
+                size={size}
                 // onLoadMore={loadMoreCategories}
                 // handleOnSubmitSearch={handleSubmitSearchCategory}
                 // onChangeText={handleSearchCategoryChange}
@@ -347,16 +362,16 @@ export const ItemGroupPrice = memo(
     )
   })
 
-  interface ItemUnit {
-    detailUnitGroupData: any;
-    valueSwitchUnit: boolean;
-    arrUnitGroupData: any;
-    uomGroupId: {label: string};
-    uomId: {label: string};
-    addUnitOrGroup: ()=> void;
-    onChangeSwitch: ()=> void;
-    onChangeInput: (item: any)=> void;
-  }
+interface ItemUnit {
+  detailUnitGroupData: any;
+  valueSwitchUnit: boolean;
+  arrUnitGroupData: any;
+  uomGroupId: { label: string };
+  uomId: { label: string };
+  addUnitOrGroup: () => void;
+  onChangeSwitch: () => void;
+  onChangeInput: (item: any) => void;
+}
 
 export const ItemUnit = memo(
   function ItemUnit(props: ItemUnit) {

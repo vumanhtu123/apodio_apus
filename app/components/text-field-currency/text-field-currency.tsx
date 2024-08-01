@@ -405,9 +405,9 @@ const styles = StyleSheet.create({
   keyboardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     padding: 10,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    borderTopColor: colors.veryLightGrey2,
   },
 }); 

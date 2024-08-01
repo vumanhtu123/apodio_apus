@@ -50,8 +50,7 @@ interface AppProps {
 /**
  * This is the root component of our app.
  */
-function App(props: AppProps) {
-  const { hideSplashScreen } = props;
+function App() {
   const {
     initialNavigationState,
     onNavigationStateChange,

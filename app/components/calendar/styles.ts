@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: colors.dodgerBlue1,
     },
     modalText: {
         marginBottom: 15,
@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         width: 68, // Kích thước chiều rộng 68dp
         height: 5, // Kích thước chiều cao 5dp
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },

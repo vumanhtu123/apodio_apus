@@ -16,6 +16,9 @@ import {
   _textStyle,
 } from "./Keypad.style";
 import { BACKSPACE_KEYPAD } from "./ModernKeyboard";
+import Images from "../../../assets/index";
+import { colors } from "../../app-purchase/theme";
+import Images from "../../../assets/index";
 
 type CustomTextStyleProp = StyleProp<TextStyle> | Array<StyleProp<TextStyle>>;
 type CustomImageStyleProp =
@@ -42,10 +45,10 @@ const Keypad: React.FC<KeypadProps> = ({
   size = 75,
   outerBackgroundColor = "transparent",
   outerActiveBackgroundColor = "rgba(0, 173, 255, 0.1)",
-  buttonColor = "#fff",
+  buttonColor = colors.white,
   buttonActiveColor = "#00ADFF",
-  textColor = "#000",
-  textActiveColor = "#fff",
+  textColor = colors.black,
+  textActiveColor = colors.white,
   backspaceStyle,
   backspaceImageSource = require("./local-assets/backspace.png"),
   textStyle,
@@ -65,8 +68,7 @@ const Keypad: React.FC<KeypadProps> = ({
 
   const renderText = () => (
     <Text
-      style={[_textStyle(isPressed, textColor, textActiveColor), textStyle]}
-    >
+      style={[_textStyle(isPressed, textColor, textActiveColor), textStyle]}>
       {text}
     </Text>
   );
@@ -77,9 +79,8 @@ const Keypad: React.FC<KeypadProps> = ({
         isPressed,
         size,
         outerBackgroundColor,
-        outerActiveBackgroundColor,
-      )}
-    >
+        outerActiveBackgroundColor
+      )}>
       <TouchableOpacity
         activeOpacity={1}
         style={_buttonStyle(isPressed, size, buttonColor, buttonActiveColor)}
@@ -89,8 +90,7 @@ const Keypad: React.FC<KeypadProps> = ({
         onPressOut={() => {
           setPressed(false);
           onPress?.();
-        }}
-      >
+        }}>
         {text === BACKSPACE_KEYPAD ? renderBackspace() : renderText()}
       </TouchableOpacity>
     </View>

@@ -13,7 +13,7 @@ export interface InputSelectProps {
   checkUse?: boolean;
   onPressNotUse?(): void;
   arrData: {}[];
-  onPressChoice({}): void;
+  onPressChoice({ }): void;
   dataDefault?: string;
   multiple?: any;
   disabled?: boolean;
@@ -24,4 +24,8 @@ export interface InputSelectProps {
   onChangeText?: any;
   textStyle?: TextStyle;
   styleViewDropdown?: ViewStyle;
+  size?: any
+  onRefresh?: any
+  isRefreshing?: any
+  setIsRefreshing?: any
 }

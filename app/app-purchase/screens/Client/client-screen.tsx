@@ -59,15 +59,15 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
         const renderKHItem = ({ item }: any) => {
             return (
                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', width: scaleWidth(375), height: scaleHeight(56), paddingHorizontal: 16, backgroundColor: 'white', marginBottom: 1.5, justifyContent: 'space-between' }}
-                    onPress={() => navigation.navigate('detailClient')}
+                    onPress={() => navigation.navigate('detailClient' as never)}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <View style={{ width: 40, height: 40, backgroundColor: '#EFF8FF', borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: fontSize.size10, color: '#0078D4' }}>{item.code}</Text>
+                        <View style={{ width: 40, height: 40, backgroundColor: colors.aliceBlue2, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: fontSize.size10, color: colors.navyBlue }}>{item.code}</Text>
                         </View>
                         <View style={{ marginHorizontal: 6 }}>
                             <Text style={{ fontSize: fontSize.size10 }}>{item.name}</Text>
-                            <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.phone}</Text>
+                            <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{item.phone}</Text>
                         </View>
                     </View>
                     <TouchableOpacity>
@@ -80,8 +80,8 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
         const renderItemNKH = ({ item }: any) => {
             return (
                 <TouchableOpacity
-                    style={{ padding: scaleWidth(padding.padding_10), backgroundColor: '#FFF', marginBottom: 10 }}
-                    onPress={() => navigation.navigate('addClientToGroup', { dataItem: item })}
+                    style={{ padding: scaleWidth(padding.padding_10), backgroundColor: colors.white, marginBottom: 10 }}
+                    onPress={() => navigation.navigate({name: 'addClientToGroup', params:{ dataItem: item }} as never)}
                 >
                     <Text>{item.nameGroup}</Text>
                     <Text>{item.quantityClient}</Text>
@@ -128,7 +128,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                     <View style={styles.rowBtnTab}>
                         <View style={{
                             flexDirection: 'row',
-                            backgroundColor: '#E6E7EA',
+                            backgroundColor: colors.solitude1,
                             borderRadius: 8,
                             padding: 2,
                             marginTop: 20
@@ -173,18 +173,18 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                         }}
                                         key={index}
                                         style={{
-                                            backgroundColor: index == indexItem ? '#FFFfff' : '#F4F4F4',
+                                            backgroundColor: index == indexItem ? colors.white : colors.whiteSmoke,
                                             borderRadius: 8,
                                             paddingHorizontal: 8,
                                             paddingVertical: 8,
                                             marginRight: 10,
                                             borderWidth: 1,
-                                            borderColor: index == indexItem ? '#0078D4' : '#c8c8c8'
+                                            borderColor: index == indexItem ? colors.navyBlue : colors.veryLightGrey
                                         }}
                                     >
                                         <Text
                                             style={{
-                                                color: index == indexItem ? '#0078D4' : '#747475',
+                                                color: index == indexItem ? colors.navyBlue : colors.dolphin,
                                                 textAlign: 'center',
                                                 fontWeight: '700',
                                                 fontSize: fontSize.size10,

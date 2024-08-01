@@ -129,7 +129,7 @@ export const CreateFunds = (props: Input) => {
           {list.map((item, index) => {
             return (
               <TouchableOpacity onPress={() => {}}>
-                <View style={{ borderRadius: 10, backgroundColor: "#F6F7F9" }}>
+                <View style={{ borderRadius: 10, backgroundColor: colors.aliceBlue }}>
                   <Text style={{ paddingHorizontal: 23, paddingVertical: 11 }}>
                     {item}
                   </Text>
@@ -166,7 +166,7 @@ export const styles = StyleSheet.create({
   },
   viewLine: {
     height: 5,
-    backgroundColor: "#C7C7C7",
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 100,
     marginHorizontal: 154,
     marginTop: 8,
@@ -179,7 +179,7 @@ export const styles = StyleSheet.create({
     marginVertical: 18,
   },
   textFunds: {
-    color: "#242424",
+    color: colors.nero,
     fontSize: 14,
     fontWeight: "700",
   },
@@ -190,7 +190,7 @@ export const styles = StyleSheet.create({
   },
   viewTittleFormField: {
     marginHorizontal: 16,
-    backgroundColor: "#E7EFFF",
+    backgroundColor: colors.solitude2,
     borderWidth: 0.19,
   },
   styleTextField: {
@@ -212,16 +212,16 @@ export const styles = StyleSheet.create({
     alignContent: "center",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#747475",
+    borderColor: colors.dolphin,
   },
   textBack: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#747475",
+    color: colors.dolphin,
     marginLeft: 5,
   },
   viewConfirm: {
-    backgroundColor: "#0078D4",
+    backgroundColor: colors.navyBlue,
     flexDirection: "row",
     paddingHorizontal: 48,
     paddingVertical: 12,
@@ -231,7 +231,7 @@ export const styles = StyleSheet.create({
   textConfirm: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#FFFFFF",
+    color: colors.white,
     marginLeft: 5,
   },
   viewList: {

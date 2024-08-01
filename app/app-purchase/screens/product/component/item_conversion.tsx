@@ -96,15 +96,6 @@ const ItemConversion = (props: ItemConversionProps) => {
   });
 
   const conversionWatch = watch("conversion");
-  // useEffect(() => {
-  //     if (items.length > 0) {
-  //         const lastItem = items[items.length - 1];
-  //         if (lastItem.amount && lastItem.price) {
-  //             append({ amount: '', price: '' });
-  //         }
-  //         console.log('test log')
-  //     }
-  // }, [items, append]);
 
   useEffect(() => {
     setFilteredData(arrData);
@@ -180,7 +171,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                             (Dimensions.get("screen").width - scaleWidth(64)) *
                             0.4,
                           borderBottomWidth: 1,
-                          borderBottomColor: "#DFE0EB",
+                          borderBottomColor: colors.quartz,
                         }}
                         value={value}
                         onBlur={onBlur}
@@ -200,7 +191,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                         (Dimensions.get("screen").width - scaleWidth(64)) *
                         0.25,
                       borderBottomWidth: 1,
-                      borderBottomColor: "#DFE0EB",
+                      borderBottomColor: colors.quartz,
                       flexDirection: "row",
                       marginHorizontal: scaleWidth(5),
                     }}>
@@ -219,7 +210,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                             (Dimensions.get("screen").width - scaleWidth(64)) *
                             0.2,
                           borderBottomWidth: 1,
-                          borderBottomColor: "#DFE0EB",
+                          borderBottomColor: colors.quartz,
                         }}
                         value={value}
                         onBlur={onBlur}
@@ -235,7 +226,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                   <View
                     style={{
                       borderBottomWidth: 1,
-                      borderBottomColor: "#DFE0EB",
+                      borderBottomColor: colors.quartz,
                       // width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.15,
                     }}>
                     <Text text={unit} />
@@ -313,7 +304,7 @@ const ItemConversion = (props: ItemConversionProps) => {
         title={"productScreen.Notification"}
         content={"itemConversion.dialogNoti"}
         titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
         onPressAccept={() => setOpenDialog(false)}
       />
     </View>

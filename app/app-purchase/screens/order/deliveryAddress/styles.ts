@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
   viewBorder: {
     borderWidth: scaleHeight(1),
     borderRadius: 4,
-    borderColor: "#DFE0EB",
+    borderColor: colors.quartz,
     marginRight: scaleWidth(10),
     justifyContent: "center",
     alignItems: "center",

@@ -22,7 +22,7 @@ import {
 } from "../../../../components/dialog-notification";
 import { ItemAttribute } from "./itemAttribute";
 import { FormProvider, useForm } from "react-hook-form";
-import { styles } from "../styles";
+import { styles } from "./styles";
 
 export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
   props

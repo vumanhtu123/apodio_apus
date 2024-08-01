@@ -12,6 +12,8 @@ import { TextFieldPass } from "../../../../components/text-field-changepass/text
 import { Button } from "../../../../components/button/button";
 import { Screen } from "../../../../components/screen/screen";
 import { useStores } from "../../../models";
+import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
+import { translate } from "../../../i18n";
 
 export const changePassScreen: FC = observer(function ChangePassScreen(
   props: any
@@ -47,7 +49,31 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
     authenticationStore
       .changePassword(data.newPass, data.reNewPass)
       .then((value: any) => {
-        console.log("change pass", value);
+        console.log("change pass", value.data.errorCodes[0].message);
+        if (value.data.errorCodes[0].message !== null) {
+          console.log("change pass 2", value.data.errorCodes[0].message);
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: translate("txtDialog.txt_title_dialog"),
+            textBody: value.data.errorCodes[0].message,
+            button: translate("common.ok"),
+            closeOnOverlayTap: false,
+            onPressButton() {
+              props.back();
+            },
+          });
+        } else {
+          Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: translate("txtDialog.txt_title_dialog"),
+            textBody: "Success",
+            button: translate("common.ok"),
+            closeOnOverlayTap: false,
+            onPressButton() {
+              props.navigation.navigate("wareHouse", { reset: true });
+            },
+          });
+        }
       });
   };
 
@@ -87,7 +113,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   fontSize: 18,
                   fontWeight: "700",
                   lineHeight: 24,
-                  color: "#323232",
+                  color: colors.nightRider1,
                   paddingLeft: 5,
                   paddingBottom: 20,
                 }}
@@ -171,7 +197,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   fontSize: 18,
                   fontWeight: "700",
                   lineHeight: 24,
-                  color: "#323232",
+                  color: colors.nightRider1,
                   paddingLeft: 5,
                   paddingBottom: 20,
                 }}
@@ -238,7 +264,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   : errors?.newPass?.message
               }`}
               style={{
-                color: "#FF0000",
+                color: colors.red,
                 alignItems: "center",
                 fontSize: 12,
                 paddingTop: 5,
@@ -254,7 +280,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   fontSize: 18,
                   fontWeight: "700",
                   lineHeight: 24,
-                  color: "#323232",
+                  color: colors.nightRider1,
                   paddingLeft: 5,
                   paddingBottom: 20,
                 }}
@@ -325,7 +351,7 @@ export const changePassScreen: FC = observer(function ChangePassScreen(
                   : errors?.reNewPass?.message
               }`}
               style={{
-                color: "#FF0000",
+                color: colors.red,
                 alignItems: "center",
                 fontSize: 12,
                 paddingTop: 5,

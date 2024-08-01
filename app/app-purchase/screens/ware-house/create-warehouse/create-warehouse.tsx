@@ -552,7 +552,7 @@ export const CreateWareHouseScreen: FC<
                   labelTx={"wareHouse.codeWareHouse"}
                   style={{
                     marginBottom: scaleHeight(0),
-                    backgroundColor: "#F6F7F9",
+                    backgroundColor: colors.aliceBlue,
                     borderRadius: 8,
                   }}
                   inputStyle={stylesWareHouse.inputPass}
@@ -592,7 +592,7 @@ export const CreateWareHouseScreen: FC<
                   keyboardType={null}
                   labelTx={"wareHouse.nameWareHouse"}
                   style={{
-                    backgroundColor: "#F6F7F9",
+                    backgroundColor: colors.aliceBlue,
                     borderRadius: 8,
                     marginVertical: 15,
                   }}
@@ -634,7 +634,7 @@ export const CreateWareHouseScreen: FC<
                   labelTx={"wareHouse.address"}
                   style={{
                     marginBottom: scaleHeight(0),
-                    backgroundColor: "#F6F7F9",
+                    backgroundColor: colors.aliceBlue,
                     borderRadius: 8,
                   }}
                   error={errors.addressWareHouse?.message ?? ""}
@@ -722,7 +722,7 @@ export const CreateWareHouseScreen: FC<
           <TouchableOpacity
             onPress={methods.handleSubmit(onSubmit, onError)}
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               alignItems: "center",
               borderRadius: 10,
             }}>
@@ -734,7 +734,7 @@ export const CreateWareHouseScreen: FC<
               }
               style={{
                 fontSize: 14,
-                color: "#FFFFFF",
+                color: colors.white,
                 fontWeight: "600",
                 paddingVertical: scaleHeight(12),
               }}

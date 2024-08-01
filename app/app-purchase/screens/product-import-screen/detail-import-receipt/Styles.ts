@@ -3,7 +3,7 @@ import { colors, padding, scaleHeight, scaleWidth } from "../../../theme"
 
 const Styles = StyleSheet.create({
     bodyItem: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         borderRadius: 8,
         // paddingVertical: scaleHeight(10),
         // paddingHorizontal: scaleWidth(16),
@@ -20,7 +20,7 @@ const Styles = StyleSheet.create({
     line: {
         width: '100%',
         borderWidth: 1,
-        borderColor: "#F6F7FB",
+        borderColor: colors.ghostWhite,
         marginVertical: scaleHeight(12)
 
     },
@@ -42,7 +42,7 @@ const Styles = StyleSheet.create({
     },
     StyleTabar: {
         flexDirection: 'row',
-        backgroundColor: '#E6E7EA',
+        backgroundColor: colors.solitude1,
         height: 32,
         // justifyContent:'space-between',
         borderRadius: 8,
@@ -60,7 +60,7 @@ const Styles = StyleSheet.create({
     },
     styleGroup2: {
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         paddingVertical: scaleHeight(12),
         paddingHorizontal: scaleWidth(16),
         marginTop: scaleHeight(20),
@@ -98,7 +98,7 @@ const Styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 7,
         padding: scaleWidth(12),
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         alignItems: 'center',
         borderColor: colors.palette.veryLightGrey,
         width: scaleWidth(166)
@@ -109,7 +109,7 @@ const Styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 7,
         padding: scaleWidth(12),
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         alignItems: 'center',
         borderColor: colors.palette.veryLightGrey,
         width: scaleWidth(152)
@@ -126,7 +126,7 @@ const Styles = StyleSheet.create({
 
         // alignItems:'center',
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         padding: scaleWidth(padding.padding_16),
         
     },
@@ -134,7 +134,7 @@ const Styles = StyleSheet.create({
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -158,7 +158,7 @@ const Styles = StyleSheet.create({
     },
     horizontalLine: {
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         marginBottom: 18,
     },
@@ -171,7 +171,7 @@ const Styles = StyleSheet.create({
         width: scaleWidth(256),
         height: scaleHeight(56),
         borderRadius: 8,
-        backgroundColor: '#F6F7F9',
+        backgroundColor: colors.aliceBlue,
         padding: scaleWidth(16)
     },
     btnCreate: {
@@ -185,7 +185,7 @@ const Styles = StyleSheet.create({
     styleTxT: {
         fontFamily: 'Inter',
         fontWeight: '600',
-        color: '#FFF'
+        color: colors.white
     }
 
 

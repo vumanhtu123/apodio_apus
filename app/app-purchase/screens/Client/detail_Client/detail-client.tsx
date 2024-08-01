@@ -94,12 +94,13 @@ export const detailClientScrent: FC<StackScreenProps<NavigatorParamList, "detail
                         <TouchableOpacity
                             style={StylesClient.btnWriteTT}
                         >
-                            <Text style={{ fontSize: fontSize.size10, color: '#FFFFFF', fontWeight: '400' }} tx="ClientScreen.paymentRecord" />
-
+                            <Text style={{ fontSize: 10, color: colors.white, fontWeight: '400' }}>
+                                Ghi nhận thanh toán
+                            </Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ height: 1, backgroundColor: '#E7EFFF', marginVertical: scaleHeight(16) }} />
+                    <View style={{ height: 1, backgroundColor: colors.solitude2 }} />
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: scaleWidth(16) }}>
                         <View style={{ flexDirection: 'row' }}>
@@ -120,10 +121,9 @@ export const detailClientScrent: FC<StackScreenProps<NavigatorParamList, "detail
                 </View>
 
                 <View style={{ padding: 16, marginTop: scaleHeight(60), marginBottom: scaleHeight(12) }}>
-                    <Text style={{ fontSize: 14, fontWeight: '400', color: "#242424", fontFamily: 'Inter-ExtraBold' }}
-                        tx="ClientScreen.listOfUnpaidTransactions"
-                    />
-
+                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.nero, fontFamily: 'Inter-ExtraBold' }}>
+                        Danh sách giao dịch chưa thanh toán
+                    </Text>
                 </View>
 
                 <FlatList

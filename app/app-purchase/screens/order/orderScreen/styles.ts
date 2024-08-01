@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
   },
   textTime: {
     fontSize: fontSize.size14,
-    color: "#848688",
+    color: colors.aluminium1,
     marginRight: scaleWidth(16),
     alignSelf: "center",
   },

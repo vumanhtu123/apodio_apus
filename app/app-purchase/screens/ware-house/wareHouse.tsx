@@ -23,6 +23,7 @@ import { NavigatorParamList } from "../../navigators";
 import { useStores } from "../../models";
 import ItemListWareHouse from "./component/item-list-warehouse";
 import { ItemTabar } from "./component/item-tabbar-warehouse";
+import Images from "../../../../assets/index";
 
 export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse'>> = observer(
     function WareHouseScreen(props) {

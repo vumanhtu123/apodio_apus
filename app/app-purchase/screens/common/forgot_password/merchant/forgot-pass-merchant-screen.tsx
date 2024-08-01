@@ -160,14 +160,14 @@ export const ForgotPasswordMerchant: FC = observer(
                 styles.button,
                 {
                   backgroundColor: colors.gray,
-                  borderColor: "#F4AD22",
+                  borderColor: colors.yellow,
                   borderWidth: isVisible ? 1 : 0,
                 },
               ]}>
               <View style={{ marginTop: scaleHeight(14) }}>
                 <Text
                   text={"Select Type"}
-                  style={[styles.lableSelectText, { color: "#84888D" }]}
+                  style={[styles.lableSelectText, { color: colors.aluminium }]}
                 />
                 <Text
                   text={
@@ -179,7 +179,7 @@ export const ForgotPasswordMerchant: FC = observer(
                         : "Eletoral Card"
                       : "Select..."
                   }
-                  style={[styles.selectText, { color: "#242426" }]}
+                  style={[styles.selectText, { color: colors.jaguar }]}
                 />
               </View>
               <Svgs.dropDown />

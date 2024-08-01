@@ -18,7 +18,7 @@ import {
   Toast,
 } from "../../../../components/dialog-notification";
 import { ItemAttribute } from "./itemAttribute";
-import { styles } from "../styles";
+import { styles } from "./styles";
 import { FormProvider, useForm } from "react-hook-form";
 
 export const EditAttribute: FC = observer(function EditAttribute(props) {

@@ -55,14 +55,14 @@ const Styles = StyleSheet.create({
     },
     modalView: {
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         padding: scaleWidth(padding.padding_16)
     },
     modalText: {
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -85,7 +85,7 @@ const Styles = StyleSheet.create({
     },
     horizontalLine: {
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         marginBottom: 18,
     },
@@ -98,7 +98,7 @@ const Styles = StyleSheet.create({
         width: scaleWidth(256),
         height: scaleHeight(56),
         borderRadius: 8,
-        backgroundColor: '#F6F7F9',
+        backgroundColor: colors.aliceBlue,
         padding: scaleWidth(16)
     },
     btnCreate: {
@@ -112,6 +112,6 @@ const Styles = StyleSheet.create({
     styleTxT: {
         fontFamily: 'Inter',
         fontWeight: '600',
-        color: '#FFF'
+        color: colors.white
     }
 })

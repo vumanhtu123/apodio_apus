@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Modal, TouchableOpacity, View } from "react-native";
 import { Button, Text, TextField } from "../../../../components";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
@@ -38,7 +38,7 @@ export const DebtSupplier = (item: any) => {
             style={{
               fontSize: 12,
               fontWeight: "500",
-              color: onclick == 0 ? "#0078D4" : "#242424",
+              color: onclick == 0 ? colors.navyBlue : colors.nero,
             }}></Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -53,7 +53,7 @@ export const DebtSupplier = (item: any) => {
             style={{
               fontSize: 12,
               fontWeight: "500",
-              color: onclick == 1 ? "#0078D4" : "#242424",
+              color: onclick == 1 ? colors.navyBlue : colors.nero,
             }}></Text>
         </TouchableOpacity>
       </View>
@@ -71,14 +71,14 @@ export const DebtSupplier = (item: any) => {
           <Text
             tx="suppliers.Bought"
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
             }}></Text>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 12,
               fontWeight: "400",
             }}>
@@ -95,14 +95,14 @@ export const DebtSupplier = (item: any) => {
           <Text
             tx="suppliers.deDebt"
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
             }}></Text>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 12,
               fontWeight: "400",
             }}>
@@ -114,14 +114,14 @@ export const DebtSupplier = (item: any) => {
           <Text
             tx="suppliers.debtLimit"
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
             }}></Text>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 12,
               fontWeight: "400",
             }}>
@@ -133,7 +133,7 @@ export const DebtSupplier = (item: any) => {
             style={{
               fontSize: 12,
               fontWeight: "400",
-              color: "#747475",
+              color: colors.dolphin,
               paddingVertical: 8,
             }}>
             Chưa có đơn hàng cho NCC này
@@ -157,7 +157,7 @@ const ItemDebt = (item: any) => {
     <View
       style={{
         flexDirection: "column",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.white,
         borderRadius: 8,
         paddingVertical: 10,
         paddingHorizontal: 16,
@@ -169,10 +169,10 @@ const ItemDebt = (item: any) => {
           justifyContent: "space-between",
         }}>
         <View style={{ flexDirection: "column", alignSelf: "flex-end" }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: "#242424" }}>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
             {item.item ?? "Nguyễn Hà Dung"}
           </Text>
-          <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
+          <Text style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
             {item.item ?? "ĐH_21090930 - 13:56 01/03/2024 "}
           </Text>
         </View>
@@ -196,7 +196,7 @@ const ItemDebt = (item: any) => {
       </View>
       <View
         style={{
-          backgroundColor: "#F6F7FB",
+          backgroundColor: colors.ghostWhite,
           height: 1,
           marginVertical: 12,
         }}></View>
@@ -210,7 +210,7 @@ const ItemDebt = (item: any) => {
           <Text
             tx="suppliers.totalAmountPaid"
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 10,
               fontWeight: "400",
               marginVertical: 8,
@@ -218,14 +218,14 @@ const ItemDebt = (item: any) => {
           <Text
             tx="suppliers.paid"
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 10,
               fontWeight: "400",
             }}></Text>
           <Text
             tx="suppliers.stillInDebt"
             style={{
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: 10,
               fontWeight: "400",
               marginVertical: 8,
@@ -251,7 +251,7 @@ const ItemDebt = (item: any) => {
       </View>
       <View
         style={{
-          backgroundColor: "#0078D4",
+          backgroundColor: colors.navyBlue,
           marginVertical: 8,
           borderRadius: 4,
           width: 59,
@@ -265,7 +265,7 @@ const ItemDebt = (item: any) => {
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#FFFFFF",
+              color: colors.white,
               marginHorizontal: 8,
               marginVertical: 6,
             }}></Text>
@@ -310,13 +310,13 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
           flexDirection: "column",
           paddingHorizontal: 16,
           paddingVertical: 20,
-          backgroundColor: "#FFFFFF",
+          backgroundColor: colors.white,
         }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text
             tx="suppliers.updateDebt"
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 16,
               fontWeight: "600",
             }}></Text>
@@ -366,7 +366,7 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
             style={{
               fontSize: 12,
               fontWeight: "400",
-              color: "#747475",
+              color: colors.dolphin,
             }}></Text>
           <Text style={{ fontSize: 12, fontWeight: "400", color: "red" }}>
             83.700.000
@@ -387,11 +387,11 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
         />
         <Button
           tx="suppliers.confirm"
-          style={{ backgroundColor: "#0078D4", borderRadius: 8, marginTop: 20 }}
+          style={{ backgroundColor: colors.navyBlue, borderRadius: 8, marginTop: 20 }}
           textStyle={{
             fontSize: 14,
             fontWeight: "600",
-            color: "#FFFFFF",
+            color: colors.white,
             marginVertical: 12,
           }}></Button>
       </View>

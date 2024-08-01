@@ -143,7 +143,7 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
                     onPress={onPressConfirm}
                 >
 
-                    <Text tx="debtScreen.pay2" style={{ color: '#FFF', fontSize: fontSize.size14 }}></Text>
+                    <Text tx="debtScreen.pay2" style={{ color: colors.white, fontSize: fontSize.size14 }}></Text>
                 </TouchableOpacity>
 
             </View>

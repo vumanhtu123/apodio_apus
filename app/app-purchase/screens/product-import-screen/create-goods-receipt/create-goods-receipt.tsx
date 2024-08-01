@@ -50,7 +50,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'product' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'product' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -64,7 +64,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'material' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'material' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -100,7 +100,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
 
 
                             <View style={{ flex: 1, marginLeft: scaleWidth(10) }}>
-                                <Text style={{ fontSize: scaleWidth(12), fontWeight: '600', color: '#242424' }} tx="ImprotGoodsBook.brick"> </Text>
+                                <Text style={{ fontSize: scaleWidth(12), fontWeight: '600', color: colors.nero }} tx="ImprotGoodsBook.brick"> </Text>
                                 <View style={Style.flexRow}>
                                     <Text style={[Style.txtColorDolphin, { fontSize: scaleWidth(12) }]}>-SP9584</Text>
                                     <Text style={[Style.txtColorDolphin, { fontSize: scaleWidth(12) }]} tx="ImprotGoodsBook.price"></Text>
@@ -226,7 +226,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                     transparent={true}
                 >
                     <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)', }}>
-                        <View style={{ paddingVertical: scaleHeight(20), paddingHorizontal: scaleWidth(16), backgroundColor: '#FFFFFF' }}>
+                        <View style={{ paddingVertical: scaleHeight(20), paddingHorizontal: scaleWidth(16), backgroundColor: colors.white }}>
                             <View style={Style.flexRow}>
                                 <Text tx="ImprotGoodsBook.paymentConfirmation"></Text>
                                 <TouchableOpacity
@@ -254,8 +254,8 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Text tx="ImprotGoodsBook.debit" />
                                         <Switch
-                                            trackColor={{ false: '#f1f1f2', true: '#f1f1f2' }}
-                                            thumbColor={isEnabled ? colors.palette.navyBlue : '#f4f3f4'}
+                                            trackColor={{ false: colors.ghostWhite1, true: colors.ghostWhite1 }}
+                                            thumbColor={isEnabled ? colors.palette.navyBlue : colors.selago}
                                             ios_backgroundColor="#3e3e3e"
                                             onValueChange={toggleSwitch}
                                             value={isEnabled}
@@ -300,7 +300,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                 />
                             </View>
                             <View style={{
-                                backgroundColor: '#FFF',
+                                backgroundColor: colors.white,
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 marginTop: scaleHeight(20)

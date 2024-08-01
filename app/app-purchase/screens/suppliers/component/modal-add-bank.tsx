@@ -5,7 +5,7 @@ import Modal from "react-native-modal"
 import { styles } from "./modal-create-supplier"
 import { Text, TextField } from "../../../../components"
 import { Svgs } from "../../../../../assets/svgs"
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme"
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme"
 import { InputSelect } from "../../../../components/input-select/inputSelect"
 import { Controller, useForm } from "react-hook-form"
 
@@ -155,7 +155,7 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                             borderWidth: 1,
                             marginRight: scaleWidth(12),
                             borderRadius: 10,
-                            borderColor: "#c8c8c8",
+                            borderColor: colors.veryLightGrey,
                         }}
                     >
                         <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
@@ -167,7 +167,7 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                             justifyContent: "center",
                             alignItems: "center",
                             borderRadius: 10,
-                            backgroundColor: "#0078d4",
+                            backgroundColor: colors.navyBlue,
                         }}
                     >
                         <Text style={{ fontSize: fontSize.size14, color: "white" }}>

@@ -238,7 +238,7 @@ export const DetailDebtScreen: FC<
                   style={{
                     width: "40%",
                     height: 1,
-                    backgroundColor: "#E6E7EA",
+                    backgroundColor: colors.solitude1,
                   }}
                 />
                 <Text style={Styles.dateText}>{createDateTransaction}</Text>
@@ -246,7 +246,7 @@ export const DetailDebtScreen: FC<
                   style={{
                     width: "40%",
                     height: 1,
-                    backgroundColor: "#E6E7EA",
+                    backgroundColor: colors.solitude1,
                   }}
                 />
               </View>
@@ -254,7 +254,7 @@ export const DetailDebtScreen: FC<
                 <TouchableOpacity
                   key={item.id}
                   style={{
-                    backgroundColor: "#FFF",
+                    backgroundColor: colors.white,
                     marginBottom: 10,
                     borderRadius: margin.margin_8,
                     padding: scaleWidth(15),
@@ -354,7 +354,7 @@ export const DetailDebtScreen: FC<
                       <Text
                         tx="debtScreen.pay"
                         style={{
-                          color: "#FFF",
+                          color: colors.white,
                           fontSize: fontSize.size10,
                         }}></Text>
                     </TouchableOpacity>
@@ -422,7 +422,7 @@ export const DetailDebtScreen: FC<
             />
             <Text
               tx="debtScreen.payTotal"
-              style={{ color: "#FFF", fontSize: fontSize.size14 }}></Text>
+              style={{ color: colors.white, fontSize: fontSize.size14 }}></Text>
           </TouchableOpacity>
         </View>
       ) : null}

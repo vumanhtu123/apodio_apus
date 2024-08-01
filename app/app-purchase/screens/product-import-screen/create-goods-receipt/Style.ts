@@ -29,12 +29,12 @@ const Style = StyleSheet.create({
         paddingVertical: scaleHeight(10),
         paddingHorizontal: scaleWidth(16),
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         marginBottom: scaleHeight(15)
     },
     styleGroup2: {
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         paddingVertical: scaleHeight(12),
         paddingHorizontal: scaleWidth(16),
         marginBottom: scaleHeight(15),
@@ -54,7 +54,7 @@ const Style = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         marginTop: 10,
-        borderColor: '#F4F4F4',
+        borderColor: colors.whiteSmoke,
         alignItems: 'center',
         justifyContent: 'space-evenly'
 
@@ -83,7 +83,7 @@ const Style = StyleSheet.create({
 
     },
     stylesBtnBottom: {
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         padding: scaleWidth(16),
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -94,7 +94,7 @@ const Style = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 7,
         padding: scaleWidth(12),
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         alignItems: 'center',
 
         borderColor: colors.palette.navyBlue,
@@ -119,13 +119,13 @@ const Style = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute',
         top: scaleWidth(45),
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         paddingVertical: scaleHeight(7),
         paddingHorizontal: scaleWidth(16)
     },
     StyleTabar: {
         flexDirection: 'row',
-        backgroundColor: '#E6E7EA',
+        backgroundColor: colors.solitude1,
         height: 32,
         // justifyContent:'space-between',
         borderRadius: 8,

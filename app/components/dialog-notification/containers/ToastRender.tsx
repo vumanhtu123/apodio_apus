@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Animated, Image, LayoutChangeEvent, PanResponder, Platform, StyleSheet, Text, View, StyleProp, TextStyle } from 'react-native';
 import { Color, getImage } from '../service';
 import { ALERT_TYPE } from '../config';
+import { colors } from '../../../app-purchase/theme';
 
 interface IProps {
   isDark: boolean;
@@ -197,7 +198,7 @@ const __styles = (isDark: boolean) =>
       alignSelf: 'center',
       height: 12,
       width: 12,
-      backgroundColor: '#FBFBFB',
+      backgroundColor: colors.snow,
       borderRadius: 100,
       left: 12 + 7,
     },

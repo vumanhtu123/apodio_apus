@@ -43,7 +43,7 @@ const VIEWBUTTON: ViewStyle = {
 };
 const TITLE: TextStyle = { color: 'black', fontWeight: '700', fontSize: fontSize.size18 };
 const CONTENT: TextStyle = {
-  color: '#242424',
+  color: colors.nero,
   fontWeight: '500',
   fontSize: fontSize.size14,
   paddingTop: scaleHeight(15),

@@ -299,7 +299,6 @@ export const ProductCreateScreen: FC = (item) => {
   }, [attributeArr]);
 
   const submitAdd = async (data: any) => {
-    console.log(data, "1268359812");
     console.log(JSON.stringify(dataCreateProduct));
     if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {

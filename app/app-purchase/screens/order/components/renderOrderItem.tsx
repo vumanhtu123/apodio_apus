@@ -21,6 +21,7 @@ import { useStores } from "../../../models";
 import AutoHeightImage from "react-native-auto-height-image";
 import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../i18n";
+import Images from "../../../../../assets/index";
 
 const RenderOrderItem = ({
   item,
@@ -41,7 +42,7 @@ const RenderOrderItem = ({
         key={item.id}
         disabled={
           item.quantityInventory === 0 ||
-            item.quantityInventory < item.minQuantity
+          item.quantityInventory < item.minQuantity
             ? true
             : false
         }
@@ -58,7 +59,7 @@ const RenderOrderItem = ({
             marginRight: scaleWidth(11),
             opacity:
               item.quantityInventory === 0 ||
-                item.quantityInventory < item.minQuantity
+              item.quantityInventory < item.minQuantity
                 ? 0.5
                 : 1,
           },
@@ -83,7 +84,7 @@ const RenderOrderItem = ({
                 borderTopLeftRadius: 8,
                 borderTopRightRadius: 8,
               }}
-              source={require("../../../../../assets/Images/no_images.png")}>
+              source={Images.noImages}>
               {viewProduct === "VIEW_PRODUCT" ? null : (
                 <FastImage
                   style={{
@@ -99,7 +100,7 @@ const RenderOrderItem = ({
                         : "",
                     cache: FastImage.cacheControl.immutable,
                   }}
-                  defaultSource={require("../../../../../assets/Images/no_images.png")}
+                  defaultSource={Images.noImages}
                 />
               )}
             </ImageBackground>
@@ -176,7 +177,7 @@ const RenderOrderItem = ({
             ) : null}
             {viewProduct === "VIEW_PRODUCT" ? null : item.isSelect === false ? (
               item.quantityInventory === 0 ||
-                item.quantityInventory < item.minQuantity ? null : (
+              item.quantityInventory < item.minQuantity ? null : (
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
@@ -201,17 +202,24 @@ const RenderOrderItem = ({
                       Dialog.show({
                         type: ALERT_TYPE.INFO,
                         title: translate("productScreen.Notification"),
-                        textBody: "SL tối thiểu cần bán là " + item.minQuantity + " " + item.saleUom.name + ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
+                        textBody:
+                          "SL tối thiểu cần bán là " +
+                          item.minQuantity +
+                          " " +
+                          item.saleUom.name +
+                          ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
                         button: translate("productScreen.cancel"),
-                        button2: translate("productScreen.BtnNotificationAccept"),
+                        button2: translate(
+                          "productScreen.BtnNotificationAccept"
+                        ),
                         closeOnOverlayTap: false,
                         onPressButton: () => {
-                          handleMinus(item)
+                          handleMinus(item);
                           Dialog.hide();
                         },
                       });
                     } else {
-                      handleMinus(item)
+                      handleMinus(item);
                     }
                   }}
                   // disabled={
@@ -241,14 +249,14 @@ const RenderOrderItem = ({
                     orderStore.checkPriceList === true
                       ? item.amount === item.quantityInventory ||
                         item.amount ===
-                        Math.floor(
-                          item.quantityInventory / item.conversionRate
-                        )
+                          Math.floor(
+                            item.quantityInventory / item.conversionRate
+                          )
                         ? true
                         : false
                       : item.amount === item.quantityInventory
-                        ? true
-                        : false
+                      ? true
+                      : false
                   }
                   style={{ width: "30%", alignItems: "center" }}>
                   <Svgs.icon_plusGreen />
@@ -265,7 +273,7 @@ const RenderOrderItem = ({
         key={item.id}
         disabled={
           item.quantityInventory === 0 ||
-            item.quantityInventory < item.minQuantity
+          item.quantityInventory < item.minQuantity
             ? true
             : false
         }
@@ -280,7 +288,7 @@ const RenderOrderItem = ({
             width: scaleWidth(343),
             opacity:
               item.quantityInventory === 0 ||
-                item.quantityInventory < item.minQuantity
+              item.quantityInventory < item.minQuantity
                 ? 0.5
                 : 1,
           },
@@ -290,7 +298,7 @@ const RenderOrderItem = ({
             position: "absolute",
             top: scaleHeight(56),
             right: scaleWidth(6),
-            backgroundColor: "#F6F7F9",
+            backgroundColor: colors.aliceBlue,
             zIndex: 1,
           }}>
           {viewProduct === "VIEW_VARIANT" && item.upc !== null ? (
@@ -311,7 +319,7 @@ const RenderOrderItem = ({
                 height: scaleHeight(70),
               }}
               imageStyle={{ borderRadius: 8 }}
-              source={require("../../../../../assets/Images/no_images.png")}>
+              source={Images.noImages}>
               {viewProduct === "VIEW_PRODUCT" ? null : (
                 <FastImage
                   style={{
@@ -326,7 +334,7 @@ const RenderOrderItem = ({
                         : "",
                     cache: FastImage.cacheControl.immutable,
                   }}
-                  defaultSource={require("../../../../../assets/Images/no_images.png")}
+                  defaultSource={Images.noImages}
                 />
               )}
             </ImageBackground>
@@ -404,7 +412,7 @@ const RenderOrderItem = ({
             ) : null}
             {viewProduct === "VIEW_PRODUCT" ? null : item.isSelect === false ? (
               item.quantityInventory === 0 ||
-                item.quantityInventory < item.minQuantity ? null : (
+              item.quantityInventory < item.minQuantity ? null : (
                 <TouchableOpacity
                   style={{ marginVertical: scaleHeight(5.5) }}
                   onPress={() => handleAddProduct(item)}>
@@ -429,17 +437,24 @@ const RenderOrderItem = ({
                       Dialog.show({
                         type: ALERT_TYPE.INFO,
                         title: translate("productScreen.Notification"),
-                        textBody: "SL tối thiểu cần bán là " + item.minQuantity + " " + item.saleUom.name + ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
+                        textBody:
+                          "SL tối thiểu cần bán là " +
+                          item.minQuantity +
+                          " " +
+                          item.saleUom.name +
+                          ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
                         button: translate("productScreen.cancel"),
-                        button2: translate("productScreen.BtnNotificationAccept"),
+                        button2: translate(
+                          "productScreen.BtnNotificationAccept"
+                        ),
                         closeOnOverlayTap: false,
                         onPressButton: () => {
-                          handleMinus(item)
+                          handleMinus(item);
                           Dialog.hide();
                         },
                       });
                     } else {
-                      handleMinus(item)
+                      handleMinus(item);
                     }
                   }}
                   // disabled={
@@ -469,14 +484,14 @@ const RenderOrderItem = ({
                     orderStore.checkPriceList === true
                       ? item.amount === item.quantityInventory ||
                         item.amount ===
-                        Math.floor(
-                          item.quantityInventory / item.conversionRate
-                        )
+                          Math.floor(
+                            item.quantityInventory / item.conversionRate
+                          )
                         ? true
                         : false
                       : item.amount === item.quantityInventory
-                        ? true
-                        : false
+                      ? true
+                      : false
                   }
                   style={{ width: "15%", alignItems: "center" }}>
                   <Svgs.icon_plusGreen />
@@ -515,12 +530,12 @@ const stylesItem = StyleSheet.create({
     marginBottom: scaleHeight(10),
   },
   title: {
-    color: "#242426",
+    color: colors.jaguar,
     fontSize: fontSize.size10,
     fontWeight: "700",
   },
   textName: {
-    color: "#242426",
+    color: colors.jaguar,
     fontSize: fontSize.size10,
     fontWeight: "400",
   },

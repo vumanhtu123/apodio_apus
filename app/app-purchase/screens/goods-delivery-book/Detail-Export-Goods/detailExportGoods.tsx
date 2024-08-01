@@ -114,7 +114,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                 />
                 <View style={{ paddingTop: scaleHeight(20), paddingHorizontal: scaleWidth(16) }}>
                     <TouchableOpacity
-                        style={{ backgroundColor: '#FFFFFF', borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
+                        style={{ backgroundColor: colors.white, borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
                         onPress={() => props.navigation.navigate('ballotDetail')}
                     >
                         <View style={Styles.flexRow}>
@@ -149,7 +149,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
 
                     </TouchableOpacity>
                     <View
-                        style={{ backgroundColor: '#FFFFFF', marginVertical: scaleWidth(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
+                        style={{ backgroundColor: colors.white, marginVertical: scaleWidth(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
                     >
                         <View style={[Styles.flexRow, { marginBottom: scaleWidth(15) }]}>
                             <View style={{ flexDirection: 'row' }}>
@@ -233,7 +233,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
 
                     </View>
                     <View
-                        style={{ backgroundColor: '#FFFFFF', borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10), }}
+                        style={{ backgroundColor: colors.white, borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10), }}
                     >
                         <View style={Styles.flexRow}>
                             <Text style={Styles.txtGray} tx="GoodsExportBook.totalNumber"></Text>
@@ -262,7 +262,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
 )
 const Styles = StyleSheet.create({
     bodyItem: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         borderRadius: 8,
         // paddingVertical: scaleHeight(10),
         // paddingHorizontal: scaleWidth(16),
@@ -278,7 +278,7 @@ const Styles = StyleSheet.create({
     line: {
         width: '100%',
         borderWidth: 1,
-        borderColor: "#F6F7FB",
+        borderColor: colors.ghostWhite,
         marginVertical: scaleHeight(12)
 
     },

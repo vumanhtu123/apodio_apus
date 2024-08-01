@@ -88,7 +88,7 @@ export const BallotDetail: FC<StackScreenProps<NavigatorParamList, "ballotDetail
                     isVisible={false}
                 >
                     <View
-                        style={{ alignItems: 'center', backgroundColor: '#FFFFFF', borderRadius: scaleWidth(8), padding: 17 }}
+                        style={{ alignItems: 'center', backgroundColor: colors.white, borderRadius: scaleWidth(8), padding: 17 }}
                     >
                         <Text style={{ marginBottom: scaleWidth(15), fontSize: scaleWidth(18), fontFamily: "Inter-Bold" }} tx="detailPallot.printerIsNotConnected" />
                         <Text style={{ textAlign: 'center', fontSize: scaleWidth(14), marginBottom: 15 }} tx="validate.printerNotConnect"></Text>

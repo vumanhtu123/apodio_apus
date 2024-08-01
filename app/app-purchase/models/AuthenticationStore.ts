@@ -180,7 +180,7 @@ export const AuthenticationStoreModel = types
         return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
-        return result;
+        return result.errorCodes;
       }
     }),
 
