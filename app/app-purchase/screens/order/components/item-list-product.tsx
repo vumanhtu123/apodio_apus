@@ -35,6 +35,7 @@ import {
 import PriceModal from "./modal-price";
 import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
 import { useStores } from "../../../models";
+import Images from "../../../../../assets/index";
 
 interface AddProduct {
   onPress: ({}) => void;
@@ -151,7 +152,7 @@ export default function ItemListProduct(props: AddProduct) {
             imageStyle={{
               borderRadius: 12,
             }}
-            source={require("../../../../../assets/Images/no_images.png")}>
+            source={Images.noImages}>
             <FastImage
               style={{
                 width: scaleWidth(48),
@@ -162,7 +163,7 @@ export default function ItemListProduct(props: AddProduct) {
                 uri: images != null && images.length > 0 ? images[0] : "",
                 cache: FastImage.cacheControl.immutable,
               }}
-              defaultSource={require("../../../../../assets/Images/no_images.png")}
+              defaultSource={Images.noImages}
             />
           </ImageBackground>
         </View>

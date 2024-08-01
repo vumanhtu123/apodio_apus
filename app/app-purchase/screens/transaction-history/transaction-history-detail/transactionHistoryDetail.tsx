@@ -16,6 +16,7 @@ import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
+import Images from "../../../../../assets/index";
 
 const { width } = Dimensions.get("screen");
 export const TransactionHistoryDetial: FC = observer(function transactionDetail(

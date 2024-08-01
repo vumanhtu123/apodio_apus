@@ -5,6 +5,7 @@ import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
 import Images from "../../../../../assets/index";
 import { colors } from "../../../theme";
+import Images from "../../../../../assets/index";
 
 export const BodyDetailsOrder = (data: any) => {
   const [dataOrder, setData] = useState<any[]>([]);
