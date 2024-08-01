@@ -18,7 +18,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../../theme";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import en from "../../../../i18n/en";
 import React from "react";
 import LinearGradient from "react-native-linear-gradient";
@@ -171,13 +171,13 @@ export const DetailDebtScreen: FC<
     <View style={{ flex: 1 }}>
       <Header
         style={{ height: scaleHeight(52) }}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="debtScreen.detailDebtSupplier"
         onLeftPress={() => {
           props.navigation.goBack();
         }}
         titleStyle={Styles.textHeader}
-        RightIcon={Images.ic_calender_white}
+        RightIcon={Svgs.ic_calender_white}
         onRightPress={() => {
           setIsSortByDate(!isSortByDate);
         }}
@@ -238,7 +238,7 @@ export const DetailDebtScreen: FC<
                   style={{
                     width: "40%",
                     height: 1,
-                    backgroundColor: "#E6E7EA",
+                    backgroundColor: colors.solitude1,
                   }}
                 />
                 <Text style={Styles.dateText}>{createDateTransaction}</Text>
@@ -246,7 +246,7 @@ export const DetailDebtScreen: FC<
                   style={{
                     width: "40%",
                     height: 1,
-                    backgroundColor: "#E6E7EA",
+                    backgroundColor: colors.solitude1,
                   }}
                 />
               </View>
@@ -254,7 +254,7 @@ export const DetailDebtScreen: FC<
                 <TouchableOpacity
                   key={item.id}
                   style={{
-                    backgroundColor: "#FFF",
+                    backgroundColor: colors.white,
                     marginBottom: 10,
                     borderRadius: margin.margin_8,
                     padding: scaleWidth(15),
@@ -347,14 +347,14 @@ export const DetailDebtScreen: FC<
                         setKeyToPass("pay");
                         setIsVisiblePay(!isVisiblePay);
                       }}>
-                      <Images.ic_pay_hand
+                      <Svgs.ic_pay_hand
                         width={scaleWidth(17)}
                         height={scaleHeight(17)}
                       />
                       <Text
                         tx="debtScreen.pay"
                         style={{
-                          color: "#FFF",
+                          color: colors.white,
                           fontSize: fontSize.size10,
                         }}></Text>
                     </TouchableOpacity>
@@ -366,7 +366,7 @@ export const DetailDebtScreen: FC<
                       }}>
                       <Text tx="debtScreen.exChange" style={Styles.label} />
                       <View style={{ flexDirection: "row" }}>
-                        <Images.ic_messenger />
+                        <Svgs.ic_messenger />
                         <Text
                           style={[
                             Styles.styleOrder,
@@ -416,13 +416,13 @@ export const DetailDebtScreen: FC<
               setKeyToPass("PayTotal");
               setIsVisiblePay(!isVisiblePay);
             }}>
-            <Images.ic_pay_hand
+            <Svgs.ic_pay_hand
               width={scaleWidth(24)}
               height={scaleHeight(24)}
             />
             <Text
               tx="debtScreen.payTotal"
-              style={{ color: "#FFF", fontSize: fontSize.size14 }}></Text>
+              style={{ color: colors.white, fontSize: fontSize.size14 }}></Text>
           </TouchableOpacity>
         </View>
       ) : null}

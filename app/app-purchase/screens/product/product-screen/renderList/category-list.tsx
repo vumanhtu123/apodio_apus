@@ -2,8 +2,8 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View, FlatList, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Button, Text } from '../../../../../components';
-import { Images } from '../../../../../../assets';
-import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
+import { Svgs } from '../../../../../../assets/svgs';
+import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import RenderCategoryItem from './renderItemCategory';
 import Dialog from '../../../../../components/dialog/dialog';
@@ -145,7 +145,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
   return (
     <View style={{ flex: 1 }}>
       <Button onPress={openDirectoryModal} style={styles.btnCreateCategory}>
-        <Images.icon_plus width={scaleWidth(24)} height={scaleHeight(24)} style={{ margin: 8 }} />
+        <Svgs.icon_plus width={scaleWidth(24)} height={scaleHeight(24)} style={{ margin: 8 }} />
       </Button>
       <View
         style={{
@@ -163,14 +163,14 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
           <Text
             tx="productScreen.filter"
             style={{
-              color: '#000000',
+              color: colors.black,
               textAlign: 'center',
               fontWeight: '400',
               fontSize: fontSize.size12,
               marginRight: scaleWidth(6),
             }}
           />
-          <Images.slider_black width={scaleWidth(16)} height={scaleHeight(16)} />
+          <Svgs.slider_black width={scaleWidth(16)} height={scaleHeight(16)} />
         </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>
@@ -208,14 +208,14 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
           borderColor: "#d5d5d5",
           borderRadius: 8,
         }}
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
       />
       <Dialog
         isVisible={isDeleteFailModalVisible}
         title={"productScreen.Notification"}
         errorMessage={errorMessage}
         titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
         onPressAccept={() => setIsDeleteFailModalVisible(false)}
       />
       <CreateDirectoryModal

@@ -11,7 +11,7 @@ import {
   ViewStyle,
 } from "react-native";
 import Modal from "react-native-modal";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components";
 import Dialog from "../../../../components/dialog/dialog";
 import {
@@ -180,7 +180,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                             (Dimensions.get("screen").width - scaleWidth(64)) *
                             0.4,
                           borderBottomWidth: 1,
-                          borderBottomColor: "#DFE0EB",
+                          borderBottomColor: colors.quartz,
                         }}
                         value={value}
                         onBlur={onBlur}
@@ -200,12 +200,12 @@ const ItemConversion = (props: ItemConversionProps) => {
                         (Dimensions.get("screen").width - scaleWidth(64)) *
                         0.25,
                       borderBottomWidth: 1,
-                      borderBottomColor: "#DFE0EB",
+                      borderBottomColor: colors.quartz,
                       flexDirection: "row",
                       marginHorizontal: scaleWidth(5),
                     }}>
                     <Text style={{ flex: 1 }} text={originalUnit.label} />
-                    <Images.icon_caretRightDown />
+                    <Svgs.icon_caretRightDown />
                   </TouchableOpacity>
                   <Controller
                     control={control}
@@ -219,7 +219,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                             (Dimensions.get("screen").width - scaleWidth(64)) *
                             0.2,
                           borderBottomWidth: 1,
-                          borderBottomColor: "#DFE0EB",
+                          borderBottomColor: colors.quartz,
                         }}
                         value={value}
                         onBlur={onBlur}
@@ -235,7 +235,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                   <View
                     style={{
                       borderBottomWidth: 1,
-                      borderBottomColor: "#DFE0EB",
+                      borderBottomColor: colors.quartz,
                       // width: (Dimensions.get('screen').width - scaleWidth(64)) * 0.15,
                     }}>
                     <Text text={unit} />
@@ -259,7 +259,7 @@ const ItemConversion = (props: ItemConversionProps) => {
                 <TouchableOpacity
                   onPress={() => remove(index)}
                   style={{ marginLeft: scaleWidth(7) }}>
-                  <Images.icon_minusCircle />
+                  <Svgs.icon_minusCircle />
                 </TouchableOpacity>
               ) : (
                 <View style={{ width: scaleWidth(12) }} />
@@ -313,7 +313,7 @@ const ItemConversion = (props: ItemConversionProps) => {
         title={"productScreen.Notification"}
         content={"itemConversion.dialogNoti"}
         titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
         onPressAccept={() => setOpenDialog(false)}
       />
     </View>

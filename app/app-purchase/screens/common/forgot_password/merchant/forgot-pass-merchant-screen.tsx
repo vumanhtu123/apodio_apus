@@ -28,7 +28,7 @@ import SelectTypeModal from "./modal-select-type";
 import { styles } from "./styles";
 import VerificationCodeModal from "../../../../../components/dialog-otp/dialog.otp";
 import DialogSuccessUnSuccess from "../../../../../components/dialog-success-unsuccess.tsx/index";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 
 export const ForgotPasswordMerchant: FC = observer(
   function ForgotPasswordMerchant() {
@@ -105,7 +105,7 @@ export const ForgotPasswordMerchant: FC = observer(
         <StatusBar translucent backgroundColor={"transparent"} />
         <Header
           type={"AntDesign"}
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           colorIcon={colors.text}
           headerTx="demoPodcastListScreen.forgotPasswordMerchant.forgotPassword"
@@ -135,7 +135,7 @@ export const ForgotPasswordMerchant: FC = observer(
                   }}
                   value={value}
                   onBlur={onBlur}
-                  RightIconClear={Images.icon_delete}
+                  RightIconClear={Svgs.icon_delete}
                   error={errors?.phonenumber?.message}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => onChange(value)}
@@ -160,14 +160,14 @@ export const ForgotPasswordMerchant: FC = observer(
                 styles.button,
                 {
                   backgroundColor: colors.gray,
-                  borderColor: "#F4AD22",
+                  borderColor: colors.yellow,
                   borderWidth: isVisible ? 1 : 0,
                 },
               ]}>
               <View style={{ marginTop: scaleHeight(14) }}>
                 <Text
                   text={"Select Type"}
-                  style={[styles.lableSelectText, { color: "#84888D" }]}
+                  style={[styles.lableSelectText, { color: colors.aluminium }]}
                 />
                 <Text
                   text={
@@ -179,10 +179,10 @@ export const ForgotPasswordMerchant: FC = observer(
                         : "Eletoral Card"
                       : "Select..."
                   }
-                  style={[styles.selectText, { color: "#242426" }]}
+                  style={[styles.selectText, { color: colors.jaguar }]}
                 />
               </View>
-              <Images.dropDown />
+              <Svgs.dropDown />
             </Button>
             {/* <Controller
               control={control}

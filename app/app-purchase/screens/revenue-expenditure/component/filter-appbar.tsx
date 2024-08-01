@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../assets";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { Svgs } from "../../../../../assets/svgs";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 import { translate } from "../../../i18n";
 
@@ -33,7 +33,7 @@ export const FilterAppBarComponent = (props: any) => {
             onPress={() => {
               props.onShowCalender();
             }}>
-            <Images.icon_calendar />
+            <Svgs.icon_calendar />
           </TouchableOpacity>
         </View>
         {props.date !== null ? (
@@ -44,7 +44,7 @@ export const FilterAppBarComponent = (props: any) => {
                 onPress={() => {
                   props.clear();
                 }}>
-                <Images.ic_x />
+                <Svgs.ic_x />
               </TouchableOpacity>
             </View>
           </View>
@@ -67,7 +67,7 @@ export const FilterAppBarComponent = (props: any) => {
         )}
       </View>
       <View style={{}}>
-        <Images.icon_searchBlack color="black" />
+        <Svgs.icon_searchBlack color="black" />
       </View>
     </View>
   );
@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: scaleWidth(9),
   },
   viewDate: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: scaleHeight(7),
     shadowColor: "black",
     shadowOpacity: 0.2,
@@ -121,7 +121,7 @@ export const styles = StyleSheet.create({
   textDate: {
     fontSize: 12,
     fontWeight: "400",
-    color: "#0078D4",
+    color: colors.navyBlue,
     marginHorizontal: scaleWidth(12),
   },
   viewNoDate: {
@@ -132,7 +132,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: scaleWidth(9),
   },
   itemSelector: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.white,
     borderRadius: scaleHeight(7),
     shadowColor: "black",
     shadowOpacity: 0.2,
@@ -141,7 +141,7 @@ export const styles = StyleSheet.create({
   textItem: {
     fontSize: 12,
     fontWeight: "400",
-    color: "#242424",
+    color: colors.nero,
     textAlign: "center",
     marginHorizontal: scaleWidth(12),
     marginVertical: scaleHeight(7),

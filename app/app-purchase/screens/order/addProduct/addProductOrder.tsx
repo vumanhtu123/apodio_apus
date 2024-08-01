@@ -10,7 +10,7 @@ import React, {
 } from "react-native";
 import { Button, Header, Text } from "../../../../components";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { useStores } from "../../../models";
 import CategoryModalFilter from "../../product/component/modal-category";
@@ -720,7 +720,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => {
           navigation.goBack();
           orderStore.setSort('');
@@ -730,10 +730,10 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         }}
         colorIcon={colors.text}
         headerTx={"order.order"}
-        RightIcon2={Images.vector}
+        RightIcon2={Svgs.vector}
         onRightPress={() => navigation.navigate("filterOrderScreen" as never)}
         onRightPress2={toggleView}
-        RightIcon={Images.slider}
+        RightIcon={Svgs.slider}
         headerInput={openSearch}
         searchValue={searchValue}
         onSearchValueChange={handleSearchValueChange}
@@ -747,7 +747,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#f6f7f9",
+          backgroundColor: colors.aliceBlue,
           paddingTop: scaleHeight(15),
         }}>
         <>
@@ -799,7 +799,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                   {orderStore.nameCategory}
                 </Text>
                 <View style={{ marginRight: scaleWidth(8) }}>
-                  <Images.iconDownBlue
+                  <Svgs.iconDownBlue
                     width={scaleWidth(14)}
                     height={scaleHeight(14)}
                   />
@@ -887,12 +887,12 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                   style={{
                     fontSize: fontSize.size9,
                     fontWeight: "500",
-                    color: "#ffffff",
+                    color: colors.white,
                   }}>
                   {dataProductAddOrder.length}
                 </Text>
               </View>
-              <Images.ic_shopping
+              <Svgs.ic_shopping
                 width={scaleWidth(20)}
                 height={scaleHeight(20)}
                 style={{ marginRight: scaleWidth(margin.margin_6), marginTop: scaleHeight(margin.margin_2) }}
@@ -924,7 +924,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         title={"productScreen.Notification"}
         errorMessage={errorMessage}
         titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
         onPressAccept={() => setIsDeleteFailModalVisible(false)}
       />
     </View>

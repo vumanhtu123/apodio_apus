@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo } from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components";
 import { useNavigation } from "@react-navigation/native";
 import { OnProgressEvent } from "react-native-fast-image";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
 import { useStores } from "../../../models";
 import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
-import { fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 interface InputData {
   openDialog: () => void;
   data: any;
@@ -50,13 +50,13 @@ export const HeaderOrder = (data: InputData) => {
             alignItems: "center",
             alignContent: "center",
           }}>
-          <Images.ic_avatar_order />
+          <Svgs.ic_avatar_order />
           {data.data.name !== "" ? (
             <Text
               text={data.data.name}
               style={{
                 marginLeft: margin.margin_8,
-                color: "#242424",
+                color: colors.nero,
                 fontSize: fontSize.size12,
                 fontWeight: "600",
               }}></Text>
@@ -65,14 +65,14 @@ export const HeaderOrder = (data: InputData) => {
               tx="order.choose_customer"
               style={{
                 marginLeft: margin.margin_8,
-                color: "#747475",
+                color: colors.dolphin,
                 fontSize: fontSize.size12,
                 fontWeight: "400",
               }}></Text>
           )}
         </View>
         {data.disabled === true ? null :
-          <Images.icon_caretRight2 />
+          <Svgs.icon_caretRight2 />
         }
       </View>
     </TouchableOpacity>
@@ -103,7 +103,7 @@ export const PriceList = (data: PriceData) => {
           tx="order.price_list"
           style={{
             fontSize: fontSize.size12,
-            color: "#242424",
+            color: colors.nero,
             fontWeight: "600",
             marginBottom: scaleWidth(4),
           }}></Text>
@@ -112,7 +112,7 @@ export const PriceList = (data: PriceData) => {
             text={data.name}
             style={{
               fontSize: fontSize.size10,
-              color: "#747475",
+              color: colors.dolphin,
               fontWeight: "400",
             }}></Text>
         ) : (
@@ -120,12 +120,12 @@ export const PriceList = (data: PriceData) => {
             tx="order.no_price_list"
             style={{
               fontSize: fontSize.size10,
-              color: "#747475",
+              color: colors.dolphin,
               fontWeight: "400",
             }}></Text>
         )}
       </View>
-      {data.disabled === true ? null : <Images.icon_caretRight2 />}
+      {data.disabled === true ? null : <Svgs.icon_caretRight2 />}
     </TouchableOpacity>
   );
 };
@@ -154,7 +154,7 @@ export const AddressOrder = (data: AddressData) => {
             tx="order.address_order"
             style={{
               fontSize: fontSize.size12,
-              color: "#242424",
+              color: colors.nero,
               fontWeight: "600",
               marginBottom: scaleWidth(4),
             }}></Text>
@@ -163,7 +163,7 @@ export const AddressOrder = (data: AddressData) => {
               {/* <Text
                 style={{
                   fontSize: 12,
-                  color: "#242424",
+                  color: colors.nero,
                   fontWeight: "400",
                 }}></Text> */}
               {data.data.phoneNumber != null ? (
@@ -172,7 +172,7 @@ export const AddressOrder = (data: AddressData) => {
                   style={{
                     marginVertical: scaleHeight(8),
                     fontSize: fontSize.size12,
-                    color: "#242424",
+                    color: colors.nero,
                     fontWeight: "400",
                   }}></Text>
               ) : null}
@@ -181,7 +181,7 @@ export const AddressOrder = (data: AddressData) => {
                 text={`${data.data?.address}${", "}${data.data?.ward?.name}${", "}${data.data?.district?.name}${", "}${data.data?.city?.name}`}
                 style={{
                   fontSize: fontSize.size12,
-                  color: "#242424",
+                  color: colors.nero,
                   fontWeight: "400",
                 }}></Text>
             </View>
@@ -190,12 +190,12 @@ export const AddressOrder = (data: AddressData) => {
               tx="order.no_address_order"
               style={{
                 fontSize: fontSize.size10,
-                color: "#747475",
+                color: colors.dolphin,
                 fontWeight: "400",
               }}></Text>
           )}
         </View>
-        <Images.icon_caretRight2 />
+        <Svgs.icon_caretRight2 />
       </View>
     </TouchableOpacity>
   );
@@ -269,8 +269,8 @@ export const SumMoney = (props: DataSumMoney) => {
       <View style={{ flexDirection: "row", flex: 1, justifyContent: 'space-between', alignItems: 'center' }}>
         <Text
           tx="order.sum_no_texas"
-          style={{ fontSize: fontSize.size10, fontWeight: "400", color: "#747475" }} />
-        <Text style={{ fontSize: fontSize.size10, fontWeight: "400", color: "#747475", justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+          style={{ fontSize: fontSize.size10, fontWeight: "400", color: colors.dolphin }} />
+        <Text style={{ fontSize: fontSize.size10, fontWeight: "400", color: colors.dolphin, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
           {formatVND(formatCurrency(commasToDots(props.sumNoVat))) ?? 0}
         </Text>
       </View>
@@ -282,7 +282,7 @@ export const SumMoney = (props: DataSumMoney) => {
               style={{
                 fontSize: fontSize.size10,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
                 marginTop: 8,
               }}>
               {data?.label ?? null}
@@ -291,7 +291,7 @@ export const SumMoney = (props: DataSumMoney) => {
               style={{
                 fontSize: fontSize.size10,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
                 marginTop: 8,
               }}>
               {formatVND(formatCurrency(commasToDots(data?.taxValue))) ?? null}
@@ -308,14 +308,14 @@ export const SumMoney = (props: DataSumMoney) => {
               style={{
                 fontSize: fontSize.size10,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
                 marginTop: scaleWidth(8),
               }} />
             <Text
               style={{
                 fontSize: fontSize.size10,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
                 marginTop: scaleWidth(8),
               }}>
               {formatVND(formatCurrency(commasToDots(discount))) ?? 0}
@@ -328,7 +328,7 @@ export const SumMoney = (props: DataSumMoney) => {
           style={{
             fontSize: fontSize.size10,
             fontWeight: "400",
-            color: "#747475",
+            color: colors.dolphin,
             marginTop: scaleWidth(8),
           }} />
         <Text

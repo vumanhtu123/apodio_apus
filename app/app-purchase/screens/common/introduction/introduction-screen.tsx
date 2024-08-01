@@ -9,7 +9,7 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import { View, Image, Dimensions, StatusBar } from "react-native";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components";
 import { useNavigation } from "@react-navigation/native";
 import { setFirstOpenApp } from "../../../utils/storage";
@@ -27,19 +27,19 @@ export const IntroductionScreen: FC<
   const dataIntro = [
     {
       id: 0,
-      image: <Images.ic_introScreen1 />,
+      image: <Svgs.ic_introScreen1 />,
       title: "welcomeScreen.introScreenSubTitle1",
       content: "welcomeScreen.introScreenContent2",
     },
     {
       id: 1,
-      image: <Images.ic_introScreen2 />,
+      image: <Svgs.ic_introScreen2 />,
       title: "welcomeScreen.introScreenSubTitle2",
       content: "welcomeScreen.introScreenContent2",
     },
     {
       id: 2,
-      image: <Images.ic_introScreen3 />,
+      image: <Svgs.ic_introScreen3 />,
       title: "welcomeScreen.introScreenSubTitle3",
       content: "welcomeScreen.introScreenContent3",
     },
@@ -62,7 +62,7 @@ export const IntroductionScreen: FC<
             // backgroundColor:'pink' ,
             marginRight: 10,
             alignItems: "flex-end",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: colors.white,
           }}
           textStyle={styles.textSkip}
         />
@@ -87,7 +87,7 @@ export const IntroductionScreen: FC<
 
       <Button
         style={{
-          backgroundColor: "#0078D4",
+          backgroundColor: colors.navyBlue,
           borderRadius: 8,
           marginBottom: scaleHeight(bottom + 14),
           marginHorizontal: scaleWidth(18),

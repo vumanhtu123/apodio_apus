@@ -16,7 +16,7 @@ import { Controller, useForm } from 'react-hook-form';
 import OTPInput from '../../../../components/otp_input/index';
 import { SvgIcon } from '../../../../components/svg-icon/index';
 import { Text } from '../../../../components/text/text';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 interface DialogOtp {
   onPress?: () => void;
   content?: string;
@@ -38,7 +38,7 @@ const DialogOtp = (props: DialogOtp) => {
     <View style={styles.main}>
       <View style={styles.content}>
         <Button onPress={handleClose} style={{ alignItems: 'center', backgroundColor: 'none', marginBottom: scaleHeight(8) }} >
-          <Images.circle_close width={scaleWidth(24)} height={scaleHeight(24)} />
+          <Svgs.circle_close width={scaleWidth(24)} height={scaleHeight(24)} />
           <Text tx='demoPodcastListScreen.dialogOtp.close' style={{ color: 'white', fontSize: fontSize.size12, marginTop: scaleHeight(3), lineHeight: scaleHeight(24) }} />
         </Button>
         <View style={styles.modalView}>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: scaleWidth(68),
     height: scaleHeight(5),
-    backgroundColor: '#C7C7C7',
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: 'center',
   },

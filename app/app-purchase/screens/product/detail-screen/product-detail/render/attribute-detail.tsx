@@ -5,7 +5,7 @@ import { styles } from '../styles';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../../../theme';
 import { Text } from '../../../../../../components';
 import { translate } from '../../../../../i18n/translate';
-import { Images } from '../../../../../../../assets';
+import { Svgs } from '../../../../../../../assets/svgs';
 import ProductAttribute from '../../../component/productAttribute';
 
 const ProductAttributeDetails = ({
@@ -34,7 +34,7 @@ const ProductAttributeDetails = ({
                             }}>
                             {translate("detailScreen.propertyDetails")}
                         </Text>
-                        <Images.iconDownBlue
+                        <Svgs.iconDownBlue
                             width={scaleWidth(16)}
                             height={scaleHeight(16)}
                             style={{

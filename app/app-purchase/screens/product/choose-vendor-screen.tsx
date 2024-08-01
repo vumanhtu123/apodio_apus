@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import FastImage from "react-native-fast-image";
-import { Images } from "../../../../assets/index";
+import { Svgs } from "../../../../assets/svgs";
 import { Header } from "../../../components/header/header";
 import { TextField } from "../../../components/text-field/text-field";
 import { Text } from "../../../components/text/text";
@@ -23,6 +23,8 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../theme";
+import Images from "../../../../assets/index";
+
 export const ChooseVendorScreen: FC = () => {
   const navigation = useNavigation();
   const [arrVendor, setArrVendor] = useState<any>([]);
@@ -78,12 +80,12 @@ export const ChooseVendorScreen: FC = () => {
   const RadioButton = ({ selected, onPress }: any) => (
     <TouchableOpacity onPress={onPress}>
       {selected ? (
-        <Images.icon_checkCircle
+        <Svgs.icon_checkCircle
           width={scaleWidth(30)}
           height={scaleHeight(30)}
         />
       ) : (
-        <Images.ic_plusCircle width={scaleWidth(30)} height={scaleHeight(30)} />
+        <Svgs.ic_plusCircle width={scaleWidth(30)} height={scaleHeight(30)} />
       )}
     </TouchableOpacity>
   );
@@ -145,7 +147,7 @@ export const ChooseVendorScreen: FC = () => {
             imageStyle={{
               borderRadius: 20,
             }}
-            source={require("../../../../assets/Images/no_images.png")}>
+            source={Images.noImages}>
             <FastImage
               style={{
                 width: scaleWidth(40),
@@ -156,7 +158,7 @@ export const ChooseVendorScreen: FC = () => {
                 uri: `${item.avatarUrl}`,
                 cache: FastImage.cacheControl.immutable,
               }}
-              defaultSource={require("../../../../assets/Images/no_images.png")}
+              defaultSource={Images.noImages}
             />
           </ImageBackground>
           <View style={{ marginHorizontal: 6, maxWidth: scaleWidth(230) }}>
@@ -191,7 +193,7 @@ export const ChooseVendorScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="vendorScreen.header"
@@ -223,7 +225,7 @@ export const ChooseVendorScreen: FC = () => {
                 inputStyle={{ fontSize: fontSize.size12, fontWeight: "500" }}
                 value={searchText}
                 onBlur={onBlur}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 error={errors?.productName?.message}
                 onClearText={async () => {
                   setSearchText("");
@@ -234,7 +236,7 @@ export const ChooseVendorScreen: FC = () => {
                 onSubmitEditing={handleSubmitSearch}
                 enablesReturnKeyAutomatically
                 placeholderTx="chooseSupplierScreen.placeholderSearch"
-                RightIcon={Images.ic_searchBlue}
+                RightIcon={Svgs.ic_searchBlue}
                 // isImportant
               />
             )}
@@ -295,12 +297,12 @@ export const ChooseVendorScreen: FC = () => {
                   style={{
                     fontSize: fontSize.size9,
                     fontWeight: "500",
-                    color: "#ffffff",
+                    color: colors.white,
                   }}>
                   {selectedCount}
                 </Text>
               </View>
-              <Images.ic_shopping
+              <Svgs.ic_shopping
                 width={scaleWidth(20)}
                 height={scaleHeight(20)}
                 style={{ marginRight: 6, marginTop: 2 }}
@@ -327,7 +329,7 @@ export const ChooseVendorScreen: FC = () => {
 };
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: "#FfFfFf",
+    backgroundColor: colors.white,
     flex: 1,
   },
   rowBtnTab: {
@@ -348,8 +350,8 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   activeButton: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -359,8 +361,8 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   activeButtonCategory: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: -2,
       height: 2,
@@ -376,10 +378,10 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   activeButtonText: {
-    color: "#0078D4",
+    color: colors.navyBlue,
   },
   discount: {
-    backgroundColor: "#FF0000",
+    backgroundColor: colors.red,
     alignItems: "center",
     justifyContent: "center",
     width: scaleWidth(32),

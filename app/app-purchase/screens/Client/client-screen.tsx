@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import React, { FC, useState } from "react"
 import { FlatList, Platform, TouchableOpacity, View } from "react-native"
-import { Images } from "../../../../assets/index"
+import { Svgs } from "../../../../assets/svgs"
 import { Header } from '../../../components/header/header'
 import { Text } from "../../../components/text/text"
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../theme"
@@ -59,19 +59,19 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
         const renderKHItem = ({ item }: any) => {
             return (
                 <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', width: scaleWidth(375), height: scaleHeight(56), paddingHorizontal: 16, backgroundColor: 'white', marginBottom: 1.5, justifyContent: 'space-between' }}
-                    onPress={() => navigation.navigate('detailClient')}
+                    onPress={() => navigation.navigate('detailClient' as never)}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <View style={{ width: 40, height: 40, backgroundColor: '#EFF8FF', borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: fontSize.size10, color: '#0078D4' }}>{item.code}</Text>
+                        <View style={{ width: 40, height: 40, backgroundColor: colors.aliceBlue2, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: fontSize.size10, color: colors.navyBlue }}>{item.code}</Text>
                         </View>
                         <View style={{ marginHorizontal: 6 }}>
                             <Text style={{ fontSize: fontSize.size10 }}>{item.name}</Text>
-                            <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>{item.phone}</Text>
+                            <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{item.phone}</Text>
                         </View>
                     </View>
                     <TouchableOpacity>
-                        <Images.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
+                        <Svgs.icon_edit width={scaleWidth(14)} height={scaleHeight(14)} />
                     </TouchableOpacity>
                 </TouchableOpacity>
             )
@@ -80,8 +80,8 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
         const renderItemNKH = ({ item }: any) => {
             return (
                 <TouchableOpacity
-                    style={{ padding: scaleWidth(padding.padding_10), backgroundColor: '#FFF', marginBottom: 10 }}
-                    onPress={() => navigation.navigate('addClientToGroup', { dataItem: item })}
+                    style={{ padding: scaleWidth(padding.padding_10), backgroundColor: colors.white, marginBottom: 10 }}
+                    onPress={() => navigation.navigate({name: 'addClientToGroup', params:{ dataItem: item }} as never)}
                 >
                     <Text>{item.nameGroup}</Text>
                     <Text>{item.quantityClient}</Text>
@@ -109,12 +109,12 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
             <View style={styles.ROOT}>
                 <Header
                     type={"AntDesign"}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={goBack}
                     colorIcon={colors.text}
                     headerTx="ClientScreen.client"
-                    RightIcon={Images.icon_funnel}
-                    RightIcon1={openSearch ? Images.icon_close : Images.search}
+                    RightIcon={Svgs.icon_funnel}
+                    RightIcon1={openSearch ? Svgs.icon_close : Svgs.search}
                     headerInput={openSearch}
                     onRightPress={openTypeFilter}
                     onRightPress1={handleOpenSearch}
@@ -128,7 +128,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                     <View style={styles.rowBtnTab}>
                         <View style={{
                             flexDirection: 'row',
-                            backgroundColor: '#E6E7EA',
+                            backgroundColor: colors.solitude1,
                             borderRadius: 8,
                             padding: 2,
                             marginTop: 20
@@ -163,7 +163,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                     {openSearch &&
                         <View style={styles.rowNotiType}>
                             <TouchableOpacity onPress={() => console.log('ok')} style={{ marginRight: scaleWidth(8) }}>
-                                <Images.squaresFour width={20} height={20} />
+                                <Svgs.squaresFour width={20} height={20} />
                             </TouchableOpacity>
                             {typeNoti.map((item, index) => {
                                 return (
@@ -173,18 +173,18 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                         }}
                                         key={index}
                                         style={{
-                                            backgroundColor: index == indexItem ? '#FFFfff' : '#F4F4F4',
+                                            backgroundColor: index == indexItem ? colors.white : colors.whiteSmoke,
                                             borderRadius: 8,
                                             paddingHorizontal: 8,
                                             paddingVertical: 8,
                                             marginRight: 10,
                                             borderWidth: 1,
-                                            borderColor: index == indexItem ? '#0078D4' : '#c8c8c8'
+                                            borderColor: index == indexItem ? colors.navyBlue : colors.veryLightGrey
                                         }}
                                     >
                                         <Text
                                             style={{
-                                                color: index == indexItem ? '#0078D4' : '#747475',
+                                                color: index == indexItem ? colors.navyBlue : colors.dolphin,
                                                 textAlign: 'center',
                                                 fontWeight: '700',
                                                 fontSize: fontSize.size10,
@@ -219,7 +219,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                     bottom: Platform.OS === 'ios' ? scaleHeight(20) : scaleHeight(5),
                                     right: scaleWidth(16)
                                 }}>
-                                    <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
+                                    <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
                                     <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Thêm khách hàng</Text>
                                 </TouchableOpacity>
                             </View>
@@ -243,7 +243,7 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                 }}
                                     onPress={() => setOpenCreateGroup(!OpenCreateGroup)}
                                 >
-                                    <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
+                                    <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
                                     <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Tạo nhóm</Text>
                                 </TouchableOpacity>
                             </View>

@@ -1,5 +1,5 @@
-import { Observer, observer } from "mobx-react-lite";
-import { FC, useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { FC, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import React, {
   Dimensions,
@@ -10,12 +10,11 @@ import React, {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Header, Switch, Text, TextField } from "../../../../components";
+import { Header, Switch, Text, TextField } from "../../../../components";
 import { styles } from "./styles";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import {
-  colors,
   margin,
   padding,
   scaleHeight,
@@ -24,17 +23,14 @@ import {
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   ALERT_TYPE,
-  Dialog,
   Toast,
 } from "../../../../components/dialog-notification";
 import { useStores } from "../../../models";
 import { translate } from "../../../i18n";
-import { checkPhoneNumber, phoneNumberPattern } from "../../../utils/validate";
+import { checkPhoneNumber } from "../../../utils/validate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Root1 } from "../../../models/order-store/entities/order-address-model";
 
 export const NewDelivery: FC = observer(function NewDelivery() {
-
   const navigation = useNavigation();
   const paddingTop = useSafeAreaInsets().top;
   const heightScroll =
@@ -44,23 +40,21 @@ export const NewDelivery: FC = observer(function NewDelivery() {
     paddingTop;
   const route = useRoute()
   const { orderStore } = useStores();
+  const page = useRef(0)
+  const size = useRef(100)
   const [dataCity, setDataCity] = useState<{}[]>([]);
   const [dataDistrict, setDataDistrict] = useState<{}[]>([]);
   const [dataWards, setDataWards] = useState<{}[]>([]);
   const [city, setCity] = useState({ id: 0, label: "" });
   const [district, setDistrict] = useState({ id: 0, label: "" });
   const [wards, setWards] = useState({ id: 0, label: "" });
-  const [page, setPage] = useState(0);
-  const [pageDistrict, setPageDistrict] = useState(0);
-  const [pageWards, setPageWards] = useState(0);
-  const [size, setSize] = useState(100);
   const [searchCity, setSearchCity] = useState("");
   const [searchDistrict, setSearchDistrict] = useState("");
   const [searchWards, setSearchWards] = useState("");
   const { screen, dataEdit, toScreen }: any = route?.params
   const [valueSwitch, setValueSwitch] = useState(toScreen == 'new-order' ? true : false);
 
-  const { control, reset, handleSubmit, setValue, formState: { errors }, setError } = useForm({
+  const { control, handleSubmit, setValue, formState: { errors }, setError } = useForm({
     defaultValues: { phone: '', address: '' },
   });
 
@@ -82,20 +76,14 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   }, [])
 
   const getListCity = async () => {
-    try {
       const response = await orderStore.getListCity(
-        page,
-        size,
+        page.current,
+        size.current,
         searchCity,
         366,
-        undefined
       );
       if (response && response.kind === "ok") {
-        if (page === 0) {
-          console.log(
-            "getListCity---------------------",
-            JSON.stringify(response.response.data.content)
-          );
+        if (page.current === 0) {
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             label: item.name,
@@ -103,10 +91,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
           }));
           setDataCity(formatArr);
         } else {
-          console.log(
-            "getListCity---------------------",
-            JSON.stringify(response.response.data)
-          );
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             label: item.name,
@@ -118,24 +102,16 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       } else {
         console.error("Failed to fetch categories:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
   const getListDistrict = async (value: any) => {
-    try {
       const response = await orderStore.getListDistrict(
-        page,
-        size,
+        page.current,
+        size.current,
         searchDistrict,
         value
       );
       if (response && response.kind === "ok") {
-        if (page === 0) {
-          console.log(
-            "getListDistrict---------------------",
-            JSON.stringify(response.response.data.content)
-          );
+        if (page.current === 0) {
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             label: item.name,
@@ -143,10 +119,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
           }));
           setDataDistrict(formatArr);
         } else {
-          console.log(
-            "getListDistrict---------------------",
-            JSON.stringify(response.response.data)
-          );
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             label: item.name,
@@ -158,24 +130,16 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       } else {
         console.error("Failed to fetch categories:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
   const getListWard = async (value: any) => {
-    try {
       const response = await orderStore.getListWard(
-        page,
-        size,
+        page.current,
+        size.current,
         searchWards,
         value
       );
       if (response && response.kind === "ok") {
-        if (page === 0) {
-          console.log(
-            "getListWard---------------------",
-            JSON.stringify(response.response.data.content)
-          );
+        if (page.current === 0) {
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             label: item.name,
@@ -183,10 +147,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
           }));
           setDataWards(formatArr);
         } else {
-          console.log(
-            "getListWard---------------------",
-            JSON.stringify(response.response.data)
-          );
           const newArr = response.response.data.content;
           const formatArr = newArr.map((item: any) => ({
             label: item.name,
@@ -198,9 +158,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       } else {
         console.error("Failed to fetch categories:", response);
       }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
   };
 
   const handleSelectCity = (data: any) => {
@@ -342,13 +299,12 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         headerTx={screen === 'new' ? "order.newDelivery" : 'order.editDelivery'}
         style={{ height: scaleHeight(54) }}
       />
       <KeyboardAvoidingView
-        // style={{flex: 1}}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 0 : scaleHeight(118)}>
         <ScrollView
@@ -362,7 +318,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
           }}>
           <Controller
             control={control}
-            render={({ field: { onChange, value, onBlur }, fieldState }) => (
+            render={({ field: { onChange, value, onBlur }}) => (
               <TextField
                 keyboardType="numeric"
                 labelTx={"order.phone"}
@@ -379,7 +335,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                   onChange(filteredValue)
                 }}
                 onClearText={() => onChange("")}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 isImportant={true}
                 error={errors?.phone?.message}
               />
@@ -395,7 +351,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
             dataDefault={city.label}
             onPressChoice={(item) => handleSelectCity(item)}
             styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
-            // onLoadMore={()=> setPage(page+1)}
             isSearch={true}
             onSearch={(text: any) => setSearchCity(text)}
           />
@@ -409,7 +364,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
             styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
             onPressNotUse={() => handleSelectDistrict1()}
             checkUse={city.label !== "" ? false : true}
-            // onLoadMore={()=> setPageDistrict(pageDistrict + 1)}
             isSearch={true}
             onSearch={(text: any) => setSearchDistrict(text)}
           />
@@ -423,7 +377,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
             styleView={{ marginVertical: scaleHeight(margin.margin_8) }}
             onPressNotUse={() => handleSelectWards1()}
             checkUse={city.label !== "" && district.label !== "" ? false : true}
-            // onLoadMore={()=> setPageWards(pageWards + 1)}
             isSearch={true}
             onSearch={(text: any) => setSearchWards(text)}
           />
@@ -442,10 +395,9 @@ export const NewDelivery: FC = observer(function NewDelivery() {
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
                 onClearText={() => onChange("")}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 isImportant={true}
                 error={errors?.address?.message}
-              // defaultValue={dataEdit !== undefined ? dataEdit.address : ''}
               />
             )}
             name="address"
@@ -469,9 +421,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       </KeyboardAvoidingView>
       <View style={styles.viewGroupBtn}>
         <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
+          onPress={() => {navigation.goBack()}}
           style={styles.viewBtnCancel}>
           <Text tx={"common.cancel"} style={styles.textBtnCancel} />
         </TouchableOpacity>

@@ -13,7 +13,7 @@ import {
   Switch,
   View,
 } from 'react-native';
-import {Images} from '../../../../../assets/index';
+import {Svgs} from '../../../../../assets/svgs';
 import {Text} from '../../../../components/text/text';
 import {colors, scaleHeight} from '../../../theme';
 import {styles} from './styles';
@@ -46,7 +46,7 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
       <StatusBar translucent backgroundColor={'transparent'} />
       <Header
         type={'AntDesign'}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="demoPodcastListScreen.notificationSetting.notificationSetting"
@@ -65,7 +65,7 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
           <View
             style={[
               styles.button,
-              {backgroundColor: colors.palette.white, borderColor: '#F4AD22'},
+              {backgroundColor: colors.palette.white, borderColor: colors.yellow},
             ]}>
             <View>
               <Text
@@ -74,12 +74,12 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
               />
               <Text
                 text={'chỉ có hiệu lực với thiết bị này'}
-                style={[styles.selectText, {color: '#84888D'}]}
+                style={[styles.selectText, {color: colors.aluminium}]}
               />
             </View>
             <Switch
-              trackColor={{false: '#f1f1f2', true: '#f1f1f2'}}
-              thumbColor={isEnabled ? colors.palette.navyBlue : '#f4f3f4'}
+              trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+              thumbColor={isEnabled ? colors.palette.navyBlue : colors.selago}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={isEnabled}
@@ -93,7 +93,7 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                   styles.button,
                   {
                     backgroundColor: colors.palette.white,
-                    borderColor: '#F4AD22',
+                    borderColor: colors.yellow,
                   },
                 ]}>
                 <View>
@@ -103,8 +103,8 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                   />
                 </View>
                 <Switch
-                  trackColor={{false: '#f1f1f2', true: '#f1f1f2'}}
-                  thumbColor={isEnabled1 ? colors.palette.navyBlue : '#f4f3f4'}
+                  trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+                  thumbColor={isEnabled1 ? colors.palette.navyBlue : colors.selago}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={setIsEnabled1}
                   value={isEnabled1}
@@ -115,7 +115,7 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                   styles.button,
                   {
                     backgroundColor: colors.palette.white,
-                    borderColor: '#F4AD22',
+                    borderColor: colors.yellow,
                   },
                 ]}>
                 <View>
@@ -125,8 +125,8 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                   />
                 </View>
                 <Switch
-                  trackColor={{false: '#f1f1f2', true: '#f1f1f2'}}
-                  thumbColor={isEnabled2 ? colors.palette.navyBlue : '#f4f3f4'}
+                  trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+                  thumbColor={isEnabled2 ? colors.palette.navyBlue : colors.selago}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={setIsEnabled2}
                   value={isEnabled2}
@@ -137,7 +137,7 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                   styles.button,
                   {
                     backgroundColor: colors.palette.white,
-                    borderColor: '#F4AD22',
+                    borderColor: colors.yellow,
                   },
                 ]}>
                 <View>
@@ -147,8 +147,8 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                   />
                 </View>
                 <Switch
-                  trackColor={{false: '#f1f1f2', true: '#f1f1f2'}}
-                  thumbColor={isEnabled3 ? colors.palette.navyBlue : '#f4f3f4'}
+                  trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+                  thumbColor={isEnabled3 ? colors.palette.navyBlue : colors.selago}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={setIsEnabled3}
                   value={isEnabled3}

@@ -4,7 +4,7 @@ import React, { FC, useState } from "react";
 import { FlatList, Modal, StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import { NavigatorParamList } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, colors, scaleWidth } from "../../../theme";
 import { Header, Text } from "../../../../components";
 import { UserStatus } from "../../../utils/const";
@@ -40,7 +40,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="ImprotGoodsBook.createGoodsReceipt"
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => navigation.goBack()}
@@ -50,7 +50,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'product' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'product' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -64,7 +64,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'material' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'material' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -91,16 +91,16 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                             style={{ flexDirection: 'row', marginTop: scaleHeight(24), marginBottom: scaleHeight(20) }}
                         >
                             <View style={{ zIndex: 1 }}>
-                                <Images.ic_Brick />
+                                <Svgs.ic_Brick />
                                 <View style={{ zIndex: 2, position: 'absolute', top: scaleHeight(-6), start: scaleWidth(-2) }}>
-                                    <Images.ic_Xcircle />
+                                    <Svgs.ic_Xcircle />
                                 </View>
                             </View>
 
 
 
                             <View style={{ flex: 1, marginLeft: scaleWidth(10) }}>
-                                <Text style={{ fontSize: scaleWidth(12), fontWeight: '600', color: '#242424' }} tx="ImprotGoodsBook.brick"> </Text>
+                                <Text style={{ fontSize: scaleWidth(12), fontWeight: '600', color: colors.nero }} tx="ImprotGoodsBook.brick"> </Text>
                                 <View style={Style.flexRow}>
                                     <Text style={[Style.txtColorDolphin, { fontSize: scaleWidth(12) }]}>-SP9584</Text>
                                     <Text style={[Style.txtColorDolphin, { fontSize: scaleWidth(12) }]} tx="ImprotGoodsBook.price"></Text>
@@ -111,7 +111,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}
                                         // onPress={() => handleDecrement()}
                                         >
-                                            <Images.ic_minus />
+                                            <Svgs.ic_minus />
                                         </TouchableOpacity>
                                         <Text style={{ flex: 1, textAlign: 'center' }}>
                                             {/* {itemCounts[item.id] || item.quantity} */}
@@ -121,7 +121,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                         // onPress={() => handleIncrement()}
 
                                         >
-                                            <Images.icon_plusGreen />
+                                            <Svgs.icon_plusGreen />
                                         </TouchableOpacity>
                                     </View>
                                     <View>
@@ -139,7 +139,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <View style={[Style.flexRow, { alignItems: 'center', paddingVertical: 20 }]}>
                             <Text style={Style.txtGroup2} tx="ImprotGoodsBook.note" />
 
-                            <Images.ic_system_uico />
+                            <Svgs.ic_system_uico />
                         </View>
 
                     </View>
@@ -168,7 +168,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                 <Text style={{ color: colors.palette.navyBlue }}>
                                     0
                                 </Text>
-                                <Images.ic_pen />
+                                <Svgs.ic_pen />
                             </View>
 
                         </View>
@@ -178,7 +178,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
 
                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
-                                <Images.ic_pen />
+                                <Svgs.ic_pen />
                             </View>
 
                         </View>
@@ -189,7 +189,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                         <View style={[Style.flexRow, { alignItems: 'center', }]}>
                             <Text style={Style.txtGroup2} tx="ImprotGoodsBook.note" />
 
-                            <Images.icon_image />
+                            <Svgs.icon_image />
                         </View>
 
                     </View>
@@ -226,13 +226,13 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                     transparent={true}
                 >
                     <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)', }}>
-                        <View style={{ paddingVertical: scaleHeight(20), paddingHorizontal: scaleWidth(16), backgroundColor: '#FFFFFF' }}>
+                        <View style={{ paddingVertical: scaleHeight(20), paddingHorizontal: scaleWidth(16), backgroundColor: colors.white }}>
                             <View style={Style.flexRow}>
                                 <Text tx="ImprotGoodsBook.paymentConfirmation"></Text>
                                 <TouchableOpacity
                                     onPress={() => setisVisibleConfimImportGoods(!isVisibleConfimImportGoods)}
                                 >
-                                    <Images.ic_x />
+                                    <Svgs.ic_x />
                                 </TouchableOpacity>
 
                             </View>
@@ -254,8 +254,8 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Text tx="ImprotGoodsBook.debit" />
                                         <Switch
-                                            trackColor={{ false: '#f1f1f2', true: '#f1f1f2' }}
-                                            thumbColor={isEnabled ? colors.palette.navyBlue : '#f4f3f4'}
+                                            trackColor={{ false: colors.ghostWhite1, true: colors.ghostWhite1 }}
+                                            thumbColor={isEnabled ? colors.palette.navyBlue : colors.selago}
                                             ios_backgroundColor="#3e3e3e"
                                             onValueChange={toggleSwitch}
                                             value={isEnabled}
@@ -300,7 +300,7 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                                 />
                             </View>
                             <View style={{
-                                backgroundColor: '#FFF',
+                                backgroundColor: colors.white,
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 marginTop: scaleHeight(20)

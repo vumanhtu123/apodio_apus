@@ -12,7 +12,7 @@ import {
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Modal from "react-native-modal";
 import { RESULTS } from "react-native-permissions";
-import { Images } from "../../../../../../assets";
+import { Svgs } from "../../../../../../assets/svgs";
 import { AutoImage, Text, TextField } from "../../../../../components";
 import {
   ALERT_TYPE,
@@ -21,7 +21,7 @@ import {
 } from "../../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import { useStores } from "../../../../models";
-import { fontSize, scaleHeight, scaleWidth } from "../../../../theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
 import {
   checkCameraPermission,
   checkLibraryPermission,
@@ -310,7 +310,7 @@ const EditDirectoryModal = (props: any) => {
               <TouchableOpacity
                 onPress={handleLibraryUse}
                 style={styles.handlerLibUse}>
-                <Images.ic_addImages
+                <Svgs.ic_addImages
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -318,7 +318,7 @@ const EditDirectoryModal = (props: any) => {
               <TouchableOpacity
                 onPress={handleCameraUse}
                 style={styles.handlerCameraUse}>
-                <Images.ic_camera
+                <Svgs.ic_camera
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -340,7 +340,7 @@ const EditDirectoryModal = (props: any) => {
                   top: scaleHeight(5),
                 }}
                 onPress={() => handleRemoveImage()}>
-                <Images.circle_close
+                <Svgs.circle_close
                   width={scaleWidth(16)}
                   height={scaleHeight(16)}
                 />
@@ -358,7 +358,7 @@ const EditDirectoryModal = (props: any) => {
                 onPress={handleLibraryUse}
                 style={styles.handleLibUse2}>
                 <View style={styles.viewIcAdd}>
-                  <Images.ic_addImages
+                  <Svgs.ic_addImages
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -366,7 +366,7 @@ const EditDirectoryModal = (props: any) => {
                     tx="productScreen.uploadImage"
                     style={{
                       fontSize: fontSize.size14,
-                      color: "#0078d4",
+                      color: colors.navyBlue,
                     }}></Text>
                 </View>
               </TouchableOpacity>
@@ -374,7 +374,7 @@ const EditDirectoryModal = (props: any) => {
                 onPress={handleCameraUse}
                 style={styles.handleCameraUse2}>
                 <View style={styles.viewIcCamera}>
-                  <Images.ic_camera
+                  <Svgs.ic_camera
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -382,7 +382,7 @@ const EditDirectoryModal = (props: any) => {
                     tx={"productScreen.camera"}
                     style={{
                       fontSize: fontSize.size14,
-                      color: "#0078d4",
+                      color: colors.navyBlue,
                     }}></Text>
                 </View>
               </TouchableOpacity>
@@ -408,7 +408,7 @@ const EditDirectoryModal = (props: any) => {
                 }}
                 value={name} // Ensure this uses the local state
                 onBlur={onBlur}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 error={errors?.nameEditCategory?.message}
                 onClearText={() => {
                   onChange(""); // Clear the form value
@@ -435,7 +435,7 @@ const EditDirectoryModal = (props: any) => {
             disabled={isButtonDisabled}
             style={[
               styles.buttonConfirm,
-              { backgroundColor: isButtonDisabled ? "gray" : "#0078d4" },
+              { backgroundColor: isButtonDisabled ? "gray" : colors.navyBlue },
             ]}>
             <Text
               tx="common.confirm"
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   modalView: {
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     borderTopRightRadius: 8,
     borderTopLeftRadius: 8,
     paddingTop: scaleHeight(8),
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: scaleWidth(68),
     height: scaleHeight(5),
-    backgroundColor: "#C7C7C7",
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: "center",
   },
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: colors.whisper,
   },
   optionText: {
     fontSize: 16,
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
     height: scaleHeight(18),
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.veryLightGrey2,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     width: scaleWidth(14),
     height: scaleHeight(14),
     borderRadius: 6,
-    backgroundColor: "#0078d4",
+    backgroundColor: colors.navyBlue,
   },
   groupTitle: {
     fontSize: 18,
@@ -515,13 +515,13 @@ const styles = StyleSheet.create({
   },
   horizontalLine: {
     height: 1,
-    backgroundColor: "#E7EFFF",
+    backgroundColor: colors.solitude2,
     marginVertical: scaleHeight(15),
     // marginBottom: 18,
   },
   cancel: {
     fontSize: fontSize.size14,
-    color: "#FF0000",
+    color: colors.red,
     fontWeight: "700",
     lineHeight: scaleHeight(24),
   },
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 8,
     paddingHorizontal: scaleWidth(10),
     paddingVertical: scaleHeight(7),
@@ -539,7 +539,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 8,
     paddingHorizontal: scaleWidth(10),
     paddingVertical: scaleHeight(7),
@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     marginRight: scaleWidth(10),
     borderRadius: 8,
   },
@@ -562,7 +562,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 8,
   },
   viewIcCamera: {
@@ -584,7 +584,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginRight: scaleWidth(12),
     borderRadius: 10,
-    borderColor: "#c8c8c8",
+    borderColor: colors.veryLightGrey,
   },
   buttonConfirm: {
     width: scaleWidth(166),

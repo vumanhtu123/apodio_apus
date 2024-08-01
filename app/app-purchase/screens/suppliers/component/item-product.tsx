@@ -1,10 +1,11 @@
 import React from "react";
 import { TouchableOpacity, View, ImageBackground } from "react-native";
 import FastImage from "react-native-fast-image";
-import { Images } from "../../../../../assets";
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { Svgs } from "../../../../../assets/svgs";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles/styles";
 import { Text } from "../../../../components";
+import Images from "../../../../../assets/index";
 
 const RenderProductItem = ({
   item,
@@ -40,7 +41,7 @@ const RenderProductItem = ({
           }}>
           {viewProduct === "VIEW_VARIANT" && item.scene?.url !== "" ? (
             <TouchableOpacity>
-              <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+              <Svgs.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -57,7 +58,7 @@ const RenderProductItem = ({
                 borderTopLeftRadius: 12,
                 borderTopRightRadius: 12,
               }}
-              source={require("../../../../../assets/Images/no_images.png")}>
+              source={Images.noImages}>
               <FastImage
                 style={{
                   width: scaleWidth(107),
@@ -72,7 +73,7 @@ const RenderProductItem = ({
                       : "",
                   cache: FastImage.cacheControl.immutable,
                 }}
-                defaultSource={require("../../../../../assets/Images/no_images.png")}
+                defaultSource={Images.noImages}
               />
             </ImageBackground>
           </View>
@@ -117,12 +118,12 @@ const RenderProductItem = ({
             position: "absolute",
             top: scaleHeight(56),
             right: scaleWidth(6),
-            backgroundColor: "#F6F7F9",
+            backgroundColor: colors.aliceBlue,
             zIndex: 1,
           }}>
           {viewProduct === "VIEW_VARIANT" && item.scene?.url !== "" ? (
             <TouchableOpacity>
-              <Images.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
+              <Svgs.ic_3d width={scaleWidth(20)} height={scaleHeight(20)} />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -138,7 +139,7 @@ const RenderProductItem = ({
                 height: scaleHeight(70),
               }}
               imageStyle={{ borderRadius: 8 }}
-              source={require("../../../../../assets/Images/no_images.png")}>
+              source={Images.noImages}>
               <FastImage
                 style={{
                   width: scaleWidth(70),

@@ -1,7 +1,8 @@
 import React, {FC, memo} from 'react';
 import {Text, View} from 'react-native';
-import {Images} from '../../../../../assets/index';
+import {Svgs} from '../../../../../assets/svgs';
 import {navigate} from '../../../../app-purchase/navigators';
+import { colors } from '../../../theme';
 
 export const WellComeScreen: FC = () => {
   setTimeout(() => {
@@ -12,11 +13,11 @@ export const WellComeScreen: FC = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Images.icon_Logo1 />
+      <Svgs.icon_Logo1 />
     </View>
   );
 };

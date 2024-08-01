@@ -1,17 +1,18 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { NavigatorParamList } from "../../../navigators"
+import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
 import { View } from "react-native";
 import { LinearGradient } from "react-native-linear-gradient";
 import { colors } from "../../../theme";
 import LottieView from "lottie-react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components/text/text";
 import React from "react";
 import { useAuth } from "../../contexts/auth";
 import { useStores } from "../../../models";
 import { getAccessToken, setAccessToken } from "../../../utils/storage";
+import Images from "../../../../../assets/index";
 
 export const SplashScreen1: FC<
   StackScreenProps<NavigatorParamList, "SplashScreen">
@@ -42,18 +43,18 @@ export const SplashScreen1: FC<
           alignItems: "center",
           justifyContent: "center",
         }}>
-        <Images.ic_logofull style={{ width: 248, height: 178 }} />
+        <Svgs.ic_logofull style={{ width: 248, height: 178 }} />
       </View>
 
       <View style={{ width: "100%", height: "25%", alignItems: "center" }}>
         <LottieView
           style={{ width: 100, height: 100 }}
-          source={require("./ic_animation.json")}
+          source={Images.loading}
           autoPlay
         />
         <Text
           tx="inforMerchant.loading"
-          style={{ color: "#FFFFFF", fontSize: 18, textTransform: "uppercase" }}
+          style={{ color: colors.white, fontSize: 18, textTransform: "uppercase" }}
         />
       </View>
     </LinearGradient>

@@ -44,7 +44,7 @@ import ReactNativeModal from "react-native-modal";
 import { useAuth } from "../../../contexts/auth";
 // import { Screen } from "../screen/screen"
 import { Header } from "../../../../../components/header/header";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { LinearGradient } from "react-native-linear-gradient";
 // import { string } from "mobx-state-tree/dist/internal"
 // import { BulletItem } from "app/components/bullet-item/bullet-item"
@@ -232,7 +232,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     const textData = [
       {
         title: "inforMerchant.btnInfor",
-        icon: Images.ic_infor,
+        icon: Svgs.ic_infor,
         onPress: () => {
           // Alert.alert('ok')
           props.navigation.navigate("inforAccount");
@@ -240,27 +240,27 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       },
       {
         title: "inforMerchant.btnSecutityAcc",
-        icon: Images.ic_secutity,
+        icon: Svgs.ic_secutity,
         onPress: () => props.navigation.navigate("accountSecurity"),
       },
       {
         title: "inforMerchant.btnChangePassword",
-        icon: Images.ic_changePass,
+        icon: Svgs.ic_changePass,
         onPress: () => props.navigation.navigate("changePass"),
       },
       {
         title: "inforMerchant.btnIntroduct",
-        icon: Images.ic_inTroduce,
+        icon: Svgs.ic_inTroduce,
         onPress: () => props.navigation.navigate("Introduce"),
       },
       {
         title: "inforMerchant.btnFeedback",
-        icon: Images.ic_feedBack,
+        icon: Svgs.ic_feedBack,
         onPress: () => setIsVisibleFeedback(!isVisibleFeedback),
       },
       {
         title: "inforMerchant.btnSettingBell",
-        icon: Images.ic_settingBell,
+        icon: Svgs.ic_settingBell,
         onPress: () => props.navigation.navigate("notificationSetting"),
       },
     ];
@@ -303,9 +303,9 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                   height: 52,
                   justifyContent: "center",
                 }}
-                LeftIcon={Images.back}
+                LeftIcon={Svgs.back}
                 headerTx="inforMerchant.setTingShop"
-                titleStyle={{ color: "#ffffff" }}
+                titleStyle={{ color: colors.white }}
                 type={"AntDesign"}
                 onLeftPress={() => navigation.goBack()}
               />
@@ -355,7 +355,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                     </View>
                     <Text style={styles.textBody} tx={item.title} />
                   </View>
-                  <Images.ic_right width={20} height={20} />
+                  <Svgs.ic_right width={20} height={20} />
                 </TouchableOpacity>
                 <View style={styles.divider}></View>
               </View>
@@ -420,7 +420,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             </Row>
 
             <View
-              style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
+              style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
             />
             <TouchableOpacity
               style={{
@@ -435,14 +435,14 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
-                  <Images.icon_VietNam />
+                  <Svgs.icon_VietNam />
                 </View>
                 <Text>Tiếng Việt </Text>
               </View>
-              {selectLanguage ? <Images.ic_tick /> : null}
+              {selectLanguage ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
             <View
-              style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
+              style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
             />
 
             <TouchableOpacity
@@ -458,11 +458,11 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
-                  <Images.icon_English />
+                  <Svgs.icon_English />
                 </View>
                 <Text>Tiếng Anh </Text>
               </View>
-              {selectLanguage ? null : <Images.ic_tick />}
+              {selectLanguage ? null : <Svgs.ic_tick />}
             </TouchableOpacity>
           </View>
         </ReactNativeModal>
@@ -493,7 +493,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               }}
             />
             <View
-              style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
+              style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
             />
             <TouchableOpacity
               style={{ marginVertical: 15, alignItems: "center" }}
@@ -550,7 +550,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             style={{ backgroundColor: colors.palette.white, borderRadius: 8 }}>
             <View
               style={{
-                backgroundColor: "#C7C7C7",
+                backgroundColor: colors.veryLightGrey1,
                 width: 68,
                 height: 5,
                 borderRadius: 100,
@@ -567,7 +567,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                   justifyContent: "space-between",
                   borderBottomWidth: 1,
                   marginBottom: scaleHeight(15),
-                  borderBottomColor: "#E7EFFF",
+                  borderBottomColor: colors.solitude2,
                 }}>
                 <Text tx="menuDrawer.feedback" style={{ fontWeight: "bold" }} />
                 <TouchableOpacity

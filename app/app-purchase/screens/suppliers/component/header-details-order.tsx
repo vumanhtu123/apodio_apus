@@ -1,7 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import { Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
+import { colors } from "../../../theme";
 
 export const HeaderOrderDetails = (props: any) => {
   return (
@@ -21,14 +22,14 @@ export const HeaderOrderDetails = (props: any) => {
           marginHorizontal: 16,
         }}>
         <View style={{ flexDirection: "column" }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: "#242424" }}>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
             ĐH_21090930
           </Text>
           <Text
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#747475",
+              color: colors.dolphin,
             }}>
             Thời gian đặt hàng: 13:56 - 01/03/2023
           </Text>
@@ -49,7 +50,7 @@ export const HeaderOrderDetails = (props: any) => {
       <View
         style={{
           height: 1,
-          backgroundColor: "#F6F7FB",
+          backgroundColor: colors.ghostWhite,
           marginHorizontal: 16,
           marginVertical: 12,
         }}></View>
@@ -57,7 +58,7 @@ export const HeaderOrderDetails = (props: any) => {
         style={{
           fontSize: 16,
           fontWeight: "600",
-          color: "#242424",
+          color: colors.nero,
           marginHorizontal: 16,
         }}>
         84.000.000
@@ -80,12 +81,12 @@ export const SubHeader = (props: any) => {
         alignItems: "center",
         backgroundColor: "white",
       }}>
-      <Images.avatar />
+      <Svgs.avatar />
       <Text
         style={{
           fontSize: 12,
           fontWeight: "600",
-          color: "#242424",
+          color: colors.nero,
           paddingLeft: 8.5,
         }}>
         Công ty TNHH Một thành viên Apodio
@@ -109,24 +110,24 @@ export const AddressOrder = (props: any) => {
         style={{
           fontWeight: "600",
           fontSize: 12,
-          color: "#242424",
+          color: colors.nero,
           marginBottom: 15,
         }}>
         Địa chỉ nhận hàng
       </Text>
-      <Text style={{ fontWeight: "400", fontSize: 12, color: "#242424" }}>
+      <Text style={{ fontWeight: "400", fontSize: 12, color: colors.nero }}>
         Công ty TNHH Mặt Trời Hồng
       </Text>
       <Text
         style={{
           fontWeight: "400",
           fontSize: 12,
-          color: "#242424",
+          color: colors.nero,
           marginVertical: 8,
         }}>
         02466876656
       </Text>
-      <Text style={{ fontWeight: "400", fontSize: 12, color: "#242424" }}>
+      <Text style={{ fontWeight: "400", fontSize: 12, color: colors.nero }}>
         85 Hàng Bài, Hoàn Kiếm, HN
       </Text>
     </View>

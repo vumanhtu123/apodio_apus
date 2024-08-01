@@ -1,9 +1,10 @@
 import React from "react";
 import { TouchableOpacity, View, Image } from "react-native";
 import { Text } from "../../../../components";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { Svgs } from "../../../../../assets/svgs";
 import { translate } from "i18n-js";
+import Images from "../../../../../assets/index";
 
 export const InfoDetails = () => {
   return (
@@ -20,7 +21,7 @@ export const InfoDetails = () => {
           paddingBottom: 10,
           fontSize: 12,
           fontWeight: "600",
-          color: "#242424",
+          color: colors.nero,
         }}></Text>
       <View style={{ flexDirection: "row" }}>
         <Text
@@ -28,10 +29,10 @@ export const InfoDetails = () => {
           style={{
             fontSize: 12,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
           }}></Text>
         <Text
-          style={{ fontSize: 12, fontWeight: "400", color: "#242424" }}
+          style={{ fontSize: 12, fontWeight: "400", color: colors.nero }}
           text=" Tổ chức"></Text>
       </View>
 
@@ -41,10 +42,10 @@ export const InfoDetails = () => {
           style={{
             fontSize: 12,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
           }}></Text>
         <Text
-          style={{ fontSize: 12, fontWeight: "400", color: "#242424" }}
+          style={{ fontSize: 12, fontWeight: "400", color: colors.nero }}
           text=" Đồng bằng sông hồng"></Text>
       </View>
 
@@ -54,10 +55,10 @@ export const InfoDetails = () => {
           style={{
             fontSize: 12,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
           }}></Text>
         <Text
-          style={{ fontSize: 12, fontWeight: "400", color: "#242424" }}
+          style={{ fontSize: 12, fontWeight: "400", color: colors.nero }}
           text=" Contact@gmail.com"></Text>
       </View>
 
@@ -67,10 +68,10 @@ export const InfoDetails = () => {
           style={{
             fontSize: 12,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
           }}></Text>
         <Text
-          style={{ fontSize: 12, fontWeight: "400", color: "#242424" }}
+          style={{ fontSize: 12, fontWeight: "400", color: colors.nero }}
           text=" 0344911322"></Text>
       </View>
     </View>
@@ -93,14 +94,14 @@ export const InfoAddress = () => {
           paddingBottom: 10,
           fontSize: 12,
           fontWeight: "600",
-          color: "#242424",
+          color: colors.nero,
         }}></Text>
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
         }}>
-        <Images.ic_location width={14} height={14} />
+        <Svgs.ic_location width={14} height={14} />
         <Text
           style={{ fontWeight: "400", fontSize: 12, marginLeft: 5 }}
           text="24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam"></Text>
@@ -111,7 +112,7 @@ export const InfoAddress = () => {
           alignItems: "center",
           marginVertical: 15,
         }}>
-        <Images.ic_oto width={30} height={30} />
+        <Svgs.ic_oto width={30} height={30} />
         <View style={{ flexDirection: "column", marginLeft: 8 }}>
           <Text
             tx="suppliers.deliveryAddress"
@@ -119,14 +120,14 @@ export const InfoAddress = () => {
               paddingBottom: 10,
               fontSize: 12,
               fontWeight: "600",
-              color: "#242424",
+              color: colors.nero,
             }}></Text>
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
             }}>
-            <Images.ic_location width={14} height={14} />
+            <Svgs.ic_location width={14} height={14} />
             <Text
               style={{ fontWeight: "400", fontSize: 12 }}
               text="24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam"></Text>
@@ -140,7 +141,7 @@ export const InfoAddress = () => {
           alignItems: "center",
           marginVertical: 15,
         }}>
-        <Images.ic_oto width={30} height={30} />
+        <Svgs.ic_oto width={30} height={30} />
         <View style={{ flexDirection: "column", marginLeft: 8 }}>
           <Text
             tx="suppliers.storageAddress"
@@ -148,14 +149,14 @@ export const InfoAddress = () => {
               paddingBottom: 10,
               fontSize: 12,
               fontWeight: "600",
-              color: "#242424",
+              color: colors.nero,
             }}></Text>
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
             }}>
-            <Images.ic_location width={14} height={14} />
+            <Svgs.ic_location width={14} height={14} />
             <Text
               style={{ fontWeight: "400", fontSize: 12 }}
               text="24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam"></Text>
@@ -181,12 +182,12 @@ export const InfoBank = () => {
           paddingBottom: 10,
           fontSize: 12,
           fontWeight: "600",
-          color: "#242424",
+          color: colors.nero,
         }}></Text>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
           style={{ width: 42, height: 42 }}
-          source={require("../../../../../assets/icons/logo_default.png")}></Image>
+          source={Images.logoDefault}></Image>
         <View style={{ flexDirection: "column", marginLeft: 8 }}>
           <View style={{ flexDirection: "row" }}>
             <Text
@@ -194,10 +195,10 @@ export const InfoBank = () => {
               style={{
                 fontSize: 12,
                 fontWeight: "400",
-                color: "#242424",
+                color: colors.nero,
               }}></Text>
             <Text
-              style={{ fontSize: 12, fontWeight: "400", color: "#242424" }}
+              style={{ fontSize: 12, fontWeight: "400", color: colors.nero }}
               text=" BIDV"></Text>
           </View>
           <View style={{ flexDirection: "row" }}>
@@ -206,10 +207,10 @@ export const InfoBank = () => {
               style={{
                 fontSize: 12,
                 fontWeight: "400",
-                color: "#242424",
+                color: colors.nero,
               }}></Text>
             <Text
-              style={{ fontSize: 12, fontWeight: "400", color: "#242424" }}
+              style={{ fontSize: 12, fontWeight: "400", color: colors.nero }}
               text=" 102875087567"></Text>
           </View>
           <View style={{ flexDirection: "row" }}>
@@ -218,10 +219,10 @@ export const InfoBank = () => {
               style={{
                 fontSize: 12,
                 fontWeight: "400",
-                color: "#242424",
+                color: colors.nero,
               }}></Text>
             <Text
-              style={{ fontSize: 12, fontWeight: "400", color: "#242424" }}
+              style={{ fontSize: 12, fontWeight: "400", color: colors.nero }}
               text=" Vu Manh Tu"></Text>
           </View>
         </View>

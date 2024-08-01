@@ -25,7 +25,7 @@ import {
 } from "../../../theme";
 import { translate } from "../../../i18n";
 import { Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 
 const ROOT: ViewStyle = {
   borderRadius: 8,
@@ -91,7 +91,7 @@ const RADIOBUTTON: ViewStyle = {
   height: scaleHeight(18),
   borderRadius: 3,
   borderWidth: 1,
-  borderColor: "#ccc",
+  borderColor: colors.veryLightGrey2,
   justifyContent: "center",
   alignItems: "center",
   marginRight: scaleWidth(6),
@@ -191,7 +191,7 @@ export const SelectUom = (props: any) => {
                 style={{
                   flexDirection: "row",
                   borderWidth: 1,
-                  borderColor: "#53A0F6",
+                  borderColor: colors.cornflowerBlue,
                   borderRadius: 4,
                   paddingVertical: scaleHeight(5),
                 }}>
@@ -201,12 +201,12 @@ export const SelectUom = (props: any) => {
                       justifyContent: "center",
                       marginLeft: scaleWidth(8),
                     }}>
-                    <Images.icon_searchBlack
+                    <Svgs.icon_searchBlack
                       width={scaleWidth(18)}
                       height={scaleHeight(18)}
                     />
                   </TouchableOpacity>
-                  {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
+                  {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : colors.navyBlue , marginLeft : scaleWidth(8)}}></View> */}
                 </View>
 
                 <Controller
@@ -265,7 +265,7 @@ export const SelectUom = (props: any) => {
                       {isShowCheckBox ? (
                         <View style={RADIOBUTTON}>
                           {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
-                          {data === item.text && <Images.icon_checkBox />}
+                          {data === item.text && <Svgs.icon_checkBox />}
                         </View>
                       ) : null}
                       <Text text={item.text} style={TEXTLABELFLATLIST} />

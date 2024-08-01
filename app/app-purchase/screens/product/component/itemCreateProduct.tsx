@@ -8,7 +8,7 @@ import DropdownModal from './multiSelect';
 import { Controller, useFormContext } from 'react-hook-form';
 import { translate } from '../../../i18n';
 import { useStores } from '../../../models';
-import { Images } from '../../../../../assets';
+import { Svgs } from '../../../../../assets/svgs';
 import { addCommas, convertRetailPrice, convertWholesalePrice, formatCurrency, removeNonNumeric } from '../../../utils/validate';
 import PriceModal from './modal-price';
 
@@ -201,7 +201,7 @@ export const ItemGroupPrice = memo(
                       />
                     )}
                   </View>
-                  <Images.icon_caretRightDown />
+                  <Svgs.icon_caretRightDown />
                 </View>
               </TouchableOpacity>
             )}
@@ -317,7 +317,7 @@ export const ItemGroupPrice = memo(
                       />
                     )}
                   </View>
-                  <Images.icon_caretRightDown />
+                  <Svgs.icon_caretRightDown />
                 </View>
               </TouchableOpacity>
             )}
@@ -385,117 +385,117 @@ export const ItemUnit = memo(
     };
 
     return (
-      <View
-        style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
-      >
-        <View style={styles.viewViewDetail}>
-          <Text
-            tx={
-              props.valueSwitchUnit
-                ? "productScreen.unit_group"
-                : "productScreen.unit"
-            }
-            style={styles.textTitleView}
-          />
-          <View style={styles.viewLineSwitchUnit}>
-            <Text
-              tx={"productScreen.manage_multiple_units"}
-              style={styles.textWeight400Dolphin}
-            />
-            <Switch
-              value={props.valueSwitchUnit}
-              onToggle={props.onChangeSwitch}
-            />
-          </View>
-          <InputSelect
-            titleTx={
-              props.valueSwitchUnit
-                ? "productScreen.unit_group"
-                : "productScreen.unit"
-            }
-            hintTx={
-              props.valueSwitchUnit
-                ? "productScreen.select_unit_group"
-                : "productScreen.select_unit"
-            }
-            isSearch
-            required={true}
-            arrData={props.arrUnitGroupData}
-            dataDefault={props.valueSwitchUnit ? props.uomGroupId.label : props.uomId.label}
-            onPressChoice={(item) => props.onChangeInput(item)}
-            styleView={{ marginBottom: scaleHeight(6) }}
-          />
-          <View style={{ marginBottom: scaleHeight(15) }}>
-            <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center" }}
-              onPress={props.addUnitOrGroup}
-            >
-              <Images.ic_plusCircleBlue
-                width={scaleWidth(14)}
-                height={scaleHeight(14)}
-              />
+        <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
+          >
+            <View style={styles.viewViewDetail}>
               <Text
                 tx={
                   props.valueSwitchUnit
-                    ? "productScreen.create_unit_group"
-                    : "productScreen.create_unit"
+                    ? "productScreen.unit_group"
+                    : "productScreen.unit"
                 }
-                style={styles.textWeight400Blue}
+                style={styles.textTitleView}
               />
-            </TouchableOpacity>
-          </View>
-          {props.valueSwitchUnit ? (
-            <>
               <View style={styles.viewLineSwitchUnit}>
                 <Text
-                  tx={"createProductScreen.originalUnit"}
-                  style={{ fontSize: fontSize.size14 }}
+                  tx={"productScreen.manage_multiple_units"}
+                  style={styles.textWeight400Dolphin}
                 />
-                {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
-                {props.detailUnitGroupData ? (
-                  <Text style={styles.textWeight600}>
-                    {props.detailUnitGroupData.originalUnit.name}
-                  </Text>
-                ) : null}
-              </View>
-              <View style={styles.viewLineSwitchUnit}>
-                <Text
-                  tx={"createProductScreen.conversion"}
-                  style={{ fontSize: fontSize.size14 }}
-                />
-                <Text
-                  tx={"createProductScreen.conversionRate"}
-                  style={styles.textWeight600}
+                <Switch
+                  value={props.valueSwitchUnit}
+                  onToggle={props.onChangeSwitch}
                 />
               </View>
-              {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
-                <View key={index} style={styles.viewLineSwitchUnit}>
-                  <View
-                    style={{ flexDirection: "row", alignItems: "center" }}
-                  >
-                    <Images.ic_arrowDownRight
-                      width={scaleWidth(14)}
-                      height={scaleHeight(14)}
+              <InputSelect
+                titleTx={
+                  props.valueSwitchUnit
+                    ? "productScreen.unit_group"
+                    : "productScreen.unit"
+                }
+                hintTx={
+                  props.valueSwitchUnit
+                    ? "productScreen.select_unit_group"
+                    : "productScreen.select_unit"
+                }
+                isSearch
+                required={true}
+                arrData={props.arrUnitGroupData}
+                dataDefault={props.valueSwitchUnit ? props.uomGroupId.label : props.uomId.label}
+                onPressChoice={(item)=>props.onChangeInput(item)}
+                styleView={{ marginBottom: scaleHeight(6) }}
+              />
+              <View style={{ marginBottom: scaleHeight(15) }}>
+                <TouchableOpacity
+                  style={{ flexDirection: "row", alignItems: "center" }}
+                  onPress={props.addUnitOrGroup}
+                >
+                  <Svgs.ic_plusCircleBlue
+                    width={scaleWidth(14)}
+                    height={scaleHeight(14)}
+                  />
+                  <Text
+                    tx={
+                      props.valueSwitchUnit
+                        ? "productScreen.create_unit_group"
+                        : "productScreen.create_unit"
+                    }
+                    style={styles.textWeight400Blue}
+                  />
+                </TouchableOpacity>
+              </View>
+              {props.valueSwitchUnit ? (
+                <>
+                  <View style={styles.viewLineSwitchUnit}>
+                    <Text
+                      tx={"createProductScreen.originalUnit"}
+                      style={{ fontSize: fontSize.size14 }}
+                    />
+                    {/* Hiển thị đơn vị gốc (baseUnit) từ arrDVT dựa trên group.label */}
+                    {props.detailUnitGroupData ? (
+                      <Text style={styles.textWeight600}>
+                        {props.detailUnitGroupData.originalUnit.name}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <View style={styles.viewLineSwitchUnit}>
+                    <Text
+                      tx={"createProductScreen.conversion"}
+                      style={{ fontSize: fontSize.size14 }}
                     />
                     <Text
-                      style={{
-                        fontSize: fontSize.size14,
-                        marginHorizontal: scaleWidth(6),
-                      }}
-                    >
-                      {item.unitName}
-                    </Text>
+                      tx={"createProductScreen.conversionRate"}
+                      style={styles.textWeight600}
+                    />
                   </View>
-                  <Text style={styles.textWeight600}>
-                    {item.conversionRate}{" "}
-                    {props.detailUnitGroupData?.originalUnit?.name}
-                  </Text>
-                </View>
-              ))}
-            </>
-          ) : null}
-        </View>
-      </View>
+                  {getConvertedUnitsForGroup()?.map((item: any, index: any) => (
+                    <View key={index} style={styles.viewLineSwitchUnit}>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Svgs.ic_arrowDownRight
+                          width={scaleWidth(14)}
+                          height={scaleHeight(14)}
+                        />
+                        <Text
+                          style={{
+                            fontSize: fontSize.size14,
+                            marginHorizontal: scaleWidth(6),
+                          }}
+                        >
+                          {item.unitName}
+                        </Text>
+                      </View>
+                      <Text style={styles.textWeight600}>
+                        {item.conversionRate}{" "}
+                        {props.detailUnitGroupData?.originalUnit?.name}
+                      </Text>
+                    </View>
+                  ))}
+                </>
+              ) : null}
+            </View>
+          </View>
     )
   })
 

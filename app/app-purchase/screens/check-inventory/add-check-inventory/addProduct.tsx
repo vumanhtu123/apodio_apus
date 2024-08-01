@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 import {  NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import React from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
@@ -23,10 +23,10 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="checkInventory.createInventorySeets"
                     headerInput={true}
-                    RightIconTextInput={Images.ic_QR}
+                    RightIconTextInput={Svgs.ic_QR}
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => navigation.goBack()}
                 />
@@ -67,9 +67,9 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
                             style={{ flexDirection: 'row', marginTop: scaleHeight(24), marginBottom: scaleHeight(20) }}
                         >
                             <View style={{ zIndex: 1 }}>
-                                <Images.ic_Brick />
+                                <Svgs.ic_Brick />
                                 <View style={{ zIndex: 2, position: 'absolute', top: scaleHeight(-6), start: scaleWidth(-2) }}>
-                                    <Images.ic_Xcircle />
+                                    <Svgs.ic_Xcircle />
                                 </View>
                             </View>
 
@@ -87,7 +87,7 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
                                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}
                                         // onPress={() => handleDecrement()}
                                         >
-                                            <Images.ic_minus />
+                                            <Svgs.ic_minus />
                                         </TouchableOpacity>
                                         <Text style={{ flex: 1, textAlign: 'center' }}>
                                             {/* {itemCounts[item.id] || item.quantity} */}
@@ -97,7 +97,7 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
                                         // onPress={() => handleIncrement()}
 
                                         >
-                                            <Images.icon_plusGreen
+                                            <Svgs.icon_plusGreen
                                             />
                                         </TouchableOpacity>
                                     </View>
@@ -148,7 +148,7 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
                             <Text style={Style.txtGroup2}>
                                 Ghi Chú
                             </Text>
-                            <Images.icon_image />
+                            <Svgs.icon_image />
                         </View>
 
                     </View>
@@ -208,13 +208,13 @@ export const Style = StyleSheet.create({
         paddingVertical: scaleHeight(10),
         paddingHorizontal: scaleWidth(16),
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         marginVertical: scaleHeight(15)
 
     },
     styleGroup2: {
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         paddingVertical: scaleHeight(12),
         paddingHorizontal: scaleWidth(16),
         marginBottom: scaleHeight(15),
@@ -234,7 +234,7 @@ export const Style = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         marginTop: 10,
-        borderColor: '#F4F4F4',
+        borderColor: colors.whiteSmoke,
         alignItems: 'center',
         justifyContent: 'space-evenly'
 
@@ -263,7 +263,7 @@ export const Style = StyleSheet.create({
 
     },
     stylesBtnBottom: {
-       backgroundColor:'#FFF',
+       backgroundColor:colors.white,
        padding:scaleWidth(16),
        flexDirection:'row',
        justifyContent:'space-between'
@@ -274,7 +274,7 @@ export const Style = StyleSheet.create({
         borderWidth:1,
         borderRadius:7,
         padding:scaleWidth(12),
-        backgroundColor:'#FFF',
+        backgroundColor:colors.white,
         alignItems:'center',
        
         borderColor:colors.palette.navyBlue,

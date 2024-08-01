@@ -1,7 +1,7 @@
 import { LinearGradient } from "react-native-linear-gradient"
 import React, { useState } from "react"
 import { Platform, TextInput, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
-import { Images } from "../../../assets/index"
+import { Svgs } from "../../../assets/svgs"
 import { translate } from "../../app-purchase/i18n"
 import { colors, fontSize, scaleHeight, scaleWidth, spacing } from "../../app-purchase/theme"
 import { Button } from "../button/button"
@@ -105,7 +105,7 @@ export function Header(props: HeaderProps) {
         }
         {leftText && (
           <TouchableOpacity onPress={onLeftTextPress} style={{ width: '40%', justifyContent: 'center' }}>
-            <Text tx={leftText} style={{ color: '#FFFFFF', textAlign: 'left', fontSize: fontSize.size16 }} />
+            <Text tx={leftText} style={{ color: colors.white, textAlign: 'left', fontSize: fontSize.size16 }} />
           </TouchableOpacity>
         )
         }
@@ -123,7 +123,7 @@ export function Header(props: HeaderProps) {
             }}
             >
               <View style={{ position: 'absolute', zIndex: 100, left: scaleWidth(8) }}>
-                <Images.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
+                <Svgs.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
               </View>
               <TextInput
                 style={{
@@ -158,7 +158,7 @@ export function Header(props: HeaderProps) {
                       <RightIconTextInputCenter width={16} height={16} />
                       {
                         textBelowIconRightSearch && (
-                          <Text style={{ fontSize: 9, fontFamily: 'Inter', color: '#FFF', }}>
+                          <Text style={{ fontSize: 9, fontFamily: 'Inter', color: colors.white, }}>
                             Báo cáo
                           </Text>
                         )
@@ -177,7 +177,7 @@ export function Header(props: HeaderProps) {
           {rightText1 ? (
             <Button preset="link" onPress={onRightTextPress} style={{ alignItems: 'flex-end', zIndex: 2, width: scaleWidth(136) }}>
               <Text text={textRight1} style={{
-                color: '#FFFFFF', textAlign: 'center',
+                color: colors.white, textAlign: 'center',
                 fontSize: fontSize.size10, fontWeight: '400'
               }} />
             </Button>
@@ -213,7 +213,7 @@ export function Header(props: HeaderProps) {
           )}
           {rightText && (
             <Button preset="link" onPress={onRightTextPress} style={{ width: scaleWidth(50), alignItems: 'center', zIndex: 2 }}>
-              <Text text={textRight} style={{ color: '#FFFFFF', textAlign: 'center' }} />
+              <Text text={textRight} style={{ color: colors.white, textAlign: 'center' }} />
             </Button>
           )
           }
@@ -228,7 +228,7 @@ export function Header(props: HeaderProps) {
                 {
                   textBelowIconRight && (
                     <Text text={textBelowIconRight}
-                      style={{ fontSize: scaleWidth(8), color: '#FFF' }}
+                      style={{ fontSize: scaleWidth(8), color: colors.white }}
                     />
                   )
                 }
@@ -238,7 +238,7 @@ export function Header(props: HeaderProps) {
         </View>
 
         <View style={LOGO}>
-          <Images.icon_logoHome />
+          <Svgs.icon_logoHome />
         </View>
       </LinearGradient>
       {headerInput && (
@@ -248,7 +248,7 @@ export function Header(props: HeaderProps) {
           style={{ height: scaleHeight(45), flexDirection: 'row', alignItems: 'center', justifyContent: RightIconTextInput ? 'space-evenly' : 'center', }}
         >
           <View style={{ position: 'absolute', zIndex: 100, left: scaleWidth(25) }}>
-            <Images.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
+            <Svgs.icon_searchBlack width={scaleWidth(16)} height={scaleHeight(16)} />
           </View>
           <TextInput
             style={{
@@ -286,7 +286,7 @@ export function Header(props: HeaderProps) {
                 <RightIconTextInput width={16} height={16} />
                 {
                   textBelowIconRightSearch && (
-                    <Text style={{ fontSize: 9, fontFamily: 'Inter', color: '#FFF' }}>
+                    <Text style={{ fontSize: 9, fontFamily: 'Inter', color: colors.white }}>
                       Báo cáo
                     </Text>
                   )

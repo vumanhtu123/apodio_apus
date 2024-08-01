@@ -12,7 +12,7 @@ import React from "react";
 import { FilterAppBarComponent } from "./component/filter-appbar";
 import { Text } from "../../../components";
 import { translate } from "../../i18n";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { ItemRevenue } from "./component/item-list-renvenue";
 import { RefactorMoneyModal } from "./refactor-money-modal";
@@ -105,7 +105,7 @@ export const ListRevenueScreen: FC<
             top: Platform.OS === "ios" ? scaleHeight(44) : scaleHeight(0),
             right: 0,
           }}>
-          <Images.icon_logoHome />
+          <Svgs.icon_logoHome />
         </View>
         <View
           style={{
@@ -133,7 +133,7 @@ export const ListRevenueScreen: FC<
             }}
           />
           <TouchableOpacity onPress={() => { }}>
-            <Images.icon_search />
+            <Svgs.icon_search />
           </TouchableOpacity>
         </View>
         <View style={{ backgroundColor: "white" }}>
@@ -155,7 +155,7 @@ export const ListRevenueScreen: FC<
               marginHorizontal: 16,
               alignItems: "center",
             }}>
-            <Text style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
+            <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
               {translate("analysis.balance")}
               <Text
                 style={{
@@ -169,10 +169,10 @@ export const ListRevenueScreen: FC<
             <TouchableOpacity style={{ flexDirection: "row" }}
               onPress={() => props.navigation.navigate('moneyManagement')}
             >
-              <Images.ic_Chartbar />
+              <Svgs.ic_Chartbar />
               <Text
                 style={{
-                  color: "#0078D4",
+                  color: colors.navyBlue,
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
@@ -194,7 +194,7 @@ export const ListRevenueScreen: FC<
                 style={{
                   fontSize: 10,
                   fontWeight: "400",
-                  color: "#242424",
+                  color: colors.nero,
                   flex: 1,
                 }}></Text>
               <Text
@@ -202,7 +202,7 @@ export const ListRevenueScreen: FC<
                 style={{
                   fontSize: 10,
                   fontWeight: "400",
-                  color: "#242424",
+                  color: colors.nero,
                   // flex: 1,
                   marginRight: scaleWidth(30),
                 }}></Text>
@@ -246,19 +246,19 @@ export const ListRevenueScreen: FC<
           }}
 
         >
-          <Images.ic_arrow_up />
+          <Svgs.ic_arrow_up />
           <Text
             tx={"analysis.amountExpenditure"}
             style={{
               fontSize: 14,
               fontWeight: "600",
-              color: "#FFFFFF",
+              color: colors.white,
               marginLeft: 5,
             }}></Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            backgroundColor: "#00CC6A",
+            backgroundColor: colors.malachite,
             flexDirection: "row",
             // paddingHorizontal: 36,
             justifyContent: "center",
@@ -269,13 +269,13 @@ export const ListRevenueScreen: FC<
           }}
           onPress={() => props.navigation.navigate('addRevenueScreen')}
         >
-          <Images.ic_arrow_down />
+          <Svgs.ic_arrow_down />
           <Text
             tx={"analysis.amountRevenue"}
             style={{
               fontSize: 14,
               fontWeight: "600",
-              color: "#FFFFFF",
+              color: colors.white,
               marginLeft: 5,
             }}></Text>
         </TouchableOpacity>
@@ -333,11 +333,11 @@ const ItemSum = () => {
         style={{
           flex: 1,
           paddingVertical: 15,
-          backgroundColor: "#F6F7F9",
+          backgroundColor: colors.aliceBlue,
           borderRadius: 6,
           flexDirection: "row",
         }}>
-        <Images.ic_money_down style={{ marginLeft: scaleWidth(5) }} />
+        <Svgs.ic_money_down style={{ marginLeft: scaleWidth(5) }} />
 
         <View style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
           <Text
@@ -345,7 +345,7 @@ const ItemSum = () => {
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
             }}></Text>
           <Text
             style={{
@@ -361,25 +361,25 @@ const ItemSum = () => {
         style={{
           marginLeft: scaleWidth(15),
           paddingVertical: 15,
-          backgroundColor: "#F6F7F9",
+          backgroundColor: colors.aliceBlue,
           flex: 1,
           borderRadius: 6,
           flexDirection: "row",
         }}>
-        <Images.ic_money_up style={{ marginLeft: scaleWidth(5) }} />
+        <Svgs.ic_money_up style={{ marginLeft: scaleWidth(5) }} />
         <View style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
           <Text
             tx={"analysis.totalRevenue"}
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
             }}></Text>
           <Text
             style={{
               fontSize: 16,
               fontWeight: "600",
-              color: "#00CC6A",
+              color: colors.malachite,
             }}>
             900.000
           </Text>

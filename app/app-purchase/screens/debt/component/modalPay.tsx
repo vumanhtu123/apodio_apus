@@ -4,7 +4,7 @@ import Modal from 'react-native-modal'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme'
 import { Text, TextField } from '../../../../components'
-import { Images } from '../../../../../assets'
+import { Svgs } from '../../../../../assets/svgs'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 import { Controller, useForm } from 'react-hook-form'
 import en from '../../../i18n/en'
@@ -78,7 +78,7 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
                     <TouchableOpacity
                         onPress={setIsVisible}
                     >
-                        <Images.ic_x />
+                        <Svgs.ic_x />
                     </TouchableOpacity>
 
                 </View>
@@ -144,7 +144,7 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
                     onPress={onPressConfirm}
                 >
 
-                    <Text tx="ImprotGoodsBook.confrim" style={{ color: '#FFF', fontSize: fontSize.size14 }}></Text>
+                    <Text tx="ImprotGoodsBook.confrim" style={{ color: colors.white, fontSize: fontSize.size14 }}></Text>
                 </TouchableOpacity>
 
             </View>

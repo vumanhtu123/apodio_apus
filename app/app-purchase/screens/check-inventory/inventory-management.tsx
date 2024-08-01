@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Header } from "../../../components";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { FlashList } from "@shopify/flash-list";
 import { UserStatus } from "../../utils/const";
@@ -153,11 +153,11 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
         return (
             <View style={{ flex: 1, }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="checkInventory.manageInventorySheets"
                     headerInput={true}
                     style={{ height: scaleHeight(55) }}
-                    RightIconTextInput={Images.ic_dowload}
+                    RightIconTextInput={Svgs.ic_dowload}
                     onLeftPress={() => props.navigation.goBack()}
 
                 />
@@ -173,7 +173,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                                     paddingVertical: scaleHeight(13),
                                     paddingHorizontal: scaleWidth(16),
                                     borderBottomWidth: 1,
-                                    borderColor: isCLickTabBar === index ? colors.palette.navyBlue : '#FFF', backgroundColor: '#FFF'
+                                    borderColor: isCLickTabBar === index ? colors.palette.navyBlue : colors.white, backgroundColor: colors.white
 
                                 }}
 
@@ -197,7 +197,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                     <TouchableOpacity
                         style={{
                             borderRadius: 8,
-                            backgroundColor: '#D9DADD',
+                            backgroundColor: colors.hawkesBlue,
                             width: scaleWidth(32),
                             height: scaleHeight(36),
                             marginHorizontal: scaleWidth(16),
@@ -211,14 +211,14 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
 
                         }}
                     >
-                        <Images.ic_Calender_gray />
+                        <Svgs.ic_Calender_gray />
                     </TouchableOpacity>
 
 
                     <View style={{
                         // width:scaleWidth(260),
                         // height:scaleHeight(32), 
-                        backgroundColor: '#D9DADD',
+                        backgroundColor: colors.hawkesBlue,
                         borderRadius: 8,
                         justifyContent: 'space-evenly',
                         flexDirection: 'row',
@@ -230,7 +230,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             paddingVertical: (scaleHeight(8)),
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: selectCalendar === 1 ? "#FFF" : "#D9DADD",
+                            backgroundColor: selectCalendar === 1 ? colors.white : colors.hawkesBlue,
                             borderRadius: 8
                         }}
                             onPress={() => {
@@ -245,7 +245,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             paddingHorizontal: (scaleWidth(12)),
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: selectCalendar === 2 ? "#FFF" : "#D9DADD",
+                            backgroundColor: selectCalendar === 2 ? colors.white : colors.hawkesBlue,
                             borderRadius: 8
                         }}
                             onPress={() => {
@@ -260,7 +260,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             paddingHorizontal: (scaleWidth(12)),
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: selectCalendar === 3 ? "#FFF" : "#D9DADD",
+                            backgroundColor: selectCalendar === 3 ? colors.white : colors.hawkesBlue,
                             borderRadius: 8
                         }}
                             onPress={() => {
@@ -286,7 +286,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                                 renderItem={({ item }) => {
                                     return (
                                         <View style={{
-                                            backgroundColor: '#FFF',
+                                            backgroundColor: colors.white,
                                             borderRadius: 8,
                                             paddingVertical: scaleHeight(10),
                                             paddingHorizontal: scaleWidth(16),
@@ -297,14 +297,14 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
 
                                         >
                                             <View>
-                                                <Text style={{ fontSize: 12, fontWeight: '600', color: '#333' }}>{item.id}</Text>
+                                                <Text style={{ fontSize: 12, fontWeight: '600', color: colors.nightRider }}>{item.id}</Text>
                                                 <View style={{ flexDirection: 'row' }}>
                                                     <Text style={Styles.stylesTextTime} >{item.time} </Text>
                                                     <Text style={Styles.stylesTextTime}> {item.date}</Text>
                                                 </View>
                                             </View>
-                                            <View style={{ backgroundColor: item.status === 'Đã thanh toán' ? '#DAFBDF' : '#FFEFF0', height: 14, paddingHorizontal: 8, paddingVertical: 2 }}>
-                                                <Text style={{ fontSize: 8, color: item.status === 'Đã thanh toán' ? '#00CC6A' : 'red' }}>
+                                            <View style={{ backgroundColor: item.status === 'Đã thanh toán' ? colors.greenTea : colors.redExDG, height: 14, paddingHorizontal: 8, paddingVertical: 2 }}>
+                                                <Text style={{ fontSize: 8, color: item.status === 'Đã thanh toán' ? colors.malachite : 'red' }}>
                                                     {item.status}
                                                 </Text>
 
@@ -320,7 +320,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                 {
                     !dataListInventory && (
                         <View style={{ alignItems: 'center', marginTop: scaleHeight(80), flex: 1, }}>
-                            <Images.img_not_init />
+                            <Svgs.img_not_init />
                             <Text >
                                 Chưa có phiếu kiểm kho nào được tạo
                             </Text>
@@ -346,7 +346,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
 
                     }}
                 >
-                    <Images.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
+                    <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
                     <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Tạo phiếu kiểm kho</Text>
                 </TouchableOpacity>
 

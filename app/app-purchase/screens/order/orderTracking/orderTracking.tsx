@@ -2,7 +2,7 @@ import { Observer, observer } from "mobx-react-lite";
 import { FC } from "react";
 import React, { FlatList, TouchableOpacity, View } from "react-native";
 import { Button, Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation } from "@react-navigation/native";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles";
@@ -89,13 +89,13 @@ export const OrderTracking: FC = observer(
                         <Text text={item.time} style={index === 0 ? styles.textInformation : styles.textDate} />
                     </View>
                     <View style={{ width: '12%', justifyContent: 'center', alignItems: 'center' }}>
-                        {index === 0 ? <View style={{ width: scaleWidth(1), height: '20%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: '#D5D5D6', height: '10%' }} />}
-                        {item.status === null ? (index === 0 ? <Images.icon_ellipse_tracking_blue /> : <Images.icon_ellipse_tracking />) :
-                            item.status === "Đặt hàng" ? (index === 0 ? <Images.icon_order_success_blue /> : <Images.icon_order_success />) :
-                                item.status === "Chờ lấy hàng" ? (index === 0 ? <Images.icon_pickup_blue /> : <Images.icon_pickup />) :
-                                    (index === 0 ? <Images.icon_deliveryBlue /> : <Images.icon_delivery />)
+                        {index === 0 ? <View style={{ width: scaleWidth(1), height: '20%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: colors.quartz1, height: '10%' }} />}
+                        {item.status === null ? (index === 0 ? <Svgs.icon_ellipse_tracking_blue /> : <Svgs.icon_ellipse_tracking />) :
+                            item.status === "Đặt hàng" ? (index === 0 ? <Svgs.icon_order_success_blue /> : <Svgs.icon_order_success />) :
+                                item.status === "Chờ lấy hàng" ? (index === 0 ? <Svgs.icon_pickup_blue /> : <Svgs.icon_pickup />) :
+                                    (index === 0 ? <Svgs.icon_deliveryBlue /> : <Svgs.icon_delivery />)
                         }
-                        {index === data.length - 1 ? <View style={{ width: scaleWidth(1), height: '75%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: '#D5D5D6', height: '75%' }} />}
+                        {index === data.length - 1 ? <View style={{ width: scaleWidth(1), height: '75%' }} /> : <View style={{ width: scaleWidth(1), backgroundColor: colors.quartz1, height: '75%' }} />}
                     </View>
                     <View style={{
                         width: '67%', paddingBottom: scaleHeight(15),
@@ -112,7 +112,7 @@ export const OrderTracking: FC = observer(
                 <Header
                     headerTx={'order.orderTracking'}
                     style={{ height: scaleHeight(52) }}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => navigation.goBack()}
                 />
                 <View style={styles.viewTitle}>
@@ -135,7 +135,7 @@ export const OrderTracking: FC = observer(
                         <View style={styles.viewTitleModal}>
                             <Text tx={'order.update_shipping_status'} style={styles.textTitleModal} />
                             <TouchableOpacity style={styles.viewIconDelete} onPress={() => orderStore.closeModalTracking()}>
-                                <Images.ic_close />
+                                <Svgs.ic_close />
                             </TouchableOpacity>
                         </View>
                         <InputSelect

@@ -7,7 +7,7 @@ import { ScreenProps } from "react-native-screens";
 import { NavigatorParamList } from "../../../navigators";
 import { Header, Text } from "../../../../components";
 import { colors, palette, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 
 
 
@@ -102,8 +102,8 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
         return (
             <View>
                 <Header
-                    RightIcon1={Images.ic_bin}
-                    LeftIcon={Images.back}
+                    RightIcon1={Svgs.ic_bin}
+                    LeftIcon={Svgs.back}
                     widthRightIcon={scaleWidth(16)}
                     heightRightIcon={scaleHeight(16)}
                     headerTx="GoodsExportBook.shippingDetails"
@@ -114,7 +114,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                 />
                 <View style={{ paddingTop: scaleHeight(20), paddingHorizontal: scaleWidth(16) }}>
                     <TouchableOpacity
-                        style={{ backgroundColor: '#FFFFFF', borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
+                        style={{ backgroundColor: colors.white, borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
                         onPress={() => props.navigation.navigate('ballotDetail')}
                     >
                         <View style={Styles.flexRow}>
@@ -136,20 +136,20 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_PaperPlaneTilt />
+                                <Svgs.ic_PaperPlaneTilt />
                                 <Text tx="GoodsExportBook.submitBallot" style={{ marginLeft: 4, color: colors.palette.navyBlue, fontWeight: "600" }} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue, backgroundColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_dowload />
+                                <Svgs.ic_dowload />
                                 <Text tx="GoodsExportBook.dowloadBallot" style={{ marginLeft: 4, color: colors.palette.white, fontWeight: "600" }} />
                             </TouchableOpacity>
                         </View>
 
                     </TouchableOpacity>
                     <View
-                        style={{ backgroundColor: '#FFFFFF', marginVertical: scaleWidth(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
+                        style={{ backgroundColor: colors.white, marginVertical: scaleWidth(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
                     >
                         <View style={[Styles.flexRow,{marginBottom:scaleWidth(15)}]}>
                             <View style={{ flexDirection: 'row' }}>
@@ -167,7 +167,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                                     paddingHorizontal: scaleWidth(6),
                                     borderRadius: scaleWidth(2)
                                 }} tx="GoodsExportBook.collapse"></Text>
-                                <Images.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
+                                <Svgs.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
 
                             </TouchableOpacity>
 
@@ -233,7 +233,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
 
                     </View>
                     <View
-                        style={{ backgroundColor: '#FFFFFF', borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10), }}
+                        style={{ backgroundColor: colors.white, borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10), }}
                     >
                         <View style={Styles.flexRow}>
                             <Text style={Styles.txtGray}>Tổng số lượng</Text>
@@ -262,7 +262,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
 )
 const Styles = StyleSheet.create({
     bodyItem: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.white,
         borderRadius: 8,
         // paddingVertical: scaleHeight(10),
         // paddingHorizontal: scaleWidth(16),
@@ -278,7 +278,7 @@ const Styles = StyleSheet.create({
     line: {
         width: '100%',
         borderWidth: 1,
-        borderColor: "#F6F7FB",
+        borderColor: colors.ghostWhite,
         marginVertical: scaleHeight(12)
 
     },

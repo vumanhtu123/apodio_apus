@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { Alert, FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { it } from "date-fns/locale";
 
@@ -64,7 +64,7 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
                 setItemCounts({ ...itemCounts, [item.id]: Math.max((itemCounts[item.id] || 0) - 1, 0) });
             };
             return (
-                <View style={{ flex: 1, padding: scaleWidth(6), flexDirection: 'row', backgroundColor: '#FFF', marginBottom: 12, justifyContent: 'space-between' }}>
+                <View style={{ flex: 1, padding: scaleWidth(6), flexDirection: 'row', backgroundColor: colors.white, marginBottom: 12, justifyContent: 'space-between' }}>
                     <View style={{ flexDirection: 'row', borderRadius: 8, }}>
                         <Image
                             source={{ uri: item.img }}
@@ -88,7 +88,7 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
                         <TouchableOpacity style={{ flex: 1, alignItems: 'center' }}
                             onPress={() => handleDecrement()}
                         >
-                            <Images.ic_minus />
+                            <Svgs.ic_minus />
                         </TouchableOpacity>
                         <Text style={{ flex: 1, textAlign: 'center' }}>
                             {itemCounts[item.id] || item.quantity}
@@ -97,7 +97,7 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
                             onPress={() => handleIncrement()}
 
                         >
-                            <Images.icon_plusGreen
+                            <Svgs.icon_plusGreen
                             />
                         </TouchableOpacity>
                     </View>
@@ -107,10 +107,10 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="checkInventory.createInventorySeets"
                     headerInput={true}
-                    RightIconTextInput={Images.ic_QR}
+                    RightIconTextInput={Svgs.ic_QR}
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => props.navigation.goBack()}
                 />
@@ -123,7 +123,7 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
                                     <TouchableOpacity
                                         style={{
                                             flex: 1,
-                                            backgroundColor: sellectTab === 'product' ? '#FFF' : '#E6E7EA',
+                                            backgroundColor: sellectTab === 'product' ? colors.white : colors.solitude1,
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             borderRadius: 7,
@@ -137,7 +137,7 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
                                     <TouchableOpacity
                                         style={{
                                             flex: 1,
-                                            backgroundColor: sellectTab === 'material' ? '#FFF' : '#E6E7EA',
+                                            backgroundColor: sellectTab === 'material' ? colors.white : colors.solitude1,
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                             borderRadius: 7,
@@ -160,7 +160,7 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
                             </View>
                             :
                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                                <Images.ic_BoxAndSearch />
+                                <Svgs.ic_BoxAndSearch />
 
                                 <Text
                                     style={{ textAlign: 'center', fontSize: 16 }}
@@ -187,7 +187,7 @@ export const addCheckInventory: FC<StackScreenProps<NavigatorParamList, "addChec
                     >
                         <Text
 
-                            style={{ color: '#FFF' }}
+                            style={{ color: colors.white }}
                             tx="checkInventory.btnAddProduct"
                         />
                     </TouchableOpacity>
@@ -217,14 +217,14 @@ export const Style = StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         marginTop: 10,
-        borderColor: '#F4F4F4',
+        borderColor: colors.whiteSmoke,
         alignItems: 'center',
         justifyContent: 'space-evenly'
 
     },
     StyleTabar: {
         flexDirection: 'row',
-        backgroundColor: '#E6E7EA',
+        backgroundColor: colors.solitude1,
         height: 32,
         // justifyContent:'space-between',
         borderRadius: 8,

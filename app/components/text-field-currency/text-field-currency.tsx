@@ -25,7 +25,7 @@ import {
 import { translate, TxKeyPath } from "../../app-purchase/i18n";
 import { Text } from "../text/text";
 import { SvgIcon } from "../svg-icon";
-import { Images } from "../../../assets";
+import { Svgs } from "../../../assets/svgs";
 import CurrencyInput from 'react-native-currency-input';
 import CustomKeyboard from "./custom-keyboard";
 import ModernKeyboard from "../keypad/ModernKeyboard";
@@ -405,9 +405,9 @@ const styles = StyleSheet.create({
   keyboardContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     padding: 10,
     borderTopWidth: 1,
-    borderTopColor: '#ccc',
+    borderTopColor: colors.veryLightGrey2,
   },
 }); 

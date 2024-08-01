@@ -18,7 +18,7 @@ import {
 } from "../../../theme";
 import { Text } from "../../../../components/text/text";
 import { TxKeyPath, translate } from "../../../i18n";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import Modal from "react-native-modal";
 import { Button } from "../../../../components";
 
@@ -142,13 +142,13 @@ const DropdownModal = (props: InputSelectProps) => {
     );
     return (
       <View>
-        <View style={{ height: scaleHeight(1), backgroundColor: "#E7EFFF" }} />
+        <View style={{ height: scaleHeight(1), backgroundColor: colors.solitude2 }} />
         <TouchableOpacity
           style={styles.item}
           onPress={() => handleItemSelect(item)}>
           <View style={styles.radioButton}>
             {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
-            {isSelected && <Images.icon_checkBox />}
+            {isSelected && <Svgs.icon_checkBox />}
           </View>
           <Text style={[styles.itemText]}>{item.text}</Text>
         </TouchableOpacity>
@@ -188,7 +188,7 @@ const DropdownModal = (props: InputSelectProps) => {
                     <Text style={styles.selectedItemText}>{item?.text}</Text>
                     {disable === true ? null : (
                       <TouchableOpacity onPress={() => handleRemoveItem(item)}>
-                        <Images.ic_close
+                        <Svgs.ic_close
                           width={scaleWidth(14)}
                           height={scaleHeight(14)}
                         />
@@ -204,7 +204,7 @@ const DropdownModal = (props: InputSelectProps) => {
         </View>
         {disable === true ? null : (
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Images.dropDown />
+            <Svgs.dropDown />
           </View>
         )}
       </TouchableOpacity>
@@ -245,7 +245,7 @@ const DropdownModal = (props: InputSelectProps) => {
 
 const styles = StyleSheet.create({
   dropdown: {
-    // backgroundColor: '#f2f2f2',
+    // backgroundColor: colors.gray,
     // paddingVertical: 10,
     // paddingHorizontal: 15,
     // borderRadius: 5,
@@ -276,11 +276,11 @@ const styles = StyleSheet.create({
     fontSize: fontSize.size14,
   },
   selectedItemText: {
-    color: "#747475",
+    color: colors.dolphin,
     marginRight: scaleWidth(4),
   },
   closeButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.dodgerBlue,
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   closeButtonText: {
-    color: "#fff",
+    color: colors.white,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   selectedItem: {
     borderWidth: 1,
-    borderColor: "#DFE0EB",
+    borderColor: colors.quartz,
     // backgroundColor: colors.palette.aliceBlue,
     borderRadius: 4,
     paddingHorizontal: scaleWidth(9),
@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     height: scaleHeight(16),
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.veryLightGrey2,
     justifyContent: "center",
     alignItems: "center",
     marginRight: scaleWidth(6),

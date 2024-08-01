@@ -11,7 +11,7 @@ import { scaleWidth, padding, scaleHeight, colors } from "../../../theme";
 import { Text, TextField } from "../../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { validatePhoneStartsWith } from "../../../utils/validate";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { styles } from "../../account_security/styles";
 
 interface ModalCreateGroup {
@@ -98,13 +98,13 @@ const Styles = StyleSheet.create({
     marginRight: 16,
     marginBottom: 20,
     borderWidth: 2,
-    borderColor: "#FFF",
+    borderColor: colors.white,
   },
 
   styleTxT: {
     fontFamily: "Inter",
     fontWeight: "600",
-    color: "#FFF",
+    color: colors.white,
     fontSize: scaleWidth(12),
   },
 });

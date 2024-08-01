@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header } from "../../../../../components/header/header";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Text } from "../../../../../components/text/text"
 import ReactNativeModal from "react-native-modal";
 import ModelSenSuccess from "../comment/ModelSendSuccess";
@@ -15,6 +15,7 @@ import { useStores } from "../../../../models";
 import React from "react";
 import StarRating from "react-native-star-rating-widget";
 import { NavigatorParamList } from "../../../../navigators";
+import { colors } from "../../../../theme";
 
 
 
@@ -135,7 +136,7 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
                                     key={item}
                                 >
 
-                                    <Images.ic_starSuccess />
+                                    <Svgs.ic_starSuccess />
 
                                 </View>
                             )
@@ -148,18 +149,18 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
         const textData = [
             {
                 title: 'inforMerchant.introductionbody',
-                icon: Images.ic_introduction2,
+                icon: Svgs.ic_introduction2,
                 onPress: () => props.navigation.navigate('termsAndAgreement')
 
             },
             {
                 title: 'inforMerchant.feedback',
-                icon: Images.ic_star,
+                icon: Svgs.ic_star,
                 onPress: () => setVisible(true)
             },
             {
                 title: 'inforMerchant.question',
-                icon: Images.ic_question,
+                icon: Svgs.ic_question,
                 onPress: () => props.navigation.navigate('faqscren')
             }
         ]
@@ -168,7 +169,7 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
             <View style={styles.main}>
                 <Header
                     style={{ height: 52 }}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="inforMerchant.introduction"
                     onLeftPress={() => props.navigation.goBack()}
                 />
@@ -189,7 +190,7 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
                                             <Text tx={item.title} />
                                         </View>
                                     </View>
-                                    <Images.ic_right />
+                                    <Svgs.ic_right />
                                 </TouchableOpacity>
                                 <View style={styles.divider}></View>
                             </View>
@@ -209,8 +210,8 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
                     }}
                     style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
                 >
-                    <View style={{ width: 269, height: 273, backgroundColor: '#F2F2F2', borderRadius: 8, padding: 8, alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Images.ic_modalFeedBack />
+                    <View style={{ width: 269, height: 273, backgroundColor: colors.gray, borderRadius: 8, padding: 8, alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Svgs.ic_modalFeedBack />
 
                         {dialogSend ?
 
@@ -244,12 +245,12 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
                         <View style={{ width: '100%', }}>
                            
 
-                            <View style={{ width: '100%', padding: 10, borderTopColor: '#DADADA', borderBottomColor: '#DADADA', borderTopWidth: 1, alignItems: 'center', borderBottomWidth: 1, }}>
+                            <View style={{ width: '100%', padding: 10, borderTopColor: colors.gainsboro1, borderBottomColor: colors.gainsboro1, borderTopWidth: 1, alignItems: 'center', borderBottomWidth: 1, }}>
 
                                 {dialogSend ?
                                     <TouchableOpacity>
                                         <Text
-                                            style={{ color: '#007AFF' }}
+                                            style={{ color: colors.dodgerBlue }}
                                             tx="inforMerchant.comment"
                                             onPress={() => props.navigation.navigate('comment', { defaultRating: rating, })}
 
@@ -281,7 +282,7 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
                                                 }}
                                             >
                                                 <Text
-                                                    style={{ color: '#007AFF' }}
+                                                    style={{ color: colors.dodgerBlue }}
                                                     tx="inforMerchant.ok"
                                                 />
                                             </TouchableOpacity>
@@ -295,18 +296,18 @@ export const IntroductionScreen2: FC<StackScreenProps<NavigatorParamList, "Intro
                                                     }}
                                                 >
                                                     <Text
-                                                        style={{ color: '#007AFF' }}
+                                                        style={{ color: colors.dodgerBlue }}
                                                         tx="inforMerchant.cancel"
                                                     />
                                                 </TouchableOpacity>
 
-                                                <TouchableOpacity style={{ width: '50%', alignItems: 'center', borderLeftWidth: 1, borderLeftColor: "#DADADA" }}
+                                                <TouchableOpacity style={{ width: '50%', alignItems: 'center', borderLeftWidth: 1, borderLeftColor: colors.gainsboro1 }}
                                                     onPress={() => {
                                                         setDialogSend(!dialogSend)
                                                     }}
                                                 >
                                                     <Text
-                                                        style={{ margin: 11, color: '#007AFF' }}
+                                                        style={{ margin: 11, color: colors.dodgerBlue }}
                                                         tx="inforMerchant.btnSen"
 
                                                     />

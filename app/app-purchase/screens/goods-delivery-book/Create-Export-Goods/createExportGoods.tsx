@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite"
 import React, { useState } from "react"
 import { FC } from "react"
 import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View } from "react-native"
-import { Images } from "../../../../../assets"
+import { Svgs } from "../../../../../assets/svgs"
 import { NavigatorParamList } from "../../../navigators"
 import { colors, palette, scaleHeight, scaleWidth } from "../../../theme"
 import { Header, Text } from "../../../../components"
@@ -70,7 +70,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
         ]
         const ItemListExprortGoods = ({ item, index }) => {
             return (
-                <View style={{ flex: 1, flexDirection: 'row', padding: scaleHeight(6), borderRadius: scaleWidth(8), backgroundColor: '#FFFFFF', marginBottom: scaleHeight(12), alignItems: 'center' }}>
+                <View style={{ flex: 1, flexDirection: 'row', padding: scaleHeight(6), borderRadius: scaleWidth(8), backgroundColor: colors.white, marginBottom: scaleHeight(12), alignItems: 'center' }}>
                     <Image source={{ uri: item.img }}
                         style={{ width: scaleWidth(40), height: scaleHeight(40), borderRadius: scaleHeight(8), marginRight: scaleWidth(6) }}
                     />
@@ -82,7 +82,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                                     <Text style={{ fontSize: scaleWidth(10), fontFamily: 'Inter-Bold' }}>{item.name}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Text style={Styles.txtItemWareHouse}>{item.id}</Text>
-                                        <Text style={{ fontSize: scaleWidth(8), marginHorizontal: scaleWidth(6), color: '#E7EFFF' }}>|</Text>
+                                        <Text style={{ fontSize: scaleWidth(8), marginHorizontal: scaleWidth(6), color: colors.solitude2 }}>|</Text>
                                         <Text style={[Styles.txtItemWareHouse, { textAlign: 'right' }]}>Còn: {item.quantity}</Text>
                                     </View>
 
@@ -121,7 +121,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                                     <TouchableOpacity style={{ position: 'absolute', bottom: 0, end: 0 }}
                                         onPress={() => setQuantity(1)}
                                     >
-                                        <Images.ic_btnAddSquare
+                                        <Svgs.ic_btnAddSquare
                                         />
                                     </TouchableOpacity>
                                 ) : (
@@ -130,7 +130,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                                             style={Styles.btnMinus}
                                             onPress={() => setQuantity(quantity - 1)}
                                         >
-                                            <Images.ic_minus />
+                                            <Svgs.ic_minus />
                                         </TouchableOpacity>
                                         <Text
                                             style={{ flex: 1, textAlign: 'center' }}
@@ -139,7 +139,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                                             style={Styles.btnMinus}
                                             onPress={() => setQuantity(quantity + 1)}
                                         >
-                                            <Images.icon_plusGreen  />
+                                            <Svgs.icon_plusGreen  />
                                         </TouchableOpacity>
                                     </View>
                                 )
@@ -154,10 +154,10 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     leftText="GoodsExportBook.exportGoods"
-                    RightIcon={Images.ic_QR}
-                    RightIcon1={Images.icon_search}
+                    RightIcon={Svgs.ic_QR}
+                    RightIcon1={Svgs.icon_search}
                     style={{ height: scaleHeight(52), }}
                     btnRightStyle={{ width: 30, height: 30, }}
                     onLeftPress={() => props.navigation.goBack()}
@@ -166,7 +166,7 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                 <View style={{ flex: 1, paddingTop: scaleHeight(20), paddingHorizontal: scaleWidth(16) }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ marginRight: scaleWidth(8) }}>
-                            <Images.squaresFour />
+                            <Svgs.squaresFour />
                         </View>
                         {titleTabar.map((item, index) => {
                             return (
@@ -196,16 +196,16 @@ export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createE
                 </View>
 
                 {
-                    quantity === 1 &&  <View style={{ backgroundColor: '#FFFFFF', paddingHorizontal: scaleHeight(16), paddingTop: scaleHeight(20), paddingBottom: scaleHeight(12) }}>
+                    quantity === 1 &&  <View style={{ backgroundColor: colors.white, paddingHorizontal: scaleHeight(16), paddingTop: scaleHeight(20), paddingBottom: scaleHeight(12) }}>
                     <TouchableOpacity
                         style={Styles.btnBottom}
                         onPress={() => props.navigation.navigate('createDeliveNote')}
                     >
                         <View style={{ flexDirection: 'row', }}>
-                            <Images.ic_ShoopingCar />
+                            <Svgs.ic_ShoopingCar />
                             <View style={{ position: 'absolute', start: scaleWidth(7), top: scaleWidth(-5) }}>
-                                <View style={{ width: scaleWidth(15), height: scaleHeight(15), backgroundColor: 'red', borderRadius: scaleWidth(14), borderWidth: 1, borderColor: '#FFFFFF' }}>
-                                    <Text style={{ alignSelf: 'center', fontSize: 9, color: '#FFF' }}>1</Text>
+                                <View style={{ width: scaleWidth(15), height: scaleHeight(15), backgroundColor: 'red', borderRadius: scaleWidth(14), borderWidth: 1, borderColor: colors.white }}>
+                                    <Text style={{ alignSelf: 'center', fontSize: 9, color: colors.white }}>1</Text>
                                 </View>
                             </View>
                             <View style={{ flexDirection: 'row', marginLeft: scaleWidth(10) }}>
@@ -271,7 +271,7 @@ export const Styles = StyleSheet.create({
         width: scaleWidth(91),
         height: scaleHeight(30),
         borderRadius: scaleWidth(4),
-        borderColor: '#F4F4F4',
+        borderColor: colors.whiteSmoke,
         justifyContent: 'space-around',
         alignItems: 'center',
 
@@ -281,7 +281,7 @@ export const Styles = StyleSheet.create({
     },
 
     TextWhite: {
-        color: '#FFFFFF',
+        color: colors.white,
         fontWeight: '600'
     },
     btnBottom: {

@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../assets/index";
+import { Svgs } from "../../../../assets/svgs";
 import { Text } from "../../../components/text/text";
-import { fontSize, scaleHeight, scaleWidth } from "../../theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useStores } from "../../models";
@@ -15,7 +15,7 @@ export const SuccessScreen: FC = () => {
   return (
     <View style={styles.ROOT}>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Images.ic_checkCircleBlue
+        <Svgs.ic_checkCircleBlue
           width={scaleWidth(98)}
           height={scaleHeight(98)}
         />
@@ -33,7 +33,7 @@ export const SuccessScreen: FC = () => {
           style={{
             fontSize: fontSize.size14,
             fontWeight: "500",
-            color: "#84888D",
+            color: colors.aluminium,
           }}
         />
       </View>
@@ -52,9 +52,9 @@ export const SuccessScreen: FC = () => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-            borderColor: "#c8c8c8",
+            borderColor: colors.veryLightGrey,
             paddingVertical: scaleHeight(12),
-            backgroundColor: "#0078d4",
+            backgroundColor: colors.navyBlue,
           }}>
           <Text
             tx="successScreen.btnCreate"
@@ -79,7 +79,7 @@ export const SuccessScreen: FC = () => {
             tx="successScreen.btnDetail"
             style={{
               fontSize: fontSize.size14,
-              color: "#0078D4",
+              color: colors.navyBlue,
               fontWeight: "700",
             }}
           />
@@ -99,7 +99,7 @@ export const SuccessScreen: FC = () => {
             tx="successScreen.btnBack"
             style={{
               fontSize: fontSize.size14,
-              color: "#0078D4",
+              color: colors.navyBlue,
               fontWeight: "700",
             }}
           />

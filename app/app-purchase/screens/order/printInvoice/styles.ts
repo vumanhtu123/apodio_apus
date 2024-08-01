@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     // textAlign: 'center',
   },
   textInfo: {
-    color: '#242424',
+    color: colors.nero,
     fontSize: fontSize.size12,
     // maxWidth : scaleWidth(250)
     // textDecorationLine: 'underline',
@@ -42,13 +42,13 @@ export const styles = StyleSheet.create({
     marginVertical: scaleHeight(20)
   },
   invoiceName: {
-    color: '#242424',
+    color: colors.nero,
     fontSize: fontSize.size14,
     fontWeight: '600',
     textAlign: 'center',
   },
   invoiceTime: {
-    color: '#242424',
+    color: colors.nero,
     fontSize: fontSize.size12,
     textAlign: 'center',
     marginTop: scaleHeight(10),
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
   },
   row: {
     borderBottomWidth: 1,
-    borderBottomColor: '#f6f7fb',
+    borderBottomColor: colors.ghostWhite,
     paddingBottom : scaleHeight(15)
   },
   cell: {
@@ -105,7 +105,7 @@ export const styles = StyleSheet.create({
   },
   headerRow: {
     borderBottomWidth: 1,
-    borderBottomColor: '#f6f7fb',
+    borderBottomColor: colors.ghostWhite,
     // padding: 10,
   },
   cellProductHeader: {

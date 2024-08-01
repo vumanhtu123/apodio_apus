@@ -9,8 +9,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Images } from "../../../../../assets/index";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { Svgs } from "../../../../../assets/svgs";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Text } from "../../../../components";
 import { translate } from "../../../i18n";
 
@@ -45,7 +45,7 @@ const CategoryModal = (props: CategoryModalProps) => {
       }}
       style={[styles.categoryItem]}>
       <View>
-        <Images.logoChangePass width={50} height={50} />
+        <Svgs.logoChangePass width={50} height={50} />
       </View>
       <View style={styles.titleView}>
         <Text style={styles.title}>{item.name}</Text>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#E7EFFF",
+    borderBottomColor: colors.solitude2,
   },
   modalTitle: {
     fontSize: 16,
@@ -122,14 +122,14 @@ const styles = StyleSheet.create({
   },
   modalClose: {
     fontSize: 14,
-    color: "#FF0000",
+    color: colors.red,
   },
   modalBody: {
     padding: scaleHeight(32),
   },
   searchInput: {
     borderWidth: 1,
-    borderColor: "#E7EFFF",
+    borderColor: colors.solitude2,
     borderRadius: 8,
     padding: 8,
     marginBottom: 16,
@@ -146,13 +146,13 @@ const styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: "#E7EFFF",
+    backgroundColor: colors.solitude2,
   },
   titleView: {
     alignItems: "center",
   },
   title: {
-    color: "#242426",
+    color: colors.jaguar,
     fontSize: fontSize.size12,
     fontWeight: "400",
   },

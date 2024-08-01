@@ -15,7 +15,7 @@ import { ScreenStackProps } from "react-native-screens";
 import { NavigatorParamList } from "../../../navigators";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Styles } from "./styles";
 import SelectFilterModal from "./Modal/modal-select-filter";
@@ -160,14 +160,14 @@ export const SelectClientScreen: FC<
     <View style={{ flex: 1 }}>
       <Header
         headerTx="selectClient.selectClient"
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => {
           getAPi.orderStore.setIsLoadMoreSelectClient(false)
 
           props.navigation.goBack()
         }}
-        RightIcon={Images.icon_funnel}
-        RightIcon1={Images.icon_search}
+        RightIcon={Svgs.icon_funnel}
+        RightIcon1={Svgs.icon_search}
         style={{ height: scaleWidth(52) }}
         headerInput={isShowSearch}
         handleOnSubmitSearch={() => {
@@ -217,7 +217,7 @@ export const SelectClientScreen: FC<
                   <View
                     style={Styles.icCodeItem}>
                     <Text
-                      style={{ fontSize: fontSize.size10, color: "#0078D4" }}>
+                      style={{ fontSize: fontSize.size10, color: colors.navyBlue }}>
                       {item.code}
                     </Text>
                   </View>
@@ -226,7 +226,7 @@ export const SelectClientScreen: FC<
                       {item.name}
                     </Text>
                     <Text
-                      style={{ fontSize: fontSize.size10, color: "#747475" }}>
+                      style={{ fontSize: fontSize.size10, color: colors.dolphin }}>
                       {item.phoneNumber}
                     </Text>
                   </View>
@@ -278,7 +278,7 @@ export const SelectClientScreen: FC<
           onPress={() => {
             setIsVisibleCreateClient(!isVisibleCreateClient);
           }}>
-          <Images.icon_plus
+          <Svgs.icon_plus
             width={scaleWidth(16)}
             height={scaleHeight(16)}
             style={{ marginRight: scaleWidth(6), marginTop: scaleHeight(2) }}

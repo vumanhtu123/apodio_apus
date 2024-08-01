@@ -17,7 +17,7 @@ import {
   Text,
   TextField,
 } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
@@ -858,7 +858,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   return (
     <View style={{ backgroundColor: colors.palette.aliceBlue }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => {
           handleBack();
           navigation.goBack();
@@ -930,7 +930,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 navigation.navigate("addProductOrder" as never);
                 selectProduct();
               }}>
-              <Images.icon_add />
+              <Svgs.icon_add />
               <Text
                 tx={"order.addProduct"}
                 style={styles.textButtonListProduct}
@@ -1041,7 +1041,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 style={{
                   fontSize: fontSize.size10,
                   fontWeight: "400",
-                  color: "#242424",
+                  color: colors.nero,
                 }}></Text>
               <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
                 <View style={{ flexDirection: "row" }}>
@@ -1050,10 +1050,10 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                     style={{
                       fontSize: fontSize.size10,
                       fontWeight: "400",
-                      color: "#242424",
+                      color: colors.nero,
                       marginRight: 6,
                     }}></Text>
-                  <Images.icon_caretRight2 />
+                  <Svgs.icon_caretRight2 />
                 </View>
                 {countRef.current.toString() ===
                   translate("order.DEDUCTION_OF_LIABILITIES") ? (
@@ -1063,7 +1063,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       style={{
                         fontWeight: "400",
                         fontSize: fontSize.size10,
-                        color: "#747475",
+                        color: colors.dolphin,
                         alignContent: "center",
                       }}></Text>
                     <Text
@@ -1076,8 +1076,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                               store.orderStore.dataDebtLimit.amountOwed ?? 0
                             ))) >
                             Number(price)
-                            ? "#00CC6A"
-                            : "#FF0000",
+                            ? colors.malachite
+                            : colors.red,
                       }}>
                       {formatVND(formatCurrency(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
@@ -1087,7 +1087,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         style={{
                           fontWeight: "400",
                           fontSize: fontSize.size10,
-                          color: "#747475",
+                          color: colors.dolphin,
                           alignContent: "center",
                         }}>
                         )
@@ -1114,7 +1114,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 alignItems: "center",
               }}>
               <TouchableOpacity onPress={() => setDesiredDate(false)}>
-                <Images.icon_deleteDolphin />
+                <Svgs.icon_deleteDolphin />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setIsSortByDate(true)}
@@ -1123,7 +1123,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                   alignItems: "center",
                   marginLeft: scaleWidth(margin.margin_8),
                 }}>
-                <Images.icon_calendar />
+                <Svgs.icon_calendar />
                 <Text
                   style={[
                     styles.textDate,
@@ -1135,7 +1135,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       markedDatesS === "" ? new Date() : markedDatesS
                     ).format("MMMM DD, YYYY")}
                 </Text>
-                <Images.icon_caretDownBlue />
+                <Svgs.icon_caretDownBlue />
               </TouchableOpacity>
             </View>
           ) : null}
@@ -1150,7 +1150,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             ]}
           />
           <View style={styles.viewMoreInformation}>
-            <Images.icon_gear
+            <Svgs.icon_gear
               style={{ marginRight: scaleWidth(margin.margin_4) }}
             />
             {note === false || isDeposit === false || desiredDate === false ? (
@@ -1269,7 +1269,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               <Text
                 text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
-                  color: "#747475",
+                  color: colors.dolphin,
                   fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}>
@@ -1301,7 +1301,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                     }
                   } as never);
                 }}>
-                <Images.icon_edit
+                <Svgs.icon_edit
                   style={{ marginRight: scaleWidth(margin.margin_6) }}
                 />
               </TouchableOpacity>
@@ -1327,7 +1327,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             <Text
               tx={'order.debtLimit'}
               style={{
-                color: "#747475",
+                color: colors.dolphin,
                 fontSize: fontSize.size12,
                 fontWeight: "400",
                 flex: 1,

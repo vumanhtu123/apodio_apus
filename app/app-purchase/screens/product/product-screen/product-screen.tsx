@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import Dialog from "../../../../components/dialog/dialog";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
@@ -74,13 +74,13 @@ export const ProductScreen: FC = () => {
         RightIcon2={
           activeTab === "product"
             ? isGridView
-              ? Images.ic_squareFour
-              : Images.ic_grid
+              ? Svgs.ic_squareFour
+              : Svgs.ic_grid
             : null
         }
         onRightPress={handleOpenSearch}
         onRightPress2={toggleView}
-        RightIcon={openSearch ? Images.icon_close : Images.search}
+        RightIcon={openSearch ? Svgs.icon_close : Svgs.search}
         headerInput={openSearch}
         searchValue={activeTab === "product" ? searchValue : searchCategory}
         onSearchValueChange={
@@ -100,10 +100,10 @@ export const ProductScreen: FC = () => {
         <Images.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
         <View style={{ marginHorizontal: scaleWidth(6) }}>
           <Text style={{ fontSize: fontSize.size10 }}>NCC00001 - {company}</Text>
-          <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>02466989909</Text>
+          <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>02466989909</Text>
         </View>
       </View> */}
-      <View style={{ flex: 1, backgroundColor: "#f6f7f9" }}>
+      <View style={{ flex: 1, backgroundColor: colors.aliceBlue }}>
         <View style={styles.btnTab}>
           <View style={styles.rowBtnTab}>
             {btnTab.map((item, index) => {

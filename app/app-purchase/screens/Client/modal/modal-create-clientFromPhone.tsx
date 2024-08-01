@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { Svgs } from "../../../../../assets/svgs";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
 
@@ -48,7 +48,7 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
                                 <Text style={{ fontSize: scaleWidth(16) }}>Chọn kiểu khách hàng </Text>
                             </View>
                             <View style={{ alignItems: "center", justifyContent: 'center' }}>
-                                <Images.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showFindClient ? '180deg' : '0deg' }] }} />
+                                <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showFindClient ? '180deg' : '0deg' }] }} />
                             </View>
                         </TouchableOpacity>
 
@@ -68,7 +68,7 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
                                             </Text>
                                             {
                                                 selectFindClient === optionIndex ? (
-                                                    <Images.ic_tick />
+                                                    <Svgs.ic_tick />
                                                 ) : null
                                             }
                                         </View>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalView: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.white,
         borderRadius: 8,
         paddingTop: scaleHeight(8),
         marginHorizontal: scaleWidth(16),
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -149,13 +149,13 @@ const styles = StyleSheet.create({
     },
     horizontalLine: {
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         marginBottom: 18,
     },
     selectKindClient: {
         borderRadius: 8,
-        backgroundColor: '#F6F7F9',
+        backgroundColor: colors.aliceBlue,
         paddingVertical: scaleHeight(8),
         paddingHorizontal: scaleWidth(18),
         marginVertical: scaleHeight(7)

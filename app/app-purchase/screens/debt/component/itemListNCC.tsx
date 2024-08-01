@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native'
 import React, { Dispatch, FC, SetStateAction, useState } from 'react'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, scaleWidth } from '../../../theme'
-import { Images } from '../../../../../assets'
+import { Svgs } from '../../../../../assets/svgs'
 import { Text } from '../../../../components'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 
@@ -35,7 +35,7 @@ const ItemListNCC: FC<ItemNCC> = ({ item, isVisible, setIsVisible }) => {
                 <View
                     style={[{ flexDirection: 'row', alignItems: 'center', }]}
                 >
-                    <Images.ic_avatar />
+                    <Svgs.ic_avatar />
                     <Text style={{
                         fontSize: fontSize.size12,
                         fontWeight: '600'
@@ -54,7 +54,7 @@ const ItemListNCC: FC<ItemNCC> = ({ item, isVisible, setIsVisible }) => {
                 <TouchableOpacity style={Styles.styleBtnPay}
                     onPress={() => setIsVisible(!isVisible)}
                 >
-                    <Text style={{ fontSize: fontSize.size12, color: '#FFF' }}
+                    <Text style={{ fontSize: fontSize.size12, color: colors.white }}
                         tx="debtScreen.pay2"
                     ></Text>
                 </TouchableOpacity>

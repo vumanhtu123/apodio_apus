@@ -8,7 +8,7 @@ import {
   useForm,
   useFormContext,
 } from "react-hook-form";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
@@ -190,7 +190,7 @@ export default function ItemWeight(props: ItemWeight) {
           }}>
           <Text
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: fontSize.size14,
               fontWeight: "400",
             }}
@@ -214,7 +214,7 @@ export default function ItemWeight(props: ItemWeight) {
               }}>
               <Text
                 style={{
-                  color: "#0078D4",
+                  color: colors.navyBlue,
                   fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}
@@ -351,7 +351,7 @@ const ItemConversion = observer((item: InputSelectProps) => {
               item.onRestore(item.fields, item.index);
               item.remove(item.index);
             }}>
-            <Images.minus_ic
+            <Svgs.minus_ic
               style={{
                 marginRight: 4,
               }}

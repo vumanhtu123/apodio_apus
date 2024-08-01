@@ -5,7 +5,7 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import { Styles } from "../style";
 import { Header, Text } from "../../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import CustomCalendar from "../../../../components/calendar";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -80,7 +80,7 @@ export const TransactionHistoryScreen: FC <StackScreenProps<NavigatorParamList,'
                         <View style={Styles.ItemList}>
                             <View style={{ flexDirection: 'row' }}>
 
-                                <Images.ic_pay />
+                                <Svgs.ic_pay />
 
                                 <View
                                     style={{ justifyContent: 'space-evenly', marginLeft: scaleWidth(6) }}
@@ -132,7 +132,7 @@ export const TransactionHistoryScreen: FC <StackScreenProps<NavigatorParamList,'
                 <Header
                     headerTx="tranSacTionHistory.tranSactionHistory"
                     style={{ height: scaleHeight(52) }}
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
 
                     onLeftPress={() => props.navigation.goBack()}
                 />
@@ -153,7 +153,7 @@ export const TransactionHistoryScreen: FC <StackScreenProps<NavigatorParamList,'
                                         onPress={() => toggleModalDate()}
                                     >
 
-                                        <Images.icon_calendar />
+                                        <Svgs.icon_calendar />
                                     </TouchableOpacity>
                                 </View>
 
@@ -179,7 +179,7 @@ export const TransactionHistoryScreen: FC <StackScreenProps<NavigatorParamList,'
                         :
                         (
                             <View style={Styles.body}>
-                                <Images.img_not_init />
+                                <Svgs.img_not_init />
                                 <Text tx="message.noTransactionYet"
 
                                 />

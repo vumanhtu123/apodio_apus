@@ -7,7 +7,7 @@ import React, { FC, useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Header, Text } from "../../../../components";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { useStores } from "../../../models";
 
 export const FilterOrderScreen: FC = (item) => {
@@ -71,10 +71,10 @@ export const FilterOrderScreen: FC = (item) => {
         onPress={() => handleTagPress(item.id)}
         key={item.id}
         style={{
-          backgroundColor: item.isSelect === true ? "#eff8ff" : "#F6F7F9",
+          backgroundColor: item.isSelect === true ? colors.aliceBlue2 : colors.aliceBlue,
           borderRadius: 10,
           borderWidth: item.isSelect === true ? 1 : 0,
-          borderColor: item.isSelect === true ? "#0078D4" : "#c8c8c8",
+          borderColor: item.isSelect === true ? colors.navyBlue : colors.veryLightGrey,
           flex: 1 / 3,
           marginBottom: 10,
           width: scaleWidth(109),
@@ -84,7 +84,7 @@ export const FilterOrderScreen: FC = (item) => {
         }}>
         <Text
           style={{
-            color: item.isSelect === true ? "#0078D4" : "#747475",
+            color: item.isSelect === true ? colors.navyBlue : colors.dolphin,
             textAlign: "center",
             fontWeight: "400",
             fontSize: fontSize.size10,
@@ -98,7 +98,7 @@ export const FilterOrderScreen: FC = (item) => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Bộ lọc`}
@@ -119,10 +119,10 @@ export const FilterOrderScreen: FC = (item) => {
                   onPress={() => setSort(item.sort)}
                   key={index}
                   style={{
-                    backgroundColor: item.sort === sort ? "#eff8ff" : "#F6F7F9",
+                    backgroundColor: item.sort === sort ? colors.aliceBlue2 : colors.aliceBlue,
                     borderRadius: 10,
                     borderWidth: item.sort === sort ? 1 : 0,
-                    borderColor: item.sort === sort ? "#0078D4" : "#c8c8c8",
+                    borderColor: item.sort === sort ? colors.navyBlue : colors.veryLightGrey,
                     marginRight: scaleWidth(12),
                     width: scaleWidth(165),
                     height: scaleHeight(38),
@@ -130,7 +130,7 @@ export const FilterOrderScreen: FC = (item) => {
                   }}>
                   <Text
                     style={{
-                      color: item.sort === sort ? "#0078D4" : "#747475",
+                      color: item.sort === sort ? colors.navyBlue : colors.dolphin,
                       textAlign: "center",
                       fontWeight: "400",
                       fontSize: fontSize.size14,
@@ -158,10 +158,10 @@ export const FilterOrderScreen: FC = (item) => {
                   onPress={() => setSort(item.sort)}
                   key={index}
                   style={{
-                    backgroundColor: item.sort === sort ? "#eff8ff" : "#F6F7F9",
+                    backgroundColor: item.sort === sort ? colors.aliceBlue2 : colors.aliceBlue,
                     borderRadius: scaleWidth(margin.margin_10),
                     borderWidth: item.sort === sort ? 1 : 0,
-                    borderColor: item.sort === sort ? "#0078D4" : "#c8c8c8",
+                    borderColor: item.sort === sort ? colors.navyBlue : colors.veryLightGrey,
                     marginRight: scaleWidth(12),
                     width: scaleWidth(165),
                     height: scaleHeight(38),
@@ -169,7 +169,7 @@ export const FilterOrderScreen: FC = (item) => {
                   }}>
                   <Text
                     style={{
-                      color: item.sort === sort ? "#0078D4" : "#747475",
+                      color: item.sort === sort ? colors.navyBlue : colors.dolphin,
                       textAlign: "center",
                       fontWeight: "400",
                       fontSize: fontSize.size14,
@@ -215,7 +215,7 @@ export const FilterOrderScreen: FC = (item) => {
             alignItems: "center",
             borderWidth: 1,
             borderRadius: 10,
-            borderColor: "#c8c8c8",
+            borderColor: colors.veryLightGrey,
           }}>
           <Text tx="common.cancel" style={{ fontSize: fontSize.size14 }} />
         </TouchableOpacity>
@@ -227,7 +227,7 @@ export const FilterOrderScreen: FC = (item) => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 10,
-            backgroundColor: "#0078d4",
+            backgroundColor: colors.navyBlue,
           }}>
           <Text tx="common.confirm" style={{ fontSize: fontSize.size14, color: "white" }} />
         </TouchableOpacity>
@@ -238,7 +238,7 @@ export const FilterOrderScreen: FC = (item) => {
 };
 const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: "#Ffffff",
+    backgroundColor: colors.white,
     flex: 1,
   },
 })

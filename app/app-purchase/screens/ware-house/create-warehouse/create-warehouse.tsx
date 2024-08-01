@@ -8,7 +8,7 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { Header, Text, TextField } from "../../../../components";
 import { Styles, stylesWareHouse } from "../style";
 import { scaleHeight } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { ConditionsComponent } from "../component/conditions-component";
 import { ConfigInfoMoreComponent } from "../component/config-info-component";
 import { useStores } from "../../../models";
@@ -526,7 +526,7 @@ export const CreateWareHouseScreen: FC<
     <FormProvider {...methods}>
       <View style={Styles.main}>
         <Header
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           style={{ height: scaleHeight(52) }}
           headerTx={
             status.current == "UPDATE"
@@ -552,7 +552,7 @@ export const CreateWareHouseScreen: FC<
                   labelTx={"wareHouse.codeWareHouse"}
                   style={{
                     marginBottom: scaleHeight(0),
-                    backgroundColor: "#F6F7F9",
+                    backgroundColor: colors.aliceBlue,
                     borderRadius: 8,
                   }}
                   inputStyle={stylesWareHouse.inputPass}
@@ -592,7 +592,7 @@ export const CreateWareHouseScreen: FC<
                   keyboardType={null}
                   labelTx={"wareHouse.nameWareHouse"}
                   style={{
-                    backgroundColor: "#F6F7F9",
+                    backgroundColor: colors.aliceBlue,
                     borderRadius: 8,
                     marginVertical: 15,
                   }}
@@ -634,7 +634,7 @@ export const CreateWareHouseScreen: FC<
                   labelTx={"wareHouse.address"}
                   style={{
                     marginBottom: scaleHeight(0),
-                    backgroundColor: "#F6F7F9",
+                    backgroundColor: colors.aliceBlue,
                     borderRadius: 8,
                   }}
                   error={errors.addressWareHouse?.message ?? ""}
@@ -677,7 +677,7 @@ export const CreateWareHouseScreen: FC<
                     console.log(conditions);
                   }}>
                   {conditions ? (
-                    <Images.ic_checkbox marginRight={5} />
+                    <Svgs.ic_checkbox marginRight={5} />
                   ) : (
                     <View style={stylesWareHouse.selected}></View>
                   )}
@@ -708,7 +708,7 @@ export const CreateWareHouseScreen: FC<
                     onPressConfig();
                   }}>
                   {config ? (
-                    <Images.ic_checkbox marginRight={5} />
+                    <Svgs.ic_checkbox marginRight={5} />
                   ) : (
                     <View style={stylesWareHouse.selected}></View>
                   )}
@@ -722,7 +722,7 @@ export const CreateWareHouseScreen: FC<
           <TouchableOpacity
             onPress={methods.handleSubmit(onSubmit, onError)}
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               alignItems: "center",
               borderRadius: 10,
             }}>
@@ -734,7 +734,7 @@ export const CreateWareHouseScreen: FC<
               }
               style={{
                 fontSize: 14,
-                color: "#FFFFFF",
+                color: colors.white,
                 fontWeight: "600",
                 paddingVertical: scaleHeight(12),
               }}

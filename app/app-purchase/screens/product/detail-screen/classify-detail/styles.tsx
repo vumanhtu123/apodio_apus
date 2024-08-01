@@ -3,7 +3,7 @@ import { colors, fontSize, margin, padding, palette, scaleHeight, scaleWidth } f
 
 export const styles = StyleSheet.create({
     ROOT: {
-      backgroundColor: "#Ffffff",
+      backgroundColor: colors.white,
       flex: 1,
     },
     titleHeader: {

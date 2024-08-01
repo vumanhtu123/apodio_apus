@@ -26,6 +26,7 @@ import {
 } from "../../../utils/storage";
 import { AuthParamList } from "../../../navigators/auth-navigator";
 import { useAuth } from "../../contexts/auth";
+import Images from "../../../../../assets/index";
 
 export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
   observer(function ListCompany(props) {
@@ -110,7 +111,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
                   imageStyle={{
                     borderRadius: 20,
                   }}
-                  source={require("../../../../../assets/Images/no_images.png")}>
+                  source={Images.noImages}>
                   <FastImage
                     style={{
                       width: scaleWidth(40),
@@ -121,7 +122,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
                       uri: `${item?.imageUrls ?? ""}`,
                       cache: FastImage.cacheControl.immutable,
                     }}
-                    defaultSource={require("../../../../../assets/Images/no_images.png")}
+                    defaultSource={Images.noImages}
                   />
                 </ImageBackground>
               </View>
@@ -150,7 +151,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
               <Text
                 style={{
                   fontSize: scaleHeight(10),
-                  color: "#FFF",
+                  color: colors.white,
                 }}>
                 Truy cập
               </Text>
@@ -163,7 +164,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
     };
 
     return (
-      <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+      <View style={{ flex: 1, backgroundColor: colors.white }}>
         <Header
           headerTx="common.listCompany"
           style={{ height: scaleHeight(52) }}
@@ -175,52 +176,52 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
           renderItem={({ item }) => <ItemListCompany item={item} />}
           keyExtractor={(item: any, index: any) => index}
           showsVerticalScrollIndicator={false}
-        // "để hiện hình quay quay khi kéo xuống"
-        // refreshControl={
-        //     <RefreshControl refreshing={refresControl} onRefresh={() => {
-        //         setRefresControl(true)
-        //         console.log('====================================');
-        //         console.log("doandev");
-        //         console.log('====================================');
-        //         setRefresControl(false)
-        //     }}
-        //         colors={['red']}
-        //     />
-        // }
+          // "để hiện hình quay quay khi kéo xuống"
+          // refreshControl={
+          //     <RefreshControl refreshing={refresControl} onRefresh={() => {
+          //         setRefresControl(true)
+          //         console.log('====================================');
+          //         console.log("doandev");
+          //         console.log('====================================');
+          //         setRefresControl(false)
+          //     }}
+          //         colors={['red']}
+          //     />
+          // }
 
-        // Để hiện hình quay quay khi kéo lên
-        // ListFooterComponent={() => (
-        //     isLoading ? <View
+          // Để hiện hình quay quay khi kéo lên
+          // ListFooterComponent={() => (
+          //     isLoading ? <View
 
-        //     style={{
+          //     style={{
 
-        //         marginTop:30,
-        //         alignItems:'center',
-        //         justifyContent:'center',
-        //         // justifyContent:'space-between',
-        //         flexDirection:'row',
+          //         marginTop:30,
+          //         alignItems:'center',
+          //         justifyContent:'center',
+          //         // justifyContent:'space-between',
+          //         flexDirection:'row',
 
-        //         padding:10
-        //     }}>
-        //         <ActivityIndicator size={"large"} color={'blue'} />
+          //         padding:10
+          //     }}>
+          //         <ActivityIndicator size={"large"} color={'blue'} />
 
-        //     </View>
+          //     </View>
 
-        //         : null
-        //     )}
+          //         : null
+          //     )}
 
-        // "Phần sử lý logic khi load more"
-        // onEndReached={() =>{
-        //     setIsLoading(true)
-        //     // setPrevPaget(prevPaget+1)
-        //     console.log("doandev load more");
-        //     setdata(data.concat([{id:"10",name: "Cong Ty A", code: "123",hotline:"836666"}]))
-        //     setTimeout(() => {
-        //         setIsLoading(false)
-        //     }, 3000);
-        // }}
+          // "Phần sử lý logic khi load more"
+          // onEndReached={() =>{
+          //     setIsLoading(true)
+          //     // setPrevPaget(prevPaget+1)
+          //     console.log("doandev load more");
+          //     setdata(data.concat([{id:"10",name: "Cong Ty A", code: "123",hotline:"836666"}]))
+          //     setTimeout(() => {
+          //         setIsLoading(false)
+          //     }, 3000);
+          // }}
 
-        // onEndReachedThreshold={0.2}
+          // onEndReachedThreshold={0.2}
         />
       </View>
     );

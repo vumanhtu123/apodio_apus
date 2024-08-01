@@ -3,7 +3,7 @@ import { Header } from "../../../../../components/header/header";
 import { observer } from "mobx-react-lite";
 import { FC} from "react";
 import { ScrollView, View } from "react-native";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import {Styles} from "./index"
 import { Text } from "../../../../../components/text/text";
 import React from "react";
@@ -30,7 +30,7 @@ export const termsAndAgreementsScreen: FC<StackScreenProps<NavigatorParamList, "
                 <Header
                     style={{height:52}}
                     headerTx="inforMerchant.introductionbody"
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={props.navigation.goBack}   
                 />
                 <View style={{flex:1, borderRadius:8, margin:20, padding:16}}>

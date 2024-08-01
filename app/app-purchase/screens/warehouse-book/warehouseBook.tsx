@@ -7,7 +7,7 @@ import React from "react";
 import { Header, Text } from "../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { Image } from "react-native-svg";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { styles } from "./styles";
 
 
@@ -230,9 +230,9 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
             <View style={{ flex: 1 }}>
 
                 <Header
-                    LeftIcon={Images.back}
-                    RightIcon1={Images.icon_search}
-                    RightIconAndTextBelow={Images.ic_dowload}
+                    LeftIcon={Svgs.back}
+                    RightIcon1={Svgs.icon_search}
+                    RightIconAndTextBelow={Svgs.ic_dowload}
                     textBelowIconRight={"Báo cáo"}
                     widthRightIcon={scaleWidth(15)}
                     heightRightIcon={scaleHeight(15)}
@@ -247,7 +247,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                         <TouchableOpacity
                             style={{
                                 borderRadius: 8,
-                                backgroundColor: '#D9DADD',
+                                backgroundColor: colors.hawkesBlue,
                                 width: scaleWidth(32),
                                 height: scaleHeight(36),
                                 marginRight: scaleWidth(16),
@@ -262,7 +262,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
 
                             }}
                         >
-                            <Images.ic_Feilter />
+                            <Svgs.ic_Feilter />
 
                         </TouchableOpacity>
 
@@ -270,7 +270,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                         <View style={{
                             // width:scaleWidth(260),
                             // height:scaleHeight(32), 
-                            backgroundColor: '#D9DADD',
+                            backgroundColor: colors.hawkesBlue,
                             borderRadius: 8,
                             justifyContent: 'space-evenly',
                             flexDirection: 'row',
@@ -282,7 +282,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                                 paddingVertical: (scaleHeight(8)),
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: selectCalendar === 1 ? "#FFF" : "#D9DADD",
+                                backgroundColor: selectCalendar === 1 ? colors.white : colors.hawkesBlue,
                                 borderRadius: 8
                             }}
                                 onPress={() => {
@@ -297,7 +297,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                                 paddingHorizontal: (scaleWidth(12)),
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: selectCalendar === 2 ? "#FFF" : "#D9DADD",
+                                backgroundColor: selectCalendar === 2 ? colors.white : colors.hawkesBlue,
                                 borderRadius: 8
                             }}
                                 onPress={() => {
@@ -313,7 +313,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                                 paddingHorizontal: (scaleWidth(12)),
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                backgroundColor: selectCalendar === 3 ? "#FFF" : "#D9DADD",
+                                backgroundColor: selectCalendar === 3 ? colors.white : colors.hawkesBlue,
                                 borderRadius: 8
                             }}
                                 onPress={() => {
@@ -356,12 +356,12 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                     renderItem={({ item: [date, products,] }) => (
                         <View style={styles.groupContainer}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: scaleHeight(15) }}>
-                                <View style={{ width: '40%', height: 1, backgroundColor: "#E6E7EA" }} />
+                                <View style={{ width: '40%', height: 1, backgroundColor: colors.solitude1 }} />
                                 <Text style={styles.dateText}>{date}</Text>
-                                <View style={{ width: '40%', height: 1, backgroundColor: "#E6E7EA" }} />
+                                <View style={{ width: '40%', height: 1, backgroundColor: colors.solitude1 }} />
                             </View>
 
-                            <View style={{ backgroundColor: '#FFFFFF', padding: scaleWidth(6), borderRadius: scaleWidth(8) }}>
+                            <View style={{ backgroundColor: colors.white, padding: scaleWidth(6), borderRadius: scaleWidth(8) }}>
                                 {products.map((product, index) => (
                                     <View key={product.id} style={styles.productContainer}>
                                         <View style={styles.flexRow}>
@@ -397,15 +397,15 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
 
                 <View style={[styles.styleBTNBottom, styles.flexRow]}>
                     <TouchableOpacity style={[styles.StyleTextBtn, { backgroundColor: colors.palette.radicalRed }]}>
-                        <Text tx="warehouseBook.productDelivery" style={{ color: '#FFFFFF' }} />
+                        <Text tx="warehouseBook.productDelivery" style={{ color: colors.white }} />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.StyleTextBtn, { backgroundColor: colors.palette.navyBlue }]}>
-                        <Text tx="warehouseBook.productDelivery" style={{ color: '#FFFFFF' }} />
+                        <Text tx="warehouseBook.productDelivery" style={{ color: colors.white }} />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={[styles.StyleTextBtn, { backgroundColor: colors.palette.malachite }]}>
-                        <Text tx="warehouseBook.productDelivery" style={{ color: '#FFFFFF' }} />
+                        <Text tx="warehouseBook.productDelivery" style={{ color: colors.white }} />
                     </TouchableOpacity>
                 </View>
 

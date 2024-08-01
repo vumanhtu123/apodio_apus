@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
 import { Header, Text } from "../../../components";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleWidth } from "../../theme";
 import { styles } from "./styles/styles-filter";
 import CustomCalendarWarehouseBook from "../warehouse-book/calendar-warehouse-book/customCalendarWarehouseBook";
@@ -132,7 +132,7 @@ export const FilterRevenueScreen: FC<
   return (
     <View style={{ flex: 1 }}>
       <Header
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         headerTx="warehouseBook.filter"
         onLeftPress={() => {
           navigation.goBack();
@@ -142,7 +142,7 @@ export const FilterRevenueScreen: FC<
       <ScrollView style={{ flex: 1 }}>
         <View
           style={{
-            backgroundColor: "#FFF",
+            backgroundColor: colors.white,
             borderRadius: scaleWidth(8),
             height: "100%",
           }}>
@@ -179,12 +179,12 @@ export const FilterRevenueScreen: FC<
                         styles.styleIemTime,
                         {
                           backgroundColor:
-                            indexTime === index ? "#EFF8FF" : "#F6F7F9",
+                            indexTime === index ? colors.aliceBlue2 : colors.aliceBlue,
                           borderWidth: 1,
                           borderColor:
                             indexTime == index
                               ? colors.palette.navyBlue
-                              : "#F6F7F9",
+                              : colors.aliceBlue,
                         },
                       ]}>
                       <Text
@@ -215,7 +215,7 @@ export const FilterRevenueScreen: FC<
                   marginRight: scaleWidth(16),
                   fontSize: scaleWidth(12),
                   alignSelf: "center",
-                  color: "#747475",
+                  color: colors.dolphin,
                 }}
                 tx="warehouseBook.from"></Text>
               <View
@@ -233,7 +233,7 @@ export const FilterRevenueScreen: FC<
                 />
 
                 <View style={{ transform: [{ rotate: "180deg" }] }}>
-                  <Images.dropDown />
+                  <Svgs.dropDown />
                 </View>
               </View>
             </View>
@@ -261,7 +261,7 @@ export const FilterRevenueScreen: FC<
                   marginRight: scaleWidth(16),
                   fontSize: scaleWidth(12),
                   alignSelf: "center",
-                  color: "#747475",
+                  color: colors.dolphin,
                 }}
                 tx="warehouseBook.to"></Text>
               <View
@@ -278,7 +278,7 @@ export const FilterRevenueScreen: FC<
                 />
 
                 <View style={{ transform: [{ rotate: "180deg" }] }}>
-                  <Images.dropDown />
+                  <Svgs.dropDown />
                 </View>
               </View>
             </View>
@@ -301,12 +301,12 @@ export const FilterRevenueScreen: FC<
                         styles.styleIemTime,
                         {
                           backgroundColor:
-                            indexClassify === index ? "#EFF8FF" : "#F6F7F9",
+                            indexClassify === index ? colors.aliceBlue2 : colors.aliceBlue,
                           borderWidth: 1,
                           borderColor:
                             indexClassify == index
                               ? colors.palette.navyBlue
-                              : "#F6F7F9",
+                              : colors.aliceBlue,
                         },
                       ]}>
                       <Text
@@ -347,13 +347,13 @@ export const FilterRevenueScreen: FC<
                           {
                             backgroundColor:
                               indexTypeOfGoods === index
-                                ? "#EFF8FF"
-                                : "#F6F7F9",
+                                ? colors.aliceBlue2
+                                : colors.aliceBlue,
                             borderWidth: 1,
                             borderColor:
                               indexTypeOfGoods == index
                                 ? colors.palette.navyBlue
-                                : "#F6F7F9",
+                                : colors.aliceBlue,
                           },
                         ]}>
                         <Text
@@ -381,7 +381,7 @@ export const FilterRevenueScreen: FC<
                 style={styles.stytleTitle}
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Images.ic_downLoadBlue />
+                <Svgs.ic_downLoadBlue />
 
                 <Text
                   tx="warehouseBook.downloadNow"
@@ -405,7 +405,7 @@ export const FilterRevenueScreen: FC<
                     backgroundColor:
                       slectedReportDetail == en.warehouseBook.reset
                         ? colors.palette.navyBlue
-                        : "#FFF",
+                        : colors.white,
                   },
                 ]}
                 onPress={() => {
@@ -417,8 +417,8 @@ export const FilterRevenueScreen: FC<
                     fontSize: scaleWidth(14),
                     color:
                       slectedReportDetail == en.warehouseBook.reset
-                        ? "#FFF"
-                        : "#747475",
+                        ? colors.white
+                        : colors.dolphin,
                   }}
                 />
               </TouchableOpacity>
@@ -433,7 +433,7 @@ export const FilterRevenueScreen: FC<
                     backgroundColor:
                       slectedReportDetail == en.warehouseBook.apply
                         ? colors.palette.navyBlue
-                        : "#FFF",
+                        : colors.white,
                   },
                 ]}
                 onPress={() => {
@@ -456,8 +456,8 @@ export const FilterRevenueScreen: FC<
                     fontSize: scaleWidth(14),
                     color:
                       slectedReportDetail == en.warehouseBook.apply
-                        ? "#FFF"
-                        : "#747475",
+                        ? colors.white
+                        : colors.dolphin,
                   }}
                 />
               </TouchableOpacity>

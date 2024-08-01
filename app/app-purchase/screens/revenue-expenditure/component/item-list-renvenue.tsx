@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "../../../../components";
-import { scaleWidth } from "../../../theme";
+import { colors, scaleWidth } from "../../../theme";
 
 interface InputItem {
   status?: any;
@@ -28,7 +28,7 @@ export const ItemRevenue = (props: InputItem) => {
           <Text style={{ fontSize: 12, fontWeight: "600" }}>
             {props.toDay ?? "Thứ Ba"}
           </Text>
-          <Text style={{ fontSize: 12, fontWeight: "400", color: "#747475" }}>
+          <Text style={{ fontSize: 12, fontWeight: "400", color: colors.dolphin }}>
             {props.monthDay ?? "Tháng 3/24"}
           </Text>
         </View>
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   textStatus: {
     fontSize: 14,
     fontWeight: "400",
-    color: "#242424",
+    color: colors.nero,
     paddingHorizontal: 14,
     paddingVertical: 8,
   },
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
   },
   textExpenditure: {
     flex: 1,
-    color: "#00CC6A",
+    color: colors.malachite,
     fontSize: 12,
     fontWeight: "600",
     textAlign: "center",
@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 12,
     fontWeight: "400",
-    color: "#747475",
+    color: colors.dolphin,
   },
   viewPaymentMethod: {
     flex: 1,
@@ -110,6 +110,6 @@ export const styles = StyleSheet.create({
   textPaymentMethod: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#747475",
+    color: colors.dolphin,
   },
 });

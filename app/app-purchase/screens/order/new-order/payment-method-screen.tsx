@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header, Screen, Text, TextField } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
@@ -157,7 +157,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
       }}>
       <View>
         <Header
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           style={{ height: scaleHeight(70) }}
           headerTx={"order.warning_payment"}
@@ -180,11 +180,11 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 justifyContent: "flex-start",
                 paddingVertical: padding.padding_10,
               }}>
-              <Images.ic_warning_yellow />
+              <Svgs.ic_warning_yellow />
               <Text
                 tx="order.tittle_warning"
                 style={{
-                  color: "#242424",
+                  color: colors.nero,
                   fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}></Text>
@@ -206,7 +206,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 style={{
                   fontSize: fontSize.size12,
                   fontWeight: "400",
-                  color: "#747475",
+                  color: colors.dolphin,
                 }}
                 tx="order.debt_limit"></Text>
               <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
@@ -219,7 +219,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               style={{
                 fontSize: fontSize.size12,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
               }}
               tx="order.text_money_limit"></Text>
             <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
@@ -243,7 +243,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               style={{
                 fontSize: fontSize.size12,
                 fontWeight: "400",
-                color: "#242424",
+                color: colors.nero,
               }}></Text>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View>
@@ -251,7 +251,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   style={{
                     fontSize: fontSize.size12,
                     fontWeight: "400",
-                    color: "#242424",
+                    color: colors.nero,
                     marginRight: scaleWidth(6),
                     textAlign: 'right'
 
@@ -272,7 +272,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   </Text>
                 ) : null}
               </View>
-              <Images.icon_caretRight2 />
+              <Svgs.icon_caretRight2 />
             </View>
           </TouchableOpacity>
           <Controller
@@ -290,7 +290,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
-                RightIconClear={Images.icon_delete2}
+                RightIconClear={Svgs.icon_delete2}
                 error={errors?.price?.message}
                 styleError={{ marginLeft: scaleHeight(16) }}
                 //valueCurrency={vendorStore.companyInfo.symbol}
@@ -358,7 +358,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               style={{
                 fontSize: fontSize.size12,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
               }}
               tx="order.amount_paid"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
@@ -374,7 +374,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}>
           <View
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               borderRadius: 8,
               marginHorizontal: margin.margin_15,
               marginBottom: margin.margin_15,

@@ -34,10 +34,7 @@ import { ClientScreen } from "../screens/Client/client-screen";
 import { detailClientScrent } from "../screens/Client/detail_Client/detail-client";
 import { AddClientToGroup } from "../screens/Client/add-client-to-group";
 import { useColorScheme } from "react-native";
-import {
-  navigationRef,
-  useBackButtonHandler,
-} from "./navigation-utilities";
+import { navigationRef, useBackButtonHandler } from "./navigation-utilities";
 import { MyDrawer } from "./drawer-navigator";
 
 // import { CardStyleInterpolators } from "@react-navigation/stack";
@@ -549,13 +546,15 @@ export const AppNavigator = (props: NavigationProps) => {
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName));
 
   // return (
-  //   <NavigationContainer
-  //     ref={navigationRef}
-  //     theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-  //     {...props}>
-  //     <AppStack />
-  //     {/* <MyDrawer /> */}
-  //   </NavigationContainer>
+  //   <AuthProvider>
+  //     <NavigationContainer
+  //       ref={navigationRef}
+  //       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+  //       {...props}>
+  //       {/* <AppStack /> */}
+  //       <MyDrawer />
+  //     </NavigationContainer>
+  //   </AuthProvider>
   // );
 
   return (

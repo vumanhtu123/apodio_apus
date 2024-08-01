@@ -5,7 +5,7 @@ import { NavigatorParamList } from "../../../navigators";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Header, Text } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Styles } from "./styles";
 import { useStores } from "../../../models";
@@ -80,7 +80,7 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
             <View style={{ flex: 1 }}>
                 <Header
                     headerTx="selectClient.filter"
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     onLeftPress={() => props.navigation.goBack()}
 
                 />
@@ -144,9 +144,9 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                                         width: scaleWidth(109),
                                         height: scaleHeight(38),
                                         borderRadius: 8,
-                                        backgroundColor: selectedTagId.includes(item.id) ? colors.palette.aliceBlue2 : "#F6F7F9",
+                                        backgroundColor: selectedTagId.includes(item.id) ? colors.palette.aliceBlue2 : colors.aliceBlue,
                                         borderWidth: 1,
-                                        borderColor: selectedTagId.includes(item.id) ? colors.palette.navyBlue : '#F6F7F9',
+                                        borderColor: selectedTagId.includes(item.id) ? colors.palette.navyBlue : colors.aliceBlue,
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         marginRight: scaleWidth(8),

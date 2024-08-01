@@ -3,8 +3,8 @@ import { View, Text as TextRN, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { styles } from "./modal-create-supplier";
 import { Text, TextField } from "../../../../components";
-import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
+import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 
@@ -209,7 +209,7 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                RightIconClear={Images.icon_delete2}
+                                RightIconClear={Svgs.icon_delete2}
                                 error={errors?.nameSuppliers?.message}
                                 onClearText={() => onChange("")}
                                 onChangeText={(value) => onChange(value)}
@@ -243,7 +243,7 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                             borderWidth: 1,
                             marginRight: scaleWidth(12),
                             borderRadius: 10,
-                            borderColor: "#c8c8c8",
+                            borderColor: colors.veryLightGrey,
                         }}
                     >
                         <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
@@ -255,7 +255,7 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                             justifyContent: "center",
                             alignItems: "center",
                             borderRadius: 10,
-                            backgroundColor: "#0078d4",
+                            backgroundColor: colors.navyBlue,
                         }}
                     >
                         <Text style={{ fontSize: fontSize.size14, color: "white" }}>

@@ -3,7 +3,7 @@ import { TouchableOpacity, View, ViewStyle } from "react-native";
 import { Text, TextField } from "../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import Modal from "react-native-modal";
 import { Numpad } from "./component/num-pad-component";
 
@@ -61,7 +61,7 @@ export const RefactorMoneyModal = (props: Input) => {
         <View
           style={{
             height: 5,
-            backgroundColor: "#C7C7C7",
+            backgroundColor: colors.veryLightGrey1,
             borderRadius: 100,
             marginHorizontal: 154,
             marginTop: 8,
@@ -77,7 +77,7 @@ export const RefactorMoneyModal = (props: Input) => {
           <Text
             tx={"analysis.refactorMoney"}
             style={{
-              color: "#242424",
+              color: colors.nero,
               fontSize: 14,
               fontWeight: "700",
             }}></Text>
@@ -97,7 +97,7 @@ export const RefactorMoneyModal = (props: Input) => {
         <View
           style={{
             marginHorizontal: 16,
-            backgroundColor: "#E7EFFF",
+            backgroundColor: colors.solitude2,
             borderWidth: 0.19,
           }}></View>
         <Controller
@@ -167,20 +167,20 @@ export const RefactorMoneyModal = (props: Input) => {
               alignContent: "center",
               borderRadius: 8,
               borderWidth: 1,
-              borderColor: "#747475",
+              borderColor: colors.dolphin,
             }}>
             <Text
               tx={"analysis.back"}
               style={{
                 fontSize: 14,
                 fontWeight: "600",
-                color: "#747475",
+                color: colors.dolphin,
                 marginLeft: 5,
               }}></Text>
           </View>
           <View
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               flexDirection: "row",
               paddingHorizontal: 48,
               paddingVertical: 12,
@@ -192,7 +192,7 @@ export const RefactorMoneyModal = (props: Input) => {
               style={{
                 fontSize: 14,
                 fontWeight: "600",
-                color: "#FFFFFF",
+                color: colors.white,
                 marginLeft: 5,
               }}></Text>
           </View>
@@ -206,7 +206,7 @@ export const RefactorMoneyModal = (props: Input) => {
           {list.map((item, index) => {
             return (
               <TouchableOpacity onPress={() => {}}>
-                <View style={{ borderRadius: 10, backgroundColor: "#F6F7F9" }}>
+                <View style={{ borderRadius: 10, backgroundColor: colors.aliceBlue }}>
                   <Text style={{ paddingHorizontal: 23, paddingVertical: 11 }}>
                     {item}
                   </Text>

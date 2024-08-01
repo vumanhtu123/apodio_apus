@@ -3,7 +3,7 @@ import { Header } from "../../../../../components/header/header";
 import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Text } from "../../../../../components/text/text";
 import ModelSenSuccess from "./ModelSendSuccess";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +12,7 @@ import { action, makeObservable, observable } from "mobx";
 import React from "react";
 import StarRating from "react-native-star-rating-widget";
 import { NavigatorParamList } from "../../../../navigators/app-navigator";
+import { colors } from "../../../../theme";
 
 export const commentScreen: FC<StackScreenProps<NavigatorParamList, "comment">> = observer(
         function comment (props) {
@@ -63,16 +64,16 @@ export const commentScreen: FC<StackScreenProps<NavigatorParamList, "comment">> 
                          <RatingFeedback/>
                          <Text 
                             tx="inforMerchant.clickStar"
-                            style={{color: '#747475'}}
+                            style={{color: colors.dolphin}}
                          />
-                         <View style={{ width:'100%',height:1, borderWidth:1,borderColor:'#F6F7FB', marginTop:20 }}/>
+                         <View style={{ width:'100%',height:1, borderWidth:1,borderColor:colors.ghostWhite, marginTop:20 }}/>
                         </View>
 
                         <TextInput
                             style={{width:'100%', padding:12}}
                             placeholder="BestAPP!"
                         />
-                        <View style={{ width:'100%',height:1, borderWidth:1,borderColor:'#F6F7FB'}}/>
+                        <View style={{ width:'100%',height:1, borderWidth:1,borderColor:colors.ghostWhite}}/>
 
                         <TextInput
                             style={{width:'100%', padding:12}}

@@ -7,7 +7,7 @@ import {NavigatorParamList, AppStackScreenProps} from './app-navigator';
 import { SvgIcon, Text } from "../../components"
 import { colors } from "../theme"
 import { fontSize, scaleHeight, scaleWidth } from "../theme/dimension"
-import { Images } from '../../../assets'
+import { Svgs } from '../../../assets/svgs'
 import { UserScreen } from "../screens/common/users/view/users-screen"
 
 export type BottomParamList = {
@@ -67,13 +67,13 @@ function MyTabBar({ state, descriptors, navigation }) {
 
         let IconTabBar: React.ReactNode
         if (route.name === "home") {
-          IconTabBar = isFocused ? <Images.icon_dashboardFocus /> : <Images.icon_dashboard />
+          IconTabBar = isFocused ? <Svgs.icon_dashboardFocus /> : <Svgs.icon_dashboard />
         } else if (route.name === "orders") {
-          IconTabBar = isFocused ? <Images.icon_orderTabFocus /> : <Images.icon_orderTab />
+          IconTabBar = isFocused ? <Svgs.icon_orderTabFocus /> : <Svgs.icon_orderTab />
         } else if (route.name === "products") {
-          IconTabBar = isFocused ? <Images.icon_exampleTabFocus /> : <Images.icon_exampleTab />
+          IconTabBar = isFocused ? <Svgs.icon_exampleTabFocus /> : <Svgs.icon_exampleTab />
         } else if (route.name === "users") {
-          IconTabBar = isFocused ? <Images.icon_userTabFocus /> : <Images.icon_userTab />
+          IconTabBar = isFocused ? <Svgs.icon_userTabFocus /> : <Svgs.icon_userTab />
         }
         let label = 'home'
         if (route.name === "home") {
@@ -117,7 +117,7 @@ const Tabbar = ({ route, isFocused, options, onPress, label, IconTabBar }) => {
       <Text
         tx={label}
         style={{
-          color: isFocused ? colors.yellow : '#B6B6B6',
+          color: isFocused ? colors.yellow : colors.normalNavigator,
           marginTop: scaleHeight(5),
           fontSize: fontSize.size11,
         }}
@@ -132,10 +132,10 @@ const viewTabbar: ViewStyle = {
   paddingVertical: scaleHeight(10),
   borderTopLeftRadius: 20,
   borderTopRightRadius: 20,
-  backgroundColor: '#FFFFFF',
+  backgroundColor: colors.white,
   paddingHorizontal: scaleWidth(15),
   paddingBottom: Platform.OS === 'android' ? scaleHeight(15) : scaleHeight(25),
-  shadowColor: '#000', // Màu của bóng
+  shadowColor: colors.black, // Màu của bóng
   shadowOffset: { width: 0, height: -2 }, // Độ dịch chuyển của bóng theo trục x và y
   shadowOpacity: 0.25, // Độ mờ của bóng
   shadowRadius: 3, // Bán kính của bóng

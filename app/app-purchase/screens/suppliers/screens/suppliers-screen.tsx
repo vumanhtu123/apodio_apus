@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, NativeSyntheticEvent, Platform, RefreshControl, TextInputSubmitEditingEventData, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
 import {
@@ -117,13 +117,13 @@ export const SuppliersScreen: FC = () => {
       <Header
         onRightPress={() => openTypeFilter()}
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Nhà cung cấp`}
-        RightIcon={statusHidden ? Images.ic_outline_list : Images.ic_grid}
-        RightIcon1={isVisible ? Images.icon_close : Images.icon_funnel}
-        RightIcon2={isVisible ? Images.icon_close : Images.search}
+        RightIcon={statusHidden ? Svgs.ic_outline_list : Svgs.ic_grid}
+        RightIcon1={isVisible ? Svgs.icon_close : Svgs.icon_funnel}
+        RightIcon2={isVisible ? Svgs.icon_close : Svgs.search}
         headerInput={isVisibleOpenSearch}
         onSearchValueChange={(txt: any) => { }}
         handleOnSubmitSearch={(value: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
@@ -185,7 +185,7 @@ export const SuppliersScreen: FC = () => {
             text={showTextCategory}
             style={styles.textDropDow}
           />
-          <Images.iconDownBlue
+          <Svgs.iconDownBlue
             width={scaleWidth(14)}
             height={scaleHeight(14)}
           />
@@ -259,7 +259,7 @@ export const SuppliersScreen: FC = () => {
           navigation.navigate("orderDetailsSupplier" as never);
         }}
         style={styles.btnAdd}>
-        <Images.icon_plus
+        <Svgs.icon_plus
           width={scaleWidth(16)}
           height={scaleHeight(16)}
           style={{ marginRight: 6, marginTop: 2 }}

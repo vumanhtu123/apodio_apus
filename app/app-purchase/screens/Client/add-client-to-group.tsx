@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite"
 import { AppStackParamList, navigate } from "../../navigators"
 import { StackScreenProps } from "@react-navigation/stack"
 import { Header } from "../../../components"
-import { Images } from "../../../../assets"
+import { Svgs } from "../../../../assets/svgs"
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../theme"
 
 
@@ -87,8 +87,8 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
                     onPress={() => handleCheckboxPress(item.id)}
                 >
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <View style={{ width: 40, height: 40, backgroundColor: '#EFF8FF', borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: fontSize.size10, color: '#0078D4' }}>{item.code}</Text>
+                        <View style={{ width: 40, height: 40, backgroundColor: colors.aliceBlue2, borderRadius: 50, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: fontSize.size10, color: colors.navyBlue }}>{item.code}</Text>
                         </View>
                         <View style={{ marginHorizontal: 6 }}>
                             <Text style={{ fontSize: fontSize.size10 }}>{item.name}</Text>
@@ -101,7 +101,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
                         onPress={() => handleCheckboxPress(item.id)}
                     >
                         <Text style={Styles.checkboxText}>
-                            {itemsChecked.includes(item.id) ? <Images.icon_check/> : null}
+                            {itemsChecked.includes(item.id) ? <Svgs.icon_check/> : null}
                         </Text>
                     </TouchableOpacity>
 
@@ -114,7 +114,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
         return (
             <View style={{ flex: 1 }}>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     style={{ height: 56 }}
                     headerInputCenter={true}
                     onLeftPress={() => props.navigation.goBack()}
@@ -131,19 +131,19 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
                 />
                 <View style={Styles.styleBTN}>
                     <TouchableOpacity
-                        style={{height:scaleHeight(48), width:scaleWidth(165), justifyContent:'center',alignItems:'center', borderWidth:1, borderRadius:8, backgroundColor: isClick ? colors.palette.navyBlue: "#FFF" , borderColor:'#C8C8C8'}}
+                        style={{height:scaleHeight(48), width:scaleWidth(165), justifyContent:'center',alignItems:'center', borderWidth:1, borderRadius:8, backgroundColor: isClick ? colors.palette.navyBlue: colors.white , borderColor:colors.veryLightGrey}}
                         onPress={() => setIsclick(!isClick)}
                     >
-                        <Text style={{color: isClick ? '#FFF' : "#333"}}>
+                        <Text style={{color: isClick ? colors.white : colors.nightRider}}>
                             Quay lại
                         </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={{height:scaleHeight(48), width:scaleWidth(165), justifyContent:'center',alignItems:'center', borderWidth:1, borderRadius:8, backgroundColor: isClick ? '#FFF' :colors.palette.navyBlue, borderColor:'#C8C8C8'}}
+                        style={{height:scaleHeight(48), width:scaleWidth(165), justifyContent:'center',alignItems:'center', borderWidth:1, borderRadius:8, backgroundColor: isClick ? colors.white :colors.palette.navyBlue, borderColor:colors.veryLightGrey}}
                         onPress={() => setIsclick(!isClick)}
                     >
-                        <Text style={{color: isClick ? "#333" :  '#FFF'}}>
+                        <Text style={{color: isClick ? colors.nightRider :  colors.white}}>
                             Cập nhật
                         </Text>
                     </TouchableOpacity>
@@ -159,7 +159,7 @@ const Styles = StyleSheet.create({
         height: scaleHeight(18),
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: colors.veryLightGrey2,
         justifyContent: 'center',
         alignItems: 'center',
         // marginRight: 10

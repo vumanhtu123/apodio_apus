@@ -12,7 +12,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { Images } from "../../../../assets";
+import { Svgs } from "../../../../assets/svgs";
 import {
   colors,
   fontSize,
@@ -40,7 +40,7 @@ export const CreateConversionGroup: FC = observer(
   function CreateConversionGroup(props) {
     const paddingTop = useSafeAreaInsets().top;
     const route = useRoute();
-    const {editScreen}: any = route?.params;
+    const { editScreen }: any = route?.params;
     const navigation = useNavigation();
     const { unitStore } = useStores();
     const [originalUnit, setOriginalUnit] = useState({ id: 0, label: "" });
@@ -48,7 +48,7 @@ export const CreateConversionGroup: FC = observer(
     const [arrData, setData] = useState([] as any);
     const [showModal, setShowModal] = useState(false);
     const [showModalDVT, setShowModalDVT] = useState(false);
-    const [filteredData, setFilteredData] = useState<{id: number, label: string}[]>([]);
+    const [filteredData, setFilteredData] = useState<{ id: number, label: string }[]>([]);
     const [search, setSearch] = useState("");
     const [indexConversion, setIndexConversion] = useState(0);
     const [disabledSelect, setDisabledSelect] = useState(false);
@@ -58,18 +58,17 @@ export const CreateConversionGroup: FC = observer(
       setSearch(text);
       if (text) {
         const dataChoiceItem = arrData.filter(
-          (item: {label: string}) => item.label !== dataUnit
+          (item: { label: string }) => item.label !== dataUnit
         );
         const newData = dataChoiceItem.filter((item: { label: string }) => {
           const itemData = item.label.toUpperCase();
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;
         });
-
         setFilteredData(newData);
       } else {
         const dataChoiceItem = arrData.filter(
-          (item: {label: string}) => item.label !== dataUnit
+          (item: { label: string }) => item.label !== dataUnit
         );
         setFilteredData(dataChoiceItem);
       }
@@ -103,19 +102,23 @@ export const CreateConversionGroup: FC = observer(
 
     const goBackToProductCreateScreen = (id: number, name: string) => {
       if (editScreen === true) {
-        navigation.navigate({name: "ProductEditScreen", params: {
-          idUnitGroup: id,
-          nameUnitGroup: name,
-          goBackConversionGroup: true,
-          resetData: false,
-        }} as never);
+        navigation.navigate({
+          name: "ProductEditScreen", params: {
+            idUnitGroup: id,
+            nameUnitGroup: name,
+            goBackConversionGroup: true,
+            resetData: false,
+          }
+        } as never);
       } else {
-        navigation.navigate({name: "ProductCreateScreen", params: {
-          idUnitGroup: id,
-          nameUnitGroup: name,
-          goBackConversionGroup: true,
-          resetData: false,
-        }} as never);
+        navigation.navigate({
+          name: "ProductCreateScreen", params: {
+            idUnitGroup: id,
+            nameUnitGroup: name,
+            goBackConversionGroup: true,
+            resetData: false,
+          }
+        } as never);
       }
     };
 
@@ -257,7 +260,7 @@ export const CreateConversionGroup: FC = observer(
     return (
       <View style={{ backgroundColor: colors.palette.neutral100, flex: 1 }}>
         <Header
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           headerTx="createProductScreen.createUnitGroup"
           style={{ height: scaleHeight(52) }}
@@ -279,14 +282,11 @@ export const CreateConversionGroup: FC = observer(
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(value) => onChange(value)}
-                // onClearText={() => onChange('')}
-                // RightIconClear={Images.icon_delete2}
                 showRightIcon={false}
                 isImportant={true}
               />
             )}
-            // defaultValue={''}
-            rules={{ required: "Group name is required" }}
+            rules={{ required: "Tên nhóm thuộc tính là bắt buộc" }}
           />
           <InputSelect
             titleTx={"productDetail.originUnit"}
@@ -295,11 +295,11 @@ export const CreateConversionGroup: FC = observer(
             required={true}
             arrData={arrData}
             dataDefault={originalUnit.label}
-            onPressChoice={(item: {label: string, id: number}) => {
+            onPressChoice={(item: { label: string, id: number }) => {
               setDataUnit(item.label);
               setOriginalUnit(item);
               setFilteredData((prevItems) =>
-                prevItems.filter((i: {label: string}) => i.label !== item.label)
+                prevItems.filter((i: { label: string }) => i.label !== item.label)
               );
             }}
             disabled={disabledSelect}
@@ -311,30 +311,19 @@ export const CreateConversionGroup: FC = observer(
               marginBottom: scaleHeight(margin.margin_15),
               flexDirection: "row",
             }}>
-            <Images.icon_plusCircleBlue />
+            <Svgs.icon_plusCircleBlue />
             <Text
               tx={"productScreen.createDVT"}
-              style={{
+              style={[styles.textAddLine, {
                 marginLeft: scaleWidth(4),
-                fontWeight: "400",
-                fontSize: fontSize.size12,
-                lineHeight: scaleHeight(14.52),
-                color: colors.palette.navyBlue,
-              }}
+              }]}
             />
           </TouchableOpacity>
           <View>
             <View style={{ flexDirection: "row" }}>
               <Text
                 tx="productScreen.conversionRate1"
-                style={{
-                  fontWeight: "600",
-                  fontSize: fontSize.size12,
-                  lineHeight: scaleHeight(14.52),
-                  color: colors.palette.nero,
-                  flex: 1,
-                }}
-              />
+                style={styles.textTitleConversionRate} />
               <TouchableOpacity
                 onPress={() => {
                   const lastItem = conversionWatch[conversionWatch.length - 1];
@@ -356,13 +345,7 @@ export const CreateConversionGroup: FC = observer(
                 }}>
                 <Text
                   tx="productScreen.addLine"
-                  style={{
-                    fontWeight: "400",
-                    fontSize: fontSize.size12,
-                    lineHeight: scaleHeight(14.52),
-                    color: colors.palette.navyBlue,
-                  }}
-                />
+                  style={styles.textAddLine} />
               </TouchableOpacity>
             </View>
             <ScrollView>
@@ -376,11 +359,7 @@ export const CreateConversionGroup: FC = observer(
                     }}>
                     <View style={{ flex: 1 }}>
                       <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          marginTop: scaleHeight(margin.margin_16),
-                        }}>
+                        style={styles.viewLineItemUnit}>
                         <Controller
                           control={control}
                           name={`conversion.${index}.code`}
@@ -390,15 +369,7 @@ export const CreateConversionGroup: FC = observer(
                               placeholder={translate(
                                 "productScreen.enterConversionCode1"
                               )}
-                              style={{
-                                width: "35%",
-                                borderBottomWidth: 1,
-                                borderBottomColor: "#DFE0EB",
-                                paddingVertical:
-                                  Platform.OS === "ios"
-                                    ? scaleHeight(15)
-                                    : null,
-                              }}
+                              style={styles.viewInputCode}
                               value={value}
                               onBlur={onBlur}
                               onChangeText={(value) => {
@@ -431,48 +402,25 @@ export const CreateConversionGroup: FC = observer(
                               setIndexConversion(index);
                             }
                           }}
-                          style={{
-                            width: "25%",
-                            borderBottomWidth: 1,
-                            borderBottomColor: "#DFE0EB",
-                            flexDirection: "row",
-                            marginHorizontal: scaleWidth(8),
-                            marginTop: 15,
-                          }}>
+                          style={styles.viewChangeDvt}>
                           {conversionWatch[index].changeDVT !== "" ? (
                             <Text
-                              style={{
-                                flex: 1,
-                                fontSize: fontSize.size12,
-                                paddingBottom: scaleHeight(12),
-                              }}
+                              style={styles.textChangeDvt}
                               text={conversionWatch[index].changeDVT}
                               numberOfLines={1}
                             />
                           ) : (
                             <Text
-                              style={{
-                                flex: 1,
-                                fontWeight: "400",
-                                fontSize: fontSize.size12,
+                              style={[styles.textChangeDvt, {
                                 color: colors.palette.dolphin,
-                                paddingBottom: scaleHeight(18),
-                              }}
+                              }]}
                               tx="productScreen.selectDVT"
                             />
                           )}
-                          <Images.icon_caretRightDown />
+                          <Svgs.icon_caretRightDown />
                         </TouchableOpacity>
                         <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "flex-end",
-                            width: "35%",
-                            borderBottomWidth: 1,
-                            borderBottomColor: "#DFE0EB",
-                            paddingVertical:
-                              Platform.OS === "ios" ? scaleHeight(15) : 0,
-                          }}>
+                          style={styles.viewInputConversionRate}>
                           <Controller
                             control={control}
                             name={`conversion.${index}.conversionRate`}
@@ -513,20 +461,15 @@ export const CreateConversionGroup: FC = observer(
                             }}>
                             <Text
                               text={originalUnit.label}
-                              style={{
-                                color: colors.palette.dolphin,
-                                fontWeight: "400",
-                                fontSize: fontSize.size10,
-                                textAlign: "right",
-                              }}
+                              style={styles.textOriginalUint}
                               numberOfLines={1}
                             />
                           </View>
                         </View>
                       </View>
                       {conversionWatch[index].changeDVT &&
-                      originalUnit.label &&
-                      conversionWatch[index].conversionRate ? (
+                        originalUnit.label &&
+                        conversionWatch[index].conversionRate ? (
                         <Text
                           text={
                             "1 " +
@@ -536,25 +479,19 @@ export const CreateConversionGroup: FC = observer(
                             " " +
                             originalUnit.label
                           }
-                          style={{
-                            color: colors.palette.dolphin,
-                            fontWeight: "400",
-                            fontSize: fontSize.size10,
-                          }}
+                          style={styles.textLineConversion}
                         />
                       ) : null}
                     </View>
-
                     {fields.length > 1 ? (
                       <TouchableOpacity
                         onPress={() => remove(index)}
                         style={{ marginLeft: scaleWidth(7) }}>
-                        <Images.icon_minusCircle />
+                        <Svgs.icon_minusCircle />
                       </TouchableOpacity>
                     ) : (
                       <View style={{ width: scaleWidth(12) }} />
                     )}
-
                     <Modal
                       isVisible={showModal}
                       onBackdropPress={() => {
@@ -579,13 +516,7 @@ export const CreateConversionGroup: FC = observer(
                           }}>
                           <View style={styles.viewModal}>
                             <View
-                              style={{
-                                flexDirection: "row",
-                                borderWidth: 1,
-                                borderColor: "#53A0F6",
-                                borderRadius: 4,
-                                paddingVertical: scaleHeight(5),
-                              }}>
+                              style={styles.viewSearchModal}>
                               <View
                                 style={{
                                   flexDirection: "row",
@@ -596,20 +527,14 @@ export const CreateConversionGroup: FC = observer(
                                     justifyContent: "center",
                                     marginLeft: scaleWidth(8),
                                   }}>
-                                  <Images.icon_searchBlack
+                                  <Svgs.icon_searchBlack
                                     width={scaleWidth(18)}
                                     height={scaleHeight(18)}
                                   />
                                 </TouchableOpacity>
                               </View>
-
                               <TextInput
-                                style={{
-                                  fontSize: fontSize.size16,
-                                  fontWeight: "400",
-                                  paddingVertical: 0,
-                                  flex: 1,
-                                }}
+                                style={styles.viewInputModal}
                                 onChangeText={(text) => handleSearch(text)}
                                 value={search}
                                 placeholder={translate("productScreen.search")}
@@ -682,50 +607,20 @@ export const CreateConversionGroup: FC = observer(
           }}
         />
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            backgroundColor: "white",
-            paddingVertical: scaleHeight(20),
-          }}>
+          style={styles.viewGroupButton}>
           <TouchableOpacity
             onPress={() => onSubmit1()}
-            style={{
-              width: scaleWidth(165),
-              height: scaleHeight(48),
-              justifyContent: "center",
-              alignItems: "center",
-              borderWidth: 1,
-              borderRadius: 10,
-              borderColor: colors.palette.navyBlue,
-            }}>
+            style={styles.viewButtonSave}>
             <Text
               tx={"productScreen.save"}
-              style={{
-                fontSize: fontSize.size14,
-                fontWeight: "600",
-                color: colors.palette.navyBlue,
-              }}
-            />
+              style={styles.textButtonSave} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => onSubmit()}
-            style={{
-              width: scaleWidth(150),
-              height: scaleHeight(48),
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 10,
-              backgroundColor: "#0078d4",
-            }}>
+            style={styles.viewButtonSaveAndChange}>
             <Text
               tx={"productScreen.saveAndChange"}
-              style={{
-                fontSize: fontSize.size14,
-                fontWeight: "600",
-                color: colors.palette.neutral100,
-              }}
-            />
+              style={styles.textButtonSaveChange} />
           </TouchableOpacity>
         </View>
       </View>
@@ -758,5 +653,112 @@ const styles = StyleSheet.create({
     height: scaleHeight(1),
     width: "100%",
     backgroundColor: colors.palette.ghostWhite,
+  },
+  viewGroupButton: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    backgroundColor: "white",
+    paddingVertical: scaleHeight(20),
+  },
+  viewButtonSave: {
+    width: scaleWidth(158),
+    height: scaleHeight(48),
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: colors.palette.navyBlue,
+  },
+  viewButtonSaveAndChange: {
+    width: scaleWidth(158),
+    height: scaleHeight(48),
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: colors.navyBlue,
+  },
+  textTitleConversionRate: {
+    fontWeight: "600",
+    fontSize: fontSize.size12,
+    lineHeight: scaleHeight(14.52),
+    color: colors.palette.nero,
+    flex: 1,
+  },
+  textButtonSave: {
+    fontSize: fontSize.size14,
+    fontWeight: "600",
+    color: colors.palette.navyBlue,
+  },
+  textButtonSaveChange: {
+    fontSize: fontSize.size14,
+    fontWeight: "600",
+    color: colors.palette.neutral100,
+  },
+  textAddLine: {
+    fontWeight: "400",
+    fontSize: fontSize.size12,
+    lineHeight: scaleHeight(14.52),
+    color: colors.palette.navyBlue,
+  },
+  viewInputModal: {
+    fontSize: fontSize.size16,
+    fontWeight: "400",
+    paddingVertical: 0,
+    flex: 1,
+  },
+  viewSearchModal: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: colors.cornflowerBlue,
+    borderRadius: 4,
+    paddingVertical: scaleHeight(5),
+  },
+  textLineConversion: {
+    color: colors.palette.dolphin,
+    fontWeight: "400",
+    fontSize: fontSize.size10,
+  },
+  textOriginalUint: {
+    color: colors.palette.dolphin,
+    fontWeight: "400",
+    fontSize: fontSize.size10,
+    textAlign: "right",
+  },
+  viewInputConversionRate: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    width: "35%",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.quartz,
+    paddingVertical:
+      Platform.OS === "ios" ? scaleHeight(15) : 0,
+  },
+  viewChangeDvt: {
+    width: "25%",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.quartz,
+    flexDirection: "row",
+    marginHorizontal: scaleWidth(8),
+    marginTop: 15,
+  },
+  textChangeDvt: {
+    flex: 1,
+    fontWeight: "400",
+    fontSize: fontSize.size12,
+    paddingBottom: scaleHeight(16),
+  },
+  viewInputCode: {
+    width: "35%",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.quartz,
+    paddingVertical:
+      Platform.OS === "ios"
+        ? scaleHeight(15)
+        : null,
+  },
+  viewLineItemUnit: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: scaleHeight(margin.margin_16),
   },
 });

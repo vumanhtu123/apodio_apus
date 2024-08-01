@@ -4,7 +4,7 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../../theme';
 import { Text } from '../../../../../../components';
 import { styles } from '../styles';
-import { Images } from '../../../../../../../assets';
+import { Svgs } from '../../../../../../../assets/svgs';
 import { commasToDots } from '../../../../../utils/validate';
 
 const ProductWeightDetails = ({
@@ -45,7 +45,7 @@ const ProductWeightDetails = ({
                                 marginRight: scaleWidth(5),
                             }}
                         />
-                        <Images.icon_caretDownBlue
+                        <Svgs.icon_caretDownBlue
                             width={scaleWidth(16)}
                             height={scaleHeight(16)}
                             style={{
@@ -86,7 +86,7 @@ const ProductWeightDetails = ({
                                                         {getUnitName(line?.uomGroupLineId)}
                                                     </Text>
                                                     <View
-                                                        style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                                                        style={{ backgroundColor: colors.solitude2, height: 1 }}
                                                     />
                                                     <Text style={[styles.fontSizeWeight, {}]}>
                                                         {`${commasToDots(line?.amount)} ${dataClassification.uomId == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
@@ -122,7 +122,7 @@ const ProductWeightDetails = ({
                                                                     {item.uomGroupLineOutput?.unitName}
                                                                 </Text>
                                                                 <View
-                                                                    style={{ backgroundColor: '#E7EFFF', height: 1 }}
+                                                                    style={{ backgroundColor: colors.solitude2, height: 1 }}
                                                                 />
                                                                 <Text style={[styles.fontSizeWeight, {}]}>
                                                                     {`${commasToDots(item.amount)} ${detailProduct?.uomGroupLineOutput?.unitName}`}

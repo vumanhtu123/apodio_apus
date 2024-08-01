@@ -11,7 +11,7 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import { Images } from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
 import { Header } from "../../../../../components/header/header";
 import { Text } from "../../../../../components/text/text";
 import {
@@ -179,7 +179,7 @@ export const ClassifyDetailScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="detailScreen.headerClassify"
@@ -187,9 +187,9 @@ export const ClassifyDetailScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
         widthRightIcon={scaleWidth(16)}
         heightRightIcon={scaleHeight(16)}
-        RightIcon={Images.icon_editWhite}
+        RightIcon={Svgs.icon_editWhite}
         onRightPress={() => navigation.navigate({ name: 'EditClassify', params: { dataEdit: dataClassification, typeVariant: 'variant', nameValue: nameValue, attributes: attributes } } as never)}
-        RightIcon1={Images.icon_trashWhite}
+        RightIcon1={Svgs.icon_trashWhite}
         onRightPress1={() => {
           Dialog.show({
             type: ALERT_TYPE.INFO,
@@ -251,13 +251,13 @@ export const ClassifyDetailScreen: FC = () => {
                   }
                 } as never)
               }>
-              <Images.ic_3d
+              <Svgs.ic_3d
                 width={scaleWidth(20)}
                 height={scaleHeight(20)}
               />
               <Text
                 tx="productScreen.Perspective"
-                style={{ fontSize: fontSize.size12, marginLeft: 6, color: "#0078d4" }}>
+                style={{ fontSize: fontSize.size12, marginLeft: 6, color: colors.navyBlue }}>
               </Text>
             </TouchableOpacity>
           ) : null}
@@ -307,7 +307,7 @@ export const ClassifyDetailScreen: FC = () => {
                       source={{
                         uri: item,
                       }}
-                      defaultSource={Images.imageError}
+                      defaultSource={Svgs.imageError}
                       resizeMode='cover'
                       style={{ height: scaleHeight(416), width: scaleWidth(294), borderRadius: 16, alignSelf: 'center' }}>
                     </Image>
@@ -331,15 +331,15 @@ export const ClassifyDetailScreen: FC = () => {
                   borderColor: colors.palette.neutral100,
                   borderWidth: 2,
                 }}
-                dotColor={'#BBB9B9'}
-                inactiveDotColor={'#BBB9B9'}
+                dotColor={colors.silver}
+                inactiveDotColor={colors.silver}
                 inactiveDotOpacity={1}
                 inactiveDotScale={1}
                 inactiveDotStyle={{
                   width: scaleWidth(8),
                   height: scaleHeight(8),
                   borderRadius: 5,
-                  borderColor: '#BBB9B9',
+                  borderColor: colors.silver,
                   borderWidth: 2,
                 }}
               />

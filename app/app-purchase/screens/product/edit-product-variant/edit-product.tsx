@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Images } from "../../../../../assets/index";
+import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
@@ -891,7 +891,7 @@ export const ProductEditScreen: FC = (item) => {
       <View style={styles.ROOT}>
         <Header
           type={"AntDesign"}
-          LeftIcon={Images.back}
+          LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           colorIcon={colors.text}
           headerTx={"createProductScreen.edit_product"}
@@ -921,14 +921,14 @@ export const ProductEditScreen: FC = (item) => {
                     inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                     value={value}
                     onBlur={onBlur}
-                    RightIconClear={Images.icon_delete2}
+                    RightIconClear={Svgs.icon_delete2}
                     error={methods.formState.errors?.SKU?.message}
                     onClearText={() => onChange("")}
                     onChangeText={(value) => {
                       onChange(value)
                     }}
                     placeholderTx="productScreen.placeholderSKU"
-                    RightIcon={Images.ic_QR}
+                    RightIcon={Svgs.ic_QR}
                     editable={false}
                   // isImportant
                   />
@@ -949,7 +949,7 @@ export const ProductEditScreen: FC = (item) => {
                     inputStyle={{ fontSize: fontSize.size16, fontWeight: "500" }}
                     value={value}
                     onBlur={onBlur}
-                    RightIconClear={Images.icon_delete2}
+                    RightIconClear={Svgs.icon_delete2}
                     error={methods.formState.errors.productName?.message}
                     onClearText={() => onChange("")}
                     onChangeText={(value) => {
@@ -1000,7 +1000,7 @@ export const ProductEditScreen: FC = (item) => {
                     <Text tx={"createProductScreen.noSelectSupplier"}
                       style={styles.textWeight400Dolphin} />
                   )}
-                  <Images.icon_caretRight
+                  <Svgs.icon_caretRight
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
@@ -1054,7 +1054,7 @@ export const ProductEditScreen: FC = (item) => {
                     methods.setValue('volumeOriginal', '')
                     methods.setValue('weight', [])
                   }}>
-                  <Images.icon_deleteDolphin />
+                  <Svgs.icon_deleteDolphin />
                 </TouchableOpacity>
                 <ItemWeight
                   dataUnitGroup={valueSwitchUnit == false ? [] : detailUnitGroupData?.uomGroupLines}
@@ -1096,7 +1096,7 @@ export const ProductEditScreen: FC = (item) => {
                         onPress={() => {
                           setModalDescribe(true);
                         }}>
-                        <Images.icon_edit
+                        <Svgs.icon_edit
                           style={{ marginLeft: scaleWidth(8) }}
                           width={scaleWidth(14)}
                           height={scaleHeight(14)}
@@ -1111,7 +1111,7 @@ export const ProductEditScreen: FC = (item) => {
                       right: 0,
                       flexDirection: "row",
                     }}>
-                    <Images.ic_close
+                    <Svgs.ic_close
                       width={scaleWidth(14)}
                       height={scaleHeight(14)}
                     />
@@ -1122,7 +1122,7 @@ export const ProductEditScreen: FC = (item) => {
                     <TouchableOpacity
                       style={{ flexDirection: "row", alignItems: "center" }}
                       onPress={() => setModalDescribe(true)}>
-                      <Images.ic_plusCircleBlue
+                      <Svgs.ic_plusCircleBlue
                         width={scaleWidth(14)}
                         height={scaleHeight(14)}
                       />
@@ -1144,7 +1144,7 @@ export const ProductEditScreen: FC = (item) => {
               />
               <View>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Images.icon_gear
+                  <Svgs.icon_gear
                     width={scaleWidth(20)}
                     height={scaleHeight(20)}
                   />

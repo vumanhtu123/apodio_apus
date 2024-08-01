@@ -6,7 +6,7 @@ import { FlatList, Image, StyleSheet, TouchableOpacity, View, ScrollView, Modal,
 import React from "react";
 import { Header, Text } from "../../../../components";
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import Styles from "./Styles";
 
 
@@ -110,12 +110,12 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
         return (
             <ScrollView>
                 <Header
-                    LeftIcon={Images.back}
+                    LeftIcon={Svgs.back}
                     headerTx="ImprotGoodsBook.detailImportReceipt"
                     style={{ height: scaleHeight(52) }}
                     onLeftPress={() => props.navigation.goBack()}
-                    RightIcon1={Images.ic_bin}
-                    RightIcon2={Images.icon_printer}
+                    RightIcon1={Svgs.ic_bin}
+                    RightIcon2={Svgs.icon_printer}
                     onRightPress1={() => {
                         // Alert.alert("ok")
                         setisVisibleDeleteReceipt(!isVisibleDeleteReceipt)
@@ -131,7 +131,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'product' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'product' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -145,7 +145,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'material' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'material' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -159,7 +159,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity
-                        style={{ backgroundColor: '#FFFFFF', borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
+                        style={{ backgroundColor: colors.white, borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
                     // onPress={() => props.navigation.navigate('ballotDetail')}
                     >
                         <View style={Styles.flexRow}>
@@ -181,13 +181,13 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_PaperPlaneTilt />
+                                <Svgs.ic_PaperPlaneTilt />
                                 <Text tx="GoodsExportBook.submitBallot" style={{ marginLeft: 4, color: colors.palette.navyBlue, fontWeight: "600" }} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[Styles.styleBtn, { borderColor: colors.palette.navyBlue, backgroundColor: colors.palette.navyBlue }]}
                             >
-                                <Images.ic_dowload />
+                                <Svgs.ic_dowload />
                                 <Text tx="GoodsExportBook.dowloadBallot" style={{ marginLeft: 4, color: colors.palette.white, fontWeight: "600" }} />
                             </TouchableOpacity>
                         </View>
@@ -198,7 +198,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                         <Text tx="ImprotGoodsBook.supplier" style={{ fontWeight: '600' }} />
                         <View style={[{ alignItems: 'center', paddingVertical: scaleHeight(10), flexDirection: 'row' }]}>
 
-                            <Images.ic_avatar />
+                            <Svgs.ic_avatar />
                             <Text style={Styles.txtGroup2} tx="ImprotGoodsBook.note" />
 
                         </View>
@@ -206,7 +206,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                     </View>
 
                     <View
-                        style={{ backgroundColor: '#FFFFFF', marginVertical: scaleWidth(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
+                        style={{ backgroundColor: colors.white, marginVertical: scaleWidth(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
                     >
                         <View style={[Styles.flexRow, { marginBottom: scaleHeight(15) }]}>
                             <View style={{ flexDirection: 'row' }}>
@@ -224,7 +224,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                     paddingHorizontal: scaleWidth(6),
                                     borderRadius: scaleWidth(2)
                                 }} tx="GoodsExportBook.collapse"></Text>
-                                <Images.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
+                                <Svgs.iconDownBlue style={{ transform: [{ rotate: show ? '180deg' : '0deg' }], }} />
 
                             </TouchableOpacity>
 
@@ -290,7 +290,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
 
                     </View>
                     <View
-                        style={{ backgroundColor: '#FFFFFF', borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10), }}
+                        style={{ backgroundColor: colors.white, borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10), }}
                     >
                         <View style={Styles.flexRow}>
                             <Text style={Styles.txtGray} tx="ImprotGoodsBook.Total"></Text>
@@ -312,7 +312,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                     </View>
 
                     <View
-                        style={{ backgroundColor: '#FFFFFF', marginTop: scaleHeight(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(18), }}
+                        style={{ backgroundColor: colors.white, marginTop: scaleHeight(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(18), }}
                     >
                         <View style={Styles.flexRow}>
                             <View>
@@ -324,7 +324,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                 </Text>
                             </View>
 
-                            <Images.img_test />
+                            <Svgs.img_test />
                         </View>
                     </View>
                 </View>
@@ -335,13 +335,13 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                     transparent={true}
                 >
                     <View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: 'rgba(0,0,0,0.5)', }}>
-                        <View style={{ paddingVertical: scaleHeight(20), paddingHorizontal: scaleWidth(16), backgroundColor: '#FFFFFF' }}>
+                        <View style={{ paddingVertical: scaleHeight(20), paddingHorizontal: scaleWidth(16), backgroundColor: colors.white }}>
                             <View style={[Styles.flexRow, { marginBottom: scaleHeight(20) }]}>
                                 <Text tx="ImprotGoodsBook.cancelImportOrder" ></Text>
                                 <TouchableOpacity
                                     onPress={() => setisVisibleDeleteReceipt(!isVisibleDeleteReceipt)}
                                 >
-                                    <Images.ic_x />
+                                    <Svgs.ic_x />
                                 </TouchableOpacity>
 
                             </View>
@@ -363,8 +363,8 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                     {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Text tx="ImprotGoodsBook.debit" />
                                         <Switch
-                                            trackColor={{ false: '#f1f1f2', true: '#f1f1f2' }}
-                                            thumbColor={isEnabled ? colors.palette.navyBlue : '#f4f3f4'}
+                                            trackColor={{ false: colors.ghostWhite1, true: colors.ghostWhite1 }}
+                                            thumbColor={isEnabled ? colors.palette.navyBlue : colors.selago}
                                             ios_backgroundColor="#3e3e3e"
                                             onValueChange={toggleSwitch}
                                             value={isEnabled}
@@ -387,7 +387,7 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                                 }}
                                     onPress={() => setRadioModal(!radioModal)}
                                 >
-                                    <View style={{ backgroundColor: radioModal ? colors.palette.navyBlue : '#FFF', flex: 1, borderRadius: 3, }}>
+                                    <View style={{ backgroundColor: radioModal ? colors.palette.navyBlue : colors.white, flex: 1, borderRadius: 3, }}>
 
                                     </View>
                                 </TouchableOpacity>

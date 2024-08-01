@@ -14,7 +14,7 @@ import { SvgIcon } from "../../../../components/svg-icon/index";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { navigate } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { Text, TextField } from "../../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
@@ -222,7 +222,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   }}
                   value={value}
                   onBlur={onBlur}
-                  RightIconClear={Images.icon_delete2}
+                  RightIconClear={Svgs.icon_delete2}
                   error={errors?.nameSuppliers?.message}
                   onClearText={() => onChange("")}
                   onChangeText={(value) => onChange(value)}
@@ -261,7 +261,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   }}
                   onClearText={() => onChange("")}
                   onChangeText={() => onChange}
-                  RightIconClear={Images.icon_delete2}
+                  RightIconClear={Svgs.icon_delete2}
                   error={errors?.phoneNumber?.message}
                   placeholder="Ví dụ: 0909448877"
                   isImportant
@@ -292,7 +292,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
               style={styles.headerTitle}
               tx="NCCScreen.moreInformation"
             ></Text>
-            <Images.dropDown />
+            <Svgs.dropDown />
           </TouchableOpacity>
 
           {showMore && (
@@ -324,7 +324,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                           }}
                           value={value}
                           onBlur={onBlur}
-                          RightIconClear={Images.icon_delete2}
+                          RightIconClear={Svgs.icon_delete2}
                           error={errors?.[item.name]?.message}
                           onClearText={() => onChange("")}
                           onChangeText={(value) => onChange(value)}
@@ -417,7 +417,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                       }}
                       value={value}
                       onBlur={onBlur}
-                      RightIconClear={Images.icon_delete2}
+                      RightIconClear={Svgs.icon_delete2}
                       error={errors?.nameSuppliers?.message}
                       onClearText={() => onChange("")}
                       onChangeText={(value) => onChange(value)}
@@ -441,10 +441,10 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   />
                 </TouchableOpacity>
                 <View style={[styles.flexRow, { alignItems: "center" }]}>
-                  <Images.ic_minusCircle style={{ marginRight: 8 }} />
+                  <Svgs.ic_minusCircle style={{ marginRight: 8 }} />
                   <View style={styles.stylesCard}>
                     <View style={{ marginRight: 8 }}>
-                      <Images.ic_Truck />
+                      <Svgs.ic_Truck />
                     </View>
                     <View style={{ flex: 1 }}>
                       <View
@@ -456,7 +456,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                         <Text style={styles.styleTextBold}>
                           Địa chỉ giao hàng
                         </Text>
-                        <Images.ic_pen />
+                        <Svgs.ic_pen />
                       </View>
                       <Text style={styles.textSize}>
                         24 Dịch Vọng Hậu, Cầu Giấy, Hà Nội, Việt Nam
@@ -485,10 +485,10 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   <Text style={styles.addAnother} tx="NCCScreen.addBank" />
                 </TouchableOpacity>
                 <View style={[styles.flexRow, { alignItems: "center" }]}>
-                  <Images.ic_minusCircle style={{ marginRight: 8 }} />
+                  <Svgs.ic_minusCircle style={{ marginRight: 8 }} />
                   <View style={styles.stylesCard}>
                     <View style={{ marginRight: 8 }}>
-                      <Images.ic_BIDV />
+                      <Svgs.ic_BIDV />
                     </View>
                     <View style={{ flex: 1 }}>
                       <View
@@ -498,7 +498,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                         ]}
                       >
                         <Text style={styles.textSize}>Ngân hàng: BIDV</Text>
-                        <Images.ic_pen />
+                        <Svgs.ic_pen />
                       </View>
                       <Text style={styles.textSize}>
                         Số tài khoản: 1231231155151
@@ -528,10 +528,10 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   <Text style={styles.addAnother} tx="NCCScreen.addContactPersonInformation" />
                 </TouchableOpacity>
                 <View style={[styles.flexRow, { alignItems: "center" }]}>
-                  <Images.ic_minusCircle style={{ marginRight: 8 }} />
+                  <Svgs.ic_minusCircle style={{ marginRight: 8 }} />
                   <View style={styles.stylesCard}>
                     <View style={{ marginRight: 8 }}>
-                      <Images.img_Girl />
+                      <Svgs.img_Girl />
                     </View>
                     <View style={{ flex: 1 }}>
                       <View
@@ -541,7 +541,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                         ]}
                       >
                         <Text style={styles.textSize}>Chị Nguyễn Lan Hương</Text>
-                        <Images.ic_pen />
+                        <Svgs.ic_pen />
                       </View>
 
                       <Text style={styles.textSize}>
@@ -591,7 +591,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                     borderWidth: 1,
                     marginRight: scaleWidth(12),
                     borderRadius: 10,
-                    borderColor: "#c8c8c8",
+                    borderColor: colors.veryLightGrey,
                   }}
                 >
                   <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
@@ -603,7 +603,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: 10,
-                    backgroundColor: "#0078d4",
+                    backgroundColor: colors.navyBlue,
                   }}
                 >
                   <Text style={{ fontSize: fontSize.size14, color: "white" }}>
@@ -630,7 +630,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
               borderWidth: 1,
               marginRight: scaleWidth(12),
               borderRadius: 10,
-              borderColor: "#c8c8c8",
+              borderColor: colors.veryLightGrey,
             }}
           >
             <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
@@ -642,7 +642,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 10,
-              backgroundColor: "#0078d4",
+              backgroundColor: colors.navyBlue,
             }}
           >
             <Text style={{ fontSize: fontSize.size14, color: "white" }}>
@@ -663,7 +663,7 @@ export const styles = StyleSheet.create({
   },
   modalView: {
     // flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: colors.white,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     paddingTop: scaleHeight(8),
@@ -675,7 +675,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     width: scaleWidth(68),
     height: scaleHeight(5),
-    backgroundColor: "#C7C7C7",
+    backgroundColor: colors.veryLightGrey1,
     borderRadius: 8,
     alignSelf: "center",
   },
@@ -734,7 +734,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: colors.whisper,
   },
   optionText: {
     fontSize: 16,
@@ -744,7 +744,7 @@ export const styles = StyleSheet.create({
     height: scaleHeight(18),
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colors.veryLightGrey2,
     justifyContent: "center",
     alignItems: "center",
     // marginRight: 10
@@ -753,7 +753,7 @@ export const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 6,
-    backgroundColor: "#0078d4",
+    backgroundColor: colors.navyBlue,
   },
   groupTitle: {
     fontSize: 18,
@@ -764,13 +764,13 @@ export const styles = StyleSheet.create({
   },
   horizontalLine: {
     height: 1,
-    backgroundColor: "#E7EFFF",
+    backgroundColor: colors.solitude2,
     marginTop: scaleHeight(18),
     // marginBottom: 18,
   },
   cancel: {
     fontSize: fontSize.size14,
-    color: "#FF0000",
+    color: colors.red,
     fontWeight: "700",
     lineHeight: scaleHeight(24),
   },

@@ -18,26 +18,33 @@ import {
   ViewStyle,
 } from "react-native";
 import { Button, TextField } from "../../../../components";
-import { Images } from "../../../../../assets";
+import { Svgs } from "../../../../../assets/svgs";
 import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
 import AutoHeightImage from "react-native-auto-height-image";
 import { translate } from "../../../i18n/translate";
 import { Controller, useForm } from "react-hook-form";
 import { number } from "mobx-state-tree/dist/internal";
 import FastImage from "react-native-fast-image";
-import { commasToDots, formatCurrency, formatNumberByString, formatStringToFloat, formatVND } from "../../../utils/validate";
+import {
+  commasToDots,
+  formatCurrency,
+  formatNumberByString,
+  formatStringToFloat,
+  formatVND,
+} from "../../../utils/validate";
 import PriceModal from "./modal-price";
 import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
 import { useStores } from "../../../models";
+import Images from "../../../../../assets/index";
 
 interface AddProduct {
-  onPress: ({ }) => void;
-  onPressPlus: ({ }) => void;
-  onPressMinus: ({ }) => void;
-  onPressSelectTexas: ({ }) => void;
-  onPressAddTexas: ({ }) => void;
-  handleUpdatePrice: ({ }) => void;
-  editDiscount?: ({ }) => void;
+  onPress: ({}) => void;
+  onPressPlus: ({}) => void;
+  onPressMinus: ({}) => void;
+  onPressSelectTexas: ({}) => void;
+  onPressAddTexas: ({}) => void;
+  handleUpdatePrice: ({}) => void;
+  editDiscount?: ({}) => void;
   arrData?: {}[];
   images?: string;
   name?: string;
@@ -57,7 +64,7 @@ interface AddProduct {
   id: number;
   inputDiscount: (textInput: any) => void;
   inputPrice: (textInput: any) => void;
-  isEdit?: any
+  isEdit?: any;
 }
 
 export default function ItemListProduct(props: AddProduct) {
@@ -99,27 +106,28 @@ export default function ItemListProduct(props: AddProduct) {
   } = useForm({
     mode: "all",
   });
-  const [modalPrice, setModalPrice] = useState(false)
-  const [modalPriceUnit, setModalPriceUnit] = useState(false)
-  const { vendorStore } = useStores()
-  const [dataModal, setDataModal] = useState('')
-  const [taxesId, setTaxesId] = useState(0)
-  const [priceId, setPriceId] = useState(0)
+  const [modalPrice, setModalPrice] = useState(false);
+  const [modalPriceUnit, setModalPriceUnit] = useState(false);
+  const { vendorStore } = useStores();
+  const [dataModal, setDataModal] = useState("");
+  const [taxesId, setTaxesId] = useState(0);
+  const [priceId, setPriceId] = useState(0);
   console.log("taxes VAT", props.cost);
   const Price = () => {
-    return Number((props.cost) ?? 0) * Number(props.qty);
+    return Number(props.cost ?? 0) * Number(props.qty);
   };
 
   const Sum = (): Number => {
     return (
-      Price() * (1 - (Number(props.textDiscount ?? 0)) / 100) + Number(props.valueVAT ?? 0)
+      Price() * (1 - Number(props.textDiscount ?? 0) / 100) +
+      Number(props.valueVAT ?? 0)
     );
   };
 
   console.log("sumfnjewdnf", cost);
   return (
     <View>
-      {props.disabled === true ? null :
+      {props.disabled === true ? null : (
         <TouchableOpacity
           onPress={(item) => onPress(item)}
           style={{
@@ -128,8 +136,9 @@ export default function ItemListProduct(props: AddProduct) {
             top: scaleHeight(8),
             zIndex: 1,
           }}>
-          <Images.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
-        </TouchableOpacity>}
+          <Svgs.icon_delete2 height={scaleHeight(16)} width={scaleHeight(16)} />
+        </TouchableOpacity>
+      )}
       <View
         style={{
           flexDirection: "row",
@@ -143,18 +152,18 @@ export default function ItemListProduct(props: AddProduct) {
             imageStyle={{
               borderRadius: 12,
             }}
-            source={require("../../../../../assets/Images/no_images.png")}>
+            source={Images.noImages}>
             <FastImage
               style={{
                 width: scaleWidth(48),
                 height: scaleHeight(48),
-                borderRadius: 12
+                borderRadius: 12,
               }}
               source={{
-                uri: images != null && images.length > 0 ? images[0] : '',
+                uri: images != null && images.length > 0 ? images[0] : "",
                 cache: FastImage.cacheControl.immutable,
               }}
-              defaultSource={require("../../../../../assets/Images/no_images.png")}
+              defaultSource={Images.noImages}
             />
           </ImageBackground>
         </View>
@@ -170,7 +179,11 @@ export default function ItemListProduct(props: AddProduct) {
           />
           <View style={{ flexDirection: "row", marginTop: scaleHeight(6) }}>
             <Text
-              text={cost !== undefined ? formatVND(formatCurrency(commasToDots(cost))) : formatVND(0)}
+              text={
+                cost !== undefined
+                  ? formatVND(formatCurrency(commasToDots(cost)))
+                  : formatVND(0)
+              }
               style={{
                 fontWeight: "400",
                 fontSize: fontSize.size12,
@@ -183,10 +196,10 @@ export default function ItemListProduct(props: AddProduct) {
               <TouchableOpacity
                 onPress={(item) => {
                   handleUpdatePrice(item);
-                  setPriceId(props.id)
-                  setModalPriceUnit(true)
+                  setPriceId(props.id);
+                  setModalPriceUnit(true);
                 }}>
-                {isEdit === 'edit' ? null : <Images.icon_edit />}
+                {isEdit === "edit" ? null : <Svgs.icon_edit />}
               </TouchableOpacity>
             ) : null}
             <Text
@@ -205,15 +218,15 @@ export default function ItemListProduct(props: AddProduct) {
           {VAT != undefined ? (
             <View style={{ flexDirection: "column", marginTop: 6 }}>
               <View style={{ flexDirection: "row" }}>
-                <Images.ic_tag />
+                <Svgs.ic_tag />
                 <Text
                   numberOfLines={1}
                   style={{
                     fontSize: 10,
                     fontWeight: "400",
-                    color: "#242424",
+                    color: colors.nero,
                     marginHorizontal: 4,
-                    maxWidth: scaleWidth(100)
+                    maxWidth: scaleWidth(100),
                   }}>
                   {/* {translate("order.taxes_vat")} */}
                   {VAT + " "}
@@ -223,14 +236,14 @@ export default function ItemListProduct(props: AddProduct) {
                     fontSize: 10,
                     fontWeight: "400",
                     fontStyle: "italic",
-                    color: "#F4AD22",
+                    color: colors.yellow,
                   }}>
                   {formatVND(formatCurrency(commasToDots(valueVAT)))}
                 </Text>
               </View>
             </View>
           ) : null}
-          {props.disabled === true ? null :
+          {props.disabled === true ? null : (
             <TouchableOpacity onPress={(item) => onPressSelectTexas(item)}>
               <View
                 style={{
@@ -238,43 +251,47 @@ export default function ItemListProduct(props: AddProduct) {
                   marginVertical: 6,
                   alignItems: "center",
                 }}>
-                <Images.ic_plus_orange />
+                <Svgs.ic_plus_orange />
                 <Text
                   style={{
                     fontSize: 10,
                     fontWeight: "600",
-                    color: "#F4AD22",
+                    color: colors.yellow,
                     marginHorizontal: 2,
                     fontStyle: "italic",
                   }}>
                   {translate("order.select_texas")}
                 </Text>
               </View>
-            </TouchableOpacity>}
+            </TouchableOpacity>
+          )}
           {priceList == true ? (
-            addTaxes == false ? (props.disabled === true ? null :
-              <TouchableOpacity onPress={(item) => {
-                console.log('---------onPressAddTexas---1--')
-                onPressAddTexas(item)
-                setTaxesId(props.id)
-                setDataModal(taxesInput?.toString() ?? '')
-                setModalPrice(true)
-              }}>
-                <View style={{ flexDirection: "row" }}>
-                  <Images.icon_plusGreen />
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      fontWeight: "600",
-                      color: "#00CC6A",
-                      marginHorizontal: 2,
-                      fontStyle: "italic",
-                    }}>
-                    {translate("order.add_texas")}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )
+            addTaxes == false ? (
+              props.disabled === true ? null : (
+                <TouchableOpacity
+                  onPress={(item) => {
+                    console.log("---------onPressAddTexas---1--");
+                    onPressAddTexas(item);
+                    setTaxesId(props.id);
+                    setDataModal(taxesInput?.toString() ?? "");
+                    setModalPrice(true);
+                  }}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Svgs.icon_plusGreen />
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        fontWeight: "600",
+                        color: colors.malachite,
+                        marginHorizontal: 2,
+                        fontStyle: "italic",
+                      }}>
+                      {translate("order.add_texas")}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )
+            ) : (
               // : editTaxes == true ? (props.disabled === true ? null :
               //   <TouchableOpacity onPress={(item) => {
               //     console.log('---------onPressAddTexas---2--')
@@ -296,7 +313,7 @@ export default function ItemListProduct(props: AddProduct) {
               //                 fontWeight: "400",
               //                 height: scaleHeight(16),
               //                 alignContent: "center",
-              //                 borderColor: "#F6F7FB",
+              //                 borderColor: colors.ghostWhite,
               //                 padding: 0,
               //                 paddingBottom: 2,
               //                 paddingLeft: 4,
@@ -308,7 +325,7 @@ export default function ItemListProduct(props: AddProduct) {
               //               keyboardType="numeric"
               //               maxLength={3}
               //               placeholder={translate("order.input_texas")}
-              //               placeholderTextColor={"#747475"}
+              //               placeholderTextColor={colors.dolphin}
               //               onChangeText={(newText) => {
               //                 // inputDiscount(newText);
               //                 onChange(newText)
@@ -322,33 +339,38 @@ export default function ItemListProduct(props: AddProduct) {
               //       />
               //     </View>
               //   </TouchableOpacity>
-              // ) 
-              :
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text tx={'order.promotions'} style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  marginHorizontal: 2,
-                }} />
-                <Text style={{
-                  fontSize: 10,
-                  fontWeight: "400",
-                  marginHorizontal: 2,
-                }}>
-                  {formatCurrency(commasToDots(taxesInput)) + ' %'}
+              // )
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text
+                  tx={"order.promotions"}
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "400",
+                    marginHorizontal: 2,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "400",
+                    marginHorizontal: 2,
+                  }}>
+                  {formatCurrency(commasToDots(taxesInput)) + " %"}
                 </Text>
-                {props.disabled === true ? null :
+                {props.disabled === true ? null : (
                   <TouchableOpacity onPress={() => setModalPrice(true)}>
-                    <Images.icon_edit />
-                  </TouchableOpacity>}
+                    <Svgs.icon_edit />
+                  </TouchableOpacity>
+                )}
               </View>
+            )
           ) : null}
           {/* {sumTexas != null ? ( */}
           <Text
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
               fontStyle: "italic",
               marginVertical: 6,
             }}>
@@ -360,7 +382,10 @@ export default function ItemListProduct(props: AddProduct) {
                 color: "#FF4956",
                 fontStyle: "italic",
               }}>
-              {" " + (Sum().toString() === "NaN" ? "0" : formatVND(formatCurrency(commasToDots(Sum()))))}
+              {" " +
+                (Sum().toString() === "NaN"
+                  ? "0"
+                  : formatVND(formatCurrency(commasToDots(Sum()))))}
             </Text>
           </Text>
           {/* ) : null} */}
@@ -376,15 +401,16 @@ export default function ItemListProduct(props: AddProduct) {
             borderRadius: 8,
             marginTop: scaleHeight(margin.margin_12),
           }}>
-          {props.disabled === true ? null :
+          {props.disabled === true ? null : (
             <TouchableOpacity
               onPress={(item) => onPressMinus(item)}
               style={{
                 marginHorizontal: scaleWidth(margin.margin_6),
                 alignItems: "center",
               }}>
-              <Images.icon_minus />
-            </TouchableOpacity>}
+              <Svgs.icon_minus />
+            </TouchableOpacity>
+          )}
           <Text
             style={{
               marginHorizontal: 15,
@@ -395,14 +421,16 @@ export default function ItemListProduct(props: AddProduct) {
             }}>
             {qty}
           </Text>
-          {props.disabled === true ? null : <TouchableOpacity
-            onPress={(item) => onPressPlus(item)}
-            style={{
-              marginHorizontal: scaleWidth(margin.margin_6),
-              alignContent: "center",
-            }}>
-            <Images.icon_plusGreen />
-          </TouchableOpacity>}
+          {props.disabled === true ? null : (
+            <TouchableOpacity
+              onPress={(item) => onPressPlus(item)}
+              style={{
+                marginHorizontal: scaleWidth(margin.margin_6),
+                alignContent: "center",
+              }}>
+              <Svgs.icon_plusGreen />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <PriceModal
@@ -415,19 +443,19 @@ export default function ItemListProduct(props: AddProduct) {
         id={taxesId}
         onConfirm={(data) => {
           if (Number(data) < 100) {
-            inputDiscount(data)
-            setModalPrice(false)
+            inputDiscount(data);
+            setModalPrice(false);
           } else {
             Toast.show({
               type: ALERT_TYPE.DANGER,
-              textBody: 'Chiết khấu không thể lớn hơn 100'
-            })
+              textBody: "Chiết khấu không thể lớn hơn 100",
+            });
           }
         }}
-        rightText={'%'}
-        titleTx={'ImprotGoodsBook.discount'}
-        placeholderTx={'order.input_texas'}
-        titleInputTx={'ImprotGoodsBook.discount'}
+        rightText={"%"}
+        titleTx={"ImprotGoodsBook.discount"}
+        placeholderTx={"order.input_texas"}
+        titleInputTx={"ImprotGoodsBook.discount"}
       />
       <PriceModal
         isVisible={modalPriceUnit}
@@ -439,13 +467,13 @@ export default function ItemListProduct(props: AddProduct) {
         id={priceId}
         onConfirm={(item) => {
           // changeText(item, data)
-          inputPrice(formatStringToFloat(item))
-          setModalPriceUnit(false)
+          inputPrice(formatStringToFloat(item));
+          setModalPriceUnit(false);
           // setCheck(false)
         }}
-        titleTx={'selectPriceListApply.inputPrice'}
-        placeholder='Nhập giá'
-        titleInputTx={'productScreen.priceProduct'}
+        titleTx={"selectPriceListApply.inputPrice"}
+        placeholder="Nhập giá"
+        titleInputTx={"productScreen.priceProduct"}
         rightText={vendorStore.companyInfo.symbol}
       />
     </View>

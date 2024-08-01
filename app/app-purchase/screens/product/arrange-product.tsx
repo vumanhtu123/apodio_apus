@@ -10,7 +10,7 @@ import {
 import { AutoImage } from "../../../components/auto-image/auto-image";
 import { Button } from "../../../components/button/button";
 import { Screen } from "../../../components/screen/screen";
-import { Images } from "../../../../assets/index";
+import { Svgs } from "../../../../assets/svgs";
 import { Header } from "../../../components/header/header";
 import { Text } from "../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
@@ -194,7 +194,7 @@ export const ArrangeProduct: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
-        LeftIcon={Images.back}
+        LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={`Sắp xếp sản phẩm `}
@@ -213,7 +213,7 @@ export const ArrangeProduct: FC = () => {
           <View
             style={{
               flexDirection: "row",
-              backgroundColor: "#E6E7EA",
+              backgroundColor: colors.solitude1,
               borderRadius: 8,
               padding: 2,
             }}>
@@ -244,7 +244,7 @@ export const ArrangeProduct: FC = () => {
           <TouchableOpacity
             onPress={openCategoryModal}
             style={{ marginRight: scaleWidth(8) }}>
-            <Images.squaresFour width={20} height={20} />
+            <Svgs.squaresFour width={20} height={20} />
           </TouchableOpacity>
           {typeNoti.map((item, index) => {
             return (
@@ -255,17 +255,17 @@ export const ArrangeProduct: FC = () => {
                 }}
                 key={index}
                 style={{
-                  backgroundColor: index == indexItem ? "#FFFfff" : "#F4F4F4",
+                  backgroundColor: index == indexItem ? colors.white : colors.whiteSmoke,
                   borderRadius: 8,
                   paddingHorizontal: 8,
                   paddingVertical: 8,
                   marginRight: 10,
                   borderWidth: 1,
-                  borderColor: index == indexItem ? "#0078D4" : "#c8c8c8",
+                  borderColor: index == indexItem ? colors.navyBlue : colors.veryLightGrey,
                 }}>
                 <Text
                   style={{
-                    color: index == indexItem ? "#0078D4" : "#747475",
+                    color: index == indexItem ? colors.navyBlue : colors.dolphin,
                     textAlign: "center",
                     fontWeight: "700",
                     fontSize: fontSize.size10,
@@ -280,7 +280,7 @@ export const ArrangeProduct: FC = () => {
           <Text
             style={{
               fontWeight: "400",
-              color: "#747475",
+              color: colors.dolphin,
               fontSize: fontSize.size12,
             }}>
             {translate("productScreen.selectProductFirst")}
