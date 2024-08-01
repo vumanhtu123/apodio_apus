@@ -103,7 +103,7 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
                         />
                     }
                     rules={{
-                        required: 'Vui long nhap du lieu'
+                        required: en.validate.enterData
                     }}
 
                 />

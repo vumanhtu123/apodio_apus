@@ -218,9 +218,13 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                     backgroundColor: colors.palette.navyBlue,
                                     bottom: Platform.OS === 'ios' ? scaleHeight(20) : scaleHeight(5),
                                     right: scaleWidth(16)
-                                }}>
+                                }}
+
+                                >
                                     <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
-                                    <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Thêm khách hàng</Text>
+                                    <Text style={{ color: 'white', fontSize: fontSize.size14 }}
+                                        tx="ClientScreen.addClient"
+                                    ></Text>
                                 </TouchableOpacity>
                             </View>
 
@@ -244,7 +248,9 @@ export const ClientScreen: FC<StackScreenProps<NavigatorParamList, 'clientScreen
                                     onPress={() => setOpenCreateGroup(!OpenCreateGroup)}
                                 >
                                     <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
-                                    <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Tạo nhóm</Text>
+                                    <Text style={{ color: 'white', fontSize: fontSize.size14 }}
+                                        tx="ClientScreen.createGroup"
+                                    />
                                 </TouchableOpacity>
                             </View>
 

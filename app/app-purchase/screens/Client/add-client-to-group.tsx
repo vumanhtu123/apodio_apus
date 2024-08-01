@@ -1,9 +1,8 @@
 import { FC, useState } from "react"
-import { TabScreenProps } from "../../navigators/BottomTabNavigator"
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { AppStackParamList, navigate } from "../../navigators"
+import { NavigatorParamList } from "../../navigators"
 import { StackScreenProps } from "@react-navigation/stack"
 import { Header } from "../../../components"
 import { Svgs } from "../../../../assets/svgs"
@@ -19,9 +18,9 @@ interface Item {
     phoneNumber: string;
 }
 
-export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClientToGroup">> = observer(
+export const AddClientToGroup: FC<StackScreenProps<NavigatorParamList, "addClientToGroup">> = observer(
 
-    
+
 
     function addClentToGroup(props) {
 
@@ -66,7 +65,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
         const [itemsChecked, setItemsChecked] = useState<string[]>([]);
 
         // console.log(itemsChecked)
-        
+
         const handleCheckboxPress = (itemId: string) => {
             // console.log('====================================');
             // console.log(itemId);
@@ -78,7 +77,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
             }
         };
 
-      
+
         const RenderItemListClient = ({ item }: { item: Item }) => {
             // console.log(indexClick)
 
@@ -101,7 +100,7 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
                         onPress={() => handleCheckboxPress(item.id)}
                     >
                         <Text style={Styles.checkboxText}>
-                            {itemsChecked.includes(item.id) ? <Svgs.icon_check/> : null}
+                            {itemsChecked.includes(item.id) ? <Svgs.icon_check /> : null}
                         </Text>
                     </TouchableOpacity>
 
@@ -131,19 +130,19 @@ export const AddClientToGroup: FC<StackScreenProps<AppStackParamList, "addClient
                 />
                 <View style={Styles.styleBTN}>
                     <TouchableOpacity
-                        style={{height:scaleHeight(48), width:scaleWidth(165), justifyContent:'center',alignItems:'center', borderWidth:1, borderRadius:8, backgroundColor: isClick ? colors.palette.navyBlue: "#FFF" , borderColor:'#C8C8C8'}}
+                        style={{ height: scaleHeight(48), width: scaleWidth(165), justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 8, backgroundColor: isClick ? colors.palette.navyBlue : "#FFF", borderColor: '#C8C8C8' }}
                         onPress={() => setIsclick(!isClick)}
                     >
-                        <Text style={{color: isClick ? '#FFF' : "#333"}}>
+                        <Text style={{ color: isClick ? '#FFF' : "#333" }}>
                             Quay lại
                         </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={{height:scaleHeight(48), width:scaleWidth(165), justifyContent:'center',alignItems:'center', borderWidth:1, borderRadius:8, backgroundColor: isClick ? '#FFF' :colors.palette.navyBlue, borderColor:'#C8C8C8'}}
+                        style={{ height: scaleHeight(48), width: scaleWidth(165), justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderRadius: 8, backgroundColor: isClick ? '#FFF' : colors.palette.navyBlue, borderColor: '#C8C8C8' }}
                         onPress={() => setIsclick(!isClick)}
                     >
-                        <Text style={{color: isClick ? "#333" :  '#FFF'}}>
+                        <Text style={{ color: isClick ? "#333" : '#FFF' }}>
                             Cập nhật
                         </Text>
                     </TouchableOpacity>
@@ -167,12 +166,12 @@ const Styles = StyleSheet.create({
     checkboxText: {
         fontSize: 18,
     },
-    styleBTN:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        marginBottom:scaleHeight(46),
-        paddingHorizontal:scaleWidth(16)
+    styleBTN: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: scaleHeight(46),
+        paddingHorizontal: scaleWidth(16)
     },
-   
-    
+
+
 })

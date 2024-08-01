@@ -3,13 +3,13 @@ import {
   Dimensions,
   Modal,
   StyleSheet,
-  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { Svgs } from '../../../../../assets/svgs';
 import { fontSize, scaleHeight, scaleWidth } from '../../../theme';
+import { Text } from '../../../../components';
 
 // import IconSelected from '../../assets/icons/icon_selected.svg'
 const { width, height } = Dimensions.get('screen');
@@ -64,10 +64,10 @@ const SelectTypeModal = (props: DialogSelectType) => {
             <View style={styles.modalView}>
               <View style={styles.row}>
                 <View style={styles.row1}>
-                  <Text style={styles.selectType}>Select type</Text>
+                  <Text style={styles.selectType} tx="security.select_type"></Text>
                   <Text
                     style={styles.cancel}
-                    onPress={() => setIsVisible(!isVisible)}>Cancel</Text>
+                    onPress={() => setIsVisible(!isVisible)} tx="security.cancel"></Text>
                 </View>
                 <View style={styles.horizontalLine} />
                 {data.map((item, index) => {
@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
   text: {
     alignSelf: 'center',
     color: '#323232',
-    fontSize : fontSize.size14,
-    lineHeight :scaleHeight(24),
+    fontSize: fontSize.size14,
+    lineHeight: scaleHeight(24),
   },
   row: {
     marginHorizontal: scaleWidth(16),
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   },
   selectType: {
     fontSize: fontSize.size14,
-    lineHeight :scaleHeight(24),
+    lineHeight: scaleHeight(24),
     color: '#323232',
     fontWeight: '700',
   },
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.size14,
     color: '#FF0000',
     fontWeight: '700',
-    lineHeight :scaleHeight(24),
+    lineHeight: scaleHeight(24),
   },
   horizontalLine: {
     height: 1,
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
   row2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems : 'center',
+    alignItems: 'center',
   },
 });
 export default SelectTypeModal;

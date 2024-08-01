@@ -1,19 +1,20 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { FC, useRef, useState } from "react";
-import {  AppStackScreenProps, NavigatorParamList, navigate } from "../../navigators";
+import { AppStackScreenProps, NavigatorParamList, navigate } from "../../navigators";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Alert, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Header } from "../../../components";
+import { Alert, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Header, Text } from "../../../components";
 import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { FlashList } from "@shopify/flash-list";
 import { UserStatus } from "../../utils/const";
 import { boolean, number } from "mobx-state-tree/dist/internal";
 import CustomCalendar from "../../../components/calendar";
+import en from "../../i18n/en";
 
 
-export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inventoryManagenment">> = observer(
+export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inventoryManagement">> = observer(
 
     function inventoryManagement(props) {
 
@@ -23,15 +24,15 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
             id: string,
             time: string,
             date: string,
-            status:string ,
+            status: string,
         }
 
         const dataTabbar = [
-            { name: "Tất cả" },
-            { name: "Đang kiểm kho" },
-            { name: "Đang cân bằng" },
-            { name: "Lệch" },
-            { name: " Trước" },
+            { name: en.checkInventory.all },
+            { name: en.checkInventory.checkingInventory },
+            { name: en.checkInventory.isBalancing },
+            { name: en.checkInventory.command },
+            { name: en.checkInventory.before },
         ]
 
         const dataListInventory: DateItem[] = [
@@ -81,15 +82,15 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
         const [displayedData, setDisplayedData] = useState<DateItem[]>(dataListInventory)
 
         // console.log('doandev',displayedData);
-        
-        const handbleSlectdate = (selectType: any) => {
+
+        const handleSelectDate = (selectType: any) => {
             let filterData: DateItem[];
 
             const today = new Date()
             var day = today.getDate();
-            var currentMonth =  today.getMonth() + 1 
+            var currentMonth = today.getMonth() + 1
             var fullMonth = currentMonth < 10 ? `${0}+${currentMonth}` : currentMonth
-            
+
             var currentYear = today.getFullYear()
 
             var fullDay = `${day}/${currentMonth}/${currentYear}`
@@ -100,37 +101,37 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
             // console.log('====================================');
             // console.log(`${ 'ngay'+day}`,`${'thang'+currentMoth}`, `${'name'+currentYear}`);
             // console.log('====================================');
-            
+
             switch (selectType) {
                 case 'toDay':
                     filterData = dataListInventory.filter(item => item.date.includes(fullDay))
-                    console.log('aaa',filterData);
+                    console.log('aaa', filterData);
 
                     break;
                 case 'month':
                     filterData = dataListInventory.filter(item => item.date.includes(`${currentMonth}/${currentYear}`))
-                    console.log('bbb' ,filterData);
+                    console.log('bbb', filterData);
                     break;
                 case 'previous':
-                    
+
                     const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1
                     const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear
 
                     filterData = dataListInventory.filter(item => item.date.includes(`/${previousMonth}/${previousYear}`))
-                    console.log('ccc'  ,filterData);
+                    console.log('ccc', filterData);
                     break;
                 default:
                     filterData = dataListInventory
-                  
+
 
             }
-            console.log('doandevvvvv',filterData);
-            
+            console.log('doandevvvvv', filterData);
+
             setDisplayedData(filterData)
         }
 
 
-        const [isCLickTabBar, setisCLickTabBar] = useState(0)
+        const [isCLickTabBar, setIsCLickTabBar] = useState(0)
         const [selectCalendar, setSelectCalendar] = useState(1);
 
         const [isSortByDate, setIsSortByDate] = useState<boolean>(false);
@@ -166,6 +167,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
 
                     horizontal={true}
                     data={dataTabbar}
+                    showsHorizontalScrollIndicator={false}
                     renderItem={({ item, index }) => {
                         return (
                             <TouchableOpacity
@@ -180,10 +182,10 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                                 onPress={() => {
                                     console.log(index);
 
-                                    setisCLickTabBar(index)
+                                    setIsCLickTabBar(index)
                                 }}
                             >
-                                <Text>
+                                <Text style={Styles.textSize}>
                                     {item.name}
                                 </Text>
 
@@ -234,11 +236,11 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             borderRadius: 8
                         }}
                             onPress={() => {
-                                handbleSlectdate('toDay')
+                                handleSelectDate('toDay')
                                 setSelectCalendar(1)
                             }}
                         >
-                            <Text>Hôm nay</Text>
+                            <Text tx="checkInventory.toDay" style={Styles.textSize}></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
                             // width:scaleWidth(80), 
@@ -249,11 +251,11 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             borderRadius: 8
                         }}
                             onPress={() => {
-                                handbleSlectdate('month')
+                                handleSelectDate('month')
                                 setSelectCalendar(2)
                             }}
                         >
-                            <Text>Tháng này</Text>
+                            <Text tx="checkInventory.thisMonth" style={Styles.textSize}></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
                             // width:scaleWidth(80),
@@ -264,11 +266,11 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                             borderRadius: 8
                         }}
                             onPress={() => {
-                                handbleSlectdate('previous')
+                                handleSelectDate('previous')
                                 setSelectCalendar(3)
                             }}
                         >
-                            <Text>Tháng trước</Text>
+                            <Text tx="checkInventory.lastMonth" style={Styles.textSize}></Text>
                         </TouchableOpacity>
 
                     </View>
@@ -321,8 +323,8 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                     !dataListInventory && (
                         <View style={{ alignItems: 'center', marginTop: scaleHeight(80), flex: 1, }}>
                             <Svgs.img_not_init />
-                            <Text >
-                                Chưa có phiếu kiểm kho nào được tạo
+                            <Text tx="checkInventory.noTicketsHaveBeenCreatedYet" >
+
                             </Text>
 
                         </View>
@@ -347,7 +349,7 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
                     }}
                 >
                     <Svgs.icon_plus width={scaleWidth(16)} height={scaleHeight(16)} style={{ marginRight: 6, marginTop: 2 }} />
-                    <Text style={{ color: 'white', fontSize: fontSize.size14 }}>Tạo phiếu kiểm kho</Text>
+                    <Text style={{ color: 'white', fontSize: fontSize.size14 }} tx="checkInventory.createTicketWarehouse"></Text>
                 </TouchableOpacity>
 
 
@@ -375,9 +377,12 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
     }
 )
 
- const Styles = StyleSheet.create({
+const Styles = StyleSheet.create({
     stylesTextTime: {
         fontSize: 10
+    },
+    textSize: {
+        fontSize: fontSize.size12
     }
 })
 export default Styles

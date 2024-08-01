@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { observer } from 'mobx-react-lite';
-import  { FC, useRef, useState } from 'react';
-import { View, Alert, Platform, TouchableOpacity, StyleSheet,FlatList } from 'react-native';
+import { FC, useRef, useState } from 'react';
+import { View, Alert, Platform, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { NavigatorParamList, navigate } from '../../navigators';
 import { Header, Text } from '../../../components';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../theme';
@@ -76,7 +76,7 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
 
         const [displayedData, setDisplayedData] = useState<DateItem[]>(dataListGoodsDeliveryBook)
 
-        const handbleSlectdate = (selectType: any) => {
+        const handleSelectDate = (selectType: any) => {
             let filterData: DateItem[];
 
             const today = new Date()
@@ -152,7 +152,7 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                     onLeftPress={() => props.navigation.goBack()}
                 />
 
-                <View style={{ flex: 1 ,zIndex:1}}>
+                <View style={{ flex: 1, zIndex: 1 }}>
 
 
                     {
@@ -202,11 +202,11 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                                             borderRadius: 8
                                         }}
                                             onPress={() => {
-                                                handbleSlectdate('toDay')
+                                                handleSelectDate('toDay')
                                                 setSelectCalendar(1)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Hôm nay</Text>
+                                            <Text style={Styles.TextTabbar} tx="GoodsExportBook.today"></Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{
                                             // width:scaleWidth(80), 
@@ -217,11 +217,11 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                                             borderRadius: 8
                                         }}
                                             onPress={() => {
-                                                handbleSlectdate('month')
+                                                handleSelectDate('month')
                                                 setSelectCalendar(2)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Tháng này</Text>
+                                            <Text style={Styles.TextTabbar} tx="GoodsExportBook.thisMonth"></Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{
                                             // width:scaleWidth(80),
@@ -232,11 +232,11 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                                             borderRadius: 8
                                         }}
                                             onPress={() => {
-                                                handbleSlectdate('previous')
+                                                handleSelectDate('previous')
                                                 setSelectCalendar(3)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Tháng trước</Text>
+                                            <Text style={Styles.TextTabbar} tx="GoodsExportBook.beforeMonth"></Text>
                                         </TouchableOpacity>
 
                                     </View>
@@ -250,8 +250,8 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                                     renderItem={({ item }) => {
                                         return (
                                             <TouchableOpacity style={Styles.bodyItem}
-                                                onPress={() => props.navigation.navigate('detaiExampleGoods',{dataItemGoodsDeliveryBook: item})}
-                                            
+                                                onPress={() => props.navigation.navigate('detaiExampleGoods', { dataItemGoodsDeliveryBook: item })}
+
                                             >
                                                 <View style={{
 
@@ -259,7 +259,7 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                                                     justifyContent: 'space-between',
 
                                                 }}
-                                    
+
                                                 >
                                                     <View>
                                                         <Text style={{ fontSize: 12, fontWeight: '600', color: '#333' }}>{item.id}</Text>
@@ -278,8 +278,10 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                                                 </View>
                                                 <View style={Styles.line}></View>
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                    <Text style={Styles.stylesTextTime}>
-                                                        Tổng cộng
+                                                    <Text style={Styles.stylesTextTime}
+                                                        tx="GoodsExportBook.sum"
+                                                    >
+
                                                     </Text>
                                                     <Text style={{ fontSize: scaleWidth(12) }}>
                                                         {item.total}
@@ -320,10 +322,10 @@ export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDe
                     </TouchableOpacity>
 
                 </View>
-                <View style={{ width: '100%',height:40, position: 'absolute', top: 50, alignItems:'center',flexDirection: 'row', backgroundColor: '#F2FAF6', paddingVertical: scaleHeight(7), paddingHorizontal: scaleWidth(16),zIndex:2 }}>
+                <View style={{ width: '100%', height: 40, position: 'absolute', top: 50, alignItems: 'center', flexDirection: 'row', backgroundColor: '#F2FAF6', paddingVertical: scaleHeight(7), paddingHorizontal: scaleWidth(16), zIndex: 2 }}>
 
                     <Svgs.ic_Tick_Green />
-                    <Text style={{ fontSize: scaleWidth(12), color: colors.palette.malachite, marginLeft:3 }}>
+                    <Text style={{ fontSize: scaleWidth(12), color: colors.palette.malachite, marginLeft: 3 }}>
                         Lưu phiếu xuất hàng thành công
                     </Text>
                 </View>
@@ -353,8 +355,8 @@ const Styles = StyleSheet.create({
     stylesTextTime: {
         fontSize: 10
     },
-    TextTabbar:{
-        fontSize:12,
+    TextTabbar: {
+        fontSize: 12,
     },
     line: {
         width: '100%',

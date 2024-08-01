@@ -65,7 +65,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                 img: require("../../../../assets/Images/ic_Home.png"),
                 name: en.wareHouse.checkWare,
                 onPress: () => {
-                    props.navigation.navigate("inventoryManagenment");
+                    props.navigation.navigate("inventoryManagement");
                 },
             },
             {
@@ -277,7 +277,7 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                         data={myData}
                         renderItem={({ item, index }) => <ItemListWareHouse item={item} />}
                         keyExtractor={(item: any, index) => item?.id.toString() + index}
-                        showsVerticalScrollIndicator={true}
+                        showsVerticalScrollIndicator={false}
 
                         refreshControl={
                             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
@@ -300,9 +300,9 @@ export const wareHouseScreen: FC<StackScreenProps<NavigatorParamList, 'wareHouse
                                 </View>
                             );
                         }}
-                    // initialNumToRender={13}
-                    // maxToRenderPerBatch={13}
-                    // windowSize={5}
+                        initialNumToRender={20}
+                        maxToRenderPerBatch={20}
+                        windowSize={5}
                     />
                     <TouchableOpacity
                         style={Styles.btnPlus}
