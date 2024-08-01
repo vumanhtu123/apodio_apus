@@ -4,6 +4,7 @@ import { Text } from "../../../../components";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataContact } from "../styles/data";
+import Images from "../../../../../assets/index";
 
 export const ContactSupplier = () => {
   return (
@@ -69,7 +70,7 @@ const ItemContact = (item: any) => {
         }}>
         <Image
           style={{ width: 42, height: 42 }}
-          source={require("../../../../../assets/icons/logo_default.png")}></Image>
+          source={Images.logoDefault}></Image>
       </View>
       <View style={{ flexDirection: "column", width: "80%" }}>
         <View

@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LANGUAGE } from "../../utils/enum";
 import { navigate, NavigatorParamList } from "../../../app-purchase/navigators";
 import { changeLanguage } from "../../i18n";
+import Images from "../../../../assets/index";
 
 export const SelectLanguageScreen: FC<
   StackScreenProps<NavigatorParamList, "selectLanguage">
@@ -70,7 +71,7 @@ export const SelectLanguageScreen: FC<
           marginVertical: 20,
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Image source={require("../../../../assets/Images/ic_vietnam.png")} />
+          <Image source={Images.iconVN} />
           <Text style={{ marginHorizontal: 4 }}>Tiếng Việt</Text>
         </View>
       </TouchableOpacity>
@@ -92,7 +93,7 @@ export const SelectLanguageScreen: FC<
           justifyContent: "center",
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Image source={require("../../../../assets/Images/ic_eng.png")} />
+          <Image source={Images.iconEN} />
           <Text style={{ marginHorizontal: 4 }}>Tiếng Anh</Text>
         </View>
       </TouchableOpacity>

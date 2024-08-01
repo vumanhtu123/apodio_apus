@@ -3,6 +3,7 @@ import { Image, View } from "react-native";
 import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
+import Images from "../../../../../assets/index";
 
 export const BodyDetailsOrder = (data: any) => {
   const [dataOrder, setData] = useState<any[]>([]);
@@ -31,7 +32,7 @@ export const BodyDetailsOrder = (data: any) => {
               }}>
               <View style={{ flexDirection: "row" }}>
                 <Image
-                  source={require("../../../../../assets/Images/Avatar.png")}
+                  source={Images.iconAVT}
                   style={{
                     width: 48,
                     height: 48,
@@ -279,7 +280,7 @@ export const Notes = () => {
         </Text>
       </View>
       <Image
-        source={require("../../../../../assets/Images/Avatar.png")}
+        source={Images.iconAVT}
         style={{
           width: 48,
           height: 48,
