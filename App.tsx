@@ -1,5 +1,6 @@
 import { View } from 'react-native';
 import AppPurchase from './app/app-purchase/app';
+import AppSales from './app/app-sales/app';
 import AppB from './app/app-warehouse/App'
 import React, { useState } from 'react';
 import { AppContext } from './app/AppContext';
@@ -7,14 +8,14 @@ import { AppContext } from './app/AppContext';
 
 function IgniteApp() {
 
-  const [currentApp, setCurrentApp] = useState<string>('appWarehouse');
+  const [currentApp, setCurrentApp] = useState<string>('appSales');
 
   const renderApp = () => {
     switch (currentApp) {
       case 'AppPurchase':
         return <AppPurchase />;
       case 'appSales':
-        return <AppPurchase />;
+        return <AppSales />;
       case 'appWarehouse':
         return <AppB />;
       default:

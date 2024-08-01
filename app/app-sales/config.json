@@ -1,0 +1,36 @@
+{
+  "apiVersion": 1.0,
+  "versionNative": "0.0.1",
+  "versionCodePush": "202312220242",
+  "enableItunesAndOthersSource": true,
+  "ENV": "PRODUCT",
+  "API": {
+    "DEV": {
+      "URL_ACCOUNTING": "https://gateway-erp.dev.apusplatform.com/services/accounting",
+      "URL_ORDER": "https://gateway-erp.dev.apusplatform.com/services/sale",
+      "URL": "https://gateway-erp.dev.apusplatform.com/services/product",
+      "URL_UPLOAD": "https://product-manufactor-service.dev.apusplatform.com",
+      "URL_ERP": "https://gateway-erp.dev.apusplatform.com/services/resources",
+      "URL_GET_WAY_ERP": "https://gateway-erp.dev.apusplatform.com",
+      "UAA": "https://gateway.dev.apusplatform.com/services/uaa",
+      "URL_WAREHOUSE": "https://warehouse-service.dev.apusplatform.com"
+    },
+    "STAGING": {
+      "URL_ACCOUNTING": "https://gateway-erp.stg.apusplatform.com/services/accounting",
+      "URL_ORDER": "https://gateway-erp.stg.apusplatform.com/services/sale",
+      "URL": "https://gateway-erp.stg.apusplatform.com/services/product",
+      "URL_UPLOAD": "https://product-manufactor-service.stg.apusplatform.com",
+      "URL_ERP": "https://gateway-erp.stg.apusplatform.com/services/resources",
+      "URL_GET_WAY_ERP": "https://gateway-erp.stg.apusplatform.com",
+      "UAA": "https://gateway.stg.apusplatform.com/services/uaa",
+      "URL_WAREHOUSE": "https://warehouse-service.stg.apusplatform.com",
+      "URL_SUPPLIER": "https://resources-service.stg.apusplatform.com"
+
+    },
+    "PRODUCT": {
+      "URL": "https://product-manufactor-service.stg.apusplatform.com",
+      "URL_ERP": "https://resources-service.dev.apusplatform.com",
+      "VERSION": "v1"
+    }
+  }
+}
