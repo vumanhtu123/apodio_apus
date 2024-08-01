@@ -90,7 +90,7 @@ export const ClassifyModal = (props: Input) => {
                 }
                 keyboardType={null}
                 labelTx={"analysis.nameMoney"}
-                txColor=colors.dolphin
+                txColor={colors.dolphin}
                 style={styles.textFieldStyle}
                 RightIconClear={null}
                 value={value}

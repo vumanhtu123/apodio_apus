@@ -121,7 +121,7 @@ export const FundsModal = (props: Input) => {
                 }
                 keyboardType={null}
                 labelTx={"analysis.nameMoney"}
-                txColor=colors.dolphin
+                txColor={colors.dolphin}
                 style={{
                   backgroundColor: "transparent",
                   borderWidth: 1,

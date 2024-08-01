@@ -108,28 +108,28 @@ export const TransactionHistoryDetial: FC = observer(
                             <DataItem
                                 title="tranSacTionHistory.transactionType"
                                 value={dataFake[0].transactionType}
-                                color=colors.nero
+                                color={colors.nero}
 
                             />
                             <DataItem
                                 title="tranSacTionHistory.merchantPhone"
                                 value={dataFake[0].merchanPhone}
-                                color=colors.nero
+                                color={colors.nero}
                             />
                             <DataItem
                                 title="tranSacTionHistory.merchantName"
                                 value={dataFake[0].merchanName}
-                                color=colors.nero
+                                color={colors.nero}
                             />
                             <DataItem
                                 title="tranSacTionHistory.status"
                                 value={dataFake[0].merchanName}
-                                color=colors.nero
+                                color={colors.nero}
                             />
                             <DataItem
                                 title="tranSacTionHistory.transactionTime"
                                 value={dataFake[0].time}
-                                color=colors.nero
+                                color={colors.nero}
                             />
                         </View>
 
@@ -146,17 +146,17 @@ export const TransactionHistoryDetial: FC = observer(
                             <DataItem
                                 title="tranSacTionHistory.amount"
                                 value={dataFake[0].amount}
-                                color=colors.alizarin
+                                color={colors.alizarin}
                             />
                             <DataItem
                                 title="tranSacTionHistory.fee"
                                 value={dataFake[0].fee}
-                                color=colors.alizarin
+                                color={colors.alizarin}
                             />
                             <DataItem
                                 title="tranSacTionHistory.totalAmount"
                                 value={dataFake[0].totalAmount}
-                                color=colors.alizarin
+                                color={colors.alizarin}
                             />
 
                         </View>
