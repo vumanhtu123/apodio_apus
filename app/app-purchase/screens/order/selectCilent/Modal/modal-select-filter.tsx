@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text as TextRN, View } from 'react-native';
-import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
+import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { useNavigation } from '@react-navigation/native';
 import { Svgs } from '../../../../../../assets/svgs';
 import ModalCreateClientFromNumber from './modal-create-client';
@@ -172,10 +172,10 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
 
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
-                        <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: '#c8c8c8' }}>
+                        <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: colors.veryLightGrey }}>
                             <Text style={{ fontSize: fontSize.size14 }}>Thiết lập lại</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: '#0078d4' }}>
+                        <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: colors.navyBlue }}>
                             <Text style={{ fontSize: fontSize.size14, color: 'white' }}>Áp dụng</Text>
                         </TouchableOpacity>
                     </View>
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
 
     },
     modalView: {
-        backgroundColor: '#fff',
+        backgroundColor: colors.white,
         borderRadius: 8,
         paddingTop: scaleHeight(8),
         // paddingBottom: 5,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 15,
         borderBottomWidth: 1,
-        borderBottomColor: '#eee',
+        borderBottomColor: colors.whisper,
     },
     optionText: {
         fontSize: 16,
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         height: scaleHeight(18),
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: colors.veryLightGrey2,
         justifyContent: 'center',
         alignItems: 'center',
         // marginRight: 10
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
         width: 14,
         height: 14,
         borderRadius: 6,
-        backgroundColor: '#0078d4',
+        backgroundColor: colors.navyBlue,
     },
     groupTitle: {
         fontSize: 18,
@@ -264,13 +264,13 @@ const styles = StyleSheet.create({
     },
     horizontalLine: {
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         // marginBottom: 18,
     },
     cancel: {
         fontSize: fontSize.size14,
-        color: '#FF0000',
+        color: colors.red,
         fontWeight: '700',
         lineHeight: scaleHeight(24),
     },
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
         width: scaleHeight(150),
         height: scaleHeight(38),
         borderRadius: 8,
-        backgroundColor: '#F6F7F9',
+        backgroundColor: colors.aliceBlue,
         justifyContent: 'center',
         alignItems: 'center'
     }

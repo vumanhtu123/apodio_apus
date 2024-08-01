@@ -72,7 +72,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
         ]
         const ItemListExprortGoods = ({ item, index }) => {
             return (
-                <View style={{ flex: 1, flexDirection: 'row', padding: scaleHeight(6), borderRadius: scaleWidth(8), backgroundColor: '#FFFFFF', marginBottom: scaleHeight(12), alignItems: 'center' }}>
+                <View style={{ flex: 1, flexDirection: 'row', padding: scaleHeight(6), borderRadius: scaleWidth(8), backgroundColor: colors.white, marginBottom: scaleHeight(12), alignItems: 'center' }}>
                     <Image source={{ uri: item.img }}
                         style={{ width: scaleWidth(40), height: scaleHeight(40), borderRadius: scaleHeight(8), marginRight: scaleWidth(6) }}
                     />
@@ -84,7 +84,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                                     <Text style={{ fontSize: scaleWidth(10), fontFamily: 'Inter-Bold' }}>{item.name}</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Text style={Styles.txtItemWareHouse}>{item.id}</Text>
-                                        <Text style={{ fontSize: scaleWidth(8), marginHorizontal: scaleWidth(6), color: '#E7EFFF' }}>|</Text>
+                                        <Text style={{ fontSize: scaleWidth(8), marginHorizontal: scaleWidth(6), color: colors.solitude2 }}>|</Text>
                                         <Text style={[Styles.txtItemWareHouse, { textAlign: 'right' }]}>Còn: {item.quantity}</Text>
                                     </View>
 
@@ -170,7 +170,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'product' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'product' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -184,7 +184,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                         <TouchableOpacity
                             style={{
                                 flex: 1,
-                                backgroundColor: sellectTab === 'material' ? '#FFF' : '#E6E7EA',
+                                backgroundColor: sellectTab === 'material' ? colors.white : colors.solitude1,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 7,
@@ -229,7 +229,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                 </View>
 
                 {
-                    quantity === 1 && <View style={{ backgroundColor: '#FFFFFF', paddingHorizontal: scaleHeight(16), paddingTop: scaleHeight(20), paddingBottom: scaleHeight(12) }}>
+                    quantity === 1 && <View style={{ backgroundColor: colors.white, paddingHorizontal: scaleHeight(16), paddingTop: scaleHeight(20), paddingBottom: scaleHeight(12) }}>
                         <TouchableOpacity
                             style={Styles.btnBottom}
                             onPress={() => props.navigation.navigate('createGoodsReceipt')}
@@ -237,8 +237,8 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                             <View style={{ flexDirection: 'row', }}>
                                 <Svgs.ic_ShoopingCar />
                                 <View style={{ position: 'absolute', start: scaleWidth(7), top: scaleWidth(-5) }}>
-                                    <View style={{ width: scaleWidth(15), height: scaleHeight(15), backgroundColor: 'red', borderRadius: scaleWidth(14), borderWidth: 1, borderColor: '#FFFFFF' }}>
-                                        <Text style={{ alignSelf: 'center', fontSize: 9, color: '#FFF' }}>1</Text>
+                                    <View style={{ width: scaleWidth(15), height: scaleHeight(15), backgroundColor: 'red', borderRadius: scaleWidth(14), borderWidth: 1, borderColor: colors.white }}>
+                                        <Text style={{ alignSelf: 'center', fontSize: 9, color: colors.white }}>1</Text>
                                     </View>
                                 </View>
                                 <View style={{ flexDirection: 'row', marginLeft: scaleWidth(10) }}>
@@ -303,7 +303,7 @@ export const Styles = StyleSheet.create({
         width: scaleWidth(91),
         height: scaleHeight(30),
         borderRadius: scaleWidth(4),
-        borderColor: '#F4F4F4',
+        borderColor: colors.whiteSmoke,
         justifyContent: 'space-around',
         alignItems: 'center',
 
@@ -313,7 +313,7 @@ export const Styles = StyleSheet.create({
     },
 
     TextWhite: {
-        color: '#FFFFFF',
+        color: colors.white,
         fontWeight: '600'
     },
     btnBottom: {
@@ -325,7 +325,7 @@ export const Styles = StyleSheet.create({
     },
     StyleTabar: {
         flexDirection: 'row',
-        backgroundColor: '#E6E7EA',
+        backgroundColor: colors.solitude1,
         height: 32,
         // justifyContent:'space-between',
         borderRadius: 8,

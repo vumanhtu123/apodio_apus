@@ -4,7 +4,7 @@ import { FC } from "react";
 
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import { scaleHeight, scaleWidth } from "../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles";
 
 interface Item {
@@ -58,7 +58,7 @@ const Styles = StyleSheet.create({
         paddingHorizontal:scaleWidth(16),
         paddingVertical:scaleWidth(12), 
         borderRadius:8, 
-        backgroundColor:'#FFFFFF',
+        backgroundColor: colors.white,
         marginBottom:scaleHeight(16),
         marginHorizontal: scaleWidth(16)
 

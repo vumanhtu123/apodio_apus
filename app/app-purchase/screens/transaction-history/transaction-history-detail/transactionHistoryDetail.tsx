@@ -16,11 +16,10 @@ import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
-import Images from "../../../../../assets/index";
 
 const { width } = Dimensions.get("screen");
 export const TransactionHistoryDetial: FC = observer(function transactionDetail(
-  props: any
+  props
 ) {
   const dataFake = [
     {
@@ -52,7 +51,7 @@ export const TransactionHistoryDetial: FC = observer(function transactionDetail(
             Styles.textTitle,
             {
               fontWeight: titleFw ? titleFw : "400",
-              color: titleColor ? titleColor : "#84888D",
+              color: titleColor ? titleColor : colors.aluminium,
             },
           ]}
           tx={title}
@@ -97,7 +96,7 @@ export const TransactionHistoryDetial: FC = observer(function transactionDetail(
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image
-          source={Images.brgTransaction}
+          source={require("../../../../../assets/Images/img_bgr_transactionDetail.png")}
           style={[{ width: width, alignSelf: "center", zIndex: 1 }]}></Image>
 
         <View
@@ -125,7 +124,7 @@ export const TransactionHistoryDetial: FC = observer(function transactionDetail(
                   <Text style={{ marginRight: 5 }}>ID: 200113566777</Text>
                   <Svgs.ic_coppyID />
                 </View>
-                <Text style={{ color: "#ED1F43" }}>-12.000.000đ</Text>
+                <Text style={{ color: colors.alizarin }}>-12.000.000đ</Text>
               </View>
             </View>
           </View>
@@ -135,14 +134,14 @@ export const TransactionHistoryDetial: FC = observer(function transactionDetail(
               width: "91.5%",
               paddingVertical: scaleWidth(8),
               paddingHorizontal: scaleWidth(16),
-              backgroundColor: "#EFF8FF",
+              backgroundColor: colors.aliceBlue2,
               justifyContent: "space-between",
               marginVertical: scaleHeight(16),
             }}>
             <Text
               tx="tranSacTionHistory.transactionHistoryDetail"
               style={{
-                color: "#0078D4",
+                color: colors.navyBlue,
                 fontWeight: "700",
                 textTransform: "uppercase",
               }}
@@ -153,27 +152,27 @@ export const TransactionHistoryDetial: FC = observer(function transactionDetail(
             <DataItem
               title="tranSacTionHistory.transactionType"
               value={dataFake[0].transactionType}
-              color="#242424"
+              color={colors.nero}
             />
             <DataItem
               title="tranSacTionHistory.merchantPhone"
               value={dataFake[0].merchanPhone}
-              color="#242424"
+              color={colors.nero}
             />
             <DataItem
               title="tranSacTionHistory.merchantName"
               value={dataFake[0].merchanName}
-              color="#242424"
+              color={colors.nero}
             />
             <DataItem
               title="tranSacTionHistory.status"
               value={dataFake[0].merchanName}
-              color="#242424"
+              color={colors.nero}
             />
             <DataItem
               title="tranSacTionHistory.transactionTime"
               value={dataFake[0].time}
-              color="#242424"
+              color={colors.nero}
             />
           </View>
 
@@ -182,14 +181,14 @@ export const TransactionHistoryDetial: FC = observer(function transactionDetail(
               width: "91.5%",
               paddingVertical: scaleWidth(8),
               paddingHorizontal: scaleWidth(16),
-              backgroundColor: "#EFF8FF",
+              backgroundColor: colors.aliceBlue2,
               justifyContent: "space-between",
               marginVertical: scaleHeight(16),
             }}>
             <Text
               tx="tranSacTionHistory.paymentDetail"
               style={{
-                color: "#0078D4",
+                color: colors.navyBlue,
                 fontWeight: "700",
                 textTransform: "uppercase",
               }}
@@ -200,17 +199,17 @@ export const TransactionHistoryDetial: FC = observer(function transactionDetail(
             <DataItem
               title="tranSacTionHistory.amount"
               value={dataFake[0].amount}
-              color="#ED1F43"
+              color={colors.alizarin}
             />
             <DataItem
               title="tranSacTionHistory.fee"
               value={dataFake[0].fee}
-              color="#ED1F43"
+              color={colors.alizarin}
             />
             <DataItem
               title="tranSacTionHistory.totalAmount"
               value={dataFake[0].totalAmount}
-              color="#ED1F43"
+              color={colors.alizarin}
             />
           </View>
         </View>

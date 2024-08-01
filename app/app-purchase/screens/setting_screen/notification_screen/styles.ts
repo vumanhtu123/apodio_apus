@@ -10,7 +10,7 @@ import {
 
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: '#f6f7f9',
+    backgroundColor: colors.aliceBlue,
     flex: 1,
   },
   body: {

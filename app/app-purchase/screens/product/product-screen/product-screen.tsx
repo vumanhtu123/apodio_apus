@@ -100,10 +100,10 @@ export const ProductScreen: FC = () => {
         <Images.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
         <View style={{ marginHorizontal: scaleWidth(6) }}>
           <Text style={{ fontSize: fontSize.size10 }}>NCC00001 - {company}</Text>
-          <Text style={{ fontSize: fontSize.size10, color: '#747475' }}>02466989909</Text>
+          <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>02466989909</Text>
         </View>
       </View> */}
-      <View style={{ flex: 1, backgroundColor: "#f6f7f9" }}>
+      <View style={{ flex: 1, backgroundColor: colors.aliceBlue }}>
         <View style={styles.btnTab}>
           <View style={styles.rowBtnTab}>
             {btnTab.map((item, index) => {

@@ -165,7 +165,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                     <TouchableOpacity
                                         style={{
                                             borderRadius: 8,
-                                            backgroundColor: '#D9DADD',
+                                            backgroundColor: colors.hawkesBlue,
                                             width: scaleWidth(32),
                                             height: scaleHeight(36),
                                             marginRight: scaleWidth(16),
@@ -186,7 +186,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                     <View style={{
                                         // width:scaleWidth(260),
                                         // height:scaleHeight(32), 
-                                        backgroundColor: '#D9DADD',
+                                        backgroundColor: colors.hawkesBlue,
                                         borderRadius: 8,
                                         justifyContent: 'space-evenly',
                                         flexDirection: 'row',
@@ -198,7 +198,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                             paddingVertical: (scaleHeight(8)),
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            backgroundColor: selectCalendar === 1 ? "#FFF" : "#D9DADD",
+                                            backgroundColor: selectCalendar === 1 ? colors.white : colors.hawkesBlue,
                                             borderRadius: 8
                                         }}
                                             onPress={() => {
@@ -213,7 +213,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                             paddingHorizontal: (scaleWidth(12)),
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            backgroundColor: selectCalendar === 2 ? "#FFF" : "#D9DADD",
+                                            backgroundColor: selectCalendar === 2 ? colors.white : colors.hawkesBlue,
                                             borderRadius: 8
                                         }}
                                             onPress={() => {
@@ -228,7 +228,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                             paddingHorizontal: (scaleWidth(12)),
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            backgroundColor: selectCalendar === 3 ? "#FFF" : "#D9DADD",
+                                            backgroundColor: selectCalendar === 3 ? colors.white : colors.hawkesBlue,
                                             borderRadius: 8
                                         }}
                                             onPress={() => {
@@ -262,14 +262,14 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                     
                                                 >
                                                     <View>
-                                                        <Text style={{ fontSize: 12, fontWeight: '600', color: '#333' }}>{item.id}</Text>
+                                                        <Text style={{ fontSize: 12, fontWeight: '600', color: colors.nightRider }}>{item.id}</Text>
                                                         <View style={{ flexDirection: 'row' }}>
                                                             <Text style={Styles.stylesTextTime} >{item.time} </Text>
                                                             <Text style={Styles.stylesTextTime}> {item.date}</Text>
                                                         </View>
                                                     </View>
-                                                    <View style={{ backgroundColor: item.status === 'Đã thanh toán' ? '#DAFBDF' : '#FFEFF0', height: 14, paddingVertical: 2 }}>
-                                                        <Text style={{ fontSize: 8, color: item.status === 'Đã thanh toán' ? '#00CC6A' : 'red' }}>
+                                                    <View style={{ backgroundColor: item.status === 'Đã thanh toán' ? colors.greenTea : colors.redExDG, height: 14, paddingVertical: 2 }}>
+                                                        <Text style={{ fontSize: 8, color: item.status === 'Đã thanh toán' ? colors.malachite : 'red' }}>
                                                             {item.status}
                                                         </Text>
 
@@ -321,7 +321,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                     </TouchableOpacity>
 
                 </View>
-                {/* <View style={{ width: '100%',height:40, position: 'absolute', top: 50, alignItems:'center',flexDirection: 'row', backgroundColor: '#F2FAF6', paddingVertical: scaleHeight(7), paddingHorizontal: scaleWidth(16),zIndex:2 }}>
+                {/* <View style={{ width: '100%',height:40, position: 'absolute', top: 50, alignItems:'center',flexDirection: 'row', backgroundColor: colors.mintCream1, paddingVertical: scaleHeight(7), paddingHorizontal: scaleWidth(16),zIndex:2 }}>
 
                     <Images.ic_Tick_Green />
                     <Text style={{ fontSize: scaleWidth(12), color: colors.palette.malachite, marginLeft:3 }}>
@@ -360,11 +360,11 @@ const Styles = StyleSheet.create({
     line: {
         width: '100%',
         borderWidth: 1,
-        borderColor: '#F6F7FB',
+        borderColor: colors.ghostWhite,
         marginVertical: scaleWidth(12)
     },
     bodyItem: {
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         borderRadius: 8,
         paddingVertical: scaleHeight(10),
         paddingHorizontal: scaleWidth(16),

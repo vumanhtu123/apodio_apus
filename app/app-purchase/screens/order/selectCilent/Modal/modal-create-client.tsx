@@ -152,7 +152,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
             return (
                 <>
                     {selectCustomerType.label === "" && (
-                        <Text style={{ fontSize: 12, color: '#C95B36' }} tx="ClientScreen.pleaseSelectTypeClient" />
+                        <Text style={{ fontSize: 12, color: colors.ecstasy }} tx="ClientScreen.pleaseSelectTypeClient" />
                     )}
                 </>
             );
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -342,13 +342,13 @@ const styles = StyleSheet.create({
     },
     horizontalLine: {
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         marginBottom: 18,
     },
     selectKindClient: {
         borderRadius: 8,
-        backgroundColor: '#F6F7F9',
+        backgroundColor: colors.aliceBlue,
         paddingVertical: scaleHeight(8),
         paddingHorizontal: scaleWidth(18),
         marginVertical: scaleHeight(7)
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginRight: scaleWidth(12),
         borderRadius: 10,
-        borderColor: '#c8c8c8'
+        borderColor: colors.veryLightGrey
     },
     btnAdd: {
         width: scaleWidth(166),
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: '#0078d4'
+        backgroundColor: colors.navyBlue
     },
     // ... (other styles)
 });

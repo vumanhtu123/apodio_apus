@@ -56,7 +56,7 @@ const ProductWeightDetails = ({ dataClassification, detailProduct }: any) => {
                                                 <Text style={[styles.fontSizeWeight]}>
                                                     {item.uomGroupLineOutput?.unitName}
                                                 </Text>
-                                                <View style={{ backgroundColor: '#E7EFFF', height: 1 }} />
+                                                <View style={{ backgroundColor: colors.solitude2, height: 1 }} />
                                                 <Text style={[styles.fontSizeWeight]}>
                                                     {`${commasToDots(item.amount)} ${dataClassification.uom == null ? detailProduct?.uomGroupLineOutput?.unitName : dataClassification?.uom?.name}`}
                                                 </Text>

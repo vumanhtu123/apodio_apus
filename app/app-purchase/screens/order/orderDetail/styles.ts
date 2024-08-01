@@ -297,20 +297,20 @@ export const styles = StyleSheet.create({
     width: 40, // Adjust for desired circle size
     height: 40, // Adjust for desired circle size
     // borderRadius: '50%',
-    backgroundColor: '#ddd', // Adjust background color
+    backgroundColor: colors.gainsboro, // Adjust background color
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2, // Add border for completed steps
-    borderColor: '#ddd', // Adjust border color
+    borderColor: colors.gainsboro, // Adjust border color
   },
   stepText: {
     fontSize: fontSize.size16,
     fontWeight: 'bold',
-    color: '#333', // Adjust text color
+    color: colors.nightRider, // Adjust text color
   },
   labelText: {
     fontSize: fontSize.size14, // Adjust label text size
-    color: '#333', // Adjust label text color
+    color: colors.nightRider, // Adjust label text color
     marginTop: 5, // Adjust spacing between circle and label
   },
   rightBar: {
@@ -319,7 +319,7 @@ export const styles = StyleSheet.create({
     right: 0, // Align to the right edge
     width: scaleWidth(48), // Stretch the bar across the entire width
     height: 1, // Set the bar height to 1 pixel
-    backgroundColor: '#00CC6A',
+    backgroundColor: colors.malachite,
     left: scaleWidth(45)
   },
   titleHeader: {

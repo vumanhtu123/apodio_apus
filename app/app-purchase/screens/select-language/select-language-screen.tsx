@@ -15,6 +15,7 @@ import { LANGUAGE } from "../../utils/enum";
 import { navigate, NavigatorParamList } from "../../../app-purchase/navigators";
 import { changeLanguage } from "../../i18n";
 import Images from "../../../../assets/index";
+import { colors } from "../../theme";
 
 export const SelectLanguageScreen: FC<
   StackScreenProps<NavigatorParamList, "selectLanguage">
@@ -45,7 +46,7 @@ export const SelectLanguageScreen: FC<
     <View
       style={{
         flex: 1,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: colors.white,
         alignItems: "center",
         padding: 17,
       }}>
@@ -65,7 +66,7 @@ export const SelectLanguageScreen: FC<
           width: "100%",
           height: 56,
           borderRadius: 8,
-          backgroundColor: visible ? "#0078D4" : "#F2F2F2",
+          backgroundColor: visible ? colors.navyBlue : colors.gray,
           padding: 12,
           justifyContent: "center",
           marginVertical: 20,
@@ -88,7 +89,7 @@ export const SelectLanguageScreen: FC<
           width: "100%",
           height: 56,
           borderRadius: 8,
-          backgroundColor: !visible ? "#0078D4" : "#F2F2F2",
+          backgroundColor: !visible ? colors.navyBlue : colors.gray,
           padding: 12,
           justifyContent: "center",
         }}>

@@ -84,7 +84,7 @@ export const DetailsSupplierScreen: FC<
                   marginHorizontal: scaleWidth(13),
                   fontSize: 12,
                   fontWeight: "400",
-                  color: index == onclick ? "#0078D4" : "#242424",
+                  color: index == onclick ? colors.navyBlue : colors.nero,
                   marginBottom: 5,
                 }}>
                 {item.tittle}
@@ -92,7 +92,7 @@ export const DetailsSupplierScreen: FC<
               {index === onclick ? (
                 <View
                   style={{
-                    backgroundColor: "#0078D4",
+                    backgroundColor: colors.navyBlue,
                     height: 1,
                     width: scaleWidth(49),
                   }}></View>

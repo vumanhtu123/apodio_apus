@@ -298,7 +298,7 @@ const RenderOrderItem = ({
             position: "absolute",
             top: scaleHeight(56),
             right: scaleWidth(6),
-            backgroundColor: "#F6F7F9",
+            backgroundColor: colors.aliceBlue,
             zIndex: 1,
           }}>
           {viewProduct === "VIEW_VARIANT" && item.upc !== null ? (
@@ -530,12 +530,12 @@ const stylesItem = StyleSheet.create({
     marginBottom: scaleHeight(10),
   },
   title: {
-    color: "#242426",
+    color: colors.jaguar,
     fontSize: fontSize.size10,
     fontWeight: "700",
   },
   textName: {
-    color: "#242426",
+    color: colors.jaguar,
     fontSize: fontSize.size10,
     fontWeight: "400",
   },

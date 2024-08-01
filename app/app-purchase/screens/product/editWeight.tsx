@@ -60,7 +60,7 @@ export const EditWeight: FC = observer(
 
         return (
             <FormProvider {...methods}>
-                <View style={{ backgroundColor: '#FFFFFF', flex: 1 }}>
+                <View style={{ backgroundColor: colors.white, flex: 1 }}>
                     <Header
                         LeftIcon={Svgs.back}
                         onLeftPress={() => navigation.goBack()}

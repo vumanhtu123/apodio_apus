@@ -155,7 +155,7 @@ export const ListRevenueScreen: FC<
               marginHorizontal: 16,
               alignItems: "center",
             }}>
-            <Text style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
+            <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
               {translate("analysis.balance")}
               <Text
                 style={{
@@ -172,7 +172,7 @@ export const ListRevenueScreen: FC<
               <Svgs.ic_Chartbar />
               <Text
                 style={{
-                  color: "#0078D4",
+                  color: colors.navyBlue,
                   fontSize: 12,
                   fontWeight: "400",
                 }}>
@@ -194,7 +194,7 @@ export const ListRevenueScreen: FC<
                 style={{
                   fontSize: 10,
                   fontWeight: "400",
-                  color: "#242424",
+                  color: colors.nero,
                   flex: 1,
                 }}></Text>
               <Text
@@ -202,7 +202,7 @@ export const ListRevenueScreen: FC<
                 style={{
                   fontSize: 10,
                   fontWeight: "400",
-                  color: "#242424",
+                  color: colors.nero,
                   // flex: 1,
                   marginRight: scaleWidth(30),
                 }}></Text>
@@ -252,13 +252,13 @@ export const ListRevenueScreen: FC<
             style={{
               fontSize: 14,
               fontWeight: "600",
-              color: "#FFFFFF",
+              color: colors.white,
               marginLeft: 5,
             }}></Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            backgroundColor: "#00CC6A",
+            backgroundColor: colors.malachite,
             flexDirection: "row",
             // paddingHorizontal: 36,
             justifyContent: "center",
@@ -275,7 +275,7 @@ export const ListRevenueScreen: FC<
             style={{
               fontSize: 14,
               fontWeight: "600",
-              color: "#FFFFFF",
+              color: colors.white,
               marginLeft: 5,
             }}></Text>
         </TouchableOpacity>
@@ -333,7 +333,7 @@ const ItemSum = () => {
         style={{
           flex: 1,
           paddingVertical: 15,
-          backgroundColor: "#F6F7F9",
+          backgroundColor: colors.aliceBlue,
           borderRadius: 6,
           flexDirection: "row",
         }}>
@@ -345,7 +345,7 @@ const ItemSum = () => {
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
             }}></Text>
           <Text
             style={{
@@ -361,7 +361,7 @@ const ItemSum = () => {
         style={{
           marginLeft: scaleWidth(15),
           paddingVertical: 15,
-          backgroundColor: "#F6F7F9",
+          backgroundColor: colors.aliceBlue,
           flex: 1,
           borderRadius: 6,
           flexDirection: "row",
@@ -373,13 +373,13 @@ const ItemSum = () => {
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
             }}></Text>
           <Text
             style={{
               fontSize: 16,
               fontWeight: "600",
-              color: "#00CC6A",
+              color: colors.malachite,
             }}>
             900.000
           </Text>

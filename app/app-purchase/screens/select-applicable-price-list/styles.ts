@@ -5,7 +5,7 @@ export const Styles = StyleSheet.create({
     stylesBtnBottom: {
         // position: 'absolute',
         // bottom:0,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         padding: scaleWidth(16),
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -16,7 +16,7 @@ export const Styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 7,
         padding: scaleWidth(12),
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         alignItems: 'center',
 
         borderColor: colors.palette.navyBlue,

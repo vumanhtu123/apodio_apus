@@ -35,7 +35,6 @@ import {
 import PriceModal from "./modal-price";
 import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
 import { useStores } from "../../../models";
-import Images from "../../../../../assets/index";
 
 interface AddProduct {
   onPress: ({}) => void;
@@ -152,7 +151,7 @@ export default function ItemListProduct(props: AddProduct) {
             imageStyle={{
               borderRadius: 12,
             }}
-            source={Images.noImages}>
+            source={require("../../../../../assets/Images/no_images.png")}>
             <FastImage
               style={{
                 width: scaleWidth(48),
@@ -163,7 +162,7 @@ export default function ItemListProduct(props: AddProduct) {
                 uri: images != null && images.length > 0 ? images[0] : "",
                 cache: FastImage.cacheControl.immutable,
               }}
-              defaultSource={Images.noImages}
+              defaultSource={require("../../../../../assets/Images/no_images.png")}
             />
           </ImageBackground>
         </View>
@@ -224,7 +223,7 @@ export default function ItemListProduct(props: AddProduct) {
                   style={{
                     fontSize: 10,
                     fontWeight: "400",
-                    color: "#242424",
+                    color: colors.nero,
                     marginHorizontal: 4,
                     maxWidth: scaleWidth(100),
                   }}>
@@ -236,7 +235,7 @@ export default function ItemListProduct(props: AddProduct) {
                     fontSize: 10,
                     fontWeight: "400",
                     fontStyle: "italic",
-                    color: "#F4AD22",
+                    color: colors.yellow,
                   }}>
                   {formatVND(formatCurrency(commasToDots(valueVAT)))}
                 </Text>
@@ -256,7 +255,7 @@ export default function ItemListProduct(props: AddProduct) {
                   style={{
                     fontSize: 10,
                     fontWeight: "600",
-                    color: "#F4AD22",
+                    color: colors.yellow,
                     marginHorizontal: 2,
                     fontStyle: "italic",
                   }}>
@@ -282,7 +281,7 @@ export default function ItemListProduct(props: AddProduct) {
                       style={{
                         fontSize: 10,
                         fontWeight: "600",
-                        color: "#00CC6A",
+                        color: colors.malachite,
                         marginHorizontal: 2,
                         fontStyle: "italic",
                       }}>
@@ -313,7 +312,7 @@ export default function ItemListProduct(props: AddProduct) {
               //                 fontWeight: "400",
               //                 height: scaleHeight(16),
               //                 alignContent: "center",
-              //                 borderColor: "#F6F7FB",
+              //                 borderColor: colors.ghostWhite,
               //                 padding: 0,
               //                 paddingBottom: 2,
               //                 paddingLeft: 4,
@@ -325,7 +324,7 @@ export default function ItemListProduct(props: AddProduct) {
               //               keyboardType="numeric"
               //               maxLength={3}
               //               placeholder={translate("order.input_texas")}
-              //               placeholderTextColor={"#747475"}
+              //               placeholderTextColor={colors.dolphin}
               //               onChangeText={(newText) => {
               //                 // inputDiscount(newText);
               //                 onChange(newText)
@@ -370,7 +369,7 @@ export default function ItemListProduct(props: AddProduct) {
             style={{
               fontSize: 10,
               fontWeight: "400",
-              color: "#242424",
+              color: colors.nero,
               fontStyle: "italic",
               marginVertical: 6,
             }}>

@@ -35,8 +35,8 @@ export const ItemListMustPay: FC<ItemProps> = ({ item, onClick, idSelect }) => {
                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
                 colors={
                     [
-                        idSelect == item?.id ? colors.palette.navyBlue : '#FFF',
-                        idSelect == item?.id ? colors.palette.malibu : '#FFF'
+                        idSelect == item?.id ? colors.palette.navyBlue : colors.white,
+                        idSelect == item?.id ? colors.palette.malibu : colors.white
                     ]
                 }
                 style={{

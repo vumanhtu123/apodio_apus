@@ -880,15 +880,15 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                   borderColor: colors.palette.neutral100,
                   borderWidth: 2,
                 }}
-                dotColor={"#BBB9B9"}
-                inactiveDotColor={"#BBB9B9"}
+                dotColor={colors.silver}
+                inactiveDotColor={colors.silver}
                 inactiveDotOpacity={1}
                 inactiveDotScale={1}
                 inactiveDotStyle={{
                   width: scaleWidth(8),
                   height: scaleHeight(8),
                   borderRadius: 5,
-                  borderColor: "#BBB9B9",
+                  borderColor: colors.silver,
                   borderWidth: 2,
                 }}
               />

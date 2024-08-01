@@ -22,7 +22,7 @@ const ItemListTransaction: FC<ItemTransaction> = ({ item, onPress }) => {
     return (
         <TouchableOpacity
             key={item.id}
-            style={{ backgroundColor: '#FFF', marginBottom: 10, borderRadius: margin.margin_8, padding: scaleWidth(15) }}
+            style={{ backgroundColor: colors.white, marginBottom: 10, borderRadius: margin.margin_8, padding: scaleWidth(15) }}
             onPress={() => {
                 onPress()
             }}

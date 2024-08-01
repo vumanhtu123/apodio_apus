@@ -48,7 +48,7 @@ export const OrderSuccess: FC = () => {
           colors={[colors.palette.navyBlue, colors.palette.malibu]}
           style={{ height: scaleHeight(228) }}></LinearGradient>
         <ImageBackground
-          source={Images.backgroundSuccess}
+          source={require("../../../../../assets/Images/back_Ground_Success.png")}
           style={{
             position: "absolute",
             alignItems: "center",
@@ -74,7 +74,7 @@ export const OrderSuccess: FC = () => {
               style={{
                 fontSize: fontSize.size14,
                 fontWeight: "500",
-                color: "#84888D",
+                color: colors.aluminium,
               }}
             />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -168,9 +168,9 @@ export const OrderSuccess: FC = () => {
               justifyContent: "center",
               alignItems: "center",
               borderRadius: scaleWidth(10),
-              borderColor: "#c8c8c8",
+              borderColor: colors.veryLightGrey,
               paddingVertical: scaleHeight(12),
-              backgroundColor: "#0078d4",
+              backgroundColor: colors.navyBlue,
             }}>
             <Text
               tx="successScreen.btnCreateOrder"
@@ -196,7 +196,7 @@ export const OrderSuccess: FC = () => {
             tx="successScreen.btnDetailOrder"
             style={{
               fontSize: fontSize.size14,
-              color: "#0078D4",
+              color: colors.navyBlue,
               fontWeight: "700",
             }}
           />
@@ -216,7 +216,7 @@ export const OrderSuccess: FC = () => {
             tx="successScreen.btnBack"
             style={{
               fontSize: fontSize.size14,
-              color: "#0078D4",
+              color: colors.navyBlue,
               fontWeight: "700",
             }}
           />

@@ -54,7 +54,7 @@ export const SplashScreen1: FC<
         />
         <Text
           tx="inforMerchant.loading"
-          style={{ color: "#FFFFFF", fontSize: 18, textTransform: "uppercase" }}
+          style={{ color: colors.white, fontSize: 18, textTransform: "uppercase" }}
         />
       </View>
     </LinearGradient>

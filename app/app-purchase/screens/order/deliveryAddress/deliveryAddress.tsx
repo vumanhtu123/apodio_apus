@@ -1,28 +1,23 @@
-import { Observer, observer } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import React, {
-  Dimensions,
   FlatList,
-  KeyboardAvoidingView,
-  Platform,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Header, Switch, Text, TextField } from "../../../../components";
+import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { styles } from "./styles";
 import {
   colors,
   margin,
-  padding,
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import {
-  OrderListAddressResult,
   Root1,
 } from "../../../models/order-store/entities/order-address-model";
 
@@ -221,7 +216,7 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
                   <View
                     style={{
                       height: 1,
-                      backgroundColor: "#E7EFFF",
+                      backgroundColor: colors.solitude2,
                       marginTop: scaleHeight(margin.margin_15),
                     }}></View>
                 </TouchableOpacity>

@@ -144,7 +144,7 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
                     onPress={onPressConfirm}
                 >
 
-                    <Text tx="ImprotGoodsBook.confrim" style={{ color: '#FFF', fontSize: fontSize.size14 }}></Text>
+                    <Text tx="ImprotGoodsBook.confrim" style={{ color: colors.white, fontSize: fontSize.size14 }}></Text>
                 </TouchableOpacity>
 
             </View>

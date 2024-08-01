@@ -297,7 +297,7 @@ export const ChooseVendorScreen: FC = () => {
                   style={{
                     fontSize: fontSize.size9,
                     fontWeight: "500",
-                    color: "#ffffff",
+                    color: colors.white,
                   }}>
                   {selectedCount}
                 </Text>
@@ -329,7 +329,7 @@ export const ChooseVendorScreen: FC = () => {
 };
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: "#FfFfFf",
+    backgroundColor: colors.white,
     flex: 1,
   },
   rowBtnTab: {
@@ -350,8 +350,8 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   activeButton: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -361,8 +361,8 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   activeButtonCategory: {
-    backgroundColor: "#fff",
-    shadowColor: "#000",
+    backgroundColor: colors.white,
+    shadowColor: colors.black,
     shadowOffset: {
       width: -2,
       height: 2,
@@ -378,10 +378,10 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   activeButtonText: {
-    color: "#0078D4",
+    color: colors.navyBlue,
   },
   discount: {
-    backgroundColor: "#FF0000",
+    backgroundColor: colors.red,
     alignItems: "center",
     justifyContent: "center",
     width: scaleWidth(32),

@@ -424,7 +424,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
             </View>
             <Text
               tx="ClientScreen.client"
-              style={{ fontSize: fontSize.size12, color: "#747475" }}
+              style={{ fontSize: fontSize.size12, color: colors.dolphin }}
             />
             <Text
               text={data.partner?.name}
@@ -497,7 +497,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                     inputStyle={{
                       fontSize: fontSize.size16,
                       fontWeight: "500",
-                      color: "#000000",
+                      color: colors.black,
                     }}
                     value={value}
                     valueInput={
@@ -538,7 +538,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                   inputStyle={{
                     fontSize: fontSize.size16,
                     fontWeight: "500",
-                    color: "#000000",
+                    color: colors.black,
                   }}
                   valueInput={
                     minDateE ? moment(minDateE).format("DD/MM/YYYY") : ""
@@ -602,7 +602,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                       imageStyle={{
                         borderRadius: 16,
                       }}
-                      source={Images.noImages}>
+                      source={require("../../../../../assets/Images/no_images.png")}>
                       <FastImage
                         style={{
                           width: scaleWidth(48),
@@ -613,7 +613,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                           uri: `${item.productInfo?.productImage ?? ""}`,
                           cache: FastImage.cacheControl.immutable,
                         }}
-                        defaultSource={Images.noImages}
+                        defaultSource={require("../../../../../assets/Images/no_images.png")}
                       />
                     </ImageBackground>
                     <View style={{ flex: 1 }}>

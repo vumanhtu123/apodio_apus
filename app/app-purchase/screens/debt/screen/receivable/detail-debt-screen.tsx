@@ -129,7 +129,7 @@ export const DetailReceivable: FC<
                 style={Styles.styleBtnPay}
                 onPress={() => setIsVisible(!isVisible)}>
                 <Text
-                  style={{ fontSize: fontSize.size12, color: "#FFF" }}
+                  style={{ fontSize: fontSize.size12, color: colors.white }}
                   tx="debtScreen.pay2"></Text>
               </TouchableOpacity>
             </View>
@@ -170,7 +170,7 @@ export const DetailReceivable: FC<
             <Text
               style={{
                 fontSize: fontSize.size12,
-                color: "#747475",
+                color: colors.dolphin,
               }}>
               Đối tác vận chuyển
             </Text>
@@ -200,7 +200,7 @@ export const DetailReceivable: FC<
       <FlatList
         style={{
           flex: 1,
-          backgroundColor: "#FFF",
+          backgroundColor: colors.white,
           padding: scaleWidth(15),
           borderRadius: scaleWidth(8),
           marginHorizontal: scaleWidth(15),

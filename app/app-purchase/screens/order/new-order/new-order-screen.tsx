@@ -1041,7 +1041,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                 style={{
                   fontSize: fontSize.size10,
                   fontWeight: "400",
-                  color: "#242424",
+                  color: colors.nero,
                 }}></Text>
               <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
                 <View style={{ flexDirection: "row" }}>
@@ -1050,7 +1050,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                     style={{
                       fontSize: fontSize.size10,
                       fontWeight: "400",
-                      color: "#242424",
+                      color: colors.nero,
                       marginRight: 6,
                     }}></Text>
                   <Svgs.icon_caretRight2 />
@@ -1063,7 +1063,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                       style={{
                         fontWeight: "400",
                         fontSize: fontSize.size10,
-                        color: "#747475",
+                        color: colors.dolphin,
                         alignContent: "center",
                       }}></Text>
                     <Text
@@ -1076,8 +1076,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                               store.orderStore.dataDebtLimit.amountOwed ?? 0
                             ))) >
                             Number(price)
-                            ? "#00CC6A"
-                            : "#FF0000",
+                            ? colors.malachite
+                            : colors.red,
                       }}>
                       {formatVND(formatCurrency(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
                         Number(
@@ -1087,7 +1087,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
                         style={{
                           fontWeight: "400",
                           fontSize: fontSize.size10,
-                          color: "#747475",
+                          color: colors.dolphin,
                           alignContent: "center",
                         }}>
                         )
@@ -1269,7 +1269,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               <Text
                 text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
                 style={{
-                  color: "#747475",
+                  color: colors.dolphin,
                   fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}>
@@ -1327,7 +1327,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             <Text
               tx={'order.debtLimit'}
               style={{
-                color: "#747475",
+                color: colors.dolphin,
                 fontSize: fontSize.size12,
                 fontWeight: "400",
                 flex: 1,

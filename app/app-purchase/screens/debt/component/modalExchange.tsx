@@ -75,7 +75,7 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
           style={{
             width: scaleWidth(68),
             height: scaleHeight(5),
-            backgroundColor: "#C7C7C7",
+            backgroundColor: colors.veryLightGrey1,
             borderRadius: margin.margin_8,
             marginBottom: scaleWidth(25),
             alignSelf: "center",
@@ -116,7 +116,7 @@ export const ModalExchange: FC<propModal> = ({ isVisible, setIsVisible }) => {
               <TextField
                 labelTx={"debtScreen.writeCommentHere"}
                 // placeholderTx={"debtScreen.writeCommentHere"}
-                style={{ backgroundColor: "#FFF" }}
+                style={{ backgroundColor: colors.white }}
               />
             )}
             rules={{

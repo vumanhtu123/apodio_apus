@@ -4,6 +4,7 @@ import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
 import Images from "../../../../../assets/index";
+import { colors } from "../../../theme";
 
 export const BodyDetailsOrder = (data: any) => {
   const [dataOrder, setData] = useState<any[]>([]);
@@ -44,7 +45,7 @@ export const BodyDetailsOrder = (data: any) => {
                     style={{
                       fontSize: 12,
                       fontWeight: "600",
-                      color: "#242424",
+                      color: colors.nero,
                     }}>
                     {item.name ?? "Gạch 1566CB502 60x60"}
                   </Text>
@@ -52,7 +53,7 @@ export const BodyDetailsOrder = (data: any) => {
                     style={{
                       fontSize: 12,
                       fontWeight: "400",
-                      color: "#747475",
+                      color: colors.dolphin,
                     }}>
                     {item.size ?? "- 30 Hộp"}
                   </Text>
@@ -70,7 +71,7 @@ export const BodyDetailsOrder = (data: any) => {
                           style={{
                             fontSize: 10,
                             fontWeight: "400",
-                            color: "#0078D4",
+                            color: colors.navyBlue,
                             fontStyle: "italic",
                           }}>
                           {item.vat ?? "100.000"}
@@ -83,7 +84,7 @@ export const BodyDetailsOrder = (data: any) => {
               </View>
               <Text
                 style={{
-                  color: "#0078D4",
+                  color: colors.navyBlue,
                   fontSize: 12,
                   fontWeight: "600",
                   fontStyle: "italic",
@@ -95,7 +96,7 @@ export const BodyDetailsOrder = (data: any) => {
             <View
               style={{
                 height: 1,
-                backgroundColor: "#F6F7FB",
+                backgroundColor: colors.ghostWhite,
                 marginVertical: 12,
               }}></View>
           </View>
@@ -121,10 +122,11 @@ export const PromotionList = (data: any) => {
         borderRadius: 8,
       }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Khuyến mại
         </Text>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
+        <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
           5.000.000đ
         </Text>
       </View>
@@ -138,13 +140,13 @@ export const PromotionList = (data: any) => {
             <View style={{ flexDirection: "row", marginTop: 10 }}>
               <Svgs.ic_tag />
               <Text
-                style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
+                style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
                 {"  "}
                 Giảm {data.disCount ?? "10%"}{" "}
               </Text>
               <View style={{ height: 10 }} />
               <Text
-                style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
+                style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
                 tối đa {data.maxValue ?? "30K"}
               </Text>
             </View>
@@ -167,11 +169,11 @@ export const Payment = () => {
         backgroundColor: "white",
         borderRadius: 8,
       }}>
-      <Text style={{ color: "#242424", fontSize: 12, fontWeight: "600" }}>
+      <Text style={{ color: colors.nero, fontSize: 12, fontWeight: "600" }}>
         Phương thức thanh toán
       </Text>
       <View style={{ height: 15 }} />
-      <Text style={{ color: "#242424", fontSize: 12, fontWeight: "400" }}>
+      <Text style={{ color: colors.nero, fontSize: 12, fontWeight: "400" }}>
         Thanh toán luôn
       </Text>
     </View>
@@ -191,55 +193,58 @@ export const InfoPayment = () => {
         justifyContent: "space-between",
       }}>
       <View style={{ flexDirection: "column" }}>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Tổng tiền hàng
         </Text>
         <Text
           style={{
             fontSize: 10,
             fontWeight: "400",
-            color: "#747475",
+            color: colors.dolphin,
             paddingVertical: 8,
           }}>
           Chiết khấu:
         </Text>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Khuyến mại:
         </Text>
         <Text
           style={{
             fontSize: 10,
             fontWeight: "400",
-            color: "#747475",
+            color: colors.dolphin,
             paddingVertical: 8,
           }}>
           Tổng tiền thuế:
         </Text>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#747475" }}>
+        <Text
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
           Tổng thanh toán:
         </Text>
       </View>
       <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
+        <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
           30.000.000đ
         </Text>
         <Text
           style={{
             fontSize: 10,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
             paddingVertical: 8,
           }}>
           0đ
         </Text>
-        <Text style={{ fontSize: 10, fontWeight: "400", color: "#242424" }}>
+        <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
           5.000.000đ
         </Text>
         <Text
           style={{
             fontSize: 10,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
             paddingVertical: 8,
           }}>
           100.000đ
@@ -266,14 +271,14 @@ export const Notes = () => {
         justifyContent: "space-between",
       }}>
       <View style={{ flexDirection: "column" }}>
-        <Text style={{ fontSize: 12, fontWeight: "600", color: "#242424" }}>
+        <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
           Ghi Chú
         </Text>
         <Text
           style={{
             fontSize: 12,
             fontWeight: "400",
-            color: "#242424",
+            color: colors.nero,
             marginTop: 15,
           }}>
           Mong muốn giao trước 30/04/2024
