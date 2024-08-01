@@ -628,7 +628,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.heatWave }}
               name={"dashboard.orders"}
               Icon={Svgs.icon_orders}
-              onPress={() => {}}
+              onPress={() => {navigation.navigate("orders" as never)}}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.metallicBlue }}
@@ -662,7 +662,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.torchRed }}
               name={"dashboard.product"}
               Icon={Svgs.icon_product}
-              onPress={() => {}}
+              onPress={() => navigation.navigate("products" as never)}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.malachite }}

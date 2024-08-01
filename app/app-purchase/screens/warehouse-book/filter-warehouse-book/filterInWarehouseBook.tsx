@@ -141,7 +141,7 @@ export const FilterWarehouseBook: FC<
       <ScrollView style={{ flex: 1 }}>
         <View
           style={{
-            backgroundColor: "#FFF",
+            backgroundColor: colors.white,
             borderRadius: scaleWidth(8),
             height: "100%",
           }}>
@@ -178,12 +178,12 @@ export const FilterWarehouseBook: FC<
                         styles.styleIemTime,
                         {
                           backgroundColor:
-                            indexTime === index ? "#EFF8FF" : "#F6F7F9",
+                            indexTime === index ? colors.aliceBlue2 : colors.aliceBlue,
                           borderWidth: 1,
                           borderColor:
                             indexTime == index
                               ? colors.palette.navyBlue
-                              : "#F6F7F9",
+                              : colors.aliceBlue,
                         },
                       ]}>
                       <Text
@@ -214,7 +214,7 @@ export const FilterWarehouseBook: FC<
                   marginRight: scaleWidth(16),
                   fontSize: scaleWidth(12),
                   alignSelf: "center",
-                  color: "#747475",
+                  color: colors.dolphin,
                 }}
                 tx="warehouseBook.from"></Text>
               <View
@@ -260,7 +260,7 @@ export const FilterWarehouseBook: FC<
                   marginRight: scaleWidth(16),
                   fontSize: scaleWidth(12),
                   alignSelf: "center",
-                  color: "#747475",
+                  color: colors.dolphin,
                 }}
                 tx="warehouseBook.to"></Text>
               <View
@@ -300,12 +300,12 @@ export const FilterWarehouseBook: FC<
                         styles.styleIemTime,
                         {
                           backgroundColor:
-                            indexClassify === index ? "#EFF8FF" : "#F6F7F9",
+                            indexClassify === index ? colors.aliceBlue2 : colors.aliceBlue,
                           borderWidth: 1,
                           borderColor:
                             indexClassify == index
                               ? colors.palette.navyBlue
-                              : "#F6F7F9",
+                              : colors.aliceBlue,
                         },
                       ]}>
                       <Text
@@ -346,13 +346,13 @@ export const FilterWarehouseBook: FC<
                           {
                             backgroundColor:
                               indexTypeOfGoods === index
-                                ? "#EFF8FF"
-                                : "#F6F7F9",
+                                ? colors.aliceBlue2
+                                : colors.aliceBlue,
                             borderWidth: 1,
                             borderColor:
                               indexTypeOfGoods == index
                                 ? colors.palette.navyBlue
-                                : "#F6F7F9",
+                                : colors.aliceBlue,
                           },
                         ]}>
                         <Text
@@ -404,7 +404,7 @@ export const FilterWarehouseBook: FC<
                     backgroundColor:
                       slectedReportDetail == en.warehouseBook.reset
                         ? colors.palette.navyBlue
-                        : "#FFF",
+                        : colors.white,
                   },
                 ]}
                 onPress={() => {
@@ -416,8 +416,8 @@ export const FilterWarehouseBook: FC<
                     fontSize: scaleWidth(14),
                     color:
                       slectedReportDetail == en.warehouseBook.reset
-                        ? "#FFF"
-                        : "#747475",
+                        ? colors.white
+                        : colors.dolphin,
                   }}
                 />
               </TouchableOpacity>
@@ -432,7 +432,7 @@ export const FilterWarehouseBook: FC<
                     backgroundColor:
                       slectedReportDetail == en.warehouseBook.apply
                         ? colors.palette.navyBlue
-                        : "#FFF",
+                        : colors.white,
                   },
                 ]}
                 onPress={() => {
@@ -455,8 +455,8 @@ export const FilterWarehouseBook: FC<
                     fontSize: scaleWidth(14),
                     color:
                       slectedReportDetail == en.warehouseBook.apply
-                        ? "#FFF"
-                        : "#747475",
+                        ? colors.white
+                        : colors.dolphin,
                   }}
                 />
               </TouchableOpacity>

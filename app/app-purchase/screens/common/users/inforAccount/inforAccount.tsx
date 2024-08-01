@@ -7,7 +7,7 @@ import React from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Header } from "../../../../../components";
 import { Svgs } from "../../../../../../assets/svgs";
-import { scaleHeight, scaleWidth } from "../../../../theme";
+import { colors, scaleHeight, scaleWidth } from "../../../../theme";
 import { Text } from "../../../../../components";
 import { Dimensions } from 'react-native';
 import { useStores } from "../../../../models";
@@ -43,12 +43,12 @@ export const InfoAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount"
                         justifyContent: 'space-between',
                         marginTop: 9,
                     }}>
-                    <Text style={{ fontSize: 14, color: '#84888D' }} tx={label}></Text>
+                    <Text style={{ fontSize: 14, color: colors.aluminium }} tx={label}></Text>
                     <Text
                         numberOfLines={1}
                         style={{
                             fontSize: 14,
-                            color: '#323232',
+                            color: colors.nightRider1,
                             maxWidth: 200,
                             fontFamily: 'Arial',
                             fontWeight: '700',
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     },
     divider: {
         height: 1,
-        backgroundColor: '#F2F2F2',
+        backgroundColor: colors.gray,
         marginLeft: 31,
         marginRight: 15,
         marginTop: 16,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     },
     main: {
         flex: 1,
-        backgroundColor: '#F0F0F0',
+        backgroundColor: colors.whiteSmoke2,
     },
     merchantInfor: {
         backgroundColor: 'white',
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
-        color: '#323232',
+        color: colors.nightRider1,
         paddingTop: 9,
         paddingLeft: 24,
         fontFamily: 'Arial',
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     },
     line: {
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: 9,
     },
     image: {
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
 
     label: {
         fontSize: 14,
-        color: '#84888D',
+        color: colors.aluminium,
         alignSelf: 'center',
     },
 });

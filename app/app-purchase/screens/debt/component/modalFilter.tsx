@@ -34,7 +34,7 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
                 <View style={{
                     width: scaleWidth(68),
                     height: scaleHeight(5),
-                    backgroundColor: '#C7C7C7',
+                    backgroundColor: colors.veryLightGrey1,
                     borderRadius: 10,
                     marginBottom: scaleWidth(25),
                     alignSelf: 'center'
@@ -76,7 +76,7 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
                     </View>
                     <View style={Styles.styleBtnSwipe}>
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: selectUpOrDow == 'Dow' ? '#FFF' : '#EDEDEE' }]}
+                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: selectUpOrDow == 'Dow' ? colors.white : colors.lavender }]}
                             onPress={() => setSelectUpOrDow('Dow')}
                         >
                             <Text style={{ fontSize: fontSize.size12, padding: 7 }}
@@ -86,7 +86,7 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: selectUpOrDow == 'Up' ? '#FFF' : "#EDEDEE" }]}
+                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: selectUpOrDow == 'Up' ? colors.white : colors.lavender }]}
                             onPress={() => setSelectUpOrDow('Up')}
                         >
                             <Text style={{ fontSize: fontSize.size12, padding: 7 }}
@@ -109,7 +109,7 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
                     </View>
                     <View style={Styles.styleBtnSwipe}>
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: totalDebt == 'Dow' ? '#FFF' : '#EDEDEE' }]}
+                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: totalDebt == 'Dow' ? colors.white : colors.lavender }]}
                             onPress={() => setTotalDebt('Dow')}
                         >
                             <Text style={{ fontSize: fontSize.size12, padding: 7 }}
@@ -118,7 +118,7 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
                             </Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: totalDebt == 'Up' ? '#FFF' : "#EDEDEE" }]}
+                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: totalDebt == 'Up' ? colors.white : colors.lavender }]}
                             onPress={() => setTotalDebt('Up')}
                         >
                             <Text style={{ fontSize: fontSize.size12, padding: 7 }}

@@ -305,7 +305,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 }}
                 LeftIcon={Svgs.back}
                 headerTx="inforMerchant.setTingShop"
-                titleStyle={{ color: "#ffffff" }}
+                titleStyle={{ color: colors.white }}
                 type={"AntDesign"}
                 onLeftPress={() => navigation.goBack()}
               />
@@ -420,7 +420,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             </Row>
 
             <View
-              style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
+              style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
             />
             <TouchableOpacity
               style={{
@@ -442,7 +442,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               {selectLanguage ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
             <View
-              style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
+              style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
             />
 
             <TouchableOpacity
@@ -493,7 +493,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               }}
             />
             <View
-              style={{ width: "100%", height: 1, backgroundColor: "#E7EFFF" }}
+              style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
             />
             <TouchableOpacity
               style={{ marginVertical: 15, alignItems: "center" }}
@@ -550,7 +550,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             style={{ backgroundColor: colors.palette.white, borderRadius: 8 }}>
             <View
               style={{
-                backgroundColor: "#C7C7C7",
+                backgroundColor: colors.veryLightGrey1,
                 width: 68,
                 height: 5,
                 borderRadius: 100,
@@ -567,7 +567,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                   justifyContent: "space-between",
                   borderBottomWidth: 1,
                   marginBottom: scaleHeight(15),
-                  borderBottomColor: "#E7EFFF",
+                  borderBottomColor: colors.solitude2,
                 }}>
                 <Text tx="menuDrawer.feedback" style={{ fontWeight: "bold" }} />
                 <TouchableOpacity

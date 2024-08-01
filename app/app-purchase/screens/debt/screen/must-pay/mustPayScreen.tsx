@@ -159,7 +159,7 @@ export const MustPayScreen: FC<
         <View
           style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
           <Svgs.img_not_init />
-          <Text tx="debtScreen.notThing" style={{ color: "#848688" }} />
+          <Text tx="debtScreen.notThing" style={{ color: colors.aluminium1 }} />
         </View>
       )}
 

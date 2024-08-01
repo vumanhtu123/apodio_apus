@@ -95,7 +95,7 @@ const Modal_Infor_wareHouse: FC<ModalCreateGroup> = ({ isVisible, setIsVisible }
                                 onPress={() => setIsVisible(!isVisible)}
                             >
                                 <Text
-                                 style={{color:'#FFF'}}
+                                 style={{color:colors.white}}
                                  tx='wareHouse.confirm'
                                 >
                                 </Text>
@@ -123,14 +123,14 @@ const Styles = StyleSheet.create({
     },
     modalView: {
         borderRadius: 8,
-        backgroundColor: '#FFF',
+        backgroundColor: colors.white,
         padding: scaleWidth(padding.padding_16)
     },
     modalText: {
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -153,7 +153,7 @@ const Styles = StyleSheet.create({
     },
     horizontalLine: {
         height: 1,
-        backgroundColor: '#E7EFFF',
+        backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         marginBottom: 18,
     },
@@ -165,7 +165,7 @@ const Styles = StyleSheet.create({
     styleTextInPut: {
         width: '100%',
         borderRadius: 8,
-        backgroundColor: '#F6F7F9',
+        backgroundColor: colors.aliceBlue,
     },
     btnCreate: {
         backgroundColor: colors.palette.navyBlue,
@@ -178,6 +178,6 @@ const Styles = StyleSheet.create({
     styleTxT: {
         fontFamily: 'Inter',
         fontWeight: '600',
-        color: '#FFF'
+        color: colors.white
     }
 })

@@ -117,7 +117,7 @@ const Tabbar = ({ route, isFocused, options, onPress, label, IconTabBar }) => {
       <Text
         tx={label}
         style={{
-          color: isFocused ? colors.yellow : '#B6B6B6',
+          color: isFocused ? colors.yellow : colors.normalNavigator,
           marginTop: scaleHeight(5),
           fontSize: fontSize.size11,
         }}
@@ -132,10 +132,10 @@ const viewTabbar: ViewStyle = {
   paddingVertical: scaleHeight(10),
   borderTopLeftRadius: 20,
   borderTopRightRadius: 20,
-  backgroundColor: '#FFFFFF',
+  backgroundColor: colors.white,
   paddingHorizontal: scaleWidth(15),
   paddingBottom: Platform.OS === 'android' ? scaleHeight(15) : scaleHeight(25),
-  shadowColor: '#000', // Màu của bóng
+  shadowColor: colors.black, // Màu của bóng
   shadowOffset: { width: 0, height: -2 }, // Độ dịch chuyển của bóng theo trục x và y
   shadowOpacity: 0.25, // Độ mờ của bóng
   shadowRadius: 3, // Bán kính của bóng

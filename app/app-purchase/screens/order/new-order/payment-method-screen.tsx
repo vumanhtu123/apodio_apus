@@ -184,7 +184,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               <Text
                 tx="order.tittle_warning"
                 style={{
-                  color: "#242424",
+                  color: colors.nero,
                   fontSize: fontSize.size12,
                   fontWeight: "400",
                 }}></Text>
@@ -206,7 +206,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 style={{
                   fontSize: fontSize.size12,
                   fontWeight: "400",
-                  color: "#747475",
+                  color: colors.dolphin,
                 }}
                 tx="order.debt_limit"></Text>
               <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
@@ -219,7 +219,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               style={{
                 fontSize: fontSize.size12,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
               }}
               tx="order.text_money_limit"></Text>
             <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
@@ -243,7 +243,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               style={{
                 fontSize: fontSize.size12,
                 fontWeight: "400",
-                color: "#242424",
+                color: colors.nero,
               }}></Text>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View>
@@ -251,7 +251,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   style={{
                     fontSize: fontSize.size12,
                     fontWeight: "400",
-                    color: "#242424",
+                    color: colors.nero,
                     marginRight: scaleWidth(6),
                     textAlign: 'right'
 
@@ -358,7 +358,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               style={{
                 fontSize: fontSize.size12,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
               }}
               tx="order.amount_paid"></Text>
             <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
@@ -374,7 +374,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           }}>
           <View
             style={{
-              backgroundColor: "#0078D4",
+              backgroundColor: colors.navyBlue,
               borderRadius: 8,
               marginHorizontal: margin.margin_15,
               marginBottom: margin.margin_15,

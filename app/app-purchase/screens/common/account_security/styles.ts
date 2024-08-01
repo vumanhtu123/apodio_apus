@@ -3,7 +3,7 @@ import {colors, fontSize, palette, scaleHeight, scaleWidth} from '../../../theme
 
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: '#F2F2F2',
+    backgroundColor: colors.gray,
     flex: 1,
   },
   body: {

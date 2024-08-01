@@ -104,14 +104,14 @@ export const ProductSupplier = () => {
             style={{
               backgroundColor: "white",
               borderRadius: 4,
-              borderColor: "#C8C8C8",
+              borderColor: colors.veryLightGrey,
               borderWidth: 1,
             }}>
             <Text
               style={{
                 fontSize: 10,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
                 marginHorizontal: 8,
                 marginVertical: 6,
               }}>
@@ -122,7 +122,7 @@ export const ProductSupplier = () => {
             style={{
               backgroundColor: "white",
               borderRadius: 4,
-              borderColor: "#C8C8C8",
+              borderColor: colors.veryLightGrey,
               borderWidth: 1,
               marginLeft: 8,
             }}>
@@ -130,7 +130,7 @@ export const ProductSupplier = () => {
               style={{
                 fontSize: 10,
                 fontWeight: "400",
-                color: "#747475",
+                color: colors.dolphin,
                 marginHorizontal: 8,
                 marginVertical: 6,
               }}>
@@ -140,7 +140,7 @@ export const ProductSupplier = () => {
         </View>
         <View
           style={{
-            backgroundColor: "#0078D4",
+            backgroundColor: colors.navyBlue,
             borderRadius: 4,
           }}>
           <Text

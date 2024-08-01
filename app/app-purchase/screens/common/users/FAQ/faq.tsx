@@ -7,6 +7,7 @@ import { Svgs } from "../../../../../../assets/svgs";
 import { Text } from "../../../../../components/text/text";
 import React from "react";
 import { NavigatorParamList } from "../../../../navigators/app-navigator";
+import { colors } from "../../../../theme";
 
 
 
@@ -28,11 +29,11 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                         tx="inforMerchant.title"
                     />
                     <Text
-                        style={{color:'#747475', marginVertical:20}}
+                        style={{color: colors.dolphin, marginVertical:20}}
                         tx="inforMerchant.contenFAQ1"
                     />
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: colors.aliceBlue,borderRadius:4 }}>
                         <Svgs.ic_search/>
                         <TextInput
                             
@@ -42,13 +43,13 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                     </View>            
                     
                     <Text
-                        style={{color:'#242424', marginVertical:20,}}
+                        style={{color:colors.nero, marginVertical:20,}}
                         tx="inforMerchant.faq"
                     />
                     
-                    <View style={{height:1, borderWidth:1, borderColor:"#F6F7FB"}} />
+                    <View style={{height:1, borderWidth:1, borderColor:colors.ghostWhite}} />
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4,justifyContent:'space-between' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: colors.aliceBlue,borderRadius:4,justifyContent:'space-between' }}>
                         <TextInput
                             
                             placeholder="Lorem ipsum dolor sit amet consectetur"
@@ -57,9 +58,9 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                         <Svgs.ic_plus/>
                     </View>   
 
-                    <View style={{height:1, borderWidth:1, borderColor:"#F6F7FB"}} />
+                    <View style={{height:1, borderWidth:1, borderColor:colors.ghostWhite}} />
                     
-                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4,justifyContent:'space-between' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: colors.aliceBlue,borderRadius:4,justifyContent:'space-between' }}>
                         <TextInput
                             
                             placeholder="Mattis nisl massa quis in et"
@@ -68,15 +69,15 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                         <Svgs.ic_minus/>
                     </View>
 
-                    <View style={{height:1, borderWidth:1, borderColor:"#F6F7FB"}} />
+                    <View style={{height:1, borderWidth:1, borderColor:colors.ghostWhite}} />
 
                     <Text
                         text="Lorem ipsum dolor sit amet consectetur. Quis tristique massa placerat vel sed pulvinar. Id egestas non etiam scelerisque dolor elit pellentesque fames quisque. Urna in eget nibh et odio. Cras vitae enim elit in in quis commodo."
                     /> 
 
-                    <View style={{height:1, borderWidth:1, borderColor:"#F6F7FB"}} />
+                    <View style={{height:1, borderWidth:1, borderColor:colors.ghostWhite}} />
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4,justifyContent:'space-between' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: colors.aliceBlue,borderRadius:4,justifyContent:'space-between' }}>
                         <TextInput
                             
                             placeholder="Mattis nisl massa quis in et"
@@ -84,7 +85,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                         />
                         <Svgs.ic_plus/>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4,justifyContent:'space-between' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: colors.aliceBlue,borderRadius:4,justifyContent:'space-between' }}>
                         <TextInput
                             
                             placeholder="Mattis nisl massa quis in et"
@@ -92,7 +93,7 @@ import { NavigatorParamList } from "../../../../navigators/app-navigator";
                         />
                         <Svgs.ic_plus/>
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: '#F6F7F9',borderRadius:4,justifyContent:'space-between' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center',borderWidth: 1, borderColor: colors.aliceBlue,borderRadius:4,justifyContent:'space-between' }}>
                         <TextInput
                             
                             placeholder="Mattis nisl massa quis in et"

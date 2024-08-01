@@ -30,13 +30,13 @@ export const styles = StyleSheet.create({
     line: {
         marginVertical: scaleWidth(8),
         borderWidth: 1,
-        borderColor: '#F6F7FB',
+        borderColor: colors.ghostWhite,
     },
     lineModal: {
         marginTop: scaleWidth(18),
         marginBottom: scaleHeight(25),
         borderWidth: 1,
-        borderColor: '#F6F7FB',
+        borderColor: colors.ghostWhite,
     },
     textTime: {
         fontSize: scaleWidth(14),
@@ -82,7 +82,7 @@ export const styles = StyleSheet.create({
     },
     styleBTNBottom: {
         padding: scaleWidth(16),
-        backgroundColor: '#FFFFFF'
+        backgroundColor: colors.white
     },
     StyleTextBtn: {
         paddingHorizontal: scaleWidth(19),
@@ -93,7 +93,7 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         width: scaleWidth(68),
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         borderRadius: 8,
         alignSelf: 'center',
     },
@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
     },
     lineHeaderModal: {
         height: scaleHeight(5),
-        backgroundColor: '#C7C7C7',
+        backgroundColor: colors.veryLightGrey1,
         width: scaleWidth(68),
         borderRadius: 100,
         alignSelf: 'center',
@@ -141,7 +141,7 @@ export const styles = StyleSheet.create({
         marginVertical: scaleHeight(15)
     },
     stytleTitle: {
-        color: "#242424",
+        color: colors.nero,
         fontSize: scaleWidth(14),
         fontWeight: "600",
         marginTop: scaleHeight(20)

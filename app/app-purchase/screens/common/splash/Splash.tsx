@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { NavigatorParamList } from "../../../navigators"
+import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect } from "react";
 import { View } from "react-native";
@@ -12,6 +12,7 @@ import React from "react";
 import { useAuth } from "../../contexts/auth";
 import { useStores } from "../../../models";
 import { getAccessToken, setAccessToken } from "../../../utils/storage";
+import Images from "../../../../../assets/index";
 
 export const SplashScreen1: FC<
   StackScreenProps<NavigatorParamList, "SplashScreen">
@@ -48,12 +49,12 @@ export const SplashScreen1: FC<
       <View style={{ width: "100%", height: "25%", alignItems: "center" }}>
         <LottieView
           style={{ width: 100, height: 100 }}
-          source={require("./ic_animation.json")}
+          source={Images.loading}
           autoPlay
         />
         <Text
           tx="inforMerchant.loading"
-          style={{ color: "#FFFFFF", fontSize: 18, textTransform: "uppercase" }}
+          style={{ color: colors.white, fontSize: 18, textTransform: "uppercase" }}
         />
       </View>
     </LinearGradient>

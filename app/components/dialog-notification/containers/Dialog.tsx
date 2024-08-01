@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Animated, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ACTION, ALERT_TYPE, ENV } from '../config';
 import { Color, getImage } from '../service';
-import { fontSize, scaleHeight, scaleWidth } from '../../../app-purchase/theme';
+import { colors, fontSize, scaleHeight, scaleWidth } from '../../../app-purchase/theme';
 import { Loading } from './Loading';
 
 export type IConfigDialog = {
@@ -203,7 +203,7 @@ export class Dialog extends React.Component<IProps, IState> {
       <View style={styles.viewButton}>
 
         {button && (<TouchableOpacity style={StyleSheet.flatten([button2 ? styles.button : styles.buttonBackground])} onPress={this._close}>
-          <Text style={[styles.buttonLabel, { color: button2 ? '#747475' : '#fff' }]}>{button}</Text>
+          <Text style={[styles.buttonLabel, { color: button2 ? colors.dolphin : colors.white }]}>{button}</Text>
         </TouchableOpacity>)}
         {button && button2 && <View style={{ width: scaleWidth(9) }} />}
         {button2 && (<TouchableOpacity style={StyleSheet.flatten([styles.buttonAccept])} onPress={this.onPressBTN ?? this._close}>
@@ -317,7 +317,7 @@ const __styles = (isDark: boolean) =>
     },
     textWarning: {
       fontSize: 10,
-      color: '#747475',
+      color: colors.dolphin,
       fontWeight: "400",
       textAlign: 'center',
       fontStyle: 'italic'
@@ -348,7 +348,7 @@ const __styles = (isDark: boolean) =>
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      backgroundColor: '#0078d4'
+      backgroundColor: colors.navyBlue
     },
     buttonAccept: {
       flex: 1,
@@ -358,15 +358,15 @@ const __styles = (isDark: boolean) =>
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'center',
-      backgroundColor: '#0078d4'
+      backgroundColor: colors.navyBlue
     },
     buttonLabel: {
-      // color: '#747475',
+      // color: colors.dolphin,
       fontWeight: 'bold',
       fontSize: fontSize.size14,
     },
     buttonLabelAccept: {
-      color: '#fff',
+      color: colors.white,
       fontWeight: 'bold',
       fontSize: fontSize.size14,
     },
@@ -388,7 +388,7 @@ const __styles = (isDark: boolean) =>
       justifyContent: 'center',
       height: 50,
       width: 50,
-      backgroundColor: '#FBFBFB',
+      backgroundColor: colors.snow,
       borderRadius: 100,
       marginTop: -10,
     },

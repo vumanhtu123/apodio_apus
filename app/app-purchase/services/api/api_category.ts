@@ -103,9 +103,9 @@ export class CategoryApi {
     size: any,
     search: any
   ): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_CATEGORY,

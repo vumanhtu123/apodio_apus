@@ -11,7 +11,7 @@ export const Styles = StyleSheet.create({
     },
     Root: { 
         flex: 1, 
-        backgroundColor: '#FFF' 
+        backgroundColor: colors.white 
     },
     content:{
         flex:1,
@@ -37,7 +37,7 @@ export const Styles = StyleSheet.create({
 
     },
     textCreate:{ 
-        color: '#FFF', 
+        color: colors.white, 
         fontSize: fontSize.size14, 
         fontWeight: '600' 
     },
@@ -48,7 +48,7 @@ export const Styles = StyleSheet.create({
         padding: scaleWidth(4),
     },
     taskBar2: {
-        backgroundColor: '#EEEEEF',
+        backgroundColor: colors.whisper,
         marginVertical: scaleHeight(20),
         flexDirection: "row",
         padding: scaleWidth(2),
@@ -77,7 +77,7 @@ export const Styles = StyleSheet.create({
         paddingHorizontal:padding.padding_12
     },
     textSize14: {
-        color: '#747475',
+        color: colors.dolphin,
         fontWeight: '400',
         fontSize: fontSize.size14
     },

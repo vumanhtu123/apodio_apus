@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
 
     main: {
         flex:1,
-        backgroundColor: "#F6F7F9"
+        backgroundColor: colors.aliceBlue
     },
 
     body: {
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     },
     divider: {
         height:1, 
-        backgroundColor: '#F2F2F2',
+        backgroundColor: colors.gray,
         // backgroundColor:'red',
         marginHorizontal:16
     },
@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 35,
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: colors.black,
         shadowOffset: {
           width: 0,
           height: 2,
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
       },
       closeButton: {
-        backgroundColor: '#2196F3',
+        backgroundColor: colors.dodgerBlue1,
         borderRadius: 5,
         padding: 10,
         elevation: 2,

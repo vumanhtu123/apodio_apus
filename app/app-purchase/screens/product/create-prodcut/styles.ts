@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: scaleHeight(6),
     paddingHorizontal: scaleWidth(8),
-    borderColor: "#0078d4",
+    borderColor: colors.navyBlue,
     borderRadius: 4,
     marginLeft: scaleWidth(8),
   },
@@ -145,7 +145,7 @@ export const styles = StyleSheet.create({
     width: scaleWidth(8),
     height: scaleHeight(8),
     borderRadius: 5,
-    borderColor: "#BBB9B9",
+    borderColor: colors.silver,
     borderWidth: 2,
   },
   viewItemCarousel: {

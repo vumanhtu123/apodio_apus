@@ -747,7 +747,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       <View
         style={{
           flex: 1,
-          backgroundColor: "#f6f7f9",
+          backgroundColor: colors.aliceBlue,
           paddingTop: scaleHeight(15),
         }}>
         <>
@@ -887,7 +887,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                   style={{
                     fontSize: fontSize.size9,
                     fontWeight: "500",
-                    color: "#ffffff",
+                    color: colors.white,
                   }}>
                   {dataProductAddOrder.length}
                 </Text>
@@ -924,7 +924,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
         title={"productScreen.Notification"}
         errorMessage={errorMessage}
         titleBTN2="productScreen.BtnNotificationAccept"
-        styleBTN2={{ backgroundColor: "#0078D4", borderRadius: 8 }}
+        styleBTN2={{ backgroundColor: colors.navyBlue, borderRadius: 8 }}
         onPressAccept={() => setIsDeleteFailModalVisible(false)}
       />
     </View>

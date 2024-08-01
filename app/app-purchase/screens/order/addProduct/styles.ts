@@ -3,7 +3,7 @@ import { colors, fontSize, margin, padding, palette, scaleHeight, scaleWidth } f
 
 export const styles = StyleSheet.create({
     ROOT: {
-      backgroundColor: "#Ffffff",
+      backgroundColor: colors.white,
       flex: 1,
     },
     btnTab: {
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
     },
     rowBtnTab: {
       flexDirection: "row",
-      backgroundColor: "#E6E7EA",
+      backgroundColor: colors.solitude1,
       borderRadius: 8,
       padding: scaleWidth(2),
     },
@@ -29,8 +29,8 @@ export const styles = StyleSheet.create({
       paddingVertical: scaleHeight(4),
     },
     activeButton: {
-      backgroundColor: "#fff",
-      shadowColor: "#000",
+      backgroundColor: colors.white,
+      shadowColor: colors.black,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -40,8 +40,8 @@ export const styles = StyleSheet.create({
       elevation: 5,
     },
     activeButtonCategory: {
-      backgroundColor: "#fff",
-      shadowColor: "#000",
+      backgroundColor: colors.white,
+      shadowColor: colors.black,
       shadowOffset: {
         width: -2,
         height: 2,
@@ -54,14 +54,14 @@ export const styles = StyleSheet.create({
       fontSize: fontSize.size13,
       // lineHeight: 20,
       fontWeight: "700",
-      color: "#747475",
+      color: colors.dolphin,
       textAlign: "center",
     },
     activeButtonText: {
-      color: "#0078D4",
+      color: colors.navyBlue,
     },
     discount: {
-      backgroundColor: "#FF0000",
+      backgroundColor: colors.red,
       alignItems: "center",
       justifyContent: "center",
       width: scaleWidth(32),
@@ -128,12 +128,12 @@ export const styles = StyleSheet.create({
       borderWidth: 1,
     },
     tabButtonActive: {
-      backgroundColor: "#FFFFFF",
-      borderColor: "#0078D4",
+      backgroundColor: colors.white,
+      borderColor: colors.navyBlue,
     },
     tabButtonInactive: {
-      backgroundColor: "#F4F4F4",
-      borderColor: "#c8c8c8",
+      backgroundColor: colors.whiteSmoke,
+      borderColor: colors.veryLightGrey,
     },
     tabText: {
       textAlign: "center",
@@ -141,10 +141,10 @@ export const styles = StyleSheet.create({
       fontSize: fontSize.size10,
     },
     tabTextActive: {
-      color: "#0078D4",
+      color: colors.navyBlue,
     },
     tabTextInactive: {
-      color: "#747475",
+      color: colors.dolphin,
     },
     containerFilter: {
       marginRight: scaleHeight(16),
@@ -156,13 +156,13 @@ export const styles = StyleSheet.create({
       paddingVertical: scaleHeight(8),
       marginLeft: scaleWidth(5),
       borderWidth: 1,
-      borderColor: "#0078D4",
+      borderColor: colors.navyBlue,
       flexDirection: "row",
       width: scaleWidth(110),
       justifyContent: "space-between",
     },
     textBtnFilter: {
-      color: "#0078D4",
+      color: colors.navyBlue,
       textAlign: "center",
       fontWeight: "400",
       fontSize: fontSize.size10,
@@ -182,7 +182,7 @@ export const styles = StyleSheet.create({
       zIndex: 1,
       right: scaleWidth(16),
       borderRadius: 40,
-      backgroundColor: "#0078D4",
+      backgroundColor: colors.navyBlue,
     },
     viewModal: {
         // height: Dimensions.get("screen").height * 0.3,

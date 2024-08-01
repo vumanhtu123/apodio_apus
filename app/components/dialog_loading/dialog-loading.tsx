@@ -6,6 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import { colors } from '../../app-purchase/theme';
 
 interface DialogLoadingProps {
   visible: boolean;
@@ -45,7 +46,7 @@ const modalStyle = StyleSheet.create({
     paddingRight: 10,
     paddingTop: 20,
     marginRight: 20,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     width: '90%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -58,7 +59,7 @@ const modalStyle = StyleSheet.create({
   },
   header: {
     fontWeight: 'bold',
-    backgroundColor: '#f00',
+    backgroundColor: colors.red,
     height: 35,
     width: '100%',
     alignItems: 'center',
@@ -73,7 +74,7 @@ const modalStyle = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
     //fontFamily: fonts.notoSansJPBlack,
-    color: '#333333',
+    color: colors.nightRider,
     fontWeight: 'bold',
     lineHeight: 20,
     marginBottom: 10,
@@ -83,7 +84,7 @@ const modalStyle = StyleSheet.create({
   text: {
     fontSize: 15,
     textAlign: 'center',
-    color: '#333333',
+    color: colors.nightRider,
     marginLeft: 10,
     marginRight: 10,
     //fontFamily: fonts.notoSansJPRegular,
@@ -110,7 +111,7 @@ const modalStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderTopWidth: 1,
-    borderColor: '#F8F8F7',
+    borderColor: colors.ivory,
     flexDirection: 'row',
   },
   containerButtonOk: {

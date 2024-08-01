@@ -98,13 +98,13 @@ const Styles = StyleSheet.create({
     marginRight: 16,
     marginBottom: 20,
     borderWidth: 2,
-    borderColor: "#FFF",
+    borderColor: colors.white,
   },
 
   styleTxT: {
     fontFamily: "Inter",
     fontWeight: "600",
-    color: "#FFF",
+    color: colors.white,
     fontSize: scaleWidth(12),
   },
 });

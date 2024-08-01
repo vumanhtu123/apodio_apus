@@ -129,7 +129,7 @@ export class AuthApi {
       Loading.hide();
       console.log("response", response.data);
       const data = response.data;
-      return data;
+      return { kind: "ok", data };
     } catch (e) {
       Loading.hide();
       return { kind: "bad-data" };
