@@ -602,7 +602,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                       imageStyle={{
                         borderRadius: 16,
                       }}
-                      source={require("../../../../../assets/Images/no_images.png")}>
+                      source={Images.noImages}>
                       <FastImage
                         style={{
                           width: scaleWidth(48),
@@ -613,7 +613,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                           uri: `${item.productInfo?.productImage ?? ""}`,
                           cache: FastImage.cacheControl.immutable,
                         }}
-                        defaultSource={require("../../../../../assets/Images/no_images.png")}
+                        defaultSource={Images.noImages}
                       />
                     </ImageBackground>
                     <View style={{ flex: 1 }}>
