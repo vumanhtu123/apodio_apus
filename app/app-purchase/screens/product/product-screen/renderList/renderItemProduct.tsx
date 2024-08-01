@@ -1,11 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, View, ImageBackground } from 'react-native';
+import { ImageBackground, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Images } from '../../../../../../assets';
-import { scaleHeight, scaleWidth } from '../../../../theme';
-import { styles, stylesItem } from '../../styles';
 import { Text } from '../../../../../components';
-import { MotiView } from "moti";
+import { scaleHeight, scaleWidth } from '../../../../theme';
+import { stylesItem } from '../../styles';
 
 const RenderProductItem = ({ item, index, isGridView, viewProduct, handleProductDetail, handleClassifyDetail }: any) => {
   if (isGridView) {

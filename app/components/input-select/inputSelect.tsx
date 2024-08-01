@@ -6,6 +6,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
   StyleSheet,
   TextInput,
   TextStyle,
@@ -27,6 +28,8 @@ import {
 } from "../../app-purchase/theme";
 import { Text } from "../text/text";
 import { InputSelectProps } from "./inputSelect.props";
+import { CustomModal } from "../custom-modal";
+import { ScrollView } from "react-native-gesture-handler";
 
 const ROOT: ViewStyle = {
   borderRadius: 8,
@@ -63,16 +66,16 @@ const TEXTHINT: TextStyle = {
 };
 const VIEWMODAL: ViewStyle = {
   // width: Dimensions.get('screen').width - 32,
-  height: Dimensions.get("screen").height * 0.4,
+  height: scaleHeight(350),
   backgroundColor: colors.palette.neutral100,
   borderTopRightRadius: 8,
   borderTopLeftRadius: 8,
-  paddingVertical: scaleHeight(padding.padding_12),
-  paddingHorizontal: scaleWidth(padding.padding_16),
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  right: 0,
+  // paddingVertical: scaleHeight(padding.padding_12),
+  // paddingHorizontal: scaleWidth(padding.padding_16),
+  // position: "absolute",
+  // bottom: 0,
+  // left: 0,
+  // right: 0,
 };
 const TEXTLABELFLATLIST: TextStyle = {
   //fontWeight: '500',
@@ -114,8 +117,11 @@ export function InputSelect(props: InputSelectProps) {
     onPressNotUse,
     textStyle,
     styleViewDropdown,
+    size,
     handleOnSubmitSearch,
-    onChangeText,
+    onRefresh,
+    isRefreshing,
+    setIsRefreshing
   } = props;
   const title = titleText || (titleTx && translate(titleTx)) || "";
   const hint = hintText || (hintTx && translate(hintTx)) || "";
@@ -124,6 +130,8 @@ export function InputSelect(props: InputSelectProps) {
   const [showModal, setShowModal] = useState(false);
   const [filteredData, setFilteredData] = useState(arrData);
   const [loading, setLoading] = useState(false);
+  // const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const { control, reset, formState: { errors }, clearErrors, watch } = useForm();
   const searchValue = watch('searchData');
   const handleSearch = (text: any) => {
@@ -140,14 +148,28 @@ export function InputSelect(props: InputSelectProps) {
       setFilteredData(dataChoiceItem);
     }
   };
-  const loadMore = async () => {
-    if (!loading && onLoadMore) {
-      setLoading(true);
-      await onLoadMore();
-      setLoading(false);
-    }
-  };
-
+  const onSubmitSearch = async () => {
+    // setShowLoading(true);
+    setFilteredData([])
+    await handleOnSubmitSearch(searchValue)
+      .then((result: any) => {
+        setShowLoading(false);
+      }).catch((error: any) => {
+        setShowLoading(false);
+      });
+  }
+  const refreshItem = async () => {
+    setIsRefreshing(true)
+    setFilteredData([])
+    reset({ searchData: '' });
+    await onRefresh()
+      .then((result: any) => {
+        setShowLoading(false);
+      }).catch((error: any) => {
+        setShowLoading(false);
+      });
+    setIsRefreshing(false)
+  }
   useFocusEffect(
     useCallback(() => {
       reset();
@@ -175,7 +197,13 @@ export function InputSelect(props: InputSelectProps) {
   useEffect(() => {
     setFilteredData(arrData);
   }, [arrData]);
-
+  const EmptyListComponent = () => (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      {arrData.length < 1 && (
+        <Text tx={'common.emptyList'} style={TEXTLABELHL} />
+      )}
+    </View>
+  );
   return (
     <View style={[ROOT, styleView]}>
       <TouchableOpacity
@@ -219,95 +247,103 @@ export function InputSelect(props: InputSelectProps) {
           </View>
         )}
       </TouchableOpacity>
-      <Modal
+      <CustomModal
         isVisible={showModal}
-        onBackdropPress={() => {
-          setShowModal(false);
-        }}
-        style={{ margin: 0 }}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setShowModal(false);
-          }}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "height" : "height"}
-            keyboardVerticalOffset={0}
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            <View style={VIEWMODAL}>
-              {/* <Text text="chon ly do" /> */}
-              {isSearch ? (
-                <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
-                      <Images.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
-                    </TouchableOpacity>
-                    {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
-                  </View>
+        setIsVisible={() => setShowModal(!showModal)}
+        isHideKeyBoards={showModal}
+        isVisibleLoading={showLoading}
+      >
+        <View style={VIEWMODAL}>
+          {isSearch ? (
+            <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
+                  <Images.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
+                </TouchableOpacity>
+                {/* <View style = {{width : 1 , height : scaleHeight(16) , backgroundColor : '#0078D4' , marginLeft : scaleWidth(8)}}></View> */}
+              </View>
 
-                  <Controller
-                    control={control}
-                    render={({ field: { onChange, value, onBlur } }) => (
-                      <TextInput
-                        placeholder="Tìm kiếm..."
-                        style={{
-                          fontSize: fontSize.size16,
-                          fontWeight: "400",
-                          paddingVertical: 0,
-                          flex: 1
-                        }}
-                        value={value}
-                        onBlur={onBlur}
-                        onChangeText={(text) => {
-                          onChange(text)
-                          handleSearch(text)
-                        }}
-                        multiline={true}
-                      />)}
-                    defaultValue={''}
-                    name='searchData'
-                  />
-                </View>
-              ) : null}
-              <FlatList
-                data={filteredData}
-                style={{
-                  // flex: 1,
-                  marginTop: scaleHeight(margin.margin_10),
-                  marginBottom: scaleHeight(margin.margin_15),
-                }}
-                onEndReached={loadMore}
-                onEndReachedThreshold={0.5}
-                renderItem={({ item }: any) => {
-                  return (
-                    <View>
-                      <TouchableOpacity
-                        style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: scaleWidth(5) }}
-                        onPress={() => {
-                          setData(item.label);
-                          onPressChoice(item);
-                          setShowModal(false);
-                          const dataChoiceItem = arrData.filter(
-                            (i) => i.label !== item.label
-                          );
-                          setFilteredData(dataChoiceItem);
-                          // console.log(data , 'dsadasd')
-                        }}>
-                        {isShowCheckBox ? (<View style={styles.radioButton}>
-                          {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
-                          {data === item.label && <Images.icon_checkBox />}
-                        </View>) : null}
-                        {/* <Text text={item.label} style={TEXTLABELFLATLIST} /> */}
-                        {highlightText(item.label, searchValue)}
-                      </TouchableOpacity>
-                      <View style={VIEWLINE}></View>
-                    </View>
-                  );
-                }}
+              <Controller
+                control={control}
+                render={({ field: { onChange, value, onBlur } }) => (
+                  <TextInput
+                    placeholder="Tìm kiếm..."
+                    style={{
+                      fontSize: fontSize.size16,
+                      fontWeight: "400",
+                      paddingVertical: 0,
+                      flex: 1
+                    }}
+                    value={value}
+                    onBlur={onBlur}
+                    onChangeText={(text) => {
+                      onChange(text)
+                      handleSearch(text)
+                    }}
+                    multiline={true}
+                  />)}
+                defaultValue={''}
+                name='searchData'
               />
             </View>
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-      </Modal>
+          ) : null}
+          {searchValue && size > 1 ? (
+            <View style={{ paddingHorizontal: scaleWidth(5) }}>
+              <TouchableOpacity onPress={onSubmitSearch} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ justifyContent: 'center', marginRight: scaleWidth(2) }}>
+                  <Images.icon_searchBlack width={scaleWidth(14)} height={scaleHeight(14)} />
+                </View>
+                <Text style={TEXTLABELHL}>{searchValue}</Text>
+              </TouchableOpacity>
+              <View style={VIEWLINE}></View>
+            </View>
+          ) : null}
+          <FlatList
+            data={filteredData}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={refreshItem}
+                title="ok"
+              />
+            }
+            style={{
+              marginTop: scaleHeight(margin.margin_10),
+              marginBottom: scaleHeight(margin.margin_15),
+              // flex: 1
+            }}
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'center',
+            }}
+            ListEmptyComponent={EmptyListComponent}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }: any) => {
+              return (
+                <View>
+                  <TouchableOpacity
+                    style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: scaleWidth(5) }}
+                    onPress={() => {
+                      setData(item.label);
+                      onPressChoice(item);
+                      setShowModal(false);
+                      const dataChoiceItem = arrData.filter(
+                        (i) => i.label !== item.label
+                      );
+                      setFilteredData(dataChoiceItem);
+                    }}>
+                    {isShowCheckBox ? (<View style={styles.radioButton}>
+                      {data === item.label && <Images.icon_checkBox />}
+                    </View>) : null}
+                    {highlightText(item.label, searchValue)}
+                  </TouchableOpacity>
+                  <View style={VIEWLINE}></View>
+                </View>
+              );
+            }}
+          />
+        </View>
+      </CustomModal>
     </View>
   );
 }

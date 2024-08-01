@@ -540,7 +540,7 @@ export const AppStack = () => {
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()
@@ -548,21 +548,21 @@ export const AppNavigator = (props: NavigationProps) => {
   // useBackButtonHandler(canExit);
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName));
 
-  return (
-    <NavigationContainer
-      ref={navigationRef}
-      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-      {...props}>
-      {/* <AppStack /> */}
-      <MyDrawer />
-    </NavigationContainer>
-  );
-
   // return (
-  //   <AuthProvider>
-  //     <Router {...props} />
-  //   </AuthProvider>
+  //   <NavigationContainer
+  //     ref={navigationRef}
+  //     theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+  //     {...props}>
+  //     <AppStack />
+  //     {/* <MyDrawer /> */}
+  //   </NavigationContainer>
   // );
+
+  return (
+    <AuthProvider>
+      <Router {...props} />
+    </AuthProvider>
+  );
 };
 
 AppNavigator.displayName = "AppNavigator";
