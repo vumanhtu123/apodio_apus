@@ -20,6 +20,16 @@ const en = {
   messageError: {
     required_value_null: "Vui lòng nhập thông tin",
   },
+  security: {
+    select_type: "Chọn kiểu",
+    cancel: "Hủy",
+
+  },
+  validate: {
+    enterData: "Vui lòng nhập dự liệu",
+    printerNotConnect:"Chưa có máy in được kết nối đến tài khoản của bạn. Để tiếp tục, vào cài đặt máy in để kết nối máy in mong muốn.",
+    checkQuantity :"Số lượng thực tế không được nhỏ hơn 0",
+  },
 
   txtToats: {
     please_select_attribute: "Vui lòng chọn thuộc tính",
@@ -559,6 +569,31 @@ const en = {
     customersInDaNangArea: "Khách hàng khu vực Đà Nẵng",
     filter: "Bộ lọc",
     sortBy: "Sắp xếp theo",
+    paymentRecord : "Ghi nhận thanh toán",
+    setUpAutomaticDebtReminders : "Đặt lịch nhắc nợ tự động",
+    change: "Thay đổi",
+    listOfUnpaidTransactions: "Danh sách giao dịch chưa thanh toán",
+    idOrder: "Mã đơn hàng: ",
+    dayBook:"Ngày đặt: ",
+    amountOfMoney: "Số tiền: ",
+    addClient: "Thêm khách hàng",
+    createGroup: "Tạo nhóm",
+    back: "Quay lại",
+    update: "Cập nhật",
+    createNewClient: "Tạo mới khách hàng",
+    typeClient: "Kiểu khách hàng",
+    selectTypeClient: "Chọn kiểu khách hàng",
+    nameClient: "Tên khách hàng",
+    phoneNumber:"Số điện thoại",
+    createClientGroup: "Tạo nhóm khách hàng",
+    cancel:"Hủy",
+    create: "Tạo",
+    createNewSupplier:"Tạo mới nhà cung cấp",
+    continue: "Tiếp tục",
+    sort:"Sắp xếp theo",
+    temClient: "Nhãn khách hàng",
+    reset : "Thiết lập lại", 
+    apply : "Áp dụng",
   },
   NCCScreen: {
     idSupliers: "Mã nhà cung cấp",
@@ -605,6 +640,7 @@ const en = {
     personalIdentification: "Số giấy tờ định danh cá nhân",
     placeholderPersonalIdentification: "Nhập số giấy tờ",
     addSupplier: "Thêm nhà cung cấp",
+    iHaveToCollect :"Tôi phải thu:",
   },
   debtScreen: {
     receivables: "Phải thu",
@@ -980,6 +1016,15 @@ const en = {
     dowloadBallot: "Tải phiếu",
     collapse: "Thu gọn",
     notCreateExportGoods: "Chưa có phiếu xuất nào được tạo",
+    totalNumber : "Tổng số lượng",
+    totalPrice : "Tổng tiền hàng" ,
+    discount: "Chiết khấu ",
+    costsIncurred: "Chi phí phát sinh",
+    sum: "Tổng cộng",
+    today:"Hôm nay",
+    thisMonth: "Tháng này",
+    beforeMonth: "Tháng trước",
+
   },
   detailPallot: {
     ballotDetail: "Chi tiết phiếu",
@@ -997,6 +1042,28 @@ const en = {
     btnAddProduct: "Thêm sản phẩm",
     searchAndSelectProductsMaterialsToStartCheckingGoods:
       "tìm kiếm và lựa chọn sản phẩm Chất liệu để bắt đầu kiểm tra hàng ",
+    lastMonth: "Tháng trước",
+    thisMonth: "Tháng này",
+    toDay: "Hôm nay",
+    noTicketsHaveBeenCreatedYet: "Chưa có phiếu nào được tạo",
+    createTicketWarehouse: "Tạo phiếu kho",
+    deponsit: "Lưu phiếu",
+    complete:"Hoàn thành",
+    addProduct: "+ Thêm sản phẩm",
+    totalQuantity: "Tổng số lương",
+    checkNumberProduct : "Số lượng tồn kho sản phẩm phải lớn hơn hoặc bằng số lượng trong đơn xuất hàng",
+    actualStock:"Số lượng thực tế",
+    inventoryQuantityInTheSystem: "Số lượng tồn kho trong hệ thống",
+    differenceInQuantity: "Số lượng chênh lệch",
+    note:"Ghi chú",
+    all: "Tất cả",
+    checkingInventory: "Đang kiểm kho",
+    isBalancing: "Đang cân bằng",
+    command: "Lệnh",
+    before: "Trước",
+
+
+
   },
   ImprotGoodsBook: {
     createImportGoods: "Tạo nhập hàng",

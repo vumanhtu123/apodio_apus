@@ -90,21 +90,21 @@ export const BallotDetail: FC<StackScreenProps<NavigatorParamList, "ballotDetail
                     <View
                         style={{ alignItems: 'center', backgroundColor: colors.white, borderRadius: scaleWidth(8), padding: 17 }}
                     >
-                        <Text style={{ marginBottom: scaleWidth(15), fontSize:scaleWidth(18), fontFamily:"Inter-Bold" }} tx="detailPallot.printerIsNotConnected" />
-                        <Text style={{ textAlign: 'center',fontSize:scaleWidth(14), marginBottom:15 }} >Chưa có máy in được kết nối đến tài khoản của bạn. Để tiếp tục, vào cài đặt máy in để kết nối máy in mong muốn.</Text>
+                        <Text style={{ marginBottom: scaleWidth(15), fontSize: scaleWidth(18), fontFamily: "Inter-Bold" }} tx="detailPallot.printerIsNotConnected" />
+                        <Text style={{ textAlign: 'center', fontSize: scaleWidth(14), marginBottom: 15 }} tx="validate.printerNotConnect"></Text>
 
                         <View style={[Styles.flexRow,]}>
 
                             <TouchableOpacity
-                                style={[Styles.styleBtnModal, { borderColor: colors.palette.navyBlue , marginRight:9}]}
+                                style={[Styles.styleBtnModal, { borderColor: colors.palette.navyBlue, marginRight: 9 }]}
                             >
-                                
+
                                 <Text tx="detailPallot.later" style={{ marginLeft: 4, color: colors.palette.navyBlue, fontWeight: "600" }} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={[Styles.styleBtnModal, { borderColor: colors.palette.navyBlue, backgroundColor: colors.palette.navyBlue }]}
                             >
-                               
+
                                 <Text tx="detailPallot.settingPrinter" style={{ marginLeft: 4, color: colors.palette.white, fontWeight: "600" }} />
                             </TouchableOpacity>
                         </View>

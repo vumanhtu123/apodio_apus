@@ -151,7 +151,7 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                     <View
                         style={{ backgroundColor: colors.white, marginVertical: scaleWidth(20), borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10) }}
                     >
-                        <View style={[Styles.flexRow,{marginBottom:scaleWidth(15)}]}>
+                        <View style={[Styles.flexRow, { marginBottom: scaleWidth(15) }]}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ fontWeight: '600' }} tx="GoodsExportBook.product" />
                                 <Text>({dataListGoodsDeliveryBook.length})</Text>
@@ -236,25 +236,25 @@ export const DetailExportGoods: FC<StackScreenProps<NavigatorParamList, "detaiEx
                         style={{ backgroundColor: colors.white, borderRadius: 8, paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(10), }}
                     >
                         <View style={Styles.flexRow}>
-                            <Text style={Styles.txtGray}>Tổng số lượng</Text>
+                            <Text style={Styles.txtGray} tx="GoodsExportBook.totalNumber"></Text>
                             <Text>7</Text>
                         </View>
                         <View style={Styles.flexRow}>
-                            <Text style={Styles.txtGray}>Tổng tiền hàng</Text>
+                            <Text style={Styles.txtGray} tx="GoodsExportBook.totalPrice"></Text>
                             <Text>700.000đ</Text>
                         </View>
                         <View style={Styles.flexRow}>
-                            <Text style={Styles.txtGray}>Chiết khấu</Text>
+                            <Text style={Styles.txtGray} tx="GoodsExportBook.discount"></Text>
                             <Text>0</Text>
                         </View>
                         <View style={Styles.flexRow}>
-                            <Text style={Styles.txtGray}>Chi phí phát sinh</Text>
+                            <Text style={Styles.txtGray} tx="GoodsExportBook.costsIncurred"></Text>
                             <Text>0</Text>
                         </View>
 
                     </View>
                 </View>
-            </View>
+            </View >
 
         )
 

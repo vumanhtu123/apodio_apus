@@ -1,8 +1,9 @@
 
-import { View, Text, Modal, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { View, Modal, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import React, { FC } from 'react'
 import { defaultCreateObservableOptions } from 'mobx/dist/internal'
 import { colors, padding, scaleHeight, scaleWidth } from '../../../theme'
+import { Text } from '../../../../components'
 
 
 interface ModalCreateGroup {
@@ -22,18 +23,18 @@ const ModalCreateClientGroup: FC<ModalCreateGroup> = ({ isVisible, setIsVisible 
                 <View style={Styles.modalView}>
                     <Text style={Styles.modalText} />
                     <View style={Styles.header}>
-                        <Text style={Styles.headerTitle}>Tạo nhóm khách hàng</Text>
+                        <Text style={Styles.headerTitle} tx="ClientScreen.createClientGroup"></Text>
                         <TouchableOpacity onPress={setIsVisible}>
-                            <Text style={Styles.headerButton}>Hủy</Text>
+                            <Text style={Styles.headerButton} tx="ClientScreen.cancel"></Text>
                         </TouchableOpacity>
                     </View>
                     <View style={Styles.horizontalLine} />
                     <View style={Styles.body}>
-                        <TextInput style={Styles.styleTextInPut}/>
+                        <TextInput style={Styles.styleTextInPut} />
                         <TouchableOpacity
                             style={Styles.btnCreate}
                         >
-                            <Text style={Styles.styleTxT} >Tạo</Text>
+                            <Text style={Styles.styleTxT} tx="ClientScreen.create"></Text>
                         </TouchableOpacity>
                     </View>
 
@@ -50,7 +51,7 @@ const Styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent:'flex-end'
+        justifyContent: 'flex-end'
     },
     modalView: {
         borderRadius: 8,
@@ -82,35 +83,35 @@ const Styles = StyleSheet.create({
         fontSize: 16,
         color: 'red',
     },
-     horizontalLine: {
+    horizontalLine: {
         height: 1,
         backgroundColor: colors.solitude2,
         marginTop: scaleHeight(18),
         marginBottom: 18,
     },
-    body :{
-        justifyContent:'space-between',
-        flexDirection:'row',
-        
+    body: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+
     },
-    styleTextInPut:{
-        width:scaleWidth(256), 
-        height:scaleHeight(56), 
-        borderRadius:8, 
-        backgroundColor:colors.aliceBlue, 
-        padding:scaleWidth(16) 
+    styleTextInPut: {
+        width: scaleWidth(256),
+        height: scaleHeight(56),
+        borderRadius: 8,
+        backgroundColor: colors.aliceBlue,
+        padding: scaleWidth(16)
     },
     btnCreate: {
-        backgroundColor:colors.palette.navyBlue,
+        backgroundColor: colors.palette.navyBlue,
         width: scaleWidth(78),
         height: scaleHeight(56),
-        borderRadius:8,
-        alignItems:'center',
-        justifyContent:'center'
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    styleTxT:{
-        fontFamily:'Inter',
-        fontWeight:'600',
-        color:colors.white
+    styleTxT: {
+        fontFamily: 'Inter',
+        fontWeight: '600',
+        color: colors.white
     }
 })

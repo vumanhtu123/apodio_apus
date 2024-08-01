@@ -1,9 +1,10 @@
 import React, { FC, useState } from "react";
-import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
+import { Text } from "../../../../components";
 
 interface ModalClientFromPhoneProps {
     isVisible: any;
@@ -23,15 +24,15 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
         { id: 'd', title: 'Khách hàng rất tiềm năng' },
     ]
 
-    console.log('doandev',isVisible);
-    
+    console.log('doandev', isVisible);
+
     return (
         <Modal animationType="slide" visible={isVisible} transparent={true}>
             <View style={styles.container}>
                 <View style={styles.modalView}>
                     <Text style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Tạo mới khách hàng</Text>
+                        <Text style={styles.headerTitle} tx="ClientScreen.createNewClient"></Text>
                         <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
                             <Text style={styles.headerButton}>Hủy</Text>
                         </TouchableOpacity>
@@ -40,12 +41,12 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
 
                     <View style={styles.horizontalLine} />
                     <View style={styles.selectKindClient}>
-                        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', height:scaleHeight(56), alignItems:'center' }}
+                        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', height: scaleHeight(56), alignItems: 'center' }}
                             onPress={() => setShowFindClient(!showFindClient)}
                         >
                             <View>
-                                <Text>Kiểu khách hàng<Text style={{ color: 'red' }}>*</Text></Text>
-                                <Text style={{ fontSize: scaleWidth(16) }}>Chọn kiểu khách hàng </Text>
+                                <Text tx="ClientScreen.typeClient"><Text style={{ color: 'red' }}>*</Text></Text>
+                                <Text style={{ fontSize: scaleWidth(16) }} tx="ClientScreen.selectTypeClient"> </Text>
                             </View>
                             <View style={{ alignItems: "center", justifyContent: 'center' }}>
                                 <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showFindClient ? '180deg' : '0deg' }] }} />
@@ -55,7 +56,7 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
                     </View>
                     {
                         showFindClient && (
-                            <ScrollView style={{ marginTop: 10, padding: 10, height:scaleHeight(100) }}>
+                            <ScrollView style={{ marginTop: 10, padding: 10, height: scaleHeight(100) }}>
                                 {dataFindClient.map((item, optionIndex) => (
                                     <TouchableOpacity
                                         key={item.id}
@@ -85,8 +86,8 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
                     <View style={styles.selectKindClient}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}
                         >
-                            <View style={{height:scaleHeight(56)}}>
-                                <Text >Tên khách hàng</Text>
+                            <View style={{ height: scaleHeight(56) }}>
+                                <Text tx="ClientScreen.nameClient"></Text>
                                 <TextInput style={{ fontSize: scaleWidth(16) }}></TextInput>
                             </View>
                         </View>
@@ -96,13 +97,13 @@ const ModalCreateClientFromNumber: FC<ModalClientFromPhoneProps> = ({ isVisible,
                     <View style={{}}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}
                         >
-                            <View style={{height:scaleHeight(56)}}>
-                                <Text >Số điện thoại</Text>
+                            <View style={{ height: scaleHeight(56) }}>
+                                <Text tx="ClientScreen.phoneNumber" ></Text>
                                 <TextInput style={{ fontSize: scaleWidth(16) }}></TextInput>
                             </View>
                         </View>
 
-                    </View>     
+                    </View>
                 </View>
             </View>
         </Modal>

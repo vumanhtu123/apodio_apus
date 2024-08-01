@@ -1,12 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
 import React, { FC, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { NavigatorParamList } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, colors, scaleWidth } from "../../../theme";
-import { Header } from "../../../../components";
+import { Header, Text } from "../../../../components";
 
 
 
@@ -38,7 +38,7 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                         <TouchableOpacity
                             style={Style.styleBtnAddProduct}
                         >
-                            <Text style={Style.txtBtnAddProduct}>+ Thêm sản phẩm</Text>
+                            <Text style={Style.txtBtnAddProduct} tx="checkInventory.addProduct"></Text>
                         </TouchableOpacity>
 
                         <View
@@ -90,8 +90,10 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
 
                     <View style={Style.styleGroup2}>
                         <View style={Style.flexRow}>
-                            <Text style={Style.txtGroup2}>
-                                Tổng số lượng
+                            <Text style={Style.txtGroup2}
+                                tx="checkInventory.totalQuantity"
+                            >
+
                             </Text>
                             <Text style={Style.stylesNumber}>
                                 0
@@ -99,7 +101,7 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                         </View>
                         <View style={[Style.flexRow, { marginVertical: scaleHeight(10) }]}>
                             <Text style={Style.txtGroup2}>
-                                Sản phẩm
+
                             </Text>
                             <Text style={Style.stylesNumber}>
                                 6
@@ -126,12 +128,14 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
 
                     </View>
                 </View>
-                
+
                 <View style={Style.notification}>
 
                     <Svgs.ic_Xcicle_Red />
-                    <Text style={{ fontSize: scaleWidth(12), color: colors.palette.radicalRed, }}>
-                        Số lượng tồn kho sản phẩm phải lớn hơn hoặc bằng số lượng trong đơn xuất hàng
+                    <Text style={{ fontSize: scaleWidth(12), color: colors.palette.radicalRed, }}
+                        tx="checkInventory.searchAndSelectProductsMaterialsToStartCheckingGoods"
+                    >
+
                     </Text>
                 </View>
 
@@ -142,8 +146,9 @@ export const CreateDeliveryNote: FC<StackScreenProps<NavigatorParamList, 'create
                     >
                         <Text
                             style={{ color: onClick === 'save' ? colors.palette.white : colors.palette.navyBlue }}
+
                         >
-                            Lưu phiếu
+
                         </Text>
                     </TouchableOpacity>
 

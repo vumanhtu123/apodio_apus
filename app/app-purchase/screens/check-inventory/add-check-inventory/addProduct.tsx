@@ -1,6 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { FC, useState } from "react";
-import {  NavigatorParamList } from "../../../navigators";
+import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
@@ -60,7 +60,7 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
                         <TouchableOpacity
                             style={Style.styleBtnAddProduct}
                         >
-                            <Text style={Style.txtBtnAddProduct}>+ Thêm sản phẩm</Text>
+                            <Text style={Style.txtBtnAddProduct} tx="checkInventory.addProduct"></Text>
                         </TouchableOpacity>
 
                         <View
@@ -106,8 +106,10 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
                                     </View>
                                 </View>
 
-                                <Text style={{ fontSize: scaleWidth(12), color: colors.palette.radicalRed }}>
-                                    Số lượng thực tế không được nhỏ hơn 0
+                                <Text style={{ fontSize: scaleWidth(12), color: colors.palette.radicalRed }}
+                                    tx="validate.checkQuantity"
+                                >
+
                                 </Text>
 
                             </View>
@@ -117,24 +119,29 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
 
                     <View style={Style.styleGroup2}>
                         <View style={Style.flexRow}>
-                            <Text style={Style.txtGroup2}>
-                                Số lượng tồn thực tế
-                            </Text>
+                            <Text style={Style.txtGroup2}
+                                tx="checkInventory.actualStock" />
+
+
                             <Text style={Style.stylesNumber}>
                                 0
                             </Text>
                         </View>
                         <View style={[Style.flexRow, { marginVertical: scaleHeight(10) }]}>
-                            <Text style={Style.txtGroup2}>
-                                Số lượng tồn kho trong hệ thống
+                            <Text style={Style.txtGroup2}
+                                tx="checkInventory.inventoryQuantityInTheSystem"
+                            >
+
                             </Text>
                             <Text style={Style.stylesNumber}>
                                 6
                             </Text>
                         </View>
                         <View style={Style.flexRow}>
-                            <Text style={Style.txtGroup2}>
-                                Số lượng chênh lệch
+                            <Text style={Style.txtGroup2}
+                                tx="checkInventory.differenceInQuantity"
+                            >
+
                             </Text>
                             <Text style={Style.stylesNumber}>
                                 6
@@ -145,8 +152,10 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
 
                     <View style={Style.styleGroup2}>
                         <View style={[Style.flexRow, { alignItems: 'center' }]}>
-                            <Text style={Style.txtGroup2}>
-                                Ghi Chú
+                            <Text style={Style.txtGroup2}
+                                tx="checkInventory.note"
+                            >
+
                             </Text>
                             <Svgs.icon_image />
                         </View>
@@ -156,29 +165,31 @@ export const addProductCreate: FC<StackNavigationProp<NavigatorParamList, "addPr
 
                 <View style={Style.stylesBtnBottom}>
                     <TouchableOpacity
-                        style={[onClick === 'save' ? Style.btnSuccessfully : Style.btnSave,{marginRight:13}]}
+                        style={[onClick === 'save' ? Style.btnSuccessfully : Style.btnSave, { marginRight: 13 }]}
                         onPress={() => setOnClick('save')}
                     >
                         <Text
                             style={{ color: onClick === 'save' ? colors.palette.white : colors.palette.navyBlue }}
+                            tx="checkInventory.deponsit"
                         >
-                            Lưu phiếu
+
                         </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         style={onClick === 'successfully' ? Style.btnSuccessfully : Style.btnSave}
                         onPress={() => setOnClick('successfully')}
                     >
                         <Text
                             style={{ color: onClick === 'successfully' ? colors.palette.white : colors.palette.navyBlue }}
+                            tx="checkInventory.complete"
                         >
-                            Hoàn thành
+
                         </Text>
                     </TouchableOpacity>
 
                 </View>
-            </View>
+            </View >
         )
     }
 )
@@ -263,33 +274,33 @@ export const Style = StyleSheet.create({
 
     },
     stylesBtnBottom: {
-       backgroundColor:colors.white,
-       padding:scaleWidth(16),
-       flexDirection:'row',
-       justifyContent:'space-between'
-    
-    },
-    btnSave: {
-        flex:1,
-        borderWidth:1,
-        borderRadius:7,
-        padding:scaleWidth(12),
-        backgroundColor:colors.white,
-        alignItems:'center',
-       
-        borderColor:colors.palette.navyBlue,
-        width:scaleWidth(165)
+        backgroundColor: colors.white,
+        padding: scaleWidth(16),
+        flexDirection: 'row',
+        justifyContent: 'space-between'
 
     },
-    btnSuccessfully:{
-        width:scaleWidth(160),
-        flex:1,
-        borderWidth:1,
-        borderRadius:7,
-        padding:scaleWidth(12),
-        backgroundColor:colors.palette.navyBlue,
-        alignItems:'center',
-        borderColor:colors.palette.navyBlue,
+    btnSave: {
+        flex: 1,
+        borderWidth: 1,
+        borderRadius: 7,
+        padding: scaleWidth(12),
+        backgroundColor: colors.white,
+        alignItems: 'center',
+
+        borderColor: colors.palette.navyBlue,
+        width: scaleWidth(165)
+
+    },
+    btnSuccessfully: {
+        width: scaleWidth(160),
+        flex: 1,
+        borderWidth: 1,
+        borderRadius: 7,
+        padding: scaleWidth(12),
+        backgroundColor: colors.palette.navyBlue,
+        alignItems: 'center',
+        borderColor: colors.palette.navyBlue,
 
     },
 

@@ -21,7 +21,6 @@ import { AuthProvider } from "../screens/contexts/auth";
 import { Router } from "./router";
 import { AuthStack } from "./auth-navigator";
 import * as Screens from "../screens";
-import { InventoryManagement } from "../screens/check-inventory/inventory-management";
 import { termsAndAgreementsScreen } from "../screens/common/users/termsAndAgreements/termsAndAgreements";
 import { commentScreen } from "../screens/common/users/comment/comment";
 import { faqScren } from "../screens/common/users/FAQ/faq";
@@ -92,7 +91,7 @@ export type NavigatorParamList = {
   clientScreen: undefined;
   detailClient: undefined;
   addClientToGroup: undefined;
-  inventoryManagenment: undefined;
+  inventoryManagement: undefined;
   addCheckIventory: undefined;
   addProduct: undefined;
   transactionHistory: undefined;
@@ -191,8 +190,8 @@ export const AppStack = () => {
 
       {/* màn hình kiểm kho */}
       <Stack.Screen
-        name="inventoryManagenment"
-        component={InventoryManagement}
+        name="inventoryManagement"
+        component={Screens.InventoryManagement}
       />
       <Stack.Screen name="addCheckIventory" component={addCheckInventory} />
       <Stack.Screen name="addProduct" component={addProductCreate} />

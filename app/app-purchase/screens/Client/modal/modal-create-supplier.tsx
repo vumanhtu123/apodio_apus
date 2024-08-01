@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, Text as TextRN, View, FlatList, ScrollView } from 'react-native';
+import { Modal, StyleSheet, TouchableOpacity, View, FlatList, ScrollView } from 'react-native';
 import { SvgIcon } from '../../../../components/svg-icon/index';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { navigate } from '../../../navigators';
 import { useNavigation } from '@react-navigation/native';
 import { Svgs } from '../../../../../assets/svgs';
-import { TextField } from '../../../../components';
+import { Text, TextField } from '../../../../components';
 import { Controller, useForm } from 'react-hook-form';
 import { InputSelect } from '../../../../components/input-select/inputSelect';
 import { translate } from '../../../i18n/translate';
@@ -153,11 +153,11 @@ const ModalCreateSuppliers = (props: any) => {
         <Modal animationType="slide" transparent={true} visible={isVisible}>
             <View style={styles.container}>
                 <View style={styles.modalView}>
-                    <TextRN style={styles.modalText} />
+                    <Text style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Tạo mới nhà cung cấp</Text>
+                        <Text style={styles.headerTitle} tx="ClientScreen.createNewClient" ></Text>
                         <TouchableOpacity onPress={() => setIsVisible(false)}>
-                            <Text style={styles.headerButton}>Hủy</Text>
+                            <Text style={styles.headerButton} tx="ClientScreen.cancel"></Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.horizontalLine} />

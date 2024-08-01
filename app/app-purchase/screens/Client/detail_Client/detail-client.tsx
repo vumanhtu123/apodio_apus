@@ -1,20 +1,21 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
-import { FC ,} from "react";
+import { FC, } from "react";
 
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
-import { colors, padding, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StylesClient } from "./styles";
 import ItemlistUnpaid from "../Item/Item-list-unpaid";
 import { FlatList } from "react-native";
-import { AppStackParamList } from "../../../navigators/AppNavigator";
+import { NavigatorParamList } from "../../../navigators";
 
-export const detailClientScrent: FC<StackScreenProps<AppStackParamList, "detailClient">> = observer(
+
+export const detailClientScrent: FC<StackScreenProps<NavigatorParamList, "detailClient">> = observer(
 
     function DetaiClient(props) {
 
@@ -80,8 +81,8 @@ export const detailClientScrent: FC<StackScreenProps<AppStackParamList, "detailC
                 >
                     <View style={StylesClient.styleInforTop}>
                         <View>
-                            <Text>
-                                Tôi phải thu:
+                            <Text tx="NCCScreen.iHaveToCollect" style={{ fontSize: fontSize.size12, fontWeight: '400' }}>
+
                             </Text>
                             <Text style={StylesClient.txMoney}>
                                 5.555.555đ
@@ -99,38 +100,40 @@ export const detailClientScrent: FC<StackScreenProps<AppStackParamList, "detailC
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{height:1, backgroundColor:colors.solitude2}}/>
+                    <View style={{ height: 1, backgroundColor: colors.solitude2 }} />
 
-                    <View style={{ padding:14, flexDirection:'row', justifyContent:'space-between' }}>
-                        <View style={{flexDirection:'row'}}>
-                        <Svgs.icon_calendar width={14} height={14}/>
-                        <Text
-                        style={{ fontSize: scaleWidth(10), fontWeight: "400", marginHorizontal:6}}
-                        >Đặt lịch nhắc nợ tự động</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: scaleWidth(16) }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Svgs.icon_calendar width={14} height={14} />
+                            <Text
+                                style={{ fontSize: fontSize.size10, fontWeight: "400", marginHorizontal: 6 }}
+                                tx="ClientScreen.setUpAutomaticDebtReminders"
+                            />
                         </View>
                         <TouchableOpacity>
                             <Text
-                                style={{ fontSize: scaleWidth(10), fontWeight: "400", color: colors.palette.navyBlue}}  
-                            >Thay đổi</Text>
+                                style={{ fontSize: scaleWidth(10), fontWeight: "400", color: colors.palette.navyBlue }}
+                                tx="ClientScreen.change"
+                            />
                         </TouchableOpacity>
                     </View>
 
                 </View>
 
-                <View style={{padding:16, marginTop:scaleHeight(60), marginBottom:scaleHeight(12)}}>
-                    <Text style={{fontSize: 14, fontWeight:'400', color:colors.nero, fontFamily:'Inter-ExtraBold'}}>
+                <View style={{ padding: 16, marginTop: scaleHeight(60), marginBottom: scaleHeight(12) }}>
+                    <Text style={{ fontSize: 14, fontWeight: '400', color: colors.nero, fontFamily: 'Inter-ExtraBold' }}>
                         Danh sách giao dịch chưa thanh toán
                     </Text>
                 </View>
 
                 <FlatList
-                    style={{ marginBottom:20}}
+                    style={{ marginBottom: 20 }}
                     data={dataUnPaid}
-                    renderItem={({item}) => <ItemlistUnpaid item={item}  />}
+                    renderItem={({ item }) => <ItemlistUnpaid item={item} />}
                     showsVerticalScrollIndicator={false} // Tắt thanh trạng thái bên phải
                 />
 
-            </View>
+            </View >
         )
     }
 

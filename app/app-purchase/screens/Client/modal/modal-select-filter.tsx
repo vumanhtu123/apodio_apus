@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Modal, StyleSheet, Text, TouchableOpacity, Text as TextRN, View } from 'react-native';
+import { Modal, StyleSheet, TouchableOpacity, Text as TextRN, View } from 'react-native';
 import { SvgIcon } from '../../../../components/svg-icon/index';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { navigate } from '../../../navigators';
@@ -10,6 +10,7 @@ import { load } from '../../../utils/storage';
 import { se } from 'date-fns/locale/se';
 import { RectButton } from 'react-native-gesture-handler';
 import { boolean } from 'mobx-state-tree/dist/internal';
+import { Text } from '../../../../components';
 
 interface ModalProps {
     isVisible?: boolean;
@@ -108,15 +109,15 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
                 <View style={styles.modalView}>
                     <TextRN style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Bộ lọc</Text>
+                        <Text style={styles.headerTitle} tx="ClientScreen.filter"></Text>
                         <TouchableOpacity onPress={setIsVisible}>
-                            <Text style={styles.headerButton}>Hủy</Text>
+                            <Text style={styles.headerButton} tx="ClientScreen.cancel"></Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.horizontalLine} />
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowSortOption}>
-                            <Text style={styles.groupTitle}>Sắp xếp theo</Text>
+                            <Text style={styles.groupTitle} tx="ClientScreen.sort"></Text>
                             <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showSortOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showSortOption && (
@@ -179,7 +180,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
 
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowGroupOption}>
-                            <Text style={styles.groupTitle}>Nhãn khách hàng</Text>
+                            <Text style={styles.groupTitle} tx="ClientScreen.temClient"></Text>
                             <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showGroupOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showGroupOption && (
