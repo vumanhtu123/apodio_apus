@@ -1162,6 +1162,10 @@ const en = {
     downloadNow: "Tải ngay",
     reset: "Thiết lập lại",
     apply: "Áp dụng",
+    today: "Hôm nay",
+    thisMonth:"Tháng này",
+    beforeMonth: "Tháng trước",
+
   },
   printInvoiceScreen: {
     printInvoice: "In hoá đơn",

@@ -290,7 +290,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                                     setSelectCalendar(1)
                                 }}
                             >
-                                <Text style={styles.TextTabbar}>Hôm nay</Text>
+                                <Text style={styles.TextTabbar} tx="warehouseBook.today"></Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{
                                 // width:scaleWidth(80), 
@@ -306,7 +306,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
 
                                 }}
                             >
-                                <Text style={styles.TextTabbar}>Tháng này</Text>
+                                <Text style={styles.TextTabbar} tx="warehouseBook.thisMonth"></Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{
                                 // width:scaleWidth(80),
@@ -321,7 +321,7 @@ export const warehouseBook: FC<StackScreenProps<NavigatorParamList, "warehouseBo
                                     setSelectCalendar(3)
                                 }}
                             >
-                                <Text style={styles.TextTabbar}>Tháng trước</Text>
+                                <Text style={styles.TextTabbar} tx="warehouseBook.beforeMonth"></Text>
                             </TouchableOpacity>
 
                         </View>
