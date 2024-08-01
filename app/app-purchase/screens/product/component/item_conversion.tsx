@@ -96,15 +96,6 @@ const ItemConversion = (props: ItemConversionProps) => {
   });
 
   const conversionWatch = watch("conversion");
-  // useEffect(() => {
-  //     if (items.length > 0) {
-  //         const lastItem = items[items.length - 1];
-  //         if (lastItem.amount && lastItem.price) {
-  //             append({ amount: '', price: '' });
-  //         }
-  //         console.log('test log')
-  //     }
-  // }, [items, append]);
 
   useEffect(() => {
     setFilteredData(arrData);
