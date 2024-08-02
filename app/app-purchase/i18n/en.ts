@@ -359,6 +359,9 @@ const en = {
     addressIsRequired: "Địa chỉ là bắt buộc",
     dateIsCannotBeEmpty: "Ngày không được để trống",
     enterPrice: "Nhập giá",
+    selected: "Đã chọn",
+    endow: "ưu đãi",
+   
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -817,6 +820,11 @@ const en = {
     attributeGroupNameIsRequired :"Tên nhóm thuộc tính là bắt buộc",
     selectToViewSupplierIsProducts : "Lựa chọn xem sản phẩm của nhà cung cấp:",
     materials: "Nguyên vật liệu",
+    thisMonth: "Tháng này",
+    today: "Hôm nay",
+    beforeMonth: "Tháng trước",
+    selectUnit: "Chọn đơn vị",
+    supplier:"nhà cung cấp",
 
   },
   detailScreen: {
@@ -1126,7 +1134,8 @@ const en = {
     still : "Còn",
     today: "Hôm nay",
     sum : "Tổng cộng",
-    
+
+
   },
   itemConversion: {
     dialogNoti: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",

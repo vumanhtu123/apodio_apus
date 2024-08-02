@@ -8,6 +8,7 @@ import { Text } from '../../../../../../components';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
 import en from '../../../../../i18n/en';
 
+
 const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
   const [showRetailPrice, setShowRetailPrice] = useState(false);
   const [showWholesalePrice, setShowWholesalePrice] = useState(false);

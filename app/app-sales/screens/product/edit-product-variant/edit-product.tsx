@@ -38,6 +38,7 @@ import { ItemGroupPrice, ItemMoreInformation, ItemUnit } from "../component/item
 import { ItemVariant } from "../component/itemVariant";
 import en from "../../../i18n/en";
 
+
 export const ProductEditScreen: FC = (item) => {
   const route = useRoute();
   const navigation = useNavigation();

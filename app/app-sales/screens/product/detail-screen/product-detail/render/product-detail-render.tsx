@@ -10,6 +10,7 @@ import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/va
 import { translate } from '../../../../../i18n/translate';
 import en from '../../../../../i18n/en';
 
+
 const ProductDetailsSection = ({
     dataClassification,
     detailsClassification,

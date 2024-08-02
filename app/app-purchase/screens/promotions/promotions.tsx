@@ -11,6 +11,7 @@ import AutoHeightImage from "react-native-auto-height-image"
 import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { isFormValid } from "../../utils/validate"
+import en from "../../i18n/en"
 
 export const Promotions: FC = observer(
     function Promotions() {
@@ -136,11 +137,11 @@ export const Promotions: FC = observer(
                 let isContained = arrCopy.filter(obj => {
                     return str === obj.code
                 })
-                if(isContained){
-                    let indexCheck = promotionUsed.findIndex((item)=>{
+                if (isContained) {
+                    let indexCheck = promotionUsed.findIndex((item) => {
                         item = isContained
                     })
-                    if(indexCheck === -1){
+                    if (indexCheck === -1) {
                         promotionUsed.push(isContained)
                         setPromotionUsed(promotionUsed)
                     }
@@ -290,8 +291,8 @@ export const Promotions: FC = observer(
                             paddingBottom: scaleHeight(34)
 
                         }}>
-                            <Text style={{ flex: 1 }}>Da chon {isFocus.length} uu dai</Text>
-                            <Button text="Ap dung"
+                            <Text style={{ flex: 1 }}>{en.order.selected} {isFocus.length} {en.order.endow}</Text>
+                            <Button text={en.order.apply}
                                 onPress={() => handleUsed()}
                                 style={{
                                     backgroundColor: colors.palette.navyBlue,

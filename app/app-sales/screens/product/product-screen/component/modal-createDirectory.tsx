@@ -4,15 +4,13 @@ import { Controller, useForm } from "react-hook-form";
 import {
   Linking,
   StyleSheet,
-  Text,
-  Text as TextRN,
   TouchableOpacity,
   View,
 } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Svgs } from "../../../../../../assets/svgs";
-import { AutoImage, TextField } from "../../../../../components";
+import { AutoImage, Text, TextField } from "../../../../../components";
 import { CustomModal } from "../../../../../components/custom-modal";
 import {
   ALERT_TYPE,
@@ -260,7 +258,7 @@ const CreateDirectoryModal = (props: any) => {
       isHideKeyBoards={isVisible}
       isVisibleLoading={showLoading}>
       <View style={styles.modalView}>
-        <TextRN style={styles.modalText} />
+        <Text style={styles.modalText} />
         <View style={styles.header}>
           <Text style={styles.headerTitle}>
             {translate("productScreen.create_directory")}

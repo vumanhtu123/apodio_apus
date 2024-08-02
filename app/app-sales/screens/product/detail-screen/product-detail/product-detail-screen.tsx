@@ -35,6 +35,7 @@ import ProductWeightDetails from "./render/weight-detail";
 import { translate } from "../../../../i18n/translate";
 import { useStores } from "../../../../models";
 import { styles } from "./styles";
+import en from "../../../../i18n/en";
 type RouteParams = {
   reload?: boolean;
   screen?: any
@@ -408,7 +409,7 @@ export const ProductDetailScreen: FC = () => {
                         flex: 1,
                       },
                     ]}>
-                    {arrNCC?.length + " nhà cung cấp"}
+                    {arrNCC?.length + en.productScreen.supplier}
                   </Text>
                   {showNCC === true ? (
                     <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>
