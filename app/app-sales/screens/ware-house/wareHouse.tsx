@@ -3,7 +3,7 @@ import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from "rea
 
 import React from "react";
 import { Styles } from "./style";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../app-purchase/components";
 import {
     ActivityIndicator,
     Alert,

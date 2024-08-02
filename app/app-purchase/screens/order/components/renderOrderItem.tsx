@@ -15,11 +15,11 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { Text } from "../../../../components";
+import { Text } from "../../../components";
 import { TurboModuleRegistry } from "react-native-windows";
 import { useStores } from "../../../models";
 import AutoHeightImage from "react-native-auto-height-image";
-import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import Images from "../../../../../assets/index";
 

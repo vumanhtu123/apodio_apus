@@ -4,7 +4,7 @@ import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../.
 import ProductAttribute from '../../../component/productAttribute';
 import { Svgs } from '../../../../../../../assets/svgs';
 import { styles } from '../styles';
-import { Text } from '../../../../../../components';
+import { Text } from '../../../../../../app-purchase/components';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
 import en from '../../../../../i18n/en';
 

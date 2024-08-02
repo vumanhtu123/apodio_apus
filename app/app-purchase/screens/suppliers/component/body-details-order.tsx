@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Image, View } from "react-native";
-import { Text } from "../../../../components";
+import { Text } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
 import Images from "../../../../../assets/index";

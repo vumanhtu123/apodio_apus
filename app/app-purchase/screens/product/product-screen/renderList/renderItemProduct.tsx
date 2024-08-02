@@ -4,7 +4,7 @@ import FastImage from "react-native-fast-image";
 import { Svgs } from "../../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../../theme";
 import { styles, stylesItem } from "../../styles";
-import { Text } from "../../../../../components";
+import { Text } from "../../../../components";
 import { MotiView } from "moti";
 import Images from "../../../../../../assets/index";
 

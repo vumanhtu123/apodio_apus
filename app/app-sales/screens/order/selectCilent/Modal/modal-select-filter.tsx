@@ -6,7 +6,7 @@ import { Svgs } from '../../../../../../assets/svgs';
 import ModalCreateClientFromNumber from './modal-create-client';
 import Modal from 'react-native-modal'
 import en from '../../../../i18n/en';
-import { Text } from '../../../../../components';
+import { Text } from '../../../../../app-purchase/components';
 
 
 interface ModalProps {

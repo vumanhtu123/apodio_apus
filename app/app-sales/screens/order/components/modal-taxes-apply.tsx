@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Alert, Platform, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
-import { Text } from "../../../../components";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { Text } from "../../../../app-purchase/components";
+import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
 
 interface InputSelect {
   isVisible: boolean;

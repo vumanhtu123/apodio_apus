@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Button, TouchableOpacity, View } from "react-native";
-import { TextField, Text } from "../../../../components";
+import { TextField, Text } from "../../../../app-purchase/components";
 import { scaleHeight } from "../../../theme";
 import { stylesWareHouse } from "../style";
 import { translate } from "../../../i18n";

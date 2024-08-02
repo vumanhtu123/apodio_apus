@@ -7,8 +7,7 @@ import React from "react"
 import { colors, scaleHeight, scaleWidth } from "../../../theme"
 import { FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native"
 import { Svgs } from "../../../../../assets/svgs"
-import { Header, Text } from "../../../../components"
-import en from "../../../i18n/en"
+import { Header, Text } from "../../../components"
 
 
 export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createImportGoods">> = observer(

@@ -2,7 +2,7 @@ import { ApisauceInstance, create } from "apisauce";
 import DeviceInfo from "react-native-device-info";
 import { resetRoot } from "../../navigators";
 import { getAccessToken, getDomain, getTenantId } from "../../utils/storage";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { ApiConfig, DEFAULT_API_CONFIG_ORDER } from "./api-config";
 import { ApiRefreshToken } from "./api_config_refresh_token";
 /**

@@ -12,7 +12,7 @@ function IgniteApp() {
 
   const renderApp = () => {
     switch (currentApp) {
-      case 'AppPurchase':
+      case 'appPurchase':
         return <AppPurchase />;
       case 'appSales':
         return <AppSales />;

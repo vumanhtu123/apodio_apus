@@ -10,7 +10,7 @@ import FastImage from "react-native-fast-image";
 import { scaleHeight, scaleWidth } from "../../../../theme";
 import { Svgs } from "../../../../../../assets/svgs";
 import { stylesItem } from "../../styles";
-import { Text } from "../../../../../components";
+import { Text } from "../../../../components";
 import { Swipeable } from "react-native-gesture-handler";
 import Images from "../../../../../../assets/index";
 

@@ -6,8 +6,8 @@ import {
 import React, { FC, useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../assets/svgs";
-import { Header } from "../../../components/header/header";
-import { Text } from "../../../components/text/text";
+import { Header } from "../../components/header/header";
+import { Text } from "../../components/text/text";
 import { useStores } from "../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { translate } from "../../i18n";

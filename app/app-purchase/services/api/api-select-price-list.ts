@@ -6,7 +6,7 @@ import { ApiUpload } from "../base-api/api_upload";
 import { hideLoading, showLoading } from '../../utils/toast';
 import { PriceListResponse } from '../../models/select-price-list/select-price-list.-model';
 import { ApiEndpoint } from '../base-api/api_endpoint';
-import { Loading } from '../../../components/dialog-notification';
+import { Loading } from '../../components/dialog-notification';
 
 export class SelectPriceListAPI {
     private api : Api;

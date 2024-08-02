@@ -10,13 +10,13 @@ import {
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Svgs } from "../../../../../../assets/svgs";
-import { AutoImage, Text, TextField } from "../../../../../components";
-import { CustomModal } from "../../../../../components/custom-modal";
+import { AutoImage, Text, TextField } from "../../../../components";
+import { CustomModal } from "../../../../components/custom-modal";
 import {
   ALERT_TYPE,
   Dialog,
   Loading,
-} from "../../../../../components/dialog-notification";
+} from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import { useStores } from "../../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
@@ -79,7 +79,7 @@ const CreateDirectoryModal = (props: any) => {
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: translate("txtDialog.txt_title_dialog"),
-          textBody: translate("imageUploadExceedLimitedSize"),
+          textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
           button: translate("common.ok"),
           closeOnOverlayTap: false,
         });

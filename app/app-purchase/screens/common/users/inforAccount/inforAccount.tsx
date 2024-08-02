@@ -5,10 +5,10 @@ import { observer } from "mobx-react-lite";
 import { StyleSheet, View } from "react-native";
 import React from "react";
 import { StackScreenProps } from "@react-navigation/stack";
-import { Header } from "../../../../../components";
+import { Header } from "../../../../components";
 import { Svgs } from "../../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../../theme";
-import { Text } from "../../../../../components";
+import { Text } from "../../../../components";
 import { Dimensions } from 'react-native';
 import { useStores } from "../../../../models";
 export const InfoAccount: FC<StackScreenProps<NavigatorParamList, "inforAccount">> = observer(

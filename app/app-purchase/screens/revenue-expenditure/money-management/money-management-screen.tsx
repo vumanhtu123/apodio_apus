@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import { NavigatorParamList } from "../../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import {
   colors,
   fontSize,

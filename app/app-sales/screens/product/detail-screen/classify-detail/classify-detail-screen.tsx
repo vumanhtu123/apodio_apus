@@ -12,8 +12,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { Svgs } from "../../../../../../assets/svgs";
-import { Header } from "../../../../../components/header/header";
-import { Text } from "../../../../../components/text/text";
+import { Header } from "../../../../../app-purchase/components/header/header";
+import { Text } from "../../../../../app-purchase/components/text/text";
 import {
   colors,
   fontSize,
@@ -24,7 +24,7 @@ import {
   scaleWidth,
 } from "../../../../theme";
 // import { styles } from "./styles"
-import { AutoImage } from "../../../../../components/auto-image/auto-image";
+import { AutoImage } from "../../../../../app-purchase/components/auto-image/auto-image";
 import { ScrollView } from "react-native-gesture-handler";
 import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -32,7 +32,7 @@ import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../../../models";
 import { commasToDots, formatCurrency, formatNumber, formatVND } from "../../../../utils/validate";
 import ProductAttribute from "../../component/productAttribute";
-import { ALERT_TYPE, Dialog } from "../../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog } from "../../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import SupplierList from "./render/supplier-detail";
 import ProductAttributes from "./render/attribute-detail";

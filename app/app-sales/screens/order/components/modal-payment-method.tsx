@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { Alert, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { margin, scaleHeight, scaleWidth, fontSize, colors } from "../../../theme";
-import { Text } from "../../../../components";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { Text } from "../../../../app-purchase/components";
+import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
 import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 
 interface InputSelect {

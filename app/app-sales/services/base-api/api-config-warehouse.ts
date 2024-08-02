@@ -10,7 +10,7 @@ import {
   Dialog,
   Toast,
   Loading,
-} from "../../../components/dialog-notification";
+} from "../../../app-purchase/components/dialog-notification";
 import { navigate, resetRoot } from "../../navigators";
 import DeviceInfo from "react-native-device-info";
 /**

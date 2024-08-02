@@ -6,7 +6,7 @@ import {
   Dialog,
   Toast,
   Loading,
-} from "../../../components/dialog-notification";
+} from "../../components/dialog-notification";
 import { VendorResult } from "../../models/vendor/vendor-model";
 
 export class VendorApi {
