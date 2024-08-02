@@ -30,14 +30,14 @@ import Images from "../../../../../assets/index";
 
 interface ItemSelectVariant {
   item: any;
-  handleMinusPrice: ({}) => void;
-  handleMinus: ({}) => void;
-  handlePlusPrice: ({}) => void;
-  handlePlus: ({}) => void;
-  handleAddToCart: ({}: any) => void;
-  handleAddToCartPrice: ({}: any) => void;
+  handleMinusPrice: ({ }) => void;
+  handleMinus: ({ }) => void;
+  handlePlusPrice: ({ }) => void;
+  handlePlus: ({ }) => void;
+  handleAddToCart: ({ }: any) => void;
+  handleAddToCartPrice: ({ }: any) => void;
   uomGroupLine?: {};
-  changeText: ({}, {}) => void;
+  changeText: ({ }, { }) => void;
 }
 
 export function ItemSelectVariant(props: ItemSelectVariant) {
@@ -104,7 +104,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
             source={{
               uri:
                 item?.item?.productImage !== null &&
-                item?.item?.productImage?.length !== 0
+                  item?.item?.productImage?.length !== 0
                   ? item?.item?.productImage[0]
                   : "",
               cache: FastImage.cacheControl.immutable,
@@ -442,7 +442,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
             source={{
               uri:
                 item?.item?.productImage !== null &&
-                item?.item?.productImage?.length !== 0
+                  item?.item?.productImage?.length !== 0
                   ? item?.item?.productImage[0]
                   : "",
               cache: FastImage.cacheControl.immutable,
@@ -649,7 +649,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     setModalPrice(true);
                     setPriceId(item.id);
                   }}>
-                  <Text style={{ fontSize: fontSize.size12 }}>Nhập giá</Text>
+                  <Text style={{ fontSize: fontSize.size12 }} tx="order.enterPrice"></Text>
                 </TouchableOpacity>
               )}
             </View>

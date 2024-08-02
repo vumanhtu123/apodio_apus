@@ -345,7 +345,7 @@ export default function ImagesGroup(props: ImagesGroup) {
               alignItems: 'center'
             }} >
               <Svgs.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
-              <Text text="Tải ảnh lên" style={{
+              <Text tx="productScreen.upImg" style={{
                 fontWeight: '600', fontSize: fontSize.size14,
                 lineHeight: scaleHeight(24), color: colors.palette.navyBlue, marginLeft: scaleWidth(6)
               }} />

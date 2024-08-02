@@ -287,7 +287,8 @@ export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
             required
             arrData={attributeData}
             titleTx="addAttribute.title"
-            hintText="Chọn nhóm thuộc tính"
+            hintText="addAttribute.selectAnAttributeGroup"
+
             dataEdit={dropdownSelected}
             disable={true}
             loadMore={() => setPage(page + 1)}

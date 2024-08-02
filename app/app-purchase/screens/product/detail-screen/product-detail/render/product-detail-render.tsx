@@ -8,6 +8,7 @@ import { Text } from '../../../../../../components';
 import { Svgs } from '../../../../../../../assets/svgs';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
 import { translate } from '../../../../../i18n/translate';
+import en from '../../../../../i18n/en';
 
 const ProductDetailsSection = ({
     dataClassification,
@@ -65,13 +66,13 @@ const ProductDetailsSection = ({
                     value={
                         dataClassification.saleOk === true &&
                             dataClassification.purchaseOk === false
-                            ? "Có thể bán"
+                            ? en.productScreen.canSell
                             : dataClassification.purchaseOk === true &&
                                 dataClassification.saleOk === false
-                                ? "Có thể mua"
+                                ? en.productScreen.canBuy
                                 : dataClassification.saleOk === true &&
                                     dataClassification.purchaseOk === true
-                                    ? "Có thể bán/ Có thể mua"
+                                    ? en.productScreen.canSellOrBuy
                                     : null
                     }
                 />

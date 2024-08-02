@@ -8,7 +8,7 @@ import { AppContext } from './app/AppContext';
 
 function IgniteApp() {
 
-  const [currentApp, setCurrentApp] = useState<string>('appSales');
+  const [currentApp, setCurrentApp] = useState<string>('AppPurchase');
 
   const renderApp = () => {
     switch (currentApp) {
@@ -30,7 +30,7 @@ function IgniteApp() {
       </View>
     </AppContext.Provider>
   );
-  
+
   // return <App hideSplashScreen={() => Promise.resolve(true)} />;
 }
 

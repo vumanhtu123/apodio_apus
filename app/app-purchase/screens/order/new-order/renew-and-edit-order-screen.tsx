@@ -523,7 +523,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Chiết khấu phải lớn hơn 0",
+        textBody: translate("productScreen.discountMustBeGreaterThan0"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -1326,7 +1326,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         return Dialog.show({
                           type: ALERT_TYPE.INFO,
                           title: translate("productScreen.Notification"),
-                          textBody: "Bạn cần chọn phương thức thanh toán",
+                          textBody: translate("productScreen.youNeedSelectMethodPay"),
                           button2: translate(
                             "productScreen.BtnNotificationAccept"
                           ),
