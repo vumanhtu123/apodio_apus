@@ -30,6 +30,8 @@ import ItemWeight from "../component/weight-component";
 import ImageProduct from "../create-prodcut/imageProduct";
 import { styles } from "./styles";
 import { ItemGroupPrice } from "../component/itemCreateProduct";
+import en from "../../../i18n/en";
+
 
 export const EditClassify: FC = (item) => {
     const route = useRoute();
@@ -39,7 +41,7 @@ export const EditClassify: FC = (item) => {
     const [valuePurchase, setValuePurchase] = useState(false);
     const [valueSwitchUnit, setValueSwitchUnit] = useState(true);
     const [addDescribe, setAddDescribe] = useState(false);
-    const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
+    const [detailUnitGroupData, setDetailUnitGroupData] = useState<{ uomGroupLines: any, originalUnit: any }>({ uomGroupLines: [], originalUnit: '' });
     const [addWeight, setAddWeight] = useState(false);
     const [description, setDescription] = useState("");
     const [vendor, setVendor] = useState([]);
@@ -86,7 +88,7 @@ export const EditClassify: FC = (item) => {
                 getDetailUnitGroup(newDataEdit.uomGroupId)
             }
 
-            if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null && newDataEdit?.baseTemplatePackingLine !== null ) {
+            if (newDataEdit?.baseTemplatePackingLine?.weight !== null && newDataEdit?.baseTemplatePackingLine?.volume !== null && newDataEdit?.baseTemplatePackingLine !== null) {
                 setAddWeight(true)
             }
             methods.setValue('costPrice', newDataEdit?.costPrice?.toString())
@@ -152,7 +154,7 @@ export const EditClassify: FC = (item) => {
     const submitAdd = async (data: any) => {
         console.log('dataInput------------', data)
         if (data.productName.trim() === "") {
-            methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
+            methods.setError("productName", { type: 'validate', message: en.productScreen.pleaseEnterInformation })
             return
         }
         if (uomId.id === 0) {
@@ -191,7 +193,7 @@ export const EditClassify: FC = (item) => {
                 price: Number(formatNumberByString(item.price.toString())),
             };
         });
-        
+
         const packingLine = data.weight?.map((item: any) => {
             return {
                 uomGroupLineId: item.unit.id,
@@ -274,7 +276,7 @@ export const EditClassify: FC = (item) => {
             const results = await Promise.all(uploadPromises);
             let hasNull = results.some((item) => item === null);
             if (!hasNull) {
-                    setImagesNote([...imagesNote, ...results]);
+                setImagesNote([...imagesNote, ...results]);
             }
             // Xử lý kết quả upload
             results.forEach((result, index) => {
@@ -577,8 +579,8 @@ export const EditClassify: FC = (item) => {
                             {showDetails && (
                                 <View style={[styles.viewDetails, { marginHorizontal: scaleWidth(16) }]}>
                                     <View style={styles.viewTitleDetail}>
-                                        <Text tx="createProductScreen.property" style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
-                                        <Text tx="createProductScreen.value" style={{ fontWeight: "600", fontSize: fontSize.size12 }}/>
+                                        <Text tx="createProductScreen.property" style={{ fontWeight: "600", fontSize: fontSize.size12 }} />
+                                        <Text tx="createProductScreen.value" style={{ fontWeight: "600", fontSize: fontSize.size12 }} />
                                     </View>
                                     {dataEdit?.productTemplate == null ? (
                                         <View>

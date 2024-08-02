@@ -169,8 +169,10 @@ export const ProductCategoriesScreen: FC = observer(() => {
       />
       <Screen style={styles.ROOT} preset="fixed">
         <View style={{ marginHorizontal: 16 }}>
-          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-            Lựa chọn xem sản phẩm của nhà cung cấp:
+          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+            tx="productScreen.selectToViewSupplierIsProducts"
+          >
+
           </Text>
         </View>
         <View style={{ flex: 0.95, margin: 16 }}>

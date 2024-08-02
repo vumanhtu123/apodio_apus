@@ -72,8 +72,10 @@ export const CreateGoodsReceipt: FC<StackScreenProps<NavigatorParamList, 'create
                             }}
                             onPress={() => setSellectTab('material')}
                         >
-                            <Text style={sellectTab === 'material' ? Style.StyleTextTabar : Style.StyleTextTabarUnSelect}>
-                                Nguyên vật liệu
+                            <Text style={sellectTab === 'material' ? Style.StyleTextTabar : Style.StyleTextTabarUnSelect}
+                                tx="productScreen.materials"
+                            >
+
                             </Text>
                         </TouchableOpacity>
                     </View>

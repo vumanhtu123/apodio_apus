@@ -85,7 +85,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                         <Text style={Styles.txtItemWareHouse}>{item.id}</Text>
                                         <Text style={{ fontSize: scaleWidth(8), marginHorizontal: scaleWidth(6), color: colors.solitude2 }}>|</Text>
-                                        <Text style={[Styles.txtItemWareHouse, { textAlign: 'right' }]}>Còn: {item.quantity}</Text>
+                                        <Text style={[Styles.txtItemWareHouse, { textAlign: 'right' }]}>{en.ImprotGoodsBook.still}: {item.quantity} </Text>
                                     </View>
 
 
@@ -179,7 +179,7 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
 
                             onPress={() => setSellectTab('product')}
                         >
-                            <Text style={sellectTab === 'product' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect} >Sản phẩm</Text>
+                            <Text style={sellectTab === 'product' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect} tx="ImprotGoodsBook.product"></Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
@@ -192,8 +192,10 @@ export const CreateImportGoods: FC<StackScreenProps<NavigatorParamList, "createI
                             }}
                             onPress={() => setSellectTab('material')}
                         >
-                            <Text style={sellectTab === 'material' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}>
-                                Nguyên vật liệu
+                            <Text style={sellectTab === 'material' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}
+                                tx="ImprotGoodsBook.materials"
+                            >
+
                             </Text>
                         </TouchableOpacity>
                     </View>
