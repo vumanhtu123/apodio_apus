@@ -206,7 +206,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList, "importGoo
                                                 setSelectCalendar(1)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Hôm nay</Text>
+                                            <Text style={Styles.TextTabbar} tx="productScreen.today"></Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{
                                             // width:scaleWidth(80), 
@@ -221,7 +221,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList, "importGoo
                                                 setSelectCalendar(2)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Tháng này</Text>
+                                            <Text style={Styles.TextTabbar} tx="productScreen.thisMonth"></Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{
                                             // width:scaleWidth(80),
@@ -236,7 +236,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList, "importGoo
                                                 setSelectCalendar(3)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Tháng trước</Text>
+                                            <Text style={Styles.TextTabbar} tx="productScreen.beforeMonth"></Text>
                                         </TouchableOpacity>
 
                                     </View>

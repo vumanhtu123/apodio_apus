@@ -44,6 +44,7 @@ import {
 import { ItemVariant } from "../component/itemVariant";
 import en from "../../../i18n/en";
 
+
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
   const [imagesNote, setImagesNote] = useState<any>([]);
