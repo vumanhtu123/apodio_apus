@@ -129,7 +129,6 @@ export function InputSelect(props: InputSelectProps) {
   const [data, setData] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [filteredData, setFilteredData] = useState(arrData);
-  const [loading, setLoading] = useState(false);
   // const [isRefreshing, setIsRefreshing] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const { control, reset, formState: { errors }, clearErrors, watch } = useForm();
