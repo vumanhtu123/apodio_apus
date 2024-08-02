@@ -197,7 +197,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn khách hàng",
+        textBody: translate("productScreen.youNeedSelectClient"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -209,7 +209,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần nhập địa chỉ giao hàng",
+        textBody: translate("productScreen.youNeedEnterAddress"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -221,7 +221,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn sản phẩm",
+        textBody: translate("productScreen.youNeedSelectProduct"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -233,7 +233,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn phương thức thanh toán",
+        textBody: translate("productScreen.youNeedSelectMethodPay"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {

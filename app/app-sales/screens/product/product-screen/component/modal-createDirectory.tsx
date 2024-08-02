@@ -4,8 +4,6 @@ import { Controller, useForm } from "react-hook-form";
 import {
   Linking,
   StyleSheet,
-  Text,
-  Text as TextRN,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -30,6 +28,7 @@ import {
 } from "../../../../utils/requesPermissions";
 import { validateFileSize } from "../../../../utils/validate";
 import { stylesCreateDirectory } from "../../styles";
+import { Text } from "../../../../components";
 
 const CreateDirectoryModal = (props: any) => {
   const { isVisible, setIsVisible, onCreateDirectory } = props;
@@ -260,7 +259,7 @@ const CreateDirectoryModal = (props: any) => {
       isHideKeyBoards={isVisible}
       isVisibleLoading={showLoading}>
       <View style={styles.modalView}>
-        <TextRN style={styles.modalText} />
+        <Text style={styles.modalText} />
         <View style={styles.header}>
           <Text style={styles.headerTitle}>
             {translate("productScreen.create_directory")}

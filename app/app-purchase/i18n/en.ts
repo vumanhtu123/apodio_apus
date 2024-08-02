@@ -359,6 +359,10 @@ const en = {
     phoneNumberIsRequired: "Số điện thoại là bắt buộc",
     addressIsRequired: "Địa chỉ là bắt buộc",
     dateIsCannotBeEmpty: "Ngày không được để trống",
+    enterPrice: "Nhập giá",
+    selected: "Đã chọn",
+    endow: "ưu đãi",
+   
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -798,7 +802,31 @@ const en = {
     productTittle: "Sản phẩm",
     refactorCategories: "Chỉnh sửa danh mục",
     addPriceRange: "Thêm khoảng giá",
-    totalProduct: 'Tổng số sản phẩm:'
+    totalProduct: 'Tổng số sản phẩm:',
+    youNeedSelectClient: "Bạn cần chọn khách hàng",
+    youNeedEnterAddress: "Bạn cần nhập địa chỉ giao hàng",
+    youNeedSelectProduct: "Bạn cần chọn sản phẩm",
+    youNeedSelectMethodPay: "Bạn cần chọn phương thức thanh toán",
+    discountMustBeGreaterThan0:"Chiết khấu phải lớn hơn 0",
+    informationBill: "Thông tin hóa đơn",
+    groupClient :"Nhóm khách hàng",
+    reset2  :"Thiết lập lại" ,
+    apply :"Áp dụng",
+    upImg: "Tải ảnh lên",
+    checkIdSUK: "Mã SKU gồm chữ và số",
+    pleaseEnterInformation: "Vui lòng nhập thông tin",
+    canSell:"Có thể bán",
+    canBuy: "Có thể mua",
+    canSellOrBuy: "Có thể bán hoặc mua",
+    attributeGroupNameIsRequired :"Tên nhóm thuộc tính là bắt buộc",
+    selectToViewSupplierIsProducts : "Lựa chọn xem sản phẩm của nhà cung cấp:",
+    materials: "Nguyên vật liệu",
+    thisMonth: "Tháng này",
+    today: "Hôm nay",
+    beforeMonth: "Tháng trước",
+    selectUnit: "Chọn đơn vị",
+    supplier:"nhà cung cấp",
+
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -881,6 +909,7 @@ const en = {
     priceLowToHigh: "Thấp đến cao",
     filterTime: "Thời gian tạo",
     filterName: "Theo tên",
+    filter: "Bộ lọc",
   },
   tranSacTionHistory: {
     tranSactionHistory: "Lịch sử giao dịch",
@@ -906,6 +935,9 @@ const en = {
     addAttribute: "Tạo nhóm thuộc tính mới",
     selectedValue: "Chọn giá trị",
     allowsCreatingAttribute: "Cho phép tạo phân loại",
+    selectAnAttributeGroup: "Chọn nhóm thuộc tính",
+
+
   },
   editAttribute: {
     headerText: "Sửa thuộc tính",
@@ -1098,6 +1130,13 @@ const en = {
     deletionWarning:
       "Các giao dịch liên quan đến đơn nhập hàng này sẽ bị xóa. Bạn muốn xóa giao dịch liên quan?",
     importCoupon: "Phiếu nhập hàng",
+    product:"Sản phẩm",
+    materials:"Nguyên vật liệu",
+    still : "Còn",
+    today: "Hôm nay",
+    sum : "Tổng cộng",
+
+
   },
   itemConversion: {
     dialogNoti: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",
@@ -1163,6 +1202,10 @@ const en = {
     downloadNow: "Tải ngay",
     reset: "Thiết lập lại",
     apply: "Áp dụng",
+    today: "Hôm nay",
+    thisMonth:"Tháng này",
+    beforeMonth: "Tháng trước",
+
   },
   printInvoiceScreen: {
     printInvoice: "In hoá đơn",

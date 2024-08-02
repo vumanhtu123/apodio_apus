@@ -428,7 +428,7 @@ const EditDirectoryModal = (props: any) => {
           <TouchableOpacity
             onPress={handleCloseModal}
             style={styles.buttonClose}>
-            <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+            <Text style={{ fontSize: fontSize.size14 }} tx="productScreen.cancel"></Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleUpdateDirectory}
