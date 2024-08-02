@@ -4,6 +4,7 @@ type AppContextType = {
   setCurrentApp: React.Dispatch<React.SetStateAction<string>>;
 };
 
+
 export const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const useAppContext = () => {
