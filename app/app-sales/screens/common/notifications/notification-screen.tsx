@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Text} from '../../../../components/text/text';
-import {Header} from '../../../../components/header/header';
+import {Text} from '../../../../app-purchase/components/text/text';
+import {Header} from '../../../../app-purchase/components/header/header';
 import {useNavigation} from '@react-navigation/native';
 import {colors, fontSize, scaleHeight} from '../../../theme';
 import {styles, stylesItem} from './styles';

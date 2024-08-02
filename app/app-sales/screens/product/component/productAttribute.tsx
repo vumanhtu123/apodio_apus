@@ -1,7 +1,7 @@
 import { colors, fontSize } from "../../../theme";
 import React from "react";
 import { View, StyleSheet, StyleProp, TextStyle, ViewStyle } from "react-native";
-import { Text } from "../../../../components";
+import { Text } from "../../../../app-purchase/components";
 import { TxKeyPath } from "../../../i18n";
 
 

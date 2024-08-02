@@ -11,7 +11,7 @@ import React, {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Header, Text, TextField } from "../../../../components";
+import { Button, Header, Text, TextField } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -25,7 +25,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import Modal from "react-native-modal";
 import { useStores } from "../../../models";
-import { ALERT_TYPE, Dialog, Toast } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 
 export const NewAttribute: FC = observer(function NewAttribute(props) {

@@ -6,9 +6,9 @@ import { NavigatorParamList } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, colors, scaleWidth } from "../../../theme";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../app-purchase/components";
 import { UserStatus } from "../../../utils/const";
-import data from "../../../../components/svg-icon/data";
+import data from "../../../../app-purchase/components/svg-icon/data";
 import Style from "./Style";
 
 

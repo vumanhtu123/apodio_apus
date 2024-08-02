@@ -9,7 +9,7 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import { Header, Text } from "../../../../../components";
+import { Header, Text } from "../../../../../app-purchase/components";
 import {
   colors,
   fontSize,
@@ -23,8 +23,8 @@ import en from "../../../../i18n/en";
 import React from "react";
 import LinearGradient from "react-native-linear-gradient";
 import { Styles } from "../styles";
-import data from "../../../../../components/svg-icon/data";
-import CustomCalendar from "../../../../../components/calendar";
+import data from "../../../../../app-purchase/components/svg-icon/data";
+import CustomCalendar from "../../../../../app-purchase/components/calendar";
 import moment from "moment";
 import { ModalPay } from "../../component/modalPay";
 import { ModalExchange } from "../../component/modalExchange";

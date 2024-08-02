@@ -10,10 +10,10 @@ import React, {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Header, Switch, Text, TextField } from "../../../../components";
+import { Header, Switch, Text, TextField } from "../../../../app-purchase/components";
 import { styles } from "./styles";
 import { Svgs } from "../../../../../assets/svgs";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
 import {
   margin,
   padding,
@@ -24,7 +24,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   ALERT_TYPE,
   Toast,
-} from "../../../../components/dialog-notification";
+} from "../../../../app-purchase/components/dialog-notification";
 import { useStores } from "../../../models";
 import { translate } from "../../../i18n";
 import { checkPhoneNumber } from "../../../utils/validate";

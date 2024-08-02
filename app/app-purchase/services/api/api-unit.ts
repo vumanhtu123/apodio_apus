@@ -1,7 +1,7 @@
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 import { UnitResult } from "../../models/unit/unit-model";
 import { CreateUnitResult } from "../../models/unit/create-unit-model";
 import { UnitGroupLine, CreateUnitGroupLineResult } from "../../models/unit/create_unit-group-line"

@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
-import CustomTabs from '../../../../components/calendar';
+import CustomTabs from '../../../components/calendar';
 import moment from 'moment';
 import {
   getDateLast7days,
@@ -17,7 +17,7 @@ import {
   getDateTodayOneDate,
   getOfMonthdays,
 } from '../../../utils/validate';
-import {Text} from '../../../../components/text/text';
+import {Text} from '../../../components/text/text';
 import {colors, padding, scaleHeight} from '../../../theme';
 import { el } from 'date-fns/locale';
 

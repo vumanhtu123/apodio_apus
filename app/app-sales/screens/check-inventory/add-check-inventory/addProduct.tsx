@@ -2,7 +2,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { FC, useState } from "react";
 import { NavigatorParamList } from "../../../navigators";
 import { observer } from "mobx-react-lite";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import React from "react";

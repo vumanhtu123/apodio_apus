@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Modal, TouchableOpacity, View } from "react-native";
-import { Button, Text, TextField } from "../../../../components";
+import { Button, Text, TextField } from "../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useForm } from "react-hook-form";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 
 const data = [
   { id: 1, name: "Tất cả" },

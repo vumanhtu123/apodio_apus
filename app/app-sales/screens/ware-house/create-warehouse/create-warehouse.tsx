@@ -5,14 +5,14 @@ import { FC, useEffect, useRef, useState } from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { Header, Text, TextField } from "../../../../components";
+import { Header, Text, TextField } from "../../../../app-purchase/components";
 import { Styles, stylesWareHouse } from "../style";
 import { scaleHeight } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { ConditionsComponent } from "../component/conditions-component";
 import { ConfigInfoMoreComponent } from "../component/config-info-component";
 import { useStores } from "../../../models";
-import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog } from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n";
 
 export const CreateWareHouseScreen: FC<

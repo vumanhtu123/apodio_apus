@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, View, ViewStyle } from "react-native";
-import { Text, TextField } from "../../../components";
+import { Text, TextField } from "../../components";
 import { Controller, useForm } from "react-hook-form";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { Svgs } from "../../../../assets/svgs";

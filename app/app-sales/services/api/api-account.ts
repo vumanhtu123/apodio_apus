@@ -4,7 +4,7 @@ import { getGeneralApiProblem } from "./api-problem";
 import { getAccessToken } from "../../utils/storage";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import DeviceInfo from "react-native-device-info";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../app-purchase/components/dialog-notification";
 
 export class AccountApi {
   private api: Api;

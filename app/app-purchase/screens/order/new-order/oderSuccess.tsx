@@ -3,7 +3,7 @@ import { ImageBackground, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { useStores } from "../../../models";
 import LinearGradient from "react-native-linear-gradient";

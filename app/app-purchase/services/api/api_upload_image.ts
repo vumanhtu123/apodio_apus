@@ -1,7 +1,7 @@
 import { ApiUpload } from "../base-api/api_upload";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 export class UploadApi {
   private api: ApiUpload;

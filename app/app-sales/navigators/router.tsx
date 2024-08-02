@@ -11,7 +11,7 @@ import { useColorScheme } from "react-native";
 import { navigate, navigationRef } from "./navigation-utilities";
 import { OpenAppStack } from "./open-app-navigator";
 import { ButtonProvider } from "../screens/contexts/button_context";
-import { FloatingButton } from "../../components/float-button/FloattingButton";
+import { FloatingButton } from "../../app-purchase/components/float-button/FloattingButton";
 import { hideLoading, showLoading } from "../utils/toast";
 import { MyDrawer } from "./drawer-navigator";
 

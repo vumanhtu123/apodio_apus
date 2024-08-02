@@ -22,7 +22,7 @@ import {
   scaleWidth,
 } from "../../../theme";
 import Modal from "react-native-modal";
-import { Button, Text, TextField } from "../../../../components";
+import { Button, Text, TextField } from "../../../components";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { TxKeyPath, translate } from "../../../i18n";
 

@@ -9,7 +9,7 @@ import React, {
   TouchableOpacity,
   View,
 } from "react-native";
-import { AutoImage, Button, Header, Text } from "../../../../components";
+import { AutoImage, Button, Header, Text } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {

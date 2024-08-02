@@ -12,7 +12,7 @@ import {
   View,
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { Header, Text } from "../../../../../components";
+import { Header, Text } from "../../../../../app-purchase/components";
 import { colors, scaleHeight, scaleWidth } from "../../../../theme";
 import { Svgs } from "../../../../../../assets/svgs";
 import LinearGradient from "react-native-linear-gradient";

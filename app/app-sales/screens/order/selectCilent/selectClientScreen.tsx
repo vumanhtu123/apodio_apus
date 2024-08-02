@@ -14,7 +14,7 @@ import {
 import { ScreenStackProps } from "react-native-screens";
 import { NavigatorParamList } from "../../../navigators";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Styles } from "./styles";
@@ -22,7 +22,7 @@ import SelectFilterModal from "./Modal/modal-select-filter";
 import { useStores } from "../../../models";
 import ModalCreateClient from "./Modal/modal-create-client";
 import { useNavigation } from "@react-navigation/native";
-import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Toast } from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n";
 
 export const SelectClientScreen: FC<

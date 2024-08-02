@@ -24,7 +24,7 @@ import {
   scaleWidth,
 } from "../../../theme";
 import { translate } from "../../../i18n";
-import { Text } from "../../../../components";
+import { Text } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 
 const ROOT: ViewStyle = {

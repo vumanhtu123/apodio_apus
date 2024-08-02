@@ -1,6 +1,6 @@
 import { memo, useState } from 'react';
 import React, { Dimensions, FlatList, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
-import { Button, Switch, Text } from '../../../../components';
+import { Button, Switch, Text } from '../../../components';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Svgs } from '../../../../../assets/svgs';
 import { translate } from '../../../i18n';
@@ -8,7 +8,7 @@ import Modal from "react-native-modal";
 import { useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../models';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ALERT_TYPE, Toast } from '../../../../components/dialog-notification';
+import { ALERT_TYPE, Toast } from '../../../components/dialog-notification';
 
 interface ItemAttribute {
     selectedItems: any;

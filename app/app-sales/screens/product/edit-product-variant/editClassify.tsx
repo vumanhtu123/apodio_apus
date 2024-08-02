@@ -8,14 +8,14 @@ import {
     View,
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../../components/header/header";
-import { Text } from "../../../../components/text/text";
+import { Header } from "../../../../app-purchase/components/header/header";
+import { Text } from "../../../../app-purchase/components/text/text";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import ProductAttribute from "../component/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
 import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form";
-import { TextField } from "../../../../components/text-field/text-field";
-import { Switch } from "../../../../components";
+import { TextField } from "../../../../app-purchase/components/text-field/text-field";
+import { Switch } from "../../../../app-purchase/components";
 import { useStores } from "../../../models";
 import {
     commasToDots,
@@ -24,7 +24,7 @@ import {
     formatStringToFloat,
     validateFileSize,
 } from "../../../utils/validate";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n/translate";
 import ItemWeight from "../component/weight-component";
 import ImageProduct from "../create-prodcut/imageProduct";

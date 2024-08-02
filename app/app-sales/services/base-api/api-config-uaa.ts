@@ -12,7 +12,7 @@ import {
   Dialog,
   Toast,
   Loading,
-} from "../../../components/dialog-notification";
+} from "../../../app-purchase/components/dialog-notification";
 
 const API_PAGE_SIZE = 50;
 
