@@ -833,7 +833,7 @@ const en = {
       "Tạo ra các phiên bản khác nhau của sản phẩm như màu sắc, kích thước, size.. bằng các thêm các thuộc tính tương ứng",
     addProperties: "Thêm thuộc tính",
     information: "Thêm thông tin",
-    canBuy: "Có thể mua",
+    canBuy: "Có thể bán",
     edit_product: "Sửa sản phẩm",
     cancel: "Hủy",
     done: "Hoàn tất",

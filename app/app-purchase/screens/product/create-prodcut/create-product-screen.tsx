@@ -46,7 +46,7 @@ import { ItemVariant } from "../component/itemVariant";
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
   const [imagesNote, setImagesNote] = useState<any>([]);
-  const [valuePurchase, setValuePurchase] = useState(false);
+  const [valueSale, setValueSale] = useState(false);
   const [valueSwitchUnit, setValueSwitchUnit] = useState(false);
   const [modalDescribe, setModalDescribe] = useState(false);
   const [modalcreateUnit, setModalcreateUnit] = useState(false);
@@ -55,10 +55,10 @@ export const ProductCreateScreen: FC = (item) => {
   const [addWeight, setAddWeight] = useState(false);
   const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
-  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
+  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{ uomGroupLines: any, originalUnit: any }>({ uomGroupLines: [], originalUnit: '' });
   const [description, setDescription] = useState("");
   const { productStore, unitStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState<{imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[]>([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{ imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[] }[]>([]);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [uomGroupId, setUomGroupId] = useState({ id: 0, label: "" });
   const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
@@ -173,7 +173,7 @@ export const ProductCreateScreen: FC = (item) => {
         hasVariantInConfig: hasVariantInConfig,
       },
     } as never);
-  },[attributeArr, dropdownSelected, hasVariantInConfig])
+  }, [attributeArr, dropdownSelected, hasVariantInConfig])
 
   const getListUnitGroup = async (valueSwitchUnit: boolean) => {
     let unitResult = null;
@@ -466,7 +466,7 @@ export const ProductCreateScreen: FC = (item) => {
       };
     });
     // const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
-    
+
     const packingLine = data.weight?.map((item: any) => {
       return {
         uomGroupLineId: item.unit.id,
@@ -478,9 +478,9 @@ export const ProductCreateScreen: FC = (item) => {
     const doneData = {
       sku: data.SKU === "" ? null : data.SKU,
       name: data.productName,
-      purchaseOk: valuePurchase,
+      saleOk: valueSale,
       imageUrls: imagesNote,
-      saleOk: true,
+      purchaseOk: true,
       vendorIds: selectedIds! || [],
       managementForm: data.brands?.label2,
       productCategoryId: data.category?.id || null,
@@ -618,7 +618,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
-      navigation.navigate({name: "createConversionGroup", params: {editScreen: false}} as never);
+      navigation.navigate({ name: "createConversionGroup", params: { editScreen: false } } as never);
     } else {
       setModalcreateUnit(true);
     }
@@ -747,16 +747,16 @@ export const ProductCreateScreen: FC = (item) => {
                   }}
                 />
                 <Switch
-                  value={valuePurchase}
+                  value={valueSale}
                   onToggle={() => {
-                    setValuePurchase(!valuePurchase);
+                    setValueSale(!valueSale);
                   }}
                 />
               </View>
-              <ItemGroupPrice />
+              {valueSale === true ? <ItemGroupPrice /> : null}
             </View>
           </View>
-          {valuePurchase === true ? (
+          {valueSale === true ? (
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
             >
@@ -771,7 +771,7 @@ export const ProductCreateScreen: FC = (item) => {
                 >
                   {selectedIds?.length > 0 ? (
                     <Text style={styles.textWeight400Black}>
-                      {selectedIds.length + " " + translate("createProductScreen.supplier")} 
+                      {selectedIds.length + " " + translate("createProductScreen.supplier")}
                     </Text>
                   ) : (
                     <Text

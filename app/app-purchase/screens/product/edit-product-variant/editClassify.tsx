@@ -36,7 +36,7 @@ export const EditClassify: FC = (item) => {
     // const reload = route?.params?.reload;
     const navigation = useNavigation();
     const [imagesNote, setImagesNote] = useState<any>([]);
-    const [valuePurchase, setValuePurchase] = useState(false);
+    const [valueSale, setValueSale] = useState(false);
     const [valueSwitchUnit, setValueSwitchUnit] = useState(true);
     const [addDescribe, setAddDescribe] = useState(false);
     const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
@@ -119,7 +119,7 @@ export const EditClassify: FC = (item) => {
                 setDescription(newDataEdit?.description);
             }
             setImagesNote(newDataEdit?.imageUrls);
-            setValuePurchase(newDataEdit?.purchaseOk);
+            setValueSale(newDataEdit?.saleOk);
             setValueSwitchUnit(newDataEdit?.uom !== null ? false : true);
             setDetailUnitGroupData(newDataEdit?.uomGroup);
             if (newDataEdit?.vendors?.length !== 0) {
@@ -127,7 +127,7 @@ export const EditClassify: FC = (item) => {
                     return item.vendorId;
                 });
                 setVendor(a);
-                setValuePurchase(true);
+                setValueSale(true);
             }
         }
     }, [dataEdit]);
@@ -387,13 +387,13 @@ export const EditClassify: FC = (item) => {
                                         marginRight: scaleWidth(10),
                                     }} />
                                 <Switch
-                                    value={valuePurchase}
+                                    value={valueSale}
                                 />
                             </View>
                             <ItemGroupPrice />
                         </View>
                     </View>
-                    {valuePurchase ? (
+                    {valueSale ? (
                         <View
                             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
                             <View

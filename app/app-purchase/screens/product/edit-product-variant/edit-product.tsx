@@ -41,7 +41,7 @@ export const ProductEditScreen: FC = (item) => {
   const route = useRoute();
   const navigation = useNavigation();
   const [imagesNote, setImagesNote] = useState<any>();
-  const [valuePurchase, setValuePurchase] = useState(false);
+  const [valueSale, setValueSale] = useState(false);
   const [valueSwitchUnit, setValueSwitchUnit] = useState(false);
   const [modalDescribe, setModalDescribe] = useState(false);
   const [addDescribe, setAddDescribe] = useState(false);
@@ -332,7 +332,7 @@ export const ProductEditScreen: FC = (item) => {
         label: newDataEdit?.productCategory?.name,
       });
       setImagesNote(newDataEdit?.imageUrls);
-      setValuePurchase(newDataEdit?.purchaseOk);
+      setValueSale(newDataEdit?.saleOk);
       setValueSwitchUnit(newDataEdit?.hasUomGroupInConfig);
       getListUnitGroup(newDataEdit?.hasUomGroupInConfig)
       setUomId({ id: newDataEdit?.uom?.id, label: newDataEdit?.uom?.name, uomGroupLineId: newDataEdit?.uomGroup?.uomGroupLineId });
@@ -346,7 +346,7 @@ export const ProductEditScreen: FC = (item) => {
           return item.vendorId;
         });
         setVendor(a);
-        setValuePurchase(true);
+        setValueSale(true);
       }
       const nameCreateProduct = newDataEdit?.productVariants?.map(
         (item: { name: string }) => {
@@ -697,9 +697,9 @@ export const ProductEditScreen: FC = (item) => {
     const doneData = {
       sku: data.SKU === "" ? null : data.SKU,
       name: data.productName,
-      purchaseOk: valuePurchase,
+      saleOk: valueSale,
       imageUrls: imagesNote,
-      saleOk: true,
+      purchaseOk: true,
       vendorIds: vendor,
       managementForm: data.brands?.label2,
       productCategoryId: data.category?.id || null,
@@ -968,16 +968,16 @@ export const ProductEditScreen: FC = (item) => {
                     marginRight: scaleWidth(10),
                   }} />
                 <Switch
-                  value={valuePurchase}
+                  value={valueSale}
                   onToggle={() => {
-                    setValuePurchase(!valuePurchase);
+                    setValueSale(!valueSale);
                   }}
                 />
               </View>
               <ItemGroupPrice />
             </View>
           </View>
-          {valuePurchase ? (
+          {valueSale ? (
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
               <View
