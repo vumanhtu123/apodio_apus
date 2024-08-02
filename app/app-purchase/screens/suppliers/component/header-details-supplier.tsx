@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Text } from "../../../../components";
+import { Text } from "../../../components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 

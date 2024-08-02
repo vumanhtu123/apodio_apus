@@ -8,7 +8,7 @@ import {
   Image,
 } from "react-native";
 import { scaleWidth, padding, scaleHeight, colors } from "../../../theme";
-import { Text, TextField } from "../../../../components";
+import { Text, TextField } from "../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { validatePhoneStartsWith } from "../../../utils/validate";
 import { Svgs } from "../../../../../assets/svgs";

@@ -7,7 +7,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { Text } from "../../../../components/text/text";
+import { Text } from "../../../components/text/text";
 import {
   FlatList,
   ImageBackground,
@@ -17,7 +17,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { Button, TextField } from "../../../../components";
+import { Button, TextField } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
 import AutoHeightImage from "react-native-auto-height-image";
@@ -33,7 +33,7 @@ import {
   formatVND,
 } from "../../../utils/validate";
 import PriceModal from "./modal-price";
-import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 import { useStores } from "../../../models";
 import Images from "../../../../../assets/index";
 

@@ -5,19 +5,19 @@ import { Svgs } from "../../../../../../assets/svgs";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
 import Modal from 'react-native-modal'
-import { Text, TextField } from "../../../../../components";
+import { Text, TextField } from "../../../../components";
 import { Controller, UseFormWatch, useForm, useWatch } from "react-hook-form";
-import { InputSelect } from "../../../../../components/input-select/inputSelect";
+import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { useStores } from "../../../../models";
 import { boolean } from "mobx-state-tree/dist/internal";
 import { RectButton } from "react-native-gesture-handler";
-import { Dialog, Loading } from "../../../../../components/dialog-notification";
+import { Dialog, Loading } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import en from "../../../../i18n/en";
 import { clientData } from "../../../../models/add-client-props";
 import { values } from "mobx";
 import { checkPhoneNumber } from "../../../../utils/validate";
-import { CustomModal } from "../../../../../components/custom-modal";
+import { CustomModal } from "../../../../components/custom-modal";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;

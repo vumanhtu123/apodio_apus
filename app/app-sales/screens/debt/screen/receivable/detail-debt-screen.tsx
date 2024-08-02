@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../../../components";
+import { Header, Text } from "../../../../../app-purchase/components";
 import {
   colors,
   fontSize,

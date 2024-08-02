@@ -1,4 +1,4 @@
-import { Header } from "../../../../components/header/header";
+import { Header } from "../../../components/header/header";
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import { View, ScrollView } from "react-native";
@@ -6,13 +6,13 @@ import { styles } from "./styles";
 import { colors, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Controller, useForm } from "react-hook-form";
 import { Svgs } from "../../../../../assets/svgs";
-import { Text } from "../../../../components/text/text";
-import { SvgIcon } from "../../../../components/svg-icon";
-import { TextFieldPass } from "../../../../components/text-field-changepass/text-field";
-import { Button } from "../../../../components/button/button";
-import { Screen } from "../../../../components/screen/screen";
+import { Text } from "../../../components/text/text";
+import { SvgIcon } from "../../../components/svg-icon";
+import { TextFieldPass } from "../../../components/text-field-changepass/text-field";
+import { Button } from "../../../components/button/button";
+import { Screen } from "../../../components/screen/screen";
 import { useStores } from "../../../models";
-import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 
 export const changePassScreen: FC = observer(function ChangePassScreen(

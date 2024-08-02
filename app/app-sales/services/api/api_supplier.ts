@@ -1,7 +1,7 @@
 
 
 import { ApiResponse } from "apisauce";
-import { Loading } from "../../../components/dialog-notification";
+import { Loading } from "../../../app-purchase/components/dialog-notification";
 import { ApiSupplier } from "../base-api/api-config-supplier"
 import { DataSupplierGroup } from "../../models/supplier-store/supplier-group-model";
 import { ApiEndpoint } from "../base-api/api_endpoint";

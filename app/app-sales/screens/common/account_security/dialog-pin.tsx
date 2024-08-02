@@ -10,12 +10,12 @@ import {
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 // import {Button} from '../button/button';
 // import {Text} from '../../components/Text';
-import { Button } from '../../../../components';
+import { Button } from '../../../../app-purchase/components';
 // import {Text} from '../../../app/components';
 import { Controller, useForm } from 'react-hook-form';
-import OTPInput from '../../../../components/otp_input/index';
-import { SvgIcon } from '../../../../components/svg-icon/index';
-import { Text } from '../../../../components/text/text';
+import OTPInput from '../../../../app-purchase/components/otp_input/index';
+import { SvgIcon } from '../../../../app-purchase/components/svg-icon/index';
+import { Text } from '../../../../app-purchase/components/text/text';
 import { Svgs } from '../../../../../assets/svgs';
 interface DialogOtp {
   onPress?: () => void;

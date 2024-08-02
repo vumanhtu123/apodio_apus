@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Linking, Platform, TouchableOpacity, View } from "react-native";
-import { AutoImage, Text, TextField } from "../../../../components";
+import { AutoImage, Text, TextField } from "../../../../app-purchase/components";
 import { styles } from "../new-order/styles";
 import { Svgs } from "../../../../../assets/svgs";
 import Modal from "react-native-modal";
@@ -12,7 +12,7 @@ import {
   Dialog,
   Loading,
   Toast,
-} from "../../../../components/dialog-notification";
+} from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n/translate";
 import { RESULTS } from "react-native-permissions";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";

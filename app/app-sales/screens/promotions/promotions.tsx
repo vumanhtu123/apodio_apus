@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
 import { Dimensions, FlatList, Image, TextInput, TouchableOpacity, View } from "react-native"
-import { Button, Header, Text, TextField } from "../../../components"
+import { Button, Header, Text, TextField } from "../../../app-purchase/components"
 import { Svgs } from "../../../../assets/svgs"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../theme"

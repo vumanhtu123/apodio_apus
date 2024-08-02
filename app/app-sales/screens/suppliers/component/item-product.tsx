@@ -4,7 +4,7 @@ import FastImage from "react-native-fast-image";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles/styles";
-import { Text } from "../../../../components";
+import { Text } from "../../../../app-purchase/components";
 import Images from "../../../../../assets/index";
 
 const RenderProductItem = ({

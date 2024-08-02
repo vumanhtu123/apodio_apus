@@ -4,7 +4,7 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
-import { Text } from "../../components";
+import { Text } from "../components";
 import { colors, scaleHeight, scaleWidth } from "../../app-purchase/theme";
 const { height } = Dimensions.get("window");
 import { StyleSheet } from "react-native";

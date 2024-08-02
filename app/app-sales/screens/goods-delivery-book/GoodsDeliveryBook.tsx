@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { FC, useRef, useState } from 'react';
 import { View, Alert, Platform, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { NavigatorParamList, navigate } from '../../navigators';
-import { Header, Text } from '../../../components';
+import { Header, Text } from '../../../app-purchase/components';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../theme';
 import { Svgs } from '../../../../assets/svgs';
-import CustomCalendar from '../../../components/calendar';
+import CustomCalendar from '../../../app-purchase/components/calendar';
 import React = require('react');
 
 export const GoodsDeliveryBook: FC<StackScreenProps<NavigatorParamList, "GoodsDeliveryBook">> = observer(

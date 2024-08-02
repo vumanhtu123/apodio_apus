@@ -6,7 +6,7 @@ import { FlatList, Image, ImageBackground, StyleSheet, TouchableOpacity, View } 
 import { Svgs } from "../../../../../assets/svgs"
 import { NavigatorParamList } from "../../../navigators"
 import { colors, palette, scaleHeight, scaleWidth } from "../../../theme"
-import { Header, Text } from "../../../../components"
+import { Header, Text } from "../../../components"
 
 
 export const CreateExportGoods: FC<StackScreenProps<NavigatorParamList, "createExportGoods">> = observer(

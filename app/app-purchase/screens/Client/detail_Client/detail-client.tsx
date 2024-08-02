@@ -4,7 +4,7 @@ import { FC, } from "react";
 
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
 import LinearGradient from "react-native-linear-gradient";

@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Styles } from '../styles';
 import { colors, fontSize, scaleWidth } from '../../../../theme';
 import { commasToDots, formatCurrency, formatVND } from '../../../../utils/validate';
-import { Text } from '../../../../../components';
+import { Text } from '../../../../components';
 
 
 interface PropsItem {

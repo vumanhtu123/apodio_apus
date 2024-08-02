@@ -1,12 +1,12 @@
 // CategoryList.tsx
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View, FlatList, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Button, Text } from '../../../../../components';
+import { Button, Text } from '../../../../../app-purchase/components';
 import { Svgs } from '../../../../../../assets/svgs';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import RenderCategoryItem from './renderItemCategory';
-import Dialog from '../../../../../components/dialog/dialog';
+import Dialog from '../../../../../app-purchase/components/dialog/dialog';
 import { useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
 import CreateDirectoryModal from '../component/modal-createDirectory';

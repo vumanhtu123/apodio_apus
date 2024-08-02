@@ -11,8 +11,8 @@ import {
   View,
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Button, Header, Text, TextField } from "../../../../components";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { Button, Header, Text, TextField } from "../../../../app-purchase/components";
+import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles";
 // import AddProduct from "../components/itemListProduct";
@@ -20,12 +20,12 @@ import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import FastImage from "react-native-fast-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CustomCalendar from "../../../../components/calendar";
+import CustomCalendar from "../../../../app-purchase/components/calendar";
 import {
   ALERT_TYPE,
   Dialog,
   Toast,
-} from "../../../../components/dialog-notification";
+} from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import {

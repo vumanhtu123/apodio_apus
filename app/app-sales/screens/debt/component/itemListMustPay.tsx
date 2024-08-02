@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import React, { FC } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { colors, scaleHeight, scaleWidth } from '../../../theme'
-import { Text } from '../../../../components'
+import { Text } from '../../../../app-purchase/components'
 import { Styles } from '../screen/styles'
 import { id } from 'date-fns/locale'
 

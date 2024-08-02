@@ -2,7 +2,7 @@
 import React from "react"
 import { FC } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
-import { Text } from "../../../../components"
+import { Text } from "../../../../app-purchase/components"
 import { colors, fontSize, scaleWidth } from "../../../theme"
 import { Svgs } from "../../../../../assets/svgs"
 import { Styles } from "../screen/styles"

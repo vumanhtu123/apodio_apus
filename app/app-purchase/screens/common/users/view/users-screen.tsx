@@ -15,9 +15,9 @@ import {
 } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 // import {  Row, SvgIcon, Text, VectorIcon } from "../../components"
-import { SvgIcon } from "../../../../../components/svg-icon";
-import { Text } from "../../../../../components/text/text";
-import { Button } from "../../../../../components/button/button";
+import { SvgIcon } from "../../../../components/svg-icon";
+import { Text } from "../../../../components/text/text";
+import { Button } from "../../../../components/button/button";
 import {
   colors,
   fontSize,
@@ -43,17 +43,17 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ReactNativeModal from "react-native-modal";
 import { useAuth } from "../../../contexts/auth";
 // import { Screen } from "../screen/screen"
-import { Header } from "../../../../../components/header/header";
+import { Header } from "../../../../components/header/header";
 import { Svgs } from "../../../../../../assets/svgs";
 import { LinearGradient } from "react-native-linear-gradient";
 // import { string } from "mobx-state-tree/dist/internal"
 // import { BulletItem } from "app/components/bullet-item/bullet-item"
-import { Row } from "../../../../../components/Row";
+import { Row } from "../../../../components/Row";
 import {
   BottomParamList,
   TabScreenProps,
 } from "../../../../navigators/bottom-navigation";
-import { TextField } from "../../../../../components";
+import { TextField } from "../../../../components";
 import { changeLanguage } from "../../../../i18n";
 // import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors"
 // import { UsersScreen } from "../users/view/users-screen"
