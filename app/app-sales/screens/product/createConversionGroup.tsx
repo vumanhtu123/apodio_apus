@@ -35,6 +35,7 @@ import {
 } from "../../../app-purchase/components/dialog-notification";
 import { translate } from "../../i18n/translate";
 import UnitModal from "./component/modal-unit";
+import en from "../../i18n/en";
 
 export const CreateConversionGroup: FC = observer(
   function CreateConversionGroup(props) {
@@ -286,7 +287,7 @@ export const CreateConversionGroup: FC = observer(
                 isImportant={true}
               />
             )}
-            rules={{ required: "Tên nhóm thuộc tính là bắt buộc" }}
+            rules={{ required: en.productScreen.attributeGroupNameIsRequired }}
           />
           <InputSelect
             titleTx={"productDetail.originUnit"}
