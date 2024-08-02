@@ -8,13 +8,13 @@ import React, {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Header, Text } from "../../../../components";
+import { Button, Header, Text } from "../../../../app-purchase/components";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { useStores } from "../../../models";
 import CategoryModalFilter from "../../product/component/modal-category";
-import Dialog from "../../../../components/dialog/dialog";
+import Dialog from "../../../../app-purchase/components/dialog/dialog";
 import { styles } from "./styles";
 import RenderOrderItem from "../components/renderOrderItem";
 

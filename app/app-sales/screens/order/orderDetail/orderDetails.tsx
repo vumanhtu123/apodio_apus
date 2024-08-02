@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import FastImage from "react-native-fast-image";
-import { Button, Header, Text } from "../../../../components";
+import { Button, Header, Text } from "../../../../app-purchase/components";
 import {
   colors,
   fontSize,
@@ -20,7 +20,7 @@ import {
   scaleWidth,
 } from "../../../../app-purchase/theme";
 import { Svgs } from "../../../../../assets/svgs";
-import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog } from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import { formatDateTime } from "../../../utils/formatDate";

@@ -4,13 +4,13 @@ import { AppStackScreenProps, NavigatorParamList, navigate } from "../../navigat
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Alert, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../app-purchase/components";
 import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { FlashList } from "@shopify/flash-list";
 import { UserStatus } from "../../utils/const";
 import { boolean, number } from "mobx-state-tree/dist/internal";
-import CustomCalendar from "../../../components/calendar";
+import CustomCalendar from "../../../app-purchase/components/calendar";
 import en from "../../i18n/en";
 
 

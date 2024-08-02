@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react'
 import Modal from 'react-native-modal'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme'
-import { Text } from '../../../../components'
+import { Text } from '../../../../app-purchase/components'
 import { Svgs } from '../../../../../assets/svgs'
 
 

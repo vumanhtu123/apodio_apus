@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Text } from "../../../../components";
+import { Text } from "../../../../app-purchase/components";
 import {
   colors,
   fontSize,
@@ -16,7 +16,7 @@ import {
   scaleWidth,
 } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
-import { CustomModal } from "../../../../components/custom-modal";
+import { CustomModal } from "../../../../app-purchase/components/custom-modal";
 import { stylesCategory } from "../styles";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";

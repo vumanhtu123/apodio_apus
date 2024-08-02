@@ -7,7 +7,7 @@ import {
   Text as TextRN,
   View,
 } from "react-native";
-import { SvgIcon } from "../../../../components/svg-icon/index";
+import { SvgIcon } from "../../../../app-purchase/components/svg-icon/index";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { navigate } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";

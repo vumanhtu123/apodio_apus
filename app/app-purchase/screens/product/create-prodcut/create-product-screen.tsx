@@ -2,8 +2,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../../components/header/header";
-import { Text } from "../../../../components/text/text";
+import { Header } from "../../../components/header/header";
+import { Text } from "../../../components/text/text";
 import {
   colors,
   fontSize,
@@ -12,9 +12,9 @@ import {
 } from "../../../theme";
 import { ScrollView } from "react-native-gesture-handler";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { TextField } from "../../../../components/text-field/text-field";
-import { Switch } from "../../../../components";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { TextField } from "../../../components/text-field/text-field";
+import { Switch } from "../../../components";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import DescribeModal from "../component/modal-describe";
 import { useStores } from "../../../models";
 import {
@@ -31,7 +31,7 @@ import {
   Dialog,
   Toast,
   Loading,
-} from "../../../../components/dialog-notification";
+} from "../../../components/dialog-notification";
 import { translate } from "../../../i18n/translate";
 import ImageProduct from "./imageProduct";
 import { styles } from "./styles";

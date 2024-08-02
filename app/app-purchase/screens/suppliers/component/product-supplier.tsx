@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { styles } from "../styles/styles";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { AppStackScreenProps, navigationRef } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";

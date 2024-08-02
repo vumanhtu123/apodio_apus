@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { Dimensions, View, Platform } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
-import { Button, Text, TextField } from '../../../../components';
+import { Button, Text, TextField } from '../../../components';
 import { Controller, useForm } from 'react-hook-form';
 import { TxKeyPath, translate } from '../../../i18n';
 import { useStores } from '../../../models';
 import { useFocusEffect } from '@react-navigation/native';
-import { CustomModal } from '../../../../components/custom-modal';
+import { CustomModal } from '../../../components/custom-modal';
 
 interface UnitModalProps {
   isVisible: boolean;

@@ -12,9 +12,9 @@ import {
 import { styles } from "./styles";
 
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../../components/header/header";
+import { Header } from "../../../../app-purchase/components/header/header";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Button, Text } from "../../../../components";
+import { Button, Text } from "../../../../app-purchase/components";
 import { fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, FlatList } from "react-native";
-import { Text, TextField } from "../../../../components";
+import { Text, TextField } from "../../../components";
 import {
   Controller,
   FormProvider,
@@ -10,8 +10,8 @@ import {
 } from "react-hook-form";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
-import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
+import { InputSelect } from "../../../components/input-select/inputSelect";
+import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import {
   commasToDots,

@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../assets/svgs";
-import { Text } from "../../../components/text/text";
+import { Text } from "../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
 import { useNavigation, useRoute } from "@react-navigation/native";

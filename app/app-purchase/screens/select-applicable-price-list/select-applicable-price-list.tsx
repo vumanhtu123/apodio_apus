@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { ScreenStackProps } from "react-native-screens";
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../components";
 import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { Colors } from "react-native/Libraries/NewAppScreen";

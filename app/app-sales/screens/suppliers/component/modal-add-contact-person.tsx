@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { styles } from "./modal-create-supplier";
-import { Text, TextField } from "../../../../components";
+import { Text, TextField } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
 import { Controller, useForm } from "react-hook-form";
 import { id } from "date-fns/locale";
 import Images from "../../../../../assets/index";

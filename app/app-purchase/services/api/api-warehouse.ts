@@ -3,7 +3,7 @@ import { ApiErp } from "../base-api/api-config-erp";
 import { ResponseWarehouse } from "../../models/warehouse-store/warehouse-model";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { ApiWarehouse } from "../base-api/api-config-warehouse";
-import { Loading } from "../../../components/dialog-notification";
+import { Loading } from "../../components/dialog-notification";
 import { DataDetailWarehouse } from "../../models/warehouse-store/detail-warehouse-model";
 import { ApiResponse } from "apisauce";
 import { Api } from "../base-api/api";

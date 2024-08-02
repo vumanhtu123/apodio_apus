@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Screen } from "../../../components/screen/screen";
+import { Screen } from "../../components/screen/screen";
 import { Svgs } from "../../../../assets/svgs";
-import { Header } from "../../../components/header/header";
-import { Text } from "../../../components/text/text";
+import { Header } from "../../components/header/header";
+import { Text } from "../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers } from "./data";
 import { styles } from "./styles";

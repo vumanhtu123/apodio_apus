@@ -7,7 +7,7 @@ import {
   Dialog,
   Toast,
   Loading,
-} from "../../../components/dialog-notification";
+} from "../../components/dialog-notification";
 import { GetWayAPI } from "../base-api/api-config-get-way";
 import DeviceInfo from "react-native-device-info";
 import { getGeneralApiProblem } from "./api-problem";

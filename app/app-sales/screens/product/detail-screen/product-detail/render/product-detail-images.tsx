@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { margin, scaleHeight, scaleWidth } from "../../../../../theme";
-import { AutoImage } from "../../../../../../components";
+import { AutoImage } from "../../../../../../app-purchase/components";
 import { styles } from "../styles";
 import Images from "../../../../../../../assets/index";
 
