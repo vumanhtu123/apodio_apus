@@ -162,6 +162,7 @@ const en = {
     next: "Next",
   },
   dashboard: {
+    listApp: "Danh sách App",
     storeInformation: "Store information",
     promotions: "Chiết khấu",
     transactionHistory: "Transaction history",
