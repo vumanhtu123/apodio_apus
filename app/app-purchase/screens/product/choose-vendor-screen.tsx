@@ -34,10 +34,11 @@ export const ChooseVendorScreen: FC = () => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const route = useRoute();
-  const { listIds, mode }: any = route?.params || {};
+  const { listIds, mode, vendorId }: any = route?.params || {};
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const {
     control,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "all",
@@ -53,7 +54,13 @@ export const ChooseVendorScreen: FC = () => {
     setTotalPages(vendorResult.result.data.totalPages);
     if (vendorResult && vendorResult.kind === "ok") {
       if (page === 0) {
-        setArrVendor(vendorResult.result.data.content);
+        if(vendorId === undefined){
+          setArrVendor(vendorResult.result.data.content);
+        }else{
+          const firstItem = vendorResult.result.data.content.filter((item: {id: number}) => item.id === vendorId)
+          const newArr = vendorResult.result.data.content.filter((item: {id: number}) => item.id !== vendorId)
+          setArrVendor(firstItem.concat(newArr))
+        }
       } else {
         setArrVendor((prevProducts: any) => [
           ...prevProducts,
@@ -62,42 +69,50 @@ export const ChooseVendorScreen: FC = () => {
       }
       // setArrVendor(data.content)
       if (!isRefreshing) {
-        setSelectedIds(listIds || []);
+        if (vendorId != undefined && listIds != undefined) {
+          setSelectedIds([...new Set(listIds.concat(vendorId))] as any)
+        }
+        if (vendorId == undefined && listIds != undefined) {
+          setSelectedIds(listIds)
+        }
+        if (vendorId != undefined && listIds == undefined) {
+          setSelectedIds([vendorId])
+        }
+        if (vendorId == undefined && listIds == undefined) {
+          setSelectedIds([])
+        }
       }
     } else {
-      console.error("Failed to fetch list unit:", unitResult);
+      console.error("Failed to fetch list unit:", vendorResult);
     }
   };
   const handleEndReachedCategory = () => {
-    if (page <= totalPages - 1 && !isRefreshing) {
+    if (page < totalPages - 1 ) {
       setPage((prevPage) => prevPage + 1);
-      getListVendor(true, searchText);
     }
   };
   useEffect(() => {
     getListVendor(true, searchText);
-  }, []);
-  const RadioButton = ({ selected, onPress }: any) => (
+  }, [searchText, page]);
+  const RadioButton = ({ selected, onPress, id }: any) => (
     <TouchableOpacity onPress={onPress}>
       {selected ? (
-        <Svgs.icon_checkCircle
-          width={scaleWidth(30)}
-          height={scaleHeight(30)}
-        />
+        <View style={{ opacity: id === vendorId ? 0.5 : 1 }} >
+          <Svgs.icon_checkCircle
+            width={scaleWidth(30)}
+            height={scaleHeight(30)}
+          />
+        </View>
       ) : (
         <Svgs.ic_plusCircle width={scaleWidth(30)} height={scaleHeight(30)} />
       )}
     </TouchableOpacity>
   );
-  useEffect(() => {
-    console.log("page", page);
-  }, [page]);
+
   const refreshVendor = async () => {
     setIsRefreshing(true);
-    setArrVendor([]);
     setPage(0);
     setSearchText("");
-    await getListVendor(true);
     setIsRefreshing(false);
   };
 
@@ -105,16 +120,15 @@ export const ChooseVendorScreen: FC = () => {
     const newValue = value !== null ? value.toString() : "";
     setSearchText(newValue);
   };
-  const handleSubmitSearch = () => {
+  const handleSubmitSearch = (value: any) => {
     setPage(0);
-    setArrVendor([]);
-    getListVendor(true, searchText);
+    setSearchText(value.nativeEvent.text)
   };
   const handleBtn = () => {
-    navigation.navigate("ProductCreateScreen", { selectedIds });
+    navigation.navigate({name: "ProductCreateScreen", params: { selectedIds, vendorId }} as never);
   };
   const handleBtnEditing = () => {
-    navigation.navigate("ProductEditScreen", { selectedIds });
+    navigation.navigate({name: "ProductEditScreen", params: { selectedIds }} as never);
   };
   const handleSelectOption = (groupIndex: number, id: number) => {
     const isSelected = selectedIds.includes(id);
@@ -162,7 +176,7 @@ export const ChooseVendorScreen: FC = () => {
             />
           </ImageBackground>
           <View style={{ marginHorizontal: 6, maxWidth: scaleWidth(230) }}>
-            <Text numberOfLines={2} style={{ fontSize: fontSize.size10 }}>
+            <Text numberOfLines={2} style={{ fontSize: fontSize.size10, color: item.id === vendorId ? colors.pigmentGreen : colors.nero }}>
               {item.code} - {item.name}
             </Text>
             <Text
@@ -176,14 +190,19 @@ export const ChooseVendorScreen: FC = () => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            handleSelectOption(1, item.id);
+            if (item.id !== vendorId) {
+              handleSelectOption(1, item.id);
+            }
           }}
           key={item.id}>
           <RadioButton
             selected={selectedIds.includes(item.id)}
             onPress={() => {
-              handleSelectOption(1, item.id);
+              if (item.id !== vendorId) {
+                handleSelectOption(1, item.id);
+              }
             }}
+            id={item.id}
           />
         </TouchableOpacity>
       </View>
@@ -217,34 +236,23 @@ export const ChooseVendorScreen: FC = () => {
               <TextField
                 keyboardType={null}
                 style={{
-                  // marginBottom: scaleHeight(5),
-                  // justifyContent: 'center',
-                  // height: scaleHeight(40)
-                  backgroundColor: "none",
+                  backgroundColor: colors.white,
                 }}
                 inputStyle={{ fontSize: fontSize.size12, fontWeight: "500" }}
-                value={searchText}
+                value={value}
                 onBlur={onBlur}
+                showRightIcon={false}
                 RightIconClear={Svgs.icon_delete2}
                 error={errors?.productName?.message}
-                onClearText={async () => {
-                  setSearchText("");
-                  await getListVendor(true, "");
-                }}
-                onChangeText={handleSearch}
+                onChangeText={(text)=>onChange(text)}
                 enterKeyHint="search"
                 onSubmitEditing={handleSubmitSearch}
                 enablesReturnKeyAutomatically
                 placeholderTx="chooseSupplierScreen.placeholderSearch"
                 RightIcon={Svgs.ic_searchBlue}
-                // isImportant
               />
             )}
-            // defaultValue={''}
             name="Search"
-            // rules={{
-            //     required: 'Please input data',
-            // }}
           />
         </View>
         <View style={{ flex: 1, marginBottom: scaleHeight(10) }}>
@@ -258,7 +266,7 @@ export const ChooseVendorScreen: FC = () => {
               />
             }
             showsVerticalScrollIndicator={false}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
             onEndReached={handleEndReachedCategory}
             onEndReachedThreshold={0.5}
             numColumns={1}
@@ -327,6 +335,7 @@ export const ChooseVendorScreen: FC = () => {
     </View>
   );
 };
+
 export const styles = StyleSheet.create({
   ROOT: {
     backgroundColor: colors.white,

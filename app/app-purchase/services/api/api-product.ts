@@ -2,8 +2,8 @@ import { configs } from "./../../theme/dimension";
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { Data } from "../../models/product-store/tag-product-model";
-import { Brand } from "../../models/brand-model";
+import { Data, TagResult } from "../../models/product-store/tag-product-model";
+import { Brand, BrandResult } from "../../models/brand-model";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
 
 
@@ -63,7 +63,7 @@ export class ProductApi {
         {
           page: page,
           size: size,
-          viewProduct: viewProduct,
+          view: viewProduct,
           productCategoryId: productCategoryId,
           search: search,
           tagId: tagId == 0 ? null : tagId,
@@ -126,7 +126,7 @@ export class ProductApi {
       return { kind: "bad-data" };
     }
   }
-  async getListTagProduct(): Promise<Data> {
+  async getListTagProduct(): Promise<TagResult> {
     Loading.show({
       text: 'Loading...',
     });
@@ -141,9 +141,9 @@ export class ProductApi {
       Loading.hide();
       const result = response.data;
       if (response.data.data) {
-        return { kind: "ok", result };
+        return { kind: "ok", result: result };
       } else {
-        return { kind: "bad-data", result };
+        return { kind: "bad-data", result: result };
       }
     } catch (error) {
       Loading.hide();
@@ -177,7 +177,7 @@ export class ProductApi {
       return { kind: "bad-data", result: error };
     }
   }
-  async getListBrandProduct(): Promise<Brand> {
+  async getListBrandProduct(): Promise<BrandResult> {
     Loading.show({
       text: 'Loading...',
     });

@@ -120,7 +120,8 @@ export const palette = {
   ivory: '#F8F8F7',
   oxfordBlue: '#263238',
   mintCream1: '#F2FAF6',
-  ecstasy: '#C95B36 ',
+  ecstasy: '#C95B36',
+  pigmentGreen: '#02B14F',
 } as const;
 
 export const colors = {
@@ -226,4 +227,5 @@ export const colors = {
   whiteSmoke2: palette.whiteSmoke2,
   mintCream1: palette.mintCream1,
   ecstasy: palette.ecstasy,
+  pigmentGreen: palette.pigmentGreen,
 };

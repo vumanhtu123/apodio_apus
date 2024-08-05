@@ -69,6 +69,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const {
     selectedIds,
+    vendorId,
     idUnitGroup,
     nameUnitGroup,
     attributeArr,
@@ -592,7 +593,7 @@ export const ProductCreateScreen: FC = (item) => {
       // Xử lý kết quả upload
       results.forEach((result, index) => {
         if (result) {
-          console.log(`Upload image ${imageArray[index]} successfully`);
+          console.log(`Upload image ${JSON.stringify(imageArray[index])} successfully`);
         } else {
           console.log(`Failed to upload image ${imageArray[index]}`);
         }
@@ -649,7 +650,7 @@ export const ProductCreateScreen: FC = (item) => {
     const listIds = selectedIds;
     navigation.navigate({
       name: "ChooseVendorScreen",
-      params: { listIds, mode: "create" },
+      params: { listIds, mode: "create", vendorId: 1144 },
     } as never);
   };
 
@@ -753,10 +754,10 @@ export const ProductCreateScreen: FC = (item) => {
                   }}
                 />
               </View>
-              {valueSale === true ? <ItemGroupPrice /> : null}
+              <ItemGroupPrice />
             </View>
           </View>
-          {valueSale === true ? (
+          {/* {valueSale === true ? ( */}
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
             >
@@ -786,7 +787,7 @@ export const ProductCreateScreen: FC = (item) => {
                 </TouchableOpacity>
               </View>
             </View>
-          ) : null}
+          {/* ) : null} */}
           <View
             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
           >
