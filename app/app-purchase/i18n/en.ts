@@ -743,6 +743,8 @@ const en = {
     payDebt: "Thanh toán công nợ",
   },
   productScreen: {
+    select_vendor: "Lựa chọn xem sản phẩm của nhà cung cấp:",
+    display_all: "Xem tất cả sản phẩm",
     create_product: "Tạo sản phẩm",
     create_directory: "Tạo danh mục",
     directory: "Tất cả danh mục",
@@ -909,7 +911,7 @@ const en = {
       "Tạo ra các phiên bản khác nhau của sản phẩm như màu sắc, kích thước, size.. bằng các thêm các thuộc tính tương ứng",
     addProperties: "Thêm thuộc tính",
     information: "Thêm thông tin",
-    canBuy: "Có thể mua",
+    canBuy: "Có thể bán",
     edit_product: "Sửa sản phẩm",
     cancel: "Hủy",
     done: "Hoàn tất",

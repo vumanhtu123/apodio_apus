@@ -62,7 +62,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             if (productStore.sort.length > 0) {
                 parseSort =
                     "?sort=" +
-                    productStore.sort[0] +
+                    productStore.sort[0] ,
                     (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
             }
             const response: any = await productStore.getListProduct(

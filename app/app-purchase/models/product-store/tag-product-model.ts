@@ -37,5 +37,6 @@ export interface UserCreatedBy {
 }
 
 export type TagResult =
-  | { kind: "ok"; response: Data }
-  | { kind: "bad-data"; response: Root };
+  | { kind: "ok"; result: Data }
+  | { kind: "bad-data"; result: Root }
+  | { kind: "bad-data"; result: any };

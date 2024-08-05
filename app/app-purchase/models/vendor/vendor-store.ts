@@ -37,7 +37,6 @@ export const VendorStoreModel = types
       vendorActivated: boolean,
       search: string
     ) {
-      try {
         const vendorApi = new VendorApi(self.environment.apiErp);
         const result: VendorResult = yield vendorApi.getListVendor(
           page,
@@ -47,10 +46,6 @@ export const VendorStoreModel = types
         );
         console.log("VendorResult-------------", JSON.stringify(result));
         return result;
-      } catch (error) {
-        console.log("LOG ERROR PROMOTION", error);
-        return error;
-      }
     }),
     getInfoCompany: flow(function* () {
       try {

@@ -47,7 +47,7 @@ import en from "../../../i18n/en";
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
   const [imagesNote, setImagesNote] = useState<any>([]);
-  const [valuePurchase, setValuePurchase] = useState(false);
+  const [valueSale, setValueSale] = useState(false);
   const [valueSwitchUnit, setValueSwitchUnit] = useState(false);
   const [modalDescribe, setModalDescribe] = useState(false);
   const [modalcreateUnit, setModalcreateUnit] = useState(false);
@@ -70,6 +70,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const {
     selectedIds,
+    vendorId,
     idUnitGroup,
     nameUnitGroup,
     attributeArr,
@@ -479,9 +480,9 @@ export const ProductCreateScreen: FC = (item) => {
     const doneData = {
       sku: data.SKU === "" ? null : data.SKU,
       name: data.productName,
-      purchaseOk: valuePurchase,
+      saleOk: valueSale,
       imageUrls: imagesNote,
-      saleOk: true,
+      purchaseOk: true,
       vendorIds: selectedIds! || [],
       managementForm: data.brands?.label2,
       productCategoryId: data.category?.id || null,
@@ -593,7 +594,7 @@ export const ProductCreateScreen: FC = (item) => {
       // Xử lý kết quả upload
       results.forEach((result, index) => {
         if (result) {
-          console.log(`Upload image ${imageArray[index]} successfully`);
+          console.log(`Upload image ${JSON.stringify(imageArray[index])} successfully`);
         } else {
           console.log(`Failed to upload image ${imageArray[index]}`);
         }
@@ -650,7 +651,7 @@ export const ProductCreateScreen: FC = (item) => {
     const listIds = selectedIds;
     navigation.navigate({
       name: "ChooseVendorScreen",
-      params: { listIds, mode: "create" },
+      params: { listIds, mode: "create", vendorId: 1144 },
     } as never);
   };
 
@@ -748,16 +749,16 @@ export const ProductCreateScreen: FC = (item) => {
                   }}
                 />
                 <Switch
-                  value={valuePurchase}
+                  value={valueSale}
                   onToggle={() => {
-                    setValuePurchase(!valuePurchase);
+                    setValueSale(!valueSale);
                   }}
                 />
               </View>
               <ItemGroupPrice />
             </View>
           </View>
-          {valuePurchase === true ? (
+          {/* {valueSale === true ? ( */}
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
             >
@@ -787,7 +788,7 @@ export const ProductCreateScreen: FC = (item) => {
                 </TouchableOpacity>
               </View>
             </View>
-          ) : null}
+          {/* ) : null} */}
           <View
             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
           >
