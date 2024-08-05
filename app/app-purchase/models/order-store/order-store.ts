@@ -25,7 +25,7 @@ import { SelectPriceListAPI } from "../../services/api/api-select-price-list";
 import {
   PriceListResponse,
   PriceListSelect,
-} from "../select-price-list/select-price-list.-model";
+} from "../select-price-list/select-price-list-model";
 import { TaxLineModel } from "./entities/order-tax-lines-model";
 import { DebtModel } from "./entities/order-debt-limit-model";
 import {
