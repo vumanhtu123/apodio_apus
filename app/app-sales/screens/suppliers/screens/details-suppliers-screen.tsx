@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { styles } from "../styles/styles";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { navigationRef, NavigatorParamList } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
@@ -55,7 +55,7 @@ export const DetailsSupplierScreen: FC<
         LeftIcon={Svgs.back}
         onLeftPress={() => navigationRef.goBack()}
         colorIcon={colors.text}
-        headerText={`Chi tiết nhà cung cấp`}
+        headerTx="suppliers.detailSupplier"
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={{
           paddingLeft: 5,

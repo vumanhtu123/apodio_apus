@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react"
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
-import { Text } from "../../../../components/text/text";
+import { Text } from "../../../components/text/text";
 import { Dimensions, FlatList, Image, Linking, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
-import { Button } from "../../../../components";
+import { Button } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import Modal from 'react-native-modal'
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useStores } from "../../../models";
-import { ALERT_TYPE, Dialog, Toast } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast } from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { checkLibraryPermission, requestLibraryPermission } from "../../../utils/requesPermissions";
 import { RESULTS } from "react-native-permissions";
@@ -345,7 +345,7 @@ export default function ImagesGroup(props: ImagesGroup) {
               alignItems: 'center'
             }} >
               <Svgs.ic_addImages width={scaleWidth(16)} height={scaleHeight(16)} />
-              <Text text="Tải ảnh lên" style={{
+              <Text tx="productScreen.upImg" style={{
                 fontWeight: '600', fontSize: fontSize.size14,
                 lineHeight: scaleHeight(24), color: colors.palette.navyBlue, marginLeft: scaleWidth(6)
               }} />

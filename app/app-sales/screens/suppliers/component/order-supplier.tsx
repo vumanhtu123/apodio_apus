@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
-import { Text } from "../../../../components";
+import { Text } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 
@@ -27,8 +27,10 @@ export const OrderSupplier = (item: any) => {
               fontSize: 12,
               fontWeight: "500",
               color: onclick == 0 ? colors.navyBlue : colors.nero,
-            }}>
-            Tất cả
+            }}
+            tx="suppliers.all"
+          >
+
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -43,8 +45,10 @@ export const OrderSupplier = (item: any) => {
               fontSize: 12,
               fontWeight: "500",
               color: onclick == 1 ? colors.navyBlue : colors.nero,
-            }}>
-            Tháng này
+            }}
+            tx="suppliers.thisMonth"
+          >
+
           </Text>
         </TouchableOpacity>
       </View>
@@ -65,8 +69,9 @@ export const OrderSupplier = (item: any) => {
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
-            }}>
-            Đã mua:
+            }}
+            tx="suppliers.Bought"
+          >
           </Text>
           <Text
             style={{
@@ -90,8 +95,10 @@ export const OrderSupplier = (item: any) => {
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
-            }}>
-            Đang xử lý:
+            }}
+            tx="suppliers.processing"
+          >
+
           </Text>
           <Text
             style={{
@@ -110,8 +117,10 @@ export const OrderSupplier = (item: any) => {
               fontSize: 12,
               fontWeight: "400",
               paddingHorizontal: 6,
-            }}>
-            Tổng tiền:
+            }}
+            tx="suppliers.totalAmount"
+          >
+
           </Text>
           <Text
             style={{
@@ -129,8 +138,12 @@ export const OrderSupplier = (item: any) => {
               fontWeight: "400",
               color: colors.dolphin,
               paddingVertical: 8,
-            }}>
-            Chưa có đơn hàng cho NCC này
+
+            }}
+            tx="suppliers.noOrdersYet"
+
+          >
+
           </Text>
         ) : null}
       </View>
@@ -151,8 +164,10 @@ export const OrderSupplier = (item: any) => {
             color: "white",
             paddingHorizontal: scaleWidth(8),
             paddingVertical: scaleHeight(6),
-          }}>
-          Tạo đơn
+          }}
+          tx="suppliers.createOrder"
+
+        >
         </Text>
       </View>
       <View style={{ flex: 1 }}>
@@ -210,8 +225,10 @@ const ItemOrder = (item: any) => {
               fontSize: 8,
               fontWeight: "400",
               color: "#A55EEA",
-            }}>
-            Chờ xác nhận
+            }}
+            tx="suppliers.waitForConfirmation"
+
+          >
           </Text>
         </View>
       </View>
@@ -223,8 +240,10 @@ const ItemOrder = (item: any) => {
         }}></View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "column" }}>
-          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}>
-            Số lượng sản phẩm:
+          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}
+            tx="suppliers.numberProduct"
+          >
+
           </Text>
           <Text
             style={{
@@ -232,11 +251,14 @@ const ItemOrder = (item: any) => {
               fontSize: 10,
               fontWeight: "400",
               marginVertical: 8,
-            }}>
-            Tổng tiền hàng:
+            }}
+            tx="suppliers.totalCostOfGoods"
+          >
+            T
           </Text>
-          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}>
-            Chiết khấu:
+          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}
+            tx="suppliers.discount"
+          >
           </Text>
           <Text
             style={{
@@ -244,11 +266,14 @@ const ItemOrder = (item: any) => {
               fontSize: 10,
               fontWeight: "400",
               marginVertical: 8,
-            }}>
-            Tổng thuế
+            }}
+            tx="suppliers.totalTax"
+          >
           </Text>
-          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}>
-            Tổng tiền cần thanh toán:
+          <Text style={{ color: colors.dolphin, fontSize: 10, fontWeight: "400" }}
+            tx="suppliers.totalAmountPaid"
+          >
+
           </Text>
           <Text
             style={{
@@ -256,8 +281,10 @@ const ItemOrder = (item: any) => {
               fontSize: 10,
               fontWeight: "700",
               marginVertical: 8,
-            }}>
-            Chưa thanh toán
+            }}
+            tx="suppliers.unPaid"
+          >
+
           </Text>
         </View>
         <View style={{ flexDirection: "column", alignItems: "flex-end" }}>

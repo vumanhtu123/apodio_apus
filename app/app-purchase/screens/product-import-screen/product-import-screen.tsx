@@ -2,16 +2,16 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../navigators";
 import { FC, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { View,TouchableOpacity, StyleSheet, Platform, Alert } from "react-native";
+import { View, TouchableOpacity, StyleSheet, Platform, Alert } from "react-native";
 import React from "react";
-import { Header, Text } from '../../../components';
+import { Header, Text } from '../../components';
 import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { FlashList } from "@shopify/flash-list";
-import CustomCalendar from "../../../components/calendar";
+import CustomCalendar from "../../components/calendar";
 
 
-export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGoodsBook">> = observer (
+export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList, "importGoodsBook">> = observer(
     function importGoodsBook(props) {
         interface DateItem {
 
@@ -152,7 +152,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                     onLeftPress={() => props.navigation.goBack()}
                 />
 
-                <View style={{ flex: 1 ,zIndex:1}}>
+                <View style={{ flex: 1, zIndex: 1 }}>
 
 
                     {
@@ -206,7 +206,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                                 setSelectCalendar(1)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Hôm nay</Text>
+                                            <Text style={Styles.TextTabbar} tx="productScreen.today"></Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{
                                             // width:scaleWidth(80), 
@@ -221,7 +221,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                                 setSelectCalendar(2)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Tháng này</Text>
+                                            <Text style={Styles.TextTabbar} tx="productScreen.thisMonth"></Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{
                                             // width:scaleWidth(80),
@@ -236,22 +236,22 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                                 setSelectCalendar(3)
                                             }}
                                         >
-                                            <Text style={Styles.TextTabbar}>Tháng trước</Text>
+                                            <Text style={Styles.TextTabbar} tx="productScreen.beforeMonth"></Text>
                                         </TouchableOpacity>
 
                                     </View>
 
                                 </View>
                                 <FlashList
-                                    style={{ marginTop: scaleWidth(15),  flex: 1 }}
+                                    style={{ marginTop: scaleWidth(15), flex: 1 }}
                                     data={displayedData}
                                     showsVerticalScrollIndicator={false}
 
                                     renderItem={({ item }) => {
                                         return (
                                             <TouchableOpacity style={Styles.bodyItem}
-                                                onPress={() => props.navigation.navigate('detailImportReceipt',{dataItemGoodsImportBook: item})}
-                                            
+                                                onPress={() => props.navigation.navigate('detailImportReceipt', { dataItemGoodsImportBook: item })}
+
                                             >
                                                 <View style={{
 
@@ -259,7 +259,7 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                                     justifyContent: 'space-between',
 
                                                 }}
-                                    
+
                                                 >
                                                     <View>
                                                         <Text style={{ fontSize: 12, fontWeight: '600', color: colors.nightRider }}>{item.id}</Text>
@@ -278,8 +278,10 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
                                                 </View>
                                                 <View style={Styles.line}></View>
                                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                    <Text style={Styles.stylesTextTime}>
-                                                        Tổng cộng
+                                                    <Text style={Styles.stylesTextTime}
+                                                        tx="ImprotGoodsBook.sum"
+                                                    >
+
                                                     </Text>
                                                     <Text style={{ fontSize: scaleWidth(12) }}>
                                                         {item.total}
@@ -348,14 +350,14 @@ export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGood
             </View>
         )
     }
-) 
+)
 
 const Styles = StyleSheet.create({
     stylesTextTime: {
         fontSize: 10
     },
-    TextTabbar:{
-        fontSize:12,
+    TextTabbar: {
+        fontSize: 12,
     },
     line: {
         width: '100%',

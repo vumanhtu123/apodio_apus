@@ -6,7 +6,7 @@ import { Svgs } from '../../../../../../assets/svgs';
 import ModalCreateClientFromNumber from './modal-create-client';
 import Modal from 'react-native-modal'
 import en from '../../../../i18n/en';
-import { Text } from '../../../../../components';
+import { Text } from '../../../../components';
 
 
 interface ModalProps {
@@ -148,7 +148,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
 
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowGroupOption}>
-                            <Text style={styles.groupTitle}>Nhóm khách hàng</Text>
+                            <Text style={styles.groupTitle} tx="productScreen.groupClient"></Text>
                             <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showGroupOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showGroupOption && (
@@ -173,10 +173,10 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
                         <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: colors.veryLightGrey }}>
-                            <Text style={{ fontSize: fontSize.size14 }}>Thiết lập lại</Text>
+                            <Text style={{ fontSize: fontSize.size14 }} tx="productScreen.reset2"></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: colors.navyBlue }}>
-                            <Text style={{ fontSize: fontSize.size14, color: 'white' }}>Áp dụng</Text>
+                            <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="productScreen.apply"></Text>
                         </TouchableOpacity>
                     </View>
 

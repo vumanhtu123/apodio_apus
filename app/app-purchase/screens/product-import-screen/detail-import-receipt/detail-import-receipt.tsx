@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { FlatList, Image, StyleSheet, TouchableOpacity, View, ScrollView, Modal, Switch, Alert } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import Styles from "./Styles";
@@ -140,7 +140,9 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
 
                             onPress={() => setSellectTab('product')}
                         >
-                            <Text style={sellectTab === 'product' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect} >Sản phẩm</Text>
+                            <Text style={sellectTab === 'product' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}
+                                tx="ImprotGoodsBook.product"
+                            ></Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
@@ -153,8 +155,10 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                             }}
                             onPress={() => setSellectTab('material')}
                         >
-                            <Text style={sellectTab === 'material' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}>
-                                Nguyên vật liệu
+                            <Text style={sellectTab === 'material' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}
+                                tx="ImprotGoodsBook.materials"
+                            >
+
                             </Text>
                         </TouchableOpacity>
                     </View>

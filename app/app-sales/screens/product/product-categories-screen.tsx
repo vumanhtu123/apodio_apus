@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Screen } from "../../../components/screen/screen";
+import { Screen } from "../../../app-purchase/components/screen/screen";
 import { Svgs } from "../../../../assets/svgs";
-import { Header } from "../../../components/header/header";
-import { Text } from "../../../components/text/text";
+import { Header } from "../../../app-purchase/components/header/header";
+import { Text } from "../../../app-purchase/components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers } from "./data";
 import { styles } from "./styles";
@@ -169,8 +169,10 @@ export const ProductCategoriesScreen: FC = observer(() => {
       />
       <Screen style={styles.ROOT} preset="fixed">
         <View style={{ marginHorizontal: 16 }}>
-          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-            Lựa chọn xem sản phẩm của nhà cung cấp:
+          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+            tx="productScreen.selectToViewSupplierIsProducts"
+          >
+
           </Text>
         </View>
         <View style={{ flex: 0.95, margin: 16 }}>

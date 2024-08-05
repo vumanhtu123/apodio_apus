@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/native";
 import React, { FC, useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { useStores } from "../../../models";
@@ -101,7 +101,7 @@ export const FilterOrderScreen: FC = (item) => {
         LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Bộ lọc`}
+        headerText="filterScreen.filter"
         style={{ height: scaleHeight(54) }}
       />
       <View style={{ marginHorizontal: scaleWidth(16), flex: 1 }}>

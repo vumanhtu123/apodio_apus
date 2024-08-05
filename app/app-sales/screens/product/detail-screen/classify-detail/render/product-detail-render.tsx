@@ -4,8 +4,10 @@ import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../.
 import ProductAttribute from '../../../component/productAttribute';
 import { Svgs } from '../../../../../../../assets/svgs';
 import { styles } from '../styles';
-import { Text } from '../../../../../../components';
+import { Text } from '../../../../../../app-purchase/components';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
+import en from '../../../../../i18n/en';
+
 
 const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
   const [showRetailPrice, setShowRetailPrice] = useState(false);
@@ -33,11 +35,11 @@ const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
           labelTx="detailScreen.status"
           value={
             dataClassification.saleOk === true && dataClassification.purchaseOk === false
-              ? "Có thể bán"
+              ? en.productScreen.canSell
               : dataClassification.purchaseOk === true && dataClassification.saleOk === false
-                ? "Có thể mua"
+                ? en.productScreen.canBuy
                 : dataClassification.saleOk === true && dataClassification.purchaseOk === true
-                  ? "Có thể bán/ Có thể mua"
+                  ? en.productScreen.canSellOrBuy
                   : null
           }
         />

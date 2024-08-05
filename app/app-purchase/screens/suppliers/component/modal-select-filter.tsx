@@ -6,8 +6,8 @@ import {
 import React, { FC, useEffect, useState } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../../components/header/header";
-import { Text } from "../../../../components/text/text";
+import { Header } from "../../../components/header/header";
+import { Text } from "../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles/styles";
 import { useStores } from "../../../models";
@@ -65,14 +65,14 @@ export const FilterSupplierScreen: FC = (item) => {
       selectedTimeFilter === "filterScreen.new"
         ? "createdAt,asc"
         : selectedTimeFilter === "filterScreen.older"
-        ? "createdAt,desc"
-        : "";
+          ? "createdAt,desc"
+          : "";
     const sortName =
       selectedNameFilter === "filterScreen.aToZ"
         ? "name,asc"
         : selectedNameFilter === "filterScreen.zToA"
-        ? "name,desc"
-        : "";
+          ? "name,desc"
+          : "";
 
     return {
       sortCreatedAt,
@@ -151,8 +151,10 @@ export const FilterSupplierScreen: FC = (item) => {
       />
       <View style={{ marginHorizontal: scaleWidth(16), flex: 1 }}>
         <View style={{ marginTop: scaleHeight(20) }}>
-          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-            Thời gian tạo
+          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+            tx="NCCScreen.timeCreate"
+          >
+
           </Text>
           <View
             style={{
@@ -192,8 +194,9 @@ export const FilterSupplierScreen: FC = (item) => {
         </View>
 
         <View style={{ marginTop: scaleHeight(20) }}>
-          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-            Theo tên
+          <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+            tx="NCCScreen.byName"
+          >
           </Text>
           <View
             style={{
@@ -239,8 +242,10 @@ export const FilterSupplierScreen: FC = (item) => {
                 marginTop: scaleHeight(20),
                 marginBottom: scaleHeight(12),
               }}>
-              <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}>
-                Tag
+              <Text style={{ fontSize: fontSize.size14, fontWeight: "500" }}
+                tx="NCCScreen.tag"
+              >
+
               </Text>
               <View style={{ marginTop: scaleWidth(12) }}>
                 <FlatList
@@ -284,8 +289,10 @@ export const FilterSupplierScreen: FC = (item) => {
             borderRadius: 10,
             backgroundColor: colors.navyBlue,
           }}>
-          <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-            Xác nhận
+          <Text style={{ fontSize: fontSize.size14, color: "white" }}
+            tx="NCCScreen.confirm"
+          >
+
           </Text>
         </TouchableOpacity>
       </View>

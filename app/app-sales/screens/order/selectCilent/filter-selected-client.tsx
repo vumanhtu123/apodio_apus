@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { NavigatorParamList } from "../../../navigators";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
 import { Styles } from "./styles";

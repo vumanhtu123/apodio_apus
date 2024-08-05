@@ -74,7 +74,7 @@ const getDomainWarehouse = () => {
   return domain;
 };
 const getDomainSupplier = () => {
-  const domain = CONFIG.API.STAGING.URL_SUPPLIER;
+  const domain = CONFIG.API.DEV.URL_SUPPLIER;
   console.log("URL Supplier", domain);
   return domain;
 };

@@ -11,8 +11,8 @@ import {
   View,
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Button, Header, Text, TextField } from "../../../../components";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { Button, Header, Text, TextField } from "../../../components";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles";
 // import AddProduct from "../components/itemListProduct";
@@ -20,12 +20,12 @@ import moment from "moment";
 import { Controller, useForm } from "react-hook-form";
 import FastImage from "react-native-fast-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CustomCalendar from "../../../../components/calendar";
+import CustomCalendar from "../../../components/calendar";
 import {
   ALERT_TYPE,
   Dialog,
   Toast,
-} from "../../../../components/dialog-notification";
+} from "../../../components/dialog-notification";
 import { translate } from "../../../i18n";
 import { useStores } from "../../../models";
 import {
@@ -417,9 +417,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 )}
                 // defaultValue={''}
                 name="invoiceCode"
-                // rules={{
-                //     required: translate('ruleController.emptyText'),
-                // }}
+              // rules={{
+              //     required: translate('ruleController.emptyText'),
+              // }}
               />
             </View>
             <Text
@@ -474,9 +474,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 )}
                 // defaultValue={''}
                 name="symbol"
-                // rules={{
-                //     required: translate('ruleController.emptyText'),
-                // }}
+              // rules={{
+              //     required: translate('ruleController.emptyText'),
+              // }}
               />
             </View>
             <View style={{ marginVertical: scaleHeight(15) }}>
@@ -557,9 +557,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
               )}
               defaultValue={""}
               name="invoiceEndDate"
-              // rules={{
-              //     required: translate('ruleController.emptyText'),
-              // }}
+            // rules={{
+            //     required: translate('ruleController.emptyText'),
+            // }}
             />
             <View style={{ marginVertical: scaleHeight(15) }}>
               <InputSelect
@@ -580,8 +580,10 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 fontSize: fontSize.size12,
                 fontWeight: "600",
                 marginVertical: scaleHeight(15),
-              }}>
-              Thông tin hoá đơn
+              }}
+              tx="productScreen.informationBill"
+            >
+
             </Text>
             <View
               style={{
@@ -591,7 +593,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
               {data.saleOrderLines?.map((item: any) => {
                 return (
                   <TouchableOpacity
-                    onPress={() => {}}
+                    onPress={() => { }}
                     style={styles.viewItemListProduct}>
                     <ImageBackground
                       style={{
@@ -602,7 +604,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                       imageStyle={{
                         borderRadius: 16,
                       }}
-                      source={require("../../../../../assets/Images/no_images.png")}>
+                      source={Images.noImages}>
                       <FastImage
                         style={{
                           width: scaleWidth(48),
@@ -613,7 +615,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                           uri: `${item.productInfo?.productImage ?? ""}`,
                           cache: FastImage.cacheControl.immutable,
                         }}
-                        defaultSource={require("../../../../../assets/Images/no_images.png")}
+                        defaultSource={Images.noImages}
                       />
                     </ImageBackground>
                     <View style={{ flex: 1 }}>

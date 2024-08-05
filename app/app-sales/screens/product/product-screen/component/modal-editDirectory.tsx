@@ -13,12 +13,12 @@ import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Modal from "react-native-modal";
 import { RESULTS } from "react-native-permissions";
 import { Svgs } from "../../../../../../assets/svgs";
-import { AutoImage, Text, TextField } from "../../../../../components";
+import { AutoImage, Text, TextField } from "../../../../../app-purchase/components";
 import {
   ALERT_TYPE,
   Dialog,
   Loading
-} from "../../../../../components/dialog-notification";
+} from "../../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import { useStores } from "../../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
@@ -29,7 +29,7 @@ import {
   requestLibraryPermission,
 } from "../../../../utils/requesPermissions";
 import { validateFileSize } from "../../../../utils/validate";
-import { CustomModal } from "../../../../../components/custom-modal";
+import { CustomModal } from "../../../../../app-purchase/components/custom-modal";
 
 const EditDirectoryModal = (props: any) => {
   const { isVisible, setType, setIsVisible, category, onUpdateDirectory } =
@@ -428,7 +428,7 @@ const EditDirectoryModal = (props: any) => {
           <TouchableOpacity
             onPress={handleCloseModal}
             style={styles.buttonClose}>
-            <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+            <Text style={{ fontSize: fontSize.size14 }} tx="productScreen.cancel"></Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleUpdateDirectory}

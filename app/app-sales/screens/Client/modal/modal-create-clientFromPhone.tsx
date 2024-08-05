@@ -4,7 +4,7 @@ import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 import { onAction } from "mobx-state-tree";
-import { Text } from "../../../../components";
+import { Text } from "../../../../app-purchase/components";
 
 interface ModalClientFromPhoneProps {
     isVisible: any;

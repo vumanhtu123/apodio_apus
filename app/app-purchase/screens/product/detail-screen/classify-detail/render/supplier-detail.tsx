@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import { styles } from "../styles";
 import { colors, margin, padding, scaleHeight, scaleWidth } from "../../../../../theme";
-import { Text } from "../../../../../../components";
+import { Text } from "../../../../../components";
 import { Svgs } from "../../../../../../../assets/svgs";
 
 interface SupplierListProps {

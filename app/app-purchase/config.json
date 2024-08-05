@@ -13,7 +13,9 @@
       "URL_ERP": "https://gateway-erp.dev.apusplatform.com/services/resources",
       "URL_GET_WAY_ERP": "https://gateway-erp.dev.apusplatform.com",
       "UAA": "https://gateway.dev.apusplatform.com/services/uaa",
-      "URL_WAREHOUSE": "https://warehouse-service.dev.apusplatform.com"
+      "URL_WAREHOUSE": "https://warehouse-service.dev.apusplatform.com",
+      "URL_SUPPLIER": "https://resources-service.dev.apusplatform.com"
+
     },
     "STAGING": {
       "URL_ACCOUNTING": "https://gateway-erp.stg.apusplatform.com/services/accounting",

@@ -8,15 +8,15 @@ import {
   View,
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../../components/header/header";
-import { Text } from "../../../../components/text/text";
+import { Header } from "../../../../app-purchase/components/header/header";
+import { Text } from "../../../../app-purchase/components/text/text";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles"
 import { ScrollView } from "react-native-gesture-handler";
 import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form";
-import { TextField } from "../../../../components/text-field/text-field";
-import { Switch } from "../../../../components";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { TextField } from "../../../../app-purchase/components/text-field/text-field";
+import { Switch } from "../../../../app-purchase/components";
+import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
 import DescribeModal from "../component/modal-describe";
 import { useStores } from "../../../models";
 import {
@@ -29,13 +29,15 @@ import {
   validateFileSize,
 } from "../../../utils/validate";
 
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n/translate";
 import UnitModal from "../component/modal-unit";
 import ItemWeight from "../component/weight-component";
 import ImageProduct from "../create-prodcut/imageProduct";
 import { ItemGroupPrice, ItemMoreInformation, ItemUnit } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
+import en from "../../../i18n/en";
+
 
 export const ProductEditScreen: FC = (item) => {
   const route = useRoute();
@@ -47,7 +49,7 @@ export const ProductEditScreen: FC = (item) => {
   const [addDescribe, setAddDescribe] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
-  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
+  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{ uomGroupLines: any, originalUnit: any }>({ uomGroupLines: [], originalUnit: '' });
   const [addWeight, setAddWeight] = useState(false);
   const [attributeIds, setAttributeIds] = useState<number[]>([]);
   const [description, setDescription] = useState("");
@@ -61,7 +63,7 @@ export const ProductEditScreen: FC = (item) => {
   const [dropdownToEdit, setDropdownToEdit] = useState<{}[]>([]);
   const [defaultTags, setDefaultTags] = useState([]);
   const { productStore, unitStore, categoryStore, vendorStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState<{imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[]>([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{ imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[] }[]>([]);
   const [productUsing, setProductUsing] = useState(false);
   const [priceUsing, setPriceUsing] = useState(false);
   const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
@@ -518,7 +520,7 @@ export const ProductEditScreen: FC = (item) => {
       newArr5.forEach((item: any, index) => (dataArr[index].attributeValues = item));
 
       const bMap = new Map(
-        dataOldCreateProduct.map((item: {name: any}) => [item.name.trim(), item])
+        dataOldCreateProduct.map((item: { name: any }) => [item.name.trim(), item])
       );
 
       const updatedA = dataArr.map((item) => {
@@ -547,7 +549,7 @@ export const ProductEditScreen: FC = (item) => {
   const submitAdd = async (data: any) => {
     console.log('dataInput------------', data)
     if (data.productName.trim() === "") {
-      methods.setError("productName", { type: 'validate', message: "Vui lòng nhập thông tin" })
+      methods.setError("productName", { type: 'validate', message: en.productScreen.pleaseEnterInformation })
       return
     }
     if (uomId.id === 0) {
@@ -826,7 +828,7 @@ export const ProductEditScreen: FC = (item) => {
 
   const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
-      navigation.navigate({name: "createConversionGroup", params: {editScreen: true}} as never);
+      navigation.navigate({ name: "createConversionGroup", params: { editScreen: true } } as never);
     } else {
       setModalcreateUnit(true);
     }

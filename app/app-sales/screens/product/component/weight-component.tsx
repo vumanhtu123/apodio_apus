@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, FlatList } from "react-native";
-import { Text, TextField } from "../../../../components";
+import { Text, TextField } from "../../../../app-purchase/components";
 import {
   Controller,
   FormProvider,
@@ -10,8 +10,8 @@ import {
 } from "react-hook-form";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
-import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
+import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
+import { ALERT_TYPE, Toast } from "../../../../app-purchase/components/dialog-notification";
 import { translate } from "../../../i18n";
 import {
   commasToDots,
@@ -22,6 +22,8 @@ import {
 import { useStores } from "../../../models";
 import { stylesWeight } from "../styles";
 import { observer } from "mobx-react-lite";
+import en from "../../../i18n/en";
+
 
 interface InputSelectProps {
   control: any;
@@ -94,7 +96,7 @@ export default function ItemWeight(props: ItemWeight) {
         })
       );
     }
-    if (props.setAdd?.length !== 0 ) {
+    if (props.setAdd?.length !== 0) {
       setAddLine(true)
     } else {
       setAddLine(false)
@@ -181,48 +183,48 @@ export default function ItemWeight(props: ItemWeight) {
           data={props.data}
           checkList={props.checkList}
         />
-        {props.checkList ? (addLine === true ? 
-        <View
-          style={{
-            justifyContent: "space-between",
-            flexDirection: "row",
-            marginVertical: 10,
-          }}>
-          <Text
+        {props.checkList ? (addLine === true ?
+          <View
             style={{
-              color: colors.nero,
-              fontSize: fontSize.size14,
-              fontWeight: "400",
-            }}
-            tx="productScreen.weightConversion"></Text>
-          {watch('weightOriginal')?.trim() !== "" && watch('volumeOriginal')?.trim() !== "" && fields.length !== 0 ? (data ? (data.length !== 0 ?
-            <TouchableOpacity
-              onPress={() => {
-                if (props.setAdd?.length === 0) {
-                  append({ weight1: "", volume: "", unit: {} });
-                } else {
-                  if (props.setAdd[fields.length - 1]?.weight1 === '' || props.setAdd[fields.length - 1]?.volume === '' || Object.keys(props.setAdd[fields.length - 1]?.unit).length === 0) {
-                    Toast.show({
-                      type: ALERT_TYPE.DANGER,
-                      title: "",
-                      textBody: translate("txtToats.change_weight"),
-                    })
-                  } else {
+              justifyContent: "space-between",
+              flexDirection: "row",
+              marginVertical: 10,
+            }}>
+            <Text
+              style={{
+                color: colors.nero,
+                fontSize: fontSize.size14,
+                fontWeight: "400",
+              }}
+              tx="productScreen.weightConversion"></Text>
+            {watch('weightOriginal')?.trim() !== "" && watch('volumeOriginal')?.trim() !== "" && fields.length !== 0 ? (data ? (data.length !== 0 ?
+              <TouchableOpacity
+                onPress={() => {
+                  if (props.setAdd?.length === 0) {
                     append({ weight1: "", volume: "", unit: {} });
+                  } else {
+                    if (props.setAdd[fields.length - 1]?.weight1 === '' || props.setAdd[fields.length - 1]?.volume === '' || Object.keys(props.setAdd[fields.length - 1]?.unit).length === 0) {
+                      Toast.show({
+                        type: ALERT_TYPE.DANGER,
+                        title: "",
+                        textBody: translate("txtToats.change_weight"),
+                      })
+                    } else {
+                      append({ weight1: "", volume: "", unit: {} });
+                    }
                   }
-                }
-              }}>
-              <Text
-                style={{
-                  color: colors.navyBlue,
-                  fontSize: fontSize.size12,
-                  fontWeight: "400",
-                }}
-                tx="productScreen.addLine"></Text>
-            </TouchableOpacity> : null) : null) : null}
-        </View> : <TouchableOpacity onPress={() => addLineWeight()}>
-          <Text tx="productScreen.addLineWeight" style={{ color: colors.navyBlue, fontStyle: 'italic', fontWeight: '400', fontSize: fontSize.size12 }} />
-        </TouchableOpacity>) : null}
+                }}>
+                <Text
+                  style={{
+                    color: colors.navyBlue,
+                    fontSize: fontSize.size12,
+                    fontWeight: "400",
+                  }}
+                  tx="productScreen.addLine"></Text>
+              </TouchableOpacity> : null) : null) : null}
+          </View> : <TouchableOpacity onPress={() => addLineWeight()}>
+            <Text tx="productScreen.addLineWeight" style={{ color: colors.navyBlue, fontStyle: 'italic', fontWeight: '400', fontSize: fontSize.size12 }} />
+          </TouchableOpacity>) : null}
       </View>
       {props.checkList ? <FlatList
         data={fields}
@@ -373,7 +375,7 @@ const ItemConversion = observer((item: InputSelectProps) => {
                     styleViewDropdown={stylesWeight.viewDropdown}
                     hintTx={"createProductScreen.select_unit"}
                     arrData={item.data ?? []}
-                    dataDefault={value?.label ?? "Chọn đơn vị"}
+                    dataDefault={value?.label ?? en.productScreen.selectUnit}
                     onPressChoice={(items: any) => {
                       onChange(items);
                       item.onRemove(item.fields, items);

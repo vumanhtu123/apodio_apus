@@ -1,6 +1,6 @@
 import { Image, TouchableOpacity, View } from "react-native";
 import { Styles } from "../style";
-import { Text } from "../../../../components";
+import { Text } from "../../../components";
 import React from "react";
 import { scaleHeight, scaleWidth } from "../../../theme";
 

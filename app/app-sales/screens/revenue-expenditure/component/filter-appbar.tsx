@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Text } from "../../../../components";
+import { Text } from "../../../../app-purchase/components";
 import { translate } from "../../../i18n";
 
 const listTitle = [

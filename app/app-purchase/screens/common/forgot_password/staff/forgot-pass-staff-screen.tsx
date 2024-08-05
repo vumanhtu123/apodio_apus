@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { Button } from "../../../../../components/button/button";
-import { Header } from "../../../../../components/header/header";
-import { TextField } from "../../../../../components/text-field/text-field";
+import { Button } from "../../../../components/button/button";
+import { Header } from "../../../../components/header/header";
+import { TextField } from "../../../../components/text-field/text-field";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -21,15 +21,15 @@ import {
   validatePhoneStartsWith,
 } from "../../../../theme/validate";
 import { styles } from "./styles";
-import DialogSuccessUnSuccess from "../../../../../components/dialog-success-unsuccess.tsx/index";
+import DialogSuccessUnSuccess from "../../../../components/dialog-success-unsuccess.tsx/index";
 import { Svgs } from "../../../../../../assets/svgs";
 import { StackScreenProps } from "@react-navigation/stack";
 import { useStores } from "../../../../models";
 import { AuthParamList } from "../../../../navigators/auth-navigator";
-import { VerificationCodeModal } from "../../../../../components/dialog-otp/dialog.otp";
-import { ALERT_TYPE, Dialog } from "../../../../../components/dialog-notification";
+import { VerificationCodeModal } from "../../../../components/dialog-otp/dialog.otp";
+import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n";
-import { Text } from "../../../../../components";
+import { Text } from "../../../../components";
 export const ForgotPasswordStaff: FC<
   StackScreenProps<AuthParamList, "forgotPasswordStaff">
 > = observer(function ForgotPasswordStaff() {

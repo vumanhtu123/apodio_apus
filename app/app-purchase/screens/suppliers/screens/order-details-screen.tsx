@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { styles } from "../styles/styles";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { AppStackScreenProps, navigationRef } from "../../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
@@ -26,7 +26,7 @@ export const OrderDetailsScreen: FC<
           LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           // colorIcon={colors.text}
-          headerText={`Chi tiết đơn hàng`}
+          headerTx="orderDetail.orderDetail"
           // RightIcon={Images.icon_funnel}
           onRightPress1={() => navigation.navigate("filterScreen" as never)}
           widthRightIcon={scaleWidth(16)}
@@ -65,9 +65,10 @@ export const OrderDetailsScreen: FC<
                 }}
               />
               <Text
-                style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
-                Công ty TNHH Một thành viên Apodio
-              </Text>
+                style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}
+                tx="orderDetail.nameCompany"
+              />
+
             </View>
           </View>
           <AddressOrder />
@@ -98,8 +99,10 @@ export const OrderDetailsScreen: FC<
                   style={{ marginRight: 6, marginTop: 2, color: colors.navyBlue }}
                 />
                 <Text
-                  style={{ fontSize: 14, fontWeight: "600", color: colors.navyBlue }}>
-                  Chọn sản phẩm
+                  style={{ fontSize: 14, fontWeight: "600", color: colors.navyBlue }}
+                  tx="orderDetail.selectProduct"
+                >
+
                 </Text>
               </View>
             </View>
@@ -114,8 +117,10 @@ export const OrderDetailsScreen: FC<
               marginHorizontal: 16,
               marginTop: 15,
             }}>
-            <Text style={{ color: colors.black, fontSize: 14, fontWeight: "600" }}>
-              Thông tin thêm
+            <Text style={{ color: colors.black, fontSize: 14, fontWeight: "600" }}
+              tx="orderDetail.moreInfomation"
+            >
+
             </Text>
             <View
               style={{
@@ -138,8 +143,10 @@ export const OrderDetailsScreen: FC<
                     color: colors.navyBlue,
                     paddingVertical: 6,
                     paddingHorizontal: 8,
-                  }}>
-                  Ghi chú
+                  }}
+                  tx="orderDetail.note"
+                >
+
                 </Text>
               </View>
             </View>
@@ -159,8 +166,10 @@ export const OrderDetailsScreen: FC<
             marginHorizontal: 16,
             paddingVertical: 12,
           }}>
-          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
-            Tổng cộng
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}
+            tx="orderDetail.total"
+          >
+
           </Text>
           <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
             0đ
@@ -179,8 +188,10 @@ export const OrderDetailsScreen: FC<
               fontWeight: "600",
               color: colors.white,
               marginVertical: 12,
-            }}>
-            Đặt hàng
+            }}
+            tx="orderDetail.order"
+          >
+
           </Text>
         </View>
       </View>

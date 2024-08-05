@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { Header } from '../../../../components/header/header';
+import { Header } from '../../../components/header/header';
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { useNavigation } from '@react-navigation/native';
@@ -15,9 +15,9 @@ import {
 } from 'react-native';
 import {colors, scaleHeight} from '../../../theme';
 import {styles} from './styles';
-import { Button } from '../../../../components/button/button';
-import { Text } from '../../../../components/text/text';
-import { SvgIcon } from '../../../../components/svg-icon/index';
+import { Button } from '../../../components/button/button';
+import { Text } from '../../../components/text/text';
+import { SvgIcon } from '../../../components/svg-icon/index';
 import SelectTypeModal from './modal-select-type';
 // import {icSuccess} from '../../theme/images';
 import { Svgs } from '../../../../../assets/svgs';

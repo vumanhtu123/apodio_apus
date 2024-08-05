@@ -1,7 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Svgs } from '../../../../../../assets/svgs';
-import { Button, Text } from '../../../../../components';
+import { Button, Text } from '../../../../components';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import CategoryModalFilter from '../../component/modal-category';

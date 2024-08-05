@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, Header } from "../../../../components";
+import { Button, Header } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 import {
   useNavigation,
@@ -19,7 +19,7 @@ import {
   ALERT_TYPE,
   Dialog,
   Toast,
-} from "../../../../components/dialog-notification";
+} from "../../../../app-purchase/components/dialog-notification";
 import { ItemAttribute } from "./itemAttribute";
 import { FormProvider, useForm } from "react-hook-form";
 import { styles } from "./styles";
@@ -287,7 +287,8 @@ export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
             required
             arrData={attributeData}
             titleTx="addAttribute.title"
-            hintText="Chọn nhóm thuộc tính"
+            hintText="addAttribute.selectAnAttributeGroup"
+
             dataEdit={dropdownSelected}
             disable={true}
             loadMore={() => setPage(page + 1)}

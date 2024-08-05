@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Text } from "../../../../components";
+import { Text } from "../../../components";
 import { translate } from "../../../i18n";
 
 const { width, height } = Dimensions.get("screen");

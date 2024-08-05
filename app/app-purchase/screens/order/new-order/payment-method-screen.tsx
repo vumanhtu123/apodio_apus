@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Header, Screen, Text, TextField } from "../../../../components";
+import { Header, Screen, Text, TextField } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -11,9 +11,9 @@ import { useStores } from "../../../models";
 import { advanceMethodData, methodData } from "./data";
 import { translate } from "../../../i18n";
 import { commasToDots, formatCurrency, formatStringToFloat, formatVND } from "../../../utils/validate";
-import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
-import { TextFieldCurrency } from "../../../../components/text-field-currency/text-field-currency";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { ALERT_TYPE, Toast } from "../../../components/dialog-notification";
+import { TextFieldCurrency } from "../../../components/text-field-currency/text-field-currency";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any

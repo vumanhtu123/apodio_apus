@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { Button } from "../../../../components/button/button";
-import { Text } from "../../../../components/text/text";
-import { TextField } from "../../../../components/text-field/text-field";
+import { Button } from "../../../../app-purchase/components/button/button";
+import { Text } from "../../../../app-purchase/components/text/text";
+import { TextField } from "../../../../app-purchase/components/text-field/text-field";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import {

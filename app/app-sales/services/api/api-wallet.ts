@@ -1,7 +1,7 @@
 import { ApiResponse } from "apisauce"
 import { Api } from "../base-api/api"
 import { getGeneralApiProblem } from "./api-problem"
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../app-purchase/components/dialog-notification";
 
 export class WalletApi {
   private api: Api

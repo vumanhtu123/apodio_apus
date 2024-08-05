@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { FlatList, ScrollView, TouchableOpacity, View } from "react-native";
 import { styles } from "../styles";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../app-purchase/components";
 import CustomCalendarWarehouseBook from "../calendar-warehouse-book/customCalendarWarehouseBook";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../../navigators";

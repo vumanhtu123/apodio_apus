@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { Svgs } from "../../../../../assets/svgs";
-import { Text } from "../../../../components";
-import Dialog from "../../../../components/dialog/dialog";
+import { Text } from "../../../components";
+import Dialog from "../../../components/dialog/dialog";
 import {
   colors,
   fontSize,

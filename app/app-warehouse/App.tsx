@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { useAppContext } from '../AppContext';
+import { useAppContext } from '../app-context/AppContext';
 
 const AppB: React.FC = () => {
   const { setCurrentApp } = useAppContext();

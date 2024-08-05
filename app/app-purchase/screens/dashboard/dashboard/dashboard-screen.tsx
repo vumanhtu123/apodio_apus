@@ -12,7 +12,7 @@ import {
   Animated,
 } from "react-native";
 import { styles } from "./styles";
-import { Text } from "../../../../components/text/text";
+import { Text } from "../../../components/text/text";
 
 import {
   colors,
@@ -587,7 +587,10 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
             kind={1}
             onChangeAVT={() => {
               // nextPage();
-              navigation.dispatch(DrawerActions.openDrawer);
+              navigation.navigate({
+                name: "vendorScreen",
+              } as never);
+              // navigation.dispatch(DrawerActions.openDrawer);
               // navigation.dispatch(DrawerActions.openDrawer);
               // testDebug();
             }}
@@ -628,7 +631,9 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.heatWave }}
               name={"dashboard.orders"}
               Icon={Svgs.icon_orders}
-              onPress={() => {navigation.navigate("orders" as never)}}
+              onPress={() => {
+                navigation.navigate("orders" as never);
+              }}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.metallicBlue }}

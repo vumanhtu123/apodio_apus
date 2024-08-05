@@ -3,16 +3,16 @@ import React, { useState } from "react";
 import { FC } from "react";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { Styles } from "../style";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
-import CustomCalendar from "../../../../components/calendar";
+import CustomCalendar from "../../../components/calendar";
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../../navigators/app-navigator";
 
 
-export const TransactionHistoryScreen: FC <StackScreenProps<NavigatorParamList,'transactionHistoryDetail'>> = observer(
+export const TransactionHistoryScreen: FC<StackScreenProps<NavigatorParamList, 'transactionHistoryDetail'>> = observer(
     function tranSactionHistory(props) {
 
         const navigation = useNavigation();
@@ -21,7 +21,7 @@ export const TransactionHistoryScreen: FC <StackScreenProps<NavigatorParamList,'
         const [onMarkedDatesChangeS, setOnMarkedDatesChangeS] = useState('')
         const [onMarkedDatesChangeE, setonMarkedDatesChangeE] = useState('')
 
-        
+
 
         const toggleModalDate = () => {
             setOpenCalender(!openCalender)
@@ -111,12 +111,15 @@ export const TransactionHistoryScreen: FC <StackScreenProps<NavigatorParamList,'
                         {
 
                             item.status ? (
-                                <Text style={{ color: colors.palette.malachite, fontSize: scaleWidth(12), fontWeight: '700' }}>
-                                    Thành Công
+                                <Text style={{ color: colors.palette.malachite, fontSize: scaleWidth(12), fontWeight: '700' }}
+                                    tx="tranSacTionHistory.success"
+                                >
+
                                 </Text>
                             ) : (
-                                <Text>
-                                    Thất Bại
+                                <Text
+                                    tx="tranSacTionHistory.fail">
+
                                 </Text>
                             )
 

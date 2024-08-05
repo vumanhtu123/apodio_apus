@@ -16,7 +16,7 @@ import {
   Header,
   Text,
   TextField,
-} from "../../../../components";
+} from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
@@ -28,12 +28,12 @@ import {
   scaleWidth,
 } from "../../../theme";
 import { styles } from "./styles";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Controller, useForm } from "react-hook-form";
 import { translate } from "../../../i18n";
 import moment from "moment";
-import CustomCalendar from "../../../../components/calendar";
+import CustomCalendar from "../../../components/calendar";
 import ItemListProduct from "../components/item-list-product";
 import {
   AddressOrder,
@@ -52,7 +52,7 @@ import {
   ALERT_TYPE,
   Dialog,
   Toast,
-} from "../../../../components/dialog-notification";
+} from "../../../components/dialog-notification";
 import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
 
 export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
@@ -523,7 +523,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Chiết khấu phải lớn hơn 0",
+        textBody: translate("productScreen.discountMustBeGreaterThan0"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -1326,7 +1326,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         return Dialog.show({
                           type: ALERT_TYPE.INFO,
                           title: translate("productScreen.Notification"),
-                          textBody: "Bạn cần chọn phương thức thanh toán",
+                          textBody: translate("productScreen.youNeedSelectMethodPay"),
                           button2: translate(
                             "productScreen.BtnNotificationAccept"
                           ),

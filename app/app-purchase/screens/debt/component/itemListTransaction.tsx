@@ -2,7 +2,7 @@ import { View, TouchableOpacity } from 'react-native'
 import React, { FC } from 'react'
 import { colors, margin, scaleWidth } from '../../../theme'
 import { Styles } from '../screen/styles'
-import { Text } from '../../../../components'
+import { Text } from '../../../components'
 
 interface Props {
     id: number,

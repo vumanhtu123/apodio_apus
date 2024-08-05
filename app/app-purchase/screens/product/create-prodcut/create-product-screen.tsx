@@ -2,8 +2,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../../components/header/header";
-import { Text } from "../../../../components/text/text";
+import { Header } from "../../../components/header/header";
+import { Text } from "../../../components/text/text";
 import {
   colors,
   fontSize,
@@ -12,9 +12,9 @@ import {
 } from "../../../theme";
 import { ScrollView } from "react-native-gesture-handler";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { TextField } from "../../../../components/text-field/text-field";
-import { Switch } from "../../../../components";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { TextField } from "../../../components/text-field/text-field";
+import { Switch } from "../../../components";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import DescribeModal from "../component/modal-describe";
 import { useStores } from "../../../models";
 import {
@@ -31,7 +31,7 @@ import {
   Dialog,
   Toast,
   Loading,
-} from "../../../../components/dialog-notification";
+} from "../../../components/dialog-notification";
 import { translate } from "../../../i18n/translate";
 import ImageProduct from "./imageProduct";
 import { styles } from "./styles";
@@ -42,6 +42,7 @@ import {
   ItemUnit,
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
+import en from "../../../i18n/en";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -55,10 +56,10 @@ export const ProductCreateScreen: FC = (item) => {
   const [addWeight, setAddWeight] = useState(false);
   const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
-  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{uomGroupLines: any, originalUnit: any}>({uomGroupLines: [], originalUnit: ''});
+  const [detailUnitGroupData, setDetailUnitGroupData] = useState<{ uomGroupLines: any, originalUnit: any }>({ uomGroupLines: [], originalUnit: '' });
   const [description, setDescription] = useState("");
   const { productStore, unitStore } = useStores();
-  const [dataCreateProduct, setDataCreateProduct] = useState<{imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[]>([]);
+  const [dataCreateProduct, setDataCreateProduct] = useState<{ imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[] }[]>([]);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [uomGroupId, setUomGroupId] = useState({ id: 0, label: "" });
   const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
@@ -173,7 +174,7 @@ export const ProductCreateScreen: FC = (item) => {
         hasVariantInConfig: hasVariantInConfig,
       },
     } as never);
-  },[attributeArr, dropdownSelected, hasVariantInConfig])
+  }, [attributeArr, dropdownSelected, hasVariantInConfig])
 
   const getListUnitGroup = async (valueSwitchUnit: boolean) => {
     let unitResult = null;
@@ -303,14 +304,14 @@ export const ProductCreateScreen: FC = (item) => {
     if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {
         type: "validate",
-        message: "Mã SKU gồm chữ và số",
+        message: en.productScreen.checkIdSUK,
       });
       return
     }
     if (data.productName.trim() === "") {
       methods.setError("productName", {
         type: "validate",
-        message: "Vui lòng nhập thông tin",
+        message: en.productScreen.pleaseEnterInformation,
       });
       return
     }
@@ -466,7 +467,7 @@ export const ProductCreateScreen: FC = (item) => {
       };
     });
     // const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
-    
+
     const packingLine = data.weight?.map((item: any) => {
       return {
         uomGroupLineId: item.unit.id,
@@ -618,7 +619,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const handleAddNewUnitOrGroup = useCallback(() => {
     if (valueSwitchUnit) {
-      navigation.navigate({name: "createConversionGroup", params: {editScreen: false}} as never);
+      navigation.navigate({ name: "createConversionGroup", params: { editScreen: false } } as never);
     } else {
       setModalcreateUnit(true);
     }
@@ -771,7 +772,7 @@ export const ProductCreateScreen: FC = (item) => {
                 >
                   {selectedIds?.length > 0 ? (
                     <Text style={styles.textWeight400Black}>
-                      {selectedIds.length + " " + translate("createProductScreen.supplier")} 
+                      {selectedIds.length + " " + translate("createProductScreen.supplier")}
                     </Text>
                   ) : (
                     <Text

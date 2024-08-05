@@ -3,7 +3,7 @@ import { ImageBackground, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../app-purchase/components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { useStores } from "../../../models";
 import LinearGradient from "react-native-linear-gradient";
@@ -48,7 +48,7 @@ export const OrderSuccess: FC = () => {
           colors={[colors.palette.navyBlue, colors.palette.malibu]}
           style={{ height: scaleHeight(228) }}></LinearGradient>
         <ImageBackground
-          source={require("../../../../../assets/Images/back_Ground_Success.png")}
+          source={Images.backgroundSuccess}
           style={{
             position: "absolute",
             alignItems: "center",

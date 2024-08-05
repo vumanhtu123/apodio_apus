@@ -19,7 +19,7 @@ import * as storage from './utils/storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViewStyle, Linking } from 'react-native';
 import Config from "react-native-config";
-import { Root } from '../components/dialog-notification';
+import { Root } from './components/dialog-notification';
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
 // Web linking configuration

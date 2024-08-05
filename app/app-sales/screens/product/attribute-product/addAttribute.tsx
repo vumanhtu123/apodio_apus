@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { View } from "react-native";
-import { Button, Header, Switch, Text } from "../../../../components";
+import { Button, Header, Switch, Text } from "../../../../app-purchase/components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
@@ -16,7 +16,7 @@ import {
   ALERT_TYPE,
   Dialog,
   Toast,
-} from "../../../../components/dialog-notification";
+} from "../../../../app-purchase/components/dialog-notification";
 import { FormProvider, useForm } from "react-hook-form";
 import { ItemAttribute } from "./itemAttribute";
 import { styles } from "./styles";

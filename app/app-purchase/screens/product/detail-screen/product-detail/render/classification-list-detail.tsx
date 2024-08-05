@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { colors, margin, scaleHeight, scaleWidth } from "../../../../../theme";
-import { Text } from "../../../../../../components";
+import { Text } from "../../../../../components";
 import { styles } from "../styles";
 
 const ProductClassificationDetail = ({ arrClassification, changeClassification, setChangeClassification, setDetailsClassification }: any) => {
