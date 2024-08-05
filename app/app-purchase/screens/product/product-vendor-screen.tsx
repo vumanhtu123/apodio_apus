@@ -34,13 +34,13 @@ export const ProductVendorScreen: FC<
 
   const getListVendor = (search: string) => {
     productStore.getListVendor(page, search).then((item: any) => {
-      if (item.content != null) {
-        setTotalPage(item.totalPages);
+      if (item.response.data.content != null) {
+        setTotalPage(item.response.data.totalPages);
         console.log("setList success");
-        const data = item.content;
+        const data = item.response.data.content;
         setList((prev: any) => [...prev, ...data]);
       }
-      console.log("vendor screen", JSON.stringify(item));
+      console.log("vendor screen", JSON.stringify(item.response.data));
     });
   };
 
