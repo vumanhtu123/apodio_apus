@@ -106,7 +106,7 @@ const ListSupplierScreen = (props: PROPS) => {
     console.log("page ", pageSupplier.current, "total page", totalPage.current);
 
     const handleLoadMoreSupplier = () => {
-        console.log("dang load more");
+        console.log("dang load more", isLoadMore);
 
         setValueIsLoadMore(true)
         setIsLoadMore(true)
@@ -117,11 +117,14 @@ const ListSupplierScreen = (props: PROPS) => {
 
                 getListSupplier()
             }
+            console.log("4");
+
+            setIsLoadMore(false)
+            console.log("5");
+
         } catch (error) {
             console.log("Load more error", error);
 
-        } finally {
-            setIsLoadMore(false)
         }
     }
 
@@ -144,8 +147,8 @@ const ListSupplierScreen = (props: PROPS) => {
                     return (
                         <View>
                             {
-                                isLoadMore ? null
-                                    : <ActivityIndicator />
+                                isLoadMore ? <ActivityIndicator />
+                                    : null
                             }
                         </View>
                     )
@@ -162,3 +165,4 @@ const ListSupplierScreen = (props: PROPS) => {
 }
 
 export default ListSupplierScreen
+
