@@ -9,7 +9,7 @@ import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
 import { translate } from '../../../../i18n/translate';
-const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: any) => {
+const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vendorId }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
     const [showCategory, setShowCategory] = useState(false);
@@ -73,7 +73,8 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
                 searchValue,
                 productStore.tagId,
                 parseSort,
-                productStore.isLoadMore
+                productStore.isLoadMore,
+                vendorId
             );
             if (response && response.kind === "ok") {
                 setTotalPagesProduct(response.response.data.totalPages)
@@ -145,7 +146,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         setOpenSearch(false);
         setNameDirectory("");
         setPage(0);
-        productStore.setTagId(0);  
+        productStore.setTagId(0);
         productStore.setSort([]);
         await handleGetProduct();
         setIsRefreshing(false);

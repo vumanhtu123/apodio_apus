@@ -98,7 +98,8 @@ export const ProductStoreModel = types
       search: string,
       tagId: number,
       sortId: string,
-      isLoadMore: boolean
+      isLoadMore: boolean,
+      vendorId: number
     ) {
       const productApi = new ProductApi(
         self.environment.api,
@@ -112,7 +113,8 @@ export const ProductStoreModel = types
         search,
         tagId,
         sortId,
-        isLoadMore
+        isLoadMore,
+        vendorId
       );
       if (result.kind === "ok") {
         console.log("product", result);
@@ -344,10 +346,10 @@ export const ProductStoreModel = types
     }),
   }));
 
-export interface ProductStore extends Instance<typeof ProductStoreModel> {}
+export interface ProductStore extends Instance<typeof ProductStoreModel> { }
 export interface ProductStoreSnapshotOut
-  extends SnapshotOut<typeof ProductStoreModel> {}
+  extends SnapshotOut<typeof ProductStoreModel> { }
 export interface ProductStoreSnapshotIn
-  extends SnapshotIn<typeof ProductStoreModel> {}
+  extends SnapshotIn<typeof ProductStoreModel> { }
 export const createProductStoreDefaultModel = () =>
   types.optional(ProductStoreModel, {});

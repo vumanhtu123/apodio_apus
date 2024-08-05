@@ -239,7 +239,6 @@ export function InputSelect(props: InputSelectProps) {
               styleViewDropdown ?? {
                 justifyContent: "center",
                 alignItems: "center",
-                // marginTop: 5,  để cho item mũi tên đi xuống ra giữa khi comment lại
               }
             }>
             <Svgs.dropDown />

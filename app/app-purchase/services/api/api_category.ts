@@ -57,7 +57,7 @@ export class CategoryApi {
         }
       );
       Loading.hide();
-      console.log("page", page);
+      console.log("page category", page);
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };
