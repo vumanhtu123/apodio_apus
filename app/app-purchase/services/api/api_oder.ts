@@ -1,6 +1,4 @@
-import { size } from "lodash";
 import { ApiResponse } from "apisauce";
-import { hideLoading, showLoading } from "../../utils/toast";
 import { ApiOrder } from "../base-api/api-config-order";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { Loading } from "../../components/dialog-notification";

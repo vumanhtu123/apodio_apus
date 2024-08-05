@@ -7,7 +7,7 @@ import {
 } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { Content, ProductResult } from "./product-store-model";
-import { ProductApi } from "../../services/api/api-product";
+import { ProductApi } from "../../../app-purchase/services/api/api-product";
 import { productData } from "../add-product-props";
 import { UploadApi } from "../../services/api/api_upload_image";
 import { ProductDetailResult } from "./product-detail-modal";
