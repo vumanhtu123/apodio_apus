@@ -65,17 +65,16 @@ const TEXTHINT: TextStyle = {
   color: colors.palette.dolphin,
 };
 const VIEWMODAL: ViewStyle = {
-  // width: Dimensions.get('screen').width - 32,
-  height: scaleHeight(350),
+  maxHeight: Dimensions.get('screen').height * 0.55,
+  minHeight: Dimensions.get('screen').height * 0.3,
+  // height: scaleHeight(350),
+  width: '100%',
   backgroundColor: colors.palette.neutral100,
-  borderTopRightRadius: 8,
-  borderTopLeftRadius: 8,
-  // paddingVertical: scaleHeight(padding.padding_12),
-  // paddingHorizontal: scaleWidth(padding.padding_16),
-  // position: "absolute",
-  // bottom: 0,
-  // left: 0,
-  // right: 0,
+  borderTopLeftRadius: margin.border_top_left_radius,
+  borderTopRightRadius: margin.border_top_right_radius,
+  paddingVertical: scaleWidth(margin.margin_16),
+  paddingHorizontal: scaleHeight(margin.margin_16),
+  position: 'absolute', bottom: 0,
 };
 const TEXTLABELFLATLIST: TextStyle = {
   //fontWeight: '500',
@@ -159,6 +158,7 @@ export function InputSelect(props: InputSelectProps) {
       });
   }
   const refreshItem = async () => {
+    console.log('-----refreshItem-------')
     setIsRefreshing(true)
     setFilteredData([])
     reset({ searchData: '' });
@@ -247,12 +247,15 @@ export function InputSelect(props: InputSelectProps) {
           </View>
         )}
       </TouchableOpacity>
-      <CustomModal
+
+      <Modal
         isVisible={showModal}
-        setIsVisible={() => setShowModal(!showModal)}
-        isHideKeyBoards={showModal}
-        isVisibleLoading={showLoading}
-      >
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        animationInTiming={500}
+        animationOutTiming={500}
+        onBackdropPress={() => { setShowModal(false)}}
+        style={{ margin: 0 }}>
         <View style={VIEWMODAL}>
           {isSearch ? (
             <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
@@ -343,7 +346,8 @@ export function InputSelect(props: InputSelectProps) {
             }}
           />
         </View>
-      </CustomModal>
+      </Modal>
+
     </View>
   );
 }
