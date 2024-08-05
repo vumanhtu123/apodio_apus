@@ -11,7 +11,7 @@ import {
 
 export const styles = StyleSheet.create({
   ROOT: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.gray,
     flex: 1,
   },
   animatedButton: {

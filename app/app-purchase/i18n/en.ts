@@ -14,7 +14,7 @@ const en = {
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     selected: "Đã chọn",
-    emptyList : 'Không tìm thấy dữ liệu'
+    emptyList: "Không tìm thấy dữ liệu",
     // @demo remove-current-line
   },
   messageError: {
@@ -23,12 +23,12 @@ const en = {
   security: {
     select_type: "Chọn kiểu",
     cancel: "Hủy",
-
   },
   validate: {
     enterData: "Vui lòng nhập dự liệu",
-    printerNotConnect:"Chưa có máy in được kết nối đến tài khoản của bạn. Để tiếp tục, vào cài đặt máy in để kết nối máy in mong muốn.",
-    checkQuantity :"Số lượng thực tế không được nhỏ hơn 0",
+    printerNotConnect:
+      "Chưa có máy in được kết nối đến tài khoản của bạn. Để tiếp tục, vào cài đặt máy in để kết nối máy in mong muốn.",
+    checkQuantity: "Số lượng thực tế không được nhỏ hơn 0",
   },
 
   txtToats: {
@@ -362,7 +362,6 @@ const en = {
     enterPrice: "Nhập giá",
     selected: "Đã chọn",
     endow: "ưu đãi",
-   
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -574,12 +573,12 @@ const en = {
     customersInDaNangArea: "Khách hàng khu vực Đà Nẵng",
     filter: "Bộ lọc",
     sortBy: "Sắp xếp theo",
-    paymentRecord : "Ghi nhận thanh toán",
-    setUpAutomaticDebtReminders : "Đặt lịch nhắc nợ tự động",
+    paymentRecord: "Ghi nhận thanh toán",
+    setUpAutomaticDebtReminders: "Đặt lịch nhắc nợ tự động",
     change: "Thay đổi",
     listOfUnpaidTransactions: "Danh sách giao dịch chưa thanh toán",
     idOrder: "Mã đơn hàng: ",
-    dayBook:"Ngày đặt: ",
+    dayBook: "Ngày đặt: ",
     amountOfMoney: "Số tiền: ",
     addClient: "Thêm khách hàng",
     createGroup: "Tạo nhóm",
@@ -589,16 +588,16 @@ const en = {
     typeClient: "Kiểu khách hàng",
     selectTypeClient: "Chọn kiểu khách hàng",
     nameClient: "Tên khách hàng",
-    phoneNumber:"Số điện thoại",
+    phoneNumber: "Số điện thoại",
     createClientGroup: "Tạo nhóm khách hàng",
-    cancel:"Hủy",
+    cancel: "Hủy",
     create: "Tạo",
-    createNewSupplier:"Tạo mới nhà cung cấp",
+    createNewSupplier: "Tạo mới nhà cung cấp",
     continue: "Tiếp tục",
-    sort:"Sắp xếp theo",
+    sort: "Sắp xếp theo",
     temClient: "Nhãn khách hàng",
-    reset : "Thiết lập lại", 
-    apply : "Áp dụng",
+    reset: "Thiết lập lại",
+    apply: "Áp dụng",
   },
   NCCScreen: {
     idSupliers: "Mã nhà cung cấp",
@@ -645,7 +644,7 @@ const en = {
     personalIdentification: "Số giấy tờ định danh cá nhân",
     placeholderPersonalIdentification: "Nhập số giấy tờ",
     addSupplier: "Thêm nhà cung cấp",
-    iHaveToCollect :"Tôi phải thu:",
+    iHaveToCollect: "Tôi phải thu:",
   },
   debtScreen: {
     receivables: "Phải thu",
@@ -696,6 +695,8 @@ const en = {
     payDebt: "Thanh toán công nợ",
   },
   productScreen: {
+    select_vendor: "Lựa chọn xem sản phẩm của nhà cung cấp:",
+    display_all: "Xem tất cả sản phẩm",
     create_product: "Tạo sản phẩm",
     create_directory: "Tạo danh mục",
     directory: "Tất cả danh mục",
@@ -802,31 +803,30 @@ const en = {
     productTittle: "Sản phẩm",
     refactorCategories: "Chỉnh sửa danh mục",
     addPriceRange: "Thêm khoảng giá",
-    totalProduct: 'Tổng số sản phẩm:',
+    totalProduct: "Tổng số sản phẩm:",
     youNeedSelectClient: "Bạn cần chọn khách hàng",
     youNeedEnterAddress: "Bạn cần nhập địa chỉ giao hàng",
     youNeedSelectProduct: "Bạn cần chọn sản phẩm",
     youNeedSelectMethodPay: "Bạn cần chọn phương thức thanh toán",
-    discountMustBeGreaterThan0:"Chiết khấu phải lớn hơn 0",
+    discountMustBeGreaterThan0: "Chiết khấu phải lớn hơn 0",
     informationBill: "Thông tin hóa đơn",
-    groupClient :"Nhóm khách hàng",
-    reset2  :"Thiết lập lại" ,
-    apply :"Áp dụng",
+    groupClient: "Nhóm khách hàng",
+    reset2: "Thiết lập lại",
+    apply: "Áp dụng",
     upImg: "Tải ảnh lên",
     checkIdSUK: "Mã SKU gồm chữ và số",
     pleaseEnterInformation: "Vui lòng nhập thông tin",
-    canSell:"Có thể bán",
+    canSell: "Có thể bán",
     canBuy: "Có thể mua",
     canSellOrBuy: "Có thể bán hoặc mua",
-    attributeGroupNameIsRequired :"Tên nhóm thuộc tính là bắt buộc",
-    selectToViewSupplierIsProducts : "Lựa chọn xem sản phẩm của nhà cung cấp:",
+    attributeGroupNameIsRequired: "Tên nhóm thuộc tính là bắt buộc",
+    selectToViewSupplierIsProducts: "Lựa chọn xem sản phẩm của nhà cung cấp:",
     materials: "Nguyên vật liệu",
     thisMonth: "Tháng này",
     today: "Hôm nay",
     beforeMonth: "Tháng trước",
     selectUnit: "Chọn đơn vị",
-    supplier:"nhà cung cấp",
-
+    supplier: "nhà cung cấp",
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -936,8 +936,6 @@ const en = {
     selectedValue: "Chọn giá trị",
     allowsCreatingAttribute: "Cho phép tạo phân loại",
     selectAnAttributeGroup: "Chọn nhóm thuộc tính",
-
-
   },
   editAttribute: {
     headerText: "Sửa thuộc tính",
@@ -1049,15 +1047,14 @@ const en = {
     dowloadBallot: "Tải phiếu",
     collapse: "Thu gọn",
     notCreateExportGoods: "Chưa có phiếu xuất nào được tạo",
-    totalNumber : "Tổng số lượng",
-    totalPrice : "Tổng tiền hàng" ,
+    totalNumber: "Tổng số lượng",
+    totalPrice: "Tổng tiền hàng",
     discount: "Chiết khấu ",
     costsIncurred: "Chi phí phát sinh",
     sum: "Tổng cộng",
-    today:"Hôm nay",
+    today: "Hôm nay",
     thisMonth: "Tháng này",
     beforeMonth: "Tháng trước",
-
   },
   detailPallot: {
     ballotDetail: "Chi tiết phiếu",
@@ -1081,22 +1078,20 @@ const en = {
     noTicketsHaveBeenCreatedYet: "Chưa có phiếu nào được tạo",
     createTicketWarehouse: "Tạo phiếu kho",
     deponsit: "Lưu phiếu",
-    complete:"Hoàn thành",
+    complete: "Hoàn thành",
     addProduct: "+ Thêm sản phẩm",
     totalQuantity: "Tổng số lương",
-    checkNumberProduct : "Số lượng tồn kho sản phẩm phải lớn hơn hoặc bằng số lượng trong đơn xuất hàng",
-    actualStock:"Số lượng thực tế",
+    checkNumberProduct:
+      "Số lượng tồn kho sản phẩm phải lớn hơn hoặc bằng số lượng trong đơn xuất hàng",
+    actualStock: "Số lượng thực tế",
     inventoryQuantityInTheSystem: "Số lượng tồn kho trong hệ thống",
     differenceInQuantity: "Số lượng chênh lệch",
-    note:"Ghi chú",
+    note: "Ghi chú",
     all: "Tất cả",
     checkingInventory: "Đang kiểm kho",
     isBalancing: "Đang cân bằng",
     command: "Lệnh",
     before: "Trước",
-
-
-
   },
   ImprotGoodsBook: {
     createImportGoods: "Tạo nhập hàng",
@@ -1130,13 +1125,11 @@ const en = {
     deletionWarning:
       "Các giao dịch liên quan đến đơn nhập hàng này sẽ bị xóa. Bạn muốn xóa giao dịch liên quan?",
     importCoupon: "Phiếu nhập hàng",
-    product:"Sản phẩm",
-    materials:"Nguyên vật liệu",
-    still : "Còn",
+    product: "Sản phẩm",
+    materials: "Nguyên vật liệu",
+    still: "Còn",
     today: "Hôm nay",
-    sum : "Tổng cộng",
-
-
+    sum: "Tổng cộng",
   },
   itemConversion: {
     dialogNoti: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",
@@ -1203,9 +1196,8 @@ const en = {
     reset: "Thiết lập lại",
     apply: "Áp dụng",
     today: "Hôm nay",
-    thisMonth:"Tháng này",
+    thisMonth: "Tháng này",
     beforeMonth: "Tháng trước",
-
   },
   printInvoiceScreen: {
     printInvoice: "In hoá đơn",
