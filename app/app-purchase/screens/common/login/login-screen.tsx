@@ -105,8 +105,8 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               />
             )}
             // Account test setup new pin
-            defaultValue={"afs@gmail.com"}
-            // defaultValue={"apodio@gmail.com"}
+            // defaultValue={"afs@gmail.com"}
+            defaultValue={"apodio@gmail.com"}
             // Account test
             // defaultValue={"67076743544"}
             name="username"

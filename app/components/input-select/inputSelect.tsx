@@ -313,7 +313,6 @@ export function InputSelect(props: InputSelectProps) {
             }}
             contentContainerStyle={{
               flexGrow: 1,
-              justifyContent: 'center',
             }}
             ListEmptyComponent={EmptyListComponent}
             keyExtractor={(item, index) => index.toString()}
@@ -321,7 +320,7 @@ export function InputSelect(props: InputSelectProps) {
               return (
                 <View>
                   <TouchableOpacity
-                    style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: scaleWidth(5) }}
+                    style={{ flexDirection: 'row', paddingHorizontal: scaleWidth(5) }}
                     onPress={() => {
                       setData(item.label);
                       onPressChoice(item);
