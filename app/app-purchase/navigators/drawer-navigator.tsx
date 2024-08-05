@@ -5,7 +5,7 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import { Text } from "../components";
-import { colors, scaleHeight, scaleWidth } from "../../app-purchase/theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../app-purchase/theme";
 const { height } = Dimensions.get("window");
 import { StyleSheet } from "react-native";
 import { Svgs } from "../../../assets/svgs";
@@ -15,11 +15,12 @@ import { MainBottomTab } from "./bottom-navigation";
 import { AppStack } from "./app-navigator";
 import { OpenAppStack } from "./open-app-navigator";
 import { AuthStack } from "./auth-navigator";
+import en from "../i18n/en";
+import { map } from "mobx-state-tree/dist/internal";
+import { longPressHandlerName } from "react-native-gesture-handler/lib/typescript/handlers/LongPressGestureHandler";
 export function CustomDrawerContent(props: any) {
-  const [selectBuy, setSelectBuy] = useState(true);
-  function select() {
-    setSelectBuy(selectBuy == true ? false : true);
-  }
+  const [selectBuy, setSelectBuy] = useState(0);
+
   const dataTop = [
     {
       textTittle: "menuDrawer.inforMerchant",
@@ -53,6 +54,34 @@ export function CustomDrawerContent(props: any) {
       imageIcon: Svgs.icon_logout,
     },
   ];
+
+  const dataType = [
+    {
+      id: 0,
+      name: en.menuDrawer.textBuy,
+      img: Svgs.icon_Box,
+      onPress: () => {
+        console.log("Man hinh 1:");
+
+      }
+    },
+    {
+      id: 1,
+      name: en.menuDrawer.textSell,
+      img: Svgs.icon_Store,
+      onPress: () => {
+        console.log("Man hinh 2:");
+
+      }
+    }, {
+      id: 2,
+      name: en.menuDrawer.finance,
+      img: Svgs.ic_$,
+      onPress: () => {
+        console.log("Man hinh 3:");
+      }
+    }
+  ]
   return (
     <DrawerContentScrollView
       {...props}
@@ -60,13 +89,9 @@ export function CustomDrawerContent(props: any) {
       <View style={styles.drawerContainer}>
         <View style={styles.leftContainer}>
           {/* Nội dung bên trái */}
-          <IconLeftDrawer onClick={select} />
+          <IconLeftDrawer />
         </View>
-        <View style={styles.rightContainer}>
-          {/* Nội dung bên phải */}
-          <RightDrawerTop nameCompany={"Công ty Thanh Long"} onClick={{}} />
-          <RightDrawerBottom onClick={{}} />
-        </View>
+
       </View>
     </DrawerContentScrollView>
   );
@@ -88,51 +113,91 @@ export function CustomDrawerContent(props: any) {
     );
   }
   // eslint-disable-next-line react/no-unstable-nested-components
-  function IconLeftDrawer(props: { onClick: any }) {
+  function IconLeftDrawer() {
     return (
       <View style={{ flexDirection: "column", marginTop: 10 }}>
-        <TouchableOpacity onPress={props.onClick}>
-          <View style={{ flexDirection: "row" }}>
+        <Text style={styles.textHeaderDrawer}
+        >
+          {en.menuDrawer.textHeaderDrawer}
+        </Text>
+        {
+          dataType.map((item, index) => {
+            return (
+
+              <TouchableOpacity onPress={() => {
+                console.log("value id", index);
+                setSelectBuy(index)
+                item.onPress()
+              }}
+                key={item.id}
+              >
+                <View style={{ flexDirection: "row", alignItems: 'center', marginBottom: scaleWidth(5) }}>
+                  <View
+                    style={selectBuy == index ? styles.lineMenu : styles.noLineMenu}
+                  />
+                  <View style={{ flexDirection: "row" }}>
+                    <View
+                      style={
+                        selectBuy == index ? styles.circle : styles.circleInactive
+                      }>
+                      <item.img width={24} height={24} />
+                    </View>
+                    <Text
+                      style={[selectBuy == index ? styles.textDrawer : styles.textDrawer2,]}
+                    >
+                      {item.name}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )
+          })
+        }
+
+        {/* <TouchableOpacity onPress={props.onClick}>
+          <View style={{ flexDirection: "row", marginTop: 15, }}>
             <View
-              style={selectBuy == true ? styles.lineMenu : styles.noLineMenu}
+              style={selectBuy == 0 ? styles.lineMenu : styles.noLineMenu}
             />
-            <View style={{ flexDirection: "column" }}>
+            <View style={{ flexDirection: "row" }}>
               <View
                 style={
-                  selectBuy == true ? styles.circle : styles.circleInactive
-                }>
-                <Svgs.icon_Box width={24} height={24} />
-              </View>
-              <Text
-                style={
-                  selectBuy == true ? styles.textDrawer : styles.textDrawer2
-                }
-                tx="menuDrawer.textBuy"
-              />
-            </View>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={props.onClick}>
-          <View style={{ flexDirection: "row", marginTop: 15 }}>
-            <View
-              style={selectBuy == false ? styles.lineMenu : styles.noLineMenu}
-            />
-            <View style={{ flexDirection: "column" }}>
-              <View
-                style={
-                  selectBuy == false ? styles.circle : styles.circleInactive
+                  selectBuy == 0 ? styles.circle : styles.circleInactive
                 }>
                 <Svgs.icon_Store width={24} height={24} />
               </View>
               <Text
                 style={
-                  selectBuy == false ? styles.textDrawer : styles.textDrawer2
+                  selectBuy == 0 ? styles.textDrawer : styles.textDrawer2
                 }
                 tx="menuDrawer.textSell"
               />
             </View>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity onPress={props.onClick}>
+          <View style={{ flexDirection: "row", marginTop: 15, }}>
+            <View
+              style={selectBuy == 0 ? styles.lineMenu : styles.noLineMenu}
+            />
+            <View style={{ flexDirection: "row" }}>
+              <View
+                style={
+                  selectBuy == 0 ? styles.circle : styles.circleInactive
+                }>
+                <Svgs.ic_$ width={24} height={24} />
+              </View>
+              <Text
+                style={
+                  selectBuy == 0 ? styles.textDrawer : styles.textDrawer2
+                }
+
+              >
+                {en.menuDrawer.finance}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity> */}
       </View>
     );
   }
@@ -268,7 +333,7 @@ export const styles = StyleSheet.create({
     height: height,
   },
   leftContainer: {
-    flex: 0.3,
+    flex: 1,
     backgroundColor: colors.palette.colorDrawer1,
     flexDirection: "column",
   },
@@ -297,29 +362,34 @@ export const styles = StyleSheet.create({
   },
   lineMenu: {
     width: 4,
-    height: 82,
-    backgroundColor: colors.palette.navyBlue,
+    backgroundColor: colors.palette.red,
+
   },
   noLineMenu: {
     width: 4,
-    height: 82,
+    // height: 82,
+
   },
   textDrawer: {
-    fontSize: 12,
+    fontSize: fontSize.size12,
     fontWeight: "400",
-    textAlign: "center",
-    width: 30,
-    lineHeight: 15,
     marginLeft: 15,
     color: colors.palette.navyBlue,
+    alignSelf: 'center'
   },
   textDrawer2: {
     fontSize: 12,
     fontWeight: "400",
     textAlign: "center",
-    width: 30,
-    lineHeight: 15,
+    // lineHeight: 15,
     marginLeft: 15,
     color: colors.palette.dolphin,
+    alignSelf: 'center'
   },
+  textHeaderDrawer: {
+    fontSize: fontSize.size12,
+    fontWeight: '700',
+    marginLeft: scaleWidth(15),
+    marginVertical: scaleHeight(15)
+  }
 });

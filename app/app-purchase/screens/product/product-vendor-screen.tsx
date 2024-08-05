@@ -19,6 +19,7 @@ import { observer } from "mobx-react-lite";
 import { translate } from "../../i18n";
 import { useStores } from "../../models";
 
+
 export const ProductVendorScreen: FC<
   StackScreenProps<NavigatorParamList, "vendorScreen">
 > = observer(function ProductVendorScreen(props: any) {
