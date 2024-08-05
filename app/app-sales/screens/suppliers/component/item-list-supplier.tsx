@@ -1,7 +1,7 @@
 import React from "react";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { TouchableOpacity, View } from "react-native";
-import { Text } from "../../../../app-purchase/components";
+import { Text } from "../../../components";
 
 
 interface Item {

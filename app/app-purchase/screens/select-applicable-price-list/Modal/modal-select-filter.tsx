@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, Text as TextRN, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { useNavigation } from '@react-navigation/native';
 import { Svgs } from '../../../../../assets/svgs';
 import Modal from 'react-native-modal'
+import { Text } from '../../../components';
 
 
 interface ModalProps {
@@ -105,17 +106,17 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
         >
             <View style={styles.container}>
                 <View style={styles.modalView}>
-                    <TextRN style={styles.modalText} />
+                    <Text style={styles.modalText} />
                     <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Bộ lọc</Text>
+                        <Text style={styles.headerTitle} tx="selectPriceListApply.filter"></Text>
                         <TouchableOpacity onPress={setIsVisible}>
-                            <Text style={styles.headerButton}>Hủy</Text>
+                            <Text style={styles.headerButton} tx="selectPriceListApply.cancel"></Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.horizontalLine} />
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowSortOption}>
-                            <Text style={styles.groupTitle}>Sắp xếp theo</Text>
+                            <Text style={styles.groupTitle} tx="selectPriceListApply.sortBy"></Text>
                             <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showSortOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showSortOption && (
@@ -146,7 +147,7 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
 
                     <View>
                         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} onPress={toggleShowGroupOption}>
-                            <Text style={styles.groupTitle}>Nhóm khách hàng</Text>
+                            <Text style={styles.groupTitle} tx="selectPriceListApply.groupClient"></Text>
                             <Svgs.dropDown width={scaleWidth(14)} height={scaleHeight(14)} style={{ transform: [{ rotate: showGroupOption ? '180deg' : '0deg' }], }} />
                         </TouchableOpacity>
                         {showGroupOption && (
@@ -169,10 +170,10 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: scaleHeight(15) }}>
                         <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderWidth: 1, marginRight: scaleWidth(12), borderRadius: 10, borderColor: colors.veryLightGrey }}>
-                            <Text style={{ fontSize: fontSize.size14 }}>Thiết lập lại</Text>
+                            <Text style={{ fontSize: fontSize.size14 }} tx="selectPriceListApply.reset"></Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: scaleWidth(150), height: scaleHeight(48), justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: colors.navyBlue }}>
-                            <Text style={{ fontSize: fontSize.size14, color: 'white' }}>Áp dụng</Text>
+                            <Text style={{ fontSize: fontSize.size14, color: 'white' }} tx="selectPriceListApply.apply"></Text>
                         </TouchableOpacity>
                     </View>
 

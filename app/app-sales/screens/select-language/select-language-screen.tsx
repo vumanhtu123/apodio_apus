@@ -5,7 +5,6 @@ import {
   Image,
   StatusBar,
   View,
-  Text,
   Button,
   TouchableOpacity,
 } from "react-native";
@@ -16,6 +15,7 @@ import { navigate, NavigatorParamList } from "../../../app-purchase/navigators";
 import { changeLanguage } from "../../i18n";
 import Images from "../../../../assets/index";
 import { colors } from "../../theme";
+import { Text } from "../../components";
 
 export const SelectLanguageScreen: FC<
   StackScreenProps<NavigatorParamList, "selectLanguage">
@@ -50,8 +50,10 @@ export const SelectLanguageScreen: FC<
         alignItems: "center",
         padding: 17,
       }}>
-      <Text style={{ fontSize: 18, fontWeight: "700", marginTop: 100 }}>
-        Select the language to use
+      <Text style={{ fontSize: 18, fontWeight: "700", marginTop: 100 }}
+        tx="common.selectLanguage"
+      >
+
       </Text>
       {/* <StatusBar backgroundColor={color.text}/> */}
       {/* <View style={{marginTop: scaleHeight(top + 60)}}/> */}
@@ -73,7 +75,7 @@ export const SelectLanguageScreen: FC<
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image source={Images.iconVN} />
-          <Text style={{ marginHorizontal: 4 }}>Tiếng Việt</Text>
+          <Text style={{ marginHorizontal: 4 }} tx="common.vietnamese"></Text>
         </View>
       </TouchableOpacity>
 
@@ -95,7 +97,7 @@ export const SelectLanguageScreen: FC<
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image source={Images.iconEN} />
-          <Text style={{ marginHorizontal: 4 }}>Tiếng Anh</Text>
+          <Text style={{ marginHorizontal: 4 }} tx="common.english"></Text>
         </View>
       </TouchableOpacity>
     </View>

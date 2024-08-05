@@ -333,7 +333,7 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
               borderRadius: 10,
               borderColor: colors.veryLightGrey,
             }}>
-            <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+            <Text style={{ fontSize: fontSize.size14 }} tx="NCCScreen.cancel">Huỷ</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
@@ -344,8 +344,10 @@ export const ModalAddContactPerson = (props: ModalAddContactPerson) => {
               borderRadius: 10,
               backgroundColor: colors.navyBlue,
             }}>
-            <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-              Lưu
+            <Text style={{ fontSize: fontSize.size14, color: "white" }}
+              tx="NCCScreen.save"
+            >
+
             </Text>
           </TouchableOpacity>
         </View>

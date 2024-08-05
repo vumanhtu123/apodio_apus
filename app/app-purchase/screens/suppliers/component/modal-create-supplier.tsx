@@ -176,9 +176,9 @@ const ModalCreateSuppliers = (props: ModalProps) => {
       <View style={[styles.modalView, {}]}>
         <TextRN style={styles.modalText} />
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Tạo mới nhà cung cấp</Text>
+          <Text style={styles.headerTitle} tx="suppliers.createNewSupplier"></Text>
           <TouchableOpacity onPress={() => setIsVisible(!isVisible)}>
-            <Text style={styles.headerButton}>Hủy</Text>
+            <Text style={styles.headerButton} tx="suppliers.cancel"></Text>
           </TouchableOpacity>
         </View>
         <View style={styles.horizontalLine} />
@@ -190,8 +190,8 @@ const ModalCreateSuppliers = (props: ModalProps) => {
             }}
           >
             <InputSelect
-              titleText="Kiểu"
-              hintText="Chọn kiểu NCC"
+              titleText="suppliers.type"
+              hintText="suppliers.selectTypeSupplier"
               isSearch
               required={true}
               arrData={arrTypeSupplier}
@@ -364,8 +364,8 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   }}
                 />
                 <InputSelect
-                  titleText="Tỉnh/Thành phố"
-                  hintText="Chọn tỉnh/thành phố"
+                  titleText="NCCScreen.cityProvince"
+                  hintText="NCCScreen.selectCityProvince"
                   isSearch
                   required={true}
                   arrData={arrCity}
@@ -376,8 +376,8 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   styleView={{ marginBottom: scaleHeight(15) }}
                 />
                 <InputSelect
-                  titleText="Quận/Huyện"
-                  hintText="Chọn quận/huyện"
+                  titleText="NCCScreen.district"
+                  hintText="NCCScreen.selectDistrict"
                   isSearch
                   required={true}
                   arrData={arrCity}
@@ -388,8 +388,8 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                   styleView={{ marginBottom: scaleHeight(15) }}
                 />
                 <InputSelect
-                  titleText="Phường/Xã"
-                  hintText="Chọn phường/xã"
+                  titleText="NCCScreen.wards"
+                  hintText="NCCScreen.selectWards"
                   isSearch
                   required={true}
                   arrData={arrCity}
@@ -594,7 +594,7 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                     borderColor: colors.veryLightGrey,
                   }}
                 >
-                  <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+                  <Text style={{ fontSize: fontSize.size14 }} tx="NCCScreen.cancel"></Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{
@@ -606,8 +606,10 @@ const ModalCreateSuppliers = (props: ModalProps) => {
                     backgroundColor: colors.navyBlue,
                   }}
                 >
-                  <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-                    Lưu
+                  <Text style={{ fontSize: fontSize.size14, color: "white" }}
+                    tx="NCCScreen.save"
+                  >
+
                   </Text>
                 </TouchableOpacity>
               </View>

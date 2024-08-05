@@ -42,8 +42,10 @@ export const HeaderOrderDetails = (props: any) => {
             paddingVertical: 2,
             height: 14,
           }}>
-          <Text style={{ fontSize: 8, fontWeight: "400", color: "#A55EEA" }}>
-            Chờ xác nhận
+          <Text style={{ fontSize: 8, fontWeight: "400", color: "#A55EEA" }}
+            tx="suppliers.waitForConfirmation"
+          >
+
           </Text>
         </View>
       </View>

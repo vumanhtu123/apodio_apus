@@ -132,7 +132,7 @@ export const RevenueScreen: FC<
             />
           )}
           rules={{
-            required: "Vui lòng nhập số tiền ",
+            required: en.analysis.pleaseEnterMoney,
           }}
         />
       </TouchableOpacity>
