@@ -1,10 +1,9 @@
-import { configs } from "./../../theme/dimension";
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { Data } from "../../models/product-store/tag-product-model";
 import { Brand } from "../../models/brand-model";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../app-purchase/components/dialog-notification";
+import { Loading } from "../../../app-purchase/components/dialog-notification";
 
 
 export class ProductApi {
