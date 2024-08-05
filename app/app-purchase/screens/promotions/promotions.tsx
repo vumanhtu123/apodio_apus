@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import React, { FC, useState } from "react"
 import { Dimensions, FlatList, Image, TextInput, TouchableOpacity, View } from "react-native"
-import { Button, Header, Text, TextField } from "../../components"
+import { Button, Header, Text, TextField } from "../../../components"
 import { Svgs } from "../../../../assets/svgs"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../theme"
@@ -11,7 +11,7 @@ import AutoHeightImage from "react-native-auto-height-image"
 import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { isFormValid } from "../../utils/validate"
-import en from "../../i18n/en"
+import en from "../../../i18n/en"
 
 export const Promotions: FC = observer(
     function Promotions() {

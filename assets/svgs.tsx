@@ -242,6 +242,7 @@ import ic_app_finance from "./Images/ic_app_finance.svg"
 import ic_app_purchase from "./Images/ic_app_purchase.svg"
 import ic_app_sales from "./Images/ic_app_sales.svg"
 import ic_app_warehouse from "./Images/ic_app_warehouse.svg"
+import ic_$ from "./Images/ic_$.svg"
 
 export const Svgs = {
   icon_test: _test,
@@ -483,5 +484,6 @@ export const Svgs = {
   ic_checkbox: ic_checkbox,
   ic_bin_white: ic_bin_white,
   ic_pen_white: ic_pen_white,
-  ic_outline_list: ic_outline_list
+  ic_outline_list: ic_outline_list,
+  ic_$: ic_$,
 };

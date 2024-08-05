@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import ReactNativeModal from "react-native-modal";
 

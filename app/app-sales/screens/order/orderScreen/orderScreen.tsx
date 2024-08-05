@@ -30,10 +30,10 @@ import {
 } from "../../../navigators/bottom-navigation";
 import { NavigatorParamList, navigate } from "../../../navigators";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../../app-purchase/components/header/header";
+import { Header } from "../../../../components/header/header";
 import moment from "moment";
-import { Text } from '../../../../app-purchase/components/text/text';
-import CustomCalendar from '../../../../app-purchase/components/calendar';
+import { Text } from '../../../../components/text/text';
+import CustomCalendar from '../../../../components/calendar';
 import ItemOrder from '../components/item-order';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useStores } from '../../../models';

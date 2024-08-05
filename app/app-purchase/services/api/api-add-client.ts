@@ -2,7 +2,7 @@ import { ApiResponse } from "apisauce";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { Api } from "../base-api/api";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { Loading } from "../../components/dialog-notification";
+import { Loading } from "../../../components/dialog-notification";
 
 export class AddClientAPI {
     private api : Api;

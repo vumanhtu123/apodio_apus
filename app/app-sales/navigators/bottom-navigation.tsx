@@ -4,7 +4,7 @@ import { Platform, TouchableOpacity, View, ViewStyle } from "react-native"
 import { DashBoardScreen, ProductScreen, OrderScreen } from "../screens"
 import { CommonActions, CompositeScreenProps } from "@react-navigation/native"
 import {NavigatorParamList, AppStackScreenProps} from './app-navigator';
-import { SvgIcon, Text } from "../../app-purchase/components"
+import { SvgIcon, Text } from "../../components"
 import { colors } from "../theme"
 import { fontSize, scaleHeight, scaleWidth } from "../theme/dimension"
 import { Svgs } from '../../../assets/svgs'

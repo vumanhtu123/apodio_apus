@@ -15,8 +15,8 @@ import {
   scaleText,
   scaleWidth,
 } from '../../../theme';
-import {Text} from '../../../../app-purchase/components/text/text';
-import {TxKeyPath} from '../../../i18n';
+import {Text} from '../../../../components/text/text';
+import {TxKeyPath} from '../../../../i18n';
 
 interface ItemFunctionProp {
   Icon?: any;

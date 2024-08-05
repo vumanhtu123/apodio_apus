@@ -1,13 +1,13 @@
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
-import { CustomModal } from "../../../../app-purchase/components/custom-modal"
-import { Text } from "../../../../app-purchase/components"
+import { CustomModal } from "../../../../components/custom-modal"
+import { Text } from "../../../../components"
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme"
 import { Styles } from "../style"
-import en from "../../../i18n/en"
+import en from "../../../../i18n/en"
 import { useStores } from "../../../models"
-import { Dialog } from "../../../../app-purchase/components/dialog-notification"
-import { translate } from "../../../i18n"
+import { Dialog } from "../../../../components/dialog-notification"
+import { translate } from "../../../../i18n"
 
 
 interface Props {

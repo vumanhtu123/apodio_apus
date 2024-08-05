@@ -12,7 +12,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { useStores } from "../../../models";
 import FastImage from "react-native-fast-image";

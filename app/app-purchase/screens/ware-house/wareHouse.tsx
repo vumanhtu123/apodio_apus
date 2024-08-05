@@ -11,7 +11,7 @@ import {
 
 import React from "react";
 import { Styles } from "./style";
-import { Header, Text } from "../../components";
+import { Header, Text } from "../../../components";
 import {
   ActivityIndicator,
   Alert,
@@ -22,7 +22,7 @@ import {
 } from "react-native";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { Svgs } from "../../../../assets/svgs";
-import en from "../../i18n/en";
+import en from "../../../i18n/en";
 import Modal_Infor_wareHouse from "./modal/modal_Infor_wareHouse";
 import Modal_Plus from "./modal/modal_plus";
 import { useRoute } from "@react-navigation/native";

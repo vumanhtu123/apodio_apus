@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
-import { Header } from '../../../../app-purchase/components/header/header';
+import { Header } from '../../../../components/header/header';
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { useNavigation } from '@react-navigation/native';
@@ -14,7 +14,7 @@ import {
   View,
 } from 'react-native';
 import { Svgs } from '../../../../../assets/svgs';
-import { Text } from '../../../../app-purchase/components/text/text';
+import { Text } from '../../../../components/text/text';
 import { colors, scaleHeight } from '../../../theme';
 import { styles } from './styles';
 

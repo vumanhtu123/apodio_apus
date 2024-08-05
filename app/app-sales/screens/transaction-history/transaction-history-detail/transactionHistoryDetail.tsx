@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Styles } from "../style";
-import { Header, Text } from "../../../../app-purchase/components";
+import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import LinearGradient from "react-native-linear-gradient";

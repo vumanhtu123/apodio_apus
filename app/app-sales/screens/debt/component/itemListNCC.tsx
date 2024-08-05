@@ -4,7 +4,7 @@ import React, { Dispatch, FC, SetStateAction, useState } from 'react'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, scaleWidth } from '../../../theme'
 import { Svgs } from '../../../../../assets/svgs'
-import { Text } from '../../../../app-purchase/components'
+import { Text } from '../../../../components'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 
 interface Props {

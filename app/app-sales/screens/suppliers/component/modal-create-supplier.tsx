@@ -10,14 +10,13 @@ import {
   Text as TextRN,
   Alert,
 } from "react-native";
-import { SvgIcon } from "../../../components/svg-icon/index";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { navigate } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Text, TextField } from "../../../components";
+import { Text, TextField } from "../../../../components";
 import { Controller, useForm } from "react-hook-form";
-import { InputSelect } from "../../../components/input-select/inputSelect";
+import { InputSelect } from "../../../../components/input-select/inputSelect";
 import Modal from "react-native-modal";
 import { is } from "date-fns/locale";
 import { ModalAddAnotherAddrest } from "./modal-add-another-address";

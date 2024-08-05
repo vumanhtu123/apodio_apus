@@ -6,7 +6,7 @@ import { NavigatorParamList } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
 import { scaleHeight, colors, scaleWidth } from "../../../theme";
-import { Header, Text } from "../../../../app-purchase/components";
+import { Header, Text } from "../../../../components";
 
 
 

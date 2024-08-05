@@ -4,7 +4,7 @@ import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { useNavigation } from '@react-navigation/native';
 import { Svgs } from '../../../../../assets/svgs';
 import Modal from 'react-native-modal'
-import { Text } from '../../../components';
+import { Text } from '../../../../components';
 
 
 interface ModalProps {

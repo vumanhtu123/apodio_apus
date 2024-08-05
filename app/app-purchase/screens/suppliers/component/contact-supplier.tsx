@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FlatList, Image, TouchableOpacity, View } from "react-native";
-import { Text } from "../../../components";
+import { Text } from "../../../../components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataContact } from "../styles/data";

@@ -23,8 +23,8 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { translate } from "../../../i18n";
-import { Text } from "../../../../app-purchase/components";
+import { translate } from "../../../../i18n";
+import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 
 const ROOT: ViewStyle = {

@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
-import { Text } from "../../../../components/text/text";
-import { Header } from "../../../../components/header/header";
-import { TextField } from "../../../../components/text-field/text-field";
+import { Text } from "../../../../../components/text/text";
+import { Header } from "../../../../../components/header/header";
+import { TextField } from "../../../../../components/text-field/text-field";
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
-import { Button } from "../../../../components/button/button";
+import { Button } from "../../../../../components/button/button";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -26,8 +26,8 @@ import {
 } from "../../../../theme/validate";
 import SelectTypeModal from "./modal-select-type";
 import { styles } from "./styles";
-import VerificationCodeModal from "../../../../components/dialog-otp/dialog.otp";
-import DialogSuccessUnSuccess from "../../../../components/dialog-success-unsuccess.tsx/index";
+import VerificationCodeModal from "../../../../../components/dialog-otp/dialog.otp";
+import DialogSuccessUnSuccess from "../../../../../components/dialog-success-unsuccess.tsx/index";
 import { Svgs } from "../../../../../../assets/svgs";
 
 export const ForgotPasswordMerchant: FC = observer(

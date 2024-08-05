@@ -2,7 +2,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Text } from "../../../../app-purchase/components";
+import { Text } from "../../../../components";
 
 interface InputNumpad {
   addItem: (value: string) => void;

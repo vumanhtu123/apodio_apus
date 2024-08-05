@@ -4,7 +4,7 @@ import React from "react"
 import { observer } from "mobx-react-lite"
 import { NavigatorParamList } from "../../navigators"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Header } from "../../../app-purchase/components"
+import { Header } from "../../../components"
 import { Svgs } from "../../../../assets/svgs"
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../theme"
 

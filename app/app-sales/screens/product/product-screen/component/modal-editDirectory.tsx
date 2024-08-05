@@ -13,13 +13,13 @@ import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import Modal from "react-native-modal";
 import { RESULTS } from "react-native-permissions";
 import { Svgs } from "../../../../../../assets/svgs";
-import { AutoImage, Text, TextField } from "../../../../../app-purchase/components";
+import { AutoImage, Text, TextField } from "../../../../../components";
 import {
   ALERT_TYPE,
   Dialog,
   Loading
-} from "../../../../../app-purchase/components/dialog-notification";
-import { translate } from "../../../../i18n/translate";
+} from "../../../../../components/dialog-notification";
+import { translate } from "../../../../../i18n/translate";
 import { useStores } from "../../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
 import {
@@ -29,7 +29,7 @@ import {
   requestLibraryPermission,
 } from "../../../../utils/requesPermissions";
 import { validateFileSize } from "../../../../utils/validate";
-import { CustomModal } from "../../../../../app-purchase/components/custom-modal";
+import { CustomModal } from "../../../../../components/custom-modal";
 
 const EditDirectoryModal = (props: any) => {
   const { isVisible, setType, setIsVisible, category, onUpdateDirectory } =

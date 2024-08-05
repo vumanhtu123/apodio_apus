@@ -22,7 +22,7 @@ import NetworkLogger, {
   startNetworkLogging,
   stopNetworkLogging,
 } from "react-native-network-logger";
-import { Text } from "../../components";
+import { Text } from "../../../components";
 
 export const TestDebugger: FC = observer(function TestDebugger(props) {
   const formData = new FormData();

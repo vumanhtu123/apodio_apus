@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { FlatList, ScrollView, TouchableOpacity, View } from "react-native";
 import { styles } from "../styles";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../../components";
 import CustomCalendarWarehouseBook from "../calendar-warehouse-book/customCalendarWarehouseBook";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { NavigatorParamList } from "../../../navigators";
@@ -10,7 +10,7 @@ import { observer } from "mobx-react-lite";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
-import en from "../../../i18n/en";
+import en from "../../../../i18n/en";
 
 interface ModalFielterProps {
   isVisible: boolean;

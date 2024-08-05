@@ -1,7 +1,7 @@
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 import { GetWayAPI } from "../base-api/api-config-get-way";
 import { UAA_API } from "../base-api/api-config-uaa";
 

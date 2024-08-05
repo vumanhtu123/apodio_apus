@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Modal, StyleSheet, TouchableOpacity, Text as TextRN, View } from 'react-native';
-import { SvgIcon } from '../../../components/svg-icon/index';
+import { SvgIcon } from '../../../../components/svg-icon/index';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
 import { navigate } from '../../../navigators';
 import { useNavigation } from '@react-navigation/native';
@@ -10,7 +10,7 @@ import { load } from '../../../utils/storage';
 import { se } from 'date-fns/locale/se';
 import { RectButton } from 'react-native-gesture-handler';
 import { boolean } from 'mobx-state-tree/dist/internal';
-import { Text } from '../../../components';
+import { Text } from '../../../../components';
 
 interface ModalProps {
     isVisible?: boolean;
