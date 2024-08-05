@@ -45,13 +45,13 @@ const getDomainGetWay = () => {
 const getDomainUAA = () => {
   const env = CONFIG.ENV;
   const domain = CONFIG.API.DEV.UAA;
-  console.log("URL", CONFIG.API.STAGING.UAA);
+  console.log("URL", CONFIG.API.DEV.UAA);
   return domain;
 };
 
 const getDomainUpload = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL_UPLOAD;
+  const domain = CONFIG.API.DEV.URL_UPLOAD;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Upload", domain);
   return domain;
@@ -74,7 +74,7 @@ const getDomainWarehouse = () => {
   return domain;
 };
 const getDomainSupplier = () => {
-  const domain = CONFIG.API.STAGING.URL_SUPPLIER;
+  const domain = CONFIG.API.DEV.URL_SUPPLIER;
   console.log("URL Supplier", domain);
   return domain;
 };

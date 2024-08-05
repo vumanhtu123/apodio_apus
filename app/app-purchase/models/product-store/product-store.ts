@@ -7,7 +7,7 @@ import {
 } from "mobx-state-tree";
 import { withEnvironment } from "../extensions/with-environment";
 import { Content, ProductResult } from "./product-store-model";
-import { ProductApi } from "../../services/api/api-product";
+import { ProductApi } from "../../../app-purchase/services/api/api-product";
 import { productData } from "../add-product-props";
 import { UploadApi } from "../../services/api/api_upload_image";
 import { ProductDetailResult } from "./product-detail-modal";
@@ -31,8 +31,8 @@ export const ProductStoreModel = types
     isEditing: types.optional(types.boolean, false),
     imagesLimit: types.optional(types.number, 0),
     reloadProductScreen: types.optional(types.boolean, false),
-    viewProductType : types.optional(types.string , "VIEW_PRODUCT"),
-    isLoadMore : types.optional(types.boolean, false),
+    viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
+    isLoadMore: types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -65,10 +65,10 @@ export const ProductStoreModel = types
       self.viewGrid = viewGird;
     },
     setReloadProductScreen(reload: boolean) {
-      self.reloadProductScreen = reload
-    }, 
+      self.reloadProductScreen = reload;
+    },
     setImagesLimit(imagesLength: number) {
-      self.imagesLimit = imagesLength
+      self.imagesLimit = imagesLength;
     },
     setImageModalIndex(index: number) {
       self.imageModalIndex = index;
@@ -82,12 +82,12 @@ export const ProductStoreModel = types
     setIsEditing(isEditing: boolean) {
       self.isEditing = isEditing;
     },
-    setViewProductType (viewProductType : string) {
-      self.viewProductType = viewProductType
+    setViewProductType(viewProductType: string) {
+      self.viewProductType = viewProductType;
     },
-    setIsLoadMore (isLoadMore : boolean) {
-      self.isLoadMore = isLoadMore
-    }
+    setIsLoadMore(isLoadMore: boolean) {
+      self.isLoadMore = isLoadMore;
+    },
   }))
   .actions((self) => ({
     getListProduct: flow(function* (
@@ -98,9 +98,12 @@ export const ProductStoreModel = types
       search: string,
       tagId: number,
       sortId: string,
-      isLoadMore : boolean
+      isLoadMore: boolean
     ) {
-      const productApi = new ProductApi(self.environment.api);
+      const productApi = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result: ProductResult = yield productApi.getListProduct(
         page,
         size,
@@ -120,7 +123,10 @@ export const ProductStoreModel = types
       }
     }),
     getListTagProduct: flow(function* () {
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.getListTagProduct();
       if (result.kind === "ok") {
         return result;
@@ -129,7 +135,10 @@ export const ProductStoreModel = types
       }
     }),
     getListBrand: flow(function* () {
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.getListBrandProduct();
       if (result.kind === "ok") {
         return result;
@@ -142,7 +151,10 @@ export const ProductStoreModel = types
         "post-create-product-data------- : ",
         JSON.stringify(productAdd)
       );
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.createProduct(productAdd);
       // console.log("tuvm product" + productAdd);
       if (result.kind === "ok") {
@@ -158,7 +170,10 @@ export const ProductStoreModel = types
         "tuvm product--------------------------",
         JSON.stringify(productAdd)
       );
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.editProduct(id, productAdd);
       if (result.kind === "ok") {
         console.log("post-product-Success : ", result);
@@ -174,7 +189,10 @@ export const ProductStoreModel = types
         "tuvm product--------------------------",
         JSON.stringify(productAdd)
       );
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.editClassify(id, productAdd);
       if (result.kind === "ok") {
         console.log("post-product-Success : ", result);
@@ -186,7 +204,10 @@ export const ProductStoreModel = types
     }),
 
     deleteProduct: flow(function* (id: Number) {
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.deleteProduct(id);
 
       console.log("tuvm product----------------", result);
@@ -200,7 +221,10 @@ export const ProductStoreModel = types
     }),
 
     deleteClassify: flow(function* (id: Number) {
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.deleteClassify(id);
 
       console.log("tuvm product----------------", result);
@@ -214,7 +238,10 @@ export const ProductStoreModel = types
     }),
 
     deleteCheck: flow(function* (id: Number) {
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.deleteCheck(id);
 
       console.log("tuvm product");
@@ -227,7 +254,10 @@ export const ProductStoreModel = types
       }
     }),
     usingProductCheck: flow(function* (id: Number) {
-      const product = new ProductApi(self.environment.api);
+      const product = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result = yield product.usingProductCheck(id);
 
       console.log("tuvm product=====", result);
@@ -240,7 +270,10 @@ export const ProductStoreModel = types
       }
     }),
     getDetailProduct: flow(function* (id: number) {
-      const productApi = new ProductApi(self.environment.api);
+      const productApi = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result: ProductDetailResult = yield productApi.getDetailProduct(id);
       if (result.kind === "ok") {
         return result;
@@ -250,7 +283,10 @@ export const ProductStoreModel = types
       }
     }),
     getDetailClassify: flow(function* (id: number) {
-      const productApi = new ProductApi(self.environment.api);
+      const productApi = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
       const result: ProductResult = yield productApi.getDetailClassify(id);
       if (result.kind === "ok") {
         return result;
@@ -260,7 +296,7 @@ export const ProductStoreModel = types
       }
     }),
 
-    uploadImages: flow(function* (formData, isLoading: boolean =  true) {
+    uploadImages: flow(function* (formData, isLoading: boolean = true) {
       try {
         const productApi = new UploadApi(self.environment.apiUpload);
         const result: any = yield productApi.uploadImages(
@@ -289,12 +325,29 @@ export const ProductStoreModel = types
         return error;
       }
     }),
+    getListVendor: flow(function* (page: number, search: string) {
+      const productApi = new ProductApi(
+        self.environment.api,
+        self.environment.apiUpload
+      );
+      const result: ProductDetailResult = yield productApi.getListVendor(
+        page,
+        search
+      );
+      if (result.kind === "ok") {
+        console.log("vendor api", result);
+        return result.response.data;
+      } else {
+        __DEV__ && console.tron.log(result.kind);
+        return result;
+      }
+    }),
   }));
 
-export interface ProductStore extends Instance<typeof ProductStoreModel> { }
+export interface ProductStore extends Instance<typeof ProductStoreModel> {}
 export interface ProductStoreSnapshotOut
-  extends SnapshotOut<typeof ProductStoreModel> { }
+  extends SnapshotOut<typeof ProductStoreModel> {}
 export interface ProductStoreSnapshotIn
-  extends SnapshotIn<typeof ProductStoreModel> { }
+  extends SnapshotIn<typeof ProductStoreModel> {}
 export const createProductStoreDefaultModel = () =>
   types.optional(ProductStoreModel, {});

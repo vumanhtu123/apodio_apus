@@ -32,7 +32,7 @@ export const DetailsOrderScreen: FC<
         LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText={`Chi tiết đơn hàng`}
+        headerTx="orderDetail.orderDetail"
         // RightIcon={Images.icon_funnel}
         // RightIcon1={isVisible ? Images.icon_close : Images.search}
         // RightIcon2={isVisible ? Images.icon_close : Images.search}

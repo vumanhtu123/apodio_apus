@@ -9,18 +9,18 @@ import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-noti
 
 export class ProductApi {
   private api: Api;
+  private apiUpload: ApiUpload;
 
-  constructor(api: Api) {
+  constructor(api: Api, apiUpload: ApiUpload) {
     this.api = api;
+    this.apiUpload = apiUpload;
   }
-
 
   async getBalance(): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
-
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_PRODUCT,
         {
@@ -52,7 +52,7 @@ export class ProductApi {
   ): Promise<any> {
     if (!isLoadMore) {
       Loading.show({
-        text: 'Loading...',
+        text: "Loading...",
       });
     }
     // console.log('asdasdas', isLoadMore)
@@ -82,7 +82,7 @@ export class ProductApi {
   }
   async getDetailProduct(id: number): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -105,7 +105,7 @@ export class ProductApi {
   }
   async getDetailClassify(id: number): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -128,7 +128,7 @@ export class ProductApi {
   }
   async getListTagProduct(): Promise<TagResult> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -153,17 +153,17 @@ export class ProductApi {
 
   async putMoveCategory(fromId: any, toId: any): Promise<Brand> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         ApiEndpoint.PUT_MOVE_CATEGORY +
-        "?" +
-        "fromId=" +
-        fromId +
-        "&" +
-        "toId=" +
-        toId
+          "?" +
+          "fromId=" +
+          fromId +
+          "&" +
+          "toId=" +
+          toId
       );
       Loading.hide();
       const result = response.data;
@@ -179,7 +179,7 @@ export class ProductApi {
   }
   async getListBrandProduct(): Promise<BrandResult> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -203,7 +203,7 @@ export class ProductApi {
   }
   async createProduct(product: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
@@ -224,7 +224,7 @@ export class ProductApi {
   }
   async editProduct(id: any, product: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
@@ -246,7 +246,7 @@ export class ProductApi {
 
   async editClassify(id: any, product: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
@@ -254,7 +254,7 @@ export class ProductApi {
         product
       );
       Loading.hide();
-      console.log('-------editClassify------', response.data)
+      console.log("-------editClassify------", response.data);
       const result = response.data;
       if (response.data.data) {
         return { kind: "ok", result };
@@ -269,23 +269,22 @@ export class ProductApi {
 
   async deleteProduct(id: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
-      onShow: () => console.log('Loading shown'),
-      onHide: () => console.log('Loading hidden'),
+      text: "Loading...",
+      onShow: () => console.log("Loading shown"),
+      onHide: () => console.log("Loading hidden"),
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.delete(
         ApiEndpoint.ADD_PRODUCT + "?id=" + id
       );
       Loading.hide();
-      console.log('----------delete', response.status)
+      console.log("----------delete", response.status);
       const result = response.data;
       if (response.data.errorCodes) {
         return { kind: "bad-data", result };
       } else {
         return { kind: "ok", result };
       }
-
     } catch (error) {
       Loading.hide();
       return { kind: "bad-data", result: error };
@@ -294,23 +293,22 @@ export class ProductApi {
 
   async deleteClassify(id: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
-      onShow: () => console.log('Loading shown'),
-      onHide: () => console.log('Loading hidden'),
+      text: "Loading...",
+      onShow: () => console.log("Loading shown"),
+      onHide: () => console.log("Loading hidden"),
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.delete(
         ApiEndpoint.DELETE_CLASSIFY + "?id=" + id
       );
       Loading.hide();
-      console.log('----------delete', response)
+      console.log("----------delete", response);
       const result = response.data;
       if (response.data.errorCodes) {
         return { kind: "bad-data", result };
       } else {
         return { kind: "ok", result };
       }
-
     } catch (error) {
       Loading.hide();
       return { kind: "bad-data", result: error };
@@ -319,11 +317,11 @@ export class ProductApi {
 
   async deleteCheck(id: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.DELETE_CHECK + '?productId=' + id,
+        ApiEndpoint.DELETE_CHECK + "?productId=" + id
       );
       Loading.hide();
       const result = response.data;
@@ -339,11 +337,11 @@ export class ProductApi {
   }
   async usingProductCheck(id: any): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
-        ApiEndpoint.USING_PRODUCT_CHECK + '?id=' + id,
+        ApiEndpoint.USING_PRODUCT_CHECK + "?id=" + id
       );
       Loading.hide();
       const result = response.data;
@@ -362,7 +360,7 @@ export class ProductApi {
     callBack: (arg0: number) => void
   ): Promise<any> {
     Loading.show({
-      text: 'Loading...',
+      text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.post(
@@ -393,9 +391,7 @@ export class ProductApi {
     }
   }
 
-  async getPriceOrderVariant(
-    value: any,
-  ): Promise<any> {
+  async getPriceOrderVariant(value: any): Promise<any> {
     // Loading.show({
     //   text: "Loading...",
     // });
@@ -414,6 +410,32 @@ export class ProductApi {
       return { kind: "bad-data", response: data };
     } catch (e) {
       // Loading.hide()
+      return { kind: "bad-data" };
+    }
+  }
+
+  async getListVendor(page: number, search: string): Promise<any> {
+    Loading.show({
+      text: "Loading...",
+    });
+    try {
+      const response: ApiResponse<any> = await this.apiUpload.apisauce.get(
+        ApiEndpoint.GET_VENDOR,
+        {
+          page: page,
+          size: 20,
+          search: search,
+        }
+      );
+      const data = response.data;
+      console.log("vendor list", data);
+      Loading.hide();
+      if (response.data.data) {
+        return { kind: "ok", response: data };
+      }
+      return { kind: "bad-data", response: data };
+    } catch (e) {
+      Loading.hide();
       return { kind: "bad-data" };
     }
   }

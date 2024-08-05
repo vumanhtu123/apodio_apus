@@ -42,6 +42,7 @@ import {
   ItemUnit,
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
+import en from "../../../i18n/en";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -304,14 +305,14 @@ export const ProductCreateScreen: FC = (item) => {
     if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {
         type: "validate",
-        message: "Mã SKU gồm chữ và số",
+        message: en.productScreen.checkIdSUK,
       });
       return
     }
     if (data.productName.trim() === "") {
       methods.setError("productName", {
         type: "validate",
-        message: "Vui lòng nhập thông tin",
+        message: en.productScreen.pleaseEnterInformation,
       });
       return
     }

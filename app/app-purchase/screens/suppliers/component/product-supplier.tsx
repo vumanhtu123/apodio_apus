@@ -114,8 +114,10 @@ export const ProductSupplier = () => {
                 color: colors.dolphin,
                 marginHorizontal: 8,
                 marginVertical: 6,
-              }}>
-              Sản phẩm
+              }}
+              tx="suppliers.product"
+            >
+
             </Text>
           </View>
           <View
@@ -133,8 +135,10 @@ export const ProductSupplier = () => {
                 color: colors.dolphin,
                 marginHorizontal: 8,
                 marginVertical: 6,
-              }}>
-              Phân loại
+              }}
+              tx="suppliers.classify"
+            >
+
             </Text>
           </View>
         </View>
@@ -150,8 +154,10 @@ export const ProductSupplier = () => {
               color: "white",
               marginHorizontal: 8,
               marginVertical: 6,
-            }}>
-            Tạo sản phẩm
+            }}
+            tx="suppliers.createProduct"
+          >
+
           </Text>
         </View>
       </View>
@@ -180,8 +186,8 @@ export const ProductSupplier = () => {
               index={index}
               isGridView={true}
               viewProduct={viewProduct}
-              // handleProductDetail={handleProductDetail}
-              // handleClassifyDetail={handleClassifyDetail}
+            // handleProductDetail={handleProductDetail}
+            // handleClassifyDetail={handleClassifyDetail}
             />
           )}
         />

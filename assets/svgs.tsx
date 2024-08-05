@@ -237,11 +237,21 @@ import ic_checkbox from "./Images/Checkbox.svg";
 import ic_bin_white from "./Images/ic_bin.svg";
 import ic_pen_white from "./Images/ic_pen_white.svg"
 import ic_outline_list from "./Images/ic_outline_list.svg"
+import ic_app_accountant from "./Images/ic_app_accountant.svg"
+import ic_app_finance from "./Images/ic_app_finance.svg"
+import ic_app_purchase from "./Images/ic_app_purchase.svg"
+import ic_app_sales from "./Images/ic_app_sales.svg"
+import ic_app_warehouse from "./Images/ic_app_warehouse.svg"
 
 export const Svgs = {
   icon_test: _test,
   icon_English: _test2,
   icon_VietNam: _test3,
+  iconAppAccountant: ic_app_accountant,
+  iconAppFinance: ic_app_finance,
+  iconAppPurchase: ic_app_purchase,
+  iconAppSales: ic_app_sales,
+  iconAppWarehouse: ic_app_warehouse,
   icon_Logo: logo,
   icon_backgroundLogin: backgroundLogin,
   logoChangePass: logoChangePass,

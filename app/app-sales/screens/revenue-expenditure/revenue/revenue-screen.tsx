@@ -15,10 +15,11 @@ import {
 import { Styles } from "../Styles";
 import { Controller, useForm } from "react-hook-form";
 import { Numpad } from "../component/num-pad-component";
-import en from "../../../i18n/en";
+
 import CustomCalendar from "../../../../app-purchase/components/calendar";
 import { ClassifyModal } from "../classify-modal";
 import { FundsModal } from "../funds-modal";
+import en from "../../../i18n/en";
 
 export const RevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "addRevenueScreen">
@@ -132,7 +133,7 @@ export const RevenueScreen: FC<
             />
           )}
           rules={{
-            required: "Vui lòng nhập số tiền ",
+            required: en.analysis.pleaseEnterMoney,
           }}
         />
       </TouchableOpacity>

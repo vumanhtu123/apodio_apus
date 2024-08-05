@@ -417,9 +417,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 )}
                 // defaultValue={''}
                 name="invoiceCode"
-                // rules={{
-                //     required: translate('ruleController.emptyText'),
-                // }}
+              // rules={{
+              //     required: translate('ruleController.emptyText'),
+              // }}
               />
             </View>
             <Text
@@ -474,9 +474,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 )}
                 // defaultValue={''}
                 name="symbol"
-                // rules={{
-                //     required: translate('ruleController.emptyText'),
-                // }}
+              // rules={{
+              //     required: translate('ruleController.emptyText'),
+              // }}
               />
             </View>
             <View style={{ marginVertical: scaleHeight(15) }}>
@@ -557,9 +557,9 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
               )}
               defaultValue={""}
               name="invoiceEndDate"
-              // rules={{
-              //     required: translate('ruleController.emptyText'),
-              // }}
+            // rules={{
+            //     required: translate('ruleController.emptyText'),
+            // }}
             />
             <View style={{ marginVertical: scaleHeight(15) }}>
               <InputSelect
@@ -580,8 +580,10 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                 fontSize: fontSize.size12,
                 fontWeight: "600",
                 marginVertical: scaleHeight(15),
-              }}>
-              Thông tin hoá đơn
+              }}
+              tx="productScreen.informationBill"
+            >
+
             </Text>
             <View
               style={{
@@ -591,7 +593,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
               {data.saleOrderLines?.map((item: any) => {
                 return (
                   <TouchableOpacity
-                    onPress={() => {}}
+                    onPress={() => { }}
                     style={styles.viewItemListProduct}>
                     <ImageBackground
                       style={{
@@ -602,7 +604,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                       imageStyle={{
                         borderRadius: 16,
                       }}
-                      source={require("../../../../../assets/Images/no_images.png")}>
+                      source={Images.noImages}>
                       <FastImage
                         style={{
                           width: scaleWidth(48),
@@ -613,7 +615,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
                           uri: `${item.productInfo?.productImage ?? ""}`,
                           cache: FastImage.cacheControl.immutable,
                         }}
-                        defaultSource={require("../../../../../assets/Images/no_images.png")}
+                        defaultSource={Images.noImages}
                       />
                     </ImageBackground>
                     <View style={{ flex: 1 }}>

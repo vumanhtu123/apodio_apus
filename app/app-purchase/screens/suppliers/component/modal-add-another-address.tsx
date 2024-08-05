@@ -117,9 +117,13 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
             <View style={styles.modalView}>
                 <TextRN style={styles.modalText} />
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Tạo mới nhà cung cấp</Text>
+                    <Text style={styles.headerTitle}
+                        tx="suppliers.createNewSupplier"
+                    >
+
+                    </Text>
                     <TouchableOpacity onPress={() => setIsVisible(false)}>
-                        <Text style={styles.headerButton}>Hủy</Text>
+                        <Text style={styles.headerButton} tx="suppliers.cancel"></Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.horizontalLine} />
@@ -156,8 +160,8 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                         }}
                     />
                     <InputSelect
-                        titleText="Tỉnh/Thành phố"
-                        hintText="Chọn tỉnh/thành phố"
+                        titleText="NCCScreen.cityProvince"
+                        hintText="NCCScreen.selectCityProvince"
                         isSearch
                         required={true}
                         arrData={arrCity}
@@ -168,8 +172,8 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                         styleView={{ marginBottom: scaleHeight(15) }}
                     />
                     <InputSelect
-                        titleText="Quận/Huyện"
-                        hintText="Chọn quận/huyện"
+                        titleText="NCCScreen.district"
+                        hintText="NCCScreen.selectDistrict"
                         isSearch
                         required={true}
                         arrData={arrCity}
@@ -180,8 +184,8 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                         styleView={{ marginBottom: scaleHeight(15) }}
                     />
                     <InputSelect
-                        titleText="Phường/Xã"
-                        hintText="Chọn phường/xã"
+                        titleText="NCCScreen.wards"
+                         hintText="NCCScreen.selectWards"
                         isSearch
                         required={true}
                         arrData={arrCity}
@@ -246,7 +250,7 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                             borderColor: colors.veryLightGrey,
                         }}
                     >
-                        <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+                        <Text style={{ fontSize: fontSize.size14 }} tx="NCCScreen.cancel"></Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -258,8 +262,9 @@ export const ModalAddAnotherAddrest = (props: propsModal) => {
                             backgroundColor: colors.navyBlue,
                         }}
                     >
-                        <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-                            Tiếp tục
+                        <Text style={{ fontSize: fontSize.size14, color: "white" }}
+                            tx="NCCScreen.continue"
+                        >
                         </Text>
                     </TouchableOpacity>
                 </View>

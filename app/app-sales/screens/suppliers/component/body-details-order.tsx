@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Image, View } from "react-native";
-import { Text } from "../../../../app-purchase/components";
+import { Text } from "../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
 import Images from "../../../../../assets/index";
 import { colors } from "../../../theme";
+import en from "../../../i18n/en";
 
 export const BodyDetailsOrder = (data: any) => {
   const [dataOrder, setData] = useState<any[]>([]);
@@ -123,8 +124,10 @@ export const PromotionList = (data: any) => {
       }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text
-          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
-          Khuyến mại
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}
+          tx="orderDetail.promotion"
+        >
+
         </Text>
         <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
           5.000.000đ
@@ -142,12 +145,12 @@ export const PromotionList = (data: any) => {
               <Text
                 style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
                 {"  "}
-                Giảm {data.disCount ?? "10%"}{" "}
+                {en.orderDetail.reduce} {data.disCount ?? "10%"}{" "}
               </Text>
               <View style={{ height: 10 }} />
               <Text
                 style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
-                tối đa {data.maxValue ?? "30K"}
+                {en.orderDetail.max} {data.maxValue ?? "30K"}
               </Text>
             </View>
           );
@@ -169,12 +172,15 @@ export const Payment = () => {
         backgroundColor: "white",
         borderRadius: 8,
       }}>
-      <Text style={{ color: colors.nero, fontSize: 12, fontWeight: "600" }}>
-        Phương thức thanh toán
+      <Text style={{ color: colors.nero, fontSize: 12, fontWeight: "600" }}
+        tx="orderDetail.methodPay"
+      >
       </Text>
       <View style={{ height: 15 }} />
-      <Text style={{ color: colors.nero, fontSize: 12, fontWeight: "400" }}>
-        Thanh toán luôn
+      <Text style={{ color: colors.nero, fontSize: 12, fontWeight: "400" }}
+        tx="orderDetail.payNow"
+      >
+
       </Text>
     </View>
   );
@@ -194,8 +200,10 @@ export const InfoPayment = () => {
       }}>
       <View style={{ flexDirection: "column" }}>
         <Text
-          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
-          Tổng tiền hàng
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}
+          tx="orderDetail.totalCostOfGoods"
+        >
+
         </Text>
         <Text
           style={{
@@ -203,12 +211,17 @@ export const InfoPayment = () => {
             fontWeight: "400",
             color: colors.dolphin,
             paddingVertical: 8,
-          }}>
-          Chiết khấu:
+          }}
+          tx="orderDetail.discount"
+        >
+
         </Text>
         <Text
-          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
-          Khuyến mại:
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}
+
+          tx="orderDetail.promotion"
+
+        >
         </Text>
         <Text
           style={{
@@ -216,12 +229,18 @@ export const InfoPayment = () => {
             fontWeight: "400",
             color: colors.dolphin,
             paddingVertical: 8,
-          }}>
-          Tổng tiền thuế:
+          }}
+
+          tx="orderDetail.totalTax"
+
+        >
+
         </Text>
         <Text
-          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}>
-          Tổng thanh toán:
+          style={{ fontSize: 10, fontWeight: "400", color: colors.dolphin }}
+          tx="orderDetail.totalPay"
+        >
+
         </Text>
       </View>
       <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
@@ -271,8 +290,11 @@ export const Notes = () => {
         justifyContent: "space-between",
       }}>
       <View style={{ flexDirection: "column" }}>
-        <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}>
-          Ghi Chú
+        <Text style={{ fontSize: 12, fontWeight: "600", color: colors.nero }}
+
+          tx="orderDetail.note"
+        >
+
         </Text>
         <Text
           style={{

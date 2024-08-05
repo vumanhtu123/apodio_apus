@@ -14,7 +14,10 @@ const en = {
     continue: "Tiếp tục",
     saveAndContinue: "Lưu và tiếp tục",
     selected: "Đã chọn",
-    emptyList : 'Không tìm thấy dữ liệu'
+    emptyList : 'Không tìm thấy dữ liệu',
+    selectLanguage: "Chọn ngôn ngữ để sử dụng",
+    vietnamese: "Tiếng Việt",
+    english: "Tiếng anh",
     // @demo remove-current-line
   },
   messageError: {
@@ -358,6 +361,31 @@ const en = {
     phoneNumberIsRequired: "Số điện thoại là bắt buộc",
     addressIsRequired: "Địa chỉ là bắt buộc",
     dateIsCannotBeEmpty: "Ngày không được để trống",
+    enterPrice: "Nhập giá",
+    selected: "Đã chọn",
+    endow: "ưu đãi",
+   
+  },
+  orderDetail: {
+    orderDetail: "Chi tiết đơn hàng",
+    promotion: "Khuyến mãi",
+    reduce: "giảm",
+    max: "tối đa",
+    methodPay: "Phương thức thanh toán",
+    payNow: "Thanh toán luôn",
+    totalCostOfGoods: "Tổng tiền hàng",
+    discount :"Chiết khấu",
+    totalTax: "Tổng tiền thuế",
+    totalPay: "Tổng thanh toán",
+    note: "Ghi chú",
+    nameCompany: "Công ty TNHH Một thành viên Apodio",
+    selectProduct: "Chọn sản phẩm",
+    moreInfomation: "Thông tin thêm",
+    total: "Tổng cộng",
+    order: "Đặt hàng",
+
+
+
   },
   demoNavigator: {
     componentsTab: "Components",
@@ -422,6 +450,7 @@ const en = {
     onlyFavorites: "Only Show Favorites",
     favoriteButton: "Favorite",
     unfavoriteButton: "Unfavorite",
+
     accessibility: {
       cardHint:
         "Double tap to listen to the episode. Double tap and hold to {{action}} this episode.",
@@ -454,6 +483,11 @@ const en = {
     },
     notificationSetting: {
       notificationSetting: "Cài đặt thông báo",
+      allowMessage: "Cho phép thông báo",
+      validForThisDeviceOnly: "Chỉ có hiệu lực với thiết bị này",
+      orderApproved:"Đơn hàng được phê duyệt",
+      newSalesPolicy: "Chính sách bán hàng mới",
+      newPromotions: "Chương trình khuyến mãi mới",
     },
   },
   bottomNavigation: {
@@ -641,6 +675,22 @@ const en = {
     placeholderPersonalIdentification: "Nhập số giấy tờ",
     addSupplier: "Thêm nhà cung cấp",
     iHaveToCollect :"Tôi phải thu:",
+    cityProvince: "Tỉnh/Thành Phố",
+    selectCityProvince: "Chọn Tỉnh/Thành Phố", 
+    district: "Quận/Huyện",
+    selectDistrict: "Chọn Quận/Huyện",
+    wards: "Phường/Xã",
+    selectWards: "Chọn Phường/Xã",
+    continue: "Tiếp tục",
+    cancel: "Hủy",
+    save: "Lưu",
+    timeCreate: "Thời gian tạo",
+    byName: "Theo tên",
+    tag:"Tag",
+    confirm: "Xác nhận",
+
+
+
   },
   debtScreen: {
     receivables: "Phải thu",
@@ -797,7 +847,31 @@ const en = {
     productTittle: "Sản phẩm",
     refactorCategories: "Chỉnh sửa danh mục",
     addPriceRange: "Thêm khoảng giá",
-    totalProduct: 'Tổng số sản phẩm:'
+    totalProduct: 'Tổng số sản phẩm:',
+    youNeedSelectClient: "Bạn cần chọn khách hàng",
+    youNeedEnterAddress: "Bạn cần nhập địa chỉ giao hàng",
+    youNeedSelectProduct: "Bạn cần chọn sản phẩm",
+    youNeedSelectMethodPay: "Bạn cần chọn phương thức thanh toán",
+    discountMustBeGreaterThan0:"Chiết khấu phải lớn hơn 0",
+    informationBill: "Thông tin hóa đơn",
+    groupClient :"Nhóm khách hàng",
+    reset2  :"Thiết lập lại" ,
+    apply :"Áp dụng",
+    upImg: "Tải ảnh lên",
+    checkIdSUK: "Mã SKU gồm chữ và số",
+    pleaseEnterInformation: "Vui lòng nhập thông tin",
+    canSell:"Có thể bán",
+    canBuy: "Có thể mua",
+    canSellOrBuy: "Có thể bán hoặc mua",
+    attributeGroupNameIsRequired :"Tên nhóm thuộc tính là bắt buộc",
+    selectToViewSupplierIsProducts : "Lựa chọn xem sản phẩm của nhà cung cấp:",
+    materials: "Nguyên vật liệu",
+    thisMonth: "Tháng này",
+    today: "Hôm nay",
+    beforeMonth: "Tháng trước",
+    selectUnit: "Chọn đơn vị",
+    supplier:"nhà cung cấp",
+
   },
   detailScreen: {
     headerClassify: "Chi tiết phân loại",
@@ -880,6 +954,7 @@ const en = {
     priceLowToHigh: "Thấp đến cao",
     filterTime: "Thời gian tạo",
     filterName: "Theo tên",
+    filter: "Bộ lọc",
   },
   tranSacTionHistory: {
     tranSactionHistory: "Lịch sử giao dịch",
@@ -894,6 +969,10 @@ const en = {
     amount: "Thành tiền",
     fee: "Thuế ",
     totalAmount: "Tổng cộng",
+    success: "Thành công",
+    fail: "Thất bại",
+    
+
   },
   chooseSupplierScreen: {
     placeholderSearch: "Tìm nhà cung cấp theo mã và tên",
@@ -905,6 +984,9 @@ const en = {
     addAttribute: "Tạo nhóm thuộc tính mới",
     selectedValue: "Chọn giá trị",
     allowsCreatingAttribute: "Cho phép tạo phân loại",
+    selectAnAttributeGroup: "Chọn nhóm thuộc tính",
+
+
   },
   editAttribute: {
     headerText: "Sửa thuộc tính",
@@ -1097,6 +1179,13 @@ const en = {
     deletionWarning:
       "Các giao dịch liên quan đến đơn nhập hàng này sẽ bị xóa. Bạn muốn xóa giao dịch liên quan?",
     importCoupon: "Phiếu nhập hàng",
+    product:"Sản phẩm",
+    materials:"Nguyên vật liệu",
+    still : "Còn",
+    today: "Hôm nay",
+    sum : "Tổng cộng",
+
+
   },
   itemConversion: {
     dialogNoti: "Bạn cần nhập đầy đủ thông tin trước khi thêm khoảng giá mới",
@@ -1131,6 +1220,30 @@ const en = {
     thisMonth: "Tháng này",
     all: "Tất cả",
     addContact: "Thêm liên hệ",
+    noOrdersYet: "Chưa có đơn hàng cho NCC này",
+    payment:"Hình thức thanh toán",
+    selectCategory: "Chọn danh mục",
+    waitForConfirmation:"Chờ xác nhận",
+    createNewSupplier: "Tạo mmới nhà cung cấp",
+    cancel: "Hủy",
+    selectTypeSupplier :"chọn kiểu NCC",
+    processing: "Đang sử lý",
+    totalAmount: "Tổng tiền: ",
+    createOrder: "Tạo đơn hàng",
+    numberProduct: "Số lượng sản phẩm",
+    totalCostOfGoods: "Tổng tiền hàng:",
+    discount:"Chiết khấu: ",
+    totalTax: "Tổng thuế",
+    unPaid: "Chưa thanh toán",
+    product: "Sản phẩm",
+    classify: "Phân loại",
+    createProduct: "Tạo sản phẩm",
+    detailSupplier: "Chi tiết nhà cung cấp"
+
+
+
+
+
   },
   warehouseBook: {
     warehouseBook: "Sổ kho",
@@ -1162,6 +1275,10 @@ const en = {
     downloadNow: "Tải ngay",
     reset: "Thiết lập lại",
     apply: "Áp dụng",
+    today: "Hôm nay",
+    thisMonth:"Tháng này",
+    beforeMonth: "Tháng trước",
+
   },
   printInvoiceScreen: {
     printInvoice: "In hoá đơn",
@@ -1217,7 +1334,15 @@ const en = {
     selectPriceListApply: "Chọn bảng giá áp dụng",
     noApplyPriceList: "Không áp dụng bảng giá",
     inputPrice: "Nhập giá",
+    groupClient: "Nhóm khách hàng",
+    reset: "Thiết lập lại",
+    apply: "Áp dụng",
+    filter: "Bộ lọc",
+    cancel: "Hủy",
+    sortBy: "Sắp xếp theo",
+
   },
+
   calendar: {
     today: "Hôm nay",
     last7days: "7 ngày trước",
@@ -1247,6 +1372,7 @@ const en = {
     classify: "Phân loại",
     listClassify: "Danh sách phân loại",
     revenue2: "Khoản thu",
+    pleaseEnterMoney: "Vui lòng nhập số tiền",
   },
   revenueAndExpenditure: {
     moneyManagement: "Quản lý nguồn tiền",
