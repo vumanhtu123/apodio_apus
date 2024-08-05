@@ -12,7 +12,7 @@ import React, {
 import { useStores } from "../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import FastImage from "react-native-fast-image";
-import { Text } from "../../../components";
+import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import Modal from "react-native-modal";
@@ -23,8 +23,8 @@ import {
   formatVND,
   removeNonNumeric,
 } from "../../../utils/validate";
-import { InputSelect } from "../../../components/input-select/inputSelect";
-import { translate } from "../../../i18n";
+import { InputSelect } from "../../../../components/input-select/inputSelect";
+import { translate } from "../../../../i18n";
 import PriceModal from "./modal-price";
 import Images from "../../../../../assets/index";
 

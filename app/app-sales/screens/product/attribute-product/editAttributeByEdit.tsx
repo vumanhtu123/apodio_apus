@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import { View } from "react-native";
-import { Button, Header } from "../../../../app-purchase/components";
+import { Button, Header } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import {
   useNavigation,
@@ -14,12 +14,12 @@ import {
 import DropdownModal from "../component/multiSelect";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useStores } from "../../../models";
-import { translate } from "../../../i18n/translate";
+import { translate } from "../../../../i18n/translate";
 import {
   ALERT_TYPE,
   Dialog,
   Toast,
-} from "../../../../app-purchase/components/dialog-notification";
+} from "../../../../components/dialog-notification";
 import { ItemAttribute } from "./itemAttribute";
 import { FormProvider, useForm } from "react-hook-form";
 import { styles } from "./styles";

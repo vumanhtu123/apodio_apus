@@ -11,10 +11,10 @@ import {
   scaleWidth,
 } from "../../../theme";
 import { View, FlatList, Touchable, TouchableOpacity } from "react-native";
-import { Text, TextField } from "../../../../app-purchase/components";
+import { Text, TextField } from "../../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { Svgs } from "../../../../../assets/svgs";
-import { Row } from "../../../../app-purchase/components/Row";
+import { Row } from "../../../../components/Row";
 import ItemListExChange from "./itemListExChange";
 import { useNavigation } from "@react-navigation/native";
 

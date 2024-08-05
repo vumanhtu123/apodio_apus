@@ -5,7 +5,7 @@ import { NavigatorParamList } from "../../../navigators";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { Header, Text } from "../../../../app-purchase/components";
+import { Header, Text } from "../../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import LinearGradient from "react-native-linear-gradient";

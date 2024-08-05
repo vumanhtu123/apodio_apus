@@ -2,7 +2,7 @@ import React from "react";
 import { FC } from "react";
 import { View } from "react-native";
 import { styles } from "../styles/styles";
-import { Header } from "../../../components";
+import { Header } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation } from "@react-navigation/native";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";

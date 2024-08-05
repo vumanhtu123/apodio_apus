@@ -4,9 +4,9 @@ import { styles } from "./index";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Header } from "../../../../../app-purchase/components/header/header";
+import { Header } from "../../../../../components/header/header";
 import { Svgs } from "../../../../../../assets/svgs";
-import { Text } from "../../../../../app-purchase/components/text/text"
+import { Text } from "../../../../../components/text/text"
 import ReactNativeModal from "react-native-modal";
 import ModelSenSuccess from "../comment/ModelSendSuccess";
 import { Modal } from "react-native";

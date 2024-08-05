@@ -4,7 +4,7 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
-import { Text } from "../components";
+import { Text } from "../../components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../app-purchase/theme";
 const { height } = Dimensions.get("window");
 import { StyleSheet } from "react-native";
@@ -15,7 +15,7 @@ import { MainBottomTab } from "./bottom-navigation";
 import { AppStack } from "./app-navigator";
 import { OpenAppStack } from "./open-app-navigator";
 import { AuthStack } from "./auth-navigator";
-import en from "../i18n/en";
+import en from "../../i18n/en";
 import { map } from "mobx-state-tree/dist/internal";
 import { longPressHandlerName } from "react-native-gesture-handler/lib/typescript/handlers/LongPressGestureHandler";
 export function CustomDrawerContent(props: any) {

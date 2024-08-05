@@ -12,14 +12,14 @@ import {
   View,
 } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../../theme";
 import { Svgs } from "../../../../../../assets/svgs";
 import LinearGradient from "react-native-linear-gradient";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Styles } from "../styles";
 import { ItemListMustPay } from "../../component/itemListMustPay";
-import en from "../../../../i18n/en";
+import en from "../../../../../i18n/en";
 import { ModalFilter } from "../../component/modalFilter";
 
 export const MustPayScreen: FC<

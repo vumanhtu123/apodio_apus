@@ -6,7 +6,7 @@ if (__DEV__) {
   require('./devtools/ReactotronConfig.ts');
 }
 import 'react-native-gesture-handler';
-import './i18n';
+import '../i18n';
 import './utils/ignoreWarnings';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -19,7 +19,7 @@ import * as storage from './utils/storage';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViewStyle, Linking } from 'react-native';
 import Config from "react-native-config";
-import { Root } from './components/dialog-notification';
+import { Root } from '../components/dialog-notification';
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
 // Web linking configuration

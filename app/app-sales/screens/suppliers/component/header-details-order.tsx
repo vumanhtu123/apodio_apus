@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Text } from "../../../components";
+import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors } from "../../../theme";
 

@@ -2,10 +2,10 @@ import { useNavigation } from "@react-navigation/native"
 import React, { FC, useState } from "react"
 import { FlatList, Platform, TouchableOpacity, View } from "react-native"
 import { Svgs } from "../../../../assets/svgs"
-import { Header } from '../../../app-purchase/components/header/header'
-import { Text } from "../../../app-purchase/components/text/text"
+import { Header } from '../../../components/header/header'
+import { Text } from "../../../components/text/text"
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../theme"
-import { Screen } from "../../../app-purchase/components/screen/screen"
+import { Screen } from "../../../components/screen/screen"
 // import SelectFilterModal from "./modal-select-filter"
 import { styles } from "./styles"
 import { dataSuppliers } from "./data"

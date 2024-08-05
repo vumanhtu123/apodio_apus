@@ -10,15 +10,15 @@ import {
 } from "react-native";
 import React from "react";
 import { FilterAppBarComponent } from "./component/filter-appbar";
-import { Text } from "../../components";
-import { translate } from "../../i18n";
+import { Text } from "../../../components";
+import { translate } from "../../../i18n";
 import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { ItemRevenue } from "./component/item-list-renvenue";
 import { RefactorMoneyModal } from "./refactor-money-modal";
 import { ClassifyModal } from "./classify-modal";
 import { FundsModal } from "./funds-modal";
-import CustomCalendar from "../../components/calendar";
+import CustomCalendar from "../../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
 import { NavigatorParamList } from "../../navigators";

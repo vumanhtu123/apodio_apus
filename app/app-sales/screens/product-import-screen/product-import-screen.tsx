@@ -4,11 +4,11 @@ import { FC, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { View,TouchableOpacity, StyleSheet, Platform, Alert } from "react-native";
 import React from "react";
-import { Header, Text } from '../../../app-purchase/components';
+import { Header, Text } from '../../../components';
 import { Svgs } from "../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { FlashList } from "@shopify/flash-list";
-import CustomCalendar from "../../../app-purchase/components/calendar";
+import CustomCalendar from "../../../components/calendar";
 
 
 export const ImprotGoodsBook: FC<StackScreenProps<NavigatorParamList,"importGoodsBook">> = observer (

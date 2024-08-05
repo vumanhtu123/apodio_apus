@@ -1,14 +1,14 @@
 import { Observer, observer } from "mobx-react-lite";
 import { FC } from "react";
 import React, { FlatList, TouchableOpacity, View } from "react-native";
-import { Button, Header, Text } from "../../../components";
+import { Button, Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation } from "@react-navigation/native";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles";
 import Modal from "react-native-modal"
 import { useStores } from "../../../models";
-import { InputSelect } from "../../../components/input-select/inputSelect";
+import { InputSelect } from "../../../../components/input-select/inputSelect";
 
 export const OrderTracking: FC = observer(
     function OrderTracking(props) {

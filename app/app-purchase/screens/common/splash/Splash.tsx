@@ -7,7 +7,7 @@ import { LinearGradient } from "react-native-linear-gradient";
 import { colors } from "../../../theme";
 import LottieView from "lottie-react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Text } from "../../../components/text/text";
+import { Text } from "../../../../components/text/text";
 import React from "react";
 import { useAuth } from "../../contexts/auth";
 import { useStores } from "../../../models";

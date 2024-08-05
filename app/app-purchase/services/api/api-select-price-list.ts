@@ -2,7 +2,7 @@ import { ApiResponse } from 'apisauce';
 import { Api } from "../base-api/api";
 import { PriceListResponse } from '../../models/select-price-list/select-price-list-model';
 import { ApiEndpoint } from '../base-api/api_endpoint';
-import { Loading } from '../../components/dialog-notification';
+import { Loading } from '../../../components/dialog-notification';
 
 export class SelectPriceListAPI {
     private api : Api;

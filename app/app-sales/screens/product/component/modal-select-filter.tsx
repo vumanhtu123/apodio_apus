@@ -7,11 +7,11 @@ import {
   Text as TextRN,
   View,
 } from "react-native";
-import { SvgIcon } from "../../../../app-purchase/components/svg-icon/index";
+import { SvgIcon } from "../../../../components/svg-icon/index";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { navigate } from "../../../navigators";
 import { useNavigation } from "@react-navigation/native";
-import { translate } from "../../../i18n";
+import { translate } from "../../../../i18n";
 
 const RadioButton = ({ selected, onPress }: any) => (
   <TouchableOpacity style={styles.radioButton} onPress={onPress}>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Image, View } from "react-native";
-import { Text } from "../../../components";
+import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
 import Images from "../../../../../assets/index";
 import { colors } from "../../../theme";
-import en from "../../../i18n/en";
+import en from "../../../../i18n/en";
 
 export const BodyDetailsOrder = (data: any) => {
   const [dataOrder, setData] = useState<any[]>([]);
