@@ -741,6 +741,8 @@ const en = {
     payDebt: "Thanh toán công nợ",
   },
   productScreen: {
+    select_vendor: "Lựa chọn xem sản phẩm của nhà cung cấp:",
+    display_all: "Xem tất cả sản phẩm",
     create_product: "Tạo sản phẩm",
     create_directory: "Tạo danh mục",
     directory: "Tất cả danh mục",

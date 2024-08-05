@@ -5,6 +5,7 @@ import { ApiEndpoint } from "../base-api/api_endpoint";
 import { Data, TagResult } from "../../models/product-store/tag-product-model";
 import { Brand, BrandResult } from "../../models/brand-model";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import { VendorResult } from "../../models/product-store/vendor-model";
 
 
 export class ProductApi {
@@ -414,10 +415,12 @@ export class ProductApi {
     }
   }
 
-  async getListVendor(page: number, search: string): Promise<any> {
-    Loading.show({
-      text: "Loading...",
-    });
+  async getListVendor(page: number, search: string): Promise<VendorResult> {
+    if(page === 0){
+      Loading.show({
+        text: "Loading...",
+      });
+    }
     try {
       const response: ApiResponse<any> = await this.apiUpload.apisauce.get(
         ApiEndpoint.GET_VENDOR,
@@ -436,7 +439,7 @@ export class ProductApi {
       return { kind: "bad-data", response: data };
     } catch (e) {
       Loading.hide();
-      return { kind: "bad-data" };
+      return { kind: "bad-data", response: e };
     }
   }
 }

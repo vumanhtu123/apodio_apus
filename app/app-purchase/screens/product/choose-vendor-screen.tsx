@@ -29,7 +29,7 @@ export const ChooseVendorScreen: FC = () => {
   const navigation = useNavigation();
   const [arrVendor, setArrVendor] = useState<any>([]);
   const [searchText, setSearchText] = useState("");
-  const { vendorStore } = useStores();
+  const { vendorStore, productStore } = useStores();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -44,27 +44,25 @@ export const ChooseVendorScreen: FC = () => {
     mode: "all",
   });
   const getListVendor = async (vendorActivated: boolean, search?: any) => {
-    const vendorResult = await vendorStore.getListVendor(
+    const vendorResult = await productStore.getListVendor(
       page,
-      20,
-      vendorActivated,
       search
     );
-    console.log("vendorResult----------------", vendorResult.result.data);
-    setTotalPages(vendorResult.result.data.totalPages);
+    console.log("vendorResult----------------", vendorResult.response.data.content);
+    setTotalPages(vendorResult.response.data.totalPages);
     if (vendorResult && vendorResult.kind === "ok") {
       if (page === 0) {
         if(vendorId === undefined){
-          setArrVendor(vendorResult.result.data.content);
+          setArrVendor(vendorResult.response.data.content);
         }else{
-          const firstItem = vendorResult.result.data.content.filter((item: {id: number}) => item.id === vendorId)
-          const newArr = vendorResult.result.data.content.filter((item: {id: number}) => item.id !== vendorId)
+          const firstItem = vendorResult.response.data.content.filter((item: {id: number}) => item.id === vendorId)
+          const newArr = vendorResult.response.data.content.filter((item: {id: number}) => item.id !== vendorId)
           setArrVendor(firstItem.concat(newArr))
         }
       } else {
         setArrVendor((prevProducts: any) => [
           ...prevProducts,
-          ...vendorResult.result.data.content,
+          ...vendorResult.response.data.content,
         ]);
       }
       // setArrVendor(data.content)
