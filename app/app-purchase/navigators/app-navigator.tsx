@@ -151,6 +151,7 @@ export type NavigatorParamList = {
   filterRevenueScreen: undefined;
   detailWarehouse: undefined;
   warehouse: undefined;
+  vendorScreen: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -531,12 +532,17 @@ export const AppStack = () => {
         options={{ gestureEnabled: true }}
         component={Screens.CreateWareHouseScreen}
       />
+      <Stack.Screen
+        name="vendorScreen"
+        options={{ gestureEnabled: true }}
+        component={Screens.ProductVendorScreen}
+      />
     </Stack.Navigator>
   );
 };
 
 interface NavigationProps
-  extends Partial<React.ComponentProps<typeof NavigationContainer>> { }
+  extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
   // const colorScheme = useColorScheme()
