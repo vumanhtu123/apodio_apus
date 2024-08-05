@@ -48,7 +48,7 @@ export const OrderSuccess: FC = () => {
           colors={[colors.palette.navyBlue, colors.palette.malibu]}
           style={{ height: scaleHeight(228) }}></LinearGradient>
         <ImageBackground
-          source={require("../../../../../assets/Images/back_Ground_Success.png")}
+          source={Images.backgroundSuccess}
           style={{
             position: "absolute",
             alignItems: "center",

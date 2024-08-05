@@ -1,16 +1,11 @@
 import { useFocusEffect } from "@react-navigation/native";
 import React, { memo, useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  Linking,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Svgs } from "../../../../../../assets/svgs";
-import { AutoImage, Text, TextField } from "../../../../components";
+import { AutoImage, TextField } from "../../../../components";
 import { CustomModal } from "../../../../components/custom-modal";
 import {
   ALERT_TYPE,
@@ -36,7 +31,7 @@ const CreateDirectoryModal = (props: any) => {
     const result = await categoryStore.getCreateCategories(name, imageUrl);
     if (result.kind === "ok") {
       console.log("Tạo danh mục thành công", result.response);
-      onCreateDirectory(result.response.message, result.kind)
+      onCreateDirectory(result.response.message, result.kind);
       setIsVisible(false);
     } else {
       console.log(
@@ -313,7 +308,11 @@ const CreateDirectoryModal = (props: any) => {
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
-                  <Text style={{ fontSize: fontSize.size14, color: colors.navyBlue }}>
+                  <Text
+                    style={{
+                      fontSize: fontSize.size14,
+                      color: colors.navyBlue,
+                    }}>
                     {translate("createProductScreen.uploadImage")}
                   </Text>
                 </View>
@@ -326,7 +325,11 @@ const CreateDirectoryModal = (props: any) => {
                     width={scaleWidth(16)}
                     height={scaleHeight(16)}
                   />
-                  <Text style={{ fontSize: fontSize.size14, color: colors.navyBlue }}>
+                  <Text
+                    style={{
+                      fontSize: fontSize.size14,
+                      color: colors.navyBlue,
+                    }}>
                     {translate("createProductScreen.openCamera")}
                   </Text>
                 </View>
