@@ -4,7 +4,7 @@ import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { Data } from "../../models/product-store/tag-product-model";
 import { Brand } from "../../models/brand-model";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../app-purchase/components/dialog-notification";
 
 
 export class ProductApi {

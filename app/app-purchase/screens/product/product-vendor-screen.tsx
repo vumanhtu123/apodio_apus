@@ -11,7 +11,7 @@ import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers } from "./data";
 import { styles } from "./styles";
 import LinearGradient from "react-native-linear-gradient";
-import { AutoImage, Header, Screen, Text } from "../../components";
+import { AutoImage, Header, Screen, Text } from "../../../app-purchase/components";
 import { Svgs } from "../../../../assets/svgs";
 import { NavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";

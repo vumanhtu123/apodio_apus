@@ -14,6 +14,7 @@ import { ProductList } from "./renderList/product-list";
 import { styles } from "../styles";
 import { translate } from "../../../i18n";
 export const ProductScreen: FC = () => {
+  const navigation = useNavigation();
   const [btnTab, setBtnTab] = useState(["Sản phẩm", "Danh mục"]);
   const { productStore } = useStores();
   const [searchCategory, setSearchCategory] = useState("");
@@ -49,7 +50,7 @@ export const ProductScreen: FC = () => {
     setSubmittedSearch('');
     setOpenSearch(false);
   };
-  
+
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
@@ -69,6 +70,8 @@ export const ProductScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
+        LeftIcon={Svgs.back}
+        onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={translate("productScreen.productTittle")}
         RightIcon2={

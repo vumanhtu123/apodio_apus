@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
@@ -23,6 +23,7 @@ export const ProductScreen: FC = () => {
   const [submittedCategorySearch, setSubmittedCategorySearch] = useState('');
   const [searchValue, setSearchValue] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
+
   // Xử lý tìm kiếm danh mục
   const handleSearchCategoryChange = (text: string) => {
     const newValue = text !== null ? text.toString() : "";
