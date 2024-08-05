@@ -74,7 +74,7 @@ const CreateDirectoryModal = (props: any) => {
         Dialog.show({
           type: ALERT_TYPE.DANGER,
           title: translate("txtDialog.txt_title_dialog"),
-          textBody: translate("imageUploadExceedLimitedSize"),
+          textBody: translate("txtDialog.imageUploadExceedLimitedSize"),
           button: translate("common.ok"),
           closeOnOverlayTap: false,
         });

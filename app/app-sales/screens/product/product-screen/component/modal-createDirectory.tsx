@@ -23,6 +23,7 @@ import {
 } from "../../../../utils/requesPermissions";
 import { validateFileSize } from "../../../../utils/validate";
 import { stylesCreateDirectory } from "../../styles";
+import { Text } from "../../../../components";
 
 const CreateDirectoryModal = (props: any) => {
   const { isVisible, setIsVisible, onCreateDirectory } = props;
