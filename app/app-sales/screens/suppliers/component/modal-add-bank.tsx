@@ -3,10 +3,10 @@ import React, { useState } from "react"
 import { View, Text as TextRN, TouchableOpacity, Image } from "react-native"
 import Modal from "react-native-modal"
 import { styles } from "./modal-create-supplier"
-import { Text, TextField } from "../../../../app-purchase/components"
+import { Text, TextField } from "../../../components"
 import { Svgs } from "../../../../../assets/svgs"
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme"
-import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect"
+import { InputSelect } from "../../../components/input-select/inputSelect"
 import { Controller, useForm } from "react-hook-form"
 
 
@@ -158,7 +158,9 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                             borderColor: colors.veryLightGrey,
                         }}
                     >
-                        <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+                        <Text style={{ fontSize: fontSize.size14 }}
+                            tx="suppliers.cancel"
+                        > </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -170,8 +172,9 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                             backgroundColor: colors.navyBlue,
                         }}
                     >
-                        <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-                            Lưu
+                        <Text style={{ fontSize: fontSize.size14, color: "white" }}
+                            tx="NCCScreen.save"
+                        >
                         </Text>
                     </TouchableOpacity>
                 </View>

@@ -55,7 +55,7 @@ export const DetailsSupplierScreen: FC<
         LeftIcon={Svgs.back}
         onLeftPress={() => navigationRef.goBack()}
         colorIcon={colors.text}
-        headerText={`Chi tiết nhà cung cấp`}
+        headerTx="suppliers.detailSupplier"
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={{
           paddingLeft: 5,

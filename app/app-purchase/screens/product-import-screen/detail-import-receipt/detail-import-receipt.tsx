@@ -140,7 +140,9 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
 
                             onPress={() => setSellectTab('product')}
                         >
-                            <Text style={sellectTab === 'product' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect} >Sản phẩm</Text>
+                            <Text style={sellectTab === 'product' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}
+                                tx="ImprotGoodsBook.product"
+                            ></Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={{
@@ -153,8 +155,10 @@ export const DetailImportReceipt: FC<StackScreenProps<NavigatorParamList, "detai
                             }}
                             onPress={() => setSellectTab('material')}
                         >
-                            <Text style={sellectTab === 'material' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}>
-                                Nguyên vật liệu
+                            <Text style={sellectTab === 'material' ? Styles.StyleTextTabar : Styles.StyleTextTabarUnSelect}
+                                tx="ImprotGoodsBook.materials"
+                            >
+
                             </Text>
                         </TouchableOpacity>
                     </View>

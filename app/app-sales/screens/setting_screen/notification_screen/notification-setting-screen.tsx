@@ -1,10 +1,10 @@
-import {observer} from 'mobx-react-lite';
-import React, {FC, useState} from 'react';
-import {Header} from '../../../../app-purchase/components/header/header';
+import { observer } from 'mobx-react-lite';
+import React, { FC, useState } from 'react';
+import { Header } from '../../../../app-purchase/components/header/header';
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
-import {useNavigation} from '@react-navigation/native';
-import {useForm} from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
+import { useForm } from 'react-hook-form';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -13,10 +13,10 @@ import {
   Switch,
   View,
 } from 'react-native';
-import {Svgs} from '../../../../../assets/svgs';
-import {Text} from '../../../../app-purchase/components/text/text';
-import {colors, scaleHeight} from '../../../theme';
-import {styles} from './styles';
+import { Svgs } from '../../../../../assets/svgs';
+import { Text } from '../../../../app-purchase/components/text/text';
+import { colors, scaleHeight } from '../../../theme';
+import { styles } from './styles';
 
 export const NotificationSetting: FC = observer(function NotificationSetting() {
   const navigation = useNavigation();
@@ -25,7 +25,7 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
     watch,
     setValue,
   } = useForm({
@@ -50,11 +50,11 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerTx="demoPodcastListScreen.notificationSetting.notificationSetting"
-        style={{height: scaleHeight(54)}}
-        titleStyle={{color: 'white'}}
+        style={{ height: scaleHeight(54) }}
+        titleStyle={{ color: 'white' }}
       />
       <KeyboardAvoidingView
-        style={{flex: 1}}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={keyboardVerticalOffset}>
         <ScrollView
@@ -65,20 +65,20 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
           <View
             style={[
               styles.button,
-              {backgroundColor: colors.palette.white, borderColor: colors.yellow},
+              { backgroundColor: colors.palette.white, borderColor: colors.yellow },
             ]}>
             <View>
               <Text
-                text={'Cho phép thông báo'}
-                style={[styles.lableSelectText, {color: 'black'}]}
+                tx="demoPodcastListScreen.notificationSetting.allowMessage"
+                style={[styles.lableSelectText, { color: 'black' }]}
               />
               <Text
-                text={'chỉ có hiệu lực với thiết bị này'}
-                style={[styles.selectText, {color: colors.aluminium}]}
+                tx="demoPodcastListScreen.notificationSetting.validForThisDeviceOnly"
+                style={[styles.selectText, { color: colors.aluminium }]}
               />
             </View>
             <Switch
-              trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+              trackColor={{ false: colors.ghostWhite1, true: colors.ghostWhite1 }}
               thumbColor={isEnabled ? colors.palette.navyBlue : colors.selago}
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
@@ -98,12 +98,12 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                 ]}>
                 <View>
                   <Text
-                    text={'Đơn hàng được phê duyệt '}
-                    style={[styles.lableSelectText, {color: 'black'}]}
+                    tx="demoPodcastListScreen.notificationSetting.orderApproved"
+                    style={[styles.lableSelectText, { color: 'black' }]}
                   />
                 </View>
                 <Switch
-                  trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+                  trackColor={{ false: colors.ghostWhite1, true: colors.ghostWhite1 }}
                   thumbColor={isEnabled1 ? colors.palette.navyBlue : colors.selago}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={setIsEnabled1}
@@ -120,12 +120,12 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                 ]}>
                 <View>
                   <Text
-                    text={'Chính sách bán hàng mới '}
-                    style={[styles.lableSelectText, {color: 'black'}]}
+                    tx="demoPodcastListScreen.notificationSetting.newSalesPolicy"
+                    style={[styles.lableSelectText, { color: 'black' }]}
                   />
                 </View>
                 <Switch
-                  trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+                  trackColor={{ false: colors.ghostWhite1, true: colors.ghostWhite1 }}
                   thumbColor={isEnabled2 ? colors.palette.navyBlue : colors.selago}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={setIsEnabled2}
@@ -142,12 +142,12 @@ export const NotificationSetting: FC = observer(function NotificationSetting() {
                 ]}>
                 <View>
                   <Text
-                    text={'Chương trình khuyến mãi mới '}
-                    style={[styles.lableSelectText, {color: 'black'}]}
+                    tx="demoPodcastListScreen.notificationSetting.newPromotions"
+                    style={[styles.lableSelectText, { color: 'black' }]}
                   />
                 </View>
                 <Switch
-                  trackColor={{false: colors.ghostWhite1, true: colors.ghostWhite1}}
+                  trackColor={{ false: colors.ghostWhite1, true: colors.ghostWhite1 }}
                   thumbColor={isEnabled3 ? colors.palette.navyBlue : colors.selago}
                   ios_backgroundColor="#3e3e3e"
                   onValueChange={setIsEnabled3}

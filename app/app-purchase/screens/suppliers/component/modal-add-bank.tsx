@@ -158,7 +158,9 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                             borderColor: colors.veryLightGrey,
                         }}
                     >
-                        <Text style={{ fontSize: fontSize.size14 }}>Huỷ</Text>
+                        <Text style={{ fontSize: fontSize.size14 }}
+                            tx="suppliers.cancel"
+                        > </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -170,8 +172,9 @@ export const ModalAddBank = (props: ModalAddBankProps) => {
                             backgroundColor: colors.navyBlue,
                         }}
                     >
-                        <Text style={{ fontSize: fontSize.size14, color: "white" }}>
-                            Lưu
+                        <Text style={{ fontSize: fontSize.size14, color: "white" }}
+                            tx="NCCScreen.save"
+                        >
                         </Text>
                     </TouchableOpacity>
                 </View>

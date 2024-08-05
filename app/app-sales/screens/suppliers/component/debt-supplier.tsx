@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Modal, TouchableOpacity, View } from "react-native";
-import { Button, Text, TextField } from "../../../../app-purchase/components";
+import { Button, Text, TextField } from "../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useForm } from "react-hook-form";
-import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
+import { InputSelect } from "../../../components/input-select/inputSelect";
+import en from "../../../i18n/en";
 
 const data = [
   { id: 1, name: "Tất cả" },
@@ -135,8 +136,10 @@ export const DebtSupplier = (item: any) => {
               fontWeight: "400",
               color: colors.dolphin,
               paddingVertical: 8,
-            }}>
-            Chưa có đơn hàng cho NCC này
+            }}
+            tx="suppliers.noOrdersYet"
+          >
+
           </Text>
         ) : null}
       </View>
@@ -358,7 +361,7 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
           // Account test
           // defaultValue={"67076743544"}
           name="Số tiền cần thanh toán"
-          rules={{ required: "Số tiền thanh toán" }}
+          rules={{ required: en.suppliers.paymentAmount }}
         />
         <View style={{ flexDirection: "row", paddingVertical: 15 }}>
           <Text
@@ -373,8 +376,8 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
           </Text>
         </View>
         <InputSelect
-          titleText="Hình thức thanh toán"
-          hintText="Chọn danh mục"
+          titleText={en.suppliers.payment}
+          hintText={en.suppliers.selectCategory}
           isSearch
           required={false}
           arrData={data.filter((item) => item.name)}
@@ -382,7 +385,7 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
           // onLoadMore={loadMoreCategories}
           // handleOnSubmitSearch={handleSubmitSearchCategory}
           // onChangeText={handleSearchCategoryChange}
-          onPressChoice={(item: any) => {}}
+          onPressChoice={(item: any) => { }}
           styleView={{ marginBottom: scaleHeight(15) }}
         />
         <Button

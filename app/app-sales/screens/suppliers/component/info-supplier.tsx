@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, View, Image } from "react-native";
-import { Text } from "../../../../app-purchase/components";
+import { Text } from "../../../components";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { translate } from "i18n-js";
