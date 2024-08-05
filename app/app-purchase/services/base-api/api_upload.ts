@@ -92,14 +92,14 @@ export class ApiUpload {
         if (request.data instanceof FormData) {
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
-            "Accept-Language": "en",
+            "Accept-Language": "vi",
             "Content-Type": "multipart/form-data",
             "X-TenantId": tenantId,
           };
         } else {
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
-            "Accept-Language": "en",
+            "Accept-Language": "vi",
             "X-TenantId": tenantId,
           };
         }
