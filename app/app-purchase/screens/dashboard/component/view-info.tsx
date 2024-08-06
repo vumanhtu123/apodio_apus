@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import React from "react";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { Text } from "../../../components/text/text";
-import { TxKeyPath } from "../../../i18n";
+import { Text } from "../../../../components/text/text";
+import { TxKeyPath } from "../../../../i18n";
 import { Svgs } from "../../../../../assets/svgs";
 
 interface ViewInfoProp {

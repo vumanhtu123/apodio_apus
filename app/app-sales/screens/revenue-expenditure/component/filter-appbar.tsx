@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import { Text } from "../../../../app-purchase/components";
-import { translate } from "../../../i18n";
+import { Text } from "../../../../components";
+import { translate } from "../../../../i18n";
 
 const listTitle = [
   { name: translate("calendar.today"), id: 0 },

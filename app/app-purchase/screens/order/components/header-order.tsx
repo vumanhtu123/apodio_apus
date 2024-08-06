@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Text } from "../../../components";
+import { Text } from "../../../../components";
 import { useNavigation } from "@react-navigation/native";
 import { OnProgressEvent } from "react-native-fast-image";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";

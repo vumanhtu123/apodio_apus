@@ -13,8 +13,8 @@ import {
   View,
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header, Text } from "../../../components";
-import en from "../../../i18n/en";
+import { Header, Text } from "../../../../components";
+import en from "../../../../i18n/en";
 
 export const CreateImportGoods: FC<
   StackScreenProps<NavigatorParamList, "createImportGoods">

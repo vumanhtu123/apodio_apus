@@ -3,8 +3,8 @@ import React, { memo } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../../../theme';
-import { Text } from '../../../../../components';
-import { translate } from '../../../../../i18n/translate';
+import { Text } from '../../../../../../components';
+import { translate } from '../../../../../../i18n/translate';
 import { Svgs } from '../../../../../../../assets/svgs';
 import ProductAttribute from '../../../component/productAttribute';
 

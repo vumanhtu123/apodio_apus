@@ -8,14 +8,14 @@ import {
     View,
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../components/header/header";
-import { Text } from "../../../components/text/text";
+import { Header } from "../../../../components/header/header";
+import { Text } from "../../../../components/text/text";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import ProductAttribute from "../component/productAttribute";
 import { ScrollView } from "react-native-gesture-handler";
 import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form";
-import { TextField } from "../../../components/text-field/text-field";
-import { Switch } from "../../../components";
+import { TextField } from "../../../../components/text-field/text-field";
+import { Switch } from "../../../../components";
 import { useStores } from "../../../models";
 import {
     commasToDots,
@@ -24,20 +24,20 @@ import {
     formatStringToFloat,
     validateFileSize,
 } from "../../../utils/validate";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
-import { translate } from "../../../i18n/translate";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../../components/dialog-notification";
+import { translate } from "../../../../i18n/translate";
 import ItemWeight from "../component/weight-component";
 import ImageProduct from "../create-prodcut/imageProduct";
 import { styles } from "./styles";
 import { ItemGroupPrice } from "../component/itemCreateProduct";
-import en from "../../../i18n/en";
+import en from "../../../../i18n/en";
 
 export const EditClassify: FC = (item) => {
     const route = useRoute();
     // const reload = route?.params?.reload;
     const navigation = useNavigation();
     const [imagesNote, setImagesNote] = useState<any>([]);
-    const [valuePurchase, setValuePurchase] = useState(false);
+    const [valueSale, setValueSale] = useState(false);
     const [valueSwitchUnit, setValueSwitchUnit] = useState(true);
     const [addDescribe, setAddDescribe] = useState(false);
     const [detailUnitGroupData, setDetailUnitGroupData] = useState<{ uomGroupLines: any, originalUnit: any }>({ uomGroupLines: [], originalUnit: '' });
@@ -120,7 +120,7 @@ export const EditClassify: FC = (item) => {
                 setDescription(newDataEdit?.description);
             }
             setImagesNote(newDataEdit?.imageUrls);
-            setValuePurchase(newDataEdit?.purchaseOk);
+            setValueSale(newDataEdit?.saleOk);
             setValueSwitchUnit(newDataEdit?.uom !== null ? false : true);
             setDetailUnitGroupData(newDataEdit?.uomGroup);
             if (newDataEdit?.vendors?.length !== 0) {
@@ -128,7 +128,7 @@ export const EditClassify: FC = (item) => {
                     return item.vendorId;
                 });
                 setVendor(a);
-                setValuePurchase(true);
+                setValueSale(true);
             }
         }
     }, [dataEdit]);
@@ -388,13 +388,13 @@ export const EditClassify: FC = (item) => {
                                         marginRight: scaleWidth(10),
                                     }} />
                                 <Switch
-                                    value={valuePurchase}
+                                    value={valueSale}
                                 />
                             </View>
                             <ItemGroupPrice />
                         </View>
                     </View>
-                    {valuePurchase ? (
+                    {valueSale ? (
                         <View
                             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
                             <View

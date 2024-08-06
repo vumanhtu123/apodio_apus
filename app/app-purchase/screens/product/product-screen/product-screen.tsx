@@ -2,14 +2,15 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header } from "../../../components/header/header";
-import { Text } from "../../../components/text/text";
-import { translate } from "../../../i18n";
+import Dialog from "../../../../components/dialog/dialog";
+import { Header } from "../../../../components/header/header";
+import { Text } from "../../../../components/text/text";
 import { useStores } from "../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
-import { styles } from "../styles";
 import { CategoryList } from "./renderList/category-list";
 import { ProductList } from "./renderList/product-list";
+import { styles } from "../styles";
+import { translate } from "../../../../i18n";
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
   const [btnTab, setBtnTab] = useState(["Sản phẩm", "Danh mục"]);
@@ -99,13 +100,15 @@ export const ProductScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
       />
       <View style={{ flex: 1, backgroundColor: colors.aliceBlue }}>
-        <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(8), flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white }}>
-          <Svgs.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
-          <View style={{ marginHorizontal: scaleWidth(6) }}>
-            <Text style={{ fontSize: fontSize.size10 }}>{company.code} - {company.name}</Text>
-            <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{company.phoneNumber}</Text>
+        {activeTab === "product" ? (
+          <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(8), flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white }}>
+            <Svgs.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
+            <View style={{ marginHorizontal: scaleWidth(6) }}>
+              <Text style={{ fontSize: fontSize.size10 }}>{company.code} - {company.name}</Text>
+              <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{company.phoneNumber}</Text>
+            </View>
           </View>
-        </View>
+        ) : null}
         <View style={styles.btnTab}>
           <View style={styles.rowBtnTab}>
             {btnTab.map((item, index) => {

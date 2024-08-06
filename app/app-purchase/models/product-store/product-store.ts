@@ -332,13 +332,13 @@ export const ProductStoreModel = types
         self.environment.api,
         self.environment.apiUpload
       );
-      const result: ProductDetailResult = yield productApi.getListVendor(
+      const result = yield productApi.getListVendor(
         page,
         search
       );
       if (result.kind === "ok") {
         console.log("vendor api", result);
-        return result.response.data;
+        return result;
       } else {
         __DEV__ && console.tron.log(result.kind);
         return result;

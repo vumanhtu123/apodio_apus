@@ -1,7 +1,7 @@
 import { ApisauceInstance, create } from "apisauce"
 import { ApiConfig, DEFAULT_API_CONFIG_UPLOAD } from "./api-config"
 import { getAccessToken, getTenantId } from "../../utils/storage"
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../app-purchase/components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 import { navigate, resetRoot } from "../../navigators"
 import DeviceInfo from "react-native-device-info"
 /**
@@ -89,12 +89,15 @@ export class ApiUpload {
     )
     this.apisauce.addAsyncRequestTransform(request => async () => {
       try {
+        const tenantId = await getTenantId();
+
         if (request.data instanceof FormData) {
 
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "en",
             "Content-Type": "multipart/form-data",
+            "X-TenantId": tenantId,
           };
         } else {
           const tenantId = await getTenantId();

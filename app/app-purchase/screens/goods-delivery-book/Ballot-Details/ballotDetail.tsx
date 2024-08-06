@@ -4,7 +4,7 @@ import { NavigatorParamList, navigate } from "../../../navigators";
 import { observer } from "mobx-react-lite";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../../components";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import ReactNativeModal from "react-native-modal";

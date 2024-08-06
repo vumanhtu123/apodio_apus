@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Screen } from "../../../app-purchase/components/screen/screen";
+import { Screen } from "../../../components/screen/screen";
 import { Svgs } from "../../../../assets/svgs";
-import { Header } from "../../../app-purchase/components/header/header";
-import { Text } from "../../../app-purchase/components/text/text";
+import { Header } from "../../../components/header/header";
+import { Text } from "../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers } from "./data";
 import { styles } from "./styles";
 import LinearGradient from "react-native-linear-gradient";
 import { observer } from "mobx-react-lite";
 import { useStores } from "../../models";
-import { translate } from "../../i18n";
+import { translate } from "../../../i18n";
 export const ProductCategoriesScreen: FC = observer(() => {
   const navigation = useNavigation();
   const [page, setPage] = useState(1);

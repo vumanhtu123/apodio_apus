@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../../components";
+import { Header, Text } from "../../../../../components";
 import {
   colors,
   fontSize,
@@ -22,8 +22,8 @@ import {
 import { Svgs } from "../../../../../../assets/svgs";
 import LinearGradient from "react-native-linear-gradient";
 import { Styles } from "../styles";
-import en from "../../../../i18n/en";
-import CustomCalendar from "../../../../components/calendar";
+import en from "../../../../../i18n/en";
+import CustomCalendar from "../../../../../components/calendar";
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import moment from "moment";
 import ItemListTransaction from "../../component/itemListTransaction";

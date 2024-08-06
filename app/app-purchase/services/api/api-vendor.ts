@@ -6,7 +6,7 @@ import {
   Dialog,
   Toast,
   Loading,
-} from "../../components/dialog-notification";
+} from "../../../components/dialog-notification";
 import { VendorResult } from "../../models/vendor/vendor-model";
 
 export class VendorApi {
@@ -22,9 +22,11 @@ export class VendorApi {
     vendorActivated: boolean,
     search: string
   ): Promise<VendorResult> {
-    Loading.show({
-      text: "Loading...",
-    });
+    if(page === 0){
+      Loading.show({
+        text: "Loading...",
+      });
+    }
     try {
       console.log("getListVendor1111", this.api.config.url);
 

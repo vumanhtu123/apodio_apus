@@ -7,16 +7,16 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { AutoImage } from "../../components/auto-image/auto-image";
-import { Button } from "../../components/button/button";
-import { Screen } from "../../components/screen/screen";
+import { AutoImage } from "../../../components/auto-image/auto-image";
+import { Button } from "../../../components/button/button";
+import { Screen } from "../../../components/screen/screen";
 import { Svgs } from "../../../../assets/svgs";
-import { Header } from "../../components/header/header";
-import { Text } from "../../components/text/text";
+import { Header } from "../../../components/header/header";
+import { Text } from "../../../components/text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { styles, stylesItem } from "./styles";
 import { products } from "./data";
-import { translate } from "../../i18n";
+import { translate } from "../../../i18n";
 
 export const ArrangeProduct: FC = () => {
   const navigation = useNavigation();

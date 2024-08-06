@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import { View, Modal, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { scaleWidth, padding, scaleHeight, colors } from '../../../theme';
-import { Text, TextField } from '../../../../app-purchase/components';
+import { Text, TextField } from '../../../../components';
 import { Controller, useForm } from 'react-hook-form';
 import { validatePhoneStartsWith } from '../../../utils/validate';
 

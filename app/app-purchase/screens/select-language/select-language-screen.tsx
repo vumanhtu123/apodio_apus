@@ -12,10 +12,10 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LANGUAGE } from "../../utils/enum";
 import { navigate, NavigatorParamList } from "../../../app-purchase/navigators";
-import { changeLanguage } from "../../i18n";
+import { changeLanguage } from "../../../i18n";
 import Images from "../../../../assets/index";
 import { colors } from "../../theme";
-import { Text } from "../../components";
+import { Text } from "../../../components";
 
 export const SelectLanguageScreen: FC<
   StackScreenProps<NavigatorParamList, "selectLanguage">

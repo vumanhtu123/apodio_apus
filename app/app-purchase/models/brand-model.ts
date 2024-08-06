@@ -54,4 +54,4 @@ export interface Root {
     name: string
   }
   
-  export type BrandResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root };
+  export type BrandResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root } | { kind: "bad-data", result: any };

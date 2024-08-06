@@ -2,11 +2,6 @@
 // const { API_URL } = require("../../config/env")
 // Or just specify it directly like this:
 import CONFIG from "../../config.json";
-
-/**
- * The options used to configure the API.
- */
-
 const getDomain = () => {
   const env = CONFIG.ENV;
   const domain = CONFIG.API.DEV.URL;

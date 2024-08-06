@@ -1,14 +1,14 @@
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Svgs } from '../../../../../../assets/svgs';
-import { Button, Text } from '../../../../components';
+import { Button, Text } from '../../../../../components';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import CategoryModalFilter from '../../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
-import { translate } from '../../../../i18n/translate';
+import { translate } from '../../../../../i18n/translate';
 const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vendorId }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
@@ -62,7 +62,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
             if (productStore.sort.length > 0) {
                 parseSort =
                     "?sort=" +
-                    productStore.sort[0] +
+                    productStore.sort[0] ,
                     (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
             }
             const response: any = await productStore.getListProduct(

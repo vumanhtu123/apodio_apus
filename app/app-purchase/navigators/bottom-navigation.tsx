@@ -3,8 +3,8 @@ import React from "react"
 import { Platform, TouchableOpacity, View, ViewStyle } from "react-native"
 import { DashBoardScreen, ProductScreen, OrderScreen, ProductCategoriesScreen, ProductVendorScreen } from "../screens"
 import { CommonActions, CompositeScreenProps } from "@react-navigation/native"
-import { NavigatorParamList, AppStackScreenProps } from './app-navigator';
-import { SvgIcon, Text } from "../components"
+import {NavigatorParamList, AppStackScreenProps} from './app-navigator';
+import { SvgIcon, Text } from "../../components"
 import { colors } from "../theme"
 import { fontSize, scaleHeight, scaleWidth } from "../theme/dimension"
 import { Svgs } from '../../../assets/svgs'

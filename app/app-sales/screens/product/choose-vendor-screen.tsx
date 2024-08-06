@@ -12,9 +12,9 @@ import {
 } from "react-native";
 import FastImage from "react-native-fast-image";
 import { Svgs } from "../../../../assets/svgs";
-import { Header } from "../../../app-purchase/components/header/header";
-import { TextField } from "../../../app-purchase/components/text-field/text-field";
-import { Text } from "../../../app-purchase/components/text/text";
+import { Header } from "../../../components/header/header";
+import { TextField } from "../../../components/text-field/text-field";
+import { Text } from "../../../components/text/text";
 import { useStores } from "../../models";
 import {
   colors,

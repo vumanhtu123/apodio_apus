@@ -11,13 +11,14 @@ import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers } from "./data";
 import { styles } from "./styles";
 import LinearGradient from "react-native-linear-gradient";
-import { AutoImage, Header, Screen, Text } from "../../../app-purchase/components";
+import { AutoImage, Header, Screen, Text } from "../../../components";
 import { Svgs } from "../../../../assets/svgs";
 import { NavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
-import { translate } from "../../i18n";
+import { translate } from "../../../i18n";
 import { useStores } from "../../models";
+
 
 export const ProductVendorScreen: FC<
   StackScreenProps<NavigatorParamList, "vendorScreen">
@@ -34,13 +35,13 @@ export const ProductVendorScreen: FC<
 
   const getListVendor = (search: string) => {
     productStore.getListVendor(page, search).then((item: any) => {
-      if (item.content != null) {
-        setTotalPage(item.totalPages);
+      if (item.response.data.content != null) {
+        setTotalPage(item.response.data.totalPages);
         console.log("setList success");
-        const data = item.content;
+        const data = item.response.data.content;
         setList((prev: any) => [...prev, ...data]);
       }
-      console.log("vendor screen", JSON.stringify(item));
+      console.log("vendor screen", JSON.stringify(item.response.data));
     });
   };
 

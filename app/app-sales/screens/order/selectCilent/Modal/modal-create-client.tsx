@@ -1,23 +1,16 @@
-import React, { FC, useState } from "react";
-import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Dimensions, StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../../theme";
 import { Svgs } from "../../../../../../assets/svgs";
-import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
-import { onAction } from "mobx-state-tree";
-import Modal from 'react-native-modal'
-import { Text, TextField } from "../../../../../app-purchase/components";
-import { Controller, UseFormWatch, useForm, useWatch } from "react-hook-form";
-import { InputSelect } from "../../../../../app-purchase/components/input-select/inputSelect";
+import { Text, TextField } from "../../../../../components";
+import { Controller, useForm } from "react-hook-form";
+import { InputSelect } from "../../../../../components/input-select/inputSelect";
 import { useStores } from "../../../../models";
-import { boolean } from "mobx-state-tree/dist/internal";
-import { RectButton } from "react-native-gesture-handler";
-import { Dialog, Loading } from "../../../../../app-purchase/components/dialog-notification";
-import { translate } from "../../../../i18n/translate";
-import en from "../../../../i18n/en";
-import { clientData } from "../../../../models/add-client-props";
-import { values } from "mobx";
+import { Dialog } from "../../../../../components/dialog-notification";
+import { translate } from "../../../../../i18n/translate";
+import en from "../../../../../i18n/en";
 import { checkPhoneNumber } from "../../../../utils/validate";
-import { CustomModal } from "../../../../../app-purchase/components/custom-modal";
+import { CustomModal } from "../../../../../components/custom-modal";
 interface ModalClientFromPhoneProps {
     isVisible: any;
     setIsVisible: any;

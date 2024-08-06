@@ -3,7 +3,7 @@ import { View, Modal, StyleSheet, TouchableOpacity, TextInput } from 'react-nati
 import React, { FC } from 'react'
 import { defaultCreateObservableOptions } from 'mobx/dist/internal'
 import { colors, padding, scaleHeight, scaleWidth } from '../../../theme'
-import { Text } from '../../../../app-purchase/components'
+import { Text } from '../../../../components'
 
 
 interface ModalCreateGroup {

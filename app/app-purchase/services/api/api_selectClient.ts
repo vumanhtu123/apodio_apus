@@ -3,7 +3,7 @@ import { ApiResponse } from "apisauce";
 import { ApiErp } from "../base-api/api-config-erp";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { OderListResponse  } from "../../models/order-list-select-clien-model";
-import { Loading } from "../../components/dialog-notification";
+import { Loading } from "../../../components/dialog-notification";
 import { TagList } from '../../models/tag-list-filter-client-model';
 
 export class SelectClientAPI {
