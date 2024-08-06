@@ -17,11 +17,11 @@ import PriceModal from './modal-price';
 interface ItemVariant {
     addVariant: boolean;
     productName: string;
-    dataCreateProduct: {imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[];
+    dataCreateProduct: { imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[] }[];
     dataGroupAttribute: {}[];
     valueSwitchUnit: boolean;
     addWeight: boolean;
-    detailUnitGroupData: {originalUnit: string, uomGroupLines: {}[]};
+    detailUnitGroupData: { originalUnit: string, uomGroupLines: {}[] };
     uomId: {};
     screen: string;
     setDataCreateProduct: ([]) => void;
@@ -31,6 +31,7 @@ interface ItemVariant {
     handleEditAttribute: () => void;
     isVariantInConfig: boolean;
     isUsing: boolean;
+    valueSale: boolean;
 }
 
 export const ItemVariant = memo(
@@ -360,6 +361,7 @@ export const ItemVariant = memo(
                                                                         <Svgs.icon_edit />
                                                                     </TouchableOpacity>
                                                                 ) : null}
+                                                                {/* {props.valueSale === true ? */}
                                                                 <View
                                                                     style={{
                                                                         flexDirection: "row",
@@ -516,6 +518,8 @@ export const ItemVariant = memo(
                                                                         name={`listPrice-${index}`}
                                                                     />
                                                                 </View>
+                                                                {/* : null} */}
+                                                                {/* {props.valueSale === true ? */}
                                                                 <TouchableOpacity
                                                                     style={styles.viewBtnPriceVariants}
                                                                     onPress={() => {
@@ -576,6 +580,7 @@ export const ItemVariant = memo(
                                                                         <Svgs.icon_caretRightDown />
                                                                     </View>
                                                                 </TouchableOpacity>
+                                                                {/* : null} */}
                                                             </View>
                                                         </View>
                                                     </ScrollView>

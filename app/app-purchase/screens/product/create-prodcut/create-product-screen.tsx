@@ -651,7 +651,7 @@ export const ProductCreateScreen: FC = (item) => {
     const listIds = selectedIds;
     navigation.navigate({
       name: "ChooseVendorScreen",
-      params: { listIds, mode: "create", vendorId: 1144 },
+      params: { listIds, mode: "create", vendor: {avatarUrl: "", code: "DT92", id: 1144, name: "Công ty TNHH Hưng Thịnh", phoneNumber: ""} },
     } as never);
   };
 
@@ -755,7 +755,8 @@ export const ProductCreateScreen: FC = (item) => {
                   }}
                 />
               </View>
-              <ItemGroupPrice />
+              { valueSale === true ?
+              <ItemGroupPrice /> : null}
             </View>
           </View>
           {/* {valueSale === true ? ( */}
@@ -864,6 +865,7 @@ export const ProductCreateScreen: FC = (item) => {
             addVariant={addVariant}
             setAddVariant={setAddVariant}
             addWeight={addWeight}
+            valueSale={valueSale}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
             isVariantInConfig={isVariantInConfig}

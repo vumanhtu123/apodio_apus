@@ -975,10 +975,11 @@ export const ProductEditScreen: FC = (item) => {
                   }}
                 />
               </View>
-              <ItemGroupPrice />
+              { valueSale === true ?
+              <ItemGroupPrice /> : null}
             </View>
           </View>
-          {valueSale ? (
+          {/* {valueSale ? ( */}
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
               <View
@@ -1008,7 +1009,7 @@ export const ProductEditScreen: FC = (item) => {
                 </TouchableOpacity>
               </View>
             </View>
-          ) : null}
+          {/* ) : null} */}
           <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
             <View style={styles.viewViewDetail}>
               <Text tx={'createProductScreen.inventory_management'}
@@ -1071,6 +1072,7 @@ export const ProductEditScreen: FC = (item) => {
             addVariant={addVariant}
             setAddVariant={setAddVariant}
             addWeight={addWeight}
+            valueSale={valueSale}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
             isVariantInConfig={isVariantInConfig}
