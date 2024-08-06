@@ -25,7 +25,7 @@ const AppList: React.FC = () => {
         style={[styles.itemContainer]}
         onPress={async () => {
           setCurrentApp(item.id)
-          const savedApp = await AsyncStorage.setItem('selectedApp', item.id);
+          await AsyncStorage.setItem('selectedApp', item.id);
         }
         }
       >
