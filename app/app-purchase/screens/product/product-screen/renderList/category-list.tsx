@@ -41,6 +41,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
   }, [searchCategory])
   const handleGetCategory = async (searchCategory?: any) => {
     var parseSortCategory = "";
+    console.log('check page', pageCategories)
     try {
       if (productStore.sortCategory.length > 0) {
         parseSortCategory =
@@ -75,7 +76,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
-    }
+    } 
   };
   const handleEditCategory = (category: any) => {
     // console.log('czxcxzw',category)
@@ -107,7 +108,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
     }
   }, [pageCategories]);
   const handleEndReachedCategory = async () => {
-    if (!isRefreshingCategory && pageCategories <= totalPages - 1 && !isLoading) {
+    if (!isRefreshingCategory && pageCategories < totalPages - 1 && !isLoading) {
       categoryStore.setIsLoadMore(true)
       setPageCategories((prevPage) => prevPage + 1);
     }
@@ -133,12 +134,11 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
       </View>
     );
   };
-  const handleModalDirectory = (errorMessage: any, checkReload: any) => {
-    // console.log('đâsdasdadassa', errorMessage)
+  const handleModalDirectory = async (errorMessage: any, checkReload: any) => {
     setErrorMessage(errorMessage)
     setIsDeleteFailModalVisible(true);
     if (checkReload === 'ok') {
-      handleGetCategory()
+      await handleGetCategory()
     }
   }
 
