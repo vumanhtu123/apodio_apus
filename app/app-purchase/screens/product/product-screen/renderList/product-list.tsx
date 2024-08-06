@@ -55,14 +55,13 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
         }
 
     }, [searchValue])
-
     const handleGetProduct = async (searchValue?: any) => {
         var parseSort = "";
         try {
             if (productStore.sort.length > 0) {
                 parseSort =
                     "?sort=" +
-                    productStore.sort[0] ,
+                    productStore.sort[0],
                     (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
             }
             const response: any = await productStore.getListProduct(
@@ -122,7 +121,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
         //}
 
     }, [selectedCategory]);
-
     useEffect(() => {
         if (!isFirstRender.current) {
             if (!isRefreshing) {
@@ -136,7 +134,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
             setPage((prevPage) => prevPage + 1);
         }
     };
-
     const refreshProduct = useCallback(async () => {
         productStore.setIsLoadMore(true)
         setIsRefreshing(true);

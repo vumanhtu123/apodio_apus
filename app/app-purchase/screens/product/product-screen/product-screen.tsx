@@ -14,8 +14,6 @@ import { translate } from "../../../../i18n";
 export const ProductScreen: FC = () => {
   const navigation = useNavigation();
   const [btnTab, setBtnTab] = useState(["Sản phẩm", "Danh mục"]);
-  const route = useRoute<any>();
-  const company = route?.params?.company || {};
   const { productStore } = useStores();
   const [searchCategory, setSearchCategory] = useState("");
   const [activeTab, setActiveTab] = useState(productStore.statusTab);
@@ -24,7 +22,9 @@ export const ProductScreen: FC = () => {
   const [submittedCategorySearch, setSubmittedCategorySearch] = useState('');
   const [searchValue, setSearchValue] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
+  const [company, setCompany] = useState(productStore.company);
   // Xử lý tìm kiếm danh mục
+
   const handleSearchCategoryChange = (text: string) => {
     const newValue = text !== null ? text.toString() : "";
     setSearchCategory(newValue);
@@ -100,7 +100,7 @@ export const ProductScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
       />
       <View style={{ flex: 1, backgroundColor: colors.aliceBlue }}>
-        {activeTab === "product" ? (
+        {activeTab === "product" && company.id !== null ? (
           <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(8), flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white }}>
             <Svgs.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
             <View style={{ marginHorizontal: scaleWidth(6) }}>

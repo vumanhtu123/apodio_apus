@@ -11,7 +11,13 @@ import { ProductApi } from "../../../app-purchase/services/api/api-product";
 import { productData } from "../add-product-props";
 import { UploadApi } from "../../services/api/api_upload_image";
 import { ProductDetailResult } from "./product-detail-modal";
-
+const CompanyModel = types.model("CompanyModel", {
+  id: types.maybe(types.union(types.number, types.null)),
+  name: types.string,
+  code: types.string,
+  phoneNumber: types.optional(types.string, ""),
+  avatarUrl: types.optional(types.string, "")
+});
 export const ProductStoreModel = types
   .model("ProductStore")
   .props({
@@ -33,6 +39,13 @@ export const ProductStoreModel = types
     reloadProductScreen: types.optional(types.boolean, false),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     isLoadMore: types.optional(types.boolean, false),
+    company: types.optional(CompanyModel, {
+      id: null,
+      name: '',
+      code: '',
+      phoneNumber: "",
+      avatarUrl: ""
+    })
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -87,6 +100,9 @@ export const ProductStoreModel = types
     },
     setIsLoadMore(isLoadMore: boolean) {
       self.isLoadMore = isLoadMore;
+    },
+    setCompany(company: any) {
+      self.company = company;
     },
   }))
   .actions((self) => ({
