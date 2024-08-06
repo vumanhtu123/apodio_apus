@@ -128,7 +128,6 @@ export function InputSelect(props: InputSelectProps) {
   const [data, setData] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [filteredData, setFilteredData] = useState(arrData);
-  const [loading, setLoading] = useState(false);
   // const [isRefreshing, setIsRefreshing] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const { control, reset, formState: { errors }, clearErrors, watch } = useForm();
@@ -240,7 +239,6 @@ export function InputSelect(props: InputSelectProps) {
               styleViewDropdown ?? {
                 justifyContent: "center",
                 alignItems: "center",
-                // marginTop: 5,  để cho item mũi tên đi xuống ra giữa khi comment lại
               }
             }>
             <Svgs.dropDown />
@@ -317,7 +315,6 @@ export function InputSelect(props: InputSelectProps) {
             }}
             contentContainerStyle={{
               flexGrow: 1,
-              justifyContent: 'center',
             }}
             ListEmptyComponent={EmptyListComponent}
             keyExtractor={(item, index) => index.toString()}
@@ -325,7 +322,7 @@ export function InputSelect(props: InputSelectProps) {
               return (
                 <View>
                   <TouchableOpacity
-                    style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: scaleWidth(5) }}
+                    style={{ flexDirection: 'row', paddingHorizontal: scaleWidth(5) }}
                     onPress={() => {
                       setData(item.label);
                       onPressChoice(item);

@@ -56,7 +56,8 @@ export class ApiUpload {
             title: 'Error',
             button: 'OK',
             textBody: 'Network Error!',
-            closeOnOverlayTap: false})  
+            closeOnOverlayTap: false
+          })
         }
         if (error.response.status === 401) {
           Dialog.show({
@@ -70,10 +71,10 @@ export class ApiUpload {
                 index: 1,
                 routes: [{ name: 'authStack' }],
               })
-              Dialog.hide();              
+              Dialog.hide();
               Loading.hide();
             }
-          }) 
+          })
         }
         if (error.response.status === 500 || error.response.status === 404) {
           Dialog.show({
@@ -81,7 +82,8 @@ export class ApiUpload {
             title: 'Error',
             button: 'OK',
             textBody: 'System Busy!',
-            closeOnOverlayTap: false})  
+            closeOnOverlayTap: false
+          })
         }
       }
     )
@@ -90,6 +92,7 @@ export class ApiUpload {
         const tenantId = await getTenantId();
 
         if (request.data instanceof FormData) {
+
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "en",
@@ -97,6 +100,7 @@ export class ApiUpload {
             "X-TenantId": tenantId,
           };
         } else {
+          const tenantId = await getTenantId();
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "en",
@@ -104,7 +108,7 @@ export class ApiUpload {
           };
         }
 
-        
+
         const token = await getAccessToken()
         if (token) {
           (request.headers!).Authorization = 'Bearer ' + token
@@ -118,7 +122,7 @@ export class ApiUpload {
     this.apisauce.addResponseTransform(async (response) => {
       try {
         if (response) {
-          console.log('firstzz' , response)
+          console.log('firstzz', response)
         }
       } catch (error) {
         console.log("ERROR", error)

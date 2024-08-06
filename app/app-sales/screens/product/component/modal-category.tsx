@@ -104,7 +104,7 @@ const CategoryModalFilter = ({
       <Text
         style={{
           fontWeight: "500",
-          fontSize: 10,
+          fontSize: fontSize.size10,
           color:
             selectedCategory === item.id
               ? colors.palette.neutral100
