@@ -32,20 +32,10 @@ export const FilterScreen: FC = (item) => {
     const data = await productStore.getListTagProduct();
     setData(data.result.data.content);
   };
-  const [selectedNameFilter, setSelectedNameFilter] = useState(
-    productStore.sort[0]
-  );
   const [selectedTimeFilter, setSelectedTimeFilter] = useState(
     productStore.sort[1]
   );
   const [selectedTagFilter, setSelectedTagFilter] = useState(0);
-  const handleNamePress = (item: any) => {
-    if (selectedNameFilter === item) {
-      setSelectedNameFilter(null);
-    } else {
-      setSelectedNameFilter(item);
-    }
-  };
   const handleTimePress = (item: any) => {
     if (selectedTimeFilter === item) {
       setSelectedTimeFilter(null);
@@ -58,19 +48,12 @@ export const FilterScreen: FC = (item) => {
   const { activeTab }: any = route?.params || {};
   const getFilterData = () => {
     const sortCreatedAt = selectedTimeFilter || "";
-    const sortName = selectedNameFilter || "";
     return {
       sortCreatedAt,
-      sortName,
     };
   };
   useFocusEffect(
     React.useCallback(() => {
-      setSelectedNameFilter(
-        activeTab === "product"
-          ? productStore.sort[1]
-          : productStore.sortCategory[1]
-      );
       setSelectedTimeFilter(
         activeTab === "product"
           ? productStore.sort[0]
@@ -83,16 +66,15 @@ export const FilterScreen: FC = (item) => {
   const handleSort = () => {
     const filterData = getFilterData();
     productStore.setSort(Object.values(filterData));
-    console.log(productStore.sort);
     productStore.setTagId(indexItemTag);
-    console.log(productStore.tagId);
-    navigation.navigate("productScreen" as never, { reload: false });
+    productStore.setReloadProductScreen(true)
+    navigation.navigate("productScreen" as never);
   };
   const handleSortCategory = () => {
     const filterData = getFilterData();
     productStore.setSortCategory(Object.values(filterData));
     console.log(productStore.sortCategory);
-    navigation.navigate("productScreen" as never, { reload: false });
+    navigation.navigate("productScreen" as never);
   };
   useEffect(() => {
     console.log("first ", indexItemTag);
@@ -202,10 +184,10 @@ export const FilterScreen: FC = (item) => {
               justifyContent: "space-between",
             }}>
             {typeAZ.map((item, index) => {
-              const isSelected = selectedNameFilter === item.sort;
+              const isSelected = selectedTimeFilter === item.sort;
               return (
                 <TouchableOpacity
-                  onPress={() => handleNamePress(item.sort)}
+                  onPress={() => handleTimePress(item.sort)}
                   key={index}
                   style={{
                     backgroundColor: isSelected ? colors.aliceBlue2 : colors.aliceBlue,
@@ -263,7 +245,7 @@ export const FilterScreen: FC = (item) => {
         }}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("productScreen" as never, { reload: false })
+            navigation.navigate("productScreen" as never)
           }
           style={{
             width: scaleWidth(165),

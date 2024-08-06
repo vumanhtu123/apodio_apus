@@ -11,7 +11,7 @@ import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers } from "./data";
 import { styles } from "./styles";
 import LinearGradient from "react-native-linear-gradient";
-import { AutoImage, Header, Screen, Text } from "../../../components";
+import { AutoImage, Button, Header, Screen, Text } from "../../../components";
 import { Svgs } from "../../../../assets/svgs";
 import { NavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -92,15 +92,26 @@ export const ProductVendorScreen: FC<
   useEffect(() => {
     getListVendor(searchValue);
   }, []);
-
+  const handleAllProduct = () => {
+    navigation.navigate({
+      name: "productScreen",
+    } as never);
+    productStore.setSort([])
+    productStore.setCompany({
+      id: null,
+      name: '',
+      code: '',
+      phoneNumber: '',
+      avatarUrl: ""
+    })
+  };
   const renderProductItem = ({ item, index }: any) => {
     const handlePress = () => {
       navigation.navigate({
         name: "productScreen",
-        params: { company: item },
       } as never);
-      console.log("check total page", page);
-      console.log("check item", item);
+      productStore.setCompany(item)
+      productStore.setSort([])
     };
     return (
       <LinearGradient
@@ -197,14 +208,16 @@ export const ProductVendorScreen: FC<
               fontWeight: "500",
               marginVertical: 10,
             }}></Text>
-          <Text
-            tx={"productScreen.display_all"}
-            style={{
-              fontSize: fontSize.size9,
-              fontWeight: "500",
-              marginVertical: 10,
-              color: colors.navyBlue,
-            }}></Text>
+          <TouchableOpacity onPress={handleAllProduct}>
+            <Text
+              tx={"productScreen.display_all"}
+              style={{
+                fontSize: fontSize.size9,
+                fontWeight: "500",
+                marginVertical: 10,
+                color: colors.navyBlue,
+              }}></Text>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 0.95, marginHorizontal: 16 }}>
           <FlatList
