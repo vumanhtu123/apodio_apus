@@ -78,8 +78,8 @@ export function CustomDrawerContent(props: any) {
     return (
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={styles.textHeaderDrawer}
+            tx="menuDrawer.textHeaderDrawer"
         >
-          {en.menuDrawer.textHeaderDrawer}
         </Text>
         {
           dataType.map((item, index) => {
