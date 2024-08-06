@@ -86,7 +86,6 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
 
   const handleDeleteItem = async () => {
     const result = await categoryStore.getDeleteCategories(selectedCategoryId);
-    console.log("mmm", selectedCategoryId);
     if (result.kind === "ok") {
       console.log("Xoá danh mục thành công", result.response);
       setErrorMessage(result.response.message);

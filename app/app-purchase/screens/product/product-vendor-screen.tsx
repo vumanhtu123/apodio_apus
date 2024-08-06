@@ -37,7 +37,6 @@ export const ProductVendorScreen: FC<
     productStore.getListVendor(page, search).then((item: any) => {
       if (item.response.data.content != null) {
         setTotalPage(item.response.data.totalPages);
-        console.log("setList success");
         const data = item.response.data.content;
         setList((prev: any) => [...prev, ...data]);
       }
@@ -77,7 +76,6 @@ export const ProductVendorScreen: FC<
   };
 
   const handleSearchValueChange = (text: string) => {
-    console.log("search value", text);
     const newValue = text !== null ? text.toString() : "";
     setSearchValue(newValue);
   };

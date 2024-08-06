@@ -134,7 +134,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
             setPage((prevPage) => prevPage + 1);
         }
     };
-
     const refreshProduct = useCallback(async () => {
         productStore.setIsLoadMore(true)
         setIsRefreshing(true);
