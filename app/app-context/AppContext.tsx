@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from 'react';
 
 type AppContextType = {
+  currentApp: string;
   setCurrentApp: React.Dispatch<React.SetStateAction<string>>;
 };
 
