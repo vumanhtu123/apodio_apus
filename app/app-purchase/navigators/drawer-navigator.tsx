@@ -5,7 +5,7 @@ import {
   DrawerContentScrollView,
 } from "@react-navigation/drawer";
 import { Text } from "../../components";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../app-purchase/theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../app-sales/theme";
 const { height } = Dimensions.get("window");
 import { StyleSheet } from "react-native";
 import { Svgs } from "../../../assets/svgs";
@@ -14,7 +14,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AppStack } from "./app-navigator";
 import en from "../../i18n/en";
 import { useAppContext } from '../../app-context/AppContext';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function CustomDrawerContent(props: any) {
   const [selectBuy, setSelectBuy] = useState(0);
@@ -22,9 +21,12 @@ export function CustomDrawerContent(props: any) {
 
 
   useEffect(() => {
-    
-  },[]);
-  
+    console.log('----------currentApp----22---', currentApp)
+    const appItem = dataType.find(item => item.type === currentApp);
+    if(appItem != undefined){
+      setSelectBuy(appItem.id);
+    }
+  },[currentApp]);
 
 
   const dataType = [
@@ -33,9 +35,9 @@ export function CustomDrawerContent(props: any) {
       type: 'appPurchase',
       name: en.menuDrawer.textBuy,
       img: Svgs.icon_Box,
-      onPress: async () => {
+      onPress: () => {
         setCurrentApp('appPurchase')
-        await AsyncStorage.setItem('selectedApp', 'appPurchase');
+
       }
     },
     {
@@ -43,18 +45,18 @@ export function CustomDrawerContent(props: any) {
       type: 'appSales',
       name: en.menuDrawer.textSell,
       img: Svgs.icon_Store,
-      onPress: async () => {
+      onPress: () => {
         setCurrentApp('appSales')
-        await AsyncStorage.setItem('selectedApp', 'appSales');
+
       }
-    }, {
+    }, 
+    {
       id: 2,
       type: 'appFinance',
       name: en.menuDrawer.finance,
       img: Svgs.ic_$,
-      onPress: async () => {
-        setCurrentApp('appC')
-        await AsyncStorage.setItem('selectedApp', 'appC');
+      onPress: () => {
+        setCurrentApp('appFinance')
       }
     }
   ]
@@ -71,14 +73,13 @@ export function CustomDrawerContent(props: any) {
       </View>
     </DrawerContentScrollView>
   );
-
   // eslint-disable-next-line react/no-unstable-nested-components
   function IconLeftDrawer() {
     return (
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={styles.textHeaderDrawer}
+            tx="menuDrawer.textHeaderDrawer"
         >
-          {en.menuDrawer.textHeaderDrawer}
         </Text>
         {
           dataType.map((item, index) => {
@@ -91,7 +92,7 @@ export function CustomDrawerContent(props: any) {
               }}
                 key={item.id}
               >
-                <View style={{ flexDirection: "row", alignItems: 'center', marginBottom: scaleWidth(5) }}>
+                <View style={{ flexDirection: "row", alignItems: 'center', marginBottom: scaleWidth(10) }}>
                   <View
                     style={selectBuy == index ? styles.lineMenu : styles.noLineMenu}
                   />
@@ -100,7 +101,7 @@ export function CustomDrawerContent(props: any) {
                       style={
                         selectBuy == index ? styles.circle : styles.circleInactive
                       }>
-                      <item.img width={24} height={24} />
+                      <item.img width={22} height={22} />
                     </View>
                     <Text
                       style={[selectBuy == index ? styles.textDrawer : styles.textDrawer2,]}
@@ -135,7 +136,7 @@ export function MyDrawer() {
 
 export const styles = StyleSheet.create({
   textOptions: {
-    fontSize: 14,
+    fontSize: fontSize.size14,
     fontWeight: "400",
     marginLeft: 4,
   },
@@ -183,18 +184,18 @@ export const styles = StyleSheet.create({
   },
   circle: {
     marginLeft: 7,
-    width: 50, // Đặt kích thước width
-    height: 50, // Đặt kích thước height tương đương với width để tạo hình vuông
-    borderRadius: 50, // Sử dụng một nửa giá trị của width/height để tạo hình tròn
+    width: 40, // Đặt kích thước width
+    height: 40, // Đặt kích thước height tương đương với width để tạo hình vuông
+    borderRadius: 20, // Sử dụng một nửa giá trị của width/height để tạo hình tròn
     backgroundColor: colors.palette.navyBlue, // Màu nền của container hình tròn
     alignItems: "center",
     justifyContent: "center",
   },
   circleInactive: {
     marginLeft: 7,
-    width: 50, // Đặt kích thước width
-    height: 50, // Đặt kích thước height tương đương với width để tạo hình vuông
-    borderRadius: 50, // Sử dụng một nửa giá trị của width/height để tạo hình tròn
+    width: 40, // Đặt kích thước width
+    height: 40, // Đặt kích thước height tương đương với width để tạo hình vuông
+    borderRadius: 20, // Sử dụng một nửa giá trị của width/height để tạo hình tròn
     backgroundColor: colors.palette.colorIconInactive, // Màu nền của container hình tròn
     alignItems: "center",
     justifyContent: "center",
@@ -206,18 +207,16 @@ export const styles = StyleSheet.create({
   },
   noLineMenu: {
     width: 4,
-    // height: 82,
-
   },
   textDrawer: {
     fontSize: fontSize.size12,
     fontWeight: "400",
-    marginLeft: 15,
+    marginLeft: scaleWidth(15),
     color: colors.palette.navyBlue,
     alignSelf: 'center'
   },
   textDrawer2: {
-    fontSize: 12,
+    fontSize: fontSize.size12,
     fontWeight: "400",
     textAlign: "center",
     // lineHeight: 15,

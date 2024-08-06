@@ -4,7 +4,6 @@ import { useAppContext } from './AppContext';
 import { colors } from '../app-purchase/theme/colors';
 import { scaleHeight, spacing } from '../app-purchase/theme';
 import { Header } from '../components';
-import { translate } from '../i18n';
 import { Svgs } from '../../assets/svgs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -44,7 +43,7 @@ const AppList: React.FC = () => {
       <Header
         type={"AntDesign"}
         colorIcon={colors.text}
-        headerText={'Danh sách App'}
+        headerTx="menuDrawer.textHeaderDrawer"
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
       />
