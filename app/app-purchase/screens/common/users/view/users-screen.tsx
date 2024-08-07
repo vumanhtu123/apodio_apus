@@ -55,54 +55,7 @@ import {
 } from "../../../../navigators/bottom-navigation";
 import { TextField } from "../../../../../components";
 import { changeLanguage } from "../../../../../i18n";
-// import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors"
-// import { UsersScreen } from "../users/view/users-screen"
-//
-// const { width } = Dimensions.get('window');
 
-// const Header = (prop) => {
-//   return (
-//     <View style={styles.accountHeader}>
-//       {/* <TouchableOpacity onPress={props.onOpenCam}>
-//         <View style={styles.viewAvatar}>
-//           <Image
-//             style={styles.avatar}
-//             source={{
-//               uri: props.url,
-//               headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: `Bearer ${props.token}`,
-//               },
-//             }}
-//           />
-//           <SvgIcon
-//             name={"icCamProfile"}
-//             width={scaleWidth(32)}
-//             height={scaleHeight(32)}
-//             style={styles.iconCam}
-//           />
-//         </View>
-//       </TouchableOpacity> */}
-//       {/* <View style={styles.merchantInfo}>
-//         <View style={styles.user}>
-//           <Text style={styles.textUser} tx="Merchant"/>
-//         </View>
-//         <Text style={styles.textName} numberOfLines={1}>
-//           {props?.name ?? ''}
-//         </Text>
-//         <Text style={styles.textPhone}>
-//           {formatPhoneNumber(props?.data?.phoneNumber ?? '')}
-//         </Text>
-//       </View>
-
-//       <View style={styles.boxId}>
-//         <Text style={styles.textId}>
-//           {props?.data?.id ?? ''}
-//         </Text>
-//       </View> */}
-//     </View>
-//   );
-// };
 
 const MainAccount1 = ({ title, onPress, index }: any) => {
   const IconData = ["ic_language", "ic_QR", "ic_userManual"];
@@ -132,102 +85,6 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     const auth = useAuth();
     const { authenticationStore } = useStores();
 
-    // const [showImagePicker, setShowImagePicker] = useState(false)
-    // const [isShowChoose, setIsShowChoose] = useState(false)
-    // const [imageAVT, setImageAVT] = useState("")
-
-    // const navigation = useNavigation()
-    // const auth = useAuth()
-
-    // const getData = async () => {
-    //   const res = await accountStore.accountInfo(accountStore.userId)
-    //   console.log('res', res.result.data)
-    //   setData(res.result.data)
-    // }
-
-    // useEffect(() => {
-    //   getData()
-    // }, [])
-
-    const _onChangeLanguage = useCallback(
-      (value: any) => {
-        console.log("onChangeLanguage", value);
-        value === true ? changeLanguage("fr") : changeLanguage("en");
-      },
-      [selectLanguage]
-    );
-
-    const options = {
-      includeBase64: false,
-      mediaType: "photo",
-      quality: 1,
-      presentationStyle: "fullScreen",
-      selectionLimit: 1,
-    };
-
-    // const requestCameraPermission = async () => {
-    //   try {
-    //     const granted = await PermissionsAndroid.request(
-    //       PermissionsAndroid.PERMISSIONS.CAMERA,
-    //     );
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //       launchCamera(options, (result) => uploadImage(result))
-    //     } else {
-    //       console.log("Camera permission denied");
-    //     }
-    //   } catch (err) {
-    //     console.warn(err);
-    //   }
-    // };
-
-    // const onSelectImage = (type) => {
-    //   if (type === TYPE_SELECT_IMAGE.CAMERA) {
-    //     if(Platform.OS === "android") {
-    //       requestCameraPermission()
-    //     } else {
-    //       launchCamera(options, (result) => uploadImage(result))
-    //     }
-    //   } else {
-    //     launchImageLibrary(options, (result) => uploadImage(result))
-    //   }
-    // }
-
-    // const uploadImage = useCallback(
-    //   async (result) => {
-    //     setIsShowChoose(false)
-    //     if (result.didCancel) {
-    //       hideLoading()
-    //       // console.log("User cancelled image picker")
-    //     } else if (result.error) {
-    //       hideLoading()
-    //       // console.log("ImagePicker Error:", result.error)
-    //     } else {
-    //       showLoading()
-    //       const { fileSize, uri, type, fileName } = result?.assets[0]
-    //       const checkFileSize = validateFileSize(fileSize)
-    //       if (checkFileSize) {
-    //         setIsShowChoose(false)
-    //         console.log("Không được chọn ảnh quá 5MB")
-    //       } else {
-    //         const formData = new FormData()
-    //         formData.append("file", {
-    //           uri,
-    //           type,
-    //           name: fileName,
-    //         })
-    //         const imageUpload = await accountStore.uploadAVT(formData)
-    //         if (imageUpload) {
-    //           hideLoading()
-    //           setImageAVT(uri)
-    //           await accountStore.updateUserAVT(userId,imageUpload)
-    //         } else {
-    //           hideLoading()
-    //         }
-    //       }
-    //     }
-    //   },
-    //   [imageUrl],
-    // )
 
     const textData = [
       {
@@ -265,60 +122,33 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       },
     ];
 
-    // const onChangeLanguage = useCallback(
-    //   (value) => {
-    //     setShowLanguage(false)
-    //     setSelectedLanguage(value)
-    //     changeLanguage(value)
-    //   },
-    //   [selectedLanguage],
-    // )
-
-    // const onLogout = async () => {
-    //   await clear()
-    //   auth.changeLoginStatus()
-    // }
 
     return (
       <ScrollView>
         <View style={styles.ROOT}>
-          {/* <Image style={styles.imgTopHeader} source={bgMyacc} /> */}
 
-          {/* <View style={{marginTop:top}}/> */}
-          {
-            // data && (
-            //   // <Header
-            //   //   navigation={'navigation'}
-            //   //   name={name}
-            //   //   data={data}
-            //   //   url={imageUrl}
-            //   //   token={accountStore.authToken}
-            //   //   onOpenCam={() => {}}
-            //   //   // onOpenCam={setShowImagePicker(true)}
-            //   // />
-            <View style={{ width: "100%" }}>
-              <Header
-                style={{
-                  alignItems: "center",
-                  height: 52,
-                  justifyContent: "center",
-                }}
-                LeftIcon={Svgs.back}
-                headerTx="inforMerchant.setTingShop"
-                titleStyle={{ color: colors.white }}
-                type={"AntDesign"}
-                onLeftPress={() => navigation.goBack()}
-              />
+          <View style={{ width: "100%" }}>
+            <Header
+              style={{
+                alignItems: "center",
+                height: 52,
+                justifyContent: "center",
+              }}
+              LeftIcon={Svgs.back}
+              headerTx="inforMerchant.setTingShop"
+              titleStyle={{ color: colors.white }}
+              type={"AntDesign"}
+              onLeftPress={() => navigation.goBack()}
+            />
 
-              <LinearGradient
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 1 }}
-                colors={[colors.palette.navyBlue, colors.palette.malibu]}
-                style={{ height: 70 }}></LinearGradient>
-            </View>
+            <LinearGradient
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 1 }}
+              colors={[colors.palette.navyBlue, colors.palette.malibu]}
+              style={{ height: 70 }}></LinearGradient>
+          </View>
 
-            // )
-          }
+
 
           {/* <View style={{backgroundColor:colors.palette.blueNavigator ,  width:'100%', height:70}}></View> */}
           <View style={styles.horView}>
@@ -342,7 +172,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.5,
             shadowRadius: 2,
-            elevation: 5,
+            // elevation: 5,
             marginTop: 30,
           }}>
           <View style={styles.body}>
@@ -386,14 +216,16 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
           animationIn={"zoomIn"}
           animationOut={"fadeOut"}
           onBackdropPress={() => {
-            setShowLanguage(showLanguage);
+            setShowLanguage(!showLanguage);
           }}
           isVisible={showLanguage}
           style={{
             justifyContent: "flex-end",
             alignItems: "center",
             paddingBottom: 15,
-          }}>
+          }}
+
+        >
           <View style={styles.viewModal}>
             <View style={styles.viewLineModal} />
             <Row justify="space-between">
@@ -403,7 +235,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
 
                 style={styles.textMethod}
               />
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setShowLanguage(false);
                   // setshowModal(false)
@@ -416,7 +248,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                     color: colors.palette.torchRed,
                   }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </Row>
 
             <View
@@ -431,7 +263,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               }}
               onPress={() => {
                 setSelectLanguage(!selectLanguage);
-                _onChangeLanguage(!selectLanguage);
+
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>

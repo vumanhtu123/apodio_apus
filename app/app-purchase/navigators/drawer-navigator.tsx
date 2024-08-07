@@ -14,6 +14,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AppStack } from "./app-navigator";
 import en from "../../i18n/en";
 import { useAppContext } from '../../app-context/AppContext';
+import { translate } from "../../i18n";
 
 export function CustomDrawerContent(props: any) {
   const [selectBuy, setSelectBuy] = useState(0);
@@ -23,17 +24,17 @@ export function CustomDrawerContent(props: any) {
   useEffect(() => {
     console.log('----------currentApp----22---', currentApp)
     const appItem = dataType.find(item => item.type === currentApp);
-    if(appItem != undefined){
+    if (appItem != undefined) {
       setSelectBuy(appItem.id);
     }
-  },[currentApp]);
+  }, [currentApp]);
 
 
   const dataType = [
     {
       id: 0,
       type: 'appPurchase',
-      name: en.menuDrawer.textBuy,
+      name: translate("menuDrawer.textBuy"),
       img: Svgs.icon_Box,
       onPress: () => {
         setCurrentApp('appPurchase')
@@ -43,17 +44,17 @@ export function CustomDrawerContent(props: any) {
     {
       id: 1,
       type: 'appSales',
-      name: en.menuDrawer.textSell,
+      name: translate("menuDrawer.textSell"),
       img: Svgs.icon_Store,
       onPress: () => {
         setCurrentApp('appSales')
 
       }
-    }, 
+    },
     {
       id: 2,
       type: 'appFinance',
-      name: en.menuDrawer.finance,
+      name: translate("menuDrawer.finance"),
       img: Svgs.ic_$,
       onPress: () => {
         setCurrentApp('appFinance')
@@ -78,7 +79,7 @@ export function CustomDrawerContent(props: any) {
     return (
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={styles.textHeaderDrawer}
-            tx="menuDrawer.textHeaderDrawer"
+          tx="menuDrawer.textHeaderDrawer"
         >
         </Text>
         {
