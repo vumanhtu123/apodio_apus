@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { FlatList, Image, StyleSheet, TouchableOpacity, View, ScrollView, Modal, Switch, Alert } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../../components";
 import { colors, fontSize, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import Styles from "./Styles";

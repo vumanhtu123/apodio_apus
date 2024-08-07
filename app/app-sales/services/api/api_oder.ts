@@ -3,7 +3,7 @@ import { ApiResponse } from "apisauce";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { ApiOrder } from "../base-api/api-config-order";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { Loading } from "../../../app-purchase/components/dialog-notification";
+import { Loading } from "../../../components/dialog-notification";
 import { ApiAccounting } from "../base-api/api-config-accounting";
 import { TaxModel } from "../../models/order-store/entities/order-tax-model";
 import { DebtLimit } from "../../models/order-store/entities/order-debt-limit-model";

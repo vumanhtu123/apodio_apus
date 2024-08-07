@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles';
-import { Text } from '../../../../../../app-purchase/components';
+import { Text } from '../../../../../../components';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../../../theme';
 import ProductAttribute from '../../../component/productAttribute';
 import { Svgs } from '../../../../../../../assets/svgs';

@@ -13,17 +13,17 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../theme";
-import { Header, Text } from "../../components";
+import { Header, Text } from "../../../components";
 import { Styles } from "./style";
 import { values } from "mobx";
 import ViewInfo from "../dashboard/component/view-info";
 import { useStores } from "../../models";
-import data from "../../components/svg-icon/data";
+import data from "../../../components/svg-icon/data";
 import DataDetailWarehouse from "../../models/warehouse-store/detail-warehouse-model";
 import { ModalDeleteWareHouse } from "./modal/modal_delete_warehouse";
-import en from "../../i18n/en";
-import { ALERT_TYPE, Dialog } from "../../components/dialog-notification";
-import { translate } from "../../i18n";
+import en from "../../../i18n/en";
+import { ALERT_TYPE, Dialog } from "../../../components/dialog-notification";
+import { translate } from "../../../i18n";
 import { useNavigation } from "@react-navigation/native";
 import { reset } from "i18n-js";
 

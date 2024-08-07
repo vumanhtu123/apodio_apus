@@ -12,8 +12,8 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { Svgs } from "../../../../../assets/svgs";
-import { Text } from "../../../../app-purchase/components";
-import Dialog from "../../../../app-purchase/components/dialog/dialog";
+import { Text } from "../../../../components";
+import Dialog from "../../../../components/dialog/dialog";
 import {
   colors,
   fontSize,
@@ -22,7 +22,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { translate } from "../../../i18n";
+import { translate } from "../../../../i18n";
 const { width, height } = Dimensions.get("screen");
 
 const VIEWMODAL: ViewStyle = {

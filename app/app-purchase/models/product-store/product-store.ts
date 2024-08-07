@@ -11,7 +11,13 @@ import { ProductApi } from "../../../app-purchase/services/api/api-product";
 import { productData } from "../add-product-props";
 import { UploadApi } from "../../services/api/api_upload_image";
 import { ProductDetailResult } from "./product-detail-modal";
-
+const CompanyModel = types.model("CompanyModel", {
+  id: types.maybe(types.union(types.number, types.null)),
+  name: types.string,
+  code: types.string,
+  phoneNumber: types.optional(types.string, ""),
+  avatarUrl: types.optional(types.string, "")
+});
 export const ProductStoreModel = types
   .model("ProductStore")
   .props({
@@ -33,6 +39,13 @@ export const ProductStoreModel = types
     reloadProductScreen: types.optional(types.boolean, false),
     viewProductType: types.optional(types.string, "VIEW_PRODUCT"),
     isLoadMore: types.optional(types.boolean, false),
+    company: types.optional(CompanyModel, {
+      id: null,
+      name: '',
+      code: '',
+      phoneNumber: "",
+      avatarUrl: ""
+    })
   })
   .extend(withEnvironment)
   .views((self) => ({}))
@@ -88,6 +101,9 @@ export const ProductStoreModel = types
     setIsLoadMore(isLoadMore: boolean) {
       self.isLoadMore = isLoadMore;
     },
+    setCompany(company: any) {
+      self.company = company;
+    },
   }))
   .actions((self) => ({
     getListProduct: flow(function* (
@@ -98,7 +114,8 @@ export const ProductStoreModel = types
       search: string,
       tagId: number,
       sortId: string,
-      isLoadMore: boolean
+      isLoadMore: boolean,
+      vendorId: number
     ) {
       const productApi = new ProductApi(
         self.environment.api,
@@ -112,7 +129,8 @@ export const ProductStoreModel = types
         search,
         tagId,
         sortId,
-        isLoadMore
+        isLoadMore,
+        vendorId
       );
       if (result.kind === "ok") {
         console.log("product", result);
@@ -344,10 +362,10 @@ export const ProductStoreModel = types
     }),
   }));
 
-export interface ProductStore extends Instance<typeof ProductStoreModel> {}
+export interface ProductStore extends Instance<typeof ProductStoreModel> { }
 export interface ProductStoreSnapshotOut
-  extends SnapshotOut<typeof ProductStoreModel> {}
+  extends SnapshotOut<typeof ProductStoreModel> { }
 export interface ProductStoreSnapshotIn
-  extends SnapshotIn<typeof ProductStoreModel> {}
+  extends SnapshotIn<typeof ProductStoreModel> { }
 export const createProductStoreDefaultModel = () =>
   types.optional(ProductStoreModel, {});

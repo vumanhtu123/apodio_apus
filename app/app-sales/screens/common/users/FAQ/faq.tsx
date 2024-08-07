@@ -1,10 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { Header } from "../../../../../app-purchase/components/header/header";
+import { Header } from "../../../../../components/header/header";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 import { TextInput, View } from "react-native";
 import { Svgs } from "../../../../../../assets/svgs";
-import { Text } from "../../../../../app-purchase/components/text/text";
+import { Text } from "../../../../../components/text/text";
 import React from "react";
 import { NavigatorParamList } from "../../../../navigators/app-navigator";
 import { colors } from "../../../../theme";

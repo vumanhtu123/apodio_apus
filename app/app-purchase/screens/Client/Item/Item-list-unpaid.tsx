@@ -6,7 +6,7 @@ import { View, StyleSheet } from 'react-native';
 import React from 'react';
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "../styles";
-import { Text } from "../../../components";
+import { Text } from "../../../../components";
 
 interface Item {
     id: string;

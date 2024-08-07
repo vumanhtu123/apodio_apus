@@ -4,10 +4,9 @@ import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../.
 import ProductAttribute from '../../../component/productAttribute';
 import { Svgs } from '../../../../../../../assets/svgs';
 import { styles } from '../styles';
-import { Text } from '../../../../../../app-purchase/components';
+import { Text } from '../../../../../../components';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
-import en from '../../../../../i18n/en';
-import { translate } from '../../../../../i18n';
+import { translate } from '../../../../../../i18n';
 
 
 const ProductDetails = ({ dataClassification, getLabelByList }: any) => {

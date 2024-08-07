@@ -5,14 +5,14 @@ import { observer } from "mobx-react-lite";
 
 import { useNavigation } from "@react-navigation/native";
 import { TextInput } from "react-native-gesture-handler";
-import { Header, Text } from "../../../app-purchase/components";
+import { Header, Text } from "../../../components";
 import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleWidth } from "../../theme";
 import { styles } from "./styles/styles-filter";
 import CustomCalendarWarehouseBook from "../warehouse-book/calendar-warehouse-book/customCalendarWarehouseBook";
 import { NavigatorParamList } from "../../navigators";
-import en from "../../i18n/en";
-import { translate } from "../../i18n";
+import { translate } from "../../../i18n";
+
 
 interface ModalFielterProps {
   isVisible: boolean;

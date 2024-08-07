@@ -5,10 +5,10 @@ import { observer } from "mobx-react-lite"
 import { useStores } from "../../models"
 import { TouchableOpacity, View } from "react-native"
 import React from "react"
-import { Header } from "../../../app-purchase/components/header/header"
+import { Header } from "../../../components/header/header"
 import { Svgs } from "../../../../assets/svgs"
 import { colors, scaleHeight } from "../../theme"
-import { Text } from "../../../app-purchase/components"
+import { Text } from "../../../components"
 import { Styles } from "./styles"
 
 export const FilterSelectApplicablePriceList: FC<StackScreenProps<NavigatorParamList, "filterSelectApplicablePriceList">> = observer(

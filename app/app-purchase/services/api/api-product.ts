@@ -4,7 +4,7 @@ import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
 import { Data, TagResult } from "../../models/product-store/tag-product-model";
 import { Brand, BrandResult } from "../../models/brand-model";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 import { VendorResult } from "../../models/product-store/vendor-model";
 
 
@@ -49,7 +49,8 @@ export class ProductApi {
     search: string,
     tagId: number,
     sort: string,
-    isLoadMore: boolean
+    isLoadMore: boolean,
+    vendorId: any
   ): Promise<any> {
     if (!isLoadMore) {
       Loading.show({
@@ -64,10 +65,11 @@ export class ProductApi {
         {
           page: page,
           size: size,
-          view: viewProduct,
+          viewProduct: viewProduct,
           productCategoryId: productCategoryId,
           search: search,
           tagId: tagId == 0 ? null : tagId,
+          vendorId: vendorId
         }
       );
       const data = response.data;
@@ -159,12 +161,12 @@ export class ProductApi {
     try {
       const response: ApiResponse<any> = await this.api.apisauce.put(
         ApiEndpoint.PUT_MOVE_CATEGORY +
-          "?" +
-          "fromId=" +
-          fromId +
-          "&" +
-          "toId=" +
-          toId
+        "?" +
+        "fromId=" +
+        fromId +
+        "&" +
+        "toId=" +
+        toId
       );
       Loading.hide();
       const result = response.data;

@@ -13,9 +13,9 @@ import {
   View,
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import { Header, Text } from "../../../components";
-import en from "../../../i18n/en";
-import { translate } from "../../../i18n";
+import { Header, Text } from "../../../../components";
+import { translate } from "../../../../i18n";
+
 
 export const CreateImportGoods: FC<
   StackScreenProps<NavigatorParamList, "createImportGoods">

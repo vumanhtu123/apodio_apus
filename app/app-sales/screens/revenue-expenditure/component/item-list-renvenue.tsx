@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Text } from "../../../../app-purchase/components";
+import { Text } from "../../../../components";
 import { colors, scaleWidth } from "../../../theme";
 
 interface InputItem {

@@ -1,7 +1,7 @@
 import { Api } from "../base-api/api";
 import { ApiResponse } from "apisauce";
 import { ApiEndpoint } from "../base-api/api_endpoint";
-import { ALERT_TYPE, Dialog, Toast, Loading } from "../../components/dialog-notification";
+import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 
 
 export class CategoryApi {
@@ -57,7 +57,7 @@ export class CategoryApi {
         }
       );
       Loading.hide();
-      console.log("page", page);
+      console.log("page category", page);
       const data = response.data;
       if (response.data.data) {
         return { kind: "ok", response: data };

@@ -1,14 +1,14 @@
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Svgs } from '../../../../../../assets/svgs';
-import { Button, Text } from '../../../../../app-purchase/components';
+import { Button, Text } from '../../../../../components';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import CategoryModalFilter from '../../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
-import { translate } from '../../../../i18n/translate';
+import { translate } from '../../../../../i18n/translate';
 const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);

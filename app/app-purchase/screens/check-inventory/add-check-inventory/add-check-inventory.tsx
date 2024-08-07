@@ -5,7 +5,7 @@ import { observe } from "mobx";
 import { observer } from "mobx-react-lite";
 import { Alert, FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { it } from "date-fns/locale";

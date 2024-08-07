@@ -1,10 +1,10 @@
 import { createBottomTabNavigator, BottomTabScreenProps } from "@react-navigation/bottom-tabs"
 import React from "react"
 import { Platform, TouchableOpacity, View, ViewStyle } from "react-native"
-import { DashBoardScreen, ProductScreen, OrderScreen } from "../screens"
+import { DashBoardScreen, ProductScreen, OrderScreen, ProductCategoriesScreen, ProductVendorScreen } from "../screens"
 import { CommonActions, CompositeScreenProps } from "@react-navigation/native"
 import {NavigatorParamList, AppStackScreenProps} from './app-navigator';
-import { SvgIcon, Text } from "../components"
+import { SvgIcon, Text } from "../../components"
 import { colors } from "../theme"
 import { fontSize, scaleHeight, scaleWidth } from "../theme/dimension"
 import { Svgs } from '../../../assets/svgs'
@@ -36,14 +36,14 @@ export function MainBottomTab() {
       tabBar={(props) => <MyTabBar {...props} />}
     >
       <Tab.Screen name="home" component={DashBoardScreen} />
-      <Tab.Screen name="products" component={ProductScreen} />
+      <Tab.Screen name="products" component={ProductVendorScreen} />
       <Tab.Screen name="orders" component={OrderScreen} />
       <Tab.Screen name="users" component={UserScreen} />
     </Tab.Navigator>
   )
 }
 
-function MyTabBar({ state, descriptors, navigation }) {
+function MyTabBar({ state, descriptors, navigation }: any) {
   return (
     <View style={viewTabbar}>
       {state.routes.map((route: { key: string | number; name: string }, index: React.Key | null | undefined) => {
@@ -101,7 +101,7 @@ function MyTabBar({ state, descriptors, navigation }) {
   )
 }
 
-const Tabbar = ({ route, isFocused, options, onPress, label, IconTabBar }) => {
+const Tabbar = ({ route, isFocused, options, onPress, label, IconTabBar }: any) => {
   return (
     <TouchableOpacity
       key={route.name}

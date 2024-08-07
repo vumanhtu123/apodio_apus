@@ -6,7 +6,7 @@ import "numeral/locales/vi";
 import { FieldErrors, FieldValues } from "react-hook-form";
 import { Platform } from "react-native";
 import { useStores } from "../models";
-import en from "../i18n/en";
+import en from "../../i18n/en";
 import { getCompanyInfo } from "./storage/storage";
 import { translate } from "../i18n";
 

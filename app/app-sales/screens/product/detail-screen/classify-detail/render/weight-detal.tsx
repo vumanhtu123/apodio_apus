@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { styles } from '../styles';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../../theme';
-import { Text } from '../../../../../../app-purchase/components';
+import { Text } from '../../../../../../components';
 import { Svgs } from '../../../../../../../assets/svgs';
 import { commasToDots } from '../../../../../utils/validate';
 

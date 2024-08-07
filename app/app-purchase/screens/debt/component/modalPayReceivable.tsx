@@ -3,12 +3,12 @@ import React, { FC, useState } from 'react'
 import Modal from 'react-native-modal'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme'
-import { Text, TextField } from '../../../components'
+import { Text, TextField } from '../../../../components'
 import { Svgs } from '../../../../../assets/svgs'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 import { Controller, useForm } from 'react-hook-form'
-import en from '../../../i18n/en'
-import { translate } from '../../../i18n'
+import { translate } from '../../../../i18n'
+
 interface propsModal {
     isVisible?: boolean,
     setIsVisible?: any,

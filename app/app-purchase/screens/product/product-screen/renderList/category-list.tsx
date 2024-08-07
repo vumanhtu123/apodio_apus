@@ -1,12 +1,12 @@
 // CategoryList.tsx
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { View, FlatList, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Button, Text } from '../../../../components';
+import { Button, Text } from '../../../../../components';
 import { Svgs } from '../../../../../../assets/svgs';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import RenderCategoryItem from './renderItemCategory';
-import Dialog from '../../../../components/dialog/dialog';
+import Dialog from '../../../../../components/dialog/dialog';
 import { useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
 import CreateDirectoryModal from '../component/modal-createDirectory';
@@ -41,6 +41,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
   }, [searchCategory])
   const handleGetCategory = async (searchCategory?: any) => {
     var parseSortCategory = "";
+    console.log('check page', pageCategories)
     try {
       if (productStore.sortCategory.length > 0) {
         parseSortCategory =
@@ -75,7 +76,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
-    }
+    } 
   };
   const handleEditCategory = (category: any) => {
     // console.log('czxcxzw',category)
@@ -85,7 +86,6 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
 
   const handleDeleteItem = async () => {
     const result = await categoryStore.getDeleteCategories(selectedCategoryId);
-    console.log("mmm", selectedCategoryId);
     if (result.kind === "ok") {
       console.log("Xoá danh mục thành công", result.response);
       setErrorMessage(result.response.message);
@@ -107,7 +107,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
     }
   }, [pageCategories]);
   const handleEndReachedCategory = async () => {
-    if (!isRefreshingCategory && pageCategories <= totalPages - 1 && !isLoading) {
+    if (!isRefreshingCategory && pageCategories < totalPages - 1 && !isLoading) {
       categoryStore.setIsLoadMore(true)
       setPageCategories((prevPage) => prevPage + 1);
     }
@@ -133,12 +133,11 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
       </View>
     );
   };
-  const handleModalDirectory = (errorMessage: any, checkReload: any) => {
-    // console.log('đâsdasdadassa', errorMessage)
+  const handleModalDirectory = async (errorMessage: any, checkReload: any) => {
     setErrorMessage(errorMessage)
     setIsDeleteFailModalVisible(true);
     if (checkReload === 'ok') {
-      handleGetCategory()
+      await handleGetCategory()
     }
   }
 

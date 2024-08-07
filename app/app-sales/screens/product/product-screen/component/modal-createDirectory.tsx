@@ -5,14 +5,14 @@ import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Svgs } from "../../../../../../assets/svgs";
-import { AutoImage, TextField } from "../../../../../app-purchase/components";
-import { CustomModal } from "../../../../../app-purchase/components/custom-modal";
+import { AutoImage, TextField } from "../../../../../components";
+import { CustomModal } from "../../../../../components/custom-modal";
 import {
   ALERT_TYPE,
   Dialog,
   Loading,
-} from "../../../../../app-purchase/components/dialog-notification";
-import { translate } from "../../../../i18n/translate";
+} from "../../../../../components/dialog-notification";
+import { translate } from "../../../../../i18n/translate";
 import { useStores } from "../../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
 import {
@@ -23,7 +23,7 @@ import {
 } from "../../../../utils/requesPermissions";
 import { validateFileSize } from "../../../../utils/validate";
 import { stylesCreateDirectory } from "../../styles";
-import { Text } from "../../../../components";
+import { Text } from "../../../../../components";
 
 const CreateDirectoryModal = (props: any) => {
   const { isVisible, setIsVisible, onCreateDirectory } = props;

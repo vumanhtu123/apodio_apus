@@ -5,7 +5,7 @@ import { FC } from "react";
 import { FlatList, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ScreenProps } from "react-native-screens";
 import { NavigatorParamList } from "../../../navigators";
-import { Header, Text } from "../../../../app-purchase/components";
+import { Header, Text } from "../../../../components";
 import { colors, palette, scaleHeight, scaleWidth } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 

@@ -16,11 +16,11 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { Text } from "../../../components/text/text";
-import { TxKeyPath, translate } from "../../../i18n";
+import { Text } from "../../../../components/text/text";
+import { TxKeyPath, translate } from "../../../../i18n";
 import { Svgs } from "../../../../../assets/svgs";
 import Modal from "react-native-modal";
-import { Button } from "../../../components";
+import { Button } from "../../../../components";
 
 export interface InputSelectProps {
   titleText?: string;

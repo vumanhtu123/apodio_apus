@@ -1,4 +1,4 @@
-import { translate } from "../i18n/translate";
+import { translate } from "../../i18n/translate";
 let toastRef: { show: (arg0: any, arg1: string, arg2: string, arg3: { type: string; name: string }, arg4: any) => any; hidden: () => any }
 let loadingRef: { showLoading: () => any; hideLoading: () => any }
 let dialogRef: { showDialog: (arg0: any, arg1: string, arg2: any, arg3: any, arg4: any, arg5: any) => any; hideDialog: () => any }

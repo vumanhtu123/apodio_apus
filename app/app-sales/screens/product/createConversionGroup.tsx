@@ -23,19 +23,19 @@ import {
 } from "../../theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Header, Text, TextField } from "../../../app-purchase/components";
+import { Header, Text, TextField } from "../../../components";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { InputSelect } from "../../../app-purchase/components/input-select/inputSelect";
+import { InputSelect } from "../../../components/input-select/inputSelect";
 import Modal from "react-native-modal";
 import { useStores } from "../../models";
 import {
   ALERT_TYPE,
   Dialog,
   Toast,
-} from "../../../app-purchase/components/dialog-notification";
-import { translate } from "../../i18n/translate";
+} from "../../../components/dialog-notification";
+import { translate } from "../../../i18n/translate";
 import UnitModal from "./component/modal-unit";
-import en from "../../i18n/en";
+import en from "../../../i18n/en";
 
 
 export const CreateConversionGroup: FC = observer(

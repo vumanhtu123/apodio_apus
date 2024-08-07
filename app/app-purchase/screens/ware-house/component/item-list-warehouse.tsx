@@ -3,7 +3,7 @@ import React from "react";
 import { colors, scaleHeight, scaleWidth } from "../../../theme";
 import { Styles } from "../style";
 import { useNavigation } from "@react-navigation/native";
-import en from "../../../i18n/en";
+import en from "../../../../i18n/en";
 import FastImage from "react-native-fast-image";
 import Images from "../../../../../assets/index";
 import { translate } from "../../../i18n";

@@ -12,9 +12,9 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { Svgs } from "../../../../../assets/svgs";
-import { Button, Text, TextField } from "../../../components";
-import Dialog from "../../../components/dialog/dialog";
-import { TxKeyPath, translate } from "../../../i18n";
+import { Button, Text, TextField } from "../../../../components";
+import Dialog from "../../../../components/dialog/dialog";
+import { TxKeyPath, translate } from "../../../../i18n";
 import { useStores } from "../../../models";
 import {
   colors,

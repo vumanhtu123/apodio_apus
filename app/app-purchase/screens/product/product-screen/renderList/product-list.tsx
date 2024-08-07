@@ -1,15 +1,15 @@
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Svgs } from '../../../../../../assets/svgs';
-import { Button, Text } from '../../../../components';
+import { Button, Text } from '../../../../../components';
 import { fontSize, scaleHeight, scaleWidth } from '../../../../theme';
 import { styles } from '../../styles';
 import CategoryModalFilter from '../../component/modal-category';
 import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
-import { translate } from '../../../../i18n/translate';
-const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: any) => {
+import { translate } from '../../../../../i18n/translate';
+const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vendorId }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
     const [showCategory, setShowCategory] = useState(false);
@@ -55,14 +55,13 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         }
 
     }, [searchValue])
-
     const handleGetProduct = async (searchValue?: any) => {
         var parseSort = "";
         try {
             if (productStore.sort.length > 0) {
                 parseSort =
                     "?sort=" +
-                    productStore.sort[0] ,
+                    productStore.sort[0],
                     (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
             }
             const response: any = await productStore.getListProduct(
@@ -73,7 +72,8 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
                 searchValue,
                 productStore.tagId,
                 parseSort,
-                productStore.isLoadMore
+                productStore.isLoadMore,
+                vendorId
             );
             if (response && response.kind === "ok") {
                 setTotalPagesProduct(response.response.data.totalPages)
@@ -121,7 +121,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         //}
 
     }, [selectedCategory]);
-
     useEffect(() => {
         if (!isFirstRender.current) {
             if (!isRefreshing) {
@@ -135,7 +134,6 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
             setPage((prevPage) => prevPage + 1);
         }
     };
-
     const refreshProduct = useCallback(async () => {
         productStore.setIsLoadMore(true)
         setIsRefreshing(true);
@@ -145,7 +143,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView }: an
         setOpenSearch(false);
         setNameDirectory("");
         setPage(0);
-        productStore.setTagId(0);  
+        productStore.setTagId(0);
         productStore.setSort([]);
         await handleGetProduct();
         setIsRefreshing(false);

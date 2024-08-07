@@ -2,7 +2,7 @@ import { Observer, observer } from 'mobx-react-lite';
 import { FC, memo, useCallback, useState } from 'react';
 import React, { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
-import { Text, TextField } from '../../../components';
+import { Text, TextField } from '../../../../components';
 import { Svgs } from '../../../../../assets/svgs';
 import { useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../models';
@@ -10,8 +10,8 @@ import ProductAttribute from './productAttribute';
 import ImagesGroup from './imageGroup';
 import { Controller, useForm } from 'react-hook-form';
 import { addCommas, convertAttributeRetailPrice, convertAttributeWholesalePrice, formatCurrency, removeNonNumeric, validateFileSize } from '../../../utils/validate';
-import { ALERT_TYPE, Dialog, Loading } from '../../../components/dialog-notification';
-import { translate } from '../../../i18n';
+import { ALERT_TYPE, Dialog, Loading } from '../../../../components/dialog-notification';
+import { translate } from '../../../../i18n';
 import PriceModal from './modal-price';
 
 interface ItemVariant {

@@ -1,30 +1,25 @@
-import { Observer, observer } from "mobx-react-lite";
-import { FC, useState } from "react";
+import { useState } from "react";
 import React, {
   Dimensions,
-  FlatList,
   ImageBackground,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useStores } from "../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import FastImage from "react-native-fast-image";
-import { Text } from "../../../../app-purchase/components";
+import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import Modal from "react-native-modal";
 import {
   commasToDots,
   formatCurrency,
   formatNumber,
   formatVND,
-  removeNonNumeric,
 } from "../../../utils/validate";
-import { InputSelect } from "../../../../app-purchase/components/input-select/inputSelect";
-import { translate } from "../../../i18n";
+import { InputSelect } from "../../../../components/input-select/inputSelect";
 import PriceModal from "./modal-price";
 import Images from "../../../../../assets/index";
 

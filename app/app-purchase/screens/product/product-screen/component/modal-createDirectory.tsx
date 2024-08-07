@@ -5,14 +5,14 @@ import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { RESULTS } from "react-native-permissions";
 import { Svgs } from "../../../../../../assets/svgs";
-import { AutoImage, Text, TextField } from "../../../../components";
-import { CustomModal } from "../../../../components/custom-modal";
+import { AutoImage, Text, TextField } from "../../../../../components";
+import { CustomModal } from "../../../../../components/custom-modal";
 import {
   ALERT_TYPE,
   Dialog,
   Loading,
-} from "../../../../components/dialog-notification";
-import { translate } from "../../../../i18n/translate";
+} from "../../../../../components/dialog-notification";
+import { translate } from "../../../../../i18n/translate";
 import { useStores } from "../../../../models";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../../theme";
 import {
@@ -109,7 +109,7 @@ const CreateDirectoryModal = (props: any) => {
 
     if (permissionStatus === RESULTS.GRANTED) {
       console.log("You can use the camera");
-      const options = {
+      const options: any = {
         cameraType: "back",
         quality: 1,
         maxHeight: 500,
@@ -159,7 +159,7 @@ const CreateDirectoryModal = (props: any) => {
     console.log(permissionStatus);
 
     if (permissionStatus === RESULTS.GRANTED) {
-      const options = {
+      const options: any = {
         cameraType: "back",
         quality: 1,
         maxHeight: 500,
@@ -205,7 +205,7 @@ const CreateDirectoryModal = (props: any) => {
     } else if (permissionStatus === RESULTS.BLOCKED) {
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
+      const options: any = {
         cameraType: "back",
         quality: 1,
         maxHeight: 500,

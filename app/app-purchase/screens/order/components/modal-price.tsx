@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Dimensions, KeyboardAvoidingView, Platform, View, ViewStyle } from 'react-native';
 import Modal from 'react-native-modal';
-import { Button, Text, TextField } from '../../../components';
-import Dialog from '../../../components/dialog/dialog';
-import { TxKeyPath, translate } from '../../../i18n';
+import { Button, Text, TextField } from '../../../../components';
+import Dialog from '../../../../components/dialog/dialog';
+import { TxKeyPath, translate } from '../../../../i18n';
 import { useStores } from '../../../models';
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme';
 import { addCommas, formatCurrency, formatNumberByString, removeNonNumeric } from '../../../utils/validate';
-import { TextFieldCurrency } from '../../../components/text-field-currency/text-field-currency';
+import { TextFieldCurrency } from '../../../../components/text-field-currency/text-field-currency';
 import { Svgs } from '../../../../../assets/svgs';
-import { CustomModal } from '../../../components/custom-modal';
+import { CustomModal } from '../../../../components/custom-modal';
 const { width, height } = Dimensions.get('screen');
 
 interface PriceModalProps {

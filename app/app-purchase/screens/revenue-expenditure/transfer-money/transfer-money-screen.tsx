@@ -11,17 +11,15 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { Header, Text } from "../../../components";
-import { Color } from "../../../components/dialog-notification/service";
-import { InputSelect } from "../../../components/input-select/inputSelect";
+import { Header, Text } from "../../../../components";
+import { Color } from "../../../../components/dialog-notification/service";
+import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { Svgs } from "../../../../../assets/svgs";
 import { observer } from "mobx-react-lite";
-import en from "../../../i18n/en";
-import { CustomModal } from "../../../components/custom-modal";
-import { PlaceholderOrder } from "../../../components/custom-placeholder/placeholder-detail/placeholder-order";
-import { PlaceholderList } from "../../../components/custom-placeholder/placeholder-list/placeholder-list";
-import { PlaceholderListGrid } from "../../../components/custom-placeholder/placeholder-list/placeholder-list-grid";
-import { translate } from "../../../i18n";
+import { translate } from "../../../../i18n";
+import { CustomModal } from "../../../../components/custom-modal";
+
+
 
 export const TransferMoneyScreen: FC<
   StackScreenProps<NavigatorParamList, "transferMoneyScreen">

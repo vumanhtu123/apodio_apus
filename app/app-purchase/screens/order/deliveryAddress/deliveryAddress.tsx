@@ -5,7 +5,7 @@ import React, {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Header, Text } from "../../../components";
+import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { styles } from "./styles";
@@ -15,7 +15,7 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
-import { translate } from "../../../i18n";
+import { translate } from "../../../../i18n";
 import { useStores } from "../../../models";
 import {
   Root1,

@@ -9,11 +9,11 @@ import AppList from "./app/app-context/AppList";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 function IgniteApp() {
-  const [currentApp, setCurrentApp] = useState<string>("AppPurchase");
-  // const [loading, setLoading] = useState(true);
+  const [currentApp, setCurrentApp] = useState<string>("appPurchase");
 
   useEffect(() => {
     const loadAppChoice = async () => {
+      console.log('--------------currentApp-------------', currentApp)
       try {
         const savedApp = await AsyncStorage.getItem("selectedApp");
         if (savedApp) {
@@ -46,17 +46,8 @@ function IgniteApp() {
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <View style={styles.loadingContainer}>
-  //       <ActivityIndicator size="large" color="#0000ff" />
-  //       <Text>Loading...</Text>
-  //     </View>
-  //   );
-  // }
-
   return (
-    <AppContext.Provider value={{ setCurrentApp }}>
+    <AppContext.Provider value={{currentApp, setCurrentApp }}>
       <SafeAreaProvider>
         <View style={{ flex: 1 }}>{renderApp()}</View>
       </SafeAreaProvider>

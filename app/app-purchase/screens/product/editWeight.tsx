@@ -4,12 +4,12 @@ import React, { TouchableOpacity, View } from 'react-native';
 import ItemWeight from './component/weight-component';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Header, Text } from '../../components';
+import { Header, Text } from '../../../components';
 import { Svgs } from '../../../../assets/svgs';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../theme';
 import { commasToDots, formatCurrency, formatNumberFloat } from '../../utils/validate';
-import { ALERT_TYPE, Toast } from '../../components/dialog-notification';
-import { translate } from '../../i18n';
+import { ALERT_TYPE, Toast } from '../../../components/dialog-notification';
+import { translate } from '../../../i18n';
 export const EditWeight: FC = observer(
     function EditWeight() {
         const route = useRoute()

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Svgs } from '../../../../../assets/svgs';
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme';
-import { Text } from '../../../../app-purchase/components';
+import { Text } from '../../../../components';
 
 // import IconSelected from '../../assets/icons/icon_selected.svg'
 const { width, height } = Dimensions.get('screen');

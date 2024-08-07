@@ -1,19 +1,18 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { FC, useEffect, useState } from "react";
+import { TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import Dialog from "../../../components/dialog/dialog";
-import { Header } from "../../../components/header/header";
-import { Text } from "../../../components/text/text";
+import Dialog from "../../../../components/dialog/dialog";
+import { Header } from "../../../../components/header/header";
+import { Text } from "../../../../components/text/text";
 import { useStores } from "../../../models";
-import { colors, scaleHeight, scaleWidth } from "../../../theme";
-import CreateDirectoryModal from "./component/modal-createDirectory";
-import EditDirectoryModal from "./component/modal-editDirectory";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { CategoryList } from "./renderList/category-list";
 import { ProductList } from "./renderList/product-list";
 import { styles } from "../styles";
-import { translate } from "../../../i18n";
+import { translate } from "../../../../i18n";
 export const ProductScreen: FC = () => {
+  const navigation = useNavigation();
   const [btnTab, setBtnTab] = useState(["Sản phẩm", "Danh mục"]);
   const { productStore } = useStores();
   const [searchCategory, setSearchCategory] = useState("");
@@ -23,7 +22,9 @@ export const ProductScreen: FC = () => {
   const [submittedCategorySearch, setSubmittedCategorySearch] = useState('');
   const [searchValue, setSearchValue] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
+  const [company, setCompany] = useState(productStore.company);
   // Xử lý tìm kiếm danh mục
+
   const handleSearchCategoryChange = (text: string) => {
     const newValue = text !== null ? text.toString() : "";
     setSearchCategory(newValue);
@@ -49,7 +50,7 @@ export const ProductScreen: FC = () => {
     setSubmittedSearch('');
     setOpenSearch(false);
   };
-  
+
   const handleTabPress = (tab: any) => {
     setActiveTab(tab);
   };
@@ -69,6 +70,8 @@ export const ProductScreen: FC = () => {
     <View style={styles.ROOT}>
       <Header
         type={"AntDesign"}
+        LeftIcon={Svgs.back}
+        onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
         headerText={translate("productScreen.productTittle")}
         RightIcon2={
@@ -96,14 +99,16 @@ export const ProductScreen: FC = () => {
         style={{ height: scaleHeight(54) }}
         titleMiddleStyle={styles.titleHeader}
       />
-      {/* <View style={{ marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(8), flexDirection: 'row', alignItems: 'center' }}>
-        <Images.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
-        <View style={{ marginHorizontal: scaleWidth(6) }}>
-          <Text style={{ fontSize: fontSize.size10 }}>NCC00001 - {company}</Text>
-          <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>02466989909</Text>
-        </View>
-      </View> */}
       <View style={{ flex: 1, backgroundColor: colors.aliceBlue }}>
+        {activeTab === "product" && company.id !== null ? (
+          <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(8), flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white }}>
+            <Svgs.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
+            <View style={{ marginHorizontal: scaleWidth(6) }}>
+              <Text style={{ fontSize: fontSize.size10 }}>{company.code} - {company.name}</Text>
+              <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{company.phoneNumber}</Text>
+            </View>
+          </View>
+        ) : null}
         <View style={styles.btnTab}>
           <View style={styles.rowBtnTab}>
             {btnTab.map((item, index) => {
@@ -140,6 +145,7 @@ export const ProductScreen: FC = () => {
             searchValue={submittedSearch}
             onClearSearch={handleClearSearch}
             isGridView={isGridView}
+            vendorId={company.id}
           />
         ) : (
           <CategoryList
