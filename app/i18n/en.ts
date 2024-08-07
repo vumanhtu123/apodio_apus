@@ -508,7 +508,7 @@ const en = {
     feedback: "Góp ý",
     logout: "Đăng xuất",
     finance: "Tài chính",
-    textHeaderDrawer: "Danh sách hệ thống bạn có thể truy câp",
+    textHeaderDrawer: "Danh sách App",
   },
   inforMerchant: {
     codeCompany: "Mã công ty",

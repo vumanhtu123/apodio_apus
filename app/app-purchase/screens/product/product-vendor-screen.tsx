@@ -11,7 +11,7 @@ import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { products, suppliers } from "./data";
 import { styles } from "./styles";
 import LinearGradient from "react-native-linear-gradient";
-import { AutoImage, Header, Screen, Text } from "../../../components";
+import { AutoImage, Button, Header, Screen, Text } from "../../../components";
 import { Svgs } from "../../../../assets/svgs";
 import { NavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -37,7 +37,6 @@ export const ProductVendorScreen: FC<
     productStore.getListVendor(page, search).then((item: any) => {
       if (item.response.data.content != null) {
         setTotalPage(item.response.data.totalPages);
-        console.log("setList success");
         const data = item.response.data.content;
         setList((prev: any) => [...prev, ...data]);
       }
@@ -77,7 +76,6 @@ export const ProductVendorScreen: FC<
   };
 
   const handleSearchValueChange = (text: string) => {
-    console.log("search value", text);
     const newValue = text !== null ? text.toString() : "";
     setSearchValue(newValue);
   };
@@ -92,15 +90,26 @@ export const ProductVendorScreen: FC<
   useEffect(() => {
     getListVendor(searchValue);
   }, []);
-
+  const handleAllProduct = () => {
+    navigation.navigate({
+      name: "productScreen",
+    } as never);
+    productStore.setSort([])
+    productStore.setCompany({
+      id: null,
+      name: '',
+      code: '',
+      phoneNumber: '',
+      avatarUrl: ""
+    })
+  };
   const renderProductItem = ({ item, index }: any) => {
     const handlePress = () => {
       navigation.navigate({
         name: "productScreen",
-        params: { company: item },
       } as never);
-      console.log("check total page", page);
-      console.log("check item", item);
+      productStore.setCompany(item)
+      productStore.setSort([])
     };
     return (
       <LinearGradient
@@ -197,9 +206,7 @@ export const ProductVendorScreen: FC<
               fontWeight: "500",
               marginVertical: 10,
             }}></Text>
-          <TouchableOpacity onPress={() => navigation.navigate({
-            name: "productScreen",
-          } as never)}>
+          <TouchableOpacity onPress={handleAllProduct}>
             <Text
               tx={"productScreen.display_all"}
               style={{

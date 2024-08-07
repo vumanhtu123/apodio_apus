@@ -47,7 +47,7 @@ function IgniteApp() {
   };
 
   return (
-    <AppContext.Provider value={{ setCurrentApp }}>
+    <AppContext.Provider value={{currentApp, setCurrentApp }}>
       <SafeAreaProvider>
         <View style={{ flex: 1 }}>{renderApp()}</View>
       </SafeAreaProvider>
