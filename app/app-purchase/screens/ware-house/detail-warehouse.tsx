@@ -81,7 +81,7 @@ export const DetailWarehouseScreen: FC<
         title: translate("txtDialog.txt_title_dialog"),
         button: "",
         button2: translate("common.ok"),
-        textBody: en.wareHouse.messengerSucces,
+        textBody: translate("wareHouse.messengerSucces"),
         closeOnOverlayTap: false,
         onPressButton: () => {
           console.log("doantesttt");
@@ -95,7 +95,7 @@ export const DetailWarehouseScreen: FC<
       Dialog.show({
         title: translate("productScreen.Notification"),
         button: translate("common.ok"),
-        textBody: data?.message + en.wareHouse.messengerFail,
+        textBody: data?.message + translate("wareHouse.messengerFail"),
         closeOnOverlayTap: false,
       });
     }
@@ -118,83 +118,83 @@ export const DetailWarehouseScreen: FC<
         onRightPress2={
           state !== "ARCHIVED"
             ? () => {
-                Dialog.show({
-                  type: ALERT_TYPE.INFO,
-                  title: translate("productScreen.Notification"),
-                  button: translate("productScreen.cancel"),
-                  button2: translate("productScreen.BtnNotificationDeleteFail"),
-                  textBody:
-                    translate("wareHouse.titleConfirm") +
-                    " " +
-                    name +
-                    " " +
-                    translate("wareHouse.this"),
-                  textBodyWarning: translate("wareHouse.warning"),
-                  closeOnOverlayTap: false,
-                  onPressButton: () => {
-                    deleteWarehouse();
-                  },
-                });
-              }
+              Dialog.show({
+                type: ALERT_TYPE.INFO,
+                title: translate("productScreen.Notification"),
+                button: translate("productScreen.cancel"),
+                button2: translate("productScreen.BtnNotificationDeleteFail"),
+                textBody:
+                  translate("wareHouse.titleConfirm") +
+                  " " +
+                  name +
+                  " " +
+                  translate("wareHouse.this"),
+                textBodyWarning: translate("wareHouse.warning"),
+                closeOnOverlayTap: false,
+                onPressButton: () => {
+                  deleteWarehouse();
+                },
+              });
+            }
             : undefined
         }
         onRightPress1={
           state !== "ARCHIVED"
             ? () => {
-                props.navigation.navigate({
-                  name: "warehouse",
-                  params: {
-                    name: myData?.name,
-                    code: myData?.code,
-                    companyId: myData?.companyId,
-                    branchId: myData?.branchId,
-                    sourceProductType: myData?.sourceProductType,
-                    address: myData?.address,
-                    areaCode: myData?.areaCode,
-                    hasAdditionalInfo: myData?.hasAdditionalInfo,
-                    additionalInfo: {
-                      latitude: myData?.additionalInfo?.latitude,
-                      longitude: myData?.additionalInfo?.longitude,
-                      height: myData?.additionalInfo?.height,
-                      heightUom: {
-                        id: myData?.additionalInfo?.heightUom?.id,
-                        name: myData?.additionalInfo?.heightUom?.name,
-                      },
-                      length: myData?.additionalInfo?.length,
-                      lengthUom: {
-                        id: myData?.additionalInfo?.lengthUom?.id,
-                        name: myData?.additionalInfo?.lengthUom?.name,
-                      },
-                      width: myData?.additionalInfo?.width,
-                      widthUom: {
-                        id: myData?.additionalInfo?.widthUom?.id,
-                        name: myData?.additionalInfo?.widthUom?.name,
-                      },
-                      weightCapacity: myData?.additionalInfo?.weightCapacity,
-                      weightCapacityUom: {
-                        id: myData?.additionalInfo?.weightCapacityUom?.id,
-                        name: myData?.additionalInfo?.weightCapacityUom?.name,
-                      },
-                      scene: myData?.additionalInfo?.scene,
+              props.navigation.navigate({
+                name: "warehouse",
+                params: {
+                  name: myData?.name,
+                  code: myData?.code,
+                  companyId: myData?.companyId,
+                  branchId: myData?.branchId,
+                  sourceProductType: myData?.sourceProductType,
+                  address: myData?.address,
+                  areaCode: myData?.areaCode,
+                  hasAdditionalInfo: myData?.hasAdditionalInfo,
+                  additionalInfo: {
+                    latitude: myData?.additionalInfo?.latitude,
+                    longitude: myData?.additionalInfo?.longitude,
+                    height: myData?.additionalInfo?.height,
+                    heightUom: {
+                      id: myData?.additionalInfo?.heightUom?.id,
+                      name: myData?.additionalInfo?.heightUom?.name,
                     },
-                    hasConditionStorage: myData?.hasConditionStorage,
-                    conditionStorage: {
-                      standardTemperature: String(
-                        myData?.conditionStorage?.standardTemperature
-                      ),
-                      minTemperature: myData?.conditionStorage?.minTemperature,
-                      standardHumidity:
-                        myData?.conditionStorage?.standardHumidity,
+                    length: myData?.additionalInfo?.length,
+                    lengthUom: {
+                      id: myData?.additionalInfo?.lengthUom?.id,
+                      name: myData?.additionalInfo?.lengthUom?.name,
                     },
-                    action: "CREATE",
-                    note: "string",
-                    isMobile: true,
-                    status: "UPDATE",
-                    id: idNumber,
-                    sequenceCopy: myData?.sequenceCopy,
-                  } as never,
-                });
-              }
+                    width: myData?.additionalInfo?.width,
+                    widthUom: {
+                      id: myData?.additionalInfo?.widthUom?.id,
+                      name: myData?.additionalInfo?.widthUom?.name,
+                    },
+                    weightCapacity: myData?.additionalInfo?.weightCapacity,
+                    weightCapacityUom: {
+                      id: myData?.additionalInfo?.weightCapacityUom?.id,
+                      name: myData?.additionalInfo?.weightCapacityUom?.name,
+                    },
+                    scene: myData?.additionalInfo?.scene,
+                  },
+                  hasConditionStorage: myData?.hasConditionStorage,
+                  conditionStorage: {
+                    standardTemperature: String(
+                      myData?.conditionStorage?.standardTemperature
+                    ),
+                    minTemperature: myData?.conditionStorage?.minTemperature,
+                    standardHumidity:
+                      myData?.conditionStorage?.standardHumidity,
+                  },
+                  action: "CREATE",
+                  note: "string",
+                  isMobile: true,
+                  status: "UPDATE",
+                  id: idNumber,
+                  sequenceCopy: myData?.sequenceCopy,
+                } as never,
+              });
+            }
             : undefined
         }
         onRightPress={() =>
@@ -282,8 +282,8 @@ export const DetailWarehouseScreen: FC<
                 { fontSize: fontSize.size12, color: colors.palette.navyBlue },
               ]}>
               {myData?.state == "APPROVED"
-                ? en.wareHouse.isActive
-                : en.wareHouse.save}
+                ? translate("wareHouse.isActive")
+                : translate("wareHouse.save")}
             </Text>
           </View>
         </View>

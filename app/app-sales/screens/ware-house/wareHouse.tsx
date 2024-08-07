@@ -32,6 +32,7 @@ import { useStores } from "../../models";
 import ItemListWareHouse from "./component/item-list-warehouse";
 import { ItemTabar } from "./component/item-tabbar-warehouse";
 import Images from "../../../../assets/index";
+import { translate } from "../../i18n";
 
 export const wareHouseScreen: FC<
   StackScreenProps<NavigatorParamList, "wareHouse">
@@ -65,7 +66,7 @@ export const wareHouseScreen: FC<
       {
         id: "1",
         img: Images.iconWareBook,
-        name: en.wareHouse.wareBook,
+        name: translate("wareHouse.wareBook"),
         onPress: () => {
           props.navigation.navigate("warehouseBook");
         },
@@ -73,7 +74,7 @@ export const wareHouseScreen: FC<
       {
         id: "2",
         img: Images.iconHome,
-        name: en.wareHouse.checkWare,
+        name: translate("wareHouse.checkWare"),
         onPress: () => {
           props.navigation.navigate("inventoryManagement");
         },
@@ -81,7 +82,7 @@ export const wareHouseScreen: FC<
       {
         id: "3",
         img: Images.iconImportBook,
-        name: en.wareHouse.importBook,
+        name: translate("wareHouse.importBook"),
         onPress: () => {
           props.navigation.navigate("importGoodsBook");
         },
@@ -89,7 +90,7 @@ export const wareHouseScreen: FC<
       {
         id: "4",
         img: Images.iconOutBook,
-        name: en.wareHouse.outputBook,
+        name: translate("wareHouse.outputBook"),
         onPress: () => {
           props.navigation.navigate("GoodsDeliveryBook");
         },
@@ -97,7 +98,7 @@ export const wareHouseScreen: FC<
       {
         id: "5",
         img: Images.iconInBook,
-        name: en.wareHouse.inTem,
+        name: translate("wareHouse.inTem"),
         onPress: () => {
           Alert.alert("ok 5");
         },
@@ -108,13 +109,13 @@ export const wareHouseScreen: FC<
 
   const titleTabbar = useMemo(
     () => [
-      { name: en.wareHouse.all, length: lengthAll, state: undefined },
+      { name: translate("wareHouse.all"), length: lengthAll, state: undefined },
       {
-        name: en.wareHouse.isActive,
+        name: translate("wareHouse.isActive"),
         length: lengthIsActive,
         state: "APPROVED",
       },
-      { name: en.wareHouse.save, length: lengthSave, state: "ARCHIVED" },
+      { name: translate("wareHouse.save"), length: lengthSave, state: "ARCHIVED" },
     ],
     [lengthAll, lengthIsActive, lengthSave]
   );

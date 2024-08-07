@@ -12,6 +12,7 @@ import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typesc
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { isFormValid } from "../../utils/validate"
 import en from "../../i18n/en"
+import { translate } from "../../i18n"
 
 export const Promotions: FC = observer(
     function Promotions() {
@@ -291,8 +292,8 @@ export const Promotions: FC = observer(
                             paddingBottom: scaleHeight(34)
 
                         }}>
-                            <Text style={{ flex: 1 }}>{en.order.selected} {isFocus.length} {en.order.endow}</Text>
-                            <Button text={en.order.apply}
+                            <Text style={{ flex: 1 }}>{translate("order.selected")} {isFocus.length} {translate("order.endow")}</Text>
+                            <Button text={translate("order.apply")}
                                 onPress={() => handleUsed()}
                                 style={{
                                     backgroundColor: colors.palette.navyBlue,

@@ -10,6 +10,7 @@ import { Controller, useForm } from 'react-hook-form'
 import en from '../../../i18n/en'
 import { InputSelect } from '../../../components/input-select/inputSelect'
 import { id } from 'date-fns/locale'
+import { translate } from '../../../i18n'
 interface propsModal {
     isVisible?: boolean,
     setIsVisible?: any,
@@ -32,11 +33,11 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
         {
 
             id: 1,
-            label: en.debtScreen.amount
+            label: translate("debtScreen.amount")
         },
         {
             id: 2,
-            label: en.order.BANK_TRANSFER
+            label: translate("order.BANK_TRANSFER")
         }
     ]
 
@@ -105,7 +106,7 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
                         />
                     }
                     rules={{
-                        required: 'Vui long nhap du lieu'
+                        required: translate("debtScreen.pleaseEnterData")
                     }}
 
                 />
@@ -130,7 +131,7 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
 
 
                 <InputSelect
-                    titleText={en.debtScreen.payments}
+                    titleTx='debtScreen.payments'
                     hintTx='debtScreen.payments'
                     arrData={myDataSelectAmount}
                     dataDefault={selectCustomerAmount.label}

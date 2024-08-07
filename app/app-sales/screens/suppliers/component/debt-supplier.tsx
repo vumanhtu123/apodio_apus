@@ -6,6 +6,7 @@ import { Svgs } from "../../../../../assets/svgs";
 import { Controller, useForm } from "react-hook-form";
 import { InputSelect } from "../../../components/input-select/inputSelect";
 import en from "../../../i18n/en";
+import { translate } from "../../../i18n";
 
 const data = [
   { id: 1, name: "Tất cả" },
@@ -361,7 +362,7 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
           // Account test
           // defaultValue={"67076743544"}
           name="Số tiền cần thanh toán"
-          rules={{ required: en.suppliers.paymentAmount }}
+          rules={{ required: translate("suppliers.paymentAmount") }}
         />
         <View style={{ flexDirection: "row", paddingVertical: 15 }}>
           <Text
@@ -376,8 +377,8 @@ const ShowDialogUpdate = (props: DebtModalProps) => {
           </Text>
         </View>
         <InputSelect
-          titleText={en.suppliers.payment}
-          hintText={en.suppliers.selectCategory}
+          titleText={translate("suppliers.payment")}
+          hintText={translate("suppliers.selectCategory")}
           isSearch
           required={false}
           arrData={data.filter((item) => item.name)}

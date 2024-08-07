@@ -11,7 +11,7 @@ import { FlashList } from "@shopify/flash-list";
 import { UserStatus } from "../../utils/const";
 import { boolean, number } from "mobx-state-tree/dist/internal";
 import CustomCalendar from "../../components/calendar";
-import en from "../../i18n/en";
+import { translate } from "../../i18n";
 
 
 export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inventoryManagement">> = observer(
@@ -28,11 +28,11 @@ export const InventoryManagement: FC<StackScreenProps<NavigatorParamList, "inven
         }
 
         const dataTabbar = [
-            { name: en.checkInventory.all },
-            { name: en.checkInventory.checkingInventory },
-            { name: en.checkInventory.isBalancing },
-            { name: en.checkInventory.command },
-            { name: en.checkInventory.before },
+            { name: translate("checkInventory.all") },
+            { name: translate("checkInventory.checkingInventory") },
+            { name: translate("checkInventory.isBalancing") },
+            { name: translate("checkInventory.command") },
+            { name: translate("checkInventory.before") },
         ]
 
         const dataListInventory: DateItem[] = [

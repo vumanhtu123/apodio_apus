@@ -19,6 +19,7 @@ import en from "../../../i18n/en";
 import CustomCalendar from "../../../../app-purchase/components/calendar";
 import { ClassifyModal } from "../classify-modal";
 import { FundsModal } from "../funds-modal";
+import { translate } from "../../../i18n";
 
 export const ExpenseScreen: FC<
   StackScreenProps<NavigatorParamList, "expenseScreen">
@@ -52,8 +53,8 @@ export const ExpenseScreen: FC<
   } = useForm<FromValue>();
 
   const dataTaskBar = [
-    { name: en.revenueAndExpenditure.unpaid },
-    { name: en.revenueAndExpenditure.paid },
+    { name: translate("revenueAndExpenditure.unpaid") },
+    { name: translate("revenueAndExpenditure.paid") },
   ];
 
   const open = () => {

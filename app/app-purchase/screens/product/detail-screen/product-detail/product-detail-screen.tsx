@@ -409,7 +409,7 @@ export const ProductDetailScreen: FC = () => {
                         flex: 1,
                       },
                     ]}>
-                    {arrNCC?.length + en.productScreen.supplier}
+                    {arrNCC?.length + translate("productScreen.supplier")}
                   </Text>
                   {showNCC === true ? (
                     <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>

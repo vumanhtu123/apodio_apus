@@ -8,6 +8,7 @@ import { Svgs } from '../../../../../assets/svgs'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 import { Controller, useForm } from 'react-hook-form'
 import en from '../../../i18n/en'
+import { translate } from '../../../i18n'
 interface propsModal {
     isVisible?: boolean,
     setIsVisible?: any,
@@ -29,11 +30,11 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
     const dataInputSelect = [
         {
             id: 1,
-            label: en.debtScreen.amount
+            label: translate("debtScreen.amount")
         },
         {
             id: 2,
-            label: en.order.BANK_TRANSFER
+            label: translate("order.BANK_TRANSFER")
         }
     ]
 
@@ -103,7 +104,7 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
                         />
                     }
                     rules={{
-                        required: en.validate.enterData
+                        required: translate("validate.enterData")
                     }}
 
                 />

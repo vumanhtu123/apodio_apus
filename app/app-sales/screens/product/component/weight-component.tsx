@@ -375,7 +375,7 @@ const ItemConversion = observer((item: InputSelectProps) => {
                     styleViewDropdown={stylesWeight.viewDropdown}
                     hintTx={"createProductScreen.select_unit"}
                     arrData={item.data ?? []}
-                    dataDefault={value?.label ?? en.productScreen.selectUnit}
+                    dataDefault={value?.label ?? translate("productScreen.selectUnit")}
                     onPressChoice={(items: any) => {
                       onChange(items);
                       item.onRemove(item.fields, items);

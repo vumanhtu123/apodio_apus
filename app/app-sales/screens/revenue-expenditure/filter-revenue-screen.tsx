@@ -12,6 +12,7 @@ import { styles } from "./styles/styles-filter";
 import CustomCalendarWarehouseBook from "../warehouse-book/calendar-warehouse-book/customCalendarWarehouseBook";
 import { NavigatorParamList } from "../../navigators";
 import en from "../../i18n/en";
+import { translate } from "../../i18n";
 
 interface ModalFielterProps {
   isVisible: boolean;
@@ -31,7 +32,7 @@ export const FilterRevenueScreen: FC<
   const [selectedClassify, setSelectedClassify] = useState("");
   const [selectedTypeOfGoods, setSelectedTypeOfGoods] = useState("");
   const [slectedReportDetail, setslectedReportDetail] = useState(
-    en.warehouseBook.apply
+    translate("warehouseBook.apply")
   );
 
   const navigation = useNavigation();
@@ -88,37 +89,37 @@ export const FilterRevenueScreen: FC<
 
   const dataClassify = [
     {
-      classify: en.warehouseBook.sell,
+      classify: translate("warehouseBook.sell"),
     },
     {
-      classify: en.warehouseBook.return,
+      classify: translate("warehouseBook.return"),
     },
     {
-      classify: en.warehouseBook.initializeWarehouse,
+      classify: translate("warehouseBook.initializeWarehouse"),
     },
     {
-      classify: en.warehouseBook.editInventory,
+      classify: translate("warehouseBook.editInventory"),
     },
     {
-      classify: en.warehouseBook.editCostPrice,
+      classify: translate("warehouseBook.editCostPrice"),
     },
     {
-      classify: en.warehouseBook.deleteProduct,
+      classify: translate("warehouseBook.deleteProduct"),
     },
     {
-      classify: en.warehouseBook.deleteRawMaterials,
+      classify: translate("warehouseBook.deleteRawMaterials"),
     },
     {
-      classify: en.warehouseBook.different,
+      classify: translate("warehouseBook.different"),
     },
   ];
 
   const dataTypeOfGoods = [
     {
-      typeOfGoods: en.warehouseBook.product,
+      typeOfGoods: translate("warehouseBook.product"),
     },
     {
-      typeOfGoods: en.warehouseBook.typeOfGoods,
+      typeOfGoods: translate("warehouseBook.typeOfGoods"),
     },
   ];
   // console.log('====================================');
@@ -251,7 +252,7 @@ export const FilterRevenueScreen: FC<
                   setMarkedDatesE(markeDateE);
                 }}
 
-                // isSortByDate={true}
+              // isSortByDate={true}
               />
             </View>
 
@@ -399,24 +400,24 @@ export const FilterRevenueScreen: FC<
                   styles.styleBtnReport,
                   {
                     borderColor:
-                      slectedReportDetail == en.warehouseBook.reset
+                      slectedReportDetail == translate("warehouseBook.reset")
                         ? colors.palette.navyBlue
                         : colors.palette.veryLightGrey,
                     backgroundColor:
-                      slectedReportDetail == en.warehouseBook.reset
+                      slectedReportDetail == translate("warehouseBook.reset")
                         ? colors.palette.navyBlue
                         : colors.white,
                   },
                 ]}
                 onPress={() => {
-                  setslectedReportDetail(en.warehouseBook.reset);
+                  setslectedReportDetail(translate("warehouseBook.reset"));
                 }}>
                 <Text
                   tx="warehouseBook.reset"
                   style={{
                     fontSize: scaleWidth(14),
                     color:
-                      slectedReportDetail == en.warehouseBook.reset
+                      slectedReportDetail == translate("warehouseBook.reset")
                         ? colors.white
                         : colors.dolphin,
                   }}
@@ -427,17 +428,17 @@ export const FilterRevenueScreen: FC<
                   styles.styleBtnReport,
                   {
                     borderColor:
-                      slectedReportDetail == en.warehouseBook.apply
+                      slectedReportDetail == translate("warehouseBook.apply")
                         ? colors.palette.navyBlue
                         : colors.palette.veryLightGrey,
                     backgroundColor:
-                      slectedReportDetail == en.warehouseBook.apply
+                      slectedReportDetail == translate("warehouseBook.apply")
                         ? colors.palette.navyBlue
                         : colors.white,
                   },
                 ]}
                 onPress={() => {
-                  setslectedReportDetail(en.warehouseBook.apply);
+                  setslectedReportDetail(translate("warehouseBook.apply"));
 
                   const getData = {
                     time: selectedTime,
@@ -455,7 +456,7 @@ export const FilterRevenueScreen: FC<
                   style={{
                     fontSize: scaleWidth(14),
                     color:
-                      slectedReportDetail == en.warehouseBook.apply
+                      slectedReportDetail == translate("warehouseBook.apply")
                         ? colors.white
                         : colors.dolphin,
                   }}

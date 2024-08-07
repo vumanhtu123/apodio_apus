@@ -29,6 +29,7 @@ import moment from "moment";
 import ItemListTransaction from "../../component/itemListTransaction";
 import ItemListNCC from "../../component/itemListNCC";
 import { ModalPayReceivable } from "../../component/modalPayReceivable";
+import { translate } from "../../../../i18n";
 
 export const ReceivableScreen: FC<
   StackScreenProps<NavigatorParamList, "receivable">
@@ -44,8 +45,8 @@ export const ReceivableScreen: FC<
   const [timeEnd, setTimeEnd] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const dataTaskBar = [
-    { name: en.debtScreen.accordingToTransaction },
-    { name: en.debtScreen.accordingToSupplier },
+    { name: translate("debtScreen.accordingToTransaction") },
+    { name: translate("debtScreen.accordingToSupplier") },
   ];
 
   interface DataItemTranSaction {
