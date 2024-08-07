@@ -71,6 +71,7 @@ export const ProductDetailScreen: FC = () => {
     try {
       const response = await productStore.getDetailProduct(productId);
       console.log("productId", productId);
+      console.log('productDetail', response.response.data)
       if (response && response.kind === "ok") {
         const data: any = response.response.data;
         setDetailProduct(data.baseTemplatePackingLine);
@@ -214,10 +215,6 @@ export const ProductDetailScreen: FC = () => {
         };
       })
       : [];
-    console.log(
-      "---setAttributeDetailsClassification--------------",
-      JSON.stringify(newArr3)
-    );
     setAttributeDetailsClassification(newArr3);
   };
 
@@ -409,7 +406,7 @@ export const ProductDetailScreen: FC = () => {
                         flex: 1,
                       },
                     ]}>
-                    {arrNCC?.length + en.productScreen.supplier}
+                    {arrNCC?.length + " " + en.productScreen.supplier}
                   </Text>
                   {showNCC === true ? (
                     <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>

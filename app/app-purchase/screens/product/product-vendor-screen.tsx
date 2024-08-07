@@ -197,14 +197,18 @@ export const ProductVendorScreen: FC<
               fontWeight: "500",
               marginVertical: 10,
             }}></Text>
-          <Text
-            tx={"productScreen.display_all"}
-            style={{
-              fontSize: fontSize.size9,
-              fontWeight: "500",
-              marginVertical: 10,
-              color: colors.navyBlue,
-            }}></Text>
+          <TouchableOpacity onPress={() => navigation.navigate({
+            name: "productScreen",
+          } as never)}>
+            <Text
+              tx={"productScreen.display_all"}
+              style={{
+                fontSize: fontSize.size9,
+                fontWeight: "500",
+                marginVertical: 10,
+                color: colors.navyBlue,
+              }}></Text>
+          </TouchableOpacity>
         </View>
         <View style={{ flex: 0.95, marginHorizontal: 16 }}>
           <FlatList

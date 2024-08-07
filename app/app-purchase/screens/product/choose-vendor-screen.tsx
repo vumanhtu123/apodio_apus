@@ -52,31 +52,32 @@ export const ChooseVendorScreen: FC = () => {
     setTotalPages(vendorResult.response.data.totalPages);
     if (vendorResult && vendorResult.kind === "ok") {
       if (page === 0) {
-        if(vendor === undefined){
+        if(vendor == undefined){
           setArrVendor(vendorResult.response.data.content);
         }else{
-          const firstItem = vendorResult.response.data.content.filter((item: {id: number}) => item.id === vendor.id)
-          const newArr = vendorResult.response.data.content.filter((item: {id: number}) => item.id !== vendor.id)
-          setArrVendor(firstItem.concat(newArr))
+          const firstItem = vendorResult.response.data.content.filter((item: {id: number}) => item.id === vendor?.id)
+          const newArr = vendorResult.response.data.content.filter((item: {id: number}) => item.id !== vendor?.id)
+          setArrVendor([vendor].concat(newArr))
         }
       } else {
+        const newArr = vendorResult.response.data.content.filter((item: {id: number}) => item.id !== vendor?.id)
         setArrVendor((prevProducts: any) => [
           ...prevProducts,
-          ...vendorResult.response.data.content,
+          ...newArr,
         ]);
       }
       // setArrVendor(data.content)
       if (!isRefreshing) {
-        if (vendor != undefined && listIds != undefined) {
-          setSelectedIds([...new Set(listIds.concat(vendor.id))] as any)
+        if (vendor  != undefined && listIds != undefined) {
+          setSelectedIds([...new Set(listIds.concat(vendor?.id))] as any)
         }
         if (vendor == undefined && listIds != undefined) {
           setSelectedIds(listIds)
         }
-        if (vendor != undefined && listIds == undefined) {
-          setSelectedIds([vendor.id])
+        if (vendor  != undefined && listIds == undefined) {
+          setSelectedIds([vendor?.id])
         }
-        if (vendor == undefined && listIds == undefined) {
+        if (vendor  == undefined && listIds == undefined) {
           setSelectedIds([])
         }
       }
@@ -91,11 +92,12 @@ export const ChooseVendorScreen: FC = () => {
   };
   useEffect(() => {
     getListVendor(true, searchText);
+    console.log(vendor, 'dajhgfsdjhafsyda')
   }, [searchText, page]);
   const RadioButton = ({ selected, onPress, id }: any) => (
     <TouchableOpacity onPress={onPress}>
       {selected ? (
-        <View style={{ opacity: id === vendor.id ? 0.5 : 1 }} >
+        <View style={{ opacity: id === vendor?.id ? 0.5 : 1 }} >
           <Svgs.icon_checkCircle
             width={scaleWidth(30)}
             height={scaleHeight(30)}
@@ -123,7 +125,7 @@ export const ChooseVendorScreen: FC = () => {
     setSearchText(value.nativeEvent.text)
   };
   const handleBtn = () => {
-    navigation.navigate({name: "ProductCreateScreen", params: { selectedIds, vendorId: vendor }} as never);
+    navigation.navigate({name: "ProductCreateScreen", params: { selectedIds, vendor: vendor }} as never);
   };
   const handleBtnEditing = () => {
     navigation.navigate({name: "ProductEditScreen", params: { selectedIds }} as never);
@@ -174,7 +176,7 @@ export const ChooseVendorScreen: FC = () => {
             />
           </ImageBackground>
           <View style={{ marginHorizontal: 6, maxWidth: scaleWidth(230) }}>
-            <Text numberOfLines={2} style={{ fontSize: fontSize.size10, color: item.id === vendor.id ? colors.pigmentGreen : colors.nero }}>
+            <Text numberOfLines={2} style={{ fontSize: fontSize.size10, color: item.id === vendor?.id ? colors.pigmentGreen : colors.nero }}>
               {item.code} - {item.name}
             </Text>
             <Text
@@ -188,7 +190,7 @@ export const ChooseVendorScreen: FC = () => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            if (item.id !== vendor.id) {
+            if (item.id !== vendor?.id) {
               handleSelectOption(1, item.id);
             }
           }}
@@ -196,7 +198,7 @@ export const ChooseVendorScreen: FC = () => {
           <RadioButton
             selected={selectedIds.includes(item.id)}
             onPress={() => {
-              if (item.id !== vendor.id) {
+              if (item.id !== vendor?.id) {
                 handleSelectOption(1, item.id);
               }
             }}

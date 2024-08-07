@@ -52,7 +52,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   };
 
   const onSubmit = async (data: any) => {
-    await authenticationStore.login(data.username, data.password);
+      await authenticationStore.login(data.username, data.password);
     if (getAccessToken() !== null) {
       navigation.navigate("listCompany" as never);
     }

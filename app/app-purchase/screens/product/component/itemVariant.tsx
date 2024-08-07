@@ -1,6 +1,6 @@
 import { Observer, observer } from 'mobx-react-lite';
 import { FC, memo, useCallback, useState } from 'react';
-import React, { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { Dimensions, FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from '../../../theme';
 import { Text, TextField } from '../../../../components';
 import { Svgs } from '../../../../../assets/svgs';
@@ -269,7 +269,7 @@ export const ItemVariant = memo(
                                             scrollEnabled={false}
                                             renderItem={({ item, index }: any) => {
                                                 return (
-                                                    <ScrollView horizontal={true}>
+                                                    <ScrollView horizontal={true} style={{ minWidth: Dimensions.get('screen').width }}>
                                                         <View style={{ marginTop: scaleHeight(15) }}>
                                                             <Text>
                                                                 {props.productName +
@@ -361,19 +361,170 @@ export const ItemVariant = memo(
                                                                         <Svgs.icon_edit />
                                                                     </TouchableOpacity>
                                                                 ) : null}
-                                                                {/* {props.valueSale === true ? */}
-                                                                <View
-                                                                    style={{
-                                                                        flexDirection: "row",
-                                                                        marginLeft: scaleWidth(10),
-                                                                        // alignItems: 'center'
-                                                                    }}
-                                                                >
+                                                                {props.valueSale === true ?
+                                                                    <View
+                                                                        style={{
+                                                                            flexDirection: "row",
+                                                                            marginLeft: scaleWidth(10),
+                                                                            // alignItems: 'center'
+                                                                        }}
+                                                                    >
+                                                                        <TouchableOpacity
+                                                                            style={styles.viewBtnPriceVariants}
+                                                                            onPress={() => {
+                                                                                setModalRetailPrice1(true);
+                                                                                setDataModal(item.retailPrice);
+                                                                                setIndexVariant(index);
+                                                                            }}
+                                                                        >
+                                                                            <View
+                                                                                style={{
+                                                                                    flexDirection: "row",
+                                                                                    alignItems: "center",
+                                                                                }}
+                                                                            >
+                                                                                <View style={{ flex: 1 }}>
+                                                                                    <Text
+                                                                                        tx={"productScreen.priceRetail"}
+                                                                                        style={styles.textTitleViewPrice}
+                                                                                    />
+                                                                                    {item.retailPrice?.length > 0 &&
+                                                                                        item.retailPrice?.length !== 1 ? (
+                                                                                        <Text
+                                                                                            text={convertAttributeRetailPrice(
+                                                                                                props.dataCreateProduct,
+                                                                                                index
+                                                                                            )}
+                                                                                            numberOfLines={1}
+                                                                                            style={styles.textTextField}
+                                                                                        />
+                                                                                    ) : item.retailPrice?.length > 0 &&
+                                                                                        item.retailPrice?.length === 1 ? (
+                                                                                        <Text
+                                                                                            text={
+                                                                                                vendorStore.checkSeparator ===
+                                                                                                    "DOTS"
+                                                                                                    ? formatCurrency(
+                                                                                                        removeNonNumeric(
+                                                                                                            item.retailPrice[0]
+                                                                                                                ?.price
+                                                                                                        )
+                                                                                                    )
+                                                                                                    : addCommas(
+                                                                                                        removeNonNumeric(
+                                                                                                            item.retailPrice[0]
+                                                                                                                ?.price
+                                                                                                        )
+                                                                                                    )
+                                                                                            }
+                                                                                            style={styles.textTextField}
+                                                                                        />
+                                                                                    ) : (
+                                                                                        <Text
+                                                                                            text="0.000 - 0.000"
+                                                                                            style={styles.textTextFieldNoData}
+                                                                                        />
+                                                                                    )}
+                                                                                </View>
+                                                                                <Svgs.icon_caretRightDown />
+                                                                            </View>
+                                                                        </TouchableOpacity>
+                                                                        <Controller
+                                                                            control={control}
+                                                                            render={({
+                                                                                field: { onChange, value, onBlur },
+                                                                            }) => (
+                                                                                <TextField
+                                                                                    maxLength={20}
+                                                                                    keyboardType={"number-pad"}
+                                                                                    labelTx={"productScreen.priceCapital"}
+                                                                                    style={styles.viewTextFieldVariants}
+                                                                                    inputStyle={{
+                                                                                        fontSize: fontSize.size16,
+                                                                                        fontWeight: "500",
+                                                                                    }}
+                                                                                    value={value}
+                                                                                    onBlur={onBlur}
+                                                                                    RightIconClear={Svgs.icon_delete2}
+                                                                                    // error={errors?.priceRetail?.message}
+                                                                                    onClearText={() => onChange("")}
+                                                                                    valueInput={vendorStore.checkSeparator === "DOTS"
+                                                                                        ? formatCurrency(
+                                                                                            removeNonNumeric(value)
+                                                                                        )
+                                                                                        : addCommas(removeNonNumeric(value))}
+                                                                                    onChangeText={(value) => {
+                                                                                        onChange(
+                                                                                            vendorStore.checkSeparator ===
+                                                                                                "DOTS"
+                                                                                                ? formatCurrency(
+                                                                                                    removeNonNumeric(value)
+                                                                                                )
+                                                                                                : addCommas(
+                                                                                                    removeNonNumeric(value)
+                                                                                                )
+                                                                                        );
+                                                                                        item.costPrice = value;
+                                                                                    }}
+                                                                                    placeholder="0.000"
+                                                                                    labelDolphin
+                                                                                />
+                                                                            )}
+                                                                            defaultValue={item.costPrice?.toString()}
+                                                                            name={`costPrice-${index}`}
+                                                                        />
+                                                                        <Controller
+                                                                            control={control}
+                                                                            render={({
+                                                                                field: { onChange, value, onBlur },
+                                                                            }) => (
+                                                                                <TextField
+                                                                                    maxLength={20}
+                                                                                    keyboardType={"number-pad"}
+                                                                                    labelTx={"productScreen.priceList"}
+                                                                                    style={styles.viewTextFieldVariants}
+                                                                                    inputStyle={{
+                                                                                        fontSize: fontSize.size16,
+                                                                                        fontWeight: "500",
+                                                                                    }}
+                                                                                    value={value}
+                                                                                    onBlur={onBlur}
+                                                                                    RightIconClear={Svgs.icon_delete2}
+                                                                                    // error={errors?.priceRetail?.message}
+                                                                                    onClearText={() => onChange("")}
+                                                                                    valueInput={vendorStore.checkSeparator === "DOTS"
+                                                                                        ? formatCurrency(
+                                                                                            removeNonNumeric(value)
+                                                                                        )
+                                                                                        : addCommas(removeNonNumeric(value))}
+                                                                                    onChangeText={(value) => {
+                                                                                        onChange(
+                                                                                            vendorStore.checkSeparator ===
+                                                                                                "DOTS"
+                                                                                                ? formatCurrency(
+                                                                                                    removeNonNumeric(value)
+                                                                                                )
+                                                                                                : addCommas(
+                                                                                                    removeNonNumeric(value)
+                                                                                                )
+                                                                                        );
+                                                                                        item.listPrice = value;
+                                                                                    }}
+                                                                                    placeholder="0.000"
+                                                                                    labelDolphin
+                                                                                />
+                                                                            )}
+                                                                            defaultValue={item.listPrice?.toString()}
+                                                                            name={`listPrice-${index}`}
+                                                                        />
+                                                                    </View>
+                                                                    : null}
+                                                                {props.valueSale === true ?
                                                                     <TouchableOpacity
                                                                         style={styles.viewBtnPriceVariants}
                                                                         onPress={() => {
-                                                                            setModalRetailPrice1(true);
-                                                                            setDataModal(item.retailPrice);
+                                                                            setModalWholesalePrice1(true);
+                                                                            setDataModal(item.wholesalePrice);
                                                                             setIndexVariant(index);
                                                                         }}
                                                                     >
@@ -385,34 +536,34 @@ export const ItemVariant = memo(
                                                                         >
                                                                             <View style={{ flex: 1 }}>
                                                                                 <Text
-                                                                                    tx={"productScreen.priceRetail"}
+                                                                                    tx={"productScreen.priceWholesale"}
                                                                                     style={styles.textTitleViewPrice}
                                                                                 />
-                                                                                {item.retailPrice?.length > 0 &&
-                                                                                    item.retailPrice?.length !== 1 ? (
+                                                                                {item.wholesalePrice?.length > 0 &&
+                                                                                    item.wholesalePrice?.length !== 1 ? (
                                                                                     <Text
-                                                                                        text={convertAttributeRetailPrice(
+                                                                                        text={convertAttributeWholesalePrice(
                                                                                             props.dataCreateProduct,
                                                                                             index
                                                                                         )}
                                                                                         numberOfLines={1}
                                                                                         style={styles.textTextField}
                                                                                     />
-                                                                                ) : item.retailPrice?.length > 0 &&
-                                                                                    item.retailPrice?.length === 1 ? (
+                                                                                ) : item.wholesalePrice?.length > 0 &&
+                                                                                    item.wholesalePrice?.length === 1 ? (
                                                                                     <Text
                                                                                         text={
                                                                                             vendorStore.checkSeparator ===
                                                                                                 "DOTS"
                                                                                                 ? formatCurrency(
                                                                                                     removeNonNumeric(
-                                                                                                        item.retailPrice[0]
+                                                                                                        item.wholesalePrice[0]
                                                                                                             ?.price
                                                                                                     )
                                                                                                 )
                                                                                                 : addCommas(
                                                                                                     removeNonNumeric(
-                                                                                                        item.retailPrice[0]
+                                                                                                        item.wholesalePrice[0]
                                                                                                             ?.price
                                                                                                     )
                                                                                                 )
@@ -429,158 +580,7 @@ export const ItemVariant = memo(
                                                                             <Svgs.icon_caretRightDown />
                                                                         </View>
                                                                     </TouchableOpacity>
-                                                                    <Controller
-                                                                        control={control}
-                                                                        render={({
-                                                                            field: { onChange, value, onBlur },
-                                                                        }) => (
-                                                                            <TextField
-                                                                                maxLength={20}
-                                                                                keyboardType={"number-pad"}
-                                                                                labelTx={"productScreen.priceCapital"}
-                                                                                style={styles.viewTextFieldVariants}
-                                                                                inputStyle={{
-                                                                                    fontSize: fontSize.size16,
-                                                                                    fontWeight: "500",
-                                                                                }}
-                                                                                value={value}
-                                                                                onBlur={onBlur}
-                                                                                RightIconClear={Svgs.icon_delete2}
-                                                                                // error={errors?.priceRetail?.message}
-                                                                                onClearText={() => onChange("")}
-                                                                                valueInput={vendorStore.checkSeparator === "DOTS"
-                                                                                    ? formatCurrency(
-                                                                                        removeNonNumeric(value)
-                                                                                    )
-                                                                                    : addCommas(removeNonNumeric(value))}
-                                                                                onChangeText={(value) => {
-                                                                                    onChange(
-                                                                                        vendorStore.checkSeparator ===
-                                                                                            "DOTS"
-                                                                                            ? formatCurrency(
-                                                                                                removeNonNumeric(value)
-                                                                                            )
-                                                                                            : addCommas(
-                                                                                                removeNonNumeric(value)
-                                                                                            )
-                                                                                    );
-                                                                                    item.costPrice = value;
-                                                                                }}
-                                                                                placeholder="0.000"
-                                                                                labelDolphin
-                                                                            />
-                                                                        )}
-                                                                        defaultValue={item.costPrice?.toString()}
-                                                                        name={`costPrice-${index}`}
-                                                                    />
-                                                                    <Controller
-                                                                        control={control}
-                                                                        render={({
-                                                                            field: { onChange, value, onBlur },
-                                                                        }) => (
-                                                                            <TextField
-                                                                                maxLength={20}
-                                                                                keyboardType={"number-pad"}
-                                                                                labelTx={"productScreen.priceList"}
-                                                                                style={styles.viewTextFieldVariants}
-                                                                                inputStyle={{
-                                                                                    fontSize: fontSize.size16,
-                                                                                    fontWeight: "500",
-                                                                                }}
-                                                                                value={value}
-                                                                                onBlur={onBlur}
-                                                                                RightIconClear={Svgs.icon_delete2}
-                                                                                // error={errors?.priceRetail?.message}
-                                                                                onClearText={() => onChange("")}
-                                                                                valueInput={vendorStore.checkSeparator === "DOTS"
-                                                                                    ? formatCurrency(
-                                                                                        removeNonNumeric(value)
-                                                                                    )
-                                                                                    : addCommas(removeNonNumeric(value))}
-                                                                                onChangeText={(value) => {
-                                                                                    onChange(
-                                                                                        vendorStore.checkSeparator ===
-                                                                                            "DOTS"
-                                                                                            ? formatCurrency(
-                                                                                                removeNonNumeric(value)
-                                                                                            )
-                                                                                            : addCommas(
-                                                                                                removeNonNumeric(value)
-                                                                                            )
-                                                                                    );
-                                                                                    item.listPrice = value;
-                                                                                }}
-                                                                                placeholder="0.000"
-                                                                                labelDolphin
-                                                                            />
-                                                                        )}
-                                                                        defaultValue={item.listPrice?.toString()}
-                                                                        name={`listPrice-${index}`}
-                                                                    />
-                                                                </View>
-                                                                {/* : null} */}
-                                                                {/* {props.valueSale === true ? */}
-                                                                <TouchableOpacity
-                                                                    style={styles.viewBtnPriceVariants}
-                                                                    onPress={() => {
-                                                                        setModalWholesalePrice1(true);
-                                                                        setDataModal(item.wholesalePrice);
-                                                                        setIndexVariant(index);
-                                                                    }}
-                                                                >
-                                                                    <View
-                                                                        style={{
-                                                                            flexDirection: "row",
-                                                                            alignItems: "center",
-                                                                        }}
-                                                                    >
-                                                                        <View style={{ flex: 1 }}>
-                                                                            <Text
-                                                                                tx={"productScreen.priceWholesale"}
-                                                                                style={styles.textTitleViewPrice}
-                                                                            />
-                                                                            {item.wholesalePrice?.length > 0 &&
-                                                                                item.wholesalePrice?.length !== 1 ? (
-                                                                                <Text
-                                                                                    text={convertAttributeWholesalePrice(
-                                                                                        props.dataCreateProduct,
-                                                                                        index
-                                                                                    )}
-                                                                                    numberOfLines={1}
-                                                                                    style={styles.textTextField}
-                                                                                />
-                                                                            ) : item.wholesalePrice?.length > 0 &&
-                                                                                item.wholesalePrice?.length === 1 ? (
-                                                                                <Text
-                                                                                    text={
-                                                                                        vendorStore.checkSeparator ===
-                                                                                            "DOTS"
-                                                                                            ? formatCurrency(
-                                                                                                removeNonNumeric(
-                                                                                                    item.wholesalePrice[0]
-                                                                                                        ?.price
-                                                                                                )
-                                                                                            )
-                                                                                            : addCommas(
-                                                                                                removeNonNumeric(
-                                                                                                    item.wholesalePrice[0]
-                                                                                                        ?.price
-                                                                                                )
-                                                                                            )
-                                                                                    }
-                                                                                    style={styles.textTextField}
-                                                                                />
-                                                                            ) : (
-                                                                                <Text
-                                                                                    text="0.000 - 0.000"
-                                                                                    style={styles.textTextFieldNoData}
-                                                                                />
-                                                                            )}
-                                                                        </View>
-                                                                        <Svgs.icon_caretRightDown />
-                                                                    </View>
-                                                                </TouchableOpacity>
-                                                                {/* : null} */}
+                                                                    : null}
                                                             </View>
                                                         </View>
                                                     </ScrollView>

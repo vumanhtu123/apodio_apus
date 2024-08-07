@@ -100,7 +100,7 @@ export const ProductScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
       />
       <View style={{ flex: 1, backgroundColor: colors.aliceBlue }}>
-        {activeTab === "product" ? (
+        {Object.keys(company).length !== 0 ? (activeTab === "product" ? (
           <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(8), flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white }}>
             <Svgs.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
             <View style={{ marginHorizontal: scaleWidth(6) }}>
@@ -108,7 +108,7 @@ export const ProductScreen: FC = () => {
               <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{company.phoneNumber}</Text>
             </View>
           </View>
-        ) : null}
+        ) : null) : null}
         <View style={styles.btnTab}>
           <View style={styles.rowBtnTab}>
             {btnTab.map((item, index) => {
@@ -146,6 +146,7 @@ export const ProductScreen: FC = () => {
             onClearSearch={handleClearSearch}
             isGridView={isGridView}
             vendorId={company.id}
+            company={company}
           />
         ) : (
           <CategoryList

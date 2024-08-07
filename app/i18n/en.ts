@@ -62,7 +62,7 @@ const en = {
   txtDialog: {
     txt_title_dialog: "Thông báo",
     content_exit_dialog: "Bạn có chắc chắn muốn thoát?",
-    settings: "Settings",
+    settings: "Cài đặt",
     delete_variant: "Bạn có muốn xóa biến thể này?",
     permission_allow: "Permission allow",
     allow_permission_in_setting: "Allow permission in setting",
