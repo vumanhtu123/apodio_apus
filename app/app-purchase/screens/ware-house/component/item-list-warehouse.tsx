@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import en from "../../../../i18n/en";
 import FastImage from "react-native-fast-image";
 import Images from "../../../../../assets/index";
+import { translate } from "../../../../i18n";
 
 interface ItemList {
   id: number;
@@ -66,8 +67,8 @@ const ItemListWareHouse: React.FC<{ item: ItemList }> = ({ item }) => {
               color: item?.state === "APPROVED" ? colors.navyBlue : "#9EA6B3",
             }}>
             {item?.state === "APPROVED"
-              ? en.wareHouse.isActive
-              : en.wareHouse.save}
+              ? translate("wareHouse.isActive")
+              : translate("wareHouse.save")}
           </Text>
         </View>
       </View>

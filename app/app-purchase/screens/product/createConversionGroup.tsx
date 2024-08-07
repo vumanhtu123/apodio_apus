@@ -287,7 +287,7 @@ export const CreateConversionGroup: FC = observer(
                 isImportant={true}
               />
             )}
-            rules={{ required: en.productScreen.attributeGroupNameIsRequired }}
+            rules={{ required: translate("productScreen.attributeGroupNameIsRequired") }}
           />
           <InputSelect
             titleTx={"productDetail.originUnit"}

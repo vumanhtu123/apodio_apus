@@ -5,8 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Svgs } from '../../../../../../assets/svgs';
 import ModalCreateClientFromNumber from './modal-create-client';
 import Modal from 'react-native-modal'
-import en from '../../../../../i18n/en';
 import { Text } from '../../../../../components';
+import { translate } from '../../../../../i18n';
 
 
 interface ModalProps {
@@ -31,14 +31,14 @@ const SelectFilterModal: FC<ModalProps> = ({ isVisible, setIsVisible, openCreate
 
 
     const sortOptions = [
-        { type: 'alphabetAsc', label: en.ClientScreen.aToZ },
-        { type: 'alphabetDesc', label: en.ClientScreen.zToA },
-        { type: 'createdDateNCC', label: en.ClientScreen.byCreationDate },
+        { type: 'alphabetAsc', label: translate("ClientScreen.aToZ") },
+        { type: 'alphabetDesc', label: translate("ClientScreen.zToA") },
+        { type: 'createdDateNCC', label: translate("ClientScreen.byCreationDate") },
     ];
 
     const groupOptions = [
-        { type: 'clientBad', label: en.ClientScreen.customersInHanoiArea },
-        { type: 'clientGoood', label: en.ClientScreen.customersInDaNangArea },
+        { type: 'clientBad', label: translate("ClientScreen.customersInHanoiArea") },
+        { type: 'clientGoood', label: translate("ClientScreen.customersInDaNangArea") },
 
     ];
 

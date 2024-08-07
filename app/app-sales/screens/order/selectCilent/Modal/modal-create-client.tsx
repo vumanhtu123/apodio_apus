@@ -97,7 +97,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                     title: translate("txtDialog.txt_title_dialog"),
                     button: '',
                     button2: translate("common.ok"),
-                    textBody: en.ClientScreen.createClientSuccess,
+                    textBody: translate("ClientScreen.createClientSuccess"),
                     closeOnOverlayTap: false,
                     onPressButton: () => {
                         setShowLoading(false)
@@ -131,8 +131,8 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
     }
 
     const dataFindClient = [
-        { id: 1, title: en.ClientScreen.individual },
-        { id: 2, title: en.ClientScreen.organization },
+        { id: 1, title: translate("ClientScreen.individual") },
+        { id: 2, title: translate("ClientScreen.organization") },
 
     ]
 
@@ -229,7 +229,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
                     />
                 )}
                 rules={{
-                    required: en.ClientScreen.pleaseInputPhoneNumber
+                    required: translate("ClientScreen.pleaseInputPhoneNumber")
                 }}
             />
 
@@ -262,13 +262,13 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
 
                         }}
                         isImportant
-                        placeholder={en.ClientScreen.example}
+                        placeholder={translate("ClientScreen.example")}
                         RightIconClear={Svgs.icon_delete2}
                         error={errors?.NameClient?.message}
                     />
                 )}
                 rules={{
-                    required: en.ClientScreen.pleaseInputName
+                    required: translate("ClientScreen.pleaseInputName")
                 }}
             />
 

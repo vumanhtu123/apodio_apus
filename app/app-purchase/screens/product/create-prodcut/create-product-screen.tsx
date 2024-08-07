@@ -305,14 +305,14 @@ export const ProductCreateScreen: FC = (item) => {
     if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {
         type: "validate",
-        message: en.productScreen.checkIdSUK,
+        message: translate("productScreen.checkIdSUK"),
       });
       return
     }
     if (data.productName.trim() === "") {
       methods.setError("productName", {
         type: "validate",
-        message: en.productScreen.pleaseEnterInformation,
+        message: translate("productScreen.pleaseEnterInformation"),
       });
       return
     }
@@ -759,35 +759,35 @@ export const ProductCreateScreen: FC = (item) => {
             </View>
           </View>
           {/* {valueSale === true ? ( */}
-            <View
-              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
-            >
-              <View style={styles.viewViewDetail}>
-                <Text
-                  tx={"createProductScreen.infoSupplier"}
-                  style={styles.textTitleView}
-                />
-                <TouchableOpacity
-                  onPress={() => goToChooseSupplierScreen()}
-                  style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}
-                >
-                  {selectedIds?.length > 0 ? (
-                    <Text style={styles.textWeight400Black}>
-                      {selectedIds.length + " " + translate("createProductScreen.supplier")}
-                    </Text>
-                  ) : (
-                    <Text
-                      tx={"createProductScreen.noSelectSupplier"}
-                      style={styles.textWeight400Dolphin}
-                    />
-                  )}
-                  <Svgs.icon_caretRight
-                    width={scaleWidth(16)}
-                    height={scaleHeight(16)}
+          <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
+          >
+            <View style={styles.viewViewDetail}>
+              <Text
+                tx={"createProductScreen.infoSupplier"}
+                style={styles.textTitleView}
+              />
+              <TouchableOpacity
+                onPress={() => goToChooseSupplierScreen()}
+                style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}
+              >
+                {selectedIds?.length > 0 ? (
+                  <Text style={styles.textWeight400Black}>
+                    {selectedIds.length + " " + translate("createProductScreen.supplier")}
+                  </Text>
+                ) : (
+                  <Text
+                    tx={"createProductScreen.noSelectSupplier"}
+                    style={styles.textWeight400Dolphin}
                   />
-                </TouchableOpacity>
-              </View>
+                )}
+                <Svgs.icon_caretRight
+                  width={scaleWidth(16)}
+                  height={scaleHeight(16)}
+                />
+              </TouchableOpacity>
             </View>
+          </View>
           {/* ) : null} */}
           <View
             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}

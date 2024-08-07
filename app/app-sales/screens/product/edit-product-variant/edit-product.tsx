@@ -549,7 +549,7 @@ export const ProductEditScreen: FC = (item) => {
   const submitAdd = async (data: any) => {
     console.log('dataInput------------', data)
     if (data.productName.trim() === "") {
-      methods.setError("productName", { type: 'validate', message: en.productScreen.pleaseEnterInformation })
+      methods.setError("productName", { type: 'validate', message: translate("productScreen.pleaseEnterInformation") })
       return
     }
     if (uomId.id === 0) {

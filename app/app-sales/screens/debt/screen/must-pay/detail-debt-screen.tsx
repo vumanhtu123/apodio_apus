@@ -27,7 +27,8 @@ import data from "../../../../../components/svg-icon/data";
 import CustomCalendar from "../../../../../components/calendar";
 import moment from "moment";
 import { ModalPay } from "../../component/modalPay";
-import { ModalExchange } from "../../component/modalExchange";
+import { translate } from "../../../../../i18n";
+
 
 export const DetailDebtScreen: FC<
   StackScreenProps<NavigatorParamList, "detailDebt">
@@ -187,7 +188,7 @@ export const DetailDebtScreen: FC<
           moment(makeDateE).format("DD/MM/YYYY")
         }
         headerInput={true}
-        searchText={en.NCCScreen.nameSuppliers}
+        searchText={translate("NCCScreen.nameSuppliers")}
       />
       <LinearGradient
         start={{ x: 0, y: 1 }}

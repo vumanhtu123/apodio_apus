@@ -66,13 +66,13 @@ const ProductDetailsSection = ({
                     value={
                         dataClassification.saleOk === true &&
                             dataClassification.purchaseOk === false
-                            ? en.productScreen.canSell
+                            ? translate("productScreen.canSell")
                             : dataClassification.purchaseOk === true &&
                                 dataClassification.saleOk === false
-                                ? en.productScreen.canBuy
+                                ? translate("productScreen.canBuy")
                                 : dataClassification.saleOk === true &&
                                     dataClassification.purchaseOk === true
-                                    ? en.productScreen.canSellOrBuy
+                                    ? translate("productScreen.canSellOrBuy")
                                     : null
                     }
                 />

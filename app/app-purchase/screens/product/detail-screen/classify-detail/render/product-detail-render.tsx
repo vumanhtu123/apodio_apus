@@ -6,7 +6,9 @@ import { Svgs } from '../../../../../../../assets/svgs';
 import { styles } from '../styles';
 import { Text } from '../../../../../../components';
 import { commasToDots, formatCurrency, formatVND } from '../../../../../utils/validate';
-import en from '../../../../../../i18n/en';
+import { translate } from '../../../../../../i18n';
+
+
 
 const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
   const [showRetailPrice, setShowRetailPrice] = useState(false);
@@ -34,11 +36,11 @@ const ProductDetails = ({ dataClassification, getLabelByList }: any) => {
           labelTx="detailScreen.status"
           value={
             dataClassification.saleOk === true && dataClassification.purchaseOk === false
-              ? en.productScreen.canSell
+              ? translate("productScreen.canSell")
               : dataClassification.purchaseOk === true && dataClassification.saleOk === false
-                ? en.productScreen.canBuy
+                ? translate("productScreen.canBuy")
                 : dataClassification.saleOk === true && dataClassification.purchaseOk === true
-                  ? en.productScreen.canSellOrBuy
+                  ? translate("productScreen.canSellOrBuy")
                   : null
           }
         />

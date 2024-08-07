@@ -19,7 +19,8 @@ import { Numpad } from "../component/num-pad-component";
 import CustomCalendar from "../../../../components/calendar";
 import { ClassifyModal } from "../classify-modal";
 import { FundsModal } from "../funds-modal";
-import en from "../../../../i18n/en";
+import { translate } from "../../../../i18n";
+
 
 export const RevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "addRevenueScreen">
@@ -53,8 +54,8 @@ export const RevenueScreen: FC<
   } = useForm<FromValue>();
 
   const dataTaskBar = [
-    { name: en.revenueAndExpenditure.unpaid },
-    { name: en.revenueAndExpenditure.paid },
+    { name: translate("revenueAndExpenditure.unpaid") },
+    { name: translate("revenueAndExpenditure.paid") },
   ];
 
   const open = () => {
@@ -133,7 +134,7 @@ export const RevenueScreen: FC<
             />
           )}
           rules={{
-            required: en.analysis.pleaseEnterMoney,
+            required: translate("analysis.pleaseEnterMoney"),
           }}
         />
       </TouchableOpacity>
