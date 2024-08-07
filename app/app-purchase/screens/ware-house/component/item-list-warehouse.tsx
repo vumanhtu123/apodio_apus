@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import en from "../../../../i18n/en";
 import FastImage from "react-native-fast-image";
 import Images from "../../../../../assets/index";
-import { translate } from "../../../i18n";
+import { translate } from "../../../../i18n";
 
 interface ItemList {
   id: number;

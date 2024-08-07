@@ -19,7 +19,8 @@ import en from "../../../../i18n/en";
 import CustomCalendar from "../../../../components/calendar";
 import { ClassifyModal } from "../classify-modal";
 import { FundsModal } from "../funds-modal";
-import { translate } from "../../../i18n";
+import { translate } from "../../../../i18n";
+
 
 export const ExpenseScreen: FC<
   StackScreenProps<NavigatorParamList, "expenseScreen">

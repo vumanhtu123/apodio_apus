@@ -8,7 +8,8 @@ import { Platform } from "react-native";
 import { useStores } from "../models";
 import en from "../../i18n/en";
 import { getCompanyInfo } from "./storage/storage";
-import { translate } from "../i18n";
+import { translate } from "../../i18n";
+
 
 // import en from "../i18n/en";
 

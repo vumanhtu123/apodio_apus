@@ -29,7 +29,8 @@ import moment from "moment";
 import ItemListTransaction from "../../component/itemListTransaction";
 import ItemListNCC from "../../component/itemListNCC";
 import { ModalPayReceivable } from "../../component/modalPayReceivable";
-import { translate } from "../../../../i18n";
+import { translate } from "../../../../../i18n";
+
 
 export const ReceivableScreen: FC<
   StackScreenProps<NavigatorParamList, "receivable">

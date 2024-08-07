@@ -21,7 +21,8 @@ import { Styles } from "../styles";
 import { ItemListMustPay } from "../../component/itemListMustPay";
 import en from "../../../../../i18n/en";
 import { ModalFilter } from "../../component/modalFilter";
-import { translate } from "../../../../i18n";
+import { translate } from "../../../../../i18n";
+;
 
 export const MustPayScreen: FC<
   StackScreenProps<NavigatorParamList, "mustPay">

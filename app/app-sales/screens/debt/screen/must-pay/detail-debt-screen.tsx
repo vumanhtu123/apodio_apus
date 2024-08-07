@@ -27,8 +27,8 @@ import data from "../../../../../components/svg-icon/data";
 import CustomCalendar from "../../../../../components/calendar";
 import moment from "moment";
 import { ModalPay } from "../../component/modalPay";
-import { ModalExchange } from "../../component/modalExchange";
-import { translate } from "../../../../i18n";
+import { translate } from "../../../../../i18n";
+
 
 export const DetailDebtScreen: FC<
   StackScreenProps<NavigatorParamList, "detailDebt">

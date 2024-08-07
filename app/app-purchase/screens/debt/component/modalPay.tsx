@@ -10,7 +10,8 @@ import { Controller, useForm } from 'react-hook-form'
 import en from '../../../../i18n/en'
 import { InputSelect } from '../../../../components/input-select/inputSelect'
 import { id } from 'date-fns/locale'
-import { translate } from '../../../i18n'
+import { translate } from '../../../../i18n'
+
 interface propsModal {
     isVisible?: boolean,
     setIsVisible?: any,
