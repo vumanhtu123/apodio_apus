@@ -37,6 +37,16 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
     setIsLoading(false)
   };
   useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (productStore.reloadProductScreen === true) {
+        handleGetCategory().then(() => {
+          productStore.setReloadProductScreen(false);
+        });
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
+  useEffect(() => {
     handleSubmitSearchCategory()
   }, [searchCategory])
   const handleGetCategory = async (searchCategory?: any) => {
@@ -76,7 +86,7 @@ const CategoryListComponent = ({ activeTab, searchCategory, onClearSearch }: any
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
-    } 
+    }
   };
   const handleEditCategory = (category: any) => {
     // console.log('czxcxzw',category)

@@ -28,4 +28,5 @@ export interface InputSelectProps {
   onRefresh?: any
   isRefreshing?: any
   setIsRefreshing?: any
+  normalInputSelect?: any
 }
