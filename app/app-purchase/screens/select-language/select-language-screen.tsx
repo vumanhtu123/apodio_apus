@@ -35,7 +35,6 @@ export const SelectLanguageScreen: FC<
 
   const handleLanguageSelection = (language: any) => {
     _onChangeLanguage(language);
-    setVisible(!language);
   };
 
   // useCallback(()=>{
@@ -61,6 +60,7 @@ export const SelectLanguageScreen: FC<
       <TouchableOpacity
         onPress={() => {
           console.log("select vietnam", visible);
+          setVisible(true)
           navigate("introduction");
           handleLanguageSelection(!visible);
         }}
@@ -68,7 +68,7 @@ export const SelectLanguageScreen: FC<
           width: "100%",
           height: 56,
           borderRadius: 8,
-          backgroundColor: visible ? colors.navyBlue : colors.gray,
+          backgroundColor: visible == true ? colors.navyBlue : colors.gray,
           padding: 12,
           justifyContent: "center",
           marginVertical: 20,
@@ -82,7 +82,7 @@ export const SelectLanguageScreen: FC<
       <TouchableOpacity
         onPress={() => {
           // handleLanguageSelection(visibel)
-          setVisible(!visible);
+          setVisible(false);
           navigate("introduction");
           handleLanguageSelection(visible);
           console.log("select english", visible);
@@ -91,7 +91,7 @@ export const SelectLanguageScreen: FC<
           width: "100%",
           height: 56,
           borderRadius: 8,
-          backgroundColor: !visible ? colors.navyBlue : colors.gray,
+          backgroundColor: visible == false ? colors.navyBlue : colors.gray,
           padding: 12,
           justifyContent: "center",
         }}>

@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    elevation: 10, // Đối với Android
+    elevation: 1, // Đối với Android
     // marginLeft:15,
     // marginRight:15
     
@@ -208,7 +208,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 8,
-    elevation: 5,
+    elevation: 1,
    
     
   
