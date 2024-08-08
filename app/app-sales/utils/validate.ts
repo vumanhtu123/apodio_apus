@@ -8,6 +8,8 @@ import { Platform } from "react-native";
 import { useStores } from "../models";
 import en from "../../i18n/en";
 import { getCompanyInfo } from "./storage/storage";
+import { translate } from "../../i18n";
+
 
 // import en from "../i18n/en";
 
@@ -584,11 +586,11 @@ export function checkPhoneNumber(value: string) {
 
   if (value.startsWith("03") || value.startsWith("05") || value.startsWith("07") || value.startsWith("08") || value.startsWith("09")) {
 
-    return value.length === 10 || en.ClientScreen.phoneNumber10
+    return value.length === 10 || translate("ClientScreen.phoneNumber10")
   } else if (value.startsWith("02")) {
-    return value.length === 11 || en.ClientScreen.startNumber02
+    return value.length === 11 || translate("ClientScreen.startNumber02")
   } else {
-    return en.ClientScreen.formatError
+    return translate("ClientScreen.formatError")
   }
 
 }

@@ -305,14 +305,14 @@ export const ProductCreateScreen: FC = (item) => {
     if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {
         type: "validate",
-        message: en.productScreen.checkIdSUK,
+        message: translate("productScreen.checkIdSUK"),
       });
       return
     }
     if (data.productName.trim() === "") {
       methods.setError("productName", {
         type: "validate",
-        message: en.productScreen.pleaseEnterInformation,
+        message: translate("productScreen.pleaseEnterInformation"),
       });
       return
     }

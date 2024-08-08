@@ -8,16 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* BaseAppRNTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BaseAppRNTests.m */; };
-		0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		219CEB30F18C4A66928D3B90 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD6FB0BE81448F9B8C30A37 /* Inter-Black.ttf */; };
 		2A49F91A487A4FAC9B279193 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3194A19E9F384C169161DE43 /* Inter-Regular.ttf */; };
 		4187739582BD4B70B86C150A /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 417F95C6F7E9412D8EBD484A /* Inter-Thin.ttf */; };
-		4D7801902C1EF8C3009DA328 /* PrintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D78018F2C1EF8C3009DA328 /* PrintManager.m */; };
-		4D7801912C1EF8C3009DA328 /* PrintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D78018F2C1EF8C3009DA328 /* PrintManager.m */; };
-		4D7801922C1EF8C3009DA328 /* PrintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D78018F2C1EF8C3009DA328 /* PrintManager.m */; };
 		4DD454C22C12AE7C00F7410B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 4DD454C12C12AE7C00F7410B /* main.jsbundle */; };
 		4DD454C32C12AE7C00F7410B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 4DD454C12C12AE7C00F7410B /* main.jsbundle */; };
 		4DD454C42C12AE7C00F7410B /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 4DD454C12C12AE7C00F7410B /* main.jsbundle */; };
@@ -47,6 +44,9 @@
 		4DDCF4062BDA4813006F3C8E /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3194A19E9F384C169161DE43 /* Inter-Regular.ttf */; };
 		4DDCF4072BDA4813006F3C8E /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 213D3F8D3DB2461A9BAFBE7D /* Inter-SemiBold.ttf */; };
 		4DDCF4082BDA4813006F3C8E /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 417F95C6F7E9412D8EBD484A /* Inter-Thin.ttf */; };
+		4DF1A1832C62264300E950C4 /* PrintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1A1822C62264300E950C4 /* PrintManager.m */; };
+		4DF1A1842C62264300E950C4 /* PrintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1A1822C62264300E950C4 /* PrintManager.m */; };
+		4DF1A1852C62264300E950C4 /* PrintManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4DF1A1822C62264300E950C4 /* PrintManager.m */; };
 		527E72E11ECC55C47A128D47 /* libPods-BaseAppRN-BaseAppRNTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D02272469E8A0A45AF74A3BF /* libPods-BaseAppRN-BaseAppRNTests.a */; };
 		59FEC3030CF8E06D3D2A6581 /* libPods-BaseAppRN-BaseAppRN-Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61D983BD91503DE6E9AF5BD1 /* libPods-BaseAppRN-BaseAppRN-Dev.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -84,13 +84,13 @@
 		3194A19E9F384C169161DE43 /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
 		417F95C6F7E9412D8EBD484A /* Inter-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Thin.ttf"; path = "../assets/fonts/Inter-Thin.ttf"; sourceTree = "<group>"; };
 		4226C2A85160AE554A8A8CCA /* libPods-BaseAppRN.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaseAppRN.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4D78018E2C1EF8C3009DA328 /* PrintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrintManager.h; path = "../../../Super-app/demoPrint2/ios/PrintManager.h"; sourceTree = "<group>"; };
-		4D78018F2C1EF8C3009DA328 /* PrintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrintManager.m; path = "../../../Super-app/demoPrint2/ios/PrintManager.m"; sourceTree = "<group>"; };
 		4DD454C12C12AE7C00F7410B /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		4DDCF3F42BDA47FC006F3C8E /* BaseAppRN-Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BaseAppRN-Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DDCF3F52BDA47FD006F3C8E /* BaseAppRN stage-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BaseAppRN stage-Info.plist"; path = "/Users/ngoandang/Desktop/React-Native/apo_merchant_staff_v2/ios/BaseAppRN stage-Info.plist"; sourceTree = "<absolute>"; };
 		4DDCF40F2BDA4813006F3C8E /* BaseAppRN-Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BaseAppRN-Stage.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4DDCF4102BDA4814006F3C8E /* BaseAppRN dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BaseAppRN dev-Info.plist"; path = "/Users/ngoandang/Desktop/React-Native/apo_merchant_staff_v2/ios/BaseAppRN dev-Info.plist"; sourceTree = "<absolute>"; };
+		4DF1A1812C62264200E950C4 /* PrintManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrintManager.h; sourceTree = "<group>"; };
+		4DF1A1822C62264300E950C4 /* PrintManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrintManager.m; sourceTree = "<group>"; };
 		51C562174F4ED22E11284FCF /* Pods-BaseAppRN-BaseAppRN-Stage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseAppRN-BaseAppRN-Stage.release.xcconfig"; path = "Target Support Files/Pods-BaseAppRN-BaseAppRN-Stage/Pods-BaseAppRN-BaseAppRN-Stage.release.xcconfig"; sourceTree = "<group>"; };
 		52F893A372FD42BEB1C6181B /* Inter-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.ttf"; path = "../assets/fonts/Inter-Bold.ttf"; sourceTree = "<group>"; };
 		61D983BD91503DE6E9AF5BD1 /* libPods-BaseAppRN-BaseAppRN-Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaseAppRN-BaseAppRN-Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,7 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
 				E7BE3531A74C7447C312AA01 /* libPods-BaseAppRN.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,8 +169,8 @@
 		13B07FAE1A68108700A75B9A /* BaseAppRN */ = {
 			isa = PBXGroup;
 			children = (
-				4D78018E2C1EF8C3009DA328 /* PrintManager.h */,
-				4D78018F2C1EF8C3009DA328 /* PrintManager.m */,
+				4DF1A1812C62264200E950C4 /* PrintManager.h */,
+				4DF1A1822C62264300E950C4 /* PrintManager.m */,
 				4DD454C12C12AE7C00F7410B /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -742,7 +742,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
-				4D7801902C1EF8C3009DA328 /* PrintManager.m in Sources */,
+				4DF1A1832C62264300E950C4 /* PrintManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -752,7 +752,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DDCF3DE2BDA47FC006F3C8E /* AppDelegate.mm in Sources */,
-				4D7801912C1EF8C3009DA328 /* PrintManager.m in Sources */,
+				4DF1A1842C62264300E950C4 /* PrintManager.m in Sources */,
 				4DDCF3DF2BDA47FC006F3C8E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -762,7 +762,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DDCF3F92BDA4813006F3C8E /* AppDelegate.mm in Sources */,
-				4D7801922C1EF8C3009DA328 /* PrintManager.m in Sources */,
+				4DF1A1852C62264300E950C4 /* PrintManager.m in Sources */,
 				4DDCF3FA2BDA4813006F3C8E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1060,10 +1060,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1131,10 +1128,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

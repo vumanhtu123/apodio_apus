@@ -48,6 +48,13 @@ export const styles = StyleSheet.create({
     paddingTop: scaleHeight(5),
     textAlign: "center",
   },
+  textMethod: {
+    color: colors.palette.neutral900,
+    fontSize: fontSize.size14,
+    fontWeight: "700",
+    lineHeight: 24,
+    textAlign: "left",
+  },
 
   textForgot: {
     color: colors.dodgerBlue2,
@@ -64,6 +71,23 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: scaleHeight(10),
+  },
+  viewModal: {
+    backgroundColor: colors.palette.neutral100,
+    borderRadius: 8,
+    // paddingBottom:scaleHeight(26),
+    paddingHorizontal:scaleHeight(14),
+    width: "100%",
+   
+  },
+  viewLineModal: {
+    alignSelf: "center",
+    backgroundColor: colors.veryLightGrey1,
+    borderRadius: 5,
+    height: 5,
+    marginBottom:scaleHeight(25),
+    marginTop:scaleHeight(8),
+    width: 68
   },
   viewForm: {
     backgroundColor: palette.neutral100,

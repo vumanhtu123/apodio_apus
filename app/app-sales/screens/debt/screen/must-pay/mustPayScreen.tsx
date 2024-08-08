@@ -21,6 +21,8 @@ import { Styles } from "../styles";
 import { ItemListMustPay } from "../../component/itemListMustPay";
 import en from "../../../../../i18n/en";
 import { ModalFilter } from "../../component/modalFilter";
+import { translate } from "../../../../../i18n";
+;
 
 export const MustPayScreen: FC<
   StackScreenProps<NavigatorParamList, "mustPay">
@@ -98,7 +100,7 @@ export const MustPayScreen: FC<
         RightIcon1={Svgs.ic_slider}
         btnRightStyle={{}}
         headerInput={true}
-        searchText={en.NCCScreen.nameSuppliers}
+        searchText={translate("NCCScreen.nameSuppliers")}
         onRightPress1={() => setIsVisible(true)}
       />
       <LinearGradient

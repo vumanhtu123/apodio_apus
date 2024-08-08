@@ -16,11 +16,9 @@ import { Color } from "../../../../components/dialog-notification/service";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { Svgs } from "../../../../../assets/svgs";
 import { observer } from "mobx-react-lite";
-import en from "../../../../i18n/en";
+import { translate } from "../../../../i18n";
 import { CustomModal } from "../../../../components/custom-modal";
-import { PlaceholderOrder } from "../../../../components/custom-placeholder/placeholder-detail/placeholder-order";
-import { PlaceholderList } from "../../../../components/custom-placeholder/placeholder-list/placeholder-list";
-import { PlaceholderListGrid } from "../../../../components/custom-placeholder/placeholder-list/placeholder-list-grid";
+
 
 export const TransferMoneyScreen: FC<
   StackScreenProps<NavigatorParamList, "transferMoneyScreen">
@@ -29,15 +27,15 @@ export const TransferMoneyScreen: FC<
   const [isVisible, setIsVisible] = useState(false);
 
   const dataDepositSource = [
-    { id: 1, title: en.revenueAndExpenditure.electronicWallet },
-    { id: 2, title: en.revenueAndExpenditure.cash },
-    { id: 3, title: en.revenueAndExpenditure.bank },
+    { id: 1, title: translate("revenueAndExpenditure.electronicWallet") },
+    { id: 2, title: translate("revenueAndExpenditure.cash") },
+    { id: 3, title: translate("revenueAndExpenditure.bank") },
   ];
   const dataListOfFundingSources = [
-    { id: 1, name: en.revenueAndExpenditure.cash },
-    { id: 2, name: en.revenueAndExpenditure.electronicWallet },
-    { id: 3, name: en.revenueAndExpenditure.bank },
-    { id: 4, name: en.revenueAndExpenditure.storeWallet },
+    { id: 1, name: translate("revenueAndExpenditure.cash") },
+    { id: 2, name: translate("revenueAndExpenditure.electronicWallet") },
+    { id: 3, name: translate("revenueAndExpenditure.bank") },
+    { id: 4, name: translate("revenueAndExpenditure.storeWallet") },
   ];
   const arrDepositSource = dataDepositSource.map((item) => {
     return {

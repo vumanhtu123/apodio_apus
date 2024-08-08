@@ -14,7 +14,8 @@ import {
 } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
 import { Header, Text } from "../../../../components";
-import en from "../../../../i18n/en";
+import { translate } from "../../../../i18n";
+
 
 export const CreateImportGoods: FC<
   StackScreenProps<NavigatorParamList, "createImportGoods">
@@ -115,7 +116,7 @@ export const CreateImportGoods: FC<
                   |
                 </Text>
                 <Text style={[Styles.txtItemWareHouse, { textAlign: "right" }]}>
-                  {en.ImprotGoodsBook.still}: {item.quantity}{" "}
+                  {translate("ImprotGoodsBook.still")}: {item.quantity}{" "}
                 </Text>
               </View>
             </View>

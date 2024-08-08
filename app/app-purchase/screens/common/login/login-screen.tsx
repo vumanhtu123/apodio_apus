@@ -20,6 +20,7 @@ import { styles } from "./styles";
 import { Svgs } from "../../../../../assets/svgs";
 import { LinearGradient } from "react-native-linear-gradient";
 import { getAccessToken } from "../../../utils/storage";
+import ModalSelectLanguage from "./modalSelectLanguage";
 
 export const LoginScreen: FC = observer(function LoginScreen(props) {
   // Pull in one of our MST stores
@@ -34,7 +35,12 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   const [emptyInputData, setEmptyInputData] = useState<boolean>(true);
   const [userName, setUserName] = useState<string>("apodio@gmail.com");
   const [password, setPassWord] = useState<string>("system@123456");
-  // Pull in navigation via hook
+  const [isVisibleSelectLanguage, setIsVisibleSelectLanguage] = useState(false)
+  const [currentLanguage, setCurrentLanguage] = useState<{
+    img: React.JSX.Element
+    name: string
+  }[]>([{ name: "Tiếng việt", img: <Svgs.icon_VietNam /> }])
+  // Pull in navigation via hoo1k
   const navigation = useNavigation();
 
   console.log("login 2");
@@ -57,6 +63,10 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
       navigation.navigate("listCompany" as never);
     }
   };
+
+
+
+  console.log("data duoc chon 2", currentLanguage);
 
   return (
     // <ImageBackground source={Images.iconEmpty} style={styles.ROOT}>
@@ -184,13 +194,26 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               styles.viewLanguage,
               { height: Platform.OS === "android" ? 100 : null },
             ]}>
-            <TouchableOpacity
-              activeOpacity={1}
-              // onPress={() => _onChangeLanguage(LANGUAGE.TIMOLESTE)}
-              style={styles.viewFlag}>
-              <Svgs.icon_VietNam />
-              <Text style={styles.textFlag} tx={"loginScreen.vietNam"} />
-            </TouchableOpacity>
+
+            {
+              currentLanguage?.map((language) => {
+                return (
+
+                  <TouchableOpacity
+                    // activeOpacity={1}
+                    // onPress={() => _onChangeLanguage(LANGUAGE.TIMOLESTE)}
+                    onPress={() => setIsVisibleSelectLanguage(true)}
+                    style={styles.viewFlag}>
+                    {language.img}
+                    <Text style={styles.textFlag}  >
+                      {language.name}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })
+            }
+
+
             {/* <View style={{ width: scaleWidth(50) }} /> */}
             {/* <TouchableOpacity
               activeOpacity={1}
@@ -200,6 +223,18 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               <Text style={styles.textFlag} tx={"loginScreen.english"} />
             </TouchableOpacity> */}
           </View>
+
+          <ModalSelectLanguage
+            isVisible={isVisibleSelectLanguage}
+            setIsVisible={() => setIsVisibleSelectLanguage(false)}
+            // currentLanguage={currentLanguage}
+            onSelectLanguage={(data) => {
+              console.log('====================================');
+              console.log("data doan", data);
+              console.log('====================================');
+              setCurrentLanguage([{ name: data.name, img: data.icon }])
+            }} />
+
         </ScrollView>
       </KeyboardAvoidingView>
     </LinearGradient>

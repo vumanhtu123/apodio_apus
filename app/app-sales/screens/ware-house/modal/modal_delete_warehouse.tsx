@@ -34,7 +34,7 @@ export const ModalDeleteWareHouse = (props: Props) => {
                     title: translate("txtDialog.txt_title_dialog"),
                     button: '',
                     button2: translate("common.ok"),
-                    textBody: en.wareHouse.messengerSucces,
+                    textBody: translate("wareHouse.messengerSucces"),
                     closeOnOverlayTap: false,
                     onPressButton: () => {
                         console.log('doantesttt');
@@ -46,7 +46,7 @@ export const ModalDeleteWareHouse = (props: Props) => {
                 Dialog.show({
                     title: translate("productScreen.Notification"),
                     button: translate("common.ok"),
-                    textBody: data?.message + en.wareHouse.messengerFail,
+                    textBody: data?.message + translate("wareHouse.messengerFail"),
                     closeOnOverlayTap: false
                 })
             }
@@ -75,7 +75,7 @@ export const ModalDeleteWareHouse = (props: Props) => {
                         marginVertical: scaleHeight(10),
                         alignSelf: 'center'
                     }}
-                >{en.wareHouse.titleConfirm} {props.dataCodeWarehouse} {en.wareHouse.this} </Text>
+                >{translate("wareHouse.titleConfirm")} {props.dataCodeWarehouse} {translate("wareHouse.this")} </Text>
 
                 <Text
                     style={{
