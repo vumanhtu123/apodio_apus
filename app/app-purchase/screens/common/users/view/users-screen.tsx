@@ -85,6 +85,15 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     const auth = useAuth();
     const { authenticationStore } = useStores();
 
+    const _onChangeLanguage = useCallback(
+      (value: any) => {
+        console.log("onChangeLanguage", value);
+        setSelectLanguage(value);
+        value === true ? changeLanguage("en") : changeLanguage("fr");
+      },
+      [selectLanguage]
+    );
+
 
     const textData = [
       {
