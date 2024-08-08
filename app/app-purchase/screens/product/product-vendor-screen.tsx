@@ -95,6 +95,8 @@ export const ProductVendorScreen: FC<
       name: "productScreen",
     } as never);
     productStore.setSort([])
+    productStore.setSortCategory([])
+    productStore.setStatusTab('product')
     productStore.setCompany({
       id: null,
       name: '',
@@ -103,13 +105,15 @@ export const ProductVendorScreen: FC<
       avatarUrl: ""
     })
   };
-  const renderProductItem = ({ item, index }: any) => {
+  const renderProductItem = ({ item }: any) => {
     const handlePress = () => {
       navigation.navigate({
         name: "productScreen",
       } as never);
       productStore.setCompany(item)
       productStore.setSort([])
+      productStore.setSortCategory([])
+      productStore.setStatusTab('product')
     };
     return (
       <LinearGradient

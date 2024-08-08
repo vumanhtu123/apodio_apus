@@ -74,7 +74,7 @@ export const FilterScreen: FC = (item) => {
     const filterData = getFilterData();
     productStore.setSortCategory(Object.values(filterData));
     console.log(productStore.sortCategory);
-    // productStore.setReloadProductScreen(true)
+    productStore.setReloadProductScreen(true)
     navigation.navigate("productScreen" as never);
   };
   useEffect(() => {
