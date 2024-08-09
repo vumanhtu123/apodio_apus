@@ -99,7 +99,7 @@ export interface Ward {
 export interface Response1 {
   message: string;
   traceId: string;
-  data: Root1;
+  data: Root1[];
   errorCodes: ErrorCode[];
 }
 export type OrderListAddressResult =

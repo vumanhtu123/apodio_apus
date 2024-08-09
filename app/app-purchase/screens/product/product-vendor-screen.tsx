@@ -196,10 +196,11 @@ export const ProductVendorScreen: FC<
         onSearchValueChange={handleSearchValueChange}
         handleOnSubmitSearch={handleSubmitSearch}
       />
-      <Screen style={styles.ROOT} preset="fixed">
+      <View style={styles.ROOT}>
         <View
           style={{
             marginHorizontal: 16,
+            marginVertical: 16,
             flexDirection: "row",
             justifyContent: "space-between",
           }}>
@@ -221,7 +222,7 @@ export const ProductVendorScreen: FC<
               }}></Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 0.95, marginHorizontal: 16 }}>
+        <View style={{ flex: 1, marginHorizontal: 16 }}>
           <FlatList
             data={getList}
             showsVerticalScrollIndicator={false}
@@ -241,7 +242,7 @@ export const ProductVendorScreen: FC<
             renderItem={renderProductItem}
           />
         </View>
-      </Screen>
+      </View>
     </View>
   );
 });

@@ -322,21 +322,31 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
                 originAmount: items.minQuantity,
               };
             } else {
-              const newObject = items.uomGroup.uomGroupLineItems.filter(
+              const newObject = items.uomGroup?.uomGroupLineItems?.filter(
                 (item: any) => item.uomId === items.saleUom?.id
               );
-              const newAmount = Math.ceil(
-                items.minQuantity / newObject[0].conversionRate
-              );
-              return {
-                ...items,
-                amount: newAmount,
-                isSelect: false,
-                conversionRate: newObject[0].conversionRate,
-                originAmount: Math.ceil(
-                  newAmount * newObject[0].conversionRate
-                ),
-              };
+              if(newObject !== undefined){
+                const newAmount = Math.ceil(
+                  items.minQuantity / newObject[0].conversionRate 
+                );
+                return {
+                  ...items,
+                  amount: newAmount,
+                  isSelect: false,
+                  conversionRate: newObject[0].conversionRate,
+                  originAmount: Math.ceil(
+                    newAmount * newObject[0].conversionRate
+                  ),
+                };
+              }else{
+                return {
+                  ...items,
+                  amount: items.minQuantity,
+                  isSelect: false,
+                  conversionRate: 1,
+                  originAmount: items.minQuantity,
+                };
+              }
             }
           });
           const newArr1 = newArr.map((item: any) => {
@@ -710,7 +720,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
   };
   const [openSearch, setOpenSearch] = useState(true);
 
-  const flatListRef = useRef(null);
+  const flatListRef = useRef<any>(null);
   useEffect(() => {
     if (flatListRef.current) {
       flatListRef.current.scrollToOffset({ animated: true, offset: 0 });

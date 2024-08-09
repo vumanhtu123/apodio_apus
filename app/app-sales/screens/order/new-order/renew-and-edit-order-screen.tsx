@@ -140,7 +140,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
             ward: { id: 0, name: "" },
             address: "",
             isDefault: false,
-          });
+          } as any);
           orderStore.setDataAddress({
             id: 0,
             partnerId: 0,

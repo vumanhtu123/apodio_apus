@@ -37,7 +37,7 @@ export const SuccessScreen: FC = () => {
           }}
         />
       </View>
-      <View style={{}}>
+      <View style={{marginHorizontal: scaleWidth(16)}}>
         <TouchableOpacity
           onPress={() =>
             navigation.reset({

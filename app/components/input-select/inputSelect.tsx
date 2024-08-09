@@ -2,34 +2,27 @@ import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Dimensions,
   FlatList,
-  KeyboardAvoidingView,
-  Platform,
   RefreshControl,
   StyleSheet,
   TextInput,
   TextStyle,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
   ViewStyle
 } from "react-native";
-import Modal from "react-native-modal";
 import { Svgs } from "../../../assets/svgs";
 import { translate } from "../../i18n";
 import {
   colors,
   fontSize,
   margin,
-  padding,
   scaleHeight,
   scaleWidth,
-} from "../../app-purchase/theme";
+} from "../theme";
 import { Text } from "../text/text";
 import { InputSelectProps } from "./inputSelect.props";
 import { CustomModal } from "../custom-modal";
-import { ScrollView } from "react-native-gesture-handler";
 
 const ROOT: ViewStyle = {
   borderRadius: 8,
@@ -161,16 +154,20 @@ export function InputSelect(props: InputSelectProps) {
       }
     }
   };
+
   const onSubmitSearch = async () => {
-    // setShowLoading(true);
-    setFilteredData([])
-    await handleOnSubmitSearch(searchValue)
-      .then((result: any) => {
-        setShowLoading(false);
-      }).catch((error: any) => {
-        setShowLoading(false);
-      });
+    setShowLoading(true);
+    setFilteredData([]);
+    try {
+      await handleOnSubmitSearch(searchValue);
+    } catch (error) {
+      setShowLoading(false);
+    }finally {
+      setShowLoading(false);
+    }
   }
+
+
   const refreshItem = async () => {
     console.log('-----refreshItem-------')
     setIsRefreshing(true)
@@ -265,15 +262,8 @@ export function InputSelect(props: InputSelectProps) {
         )}
       </TouchableOpacity>
 
-      {/* <Modal
+      <CustomModal 
         isVisible={showModal}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        animationInTiming={500}
-        animationOutTiming={500}
-        onBackdropPress={() => { setShowModal(false) }}
-        style={{ margin: 0 }}> */}
-      <CustomModal isVisible={showModal}
         setIsVisible={() => { setShowModal(false) }}
         isHideKeyBoards={showModal}
         isVisibleLoading={showLoading}
@@ -377,8 +367,6 @@ export function InputSelect(props: InputSelectProps) {
           />
         </View>
       </CustomModal>
-      {/* </Modal> */}
-
     </View>
   );
 }

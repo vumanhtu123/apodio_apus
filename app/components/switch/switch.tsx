@@ -5,7 +5,7 @@ import {
   Easing,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {colors} from '../../app-purchase/theme';
+import {colors} from '../theme';
 import {SwitchProps} from './switch.props';
 
 // dimensions

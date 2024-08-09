@@ -8,7 +8,6 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
-// import { flagEnglish, flagTimoleste } from "../../theme/img"
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LANGUAGE } from "../../utils/enum";
 import { navigate, NavigatorParamList } from "../../../app-purchase/navigators";
@@ -48,10 +47,6 @@ export const SelectLanguageScreen: FC<
   //   _onChangeLanguage(language);
   //   // setVisible(!language);
   // };
-
-  // useCallback(()=>{
-  //   handleLanguageSelection
-  // },[visibel])
 
   return (
     <View

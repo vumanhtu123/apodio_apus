@@ -56,7 +56,7 @@ function App() {
     initialNavigationState,
     onNavigationStateChange,
     isRestored: isNavigationStateRestored,
-  } = useNavigationPersistence(storage, '');
+  } = useNavigationPersistence(storage, NAVIGATION_PERSISTENCE_KEY);
 
   const linking = {
     prefixes: [prefix],

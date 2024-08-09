@@ -1,7 +1,7 @@
 import React from "react"
 import { ScrollView, StyleSheet, View } from "react-native"
 import SkeletonPlaceholder from "react-native-skeleton-placeholder"
-import { scaleHeight, scaleWidth } from "../../../app-purchase/theme"
+import { scaleHeight, scaleWidth } from "../../theme"
 
 export const PlaceholderList = () => {
 

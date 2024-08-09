@@ -47,7 +47,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   const [dataVariant, setDataVariant] = useState<Content[]>([]);
   const [modalPrice, setModalPrice] = useState<any>(false);
   const refCarousel = useRef(null);
-  const productTemplateId = route?.params?.productTemplateId;
+  const {productTemplateId}: any = route?.params;
 
   const handleGetDetailProduct = async () => {
     try {
@@ -456,7 +456,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   };
 
   const handleAddToCartPrice = (data: any) => {
-    const newArr1 = dataVariant.map((items) => {
+    const newArr1 = dataVariant.map((items: any) => {
       if (items.id === data.id) {
         if (Number(items.amount) >= Number(items.minQuantity)) {
           return { ...data, isSelect: !data.isSelect };
@@ -470,7 +470,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
     setDataVariant(newArr1);
   };
   const handleAddToCart = (data: any) => {
-    const newArr1 = dataVariant.map((items) => {
+    const newArr1 = dataVariant.map((items: any) => {
       if (items.id === data.id) {
         if (items.amount !== 0) {
           return { ...data, isSelect: !data.isSelect };
@@ -844,6 +844,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 autoplay={false}
                 ref={refCarousel}
                 loop
+                vertical={false}
                 renderItem={({ item, index }: any) => (
                   <View>
                     <Image
@@ -864,9 +865,9 @@ export const SelectVariant: FC = observer(function SelectVariant() {
                 itemWidth={Dimensions.get("window").width - 32}
                 firstItem={activeSlide}
                 onSnapToItem={(index) => setActiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
+                // lockScrollWhileSnapping={true}
+                // enableMomentum={false}
+                // decelerationRate={0.5}
               />
               <Pagination
                 dotsLength={
