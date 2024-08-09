@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    elevation: 10, // Đối với Android
+    // elevation: 10, // Đối với Android
     // marginLeft:15,
     // marginRight:15
     
@@ -205,13 +205,10 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 16,
     marginTop: '14%',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0,
     shadowRadius: 8,
-    elevation: 5,
-   
-    
-  
+    // elevation: 1,
   },
   divider: {
     backgroundColor: colors.gray,

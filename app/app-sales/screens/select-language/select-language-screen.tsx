@@ -16,12 +16,14 @@ import { changeLanguage } from "../../../i18n";
 import Images from "../../../../assets/index";
 import { colors } from "../../theme";
 import { Text } from "../../../components";
+import { useNavigation } from "@react-navigation/native";
 
 export const SelectLanguageScreen: FC<
   StackScreenProps<NavigatorParamList, "selectLanguage">
 > = observer(function SelectLanguageScreen() {
   const [selectLanguage, setSelectLanguage] = useState(LANGUAGE.ENGLISH);
   const { top, bottom } = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   const _onChangeLanguage = useCallback(
     (value: any) => {
@@ -35,7 +37,7 @@ export const SelectLanguageScreen: FC<
 
   const handleLanguageSelection = (language: any) => {
     _onChangeLanguage(language);
-    setVisible(!language);
+    // setVisible(!language);
   };
 
   // useCallback(()=>{
@@ -61,14 +63,16 @@ export const SelectLanguageScreen: FC<
       <TouchableOpacity
         onPress={() => {
           console.log("select vietnam", visible);
-          navigate("introduction");
+          setVisible(true);
+
+          navigation.navigate("introduction");
           handleLanguageSelection(!visible);
         }}
         style={{
           width: "100%",
           height: 56,
           borderRadius: 8,
-          backgroundColor: visible ? colors.navyBlue : colors.gray,
+          backgroundColor: visible == true ? colors.navyBlue : colors.gray,
           padding: 12,
           justifyContent: "center",
           marginVertical: 20,
@@ -82,8 +86,8 @@ export const SelectLanguageScreen: FC<
       <TouchableOpacity
         onPress={() => {
           // handleLanguageSelection(visibel)
-          setVisible(!visible);
-          navigate("introduction");
+          setVisible(false);
+          navigation.navigate("introduction");
           handleLanguageSelection(visible);
           console.log("select english", visible);
         }}
@@ -91,7 +95,7 @@ export const SelectLanguageScreen: FC<
           width: "100%",
           height: 56,
           borderRadius: 8,
-          backgroundColor: !visible ? colors.navyBlue : colors.gray,
+          backgroundColor: visible == false ? colors.navyBlue : colors.gray,
           padding: 12,
           justifyContent: "center",
         }}>

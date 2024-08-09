@@ -16,6 +16,7 @@ function IgniteApp() {
       console.log('--------------currentApp-------------', currentApp)
       try {
         const savedApp = await AsyncStorage.getItem("selectedApp");
+        console.log('--------------savedApp-------------', savedApp)
         if (savedApp) {
           setCurrentApp(savedApp);
         } else {

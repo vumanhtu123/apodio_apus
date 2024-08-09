@@ -5,7 +5,8 @@ import { Svgs } from "../../../../../assets/svgs";
 import { dataOrderDetails, dataPromotion } from "../styles/data";
 import Images from "../../../../../assets/index";
 import { colors } from "../../../theme";
-import en from "../../../../i18n/en";
+import { translate } from "../../../../i18n";
+
 
 export const BodyDetailsOrder = (data: any) => {
   const [dataOrder, setData] = useState<any[]>([]);
@@ -145,12 +146,12 @@ export const PromotionList = (data: any) => {
               <Text
                 style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
                 {"  "}
-                {en.orderDetail.reduce} {data.disCount ?? "10%"}{" "}
+                {translate("orderDetail.reduce")} {data.disCount ?? "10%"}{" "}
               </Text>
               <View style={{ height: 10 }} />
               <Text
                 style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
-                {en.orderDetail.max} {data.maxValue ?? "30K"}
+                {translate("orderDetail.max")} {data.maxValue ?? "30K"}
               </Text>
             </View>
           );

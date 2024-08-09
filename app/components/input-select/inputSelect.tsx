@@ -65,16 +65,16 @@ const TEXTHINT: TextStyle = {
   color: colors.palette.dolphin,
 };
 const VIEWMODAL: ViewStyle = {
-  maxHeight: Dimensions.get('screen').height * 0.55,
-  minHeight: Dimensions.get('screen').height * 0.3,
-  // height: scaleHeight(350),
-  width: '100%',
-  backgroundColor: colors.palette.neutral100,
-  borderTopLeftRadius: margin.border_top_left_radius,
-  borderTopRightRadius: margin.border_top_right_radius,
-  paddingVertical: scaleWidth(margin.margin_16),
-  paddingHorizontal: scaleHeight(margin.margin_16),
-  position: 'absolute', bottom: 0,
+  // maxHeight: Dimensions.get('screen').height * 0.4,
+  // minHeight: Dimensions.get('screen').height * 0.3,
+  // // height: scaleHeight(350),
+  // width: '100%',
+  // backgroundColor: colors.palette.neutral100,
+  // borderTopLeftRadius: margin.border_top_left_radius,
+  // borderTopRightRadius: margin.border_top_right_radius,
+  // paddingVertical: scaleWidth(margin.margin_16),
+  // paddingHorizontal: scaleHeight(margin.margin_16),
+  // position: 'absolute', bottom: 0,
 };
 const TEXTLABELFLATLIST: TextStyle = {
   //fontWeight: '500',
@@ -120,13 +120,15 @@ export function InputSelect(props: InputSelectProps) {
     handleOnSubmitSearch,
     onRefresh,
     isRefreshing,
-    setIsRefreshing
+    setIsRefreshing,
+    normalInputSelect
   } = props;
   const title = titleText || (titleTx && translate(titleTx)) || "";
   const hint = hintText || (hintTx && translate(hintTx)) || "";
   const _ = require("lodash");
   const [data, setData] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState();
   const [filteredData, setFilteredData] = useState(arrData);
   // const [isRefreshing, setIsRefreshing] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
@@ -134,28 +136,45 @@ export function InputSelect(props: InputSelectProps) {
   const searchValue = watch('searchData');
   const handleSearch = (text: any) => {
     if (text) {
-      const dataChoiceItem = arrData.filter((item: any) => item.label !== data);
-      const newData = dataChoiceItem.filter((item: any) => {
-        const itemData = item.label.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredData(newData);
+      if (normalInputSelect) {
+        const newData = arrData.filter((item: any) => {
+          const itemData = item.label.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        setFilteredData(newData);
+      } else {
+        const dataChoiceItem = arrData.filter((item: any) => item.label !== data);
+        const newData = dataChoiceItem.filter((item: any) => {
+          const itemData = item.label.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        setFilteredData(newData);
+      }
     } else {
-      const dataChoiceItem = arrData.filter((item: any) => item.label !== data);
-      setFilteredData(dataChoiceItem);
+      if (normalInputSelect) {
+        setFilteredData(arrData);
+      } else {
+        const dataChoiceItem = arrData.filter((item: any) => item.label !== data);
+        setFilteredData(dataChoiceItem);
+      }
     }
   };
+
   const onSubmitSearch = async () => {
-    // setShowLoading(true);
-    setFilteredData([])
-    await handleOnSubmitSearch(searchValue)
-      .then((result: any) => {
-        setShowLoading(false);
-      }).catch((error: any) => {
-        setShowLoading(false);
-      });
+    setShowLoading(true);
+    setFilteredData([]);
+    try {
+      await handleOnSubmitSearch(searchValue);
+    } catch (error) {
+      setShowLoading(false);
+    }finally {
+      setShowLoading(false);
+    }
   }
+
+
   const refreshItem = async () => {
     console.log('-----refreshItem-------')
     setIsRefreshing(true)
@@ -175,9 +194,13 @@ export function InputSelect(props: InputSelectProps) {
       clearErrors();
     }, [showModal])
   )
-  const highlightText = (text: string, highlight: string) => {
+  const handleBackdropPress = () => {
+    // Thêm logic tùy chỉnh ở đây nếu cần
+    setShowModal(false);
+  };
+  const highlightText = (text: string, highlight: string, id: number) => {
     if (!highlight?.trim()) {
-      return <Text style={TEXTLABELFLATLIST}>{text}</Text>;
+      return <Text style={[TEXTLABELFLATLIST, { color: selectedCategory === id ? 'white' : colors.dolphin }]}>{text}</Text>;
     }
     const regex = new RegExp(`(${highlight})`, 'gi');
     const parts = text.split(regex);
@@ -187,7 +210,7 @@ export function InputSelect(props: InputSelectProps) {
           regex.test(part) ? (
             <Text key={i} style={TEXTLABELHL}>{part}</Text>
           ) : (
-            <Text style={TEXTLABELFLATLIST} key={i}>{part}</Text>
+            <Text style={[TEXTLABELFLATLIST, { color: selectedCategory === id ? 'white' : colors.dolphin }]} key={i}>{part}</Text>
           )
         )}
       </>
@@ -246,14 +269,12 @@ export function InputSelect(props: InputSelectProps) {
         )}
       </TouchableOpacity>
 
-      <Modal
+      <CustomModal 
         isVisible={showModal}
-        animationIn="slideInUp"
-        animationOut="slideOutDown"
-        animationInTiming={500}
-        animationOutTiming={500}
-        onBackdropPress={() => { setShowModal(false)}}
-        style={{ margin: 0 }}>
+        setIsVisible={() => { setShowModal(false) }}
+        isHideKeyBoards={showModal}
+        isVisibleLoading={showLoading}
+      >
         <View style={VIEWMODAL}>
           {isSearch ? (
             <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
@@ -322,20 +343,29 @@ export function InputSelect(props: InputSelectProps) {
               return (
                 <View>
                   <TouchableOpacity
-                    style={{ flexDirection: 'row', paddingHorizontal: scaleWidth(5) }}
+                    style={{
+                      flexDirection: 'row', paddingHorizontal: scaleWidth(5),
+                      backgroundColor:
+                        selectedCategory === item.id
+                          ? colors.palette.navyBlue
+                          : colors.palette.neutral100,
+                    }}
                     onPress={() => {
                       setData(item.label);
                       onPressChoice(item);
                       setShowModal(false);
-                      const dataChoiceItem = arrData.filter(
-                        (i) => i.label !== item.label
-                      );
-                      setFilteredData(dataChoiceItem);
+                      setSelectedCategory(item.id)
+                      if (!normalInputSelect) {
+                        const dataChoiceItem = arrData.filter(
+                          (i) => i.label !== item.label
+                        );
+                        setFilteredData(dataChoiceItem);
+                      }
                     }}>
                     {isShowCheckBox ? (<View style={styles.radioButton}>
                       {data === item.label && <Svgs.icon_checkBox />}
                     </View>) : null}
-                    {highlightText(item.label, searchValue)}
+                    {highlightText(item.label, searchValue, item.id)}
                   </TouchableOpacity>
                   <View style={VIEWLINE}></View>
                 </View>
@@ -343,8 +373,7 @@ export function InputSelect(props: InputSelectProps) {
             }}
           />
         </View>
-      </Modal>
-
+      </CustomModal>
     </View>
   );
 }

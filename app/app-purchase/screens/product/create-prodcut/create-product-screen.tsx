@@ -64,7 +64,7 @@ export const ProductCreateScreen: FC = (item) => {
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [uomGroupId, setUomGroupId] = useState({ id: 0, label: "" });
   const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
-  const [vendorIds, setVendorIds]= useState([])
+  const [vendorIds, setVendorIds] = useState([])
   const vendorData = useRef()
   const route = useRoute();
   const textAttributes = useRef([])
@@ -117,13 +117,13 @@ export const ProductCreateScreen: FC = (item) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       if (vendor !== undefined && selectedIds !== undefined) {
-       setVendorIds(selectedIds)
+        setVendorIds(selectedIds)
       }
       if (vendor !== undefined && selectedIds === undefined) {
-       setVendorIds([vendor.id])
+        setVendorIds([vendor.id])
       }
       if (vendor === undefined && selectedIds !== undefined) {
-       setVendorIds(selectedIds)
+        setVendorIds(selectedIds)
       }
     });
     return unsubscribe;
@@ -338,14 +338,14 @@ export const ProductCreateScreen: FC = (item) => {
     if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {
         type: "validate",
-        message: en.productScreen.checkIdSUK,
+        message: translate("productScreen.checkIdSUK"),
       });
       return
     }
     if (data.productName.trim() === "") {
       methods.setError("productName", {
         type: "validate",
-        message: en.productScreen.pleaseEnterInformation,
+        message: translate("productScreen.pleaseEnterInformation"),
       });
       return
     }
@@ -537,7 +537,7 @@ export const ProductCreateScreen: FC = (item) => {
       retailPrice: valueSale ? dataPrice2 : null,
       costPrice: valueSale ? Number(formatNumberByString(methods.watch("costPrice"))) : null,
       listPrice: valueSale ? Number(formatNumberByString(methods.watch("listPrice"))) : null,
-      wholesalePrice: valueSale ? dataPrice: null,
+      wholesalePrice: valueSale ? dataPrice : null,
       deleteVariantIds: [],
       baseTemplatePackingLine:
         data.weightOriginal?.trim() === "" ||
@@ -788,40 +788,40 @@ export const ProductCreateScreen: FC = (item) => {
                   }}
                 />
               </View>
-              { valueSale === true ?
-              <ItemGroupPrice /> : null}
+              {valueSale === true ?
+                <ItemGroupPrice /> : null}
             </View>
           </View>
           {/* {valueSale === true ? ( */}
-            <View
-              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
-            >
-              <View style={styles.viewViewDetail}>
-                <Text
-                  tx={"createProductScreen.infoSupplier"}
-                  style={styles.textTitleView}
-                />
-                <TouchableOpacity
-                  onPress={() => goToChooseSupplierScreen()}
-                  style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}
-                >
-                  {vendorIds?.length > 0 ? (
-                    <Text style={styles.textWeight400Black}>
-                      {vendorIds.length + " " + translate("createProductScreen.supplier")}
-                    </Text>
-                  ) : (
-                    <Text
-                      tx={"createProductScreen.noSelectSupplier"}
-                      style={styles.textWeight400Dolphin}
-                    />
-                  )}
-                  <Svgs.icon_caretRight
-                    width={scaleWidth(16)}
-                    height={scaleHeight(16)}
+          <View
+            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
+          >
+            <View style={styles.viewViewDetail}>
+              <Text
+                tx={"createProductScreen.infoSupplier"}
+                style={styles.textTitleView}
+              />
+              <TouchableOpacity
+                onPress={() => goToChooseSupplierScreen()}
+                style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}
+              >
+                {vendorIds?.length > 0 ? (
+                  <Text style={styles.textWeight400Black}>
+                    {vendorIds.length + " " + translate("createProductScreen.supplier")}
+                  </Text>
+                ) : (
+                  <Text
+                    tx={"createProductScreen.noSelectSupplier"}
+                    style={styles.textWeight400Dolphin}
                   />
-                </TouchableOpacity>
-              </View>
+                )}
+                <Svgs.icon_caretRight
+                  width={scaleWidth(16)}
+                  height={scaleHeight(16)}
+                />
+              </TouchableOpacity>
             </View>
+          </View>
           {/* ) : null} */}
           <View
             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}

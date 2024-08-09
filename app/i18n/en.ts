@@ -741,6 +741,8 @@ const en = {
     ariseYes: "Phát sinh có",
     generateDebtForOrders: "Phát sinh công nợ \ncho đơn hàng",
     payDebt: "Thanh toán công nợ",
+    pleaseEnterData: "Vui lòng nhập dữ liệu",
+    
   },
   productScreen: {
     select_vendor: "Lựa chọn xem sản phẩm của nhà cung cấp:",
