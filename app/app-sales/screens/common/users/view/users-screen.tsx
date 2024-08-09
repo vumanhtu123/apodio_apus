@@ -124,7 +124,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
 
     const navigation = useNavigation();
     const [isVisibleFeedback, setIsVisibleFeedback] = useState(false);
-    const [selectLanguage, setSelectLanguage] = useState(false);
+    const [selectLanguage, setSelectLanguage] = useState(true);
     const { top } = useSafeAreaInsets();
     const [data, setData] = useState();
     const [showLanguage, setShowLanguage] = useState(false);
@@ -152,7 +152,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     const _onChangeLanguage = useCallback(
       (value: any) => {
         console.log("onChangeLanguage", value);
-        value === true ? changeLanguage("fr") : changeLanguage("en");
+        value === false ? changeLanguage("fr") : changeLanguage("en");
       },
       [selectLanguage]
     );
@@ -282,43 +282,29 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     return (
       <ScrollView>
         <View style={styles.ROOT}>
-          {/* <Image style={styles.imgTopHeader} source={bgMyacc} /> */}
 
-          {/* <View style={{marginTop:top}}/> */}
-          {
-            // data && (
-            //   // <Header
-            //   //   navigation={'navigation'}
-            //   //   name={name}
-            //   //   data={data}
-            //   //   url={imageUrl}
-            //   //   token={accountStore.authToken}
-            //   //   onOpenCam={() => {}}
-            //   //   // onOpenCam={setShowImagePicker(true)}
-            //   // />
-            <View style={{ width: "100%" }}>
-              <Header
-                style={{
-                  alignItems: "center",
-                  height: 52,
-                  justifyContent: "center",
-                }}
-                LeftIcon={Svgs.back}
-                headerTx="inforMerchant.setTingShop"
-                titleStyle={{ color: colors.white }}
-                type={"AntDesign"}
-                onLeftPress={() => navigation.goBack()}
-              />
+          <View style={{ width: "100%" }}>
+            <Header
+              style={{
+                alignItems: "center",
+                height: 52,
+                justifyContent: "center",
+              }}
+              LeftIcon={Svgs.back}
+              headerTx="inforMerchant.setTingShop"
+              titleStyle={{ color: colors.white }}
+              type={"AntDesign"}
+              onLeftPress={() => navigation.goBack()}
+            />
 
-              <LinearGradient
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 1 }}
-                colors={[colors.palette.navyBlue, colors.palette.malibu]}
-                style={{ height: 70 }}></LinearGradient>
-            </View>
+            <LinearGradient
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 1 }}
+              colors={[colors.palette.navyBlue, colors.palette.malibu]}
+              style={{ height: 70 }}></LinearGradient>
+          </View>
 
-            // )
-          }
+
 
           {/* <View style={{backgroundColor:colors.palette.blueNavigator ,  width:'100%', height:70}}></View> */}
           <View style={styles.horView}>
@@ -345,7 +331,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             elevation: 5,
             marginTop: 30,
           }}>
-          <View style={styles.body}>
+          <View style={[styles.body,]}>
             {textData.map((item, index) => (
               <View key={index}>
                 <TouchableOpacity style={styles.item} onPress={item.onPress}>
@@ -386,7 +372,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
           animationIn={"zoomIn"}
           animationOut={"fadeOut"}
           onBackdropPress={() => {
-            setShowLanguage(showLanguage);
+            setShowLanguage(false);
           }}
           isVisible={showLanguage}
           style={{
@@ -403,7 +389,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
 
                 style={styles.textMethod}
               />
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setShowLanguage(false);
                   // setshowModal(false)
@@ -416,7 +402,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                     color: colors.palette.torchRed,
                   }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </Row>
 
             <View
@@ -430,8 +416,10 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 justifyContent: "space-between",
               }}
               onPress={() => {
-                setSelectLanguage(!selectLanguage);
-                _onChangeLanguage(!selectLanguage);
+                setSelectLanguage(true);
+                _onChangeLanguage(true);
+                setShowLanguage(false);
+
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
@@ -439,7 +427,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 </View>
                 <Text>Tiếng Việt </Text>
               </View>
-              {selectLanguage ? <Svgs.ic_tick /> : null}
+              {selectLanguage == true ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
             <View
               style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
@@ -453,8 +441,10 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 justifyContent: "space-between",
               }}
               onPress={() => {
-                setSelectLanguage(!selectLanguage);
-                _onChangeLanguage(!selectLanguage);
+                setSelectLanguage(false);
+                _onChangeLanguage(false);
+                setShowLanguage(false);
+
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
@@ -462,7 +452,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 </View>
                 <Text>Tiếng Anh </Text>
               </View>
-              {selectLanguage ? null : <Svgs.ic_tick />}
+              {selectLanguage == false ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
           </View>
         </ReactNativeModal>

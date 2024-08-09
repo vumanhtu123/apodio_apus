@@ -16,26 +16,38 @@ import { changeLanguage } from "../../../i18n";
 import Images from "../../../../assets/index";
 import { colors } from "../../theme";
 import { Text } from "../../../components";
+import { setCurrentLanguage } from "../../utils/storage";
 
 export const SelectLanguageScreen: FC<
   StackScreenProps<NavigatorParamList, "selectLanguage">
 > = observer(function SelectLanguageScreen() {
-  const [selectLanguage, setSelectLanguage] = useState(LANGUAGE.ENGLISH);
+  const [selectLanguage, setSelectLanguage] = useState(LANGUAGE.VIETNAM);
   const { top, bottom } = useSafeAreaInsets();
+  const [visible, setVisible] = useState(true);
+
 
   const _onChangeLanguage = useCallback(
     (value: any) => {
-      console.log("onChangeLanguage", value);
+      console.log("onChangeLanguage1", value);
       setSelectLanguage(value);
-      value === true ? changeLanguage("en") : changeLanguage("fr");
+      switch (value) {
+        case 'vi':
+          changeLanguage("en")
+          break;
+        case 'en':
+          changeLanguage("fr")
+        default:
+
+          break;
+      }
     },
     [selectLanguage]
   );
-  const [visible, setVisible] = useState(true);
 
-  const handleLanguageSelection = (language: any) => {
-    _onChangeLanguage(language);
-  };
+  // const handleLanguageSelection = (language: any) => {
+  //   _onChangeLanguage(language);
+  //   // setVisible(!language);
+  // };
 
   // useCallback(()=>{
   //   handleLanguageSelection
@@ -61,8 +73,9 @@ export const SelectLanguageScreen: FC<
         onPress={() => {
           console.log("select vietnam", visible);
           setVisible(true)
+          setCurrentLanguage('vi')
           navigate("introduction");
-          handleLanguageSelection(!visible);
+          _onChangeLanguage('vi')
         }}
         style={{
           width: "100%",
@@ -83,8 +96,10 @@ export const SelectLanguageScreen: FC<
         onPress={() => {
           // handleLanguageSelection(visibel)
           setVisible(false);
+          setCurrentLanguage('en')
           navigate("introduction");
-          handleLanguageSelection(visible);
+          _onChangeLanguage('en')
+
           console.log("select english", visible);
         }}
         style={{
@@ -101,36 +116,6 @@ export const SelectLanguageScreen: FC<
         </View>
       </TouchableOpacity>
     </View>
-    // <Screen style={styles.ROOT} preset="scroll" unsafe={true}>
 
-    //
-    //   <Button
-    //     onPress={() => _onChangeLanguage(LANGUAGE.ENGLISH)}
-    //     style={[styles.button, { backgroundColor: selectLanguage ? color.yellow : color.gray }]}
-    //   >
-    //     <Image source={flagEnglish} style={styles.imageFlag} />
-    //     <Text
-    //       tx={"english"}
-    //       style={[
-    //         styles.textButton,
-    //         { color: selectLanguage ? color.text : color.storybookDarkBg },
-    //       ]}
-    //     />
-    //   </Button>
-    //   <Button
-    //     tx={"confirm"}
-    //     onPress={() => navigate("introduction")}
-    //     style={
-    //       {
-    //         bottom: scaleHeight(14),
-    //         left: 0,
-    //         position: "absolute",
-    //         right: 0
-    //       }
-    //     }
-    //     textStyle={styles.textButton}
-    //   />
-    //   <View style={{marginTop: scaleHeight(bottom )}}/>
-    // </Screen>
   );
 });
