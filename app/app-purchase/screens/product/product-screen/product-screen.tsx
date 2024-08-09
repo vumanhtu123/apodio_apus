@@ -146,6 +146,7 @@ export const ProductScreen: FC = () => {
             onClearSearch={handleClearSearch}
             isGridView={isGridView}
             vendorId={company.id}
+            company={company}
           />
         ) : (
           <CategoryList

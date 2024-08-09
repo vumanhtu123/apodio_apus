@@ -347,7 +347,6 @@ export const ProductEditScreen: FC = (item) => {
           return item.vendorId;
         });
         setVendor(a);
-        setValueSale(true);
       }
       const nameCreateProduct = newDataEdit?.productVariants?.map(
         (item: { name: string }) => {
@@ -671,20 +670,20 @@ export const ProductEditScreen: FC = (item) => {
     const newArr2 = newArr3?.map((item) => {
       return {
         ...item,
-        retailPrice: item.retailPrice?.map((items: any) => {
+        retailPrice: valueSale ? item.retailPrice?.map((items: any) => {
           return {
             ...items,
             price: Number(formatNumberByString(items.price)),
           };
-        }),
-        wholesalePrice: item.wholesalePrice?.map((items: any) => {
+        }) : null,
+        wholesalePrice: valueSale ? item.wholesalePrice?.map((items: any) => {
           return {
             ...items,
             price: Number(formatNumberByString(items.price)),
           };
-        }),
-        costPrice: Number(formatNumberByString(item.costPrice)),
-        listPrice: Number(formatNumberByString(item.listPrice)),
+        }) : null,
+        costPrice: valueSale ? Number(formatNumberByString(item.costPrice)) : null,
+        listPrice: valueSale ? Number(formatNumberByString(item.listPrice)) : null,
       };
     });
     const packingLine = data.weight?.map((item: any) => {
@@ -716,10 +715,10 @@ export const ProductEditScreen: FC = (item) => {
       textAttributes: textAttributes,
       description: description,
       productVariants: hasVariantInConfig === false ? [] : newArr2,
-      retailPrice: dataPrice2,
-      costPrice: Number(formatNumberByString(methods.watch('costPrice'))),
-      listPrice: Number(formatNumberByString(methods.watch('listPrice'))),
-      wholesalePrice: dataPrice,
+      retailPrice: valueSale ? dataPrice2 : null,
+      costPrice: valueSale ? Number(formatNumberByString(methods.watch('costPrice'))) : null,
+      listPrice: valueSale ? Number(formatNumberByString(methods.watch('listPrice'))) : null,
+      wholesalePrice: valueSale ? dataPrice : null,
       baseTemplatePackingLine: data.weightOriginal?.trim() === "" || data.volumeOriginal?.trim() === "" ? {} : {
         uomGroupLineId: valueSwitchUnit == false ? null : detailUnitGroupData?.originalUnit?.uomGroupLineId,
         amount: 1,
@@ -963,7 +962,7 @@ export const ProductEditScreen: FC = (item) => {
                 name="productName"
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text tx="createProductScreen.canBuy"
+                <Text tx="createProductScreen.canSale"
                   style={{
                     fontSize: fontSize.size13,
                     marginRight: scaleWidth(10),
@@ -975,10 +974,11 @@ export const ProductEditScreen: FC = (item) => {
                   }}
                 />
               </View>
-              <ItemGroupPrice />
+              { valueSale === true ?
+              <ItemGroupPrice /> : null}
             </View>
           </View>
-          {valueSale ? (
+          {/* {valueSale ? ( */}
             <View
               style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
               <View
@@ -1008,7 +1008,7 @@ export const ProductEditScreen: FC = (item) => {
                 </TouchableOpacity>
               </View>
             </View>
-          ) : null}
+          {/* ) : null} */}
           <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
             <View style={styles.viewViewDetail}>
               <Text tx={'createProductScreen.inventory_management'}
@@ -1071,6 +1071,7 @@ export const ProductEditScreen: FC = (item) => {
             addVariant={addVariant}
             setAddVariant={setAddVariant}
             addWeight={addWeight}
+            valueSale={valueSale}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
             isVariantInConfig={isVariantInConfig}
@@ -1078,7 +1079,7 @@ export const ProductEditScreen: FC = (item) => {
             isUsing={productUsing === true || priceUsing === true ? true : false}
             uomId={uomId}
             valueSwitchUnit={valueSwitchUnit}
-            productName={methods.getValues('productName')}
+            productName={methods.watch('productName')}
             setDataCreateProduct={(arr: any) => setDataCreateProduct(arr)}
             setDataGroupAttribute={(arr: any) => setDataGroupAttribute(arr)}
             setVariantInConfig={(a) => setVariantInConfig(a)}

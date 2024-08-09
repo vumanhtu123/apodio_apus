@@ -9,7 +9,7 @@ import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
 import { translate } from '../../../../../i18n/translate';
-const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vendorId }: any) => {
+const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vendorId, company }: any) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
     const [showCategory, setShowCategory] = useState(false);
@@ -185,7 +185,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
     return (
         <>
             <TouchableOpacity
-                onPress={() => navigation.navigate("ProductCreateScreen" as never)}
+                onPress={() => navigation.navigate({name: "ProductCreateScreen", params: {vendor: company}} as never)}
                 style={styles.btnCreateProduct}>
                 <Svgs.ic_addProduct
                     width={scaleWidth(50)}
