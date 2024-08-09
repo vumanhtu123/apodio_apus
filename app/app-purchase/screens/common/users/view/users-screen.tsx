@@ -166,7 +166,6 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     return (
       <ScrollView>
         <View style={styles.ROOT}>
-
           <View style={{ width: "100%" }}>
             <Header
               style={{
@@ -187,9 +186,6 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
               colors={[colors.palette.navyBlue, colors.palette.malibu]}
               style={{ height: 70 }}></LinearGradient>
           </View>
-
-
-
           {/* <View style={{backgroundColor:colors.palette.blueNavigator ,  width:'100%', height:70}}></View> */}
           <View style={styles.horView}>
             <MainAccount1
