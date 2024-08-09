@@ -199,7 +199,7 @@ export const ProductVendorScreen: FC<
       <Screen style={styles.ROOT} preset="fixed">
         <View
           style={{
-            marginHorizontal: 16,
+            marginHorizontal: scaleWidth(16),
             flexDirection: "row",
             justifyContent: "space-between",
           }}>
@@ -208,7 +208,7 @@ export const ProductVendorScreen: FC<
             style={{
               fontSize: fontSize.size10,
               fontWeight: "500",
-              marginVertical: 10,
+              marginVertical: scaleHeight(10),
             }}></Text>
           <TouchableOpacity onPress={handleAllProduct}>
             <Text
@@ -221,7 +221,7 @@ export const ProductVendorScreen: FC<
               }}></Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 0.95, marginHorizontal: 16 }}>
+        <View style={{ flex: 1, marginHorizontal: scaleWidth(16) }}>
           <FlatList
             data={getList}
             showsVerticalScrollIndicator={false}
@@ -237,7 +237,6 @@ export const ProductVendorScreen: FC<
             onEndReachedThreshold={0.8}
             ListFooterComponent={renderFooter}
             numColumns={2}
-            // columnWrapperStyle={isGridView ? null : null}
             renderItem={renderProductItem}
           />
         </View>

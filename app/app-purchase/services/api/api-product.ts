@@ -180,7 +180,7 @@ export class ProductApi {
       return { kind: "bad-data", result: error };
     }
   }
-  async getListBrandProduct(): Promise<BrandResult> {
+  async getListBrandProduct(search: any): Promise<BrandResult> {
     Loading.show({
       text: "Loading...",
     });
@@ -190,6 +190,7 @@ export class ProductApi {
         {
           page: 0,
           size: 20,
+          search: search
         }
       );
       Loading.hide();
@@ -418,7 +419,7 @@ export class ProductApi {
   }
 
   async getListVendor(page: number, search: string): Promise<VendorResult> {
-    if(page === 0){
+    if (page === 0) {
       Loading.show({
         text: "Loading...",
       });

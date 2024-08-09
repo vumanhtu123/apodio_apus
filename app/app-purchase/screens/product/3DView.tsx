@@ -10,7 +10,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 export const View3D: FC = observer(function View3D(props) {
   const paddingTop = useSafeAreaInsets().top;
   const navigation = useNavigation();
-  const route = useRoute();
+  const route = useRoute<any>();
   const scene = route?.params?.scene;
   return (
     <View style={{ flex: 1, marginTop: paddingTop }}>
