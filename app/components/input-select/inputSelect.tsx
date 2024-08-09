@@ -2,34 +2,27 @@ import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Dimensions,
   FlatList,
-  KeyboardAvoidingView,
-  Platform,
   RefreshControl,
   StyleSheet,
   TextInput,
   TextStyle,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
   ViewStyle
 } from "react-native";
-import Modal from "react-native-modal";
 import { Svgs } from "../../../assets/svgs";
 import { translate } from "../../i18n";
 import {
   colors,
   fontSize,
   margin,
-  padding,
   scaleHeight,
   scaleWidth,
-} from "../../app-purchase/theme";
+} from "../theme";
 import { Text } from "../text/text";
 import { InputSelectProps } from "./inputSelect.props";
 import { CustomModal } from "../custom-modal";
-import { ScrollView } from "react-native-gesture-handler";
 
 const ROOT: ViewStyle = {
   borderRadius: 8,

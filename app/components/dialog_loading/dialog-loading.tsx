@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { colors } from '../../app-purchase/theme';
+import { colors } from '../theme';
 
 interface DialogLoadingProps {
   visible: boolean;

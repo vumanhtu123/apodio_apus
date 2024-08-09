@@ -3,7 +3,6 @@ import { TouchableOpacity, View } from 'react-native';
 import { Text } from '../text/text';
 import { viewPresets, textPresets } from './button.presets';
 import { ButtonProps } from './button.props';
-import { scaleHeight, scaleWidth } from '../../app-purchase/theme';
 
 export function Button(props: ButtonProps) {
   const {

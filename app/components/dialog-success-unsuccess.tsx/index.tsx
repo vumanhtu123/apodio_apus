@@ -10,7 +10,7 @@ import {
 import {Text} from '../text/text';
 import {Button} from '../button/button';
 import {SvgIcon} from '../svg-icon';
-import {colors, scaleHeight, scaleWidth} from '../../app-purchase/theme';
+import {colors, scaleHeight, scaleWidth} from '../theme';
 const {width, height} = Dimensions.get('screen');
 
 interface DialogSuccessUnSuccessProps {

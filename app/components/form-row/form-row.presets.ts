@@ -1,5 +1,5 @@
 import {ViewStyle} from 'react-native';
-import {colors, spacing} from '../../app-purchase/theme';
+import {colors, spacing} from '../theme';
 
 /**
  * The size of the border radius.

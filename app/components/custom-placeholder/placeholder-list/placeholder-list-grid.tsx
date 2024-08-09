@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
-import { scaleHeight, scaleWidth } from '../../../app-purchase/theme'
+import { scaleHeight, scaleWidth } from '../../theme'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder'
 
 export const PlaceholderListGrid = () => {

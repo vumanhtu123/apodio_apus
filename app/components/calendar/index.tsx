@@ -8,9 +8,9 @@ import {
   getDateToday,
   getDateTodayOneDate,
   getOfMonthdays,
-} from "../../app-purchase/utils/validate";
+} from "../theme/validate";
 import { Text } from "../text/text";
-import { colors, padding, scaleHeight } from "../../app-purchase/theme";
+import { colors, padding, scaleHeight } from "../theme";
 import { CustomModal } from "../custom-modal";
 import CustomTabs from "./custom-tab/index";
 // import { CustomModal } from "../custom-modal/index";

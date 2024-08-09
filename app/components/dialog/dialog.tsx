@@ -3,10 +3,10 @@ import { Image, ImageStyle, StyleProp, TextStyle, View, ViewStyle } from 'react-
 import { Button } from '../button/button';
 import { Text } from '../text/text';
 import Modal from 'react-native-modal';
-import { colors } from '../../app-purchase/theme/colors';
+import { colors } from '../theme/colors';
 // import { icError, icSuccess, icWarning } from "../../theme/"
 import { LinearGradient } from 'react-native-svg';
-import { fontSize, scaleHeight, scaleWidth } from '../../app-purchase/theme';
+import { fontSize, scaleHeight, scaleWidth } from '../theme';
 import { TxKeyPath } from '../../i18n';
 
 const MODAL: ViewStyle = {
