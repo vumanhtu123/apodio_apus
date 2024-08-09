@@ -382,7 +382,7 @@ export const EditClassify: FC = (item) => {
                                 name="productName"
                             />
                             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                <Text tx="createProductScreen.canBuy"
+                                <Text tx="createProductScreen.canSale"
                                     style={{
                                         fontSize: fontSize.size13,
                                         marginRight: scaleWidth(10),

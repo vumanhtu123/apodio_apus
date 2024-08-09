@@ -11,7 +11,7 @@ import {
 // import { flagEnglish, flagTimoleste } from "../../theme/img"
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LANGUAGE } from "../../utils/enum";
-import { navigate, NavigatorParamList } from "../../../app-purchase/navigators";
+import { navigate, NavigatorParamList } from "../../../app-sales/navigators";
 import { changeLanguage } from "../../../i18n";
 import Images from "../../../../assets/index";
 import { colors } from "../../theme";

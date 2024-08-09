@@ -775,7 +775,7 @@ export const ProductCreateScreen: FC = (item) => {
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text
-                  tx="createProductScreen.canBuy"
+                  tx="createProductScreen.canSale"
                   style={{
                     fontSize: fontSize.size13,
                     marginRight: scaleWidth(10),
