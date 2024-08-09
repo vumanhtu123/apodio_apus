@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import moment from "moment";
-// import CustomTabs from "./custom-tab";
 import {
   getDateLast7days,
   getDateToday,
@@ -13,7 +12,6 @@ import { Text } from "../text/text";
 import { colors, padding, scaleHeight } from "../theme";
 import { CustomModal } from "../custom-modal";
 import CustomTabs from "./custom-tab/index";
-// import { CustomModal } from "../custom-modal/index";
 
 LocaleConfig.locales["vi"] = {
   monthNames: [
@@ -316,10 +314,13 @@ const styles = StyleSheet.create({
   buttonGroup: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: scaleHeight(padding.padding_16),
+    //padding: scaleHeight(padding.padding_16),
+    marginTop: scaleHeight(12),
+    marginBottom: scaleHeight(4)
   },
   button2: {
     flex: 1,
+    height: scaleHeight(40),
     backgroundColor: colors.palette.solitude,
     padding: 12,
     borderRadius: 8,
@@ -327,6 +328,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    height: scaleHeight(40),
     backgroundColor: colors.palette.navyBlue,
     padding: 12,
     borderRadius: 8,

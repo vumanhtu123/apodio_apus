@@ -15,12 +15,6 @@ export type ModalProps = {
 
 export const CustomModal = (props: ModalProps) => {
   const { children, style, isVisible, isVisibleLoading, setIsVisible, isHideKeyBoards, ...rest } = props
-
-  // const handleBackdropPress = useCallback(() => {
-  //   if (isHideKeyBoards) {
-  //     setIsVisible();
-  //   }
-  // }, [isHideKeyBoards, setIsVisible]);
   return (
     <Modal
       animationIn="slideInUp"
@@ -34,16 +28,8 @@ export const CustomModal = (props: ModalProps) => {
       onBackButtonPress={setIsVisible}
       style={{ margin: 0 }}
     >
-      {/* <TouchableWithoutFeedback onPress={handleBackdropPress}> */}
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-      > */}
-      {/* <TouchableWithoutFeedback  > */}
-
       <View style={{
-        maxHeight: Dimensions.get('screen').height * 0.45,
+        maxHeight: Dimensions.get('screen').height * 0.5,
         minHeight: Dimensions.get('screen').height * 0.3,
         width: '100%',
         backgroundColor: colors.palette.neutral100,
@@ -59,9 +45,6 @@ export const CustomModal = (props: ModalProps) => {
           <ActivityIndicator size={'large'} color="#2A6FA8" />
         </View>) : null}
       </View>
-      {/* </TouchableWithoutFeedback> */}
-      {/* </KeyboardAvoidingView> */}
-      {/* </TouchableWithoutFeedback> */}
     </Modal>
 
   )
