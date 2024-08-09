@@ -1,6 +1,7 @@
 export const LANGUAGE = {
   TIMOLESTE: 0,
-  ENGLISH: 1,
+  ENGLISH: 'en',
+  VIETNAM: 'vn',
 };
 export const KIND_SCREEN = {
   HOME: 0,

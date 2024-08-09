@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -35,7 +35,9 @@ import { TYPE_SELECT_IMAGE } from "../../../../utils/enum";
 import {
   clear,
   getAccessToken,
+  getCurrentLanguage,
   setAccessToken,
+  setCurrentLanguage,
 } from "../../../../utils/storage";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -55,6 +57,8 @@ import {
 } from "../../../../navigators/bottom-navigation";
 import { TextField } from "../../../../../components";
 import { changeLanguage } from "../../../../../i18n";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import I18n from "i18n-js";
 
 
 const MainAccount1 = ({ title, onPress, index }: any) => {
@@ -77,7 +81,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
 
     const navigation = useNavigation();
     const [isVisibleFeedback, setIsVisibleFeedback] = useState(false);
-    const [selectLanguage, setSelectLanguage] = useState(false);
+    const [selectLanguage, setSelectLanguage] = useState<string>();
     const { top } = useSafeAreaInsets();
     const [data, setData] = useState();
     const [showLanguage, setShowLanguage] = useState(false);
@@ -89,11 +93,38 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       (value: any) => {
         console.log("onChangeLanguage", value);
         setSelectLanguage(value);
-        value === true ? changeLanguage("en") : changeLanguage("fr");
+        switch (value) {
+          case 'vi':
+            changeLanguage("en")
+            break;
+          case 'en':
+            changeLanguage("fr")
+          default:
+
+            break;
+        }
       },
       [selectLanguage]
     );
 
+
+    const getValueLanguage = async () => {
+      const a = await getCurrentLanguage()
+      console.log('====================================');
+      console.log('AAAAAAA', a);
+      console.log('====================================');
+      setSelectLanguage(a)
+      return a
+    }
+
+
+    useEffect(() => {
+      getValueLanguage()
+      console.log('====================================');
+      console.log("key select lenguage", I18n.locale);
+      console.log('====================================');
+      // _onChangeLanguage(selectLanguage)
+    }, [])
 
     const textData = [
       {
@@ -224,17 +255,17 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
           backdropOpacity={0.5}
           animationIn={"zoomIn"}
           animationOut={"fadeOut"}
-          onBackdropPress={() => {
-            setShowLanguage(!showLanguage);
+          onBackdropPress={async () => {
+            setShowLanguage(false);
+            const a = await getCurrentLanguage()
+            console.log('asdgfkas', a)
           }}
           isVisible={showLanguage}
           style={{
             justifyContent: "flex-end",
             alignItems: "center",
             paddingBottom: 15,
-          }}
-
-        >
+          }}>
           <View style={styles.viewModal}>
             <View style={styles.viewLineModal} />
             <Row justify="space-between">
@@ -270,8 +301,12 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
-              onPress={() => {
-                setSelectLanguage(!selectLanguage);
+              onPress={async () => {
+                // selectLanguage.current = true;
+                _onChangeLanguage('vi');
+
+                await setCurrentLanguage("vi")
+                setShowLanguage(false);
 
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -280,7 +315,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 </View>
                 <Text>Tiếng Việt </Text>
               </View>
-              {selectLanguage ? <Svgs.ic_tick /> : null}
+              {selectLanguage == 'vi' ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
             <View
               style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
@@ -294,8 +329,11 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 justifyContent: "space-between",
               }}
               onPress={() => {
-                setSelectLanguage(!selectLanguage);
-                _onChangeLanguage(!selectLanguage);
+                // selectLanguage.current = false;
+                _onChangeLanguage('en');
+                setCurrentLanguage('en')
+                setShowLanguage(false);
+
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
@@ -303,7 +341,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 </View>
                 <Text>Tiếng Anh </Text>
               </View>
-              {selectLanguage ? null : <Svgs.ic_tick />}
+              {selectLanguage == "en" ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
           </View>
         </ReactNativeModal>

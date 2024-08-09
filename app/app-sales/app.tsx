@@ -20,6 +20,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ViewStyle, Linking } from 'react-native';
 import Config from "react-native-config";
 import { Root } from '../components/dialog-notification';
+import { changeLanguage } from '../i18n';
 export const NAVIGATION_PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
 // Web linking configuration
@@ -69,6 +70,25 @@ function App() {
       setupRootStore().then(setRootStore);
       const lang = await storage.getCurrentLanguage();
     })();
+
+    const languageApp = async () => {
+      const language = await storage.getCurrentLanguage()
+      // changeLanguage(language)
+      switch (language) {
+        case 'vi':
+          changeLanguage("en")
+          break;
+        case 'en':
+          changeLanguage("fr")
+        default:
+
+          break;
+      }
+      console.log(language, 'day la ngon ngu')
+    }
+
+    languageApp()
+
   }, []);
 
   if (!rootStore || !isNavigationStateRestored) return null;
