@@ -54,6 +54,7 @@ import {
   Toast,
 } from "../../../../components/dialog-notification";
 import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
+import { BottomOrder } from "../components/bottomOrder";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -197,7 +198,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn khách hàng",
+        textBody: translate("productScreen.youNeedSelectClient"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -209,7 +210,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần nhập địa chỉ giao hàng",
+        textBody: translate("productScreen.youNeedEnterAddress"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -221,7 +222,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn sản phẩm",
+        textBody: translate("productScreen.youNeedSelectProduct"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -233,7 +234,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Bạn cần chọn phương thức thanh toán",
+        textBody: translate("productScreen.youNeedSelectMethodPay"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -265,7 +266,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         }
       } as never);
     }
-
 
     const newArr = arrProduct.map((data: any) => {
       return {
@@ -361,35 +361,20 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     const order: any = {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
-      // invoiceAddressId: 0,
       deliveryAddressId: address.id,
-      // quotationDate: "",
       commitmentDate: formattedDate,
-      // quoteCreationDate: "",
-      // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
       currencyId: vendorStore.companyInfo.currencyId,
-      // paymentTermId: 0,
-      // promotionIds: [],
       paymentMethod: handleNamMethod(),
       paymentMethodPrepayment:
         handleNamPreMethod() !== "" ? handleNamPreMethod() : handleNamMethod(),
-      // salePersonIds: [],
-      // saleUserIds: [],
-      deliveryType: "SHIP", //
-      // warehouseId: 0,
-      // commitmentDate: "",
-      // deliveryStatus: "",
-      // campaignId: 0,
-      // discount: 0, //chiet khau
+      deliveryType: "SHIP",
       discountComputeType: "FIXED",
       note: valueNote.current,
       noteImages: imageNote.current,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
-      // totalPrice: 0,
       saleOrderLines: newArr,
-      // saleOrderLineDeleteIds: [],
       isClearingDebts: orderStore.clearingDebt, //co dung doi tru cong no hay ko
       isRetail: false,
       scopeType:
@@ -418,16 +403,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       console.log("success data sale order:", JSON.stringify(values));
       if (values.id !== undefined) {
         console.log("success data sale order:", JSON.stringify(values));
-        // Dialog.show({
-        //   type: ALERT_TYPE.INFO,
-        //   title: translate("productScreen.Notification"),
-        //   textBody: "Thành Công " + values.id,
-        //   button2: translate("productScreen.BtnNotificationAccept"),
-        //   closeOnOverlayTap: false,
-        //   onPressButton: () => {
-        //     Dialog.hide();
-        //   },
-        // });
         navigation.navigate({
           name: "orderSuccess", params: {
             idOrder: values.id,
@@ -596,66 +571,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   };
 
   const handleBack = () => {
-    orderStore.setDataAddress({
-      id: 0,
-      partnerId: 0,
-      phoneNumber: "",
-      addressType: "",
-      country: { id: 0, name: "" },
-      region: { id: 0, name: "" },
-      city: { id: 0, name: "" },
-      district: { id: 0, name: "" },
-      ward: { id: 0, name: "" },
-      address: "",
-      isDefault: false,
-    });
-    orderStore.setDataDebtLimit({
-      isHaveDebtLimit: false,
-      debtAmount: 0,
-      amountOwed: 0,
-    });
-    orderStore.setMethodPayment({
-      sumAll: 0,
-      methodPayment: '',
-      debt: 0,
-      inputPrice: 0,
-      apply: false,
-    });
-    orderStore.setDataProductAddOrder([]);
-    orderStore.setViewProductType("VIEW_PRODUCT");
-    orderStore.setDataClientSelect({
-      id: "",
-      name: "",
-      code: "",
-      phoneNumber: "",
-    });
-    orderStore.setDataPriceListSelect({
-      id: "",
-      name: "",
-      priceListCategory: "",
-    });
-    orderStore.setCheckPriceList(false);
-    orderStore.setViewGrid(true);
-    orderStore.setClearingDebt(false);
-    orderStore.setCheckIdPartner(false);
-    orderStore.setCheckRenderList(false);
-    orderStore.setDataPriceListSelect({
-      id: "",
-      name: "",
-      priceListCategory: "",
-      currencyId: "",
-      pricelistId: "",
-    });
+    orderStore.reset()
     setArrProduct([]);
-    setPayment({
-      label: translate("order.DOMESTICALLY"),
-    });
+    setPayment({ label: translate("order.DOMESTICALLY") });
     setNote(false);
-  };
+  }
 
   const handleSelectTaxes = (id: any) => {
     idItemOrder.current = id;
-    console.log("tuuup", idItemOrder.current);
     setButtonSelect(true);
   };
 
@@ -1234,7 +1157,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View
+      {/* <View
         style={[
           styles.viewButtonOrder,
           {
@@ -1396,7 +1319,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           style={styles.buttonOrder}
           textStyle={styles.textButtonOrder}
         />
-      </View>
+      </View> */}
+      <BottomOrder
+      isDeposit={isDeposit}
+      price={price}
+      handleNamMethod={handleNamMethod()}
+      onPressButton={()=> addProduct()}
+      screen="create"
+      />
       <CustomCalendar
         isReset={isReset}
         handleReset={() => setIReset(!isReset)}

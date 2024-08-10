@@ -136,7 +136,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             ward: { id: 0, name: "" },
             address: "",
             isDefault: false,
-          });
+          } as any);
           orderStore.setDataAddress({
             id: 0,
             partnerId: 0,

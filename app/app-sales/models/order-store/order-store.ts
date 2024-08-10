@@ -265,6 +265,7 @@ export const OrderStoreModel = types
         name: "",
         code: "",
         phoneNumber: "",
+        isHaveDeliveryAddress: false,
       };
       self.sortPriceList = "";
       self.dataPriceListSelected = {

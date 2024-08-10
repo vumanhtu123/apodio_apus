@@ -4,24 +4,20 @@ import {
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
-  Linking,
   Platform,
   ScrollView,
   TouchableOpacity,
   View,
 } from "react-native";
 import {
-  AutoImage,
   Button,
   Header,
   Text,
-  TextField,
 } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
-  fontSize,
   margin,
   padding,
   scaleHeight,
@@ -30,7 +26,6 @@ import {
 import { styles } from "./styles";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Controller, useForm } from "react-hook-form";
 import { translate } from "../../../../i18n";
 import moment from "moment";
 import CustomCalendar from "../../../../components/calendar";
@@ -44,16 +39,16 @@ import {
 import { ModalPayment } from "../components/modal-payment-method";
 import { ModalTaxes } from "../components/modal-taxes-apply";
 import { ShowNote } from "../components/note-new-order-component";
-import { Order, arrPayment, dataPromotion, methodData } from "./data";
+import { arrPayment, methodData } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
-import { values } from "mobx";
 import {
   ALERT_TYPE,
   Dialog,
   Toast,
 } from "../../../../components/dialog-notification";
 import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
+import { BottomOrder } from "../components/bottomOrder";
 
 export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   props: any
@@ -252,13 +247,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
         Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
     ) {
-      // orderStore.setMethodPayment({
-      //   sumAll: 0,
-      //   methodPayment: 0,
-      //   debt: 0,
-      //   inputPrice: 0,
-      //   apply: false,
-      // });
       return navigation.navigate({
         name: "paymentBuy", params: {
           params: {
@@ -349,18 +337,14 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         quantity: data.amount,
         uomId: data.uomId,
         orderQty: data.amount,
-        // orderUomId: number, //chon
         unitPrice: data.unitPrice, //don gia cua bang gia
-        // amountUntaxed: data.price,
         amountTotal: data.amountTotal ?? data.price,
         taxes:
           data.VAT == undefined
             ? null
             : [{ id: data.VAT.value, name: data.VAT.label }],
         discount: data.taxesInput ?? 0, // nhập chiết khấu
-        // discountComputeType: string,
         type: "PRODUCT",
-        // note: valueNote.current,
         isPriceChange: true,
         quantityInventory: data.quantityInventory,
       };
@@ -380,33 +364,19 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
       code: screen === "copy" ? null : newData.code,
-      // invoiceAddressId: 0,
       deliveryAddressId: address.id,
-      // quotationDate: "",
       commitmentDate: formattedDate,
-      // quoteCreationDate: "",
-      // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
       currencyId: vendorStore.companyInfo.currencyId,
-      // paymentTermId: 0,
-      // promotionIds: [],
       paymentMethod: handleNamMethod(),
       paymentMethodPrepayment:
         handleNamPreMethod() !== "" ? handleNamPreMethod() : handleNamMethod(),
-      // salePersonIds: [],
-      // saleUserIds: [],
-      deliveryType: "SHIP", //
-      // warehouseId: 0,
-      // commitmentDate: "",
-      // deliveryStatus: "",
-      // campaignId: 0,
-      // discount: 0, //chiet khau
+      deliveryType: "SHIP",
       discountComputeType: "FIXED",
       note: valueNote.current,
       noteImages: imageNote.current,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
-      // totalPrice: 0,
       saleOrderLines: newArr,
       saleOrderLineDeleteIds: screen === "copy" ? [] : newArr3,
       isClearingDebts: orderStore.clearingDebt, //co dung doi tru cong no hay ko
@@ -437,16 +407,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       console.log("success data sale order:", JSON.stringify(values));
       if (values.id !== undefined) {
         console.log("success data sale order:", JSON.stringify(values));
-        // Dialog.show({
-        //   type: ALERT_TYPE.INFO,
-        //   title: translate("productScreen.Notification"),
-        //   textBody: "Thành Công " + values.id,
-        //   button2: translate("productScreen.BtnNotificationAccept"),
-        //   closeOnOverlayTap: false,
-        //   onPressButton: () => {
-        //     Dialog.hide();
-        //   },
-        // });
         navigation.navigate({
           name: "orderSuccess", params: {
             idOrder: values.id,
@@ -523,7 +483,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Chiết khấu phải lớn hơn 0",
+        textBody: translate("productScreen.discountMustBeGreaterThan0"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {
@@ -539,9 +499,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       return item;
     });
     setArrProduct(newArr);
-    // discountAll(newArr);
     postTaxLines(newArr);
-    // setEditTaxes(false)
     if (isDeposit === true) {
       handleDebt();
     }
@@ -558,7 +516,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       }
       return item;
     });
-    // setEditTaxes(false)
     setArrProduct(newArr);
   };
 
@@ -598,68 +555,16 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       }
       return item;
     });
-    console.log(newArr, "log=====");
     setArrProduct(newArr);
     postTaxLines(newArr);
   };
 
   const handleBack = () => {
-    orderStore.setDataAddress({
-      id: 0,
-      partnerId: 0,
-      phoneNumber: "",
-      addressType: "",
-      country: { id: 0, name: "" },
-      region: { id: 0, name: "" },
-      city: { id: 0, name: "" },
-      district: { id: 0, name: "" },
-      ward: { id: 0, name: "" },
-      address: "",
-      isDefault: false,
-    });
-    orderStore.setDataDebtLimit({
-      isHaveDebtLimit: false,
-      debtAmount: 0,
-      amountOwed: 0,
-    });
-    orderStore.setMethodPayment({
-      sumAll: 0,
-      methodPayment: 0,
-      debt: 0,
-      inputPrice: 0,
-      apply: false,
-    });
-    orderStore.setDataProductAddOrder([]);
-    orderStore.setViewProductType("VIEW_PRODUCT");
-    orderStore.setDataClientSelect({
-      id: "",
-      name: "",
-      code: "",
-      phoneNumber: "",
-    });
-    orderStore.setDataPriceListSelect({
-      id: "",
-      name: "",
-      priceListCategory: "",
-    });
-    orderStore.setCheckPriceList(false);
-    orderStore.setViewGrid(true);
-    orderStore.setClearingDebt(false);
-    orderStore.setCheckIdPartner(false);
-    orderStore.setCheckRenderList(false);
-    orderStore.setDataPriceListSelect({
-      id: "",
-      name: "",
-      priceListCategory: "",
-      currencyId: "",
-      pricelistId: "",
-    });
+    orderStore.reset()
     setArrProduct([]);
-    setPayment({
-      label: translate("order.DOMESTICALLY"),
-    });
+    setPayment({ label: translate("order.DOMESTICALLY") });
     setNote(false);
-  };
+  }
 
   const handleSelectTaxes = (id: any) => {
     idItemOrder.current = id;
@@ -890,7 +795,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           name: newData.partner.name,
           phoneNumber: newData.partner.phoneNumber,
         });
-        if (newData.commitmentDate !== "") {
+        if (newData.commitmentDate !== "" && newData.commitmentDate !== null) {
           setDesiredDate(true);
           const appTimeZone = moment.tz.guess()
           const date1 = moment(newData.commitmentDate).subtract(1, 'seconds').set({ millisecond: 999 })
@@ -903,7 +808,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               ? translate("order.DOMESTICALLY")
               : translate("order.EXPORTED"),
         });
-        if (newData.note !== '' || newData.noteImages?.length !== 0) {
+        if ((newData.note !== '' && newData.note !== null) || (newData.noteImages?.length !== 0 && newData.noteImages !== null)) {
           setNote(true);
         }
         valueNote.current = newData.note;
@@ -946,7 +851,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         if (screen === "edit") {
           switch (newData.paymentMethod) {
             case "CASH":
-              console.log("aaa 1");
               return (countRef.current = translate("order.CASH"));
             case "BANK_TRANSFER":
               return (countRef.current = translate("order.BANK_TRANSFER"));
@@ -1244,7 +1148,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               </View>
             </View>
           </TouchableOpacity>
-
           <ShowNote
             imageNote={imageNote.current}
             dataNote={valueNote.current}
@@ -1326,7 +1229,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                         return Dialog.show({
                           type: ALERT_TYPE.INFO,
                           title: translate("productScreen.Notification"),
-                          textBody: "Bạn cần chọn phương thức thanh toán",
+                          textBody: translate("productScreen.youNeedSelectedPaymentMethods"),
                           button2: translate(
                             "productScreen.BtnNotificationAccept"
                           ),
@@ -1336,13 +1239,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
                           },
                         });
                       }
-                      // orderStore.setMethodPayment({
-                      //   sumAll: 0,
-                      //   methodPayment: 0,
-                      //   debt: 0,
-                      //   inputPrice: 0,
-                      //   apply: false,
-                      // });
                       handleDebt();
                       navigation.navigate({
                         name: "paymentBuy", params: {
@@ -1389,43 +1285,9 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
               <Text tx={"order.noMoreInformation"} style={styles.textVoucher} />
             )}
           </View>
-          {/* <View style={styles.viewVoucher}>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={[styles.textVoucher, { flex: 1 }]}>
-                {translate("order.total") +
-                  " " +
-                  arrProduct.length +
-                  " " +
-                  translate("order.product")}
-              </Text>
-              <Text
-                style={[styles.textVoucher, { color: colors.palette.nero }]}>
-                84000000
-              </Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("promotion" as any)}
-              style={{
-                flexDirection: "row",
-                marginTop: scaleHeight(margin.margin_20),
-              }}>
-              <Images.icon_tag height={16} width={16} />
-              <Text
-                style={[
-                  styles.textVoucher,
-                  {
-                    flex: 1,
-                    marginLeft: scaleWidth(margin.margin_6),
-                  },
-                ]}
-                tx={"order.applyPromoHint"}
-              />
-              <Images.icon_caretRight2 height={16} width={16} />
-            </TouchableOpacity>
-          </View> */}
         </ScrollView>
       </KeyboardAvoidingView>
-      <View
+      {/* <View
         style={[
           styles.viewButtonOrder,
           {
@@ -1443,9 +1305,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           }}>
           <Text tx={"order.sum"} style={[styles.textTotal, { flex: 1 }]} />
           <Text style={isDeposit === true ? styles.textTotal : styles.textCost}>
-            {/* {isNaN(priceSumVAT.current)
-              ? Number(priceSumVAT.current)
-              : price.current} */}
             {formatVND(formatCurrency(commasToDots(Number(price))))}
           </Text>
         </View>
@@ -1591,7 +1450,14 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           style={styles.buttonOrder}
           textStyle={styles.textButtonOrder}
         />
-      </View>
+      </View> */}
+      <BottomOrder
+        isDeposit={isDeposit}
+        price={price}
+        handleNamMethod={handleNamMethod()}
+        onPressButton={() => addProduct()}
+        screen={screen}
+      />
       <CustomCalendar
         isReset={isReset}
         handleReset={() => setIReset(!isReset)}

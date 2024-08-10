@@ -43,6 +43,7 @@ import {
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
 import en from "../../../../i18n/en";
+import { GroupButtonBottom } from "../../../../components/group-button/groupButtonBottom";
 
 
 export const ProductCreateScreen: FC = (item) => {
@@ -1028,25 +1029,13 @@ export const ProductCreateScreen: FC = (item) => {
             getListUnitGroup(false);
           }}
         />
-        <View style={styles.viewGroupBtn}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={styles.viewBtnCancel}
-          >
-            <Text tx={"common.cancel"} style={styles.textBtnCancel} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={methods.handleSubmit(submitAdd)}
-            style={styles.viewBtnConfirm}
-          >
-            <Text
-              tx={"createProductScreen.done"}
-              style={styles.textBtnConfirm}
-            />
-          </TouchableOpacity>
-        </View>
+        <GroupButtonBottom
+          onPressCancel={() => navigation.goBack()}
+          onPressConfirm={methods.handleSubmit(submitAdd)}
+          txCancel={"common.cancel"}
+          txConfirm={"createProductScreen.done"}
+          isModal={false}
+        />
       </View>
     </FormProvider>
   );
