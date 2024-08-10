@@ -1,6 +1,6 @@
 import React, { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
 import { Text } from "../text/text";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../app-purchase/theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../theme";
 
 interface GroupButtonBottom {
     onPressCancel: (data?: any) => void

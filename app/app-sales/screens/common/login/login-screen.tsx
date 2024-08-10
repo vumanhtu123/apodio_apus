@@ -19,7 +19,8 @@ import { colors, palette, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles";
 import { Svgs } from "../../../../../assets/svgs";
 import { LinearGradient } from "react-native-linear-gradient";
-import { getAccessToken } from "../../../utils/storage";
+import { getAccessToken, getCurrentLanguage } from "../../../utils/storage";
+import ModalSelectLanguage from "./modalSelectLanguage";
 
 export const LoginScreen: FC = observer(function LoginScreen(props) {
   // Pull in one of our MST stores
@@ -34,6 +35,12 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   const [emptyInputData, setEmptyInputData] = useState<boolean>(true);
   const [userName, setUserName] = useState<string>("apodio@gmail.com");
   const [password, setPassWord] = useState<string>("system@123456");
+  const [isVisibleSelectLanguage, setIsVisibleSelectLanguage] = useState(false)
+  const [currentLanguage, setCurrentLanguage] = useState<{
+    id: string,
+    icon: React.JSX.Element
+    name: string
+  }[]>([{ id: 'vi', name: "Tiếng việt", icon: <Svgs.icon_VietNam /> }])
   // Pull in navigation via hook
   const navigation = useNavigation();
 
@@ -57,6 +64,26 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
       navigation.navigate("listCompany" as never);
     }
   };
+  const languages = [
+    { id: 'vi', name: 'Tiếng Việt', icon: <Svgs.icon_VietNam /> },
+    { id: 'en', name: 'English', icon: <Svgs.icon_English /> },
+    // Thêm các ngôn ngữ khác ở đây
+  ];
+
+  const getValueLanguage = async () => {
+    const value = await getCurrentLanguage()
+    console.log('vaaaaaaaaaa', value);
+    languages.map((item) => {
+      if (item.id == value) {
+
+        setCurrentLanguage([item])
+      }
+    })
+  }
+
+  useEffect(() => {
+    getValueLanguage()
+  }, [])
 
   return (
     // <ImageBackground source={Images.iconEmpty} style={styles.ROOT}>
@@ -184,13 +211,23 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               styles.viewLanguage,
               { height: Platform.OS === "android" ? 100 : null },
             ]}>
-            <TouchableOpacity
-              activeOpacity={1}
-              // onPress={() => _onChangeLanguage(LANGUAGE.TIMOLESTE)}
-              style={styles.viewFlag}>
-              <Svgs.icon_VietNam />
-              <Text style={styles.textFlag} tx={"loginScreen.vietNam"} />
-            </TouchableOpacity>
+            {
+              currentLanguage?.map((language) => {
+                return (
+
+                  <TouchableOpacity
+                    // activeOpacity={1}
+                    // onPress={() => _onChangeLanguage(LANGUAGE.TIMOLESTE)}
+                    onPress={() => setIsVisibleSelectLanguage(true)}
+                    style={styles.viewFlag}>
+                    {language.icon}
+                    <Text style={styles.textFlag}  >
+                      {language.name}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })
+            }
             {/* <View style={{ width: scaleWidth(50) }} /> */}
             {/* <TouchableOpacity
               activeOpacity={1}
@@ -200,6 +237,21 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
               <Text style={styles.textFlag} tx={"loginScreen.english"} />
             </TouchableOpacity> */}
           </View>
+
+          <ModalSelectLanguage
+            isVisible={isVisibleSelectLanguage}
+            setIsVisible={() => setIsVisibleSelectLanguage(false)}
+            // currentLanguage={currentLanguage}
+
+            arrLanguage={languages}
+
+            onSelectLanguage={(data) => {
+              console.log('====================================');
+              console.log("data doan", data);
+              console.log('====================================');
+              setCurrentLanguage([{ id: data.id, name: data.name, icon: data.icon }])
+            }} />
+
         </ScrollView>
       </KeyboardAvoidingView>
     </LinearGradient>

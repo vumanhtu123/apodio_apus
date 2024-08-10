@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Animated, Image, LayoutChangeEvent, PanResponder, Platform, StyleSheet, Text, View, StyleProp, TextStyle } from 'react-native';
 import { Color, getImage } from '../service';
 import { ALERT_TYPE } from '../config';
-import { colors } from '../../../app-purchase/theme';
+import { colors } from '../../theme';
 
 interface IProps {
   isDark: boolean;

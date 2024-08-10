@@ -19,7 +19,7 @@ import { colors, palette, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles";
 import { Svgs } from "../../../../../assets/svgs";
 import { LinearGradient } from "react-native-linear-gradient";
-import { getAccessToken } from "../../../utils/storage";
+import { getAccessToken, getCurrentLanguage } from "../../../utils/storage";
 import ModalSelectLanguage from "./modalSelectLanguage";
 
 export const LoginScreen: FC = observer(function LoginScreen(props) {
@@ -37,9 +37,10 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   const [password, setPassWord] = useState<string>("system@123456");
   const [isVisibleSelectLanguage, setIsVisibleSelectLanguage] = useState(false)
   const [currentLanguage, setCurrentLanguage] = useState<{
-    img: React.JSX.Element
+    id: string,
+    icon: React.JSX.Element
     name: string
-  }[]>([{ name: "Tiếng việt", img: <Svgs.icon_VietNam /> }])
+  }[]>([{ id: 'vi', name: "Tiếng việt", icon: <Svgs.icon_VietNam /> }])
   // Pull in navigation via hoo1k
   const navigation = useNavigation();
 
@@ -58,13 +59,32 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
   };
 
   const onSubmit = async (data: any) => {
-      await authenticationStore.login(data.username, data.password);
+    await authenticationStore.login(data.username, data.password);
     if (getAccessToken() !== null) {
       navigation.navigate("listCompany" as never);
     }
   };
 
+  const languages = [
+    { id: 'vi', name: 'Tiếng Việt', icon: <Svgs.icon_VietNam /> },
+    { id: 'en', name: 'English', icon: <Svgs.icon_English /> },
+    // Thêm các ngôn ngữ khác ở đây
+  ];
 
+  const getValueLanguage = async () => {
+    const value = await getCurrentLanguage()
+    console.log('vaaaaaaaaaa', value);
+    languages.map((item) => {
+      if (item.id == value) {
+        ;
+        setCurrentLanguage([item])
+      }
+    })
+  }
+
+  useEffect(() => {
+    getValueLanguage()
+  }, [])
 
   console.log("data duoc chon 2", currentLanguage);
 
@@ -204,7 +224,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
                     // onPress={() => _onChangeLanguage(LANGUAGE.TIMOLESTE)}
                     onPress={() => setIsVisibleSelectLanguage(true)}
                     style={styles.viewFlag}>
-                    {language.img}
+                    {language.icon}
                     <Text style={styles.textFlag}  >
                       {language.name}
                     </Text>
@@ -228,11 +248,14 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
             isVisible={isVisibleSelectLanguage}
             setIsVisible={() => setIsVisibleSelectLanguage(false)}
             // currentLanguage={currentLanguage}
+
+            arrLanguage={languages}
+
             onSelectLanguage={(data) => {
               console.log('====================================');
               console.log("data doan", data);
               console.log('====================================');
-              setCurrentLanguage([{ name: data.name, img: data.icon }])
+              setCurrentLanguage([{ id: data.id, name: data.name, icon: data.icon }])
             }} />
 
         </ScrollView>

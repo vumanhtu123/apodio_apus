@@ -23,9 +23,6 @@ export const FloatingButton: FC = observer(function FloatingButton() {
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log(
-            "FloatingButton---------------------------------------------"
-          );
           navigation.navigate("TestDebug" as never);
         }}>
         <Animated.View

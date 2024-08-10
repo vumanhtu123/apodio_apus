@@ -204,13 +204,11 @@ export const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 8,
     marginHorizontal: 16,
-    marginTop: '14%',
+    marginTop: scaleHeight(65),
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 8,
     elevation: 1,
-   
-    
   
   },
   divider: {

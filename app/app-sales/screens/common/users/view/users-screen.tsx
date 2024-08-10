@@ -26,28 +26,23 @@ import {
   scaleHeight,
   scaleWidth,
 } from "../../../../theme";
-// import { bgMyacc, flagEnglish, flagTimoleste } from "../../theme/images"
 import { styles } from "./styles";
 import { useStores } from "../../../../models";
 import { TYPE_SELECT_IMAGE } from "../../../../utils/enum";
-// import { changeLanguage } from "../../../i18n"
-// import { formatPhoneNumber, validateFileSize } from "../../../utils/validate"
 import {
   clear,
   getAccessToken,
+  getCurrentLanguage,
   setAccessToken,
+  setCurrentLanguage,
 } from "../../../../utils/storage";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-// import { hideLoading, showLoading } from "../../../utils/toast"
 import ReactNativeModal from "react-native-modal";
 import { useAuth } from "../../../contexts/auth";
-// import { Screen } from "../screen/screen"
 import { Header } from "../../../../../components/header/header";
 import { Svgs } from "../../../../../../assets/svgs";
 import { LinearGradient } from "react-native-linear-gradient";
-// import { string } from "mobx-state-tree/dist/internal"
-// import { BulletItem } from "app/components/bullet-item/bullet-item"
 import { Row } from "../../../../../components/Row";
 import {
   BottomParamList,
@@ -55,54 +50,7 @@ import {
 } from "../../../../navigators/bottom-navigation";
 import { TextField } from "../../../../../components";
 import { changeLanguage } from "../../../../../i18n";
-// import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors"
-// import { UsersScreen } from "../users/view/users-screen"
-//
-// const { width } = Dimensions.get('window');
-
-// const Header = (prop) => {
-//   return (
-//     <View style={styles.accountHeader}>
-//       {/* <TouchableOpacity onPress={props.onOpenCam}>
-//         <View style={styles.viewAvatar}>
-//           <Image
-//             style={styles.avatar}
-//             source={{
-//               uri: props.url,
-//               headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: `Bearer ${props.token}`,
-//               },
-//             }}
-//           />
-//           <SvgIcon
-//             name={"icCamProfile"}
-//             width={scaleWidth(32)}
-//             height={scaleHeight(32)}
-//             style={styles.iconCam}
-//           />
-//         </View>
-//       </TouchableOpacity> */}
-//       {/* <View style={styles.merchantInfo}>
-//         <View style={styles.user}>
-//           <Text style={styles.textUser} tx="Merchant"/>
-//         </View>
-//         <Text style={styles.textName} numberOfLines={1}>
-//           {props?.name ?? ''}
-//         </Text>
-//         <Text style={styles.textPhone}>
-//           {formatPhoneNumber(props?.data?.phoneNumber ?? '')}
-//         </Text>
-//       </View>
-
-//       <View style={styles.boxId}>
-//         <Text style={styles.textId}>
-//           {props?.data?.id ?? ''}
-//         </Text>
-//       </View> */}
-//     </View>
-//   );
-// };
+import I18n from "i18n-js";
 
 const MainAccount1 = ({ title, onPress, index }: any) => {
   const IconData = ["ic_language", "ic_QR", "ic_userManual"];
@@ -124,7 +72,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
 
     const navigation = useNavigation();
     const [isVisibleFeedback, setIsVisibleFeedback] = useState(false);
-    const [selectLanguage, setSelectLanguage] = useState(false);
+    const [selectLanguage, setSelectLanguage] = useState<string>();
     const { top } = useSafeAreaInsets();
     const [data, setData] = useState();
     const [showLanguage, setShowLanguage] = useState(false);
@@ -132,27 +80,22 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
     const auth = useAuth();
     const { authenticationStore } = useStores();
 
-    // const [showImagePicker, setShowImagePicker] = useState(false)
-    // const [isShowChoose, setIsShowChoose] = useState(false)
-    // const [imageAVT, setImageAVT] = useState("")
 
-    // const navigation = useNavigation()
-    // const auth = useAuth()
-
-    // const getData = async () => {
-    //   const res = await accountStore.accountInfo(accountStore.userId)
-    //   console.log('res', res.result.data)
-    //   setData(res.result.data)
-    // }
-
-    // useEffect(() => {
-    //   getData()
-    // }, [])
 
     const _onChangeLanguage = useCallback(
       (value: any) => {
         console.log("onChangeLanguage", value);
-        value === true ? changeLanguage("fr") : changeLanguage("en");
+        setSelectLanguage(value);
+        switch (value) {
+          case 'vi':
+            changeLanguage("en")
+            break;
+          case 'en':
+            changeLanguage("fr")
+          default:
+
+            break;
+        }
       },
       [selectLanguage]
     );
@@ -165,69 +108,6 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       selectionLimit: 1,
     };
 
-    // const requestCameraPermission = async () => {
-    //   try {
-    //     const granted = await PermissionsAndroid.request(
-    //       PermissionsAndroid.PERMISSIONS.CAMERA,
-    //     );
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //       launchCamera(options, (result) => uploadImage(result))
-    //     } else {
-    //       console.log("Camera permission denied");
-    //     }
-    //   } catch (err) {
-    //     console.warn(err);
-    //   }
-    // };
-
-    // const onSelectImage = (type) => {
-    //   if (type === TYPE_SELECT_IMAGE.CAMERA) {
-    //     if(Platform.OS === "android") {
-    //       requestCameraPermission()
-    //     } else {
-    //       launchCamera(options, (result) => uploadImage(result))
-    //     }
-    //   } else {
-    //     launchImageLibrary(options, (result) => uploadImage(result))
-    //   }
-    // }
-
-    // const uploadImage = useCallback(
-    //   async (result) => {
-    //     setIsShowChoose(false)
-    //     if (result.didCancel) {
-    //       hideLoading()
-    //       // console.log("User cancelled image picker")
-    //     } else if (result.error) {
-    //       hideLoading()
-    //       // console.log("ImagePicker Error:", result.error)
-    //     } else {
-    //       showLoading()
-    //       const { fileSize, uri, type, fileName } = result?.assets[0]
-    //       const checkFileSize = validateFileSize(fileSize)
-    //       if (checkFileSize) {
-    //         setIsShowChoose(false)
-    //         console.log("Không được chọn ảnh quá 5MB")
-    //       } else {
-    //         const formData = new FormData()
-    //         formData.append("file", {
-    //           uri,
-    //           type,
-    //           name: fileName,
-    //         })
-    //         const imageUpload = await accountStore.uploadAVT(formData)
-    //         if (imageUpload) {
-    //           hideLoading()
-    //           setImageAVT(uri)
-    //           await accountStore.updateUserAVT(userId,imageUpload)
-    //         } else {
-    //           hideLoading()
-    //         }
-    //       }
-    //     }
-    //   },
-    //   [imageUrl],
-    // )
 
     const textData = [
       {
@@ -235,23 +115,23 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
         icon: Svgs.ic_infor,
         onPress: () => {
           // Alert.alert('ok')
-          props.navigation.navigate("inforAccount");
+          props.navigation.navigate("inforAccount" as never);
         },
       },
       {
         title: "inforMerchant.btnSecutityAcc",
         icon: Svgs.ic_secutity,
-        onPress: () => props.navigation.navigate("accountSecurity"),
+        onPress: () => props.navigation.navigate("accountSecurity" as never),
       },
       {
         title: "inforMerchant.btnChangePassword",
         icon: Svgs.ic_changePass,
-        onPress: () => props.navigation.navigate("changePass"),
+        onPress: () => props.navigation.navigate("changePass" as never),
       },
       {
         title: "inforMerchant.btnIntroduct",
         icon: Svgs.ic_inTroduce,
-        onPress: () => props.navigation.navigate("Introduce"),
+        onPress: () => props.navigation.navigate("Introduce" as never),
       },
       {
         title: "inforMerchant.btnFeedback",
@@ -261,64 +141,54 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       {
         title: "inforMerchant.btnSettingBell",
         icon: Svgs.ic_settingBell,
-        onPress: () => props.navigation.navigate("notificationSetting"),
+        onPress: () => props.navigation.navigate("notificationSetting" as never),
       },
     ];
 
-    // const onChangeLanguage = useCallback(
-    //   (value) => {
-    //     setShowLanguage(false)
-    //     setSelectedLanguage(value)
-    //     changeLanguage(value)
-    //   },
-    //   [selectedLanguage],
-    // )
 
-    // const onLogout = async () => {
-    //   await clear()
-    //   auth.changeLoginStatus()
-    // }
+    const getValueLanguage = async () => {
+      const language = await getCurrentLanguage()
+      console.log('====================================');
+      console.log('AAAAAAA', language);
+      console.log('====================================');
+      setSelectLanguage(language)
+      return language
+    }
 
+
+    useEffect(() => {
+      getValueLanguage()
+      console.log('====================================');
+      console.log("key select lenguage", I18n.locale);
+      console.log('====================================');
+      // _onChangeLanguage(selectLanguage)
+    }, [])
     return (
       <ScrollView>
         <View style={styles.ROOT}>
-          {/* <Image style={styles.imgTopHeader} source={bgMyacc} /> */}
 
-          {/* <View style={{marginTop:top}}/> */}
-          {
-            // data && (
-            //   // <Header
-            //   //   navigation={'navigation'}
-            //   //   name={name}
-            //   //   data={data}
-            //   //   url={imageUrl}
-            //   //   token={accountStore.authToken}
-            //   //   onOpenCam={() => {}}
-            //   //   // onOpenCam={setShowImagePicker(true)}
-            //   // />
-            <View style={{ width: "100%" }}>
-              <Header
-                style={{
-                  alignItems: "center",
-                  height: 52,
-                  justifyContent: "center",
-                }}
-                LeftIcon={Svgs.back}
-                headerTx="inforMerchant.setTingShop"
-                titleStyle={{ color: colors.white }}
-                type={"AntDesign"}
-                onLeftPress={() => navigation.goBack()}
-              />
+          <View style={{ width: "100%" }}>
+            <Header
+              style={{
+                alignItems: "center",
+                height: 52,
+                justifyContent: "center",
+              }}
+              LeftIcon={Svgs.back}
+              headerTx="inforMerchant.setTingShop"
+              titleStyle={{ color: colors.white }}
+              type={"AntDesign"}
+              onLeftPress={() => navigation.goBack()}
+            />
 
-              <LinearGradient
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 1 }}
-                colors={[colors.palette.navyBlue, colors.palette.malibu]}
-                style={{ height: 70 }}></LinearGradient>
-            </View>
+            <LinearGradient
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 1 }}
+              colors={[colors.palette.navyBlue, colors.palette.malibu]}
+              style={{ height: 70 }}></LinearGradient>
+          </View>
 
-            // )
-          }
+
 
           {/* <View style={{backgroundColor:colors.palette.blueNavigator ,  width:'100%', height:70}}></View> */}
           <View style={styles.horView}>
@@ -345,7 +215,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
             elevation: 5,
             marginTop: 30,
           }}>
-          <View style={styles.body}>
+          <View style={[styles.body,]}>
             {textData.map((item, index) => (
               <View key={index}>
                 <TouchableOpacity style={styles.item} onPress={item.onPress}>
@@ -385,8 +255,10 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
           backdropOpacity={0.5}
           animationIn={"zoomIn"}
           animationOut={"fadeOut"}
-          onBackdropPress={() => {
-            setShowLanguage(showLanguage);
+          onBackdropPress={async () => {
+            setShowLanguage(false);
+            const a = await getCurrentLanguage()
+            console.log('asdgfkas', a)
           }}
           isVisible={showLanguage}
           style={{
@@ -403,7 +275,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
 
                 style={styles.textMethod}
               />
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   setShowLanguage(false);
                   // setshowModal(false)
@@ -416,7 +288,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                     color: colors.palette.torchRed,
                   }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </Row>
 
             <View
@@ -429,9 +301,13 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
-              onPress={() => {
-                setSelectLanguage(!selectLanguage);
-                _onChangeLanguage(!selectLanguage);
+              onPress={async () => {
+                // selectLanguage.current = true;
+                _onChangeLanguage('vi');
+
+                await setCurrentLanguage("vi")
+                setShowLanguage(false);
+
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
@@ -439,7 +315,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 </View>
                 <Text>Tiếng Việt </Text>
               </View>
-              {selectLanguage ? <Svgs.ic_tick /> : null}
+              {selectLanguage == 'vi' ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
             <View
               style={{ width: "100%", height: 1, backgroundColor: colors.solitude2 }}
@@ -453,8 +329,11 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 justifyContent: "space-between",
               }}
               onPress={() => {
-                setSelectLanguage(!selectLanguage);
-                _onChangeLanguage(!selectLanguage);
+                // selectLanguage.current = false;
+                _onChangeLanguage('en');
+                setCurrentLanguage('en')
+                setShowLanguage(false);
+
               }}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View style={{ padding: 8 }}>
@@ -462,7 +341,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
                 </View>
                 <Text>Tiếng Anh </Text>
               </View>
-              {selectLanguage ? null : <Svgs.ic_tick />}
+              {selectLanguage == "en" ? <Svgs.ic_tick /> : null}
             </TouchableOpacity>
           </View>
         </ReactNativeModal>

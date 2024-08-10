@@ -1,5 +1,5 @@
 import {TextStyle} from 'react-native';
-import {colors} from '../../app-purchase/theme';
+import {colors} from '../theme';
 
 /**
  * All text will start off looking like this.
