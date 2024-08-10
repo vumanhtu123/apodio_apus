@@ -17,6 +17,7 @@ import Images from "../../../../assets/index";
 import { colors } from "../../theme";
 import { Text } from "../../../components";
 import { useNavigation } from "@react-navigation/native";
+import { setCurrentLanguage } from "../../utils/storage";
 
 export const SelectLanguageScreen: FC<
   StackScreenProps<NavigatorParamList, "selectLanguage">
@@ -27,9 +28,18 @@ export const SelectLanguageScreen: FC<
 
   const _onChangeLanguage = useCallback(
     (value: any) => {
-      console.log("onChangeLanguage", value);
+      console.log("onChangeLanguage1", value);
       setSelectLanguage(value);
-      value === true ? changeLanguage("en") : changeLanguage("fr");
+      switch (value) {
+        case 'vi':
+          changeLanguage("en")
+          break;
+        case 'en':
+          changeLanguage("fr")
+        default:
+
+          break;
+      }
     },
     [selectLanguage]
   );
@@ -62,11 +72,12 @@ export const SelectLanguageScreen: FC<
       {/* <Text style={styles.headerText} tx="selectLanguage" /> */}
       <TouchableOpacity
         onPress={() => {
-          console.log("select vietnam", visible);
-          setVisible(true);
+          setVisible(false);
+          setCurrentLanguage('vi')
+          navigate("introduction");
+          _onChangeLanguage('vi')
 
-          navigation.navigate("introduction");
-          handleLanguageSelection(!visible);
+          console.log("select english", visible);
         }}
         style={{
           width: "100%",
@@ -87,8 +98,10 @@ export const SelectLanguageScreen: FC<
         onPress={() => {
           // handleLanguageSelection(visibel)
           setVisible(false);
-          navigation.navigate("introduction");
-          handleLanguageSelection(visible);
+          setCurrentLanguage('en')
+          navigate("introduction");
+          _onChangeLanguage('en')
+
           console.log("select english", visible);
         }}
         style={{

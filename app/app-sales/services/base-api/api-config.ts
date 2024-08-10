@@ -9,26 +9,26 @@ import CONFIG from "../../config.json";
 
 const getDomain = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.DEV.URL;
+  const domain = CONFIG.API.STAGING.URL;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Domain", domain);
   return domain;
 };
 const getDomainOrder = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.DEV.URL_ORDER;
+  const domain = CONFIG.API.STAGING.URL_ORDER;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Domainmm", domain);
   return domain;
 };
 const getDomainAccounting = () => {
-  const domain = CONFIG.API.DEV.URL_ACCOUNTING;
+  const domain = CONFIG.API.STAGING.URL_ACCOUNTING;
   console.log("Domain accounting", domain);
   return domain;
 };
 const getDomainErp = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.DEV.URL_ERP;
+  const domain = CONFIG.API.STAGING.URL_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("ERP", domain);
   return domain;
@@ -36,7 +36,7 @@ const getDomainErp = () => {
 
 const getDomainGetWay = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.DEV.URL_GET_WAY_ERP;
+  const domain = CONFIG.API.STAGING.URL_GET_WAY_ERP;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Getway", domain);
   return domain;
@@ -44,7 +44,7 @@ const getDomainGetWay = () => {
 
 const getDomainUAA = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.DEV.UAA;
+  const domain = CONFIG.API.STAGING.UAA;
   console.log("URL", CONFIG.API.STAGING.UAA);
   return domain;
 };
@@ -69,7 +69,7 @@ const getBaseURL = () => {
 };
 
 const getDomainWarehouse = () => {
-  const domain = CONFIG.API.DEV.URL_WAREHOUSE;
+  const domain = CONFIG.API.STAGING.URL_WAREHOUSE;
   console.log("URL warehouse 2", domain);
   return domain;
 };

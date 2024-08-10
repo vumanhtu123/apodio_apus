@@ -132,23 +132,23 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
         icon: Svgs.ic_infor,
         onPress: () => {
           // Alert.alert('ok')
-          props.navigation.navigate("inforAccount");
+          props.navigation.navigate("inforAccount" as never);
         },
       },
       {
         title: "inforMerchant.btnSecutityAcc",
         icon: Svgs.ic_secutity,
-        onPress: () => props.navigation.navigate("accountSecurity"),
+        onPress: () => props.navigation.navigate("accountSecurity" as never),
       },
       {
         title: "inforMerchant.btnChangePassword",
         icon: Svgs.ic_changePass,
-        onPress: () => props.navigation.navigate("changePass"),
+        onPress: () => props.navigation.navigate("changePass" as never),
       },
       {
         title: "inforMerchant.btnIntroduct",
         icon: Svgs.ic_inTroduce,
-        onPress: () => props.navigation.navigate("Introduce"),
+        onPress: () => props.navigation.navigate("Introduce" as never),
       },
       {
         title: "inforMerchant.btnFeedback",
@@ -158,7 +158,7 @@ export const UserScreen: FC<StackScreenProps<BottomParamList, "users">> =
       {
         title: "inforMerchant.btnSettingBell",
         icon: Svgs.ic_settingBell,
-        onPress: () => props.navigation.navigate("notificationSetting"),
+        onPress: () => props.navigation.navigate("notificationSetting" as never),
       },
     ];
 
