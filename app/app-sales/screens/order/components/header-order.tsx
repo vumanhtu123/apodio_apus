@@ -31,7 +31,6 @@ interface PriceData {
   disabled?: boolean;
 }
 export const HeaderOrder = (data: InputData) => {
-  console.log(data);
   return (
     <TouchableOpacity
       disabled={data.disabled}

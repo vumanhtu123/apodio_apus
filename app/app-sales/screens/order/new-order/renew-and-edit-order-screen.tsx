@@ -119,75 +119,75 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   };
 
   const addProduct = () => {
-    // if (store.orderStore.dataClientSelect.id === '') {
-    //   return Dialog.show({
-    //     type: ALERT_TYPE.INFO,
-    //     title: translate("productScreen.Notification"),
-    //     textBody: translate("productScreen.youNeedSelectedClient"),
-    //     button2: translate("productScreen.BtnNotificationAccept"),
-    //     closeOnOverlayTap: false,
-    //     onPressButton: () => {
-    //       Dialog.hide();
-    //     },
-    //   });
-    // }
-    // if (orderStore.dataAddress.id === 0) {
-    //   return Dialog.show({
-    //     type: ALERT_TYPE.INFO,
-    //     title: translate("productScreen.Notification"),
-    //     textBody: translate("productScreen.youNeedEnterAddressShip"),
-    //     button2: translate("productScreen.BtnNotificationAccept"),
-    //     closeOnOverlayTap: false,
-    //     onPressButton: () => {
-    //       Dialog.hide();
-    //     },
-    //   });
-    // }
-    // if (arrProduct.length === 0) {
-    //   return Dialog.show({
-    //     type: ALERT_TYPE.INFO,
-    //     title: translate("productScreen.Notification"),
-    //     textBody: translate("productScreen.youNeedSelectedProduct"),
-    //     button2: translate("productScreen.BtnNotificationAccept"),
-    //     closeOnOverlayTap: false,
-    //     onPressButton: () => {
-    //       Dialog.hide();
-    //     },
-    //   });
-    // }
-    // if (handleNamMethod() == "") {
-    //   return Dialog.show({
-    //     type: ALERT_TYPE.INFO,
-    //     title: translate("productScreen.Notification"),
-    //     textBody: translate("productScreen.youNeedSelectedPaymentMethods"),
-    //     button2: translate("productScreen.BtnNotificationAccept"),
-    //     closeOnOverlayTap: false,
-    //     onPressButton: () => {
-    //       Dialog.hide();
-    //     },
-    //   });
-    // }
-    // if (
-    //   handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
-    //   Number(price) - Number(orderStore.dataDebtPayment.inputPrice) >
-    //   Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
-    //     Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
-    // ) {
-    //   return navigation.navigate({
-    //     name: "paymentBuy", params: {
-    //       params: {
-    //         type: false,
-    //         price: price,
-    //         warning: true,
-    //         debtAmount:
-    //           handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-    //             ? Number(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
-    //               Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))))
-    //             : null,
-    //       },
-    //     }
-    //   } as never);
-    // }
+    if (store.orderStore.dataClientSelect.id === '') {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: translate("productScreen.youNeedSelectedClient"),
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          Dialog.hide();
+        },
+      });
+    }
+    if (orderStore.dataAddress.id === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: translate("productScreen.youNeedEnterAddressShip"),
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          Dialog.hide();
+        },
+      });
+    }
+    if (arrProduct.length === 0) {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: translate("productScreen.youNeedSelectedProduct"),
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          Dialog.hide();
+        },
+      });
+    }
+    if (handleNamMethod() == "") {
+      return Dialog.show({
+        type: ALERT_TYPE.INFO,
+        title: translate("productScreen.Notification"),
+        textBody: translate("productScreen.youNeedSelectedPaymentMethods"),
+        button2: translate("productScreen.BtnNotificationAccept"),
+        closeOnOverlayTap: false,
+        onPressButton: () => {
+          Dialog.hide();
+        },
+      });
+    }
+    if (
+      handleNamMethod() == "DEDUCTION_OF_LIABILITIES" &&
+      Number(price) - Number(orderStore.dataDebtPayment.inputPrice) >
+      Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+        Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)))
+    ) {
+      return navigation.navigate({
+        name: "paymentBuy", params: {
+          params: {
+            type: false,
+            price: price,
+            warning: true,
+            debtAmount:
+              handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
+                ? Number(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
+                  Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))))
+                : null,
+          },
+        }
+      } as never);
+    }
 
     const newArr = arrProduct.map((data: any) => {
       return {
@@ -329,38 +329,38 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           : 0,
     };
     console.log("done new order: ", JSON.stringify(order));
-    // store.orderStore.postAddOrderSale(order).then((values) => {
-    //   console.log("success data sale order:", JSON.stringify(values));
-    //   if (values.id !== undefined) {
-    //     navigation.navigate({
-    //       name: "orderSuccess", params: {
-    //         idOrder: values.id,
-    //         code: screen == 'edit' ? newData.code : values.code,
-    //         screen: screen === "copy" ? "create" : "edit",
-    //         price: price,
-    //         inputPrice: orderStore.dataDebtPayment.inputPrice,
-    //         paymentMethod: handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ? true : false
-    //       }
-    //     } as never);
-    //     orderStore.setDataProductAddOrder([]);
-    //     setArrProduct([]);
-    //     handleBack();
-    //   } else {
-    //     const v = values?.map((data: any) => {
-    //       return data.message;
-    //     });
-    //     Dialog.show({
-    //       type: ALERT_TYPE.INFO,
-    //       title: translate("productScreen.Notification"),
-    //       textBody: v[0],
-    //       button2: translate("productScreen.BtnNotificationAccept"),
-    //       closeOnOverlayTap: false,
-    //       onPressButton: () => {
-    //         Dialog.hide();
-    //       },
-    //     });
-    //   }
-    // });
+    store.orderStore.postAddOrderSale(order).then((values) => {
+      console.log("success data sale order:", JSON.stringify(values));
+      if (values.id !== undefined) {
+        navigation.navigate({
+          name: "orderSuccess", params: {
+            idOrder: values.id,
+            code: screen == 'edit' ? newData.code : values.code,
+            screen: screen === "copy" ? "create" : "edit",
+            price: price,
+            inputPrice: orderStore.dataDebtPayment.inputPrice,
+            paymentMethod: handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ? true : false
+          }
+        } as never);
+        orderStore.setDataProductAddOrder([]);
+        setArrProduct([]);
+        handleBack();
+      } else {
+        const v = values?.map((data: any) => {
+          return data.message;
+        });
+        Dialog.show({
+          type: ALERT_TYPE.INFO,
+          title: translate("productScreen.Notification"),
+          textBody: v[0],
+          button2: translate("productScreen.BtnNotificationAccept"),
+          closeOnOverlayTap: false,
+          onPressButton: () => {
+            Dialog.hide();
+          },
+        });
+      }
+    });
   };
 
   const selectClient = () => {
@@ -675,7 +675,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
         });
         priceAll(newArr);
         handleSumAmountVAT(newArr);
-        console.log(newArr, "log =====");
         setArrProduct(newArr);
         orderStore.setDataClientSelect({
           id: newData.partner.id,
@@ -996,7 +995,6 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
           nameTax.current = name;
           selectTexas();
           setButtonSelect(false);
-          console.log("tuvm09", nameTax);
         }}
         arrTaxes={arrTax}
         isVisible={buttonSelect}

@@ -79,8 +79,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const imageNote = useRef([])
   const valueDate = useRef("")
   const { goBackPayment }: any = route?.params || {};
-  const a = useRef(0)
-  console.log('re-renders', a.current++)
 
   const handleNamMethod = (): string => {
     switch (countRef.current) {
@@ -608,10 +606,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       const price = Number(data.amount) * Number(data.unitPrice);
       const discountPrice = price - (Number(discount) / 100) * price;
       if (data.taxValue !== undefined) {
-        console.log("tutu", data.taxValue);
         return (priceSumAll.current = Number(data.taxValue) + discountPrice);
       } else {
-        console.log("tutuiii", data.taxValue);
         return discountPrice;
       }
     });
@@ -873,7 +869,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           nameTax.current = name;
           selectTexas();
           setButtonSelect(false);
-          console.log("tuvm09", nameTax);
         }}
         arrTaxes={arrTax}
         isVisible={buttonSelect}

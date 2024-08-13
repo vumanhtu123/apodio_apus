@@ -61,7 +61,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
 
   useEffect(() => {
     if (dataEdit !== undefined) {
-      console.log(dataEdit)
       setCity({ label: dataEdit.city.name, id: dataEdit.city.id })
       setDistrict({ label: dataEdit.district.name, id: dataEdit.district.id })
       setWards({ label: dataEdit.ward.name, id: dataEdit.ward.id })
@@ -240,7 +239,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
         };
         try {
           const response = await orderStore.createAddress(dataCreate);
-          console.log(response)
 
           if (response && response.kind === "ok") {
             Toast.show({
