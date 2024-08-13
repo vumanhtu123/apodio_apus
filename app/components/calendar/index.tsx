@@ -259,6 +259,28 @@ const CustomCalendar = React.memo((props: any) => {
     return date;
   }, []);
 
+  useEffect(()=>{
+    if(props.dateS){
+    if (props.isOneDate) {
+      console.log(props.dateS, 'dateS')
+      handleChangeS(props.dateS);
+      handleChangeE("");
+      setMarkedDates({
+        [props.dateS]: {
+          selected: true,
+          selectedColor: colors.palette.navyBlue,
+          selectedTextColor: colors.white,
+        },
+      });
+      // setIsStartDatePicked(true);
+      // setIsEndDatePicked(false);
+      // setStartDate(props.dateS);
+    }else {
+
+    }
+  }
+  }, [props.isSortByDate])
+
   return (
     <CustomModal
       isVisible={props.isSortByDate}
@@ -289,7 +311,8 @@ const CustomCalendar = React.memo((props: any) => {
       <View style={styles.buttonGroup}>
         <TouchableOpacity
           style={styles.button2}
-          onPress={() => props.onClose() ?? onReset(selectedIndex)}>
+          // onPress={() => props.onClose() ?? onReset(selectedIndex)}>
+          onPress={() => onReset(selectedIndex)}>
           <Text tx="calendar.reset" style={styles.resetButtonText} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={props.handleShort}>

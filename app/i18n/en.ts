@@ -861,6 +861,7 @@ const en = {
     youNeedSelectProduct: "Bạn cần chọn sản phẩm",
     youNeedSelectMethodPay: "Bạn cần chọn phương thức thanh toán",
     discountMustBeGreaterThan0:"Chiết khấu phải lớn hơn 0",
+    discountCannotBeGreaterThan100:"Chiết khấu không thể lớn hơn 100",
     informationBill: "Thông tin hóa đơn",
     groupClient :"Nhóm khách hàng",
     reset2  :"Thiết lập lại" ,

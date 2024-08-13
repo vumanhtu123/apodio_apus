@@ -22,6 +22,7 @@ import {
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import PriceModal from "./modal-price";
 import Images from "../../../../../assets/index";
+import { translate } from "../../../../i18n";
 
 interface ItemSelectVariant {
   item: any;
@@ -644,7 +645,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
                     setModalPrice(true);
                     setPriceId(item.id);
                   }}>
-                  <Text style={{ fontSize: fontSize.size12 }}>Nhập giá</Text>
+                  <Text tx={'order.input_price'} style={{ fontSize: fontSize.size12 }}/>
                 </TouchableOpacity>
               )}
             </View>
@@ -761,7 +762,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
             setCheck(false);
           }}
           titleTx={"selectPriceListApply.inputPrice"}
-          placeholder="Nhập giá"
+          placeholder={translate('order.input_price')}
           titleInputTx={"productScreen.priceProduct"}
           rightText={vendorStore.companyInfo.symbol}
         />
