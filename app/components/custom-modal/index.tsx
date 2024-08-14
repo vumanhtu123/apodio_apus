@@ -29,7 +29,7 @@ export const CustomModal = (props: ModalProps) => {
       style={{ margin: 0 }}
     >
       <View style={{
-        maxHeight: Dimensions.get('screen').height * 0.5,
+        maxHeight: Dimensions.get('screen').height * 0.6,
         minHeight: Dimensions.get('screen').height * 0.3,
         width: '100%',
         backgroundColor: colors.palette.neutral100,

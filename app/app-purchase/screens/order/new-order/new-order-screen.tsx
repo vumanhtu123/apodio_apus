@@ -136,7 +136,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             ward: { id: 0, name: "" },
             address: "",
             isDefault: false,
-          });
+          } as any);
           orderStore.setDataAddress({
             id: 0,
             partnerId: 0,
@@ -514,7 +514,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
-        textBody: "Chiết khấu phải lớn hơn 0",
+        textBody: translate("productScreen.discountMustBeGreaterThan0"),
         button2: translate("productScreen.BtnNotificationAccept"),
         closeOnOverlayTap: false,
         onPressButton: () => {

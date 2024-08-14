@@ -1,70 +1,75 @@
-import React, { StyleSheet, TouchableOpacity, View } from "react-native"
+import React, { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
 import { Text } from "../text/text";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../theme";
 
 interface GroupButtonBottom {
-
+    onPressCancel: (data?: any) => void
+    onPressConfirm: (data?: any) => void
+    txCancel: any
+    txConfirm: any
+    isModal: boolean
 }
 
-export const groupButtonBottom = (props: GroupButtonBottom) => {
+const ViewGroupBtn: ViewStyle = {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "white",
+    paddingVertical: scaleHeight(20),
+}
 
+const ViewBtnCancel: ViewStyle = {
+    // width: scaleWidth(157),
+    width: '48%',
+    height: scaleHeight(48),
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: colors.palette.veryLightGrey,
+}
+
+const ViewBtnConfirm: ViewStyle = {
+    // width: scaleWidth(157),
+    width: '48%',
+    height: scaleHeight(48),
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: colors.palette.navyBlue,
+}
+
+const TextBtnCancel: TextStyle = {
+    fontSize: fontSize.size14,
+    color: colors.palette.dolphin,
+    lineHeight: scaleHeight(24),
+    fontWeight: "600",
+}
+
+const TextBtnConfirm: TextStyle = {
+    fontSize: fontSize.size14,
+    color: colors.palette.neutral100,
+    lineHeight: scaleHeight(24),
+    fontWeight: "600",
+}
+
+export const GroupButtonBottom = (props: GroupButtonBottom) => {
     return (
-        <View style={styles.viewGroupBtn}>
+        <View style={[ViewGroupBtn, {paddingHorizontal: props.isModal ? 0 : scaleWidth(16)}]}>
             <TouchableOpacity
-                onPress={() => {
-                    navigation.goBack();
-                }}
-                style={styles.viewBtnCancel}
+                onPress={props.onPressCancel}
+                style={ViewBtnCancel}
             >
-                <Text tx={"common.cancel"} style={styles.textBtnCancel} />
+                <Text tx={props.txCancel} style={TextBtnCancel} />
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={methods.handleSubmit(submitAdd)}
-                style={styles.viewBtnConfirm}
+                onPress={props.onPressConfirm}
+                style={ViewBtnConfirm}
             >
                 <Text
-                    tx={"createProductScreen.done"}
-                    style={styles.textBtnConfirm}
+                    tx={props.txConfirm}
+                    style={TextBtnConfirm}
                 />
             </TouchableOpacity>
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    viewGroupBtn: {
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        backgroundColor: "white",
-        paddingVertical: scaleHeight(20),
-    },
-    viewBtnCancel: {
-        width: scaleWidth(157),
-        height: scaleHeight(48),
-        justifyContent: "center",
-        alignItems: "center",
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: colors.palette.veryLightGrey,
-    },
-    viewBtnConfirm: {
-        width: scaleWidth(157),
-        height: scaleHeight(48),
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: colors.palette.navyBlue,
-    },
-    textBtnConfirm: {
-        fontSize: fontSize.size14,
-        color: colors.palette.neutral100,
-        lineHeight: scaleHeight(24),
-        fontWeight: "600",
-    },
-    textBtnCancel: {
-        fontSize: fontSize.size14,
-        color: colors.palette.dolphin,
-        lineHeight: scaleHeight(24),
-        fontWeight: "600",
-    },
-})

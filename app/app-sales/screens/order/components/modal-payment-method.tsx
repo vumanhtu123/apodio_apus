@@ -144,7 +144,6 @@ interface InputItem {
 }
 
 const Item_Payment = (data: InputItem) => {
-  console.log("tuvm log", data.debt.debtAmount);
   return (
     <View
       style={{
@@ -165,7 +164,6 @@ const Item_Payment = (data: InputItem) => {
               ? null : data.index === data.length - 1 && data.debt.debtAmount === 0 ? null
                 : data.setData(data.index, data.name);
           }
-          console.log("0", data.name);
         }}>
         <View
           style={{
