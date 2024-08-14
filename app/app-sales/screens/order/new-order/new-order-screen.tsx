@@ -829,14 +829,14 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             <View style={{ marginTop: 15 }}></View>
           )}
           <ChangePayment
-          onChangeData={(data)=>{
-            countRef.current = data.name
-            setIsDeposit(false)
-          }}
-          defaultPayment={translate('order.CASH')}
-          screen="create"
-          handleNamMethod={handleNamMethod()}
-          price={price}
+            onChangeData={(data) => {
+              countRef.current = data.name
+              setIsDeposit(false)
+            }}
+            defaultPayment={translate('order.CASH')}
+            screen="create"
+            handleNamMethod={handleNamMethod()}
+            price={price}
           />
           <MoreInformation
             price={price}
@@ -849,8 +849,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
               valueNote.current = note
               imageNote.current = arr
             }}
-            onChangeDate={(date)=> valueDate.current = date}
-            onChangeIsDeposit={()=>setIsDeposit(true)}
+            onChangeDate={(date) => valueDate.current = date}
+            onChangeIsDeposit={() => setIsDeposit(true)}
             valueNote={valueNote.current}
             imageNote={imageNote.current}
             valueDate={valueDate.current}

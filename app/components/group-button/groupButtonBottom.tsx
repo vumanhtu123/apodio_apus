@@ -42,14 +42,14 @@ const TextBtnCancel: TextStyle = {
     fontSize: fontSize.size14,
     color: colors.palette.dolphin,
     lineHeight: scaleHeight(24),
-    fontWeight: "600",
+    fontWeight: "700",
 }
 
 const TextBtnConfirm: TextStyle = {
     fontSize: fontSize.size14,
     color: colors.palette.neutral100,
     lineHeight: scaleHeight(24),
-    fontWeight: "600",
+    fontWeight: "700",
 }
 
 export const GroupButtonBottom = (props: GroupButtonBottom) => {
