@@ -132,7 +132,7 @@ export const ListRevenueScreen: FC<
               // testDebug();
             }}
           />
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => {}}>
             <Svgs.icon_search />
           </TouchableOpacity>
         </View>
@@ -155,7 +155,8 @@ export const ListRevenueScreen: FC<
               marginHorizontal: 16,
               alignItems: "center",
             }}>
-            <Text style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
+            <Text
+              style={{ fontSize: 10, fontWeight: "400", color: colors.nero }}>
               {translate("analysis.balance")}
               <Text
                 style={{
@@ -166,9 +167,9 @@ export const ListRevenueScreen: FC<
                 10.000
               </Text>
             </Text>
-            <TouchableOpacity style={{ flexDirection: "row" }}
-              onPress={() => props.navigation.navigate('moneyManagement')}
-            >
+            <TouchableOpacity
+              style={{ flexDirection: "row" }}
+              onPress={() => props.navigation.navigate("moneyManagement")}>
               <Svgs.ic_Chartbar />
               <Text
                 style={{
@@ -232,7 +233,7 @@ export const ListRevenueScreen: FC<
           marginVertical: 15,
         }}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('expenseScreen')}
+          onPress={() => props.navigation.navigate("expenseScreen")}
           style={{
             backgroundColor: "#FF4956",
             flexDirection: "row",
@@ -243,9 +244,7 @@ export const ListRevenueScreen: FC<
             flex: 1,
             justifyContent: "center",
             marginRight: scaleWidth(13),
-          }}
-
-        >
+          }}>
           <Svgs.ic_arrow_up />
           <Text
             tx={"analysis.amountExpenditure"}
@@ -267,8 +266,7 @@ export const ListRevenueScreen: FC<
             borderRadius: 8,
             flex: 1,
           }}
-          onPress={() => props.navigation.navigate('addRevenueScreen')}
-        >
+          onPress={() => props.navigation.navigate("addRevenueScreen")}>
           <Svgs.ic_arrow_down />
           <Text
             tx={"analysis.amountRevenue"}
