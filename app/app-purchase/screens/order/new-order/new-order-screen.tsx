@@ -4,56 +4,45 @@ import {
   Dimensions,
   FlatList,
   KeyboardAvoidingView,
-  Linking,
   Platform,
   ScrollView,
-  TouchableOpacity,
   View,
 } from "react-native";
 import {
-  AutoImage,
   Button,
   Header,
   Text,
-  TextField,
 } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   colors,
-  fontSize,
-  margin,
-  padding,
   scaleHeight,
-  scaleWidth,
 } from "../../../theme";
 import { styles } from "./styles";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Controller, useForm } from "react-hook-form";
 import { translate } from "../../../../i18n";
 import moment from "moment";
-import CustomCalendar from "../../../../components/calendar";
 import ItemListProduct from "../components/item-list-product";
 import {
   AddressOrder,
+  ChangePayment,
   HeaderOrder,
   PriceList,
   SumMoney,
 } from "../components/header-order";
-import { ModalPayment } from "../components/modal-payment-method";
 import { ModalTaxes } from "../components/modal-taxes-apply";
-import { ShowNote } from "../components/note-new-order-component";
-import { Order, arrPayment, dataPromotion, methodData } from "./data";
+import { arrPayment } from "./data";
 import { useStores } from "../../../models";
 import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
-import { values } from "mobx";
 import {
   ALERT_TYPE,
   Dialog,
   Toast,
 } from "../../../../components/dialog-notification";
-import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
+import { BottomOrder } from "../components/bottomOrder";
+import { MoreInformation } from "../components/moreInfomation";
 
 export const NewOrder: FC = observer(function NewOrder(props: any) {
   const navigation = useNavigation();
@@ -65,7 +54,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     paddingTop;
   const route = useRoute();
   const { orderStore, vendorStore } = useStores();
-  console.log("props", orderStore.dataDebtPayment.sumAll);
 
   const [arrProduct, setArrProduct] = useState<{}[]>([]);
   const [arrTax, setArrTax] = useState<{}[]>([]);
@@ -75,16 +63,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const [note, setNote] = useState(false);
   const [desiredDate, setDesiredDate] = useState(false);
   const [isDeposit, setIsDeposit] = useState(false);
-  const [isSortByDate, setIsSortByDate] = useState(false);
-  const [isReset, setIReset] = useState<boolean>(false);
-  const [imagesNote, setImagesNote] = useState<any>([]);
-  const [markedDatesS, setMarkedDatesS] = useState("");
-  const [markedDatesE, setMarkedDatesE] = useState("");
   const [buttonSelect, setButtonSelect] = useState<boolean>(false);
-  const [buttonPayment, setButtonPayment] = useState<boolean>(false);
-  const [method, setMethod] = useState<number>(0);
-  const [address, setAddress] = useState(orderStore.dataAddress);
-  const [editTaxes, setEditTaxes] = useState(false);
   const countRef = useRef(translate("order.CASH"));
   const nameTax = useRef("");
   // const price = useRef(0);
@@ -98,66 +77,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   const store = useStores();
   const discount = useRef(0);
   const imageNote = useRef([])
+  const valueDate = useRef("")
   const { goBackPayment }: any = route?.params || {};
-
-  const getListAddress = async () => {
-    if (
-      store.orderStore.dataClientSelect.id == undefined ||
-      Number(store.orderStore.dataClientSelect.id) == 0
-    ) {
-      return;
-    }
-    try {
-      const response = await orderStore.getListAddress(
-        Number(store.orderStore.dataClientSelect.id)
-      );
-      orderStore.setCheckIdPartner(false);
-      // console.log('mm------------------' , JSON.stringify(response.response.data.content) )
-      if (response && response.kind === "ok") {
-        console.log(
-          "getListAddress---------------------",
-          JSON.stringify(response.response.data)
-        );
-        const newArr = response.response.data;
-        const newData = newArr.filter((item: any) => item.isDefault === true);
-        if (newData.length !== 0) {
-          orderStore.setDataAddress(newData[0]);
-          setAddress(newData[0]);
-        } else {
-          setAddress({
-            id: 0,
-            partnerId: 0,
-            phoneNumber: "",
-            addressType: "",
-            country: { id: 0, name: "" },
-            region: { id: 0, name: "" },
-            city: { id: 0, name: "" },
-            district: { id: 0, name: "" },
-            ward: { id: 0, name: "" },
-            address: "",
-            isDefault: false,
-          } as any);
-          orderStore.setDataAddress({
-            id: 0,
-            partnerId: 0,
-            phoneNumber: "",
-            addressType: "",
-            country: { id: 0, name: "" },
-            region: { id: 0, name: "" },
-            city: { id: 0, name: "" },
-            district: { id: 0, name: "" },
-            ward: { id: 0, name: "" },
-            address: "",
-            isDefault: false,
-          });
-        }
-      } else {
-        console.error("Failed to fetch categories:", response);
-      }
-    } catch (error) {
-      console.error("Error fetching product:", error);
-    }
-  };
 
   const handleNamMethod = (): string => {
     switch (countRef.current) {
@@ -205,7 +126,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         },
       });
     }
-    if (address.id === 0) {
+    if (orderStore.dataAddress.id === 0) {
       return Dialog.show({
         type: ALERT_TYPE.INFO,
         title: translate("productScreen.Notification"),
@@ -265,7 +186,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         }
       } as never);
     }
-
 
     const newArr = arrProduct.map((data: any) => {
       return {
@@ -356,40 +276,24 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         quantityInventory: data.quantityInventory,
       };
     });
-    console.log("data new", JSON.stringify(newArr));
-    const formattedDate = moment(markedDatesS).endOf("day").toISOString();
+    const formattedDate = moment(valueDate.current).endOf("day").toISOString();
     const order: any = {
       state: "SALE",
       partnerId: store.orderStore.dataClientSelect.id,
-      // invoiceAddressId: 0,
-      deliveryAddressId: address.id,
-      // quotationDate: "",
+      deliveryAddressId: orderStore.dataAddress.id,
       commitmentDate: formattedDate,
-      // quoteCreationDate: "",
-      // expireHoldDate: "",
       pricelistId: orderStore.dataPriceListSelected.id ?? null,
       currencyId: vendorStore.companyInfo.currencyId,
-      // paymentTermId: 0,
-      // promotionIds: [],
       paymentMethod: handleNamMethod(),
       paymentMethodPrepayment:
         handleNamPreMethod() !== "" ? handleNamPreMethod() : handleNamMethod(),
-      // salePersonIds: [],
-      // saleUserIds: [],
-      deliveryType: "SHIP", //
-      // warehouseId: 0,
-      // commitmentDate: "",
-      // deliveryStatus: "",
-      // campaignId: 0,
-      // discount: 0, //chiet khau
+      deliveryType: "SHIP",
       discountComputeType: "FIXED",
       note: valueNote.current,
       noteImages: imageNote.current,
       isOptionPrice: orderStore.dataPriceListSelected.id === "" ? false : true,
       deliveryPolicy: "FULL_DELIVERY",
-      // totalPrice: 0,
       saleOrderLines: newArr,
-      // saleOrderLineDeleteIds: [],
       isClearingDebts: orderStore.clearingDebt, //co dung doi tru cong no hay ko
       isRetail: false,
       scopeType:
@@ -418,16 +322,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       console.log("success data sale order:", JSON.stringify(values));
       if (values.id !== undefined) {
         console.log("success data sale order:", JSON.stringify(values));
-        // Dialog.show({
-        //   type: ALERT_TYPE.INFO,
-        //   title: translate("productScreen.Notification"),
-        //   textBody: "Thành Công " + values.id,
-        //   button2: translate("productScreen.BtnNotificationAccept"),
-        //   closeOnOverlayTap: false,
-        //   onPressButton: () => {
-        //     Dialog.hide();
-        //   },
-        // });
         navigation.navigate({
           name: "orderSuccess", params: {
             idOrder: values.id,
@@ -471,7 +365,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         textBody: translate("txtToats.noClient"),
       });
     } else {
-      console.log('orderStore.dataClientSelect.isHaveDeliveryAddress----', orderStore.dataClientSelect.isHaveDeliveryAddress)
       if (orderStore.dataClientSelect.isHaveDeliveryAddress) {
         navigation.navigate("deliveryAddress" as never);
       } else {
@@ -483,10 +376,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       }
 
     }
-  };
-
-  const toggleModalDate = () => {
-    setIsSortByDate(!isSortByDate);
   };
 
   const handleIncrease = (id: any) => {
@@ -522,7 +411,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
         },
       });
     }
-    console.log("input taxes", text);
     let newArr = arrProduct!.map((item: any) => {
       if (item.id === id) {
         return { ...item, taxesInput: Number(text), addInputTaxes: false };
@@ -590,72 +478,18 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       }
       return item;
     });
-    console.log(newArr, "log=====");
     setArrProduct(newArr);
     postTaxLines(newArr);
   };
 
   const handleBack = () => {
-    orderStore.setDataAddress({
-      id: 0,
-      partnerId: 0,
-      phoneNumber: "",
-      addressType: "",
-      country: { id: 0, name: "" },
-      region: { id: 0, name: "" },
-      city: { id: 0, name: "" },
-      district: { id: 0, name: "" },
-      ward: { id: 0, name: "" },
-      address: "",
-      isDefault: false,
-    });
-    orderStore.setDataDebtLimit({
-      isHaveDebtLimit: false,
-      debtAmount: 0,
-      amountOwed: 0,
-    });
-    orderStore.setMethodPayment({
-      sumAll: 0,
-      methodPayment: '',
-      debt: 0,
-      inputPrice: 0,
-      apply: false,
-    });
-    orderStore.setDataProductAddOrder([]);
-    orderStore.setViewProductType("VIEW_PRODUCT");
-    orderStore.setDataClientSelect({
-      id: "",
-      name: "",
-      code: "",
-      phoneNumber: "",
-    });
-    orderStore.setDataPriceListSelect({
-      id: "",
-      name: "",
-      priceListCategory: "",
-    });
-    orderStore.setCheckPriceList(false);
-    orderStore.setViewGrid(true);
-    orderStore.setClearingDebt(false);
-    orderStore.setCheckIdPartner(false);
-    orderStore.setCheckRenderList(false);
-    orderStore.setDataPriceListSelect({
-      id: "",
-      name: "",
-      priceListCategory: "",
-      currencyId: "",
-      pricelistId: "",
-    });
+    orderStore.reset()
     setArrProduct([]);
-    setPayment({
-      label: translate("order.DOMESTICALLY"),
-    });
-    setNote(false);
-  };
+    setPayment({ label: translate("order.DOMESTICALLY") });
+  }
 
   const handleSelectTaxes = (id: any) => {
     idItemOrder.current = id;
-    console.log("tuuup", idItemOrder.current);
     setButtonSelect(true);
   };
 
@@ -679,7 +513,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     if (isDeposit === true) {
       handleDebt();
     }
-    console.log("-tuvm", newArr);
   };
 
   const deleteItemProduct = (id: any) => {
@@ -721,17 +554,13 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       environmentalResourceTax: 0,
       vat: 0,
     };
-    console.log("log data 12345", valueApi);
-    console.log("tuvm tax 1234", JSON.stringify(arrTaxAll.current));
     await store.orderStore.postTaxLine([valueApi]).then((value: any) => {
-      console.log("tuvm tax post", JSON.stringify(value));
       handleTaxes(value, data);
     });
   };
 
   const handleTaxes = (arrTaxLine: any, data: any) => {
     const newArr = data.map((value: any) => {
-      console.log("log b1", arrTaxLine);
       if (value.id === idItemOrder.current) {
         return {
           ...value,
@@ -744,29 +573,23 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       }
       return value;
     });
-    console.log("zxxzczxcx", newArr);
     handleSumAmountVAT(newArr);
     setArrProduct(newArr);
-    console.log("data new tuvm", JSON.stringify(newArr));
   };
 
   const handleSumAmountVAT = (value: any) => {
     const all = value.reduce((sum: any, item: any) => {
       if (item.taxValue !== undefined) {
-        console.log("cats", sum, item.taxValue);
         return sum + item.taxValue;
       }
       return;
     }, 0);
     priceSumVAT.current = Number(all) + Number(price);
-    console.log("cat", all);
   };
 
   const selectTexas = () => {
-    console.log("select Texas", idItemOrder.current);
     let newArr = arrProduct.map((item: any) => {
       if (item.id === idItemOrder.current) {
-        console.log("select :", JSON.stringify(nameTax.current));
         return { ...item, VAT: nameTax.current };
       }
       return item;
@@ -783,10 +606,8 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       const price = Number(data.amount) * Number(data.unitPrice);
       const discountPrice = price - (Number(discount) / 100) * price;
       if (data.taxValue !== undefined) {
-        console.log("tutu", data.taxValue);
         return (priceSumAll.current = Number(data.taxValue) + discountPrice);
       } else {
-        console.log("tutuiii", data.taxValue);
         return discountPrice;
       }
     });
@@ -812,33 +633,21 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     }, 0);
     setPrice(all);
     setPriceNoVat(allNoVat);
-    console.log("sum all: ", all);
   };
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      console.log(
-        "arrProduct------1----",
-        JSON.stringify(orderStore.dataProductAddOrder)
-      );
       setArrProduct(orderStore.dataProductAddOrder.slice());
       getListTax();
-      if (
-        orderStore.dataAddress.id === 0 ||
-        orderStore.checkIdPartner === true
-      ) {
-        getListAddress();
-      }
-      setAddress(orderStore.dataAddress);
-      // getListAddress();
+      // setAddress(orderStore.dataAddress);
       setIsDeposit(orderStore.dataDebtPayment.apply);
       if (
         Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
           Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))) ===
         0
       ) {
-        setMethod(0);
-        setButtonPayment(false);
+        // setMethod(0);
+        // setButtonPayment(false);
         countRef.current = translate("order.CASH");
         handleNamMethod();
       }
@@ -849,7 +658,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
     });
     return unsubscribe;
   }, [navigation]);
-  console.log(vendorStore.companyInfo)
 
   useEffect(() => {
     priceAll(arrProduct);
@@ -892,7 +700,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           />
           <AddressOrder
             onPressAddress={() => onPressAddress()}
-            data={address}
           />
           <PriceList
             id={Number(orderStore.dataPriceListSelected.id) ?? null}
@@ -916,7 +723,6 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
             arrData={arrPayment}
             onPressChoice={(item: any) => {
               setPayment(item);
-              console.log('paymentMethods', item)
               orderStore.clearTaxValueAndTaxesInput();
               setArrProduct(orderStore.dataProductAddOrder.slice());
               // getListTax();
@@ -1022,439 +828,47 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
           ) : (
             <View style={{ marginTop: 15 }}></View>
           )}
-          <TouchableOpacity
-            onPress={() => {
-              setButtonPayment(true);
-            }}>
-            <View
-              style={{
-                flexDirection: "row",
-                borderRadius: scaleWidth(8),
-                backgroundColor: "white",
-                paddingHorizontal: padding.padding_16,
-                paddingVertical: padding.padding_15,
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}>
-              <Text
-                tx="order.method_pay"
-                style={{
-                  fontSize: fontSize.size10,
-                  fontWeight: "400",
-                  color: colors.nero,
-                }}></Text>
-              <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text
-                    text={countRef.current.toString()}
-                    style={{
-                      fontSize: fontSize.size10,
-                      fontWeight: "400",
-                      color: colors.nero,
-                      marginRight: 6,
-                    }}></Text>
-                  <Svgs.icon_caretRight2 />
-                </View>
-                {countRef.current.toString() ===
-                  translate("order.DEDUCTION_OF_LIABILITIES") ? (
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Text
-                      tx="order.available_limit"
-                      style={{
-                        fontWeight: "400",
-                        fontSize: fontSize.size10,
-                        color: colors.dolphin,
-                        alignContent: "center",
-                      }}></Text>
-                    <Text
-                      style={{
-                        fontSize: fontSize.size10,
-                        fontWeight: "400",
-                        color:
-                          Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
-                            Number(
-                              store.orderStore.dataDebtLimit.amountOwed ?? 0
-                            ))) >
-                            Number(price)
-                            ? colors.malachite
-                            : colors.red,
-                      }}>
-                      {formatVND(formatCurrency(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
-                        Number(
-                          store.orderStore.dataDebtLimit.amountOwed ?? 0
-                        ))))) ?? 0}
-                      <Text
-                        style={{
-                          fontWeight: "400",
-                          fontSize: fontSize.size10,
-                          color: colors.dolphin,
-                          alignContent: "center",
-                        }}>
-                        )
-                      </Text>
-                    </Text>
-                  </View>
-                ) : null}
-              </View>
-            </View>
-          </TouchableOpacity>
-          <ShowNote
+          <ChangePayment
+          onChangeData={(data)=>{
+            countRef.current = data.name
+            setIsDeposit(false)
+          }}
+          defaultPayment={translate('order.CASH')}
+          screen="create"
+          handleNamMethod={handleNamMethod()}
+          price={price}
+          />
+          <MoreInformation
+            price={price}
+            handleDebt={() => handleDebt()}
+            handleNamMethod={handleNamMethod()}
             note={note}
-            setNoteData={function (note: string, arr: []): void {
-              valueNote.current = note;
+            isDeposit={isDeposit}
+            desiredDate={desiredDate}
+            addDataNote={(note, arr) => {
+              valueNote.current = note
               imageNote.current = arr
-              console.log(arr, 'day la anh')
             }}
+            onChangeDate={(date)=> valueDate.current = date}
+            onChangeIsDeposit={()=>setIsDeposit(true)}
+            valueNote={valueNote.current}
+            imageNote={imageNote.current}
+            valueDate={valueDate.current}
           />
-          {desiredDate === true ? (
-            <View
-              style={{
-                flexDirection: "row",
-                marginVertical: margin.margin_15,
-                alignItems: "center",
-              }}>
-              <TouchableOpacity onPress={() => setDesiredDate(false)}>
-                <Svgs.icon_deleteDolphin />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setIsSortByDate(true)}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginLeft: scaleWidth(margin.margin_8),
-                }}>
-                <Svgs.icon_calendar />
-                <Text
-                  style={[
-                    styles.textDate,
-                    { marginHorizontal: scaleWidth(margin.margin_4) },
-                  ]}>
-                  {translate("order.desiredDate") +
-                    ": " +
-                    moment(
-                      markedDatesS === "" ? new Date() : markedDatesS
-                    ).format("MMMM DD, YYYY")}
-                </Text>
-                <Svgs.icon_caretDownBlue />
-              </TouchableOpacity>
-            </View>
-          ) : null}
-          <Text
-            tx={"order.moreInformation"}
-            style={[
-              styles.textTotal,
-              {
-                color: colors.palette.neutral900,
-                marginVertical: 15,
-              },
-            ]}
-          />
-          <View style={styles.viewMoreInformation}>
-            <Svgs.icon_gear
-              style={{ marginRight: scaleWidth(margin.margin_4) }}
-            />
-            {note === false || isDeposit === false || desiredDate === false ? (
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {note === false ? (
-                  <Button
-                    tx={"order.note"}
-                    onPress={() => setNote(true)}
-                    style={styles.buttonFeature}
-                    textStyle={[
-                      styles.textVoucher,
-                      { color: colors.palette.navyBlue },
-                    ]}
-                  />
-                ) : null}
-                {isDeposit === false ? (
-                  <Button
-                    tx={"order.deposit"}
-                    onPress={() => {
-                      if (handleNamMethod() == "") {
-                        return Dialog.show({
-                          type: ALERT_TYPE.INFO,
-                          title: translate("productScreen.Notification"),
-                          textBody: "productScreen.youNeedSelectPaymentMethods",
-                          button2: translate(
-                            "productScreen.BtnNotificationAccept"
-                          ),
-                          closeOnOverlayTap: false,
-                          onPressButton: () => {
-                            Dialog.hide();
-                          },
-                        });
-                      }
-                      handleDebt();
-                      navigation.navigate({
-                        name: "paymentBuy", params: {
-                          params: {
-                            type:
-                              handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                                ? false
-                                : true,
-                            price: price,
-                            warning: false,
-                            debtAmount:
-                              handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                                ? Number(Math.max(0, (Number(
-                                  store.orderStore.dataDebtLimit.debtAmount
-                                ) -
-                                  Number(
-                                    store.orderStore.dataDebtLimit.amountOwed ?? 0
-                                  ))))
-                                : 0,
-                          },
-                        }
-                      } as never);
-                    }}
-                    style={styles.buttonFeature}
-                    textStyle={[
-                      styles.textVoucher,
-                      { color: colors.palette.navyBlue },
-                    ]}
-                  />
-                ) : null}
-                {desiredDate === false ? (
-                  <Button
-                    tx={"order.desiredDate"}
-                    onPress={() => setDesiredDate(true)}
-                    style={styles.buttonFeature}
-                    textStyle={[
-                      styles.textVoucher,
-                      { color: colors.palette.navyBlue },
-                    ]}
-                  />
-                ) : null}
-              </ScrollView>
-            ) : (
-              <Text tx={"order.noMoreInformation"} style={styles.textVoucher} />
-            )}
-          </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View
-        style={[
-          styles.viewButtonOrder,
-          {
-            top:
-              isDeposit === false
-                ? Dimensions.get("window").height - scaleHeight(120)
-                : handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                  ? Dimensions.get("window").height - scaleHeight(216)
-                  : Dimensions.get("window").height - scaleHeight(184),
-          },
-        ]}>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingTop: scaleHeight(padding.padding_20),
-            paddingBottom: scaleHeight(padding.padding_12),
-          }}>
-          <Text tx={"order.sum"} style={[styles.textTotal, { flex: 1 }]} />
-          <Text style={isDeposit === true ? styles.textTotal : styles.textCost}>
-            {formatVND(formatCurrency(commasToDots(Number(price))))}
-          </Text>
-        </View>
-        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
-          <View
-            style={{
-              flexDirection: "row",
-              paddingBottom: scaleHeight(padding.padding_12),
-              justifyContent: "space-between",
-            }}>
-            <View style={{ flexDirection: "row", alignItems: 'center' }}>
-              <Text tx={"order.prepayment"} style={[styles.textTotal]} />
-              <Text
-                text={"(" + orderStore.dataDebtPayment.methodPayment + ")"}
-                style={{
-                  color: colors.dolphin,
-                  fontSize: fontSize.size12,
-                  fontWeight: "400",
-                }}>
-                {formatVND(formatCurrency(
-                  commasToDots(Number(orderStore.dataDebtPayment.sumAll))
-                ))}
-              </Text>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() => {
-                  return navigation.navigate({
-                    name: "paymentBuy", params: {
-                      params: {
-                        type:
-                          handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                            ? false
-                            : true,
-                        price: price,
-                        warning: false,
-                        debtAmount:
-                          handleNamMethod() == "DEDUCTION_OF_LIABILITIES"
-                            ? Number(Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
-                              Number(
-                                store.orderStore.dataDebtLimit.amountOwed ?? 0
-                              ))))
-                            : null,
-                      },
-                    }
-                  } as never);
-                }}>
-                <Svgs.icon_edit
-                  style={{ marginRight: scaleWidth(margin.margin_6) }}
-                />
-              </TouchableOpacity>
-              <Text style={styles.textTotal}>
-                {formatVND(formatCurrency(
-                  commasToDots(Number(orderStore.dataDebtPayment.inputPrice))
-                ))}
-              </Text>
-            </View>
-          </View>
-        ) : null}
-        {isDeposit === true && orderStore.dataDebtPayment.apply && handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ? (
-          <View
-            style={{
-              flexDirection: "row",
-              paddingBottom: scaleHeight(padding.padding_12),
-            }}>
-
-            <Text
-              tx={"order.usedDebt"}
-              style={[styles.textTotal,]}
-            />
-            <Text
-              tx={'order.debtLimit'}
-              style={{
-                color: colors.dolphin,
-                fontSize: fontSize.size12,
-                fontWeight: "400",
-                flex: 1,
-              }}></Text>
-            <Text
-              style={[styles.textTotal,]}>
-              {formatVND(formatCurrency(
-                commasToDots(
-                  Number(price ?? 0) -
-                  Number(orderStore.dataDebtPayment.inputPrice ?? 0)
-                ))
-              )}
-            </Text>
-          </View>
-        ) : null}
-        {isDeposit === true && orderStore.dataDebtPayment.apply ? (
-          handleNamMethod() === "DEDUCTION_OF_LIABILITIES" ?
-            <View
-              style={{
-                flexDirection: "row",
-                paddingBottom: scaleHeight(padding.padding_12),
-              }}>
-              <Text
-                tx={"order.stillInDebt"}
-                style={[styles.textTotal, { flex: 1 }]}
-              />
-              <Text
-                style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-                {Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0) >
-                  Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0)
-                  ? formatVND(formatCurrency(
-                    commasToDots(
-                      (Number(price ?? 0) - Number(orderStore.dataDebtPayment.inputPrice ?? 0)) -
-                      (Number(store.orderStore.dataDebtLimit.debtAmount) - Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))
-                    ))
-                  ) : formatVND(0)
-                }
-              </Text>
-            </View>
-            :
-            <View
-              style={{
-                flexDirection: "row",
-                paddingBottom: scaleHeight(padding.padding_12),
-              }}>
-              <Text
-                tx={"order.stillInDebt"}
-                style={[styles.textTotal, { flex: 1 }]}
-              />
-              <Text
-                style={[styles.textCost, { color: colors.palette.radicalRed }]}>
-                {formatVND(formatCurrency(
-                  commasToDots(
-                    Number(price ?? 0) -
-                    Number(orderStore.dataDebtPayment.inputPrice ?? 0)
-                  ))
-                )}
-              </Text>
-            </View>
-        ) : null}
-        <Button
-          onPress={() => {
-            addProduct();
-          }}
-          tx={"order.order"}
-          style={styles.buttonOrder}
-          textStyle={styles.textButtonOrder}
-        />
-      </View>
-      <CustomCalendar
-        isReset={isReset}
-        handleReset={() => setIReset(!isReset)}
-        handleShort={() => {
-          // handleOrderMerchant()
-          toggleModalDate();
-        }}
-        onMarkedDatesChangeS={(markedDatesS: any) => {
-          setMarkedDatesS(markedDatesS);
-        }}
-
-        onMarkedDatesChangeE={(markedDatesE: any) => {
-          setMarkedDatesE(markedDatesE);
-        }}
-        isShowTabs={false}
-
-        isSortByDate={isSortByDate}
-        isOneDate={true}
-        toggleModalDate={toggleModalDate}
-        minDate={new Date()}
-      />
-      <ModalPayment
-        isVisible={buttonPayment}
-        isPayment={true}
-        closeDialog={function (): void {
-          setButtonPayment(false);
-        }}
-        onSave={() => {
-          orderStore.setMethodPayment({
-            sumAll: 0,
-            methodPayment: '',
-            debt: 0,
-            inputPrice: 0,
-            apply: false,
-          });
-          setIsDeposit(false)
-        }}
-        arrData={methodData}
-        method={method}
-        setMethod={function (item: number, name: string): void {
-          setMethod(item);
-          countRef.current = name;
-          console.log("tuvm2", countRef);
-          handleNamMethod();
-        }}
-        debt={{
-          isHaveDebtLimit: store.orderStore.dataDebtLimit.isHaveDebtLimit,
-          debtAmount:
-            Math.max(0, (Number(store.orderStore.dataDebtLimit.debtAmount) -
-              Number(store.orderStore.dataDebtLimit.amountOwed ?? 0))),
-        }}
+      <BottomOrder
+        isDeposit={isDeposit}
+        price={price}
+        handleNamMethod={handleNamMethod()}
+        onPressButton={() => addProduct()}
+        screen="create"
       />
       <ModalTaxes
         arrName={function (name: any): void {
           nameTax.current = name;
           selectTexas();
           setButtonSelect(false);
-          console.log("tuvm09", nameTax);
         }}
         arrTaxes={arrTax}
         isVisible={buttonSelect}

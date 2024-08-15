@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
 import { Text } from "../../../../components";
@@ -7,7 +7,10 @@ import { OnProgressEvent } from "react-native-fast-image";
 import { Root1 } from "../../../models/order-store/entities/order-address-model";
 import { useStores } from "../../../models";
 import { commasToDots, formatCurrency, formatVND } from "../../../utils/validate";
-import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
+import { translate } from "../../../../i18n";
+import { ModalPayment } from "./modal-payment-method";
+import { methodData } from "../new-order/data";
 interface InputData {
   openDialog: () => void;
   data: any;
@@ -15,7 +18,9 @@ interface InputData {
 }
 interface AddressData {
   onPressAddress: () => void;
-  data: Root1;
+  // data: Root1;
+  addressDefault?: any
+  addressIdDefault?: any
 }
 interface PriceData {
   id: number;
@@ -26,7 +31,6 @@ interface PriceData {
   disabled?: boolean;
 }
 export const HeaderOrder = (data: InputData) => {
-  console.log(data);
   return (
     <TouchableOpacity
       disabled={data.disabled}
@@ -132,6 +136,88 @@ export const PriceList = (data: PriceData) => {
 
 export const AddressOrder = (data: AddressData) => {
   const navigation = useNavigation();
+  const { orderStore } = useStores()
+  const [address, setAddress] = useState(orderStore.dataAddress);
+
+  const getListAddress = async () => {
+    if (
+      orderStore.dataClientSelect.id == undefined ||
+      Number(orderStore.dataClientSelect.id) == 0
+    ) {
+      return;
+    }
+    try {
+      const response = await orderStore.getListAddress(
+        Number(orderStore.dataClientSelect.id)
+      );
+      orderStore.setCheckIdPartner(false);
+      if (response && response.kind === "ok") {
+        console.log(
+          "getListAddress---------------------",
+          JSON.stringify(response.response.data)
+        );
+        const newArr = response.response.data;
+        const newData = newArr.filter((item: any) => item.isDefault === true);
+        if (newData.length !== 0) {
+          orderStore.setDataAddress(newData[0]);
+          setAddress(newData[0]);
+        } else {
+          setAddress({
+            id: 0,
+            partnerId: 0,
+            phoneNumber: "",
+            addressType: "",
+            country: { id: 0, name: "" },
+            region: { id: 0, name: "" },
+            city: { id: 0, name: "" },
+            district: { id: 0, name: "" },
+            ward: { id: 0, name: "" },
+            address: "",
+            isDefault: false,
+          } as any);
+          orderStore.setDataAddress({
+            id: 0,
+            partnerId: 0,
+            phoneNumber: "",
+            addressType: "",
+            country: { id: 0, name: "" },
+            region: { id: 0, name: "" },
+            city: { id: 0, name: "" },
+            district: { id: 0, name: "" },
+            ward: { id: 0, name: "" },
+            address: "",
+            isDefault: false,
+          });
+        }
+      } else {
+        console.error("Failed to fetch categories:", response);
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (orderStore.checkRenderList === true) {
+        if (data.addressIdDefault !== null) {
+          setAddress(data.addressDefault);
+        } else {
+          setAddress(orderStore.dataAddress);
+        }
+      } else {
+        if (
+          orderStore.dataAddress.id === 0 ||
+          orderStore.checkIdPartner === true
+        ) {
+          getListAddress();
+        }
+        setAddress(orderStore.dataAddress);
+      }
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <TouchableOpacity
       onPress={() => data.onPressAddress()}>
@@ -158,7 +244,7 @@ export const AddressOrder = (data: AddressData) => {
               fontWeight: "600",
               marginBottom: scaleWidth(4),
             }}></Text>
-          {data.data.id !== 0 ? (
+          {address.id !== 0 ? (
             <View>
               {/* <Text
                 style={{
@@ -166,9 +252,9 @@ export const AddressOrder = (data: AddressData) => {
                   color: colors.nero,
                   fontWeight: "400",
                 }}></Text> */}
-              {data.data.phoneNumber != null ? (
+              {address.phoneNumber != null ? (
                 <Text
-                  text={data.data?.phoneNumber ?? ""}
+                  text={address?.phoneNumber ?? ""}
                   style={{
                     marginVertical: scaleHeight(8),
                     fontSize: fontSize.size12,
@@ -178,7 +264,7 @@ export const AddressOrder = (data: AddressData) => {
               ) : null}
 
               <Text
-                text={`${data.data?.address}${", "}${data.data?.ward?.name}${", "}${data.data?.district?.name}${", "}${data.data?.city?.name}`}
+                text={`${address?.address}${", "}${address?.ward?.name}${", "}${address?.district?.name}${", "}${address?.city?.name}`}
                 style={{
                   fontSize: fontSize.size12,
                   color: colors.nero,
@@ -345,3 +431,144 @@ export const SumMoney = (props: DataSumMoney) => {
     </View>
   );
 };
+
+interface ChangePayment {
+  price: number
+  handleNamMethod: string
+  onChangeData: (data: { id: number, name: string }) => void
+  screen: string
+  defaultPayment: string
+}
+export const ChangePayment = (props: ChangePayment) => {
+  const { orderStore } = useStores()
+  const [modal, setModal] = useState(false)
+  const [method, setMethod] = useState(0)
+  const [payment, setPayment] = useState({ id: 0, name: translate("order.CASH") })
+  const choicePayment = useRef({ id: 0, name: '' })
+
+  useEffect(()=>{
+    if(props.defaultPayment == translate("order.CASH") ){
+      setPayment({ id: 0, name: props.defaultPayment })
+    }
+    if(props.defaultPayment == translate("order.BANK") ){
+      setPayment({ id: 1, name: props.defaultPayment })
+    }
+    if(props.defaultPayment == translate("order.DEDUCTION_OF_LIABILITIES") ){
+      setPayment({ id: 2, name: props.defaultPayment })
+    }
+  }, [props.defaultPayment])
+
+  return (
+    <View>
+      <TouchableOpacity
+        disabled={props.screen === "edit" ? true : false}
+        onPress={() => {
+          setMethod(payment.id)
+          setModal(true);
+        }}>
+        <View
+          style={{
+            flexDirection: "row",
+            borderRadius: scaleWidth(8),
+            backgroundColor: "white",
+            paddingHorizontal: padding.padding_16,
+            paddingVertical: padding.padding_15,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+          <Text
+            tx="order.method_pay"
+            style={{
+              fontSize: fontSize.size10,
+              fontWeight: "400",
+              color: colors.nero,
+            }}></Text>
+          <View style={{ flexDirection: "column", alignItems: "flex-end" }}>
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                text={payment.name.toString()}
+                style={{
+                  fontSize: fontSize.size10,
+                  fontWeight: "400",
+                  color: colors.nero,
+                  marginRight: 6,
+                }}></Text>
+                  {props.screen === "edit" ? null : <Svgs.icon_caretRight2 />}
+                  </View>
+            {payment.name.toString() ===
+              translate("order.DEDUCTION_OF_LIABILITIES") ? (props.screen === 'edit' ? null :
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text
+                  tx="order.available_limit"
+                  style={{
+                    fontWeight: "400",
+                    fontSize: fontSize.size10,
+                    color: colors.dolphin,
+                    alignContent: "center",
+                  }}></Text>
+                <Text
+                  style={{
+                    fontSize: fontSize.size10,
+                    fontWeight: "400",
+                    color:
+                      Math.max(0, (Number(orderStore.dataDebtLimit.debtAmount) -
+                        Number(
+                          orderStore.dataDebtLimit.amountOwed ?? 0
+                        ))) >
+                        Number(props.price)
+                        ? colors.malachite
+                        : colors.red,
+                  }}>
+                  {formatVND(formatCurrency(Math.max(0, (Number(orderStore.dataDebtLimit.debtAmount) -
+                    Number(
+                      orderStore.dataDebtLimit.amountOwed ?? 0
+                    ))))) ?? 0}
+                  <Text
+                    style={{
+                      fontWeight: "400",
+                      fontSize: fontSize.size10,
+                      color: colors.dolphin,
+                      alignContent: "center",
+                    }}>
+                    )
+                  </Text>
+                </Text>
+              </View>
+            ) : null}
+          </View>
+        </View>
+      </TouchableOpacity>
+      <ModalPayment
+        isVisible={modal}
+        isPayment={true}
+        closeDialog={function (): void {
+          setModal(false);
+        }}
+        onSave={() => {
+          orderStore.setMethodPayment({
+            sumAll: 0,
+            methodPayment: '',
+            debt: 0,
+            inputPrice: 0,
+            apply: false,
+          });
+          setPayment(choicePayment.current)
+          props.handleNamMethod;
+          props.onChangeData(choicePayment.current)
+        }}
+        arrData={methodData}
+        method={method}
+        setMethod={function (item: number, name: string): void {
+          choicePayment.current = { id: item, name: name }
+          setMethod(item);
+        }}
+        debt={{
+          isHaveDebtLimit: orderStore.dataDebtLimit.isHaveDebtLimit,
+          debtAmount:
+            Math.max(0, (Number(orderStore.dataDebtLimit.debtAmount) -
+              Number(orderStore.dataDebtLimit.amountOwed ?? 0))),
+        }}
+      />
+    </View>
+  )
+}

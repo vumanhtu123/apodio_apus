@@ -281,7 +281,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
     const newArr2 = newData.saleOrderLines?.map((item: any) => {
       return item.productId;
     });
-    const newArr3 = newArr2.filter((item) => !newArr1.includes(item));
+    const newArr3 = newArr2.filter((item: any) => !newArr1.includes(item));
     const formattedDate = moment(valueDate.current).endOf("day").toISOString();
 
     console.log("data new", JSON.stringify(newArr));
