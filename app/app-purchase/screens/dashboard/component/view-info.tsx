@@ -5,6 +5,7 @@ import {
   ViewStyle,
   TextStyle,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import React from "react";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
@@ -25,10 +26,15 @@ interface ViewInfoProp {
 }
 
 export default function ViewInfo(props: ViewInfoProp) {
-  const { image, name, onPress, showInfo, onChangeAVT, token } = props;
+  const { image, name, onPress, showInfo, onChangeAVT, token, kind } = props;
 
   return (
-    <View style={{ flexDirection: "row", flex: 1 }}>
+    <View
+      style={{
+        flexDirection: "row",
+        flex: 1,
+        marginTop: kind == 1 && Platform.OS == "ios" ? scaleHeight(20) : 0,
+      }}>
       <TouchableOpacity onPress={onChangeAVT}>
         <Image
           source={{
