@@ -872,7 +872,7 @@ export const ProductCreateScreen: FC = (item) => {
             uomId={uomId}
             isUsing={false}
             valueSwitchUnit={valueSwitchUnit}
-            productName={methods.getValues('productName')}
+            productName={methods.watch('productName')}
             setDataCreateProduct={(arr: any) => setDataCreateProduct(arr)}
             setDataGroupAttribute={(arr: any) => setDataGroupAttribute(arr)}
             setVariantInConfig={(a) => setVariantInConfig(a)}

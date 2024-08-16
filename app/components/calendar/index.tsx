@@ -259,26 +259,79 @@ const CustomCalendar = React.memo((props: any) => {
     return date;
   }, []);
 
-  useEffect(()=>{
-    if(props.dateS){
-    if (props.isOneDate) {
-      console.log(props.dateS, 'dateS')
-      handleChangeS(props.dateS);
-      handleChangeE("");
-      setMarkedDates({
-        [props.dateS]: {
-          selected: true,
-          selectedColor: colors.palette.navyBlue,
-          selectedTextColor: colors.white,
-        },
-      });
-      // setIsStartDatePicked(true);
-      // setIsEndDatePicked(false);
-      // setStartDate(props.dateS);
-    }else {
-
+  useEffect(() => {
+    console.log('ajysdgkiayusdg', props.dateS)
+    if (props.dateS && props.dateE === undefined) {
+      if (props.isOneDate) {
+        console.log(props.dateS, 'dateS')
+        handleChangeS(props.dateS);
+        handleChangeE("");
+        setMarkedDates({
+          [props.dateS]: {
+            selected: true,
+            selectedColor: colors.palette.navyBlue,
+            selectedTextColor: colors.white,
+          },
+        });
+      }
     }
-  }
+    if (props.dateS && props.dateE) {
+      if (props.isOneDate == false) {
+        console.log('asdfkjahsd', markedDates)
+        handleChangeS(props.dateS)
+        handleChangeE(props.dateE);
+          const newMarkedDates: { [key: string]: MarkedDate } = {};
+          console.log('1', props.dateS)
+          const tempStartDate = moment(props.dateS);
+          const tempEndDate = moment(props.dateE);
+          const range = tempEndDate.diff(tempStartDate, "days");
+          console.log('2', props.dateE)
+          newMarkedDates[props.dateS] = {
+            startingDay: true,
+            color: colors.palette.navyBlue,
+            textColor: colors.white,
+            fontWeight: "700",
+          };
+          if (range > 0) {
+            for (let i = 1; i <= range; i++) {
+              const tempDate = moment(props.dateS)
+                .add(i, "days")
+                .format("YYYY-MM-DD");
+              console.log('3', range)
+              if (i < range) {
+                newMarkedDates[tempDate] = {
+                  color: colors.palette.gray,
+                  textColor: colors.black,
+                };
+              } else {
+                newMarkedDates[tempDate] = {
+                  endingDay: true,
+                  color: colors.palette.navyBlue,
+                  textColor: colors.white,
+                  fontWeight: "700",
+                };
+              }
+            }
+            setMarkedDates(newMarkedDates);
+            setIsStartDatePicked(false);
+            setIsEndDatePicked(true);
+            setStartDate("");
+          } else {
+            handleChangeS(props.dateS);
+            handleChangeE("");
+            setMarkedDates({
+              [props.dateS]: {
+                startingDay: true,
+                color: colors.palette.navyBlue,
+                textColor: colors.white,
+              },
+            });
+            setIsStartDatePicked(true);
+            setIsEndDatePicked(false);
+            setStartDate(props.dateS);
+          }
+      }
+    }
   }, [props.isSortByDate])
 
   return (
