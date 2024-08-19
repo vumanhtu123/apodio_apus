@@ -17,11 +17,11 @@ import PriceModal from './modal-price';
 interface ItemVariant {
     addVariant: boolean;
     productName: string;
-    dataCreateProduct: {imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[]}[];
+    dataCreateProduct: { imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[] }[];
     dataGroupAttribute: {}[];
     valueSwitchUnit: boolean;
     addWeight: boolean;
-    detailUnitGroupData: {originalUnit: string, uomGroupLines: {}[]};
+    detailUnitGroupData: { originalUnit: string, uomGroupLines: {}[] };
     uomId: {};
     screen: string;
     setDataCreateProduct: ([]) => void;
@@ -644,32 +644,40 @@ export const ItemVariant = memo(
                                         />
                                     </TouchableOpacity>
                                 ) : null}
-                                {props.isVariantInConfig === true ?
-                                    (props.dataCreateProduct.length === 0 ? (
-                                        <TouchableOpacity onPress={() => props.setAddVariant(false)}>
-                                            <Svgs.ic_close
-                                                width={scaleWidth(14)}
-                                                height={scaleHeight(14)}
-                                                style={{ marginLeft: 10 }}
-                                            />
-                                        </TouchableOpacity>
-                                    ) : null) :
-                                    (props.dataGroupAttribute.length > 0 && props.isUsing === false ? (
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                props.setAddVariant(false);
-                                                props.setDataGroupAttribute([]);
-                                                props.setDataCreateProduct([]);
-                                                props.setVariantInConfig(false);
-                                            }}
-                                        >
-                                            <Svgs.ic_close
-                                                width={scaleWidth(14)}
-                                                height={scaleHeight(14)}
-                                                style={{ marginLeft: 10 }}
-                                            />
-                                        </TouchableOpacity>
-                                    ) : null)}
+                                {props.isVariantInConfig === undefined ?
+                                    <TouchableOpacity onPress={() => props.setAddVariant(false)}>
+                                        <Svgs.ic_close
+                                            width={scaleWidth(14)}
+                                            height={scaleHeight(14)}
+                                            style={{ marginLeft: 10 }}
+                                        />
+                                    </TouchableOpacity>
+                                    : (props.isVariantInConfig === true ?
+                                        (props.dataCreateProduct.length === 0 ? (
+                                            <TouchableOpacity onPress={() => props.setAddVariant(false)}>
+                                                <Svgs.ic_close
+                                                    width={scaleWidth(14)}
+                                                    height={scaleHeight(14)}
+                                                    style={{ marginLeft: 10 }}
+                                                />
+                                            </TouchableOpacity>
+                                        ) : null) :
+                                        (props.dataGroupAttribute.length > 0 && props.isUsing === false ? (
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    props.setAddVariant(false);
+                                                    props.setDataGroupAttribute([]);
+                                                    props.setDataCreateProduct([]);
+                                                    props.setVariantInConfig(false);
+                                                }}
+                                            >
+                                                <Svgs.ic_close
+                                                    width={scaleWidth(14)}
+                                                    height={scaleHeight(14)}
+                                                    style={{ marginLeft: 10 }}
+                                                />
+                                            </TouchableOpacity>
+                                        ) : null))}
                             </View>
                         </View>
                     </View>

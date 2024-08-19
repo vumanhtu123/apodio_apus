@@ -15,7 +15,6 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { TextField } from "../../../../components/text-field/text-field";
 import { Switch } from "../../../../components";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
-import DescribeModal from "../component/modal-describe";
 import { useStores } from "../../../models";
 import {
   checkArrayIsEmptyOrNull,
@@ -42,24 +41,20 @@ import {
   ItemUnit,
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
-import en from "../../../../i18n/en";
 import { GroupButtonBottom } from "../../../../components/group-button/groupButtonBottom";
-
+import { MoreInformation } from "../component/moreInformation";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
   const [imagesNote, setImagesNote] = useState<any>([]);
   const [valuePurchase, setValuePurchase] = useState(false);
   const [valueSwitchUnit, setValueSwitchUnit] = useState(false);
-  const [modalDescribe, setModalDescribe] = useState(false);
-  const [modalcreateUnit, setModalcreateUnit] = useState(false);
-  const [addDescribe, setAddDescribe] = useState(false);
+  const [modalCreateUnit, setModalCreateUnit] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
   const [addWeight, setAddWeight] = useState(false);
   const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
   const [detailUnitGroupData, setDetailUnitGroupData] = useState<{ uomGroupLines: any, originalUnit: any }>({ uomGroupLines: [], originalUnit: '' });
-  const [description, setDescription] = useState("");
   const { productStore, unitStore } = useStores();
   const [dataCreateProduct, setDataCreateProduct] = useState<{ imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[] }[]>([]);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
@@ -69,6 +64,8 @@ export const ProductCreateScreen: FC = (item) => {
   const textAttributes = useRef([])
   const attributeValues = useRef([])
   const attributeIds = useRef([])
+  const dataDescription = useRef('')
+  const addDescribe = useRef(false)
 
   const {
     selectedIds,
@@ -79,8 +76,6 @@ export const ProductCreateScreen: FC = (item) => {
     newDataCreateProduct,
     isVariantInConfig,
     selectedGroupAttribute,
-    resetData,
-    goBackConversionGroup,
   }: any = route?.params || {};
   const methods = useForm({
     defaultValues: {
@@ -148,7 +143,6 @@ export const ProductCreateScreen: FC = (item) => {
   }, [selectedGroupAttribute, isVariantInConfig]);
 
   const getDetailUnitGroup = async (id: number) => {
-    // call nhieu lan
     if (id) {
       const unitResult = await unitStore.getDetailUnitGroup(id);
       if (unitResult && unitResult.kind === "ok") {
@@ -294,7 +288,6 @@ export const ProductCreateScreen: FC = (item) => {
           },
         };
       });
-
       newArr5.forEach((item: any, index: any) => (dataArr[index].attributeValues = item));
       setDataCreateProduct(dataArr);
       console.log('data variants', JSON.stringify(dataArr))
@@ -334,7 +327,6 @@ export const ProductCreateScreen: FC = (item) => {
       );
       const checkWeight1 = weight1?.some((item: any) => item?.trim() === "");
       const checkVolume = volume?.some((item: any) => item?.trim() === "");
-
       const unitVariant = dataCreateProduct.map((items: any) => {
         return items.weight?.weight?.flatMap((item: any) => item.unit);
       }).flat()
@@ -357,7 +349,6 @@ export const ProductCreateScreen: FC = (item) => {
       const checkVolumeVariant = volumeVariant?.some((item: any) => item?.trim() === "");
       const checkWeight1OriginalVariant = weight1OriginalVariant?.some((item: any) => item?.trim() === "");
       const checkVolumeOriginalVariant = volumeOriginalVariant?.some((item: any) => item?.trim() === "");
-
       if (
         checkUnit == true ||
         checkWeight1 == true ||
@@ -372,7 +363,6 @@ export const ProductCreateScreen: FC = (item) => {
         });
         return
       }
-
       if (checkUnitVariant == true || checkVolumeVariant == true || checkWeight1Variant == true || checkVolumeOriginalVariant == true || checkWeight1OriginalVariant == true) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
@@ -398,7 +388,6 @@ export const ProductCreateScreen: FC = (item) => {
             : [],
       };
     });
-
     const newArr = arrDataNew?.map((item) => {
       return {
         name: methods.watch("productName") + " - " + item.name,
@@ -409,30 +398,32 @@ export const ProductCreateScreen: FC = (item) => {
         wholesalePrice: item.wholesalePrice,
         attributeValues: item.attributeValues,
         baseProductPackingLine:
-          item.weight?.weightOriginal?.trim() === "" ||
-            item.weight?.volumeOriginal?.trim() === ""
-            ? {}
-            : valueSwitchUnit === false
-              ? {
-                uomGroupLineId: null,
-                amount: 1,
-                volume: formatStringToFloat(item.weight?.volumeOriginal),
-                weight: formatStringToFloat(item.weight?.weightOriginal),
-              }
-              : {
-                uomGroupLineId:
-                  detailUnitGroupData?.originalUnit?.uomGroupLineId,
-                amount: 1,
-                volume: formatStringToFloat(item.weight?.volumeOriginal),
-                weight: formatStringToFloat(item.weight?.weightOriginal),
-              },
+          addWeight === true ?
+            (item.weight?.weightOriginal?.trim() === "" ||
+              item.weight?.volumeOriginal?.trim() === ""
+              ? {}
+              : valueSwitchUnit === false
+                ? {
+                  uomGroupLineId: null,
+                  amount: 1,
+                  volume: formatStringToFloat(item.weight?.volumeOriginal),
+                  weight: formatStringToFloat(item.weight?.weightOriginal),
+                }
+                : {
+                  uomGroupLineId:
+                    detailUnitGroupData?.originalUnit?.uomGroupLineId,
+                  amount: 1,
+                  volume: formatStringToFloat(item.weight?.volumeOriginal),
+                  weight: formatStringToFloat(item.weight?.weightOriginal),
+                }) : {},
         productPackingLines:
-          item.weight?.weightOriginal?.trim() === "" ||
-            item.weight?.volumeOriginal?.trim() === ""
-            ? []
-            : valueSwitchUnit == false
+          addWeight === true ?
+            (item.weight?.weightOriginal?.trim() === "" ||
+              item.weight?.volumeOriginal?.trim() === ""
               ? []
-              : item?.productPackingLines,
+              : valueSwitchUnit == false
+                ? []
+                : item?.productPackingLines) : [],
       };
     });
     const dataPrice2 = data.retailPriceProduct.map((item: any) => {
@@ -468,8 +459,6 @@ export const ProductCreateScreen: FC = (item) => {
         listPrice: Number(formatNumberByString(item.listPrice.toString())),
       };
     });
-    // const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
-
     const packingLine = data.weight?.map((item: any) => {
       return {
         uomGroupLineId: item.unit.id,
@@ -499,7 +488,7 @@ export const ProductCreateScreen: FC = (item) => {
       attributeValues: attributeValues.current,
       textAttributes: textAttributes.current,
       attributeCategoryIds: attributeIds.current,
-      description: description,
+      description: addDescribe.current == true ? dataDescription.current : '',
       productVariants: hasVariantInConfig ? newArr2 : [],
       retailPrice: dataPrice2,
       costPrice: Number(formatNumberByString(methods.watch("costPrice"))),
@@ -623,7 +612,7 @@ export const ProductCreateScreen: FC = (item) => {
     if (valueSwitchUnit) {
       navigation.navigate({ name: "createConversionGroup", params: { editScreen: false } } as never);
     } else {
-      setModalcreateUnit(true);
+      setModalCreateUnit(true);
     }
   }, [valueSwitchUnit])
 
@@ -654,13 +643,6 @@ export const ProductCreateScreen: FC = (item) => {
       name: "ChooseVendorScreen",
       params: { listIds, mode: "create" },
     } as never);
-  };
-
-  const handleDescribe = () => {
-    setAddDescribe(true);
-  };
-  const handleCloseDescribe = () => {
-    setAddDescribe(false);
   };
 
   return (
@@ -878,153 +860,26 @@ export const ProductCreateScreen: FC = (item) => {
             setVariantInConfig={(a) => setVariantInConfig(a)}
             screen="create"
           />
-          {addDescribe ? (
-            <View
-              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
-            >
-              <View style={styles.viewViewDetail}>
-                <View>
-                  <View
-                    style={{ flexDirection: "row", alignContent: "center" }}
-                  >
-                    <Text
-                      tx={"createProductScreen.description"}
-                      style={styles.textTitleView}
-                    />
-                    {description ? (
-                      <TouchableOpacity
-                        onPress={() => {
-                          setModalDescribe(true);
-                        }}
-                      >
-                        <Svgs.icon_edit
-                          style={{ marginLeft: scaleWidth(8) }}
-                          width={scaleWidth(14)}
-                          height={scaleHeight(14)}
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                  </View>
-                  <TouchableOpacity
-                    onPress={handleCloseDescribe}
-                    style={{
-                      position: "absolute",
-                      right: 0,
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Svgs.ic_close
-                      width={scaleWidth(14)}
-                      height={scaleHeight(14)}
-                    />
-                  </TouchableOpacity>
-                </View>
-                {description === "" ? (
-                  <View style={{}}>
-                    <TouchableOpacity
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                      onPress={() => setModalDescribe(true)}
-                    >
-                      <Svgs.ic_plusCircleBlue
-                        width={scaleWidth(14)}
-                        height={scaleHeight(14)}
-                      />
-                      <Text
-                        tx={"createProductScreen.addDescription"}
-                        style={styles.textWeight400Blue}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <Text text={description} />
-                )}
-              </View>
-            </View>
-          ) : null}
-          <View
-            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
-          >
-            <View style={styles.viewViewDetail}>
-              <Text
-                tx="createProductScreen.information"
-                style={styles.textTitleView}
-              />
-              <View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Svgs.icon_gear
-                    width={scaleWidth(20)}
-                    height={scaleHeight(20)}
-                  />
-                  {addDescribe === false ? (
-                    <TouchableOpacity
-                      onPress={handleDescribe}
-                      style={styles.viewBtnInMorInfo}
-                    >
-                      <Text
-                        tx={"createProductScreen.description"}
-                        style={styles.textBtnMorInfo}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                  {addVariant === false ? (
-                    <TouchableOpacity
-                      onPress={() => setAddVariant(true)}
-                      style={styles.viewBtnInMorInfo}
-                    >
-                      <Text
-                        tx={"createProductScreen.productClassification"}
-                        style={styles.textBtnMorInfo}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                  {addWeight === false ? (
-                    <TouchableOpacity
-                      onPress={() => setAddWeight(true)}
-                      style={styles.viewBtnInMorInfo}
-                    >
-                      <Text
-                        tx={"createProductScreen.weight"}
-                        style={styles.textBtnMorInfo}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                  {addDescribe === true &&
-                    addVariant === true &&
-                    addWeight === true ? (
-                    <Text
-                      tx={"createProductScreen.notificationAddAllInfoProduct"}
-                      style={[
-                        styles.textWeight400Dolphin,
-                        { marginLeft: scaleWidth(8) },
-                      ]}
-                    />
-                  ) : null}
-                </View>
-              </View>
-            </View>
-          </View>
+          <MoreInformation
+            setAddVariant={setAddVariant}
+            setAddWeight={setAddWeight}
+            addDescribe={addDescribe.current}
+            addVariant={addVariant}
+            addWeight={addWeight}
+            onChangeDescription={(data) => dataDescription.current = data}
+            onChangeIsVisible={(data) => addDescribe.current = data}
+          />
         </ScrollView>
-        <DescribeModal
-          titleTx={"productScreen.describe"}
-          isVisible={modalDescribe}
-          dataDescribe={description}
-          setIsVisible={() => setModalDescribe(false)}
-          onCancel={() => setModalDescribe(false)}
-          onConfirm={(data) => {
-            setDescription(data.Describe);
-            setModalDescribe(false);
-          }}
-        />
         <UnitModal
           titleTx={"productScreen.createUnit"}
-          isVisible={modalcreateUnit}
-          setIsVisible={() => setModalcreateUnit(false)}
+          isVisible={modalCreateUnit}
+          setIsVisible={() => setModalCreateUnit(false)}
           onSave={(data) => {
-            setModalcreateUnit(false);
+            setModalCreateUnit(false);
             getListUnitGroup(false);
           }}
           onSaveAndChange={(data) => {
-            setModalcreateUnit(false);
+            setModalCreateUnit(false);
             setUomId(data);
             getListUnitGroup(false);
           }}
