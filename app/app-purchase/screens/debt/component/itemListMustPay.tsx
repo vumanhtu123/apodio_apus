@@ -5,13 +5,16 @@ import { colors, scaleHeight, scaleWidth } from '../../../theme'
 import { Text } from '../../../../components'
 import { Styles } from '../screen/styles'
 import { id } from 'date-fns/locale'
+import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
 
 interface itemData {
-    id?: string,
-    name?: string,
+    partner: { id?: string, name?: string },
     totalLiabilities?: string,
     paid?: string,
     musPay?: string,
+    amountTotal: number,
+    debtAmount: number,
+    amountPayment: number,
 
 }
 
@@ -35,8 +38,8 @@ export const ItemListMustPay: FC<ItemProps> = ({ item, onClick, idSelect }) => {
                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
                 colors={
                     [
-                        idSelect == item?.id ? colors.palette.navyBlue : colors.white,
-                        idSelect == item?.id ? colors.palette.malibu : colors.white
+                        idSelect == item?.partner?.id ? colors.palette.navyBlue : colors.white,
+                        idSelect == item?.partner?.id ? colors.palette.malibu : colors.white
                     ]
                 }
                 style={{
@@ -53,13 +56,13 @@ export const ItemListMustPay: FC<ItemProps> = ({ item, onClick, idSelect }) => {
 
                 <View style={{ width: '100%', flexDirection: 'row', }} >
                     <View style={{ width: '50%' }}>
-                        <Text style={[idSelect == item?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect]} tx='debtScreen.nameProviders' />
-                        <Text style={[idSelect == item?.id ? Styles.sizeContent : Styles.sizeContentUnSelect]}>{item?.name}</Text>
+                        <Text style={[idSelect == item?.partner?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect]} tx='debtScreen.nameProviders' />
+                        <Text style={[idSelect == item?.partner?.id ? Styles.sizeContent : Styles.sizeContentUnSelect]}>{item?.partner?.name}</Text>
                     </View>
                     <View>
-                        <Text style={[idSelect == item?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect]} tx='debtScreen.totalLiabilities' />
-                        <Text style={[idSelect == item?.id ? Styles.sizeContent : Styles.numberInItemUnSelect]}>
-                            {`${item?.totalLiabilities}đ`}
+                        <Text style={[idSelect == item?.partner?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect]} tx='debtScreen.totalLiabilities' />
+                        <Text style={[idSelect == item?.partner?.id ? Styles.sizeContent : Styles.numberInItemUnSelect]}>
+                            {formatVND(formatCurrency(commasToDots(item?.amountTotal)))}
                         </Text>
                     </View>
 
@@ -67,21 +70,19 @@ export const ItemListMustPay: FC<ItemProps> = ({ item, onClick, idSelect }) => {
                 <View style={{ width: '100%', marginTop: scaleHeight(15), flexDirection: 'row' }} >
                     <View style={{ width: '50%' }}>
                         <Text
-                            style={[idSelect == item?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect,]}
+                            style={[idSelect == item?.partner?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect,]}
                             tx='debtScreen.paid'
                         />
 
-                        <Text style={[idSelect == item?.id ? Styles.sizeContent : Styles.numberInItemUnSelect]}>{`${item?.paid}đ`}</Text>
+                        <Text style={[idSelect == item?.partner?.id ? Styles.sizeContent : Styles.numberInItemUnSelect]}>{formatVND(formatCurrency(commasToDots(item?.amountPayment)))}</Text>
                     </View>
                     <View>
                         <Text
-                            style={[idSelect == item?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect,]}
+                            style={[idSelect == item?.partner?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect,]}
                             tx='debtScreen.mustPay'
                         />
-
-
-                        <Text style={[Styles.sizeContent, { color: idSelect == item?.id ? 'yellow' : "#FF4956" }]}>
-                            {`${item?.musPay}đ`}
+                        <Text style={[Styles.sizeContent, { color: idSelect == item?.partner?.id ? 'yellow' : "#FF4956" }]}>
+                            {formatVND(formatCurrency(commasToDots(item?.debtAmount)))}
                         </Text>
                     </View>
 

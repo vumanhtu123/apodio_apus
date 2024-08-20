@@ -141,6 +141,22 @@ export const ModalPay: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass })
                     }}
 
                 />
+                {
+                    keyToPass === 'pay' ?
+                        <InputSelect
+                            titleTx='debtScreen.accountingBook'
+                            hintTx='debtScreen.payments'
+                            arrData={myDataSelectAmount}
+                            dataDefault={selectCustomerAmount.label}
+                            onPressChoice={(item: any) => {
+                                setSelectCustomerAmount(item)
+                            }}
+                            styleView={{ marginTop: 10 }}
+
+                        />
+                        : <></>
+                }
+
                 <TouchableOpacity
                     style={[Styles.btnPay, { padding: scaleWidth(12), borderRadius: scaleWidth(8), marginTop: scaleWidth(30) }]}
                     onPress={onPressConfirm}

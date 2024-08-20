@@ -88,4 +88,5 @@ export const ApiEndpoint = {
   NUMBER_STATE: "/api/v1/sale/stock-warehouse/warehouse-number",
   GET_LIST_SUPPLIER: "/api/v1/vendor/partner-tag/list",
   GET_LIST_SUPPLIER_GROUP: "/api/v1/vendor/partners/list",
+  GET_LIST_DEBT_SALE: "/v3/ad562313-93ab-4315-8e9e-690f2fed7666",
 };

@@ -7,7 +7,9 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  NativeSyntheticEvent,
   RefreshControl,
+  TextInputSubmitEditingEventData,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -98,10 +100,14 @@ export const MustPayScreen: FC<
         }}
         RightIcon={Svgs.ic_calender_white}
         RightIcon1={Svgs.ic_slider}
-        btnRightStyle={{}}
         headerInput={true}
         searchText={translate("NCCScreen.nameSuppliers")}
         onRightPress1={() => setIsVisible(true)}
+        onSearchValueChange={(txt: any) => { }}
+        handleOnSubmitSearch={(value: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
+          console.log("value search debt", value.nativeEvent.text);
+
+        }}
       />
       <LinearGradient
         start={{ x: 0, y: 1 }}

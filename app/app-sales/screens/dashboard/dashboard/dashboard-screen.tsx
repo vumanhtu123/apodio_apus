@@ -592,10 +592,10 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               // testDebug();
             }}
           />
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => { }}>
             <Svgs.icon_search />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.btnNotification} onPress={() => {}}>
+          <TouchableOpacity style={styles.btnNotification} onPress={() => { }}>
             <Svgs.icon_notification />
             {/* {notifitionStoreModel.notiUnreadHome > 0 ? ( */}
             <View style={styles.circleNoti}>
@@ -628,13 +628,13 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.heatWave }}
               name={"dashboard.orders"}
               Icon={Svgs.icon_orders}
-              onPress={() => {navigation.navigate("orders" as never)}}
+              onPress={() => { navigation.navigate("orders" as never) }}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.metallicBlue }}
-              name={"dashboard.debt"}
+              name={"dashboard.receivables"}
               Icon={Svgs.ic_debt}
-              onPress={() => props.navigation.navigate("debt" as never)}
+              onPress={() => props.navigation.navigate("receivable" as never)}
             />
             <ItemFunction
               styles={{ backgroundColor: colors.palette.torchRed }}
@@ -646,9 +646,9 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               styles={{ backgroundColor: colors.palette.verdigris }}
               name={"dashboard.promotions"}
               Icon={Svgs.icon_promotion}
-              // onPress={() => {
-              //   props.navigation.navigate('transferToBank', {});
-              // }}
+            // onPress={() => {
+            //   props.navigation.navigate('transferToBank', {});
+            // }}
             />
           </View>
           <View style={{ flexDirection: "row" }}>
@@ -704,7 +704,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                 renderItem={({ item }: any) => (
                   <TouchableOpacity
                     style={{ height: 200, width: "100%", borderRadius: 4 }}
-                    // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
+                  // onPress={() => props.navigation.navigate('promotionDetail', { id: item.campaign_id })}
                   >
                     <ImageBackground
                       source={{
@@ -846,12 +846,12 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                       item.state === "SALE"
                         ? colors.palette.solitude
                         : item.state === "SENT"
-                        ? colors.palette.floralWhite
-                        : item.state === "CANCEL"
-                        ? colors.palette.amour
-                        : item.state === "DONE"
-                        ? colors.palette.mintCream
-                        : "",
+                          ? colors.palette.floralWhite
+                          : item.state === "CANCEL"
+                            ? colors.palette.amour
+                            : item.state === "DONE"
+                              ? colors.palette.mintCream
+                              : "",
                     justifyContent: "center",
                   }}
                   styleTextStatus={{
@@ -859,22 +859,22 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                       item.state === "SALE"
                         ? colors.palette.metallicBlue
                         : item.state === "SENT"
-                        ? colors.palette.yellow
-                        : item.state === "CANCEL"
-                        ? colors.palette.radicalRed
-                        : item.state === "DONE"
-                        ? colors.palette.malachite
-                        : "",
+                          ? colors.palette.yellow
+                          : item.state === "CANCEL"
+                            ? colors.palette.radicalRed
+                            : item.state === "DONE"
+                              ? colors.palette.malachite
+                              : "",
                   }}
                   styleTextPayStatus={{
                     color:
                       item.invoiceStatus === "NO"
                         ? colors.palette.darkTangerine
                         : item.invoiceStatus === "PARTIAL_INVOICE"
-                        ? colors.palette.darkTangerine
-                        : item.invoiceStatus === "TO_INVOICE"
-                        ? colors.palette.darkTangerine
-                        : colors.palette.malachite,
+                          ? colors.palette.darkTangerine
+                          : item.invoiceStatus === "TO_INVOICE"
+                            ? colors.palette.darkTangerine
+                            : colors.palette.malachite,
                   }}
                 />
               )}
@@ -895,13 +895,13 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
           <View style={styles.viewModal}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderNCC"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
                 <Svgs.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text tx={"dashboard.orderApodio"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
                 <Svgs.icon_orderBlue width={18} height={18} />
               </TouchableOpacity>
             </View>
@@ -912,7 +912,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                 alignItems: "center",
               }}>
               <Text tx={"dashboard.request"} style={styles.textModal} />
-              <TouchableOpacity onPress={() => {}} style={styles.circleModal}>
+              <TouchableOpacity onPress={() => { }} style={styles.circleModal}>
                 <Svgs.icon_handWaving />
               </TouchableOpacity>
             </View>

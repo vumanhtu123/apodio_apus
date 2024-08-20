@@ -111,6 +111,7 @@ export const SelectLanguageScreen: FC<
           backgroundColor: visible == false ? colors.navyBlue : colors.gray,
           padding: 12,
           justifyContent: "center",
+
         }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Image source={Images.iconEN} />

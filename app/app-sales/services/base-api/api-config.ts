@@ -78,6 +78,12 @@ const getDomainSupplier = () => {
   console.log("URL Supplier", domain);
   return domain;
 };
+
+const getDomainDebtSales = () => {
+  const domain = CONFIG.API.DEV.URL_TEST_DEBT;
+  console.log("URL DEBT SALE", domain);
+  return  domain;
+}
 export interface ApiConfig {
   /**
    * The URL of the api.
@@ -136,3 +142,8 @@ export const DEFAULT_API_SUPPLIER: ApiConfig = {
   url: getDomainSupplier(),
   timeout: 100000,
 };
+
+export const DEFAULT_API_DEBT_SALES: ApiConfig ={
+  url: getDomainDebtSales(),
+  timeout: 100000,
+}

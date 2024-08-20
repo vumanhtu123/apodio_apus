@@ -76,7 +76,7 @@ export const LoginScreen: FC = observer(function LoginScreen(props) {
     console.log('vaaaaaaaaaa', value);
     languages.map((item) => {
       if (item.id == value) {
-        ;
+
         setCurrentLanguage([item])
       }
     })

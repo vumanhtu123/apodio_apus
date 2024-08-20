@@ -89,4 +89,6 @@ export const ApiEndpoint = {
   GET_LIST_SUPPLIER: "/api/v1/vendor/partner-tag/list",
   GET_LIST_SUPPLIER_GROUP: "/api/v1/vendor/partners/list",
   GET_VENDOR: "/api/v1/internal/mobile-product-template/vendors",
+  GET_TOTAL_DEBT: "/api/v1/mobile/debt-paid/total",
+  GET_LIST_DEBT_MUST_PAY: "/api/v1/mobile/debt-paid/list-partner",
 };

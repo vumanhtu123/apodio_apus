@@ -12,6 +12,7 @@ import { UserStoreModal } from "../users-store/users-store";
 import { CompanyStoreModel } from "../company-info-store/company-store";
 import { WarehouseStoreModal } from "../warehouse-store/warehouse-store";
 import { SupplierStore } from "../supplier-store/supplier-store";
+import { DebtStoreModal } from "../debt-store/debt";
 
 /**
  * A RootStore model.
@@ -29,7 +30,8 @@ export const RootStoreModel = types.model("RootStore").props({
   userStore : types.optional(UserStoreModal, {}),
   companyStore : types.optional(CompanyStoreModel, {}),
   warehouseStore: types.optional(WarehouseStoreModal,{}),
-  supplierStore: types.optional(SupplierStore,{})
+  supplierStore: types.optional(SupplierStore,{}),
+  debtStore: types.optional(DebtStoreModal,{}),
 });
 
 /**
