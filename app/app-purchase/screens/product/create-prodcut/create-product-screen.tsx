@@ -42,8 +42,6 @@ import {
   ItemUnit,
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
-import en from "../../../../i18n/en";
-import { values } from "mobx";
 import { GroupButtonBottom } from "../../../../components/group-button/groupButtonBottom";
 
 export const ProductCreateScreen: FC = (item) => {
@@ -920,7 +918,7 @@ export const ProductCreateScreen: FC = (item) => {
             uomId={uomId}
             isUsing={false}
             valueSwitchUnit={valueSwitchUnit}
-            productName={methods.getValues('productName')}
+            productName={methods.watch('productName')}
             setDataCreateProduct={(arr: any) => setDataCreateProduct(arr)}
             setDataGroupAttribute={(arr: any) => setDataGroupAttribute(arr)}
             setVariantInConfig={(a) => setVariantInConfig(a)}

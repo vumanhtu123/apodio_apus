@@ -2,7 +2,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
-import Dialog from "../../../../components/dialog/dialog";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
 import { useStores } from "../../../models";
