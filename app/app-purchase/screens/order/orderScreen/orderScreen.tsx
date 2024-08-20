@@ -378,6 +378,8 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
             console.log("markedDatesS------", markedDatesS);
             setTimeStart(markedDatesS);
           }}
+          dateS={moment(markedDatesS).format('YYYY-MM-DD')}
+          dateE={moment(markedDatesE).format('YYYY-MM-DD')}
           onMarkedDatesChangeE={(
             markedDatesE: React.SetStateAction<string>
           ) => {

@@ -713,6 +713,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         onMarkedDatesChangeE={(markedDatesE: React.SetStateAction<string>) => {
           setMarkedDatesE(markedDatesE);
         }}
+        dateS={minDateS}
         isShowTabs={false}
         isSortByDate={isSortByDate}
         isOneDate={true}
@@ -730,6 +731,7 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
           // choiseCalendar == 1 ? setMinDateS(markedDatesS) :
           setMinDateE(markedDatesS);
         }}
+        dateS={minDateE}
         onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
           setMarkedDatesS(markedDatesS);
         }}
