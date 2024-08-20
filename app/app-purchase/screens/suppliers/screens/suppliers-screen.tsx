@@ -111,6 +111,10 @@ export const SuppliersScreen: FC = () => {
   console.log("value load more 1", isLoadMore);
   console.log("value search", valuerSearch);
 
+  useEffect(() => {
+    getListSupplierGroup()
+  }, [])
+
 
   return (
     <View style={styles.ROOT}>

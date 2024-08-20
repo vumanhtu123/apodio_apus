@@ -77,7 +77,7 @@ export  const Styles = StyleSheet.create({
         paddingHorizontal: scaleWidth(15),
         paddingVertical: scaleWidth(10),
         borderTopLeftRadius: margin.border_top_left_radius,
-              borderTopRightRadius: margin.border_top_right_radius,
+        borderTopRightRadius: margin.border_top_right_radius,
 
     },
     horizontalLine: {
@@ -129,6 +129,14 @@ export  const Styles = StyleSheet.create({
         // backgroundColor: "yellow",
         paddingHorizontal: scaleWidth(10),
 
+    },
+    viewTaskbar: {
+        backgroundColor: colors.palette.veryLightGrey,
+        marginTop: scaleHeight(90),
+        flexDirection: "row",
+        padding: scaleWidth(2),
+        marginHorizontal: scaleWidth(16),
+        borderRadius: scaleWidth(8),
     },
     flexRow: {
         flexDirection: "row",

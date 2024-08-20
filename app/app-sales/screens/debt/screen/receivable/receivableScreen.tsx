@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { NavigatorParamList } from "../../../../navigators";
 import { observe } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -30,6 +30,8 @@ import ItemListTransaction from "../../component/itemListTransaction";
 import ItemListNCC from "../../component/itemListNCC";
 import { ModalPayReceivable } from "../../component/modalPayReceivable";
 import { translate } from "../../../../../i18n";
+import { ModalPayReceivableTransaction } from "../../component/modalPayReceivableTransaction";
+import { useStores } from "../../../../models";
 
 
 export const ReceivableScreen: FC<
@@ -45,9 +47,13 @@ export const ReceivableScreen: FC<
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [myData, setMyData] = useState<any>([])
+  const getAPI = useStores()
+
   const dataTaskBar = [
     { name: translate("debtScreen.accordingToTransaction") },
-    { name: translate("debtScreen.accordingToSupplier") },
+    { name: translate("debtScreen.accordingToClient") },
+    { name: translate("debtScreen.internal") },
   ];
 
   interface DataItemTranSaction {
@@ -158,6 +164,31 @@ export const ReceivableScreen: FC<
       day: "09/12/2023",
     },
   ];
+
+
+  const getListDebt = async () => {
+    try {
+      const MyDataDebt = await getAPI.debtSales.getListDebt(0, 15, "Công ty cổ phần tự thành", false)
+      const dataDebt = MyDataDebt?.content
+      console.log("doandev1", dataDebt);
+
+      if (MyDataDebt !== null) {
+        if (MyDataDebt?.page == 0) {
+          setMyData(MyDataDebt.content)
+        } else {
+          setMyData((data: any) => [...data, ...dataDebt])
+        }
+      }
+
+    } catch (error) {
+      console.log('====================================');
+      console.log("Error Call Api At Debt Screen");
+      console.log('====================================');
+    }
+
+  }
+
+
   const handleRefresh = () => {
     setRefreshing(true);
 
@@ -173,6 +204,11 @@ export const ReceivableScreen: FC<
       setIsLoadingMore(false);
     }, 3000);
   };
+
+  useEffect(() => {
+    getListDebt()
+  }, [])
+
 
   const groupByOfDayTranSaction = (
     data: DataItemTranSaction[],
@@ -204,13 +240,18 @@ export const ReceivableScreen: FC<
     );
   };
 
-  const myDataCompanyByOfDay = groupByOfDayNhaCC(dataNhaCC, "day");
+  const myDataTransaction = groupByOfDayNhaCC(myData, "day");
+  // console.log('====================================');
+  // console.log(" doan dev", myDataCompanyByOfDay);
+  // console.log('====================================');
+
   const myGroupByOfDay = groupByOfDayTranSaction(dataFake, "day");
   console.log("data group", groupByOfDayTranSaction(dataFake, "day"));
 
   const toggleModalDate = () => {
     setIsShortByDate(!isShortByDate);
   };
+
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -222,20 +263,20 @@ export const ReceivableScreen: FC<
           props.navigation.goBack();
         }}
         onRightPress1={() => toggleModalDate()}
-        rightText1={` ${moment(timeStart).format("DD/MM/YYYY")} - ${moment(
-          timeEnd
-        ).format("DD/MM/YYYY")} `}
+        rightText1={` ${moment(timeStart).format("DD/MM/YYYY")} - ${moment(timeEnd).format("DD/MM/YYYY")} `}
+        headerInput={true}
+
       />
       <LinearGradient
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 1 }}
         colors={[colors.palette.navyBlue, colors.palette.malibu]}
-        style={{ height: scaleHeight(50) }}></LinearGradient>
+        style={{ height: scaleHeight(20) }}></LinearGradient>
 
       <View
         style={[
           Styles.bodyCardMusPay,
-          { position: "absolute", top: scaleWidth(50) },
+          { position: "absolute", top: scaleWidth(90) },
         ]}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <TouchableOpacity style={[{ alignItems: "center", flex: 1 }]}>
@@ -262,14 +303,7 @@ export const ReceivableScreen: FC<
       </View>
 
       <View
-        style={{
-          backgroundColor: colors.palette.veryLightGrey,
-          marginTop: scaleHeight(60),
-          flexDirection: "row",
-          padding: scaleWidth(2),
-          marginHorizontal: scaleWidth(16),
-          borderRadius: scaleWidth(8),
-        }}>
+        style={Styles.viewTaskbar}>
         {dataTaskBar.map((item: any, index) => {
           return (
             <TouchableOpacity
@@ -287,7 +321,10 @@ export const ReceivableScreen: FC<
                 setSelectTaskbar(index);
               }}
               key={item.name}>
-              <Text>{item.name}</Text>
+              <Text style={{
+                fontSize: fontSize.size11,
+                fontWeight: selectTaskbar == index ? "700" : "normal"
+              }}>{item.name}</Text>
             </TouchableOpacity>
           );
         })}
@@ -296,13 +333,13 @@ export const ReceivableScreen: FC<
       {selectTaskbar == 0 ? (
         <FlatList
           style={{ marginTop: scaleWidth(20) }}
-          data={Object.entries(myGroupByOfDay)}
+          data={Object.entries(myDataTransaction)}
           showsVerticalScrollIndicator={false}
           keyExtractor={([day]) => day}
           renderItem={({ item: [day, products] }) => {
-            console.log("====================================");
-            console.log("dataItem", products);
-            console.log("====================================");
+            // console.log("====================================");
+            // console.log("dataItem", products);
+            // console.log("====================================");
             return (
               <View style={[Styles.groupContainer]}>
                 <View
@@ -319,10 +356,10 @@ export const ReceivableScreen: FC<
                 {products.map((item, index) => (
                   <ItemListTransaction
                     item={item}
-                    onPress={() =>
-                      props.navigation.navigate("detailReceivable")
-                    }
+                    onPress={() => { }}
                     key={item.id}
+                    isVisible={isVisible}
+                    setIsVisible={() => { setIsVisible(!isVisible) }}
                   />
                 ))}
               </View>
@@ -335,9 +372,9 @@ export const ReceivableScreen: FC<
           onEndReachedThreshold={0.2}
           ListFooterComponent={() => isLoadingMore && <ActivityIndicator />}
         />
-      ) : (
+      ) : selectTaskbar == 1 ? (
         <FlatList
-          data={Object.entries(myDataCompanyByOfDay)}
+          data={Object.entries(myDataTransaction)}
           showsVerticalScrollIndicator={false}
           keyExtractor={([day]) => day}
           renderItem={({ item: [day, company] }) => {
@@ -360,6 +397,48 @@ export const ReceivableScreen: FC<
                     item={item}
                     isVisible={isVisible}
                     setIsVisible={setIsVisible}
+                  />
+                ))}
+              </View>
+            );
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+          }
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.2}
+          ListFooterComponent={() => isLoadingMore && <ActivityIndicator />}
+        />
+      ) : (
+        <FlatList
+          style={{ marginTop: scaleWidth(20) }}
+          data={Object.entries(myGroupByOfDay)}
+          showsVerticalScrollIndicator={false}
+          keyExtractor={([day]) => day}
+          renderItem={({ item: [day, products] }) => {
+            // console.log("====================================");
+            // console.log("dataItem", products);
+            // console.log("====================================");
+            return (
+              <View style={[Styles.groupContainer]}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginVertical: scaleHeight(15),
+                  }}>
+                  <View style={{ width: "40%" }} />
+                  <Text style={Styles.dateText}>{day}</Text>
+                  <View style={{ width: "40%" }} />
+                </View>
+                {products.map((item, index) => (
+                  <ItemListTransaction
+                    item={item}
+                    onPress={() => { }}
+                    key={item.id}
+                    isVisible={isVisible}
+                    setIsVisible={() => { setIsVisible(!isVisible) }}
                   />
                 ))}
               </View>
@@ -395,6 +474,7 @@ export const ReceivableScreen: FC<
         isVisible={isVisible}
         setIsVisible={() => setIsVisible(!isVisible)}
       />
+
     </View>
   );
 });

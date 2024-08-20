@@ -14,10 +14,10 @@ import en from '../../../../i18n/en'
 interface propsModal {
     isVisible?: boolean,
     setIsVisible?: any,
-    keyToPass?: string
 }
 
-export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, keyToPass }) => {
+
+export const ModalPayReceivableTransaction: FC<propsModal> = ({ isVisible, setIsVisible }) => {
     const [selectUpOrDow, setSelectUpOrDow] = useState("Up")
     const [totalDebt, setTotalDebt] = useState("Dow")
     const [selectCustomerAmount, setSelectCustomerAmount] = useState({ label: "" })
@@ -88,9 +88,10 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
                     fontSize: fontSize.size20,
                     color: colors.palette.radicalRed,
                     fontWeight: '600',
-                    marginVertical: scaleWidth(20)
+                    marginVertical: scaleWidth(20),
+
                 }} >
-                    {formatVND(formatCurrency(commasToDots(20000)))}
+                    {formatVND(formatCurrency(commasToDots(30000)))}
                 </Text>
 
                 <Controller
@@ -113,7 +114,8 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
                 <View style={{
                     flexDirection: 'row',
                     marginTop: scaleHeight(8),
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    marginBottom: scaleHeight(20)
                 }}>
                     <Text
                         tx='suppliers.amountOwed'
@@ -132,65 +134,25 @@ export const ModalPayReceivable: FC<propsModal> = ({ isVisible, setIsVisible, ke
 
 
                 <InputSelect
-                    titleText={translate('debtScreen.payments')}
+                    titleText={en.debtScreen.payments}
                     hintTx='debtScreen.payments'
                     arrData={myDataSelectAmount}
                     dataDefault={selectCustomerAmount.label}
                     onPressChoice={(item: any) => {
                         setSelectCustomerAmount(item)
                     }}
-
-                />
-
-                <Controller
-                    control={control}
-                    name='sender'
-                    render={({ field: { onBlur, onChange, value } }) =>
-                        <TextField
-                            labelTx={"debtScreen.seder"}
-                            value={value}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            placeholder={translate("debtScreen.enterNumberAcc")}
-                            inputStyle={{ fontWeight: '500' }}
-                            style={{ marginVertical: scaleHeight(20) }}
-                        />
-                    }
-                    rules={{
-                        required: translate("validate.enterData")
-                    }}
-
-                />
-                <Controller
-                    control={control}
-                    name='receiver'
-                    render={({ field: { onBlur, onChange, value } }) =>
-                        <TextField
-                            labelTx={"debtScreen.receiver"}
-                            value={value}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            inputStyle={{ fontWeight: '500' }}
-                            placeholder={translate("debtScreen.enterNumberAcc")}
-
-                        />
-                    }
-                    rules={{
-                        required: translate("validate.enterData")
-                    }}
-
 
                 />
 
                 <InputSelect
-                    titleText={translate("debtScreen.accountingBook")}
+                    titleText={en.debtScreen.payments}
                     hintTx='debtScreen.payments'
                     arrData={myDataSelectAmount}
                     dataDefault={selectCustomerAmount.label}
                     onPressChoice={(item: any) => {
                         setSelectCustomerAmount(item)
                     }}
-                    styleView={{ marginTop: 10 }}
+                    styleView={{ marginTop: scaleHeight(20) }}
 
                 />
                 <TouchableOpacity

@@ -13,6 +13,7 @@ import {
 
 } from "../services/api";
 import { UAA_API } from "../services/base-api/api-config-uaa";
+import { ApiDebtSales } from "../services/base-api/api_config-debt-sale";
 
 
 let ReactotronDev;
@@ -42,6 +43,7 @@ export class Environment {
     this.apiWarehouse = new ApiWarehouse();
     this.apiAccount = new ApiAccounting();
     this.apiSupplier = new ApiSupplier();
+    this.apiDebtSales = new ApiDebtSales();
     
     global.api = new Api();
     global.apiErp = new ApiErp();
@@ -51,7 +53,8 @@ export class Environment {
     global.ApiOrder = new ApiOrder();
     global.apiAccount = new ApiAccounting();
     global.apiWarehouse = new ApiWarehouse();
-    global.apiSupplier = new ApiSupplier()
+    global.apiSupplier = new ApiSupplier();
+    global.apiDebSales = new ApiDebtSales();
   }
 
   async setup() {
@@ -69,6 +72,7 @@ export class Environment {
     await this.apiWarehouse.setup();
     await this.apiAccount.setup();
     await this.apiSupplier.setup();
+    await this.apiDebtSales.setup();
 
     global.api = new Api();
     global.apiErp = new ApiErp();
@@ -80,7 +84,8 @@ export class Environment {
 
     global.apiAccount = new ApiAccounting();
     global.apiWarehouse = new ApiWarehouse();
-    global.apiSupplier = new ApiSupplier()
+    global.apiSupplier = new ApiSupplier();
+    global.apiDebtSales = new ApiDebtSales();
   }
 
   /**
@@ -101,4 +106,5 @@ export class Environment {
   apiOrder: ApiOrder;
   apiWarehouse: ApiWarehouse;
   apiSupplier: ApiSupplier;
+  apiDebtSales: ApiDebtSales;
 }
