@@ -372,6 +372,8 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
             toggleModalDate();
             // getListOrder(searchValue);
           }}
+          dateS={moment(markedDatesS).format('YYYY-MM-DD')}
+          dateE={moment(markedDatesE).format('YYYY-MM-DD')}
           onMarkedDatesChangeS={(
             markedDatesS: React.SetStateAction<string>
           ) => {

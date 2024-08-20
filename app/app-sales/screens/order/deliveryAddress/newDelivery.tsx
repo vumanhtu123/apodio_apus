@@ -29,6 +29,7 @@ import { useStores } from "../../../models";
 import { translate } from "../../../../i18n";
 import { checkPhoneNumber } from "../../../utils/validate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { GroupButtonBottom } from "../../../../components/group-button/groupButtonBottom";
 
 export const NewDelivery: FC = observer(function NewDelivery() {
   const navigation = useNavigation();
@@ -60,7 +61,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
 
   useEffect(() => {
     if (dataEdit !== undefined) {
-      console.log(dataEdit)
       setCity({ label: dataEdit.city.name, id: dataEdit.city.id })
       setDistrict({ label: dataEdit.district.name, id: dataEdit.district.id })
       setWards({ label: dataEdit.ward.name, id: dataEdit.ward.id })
@@ -76,88 +76,88 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   }, [])
 
   const getListCity = async () => {
-      const response = await orderStore.getListCity(
-        page.current,
-        size.current,
-        searchCity,
-        366,
-      );
-      if (response && response.kind === "ok") {
-        if (page.current === 0) {
-          const newArr = response.response.data.content;
-          const formatArr = newArr.map((item: any) => ({
-            label: item.name,
-            id: item.id,
-          }));
-          setDataCity(formatArr);
-        } else {
-          const newArr = response.response.data.content;
-          const formatArr = newArr.map((item: any) => ({
-            label: item.name,
-            id: item.id,
-          }));
-          const endArr = dataCity.concat(formatArr);
-          setDataCity(endArr);
-        }
+    const response = await orderStore.getListCity(
+      page.current,
+      size.current,
+      searchCity,
+      366,
+    );
+    if (response && response.kind === "ok") {
+      if (page.current === 0) {
+        const newArr = response.response.data.content;
+        const formatArr = newArr.map((item: any) => ({
+          label: item.name,
+          id: item.id,
+        }));
+        setDataCity(formatArr);
       } else {
-        console.error("Failed to fetch categories:", response);
+        const newArr = response.response.data.content;
+        const formatArr = newArr.map((item: any) => ({
+          label: item.name,
+          id: item.id,
+        }));
+        const endArr = dataCity.concat(formatArr);
+        setDataCity(endArr);
       }
+    } else {
+      console.error("Failed to fetch categories:", response);
+    }
   };
   const getListDistrict = async (value: any) => {
-      const response = await orderStore.getListDistrict(
-        page.current,
-        size.current,
-        searchDistrict,
-        value
-      );
-      if (response && response.kind === "ok") {
-        if (page.current === 0) {
-          const newArr = response.response.data.content;
-          const formatArr = newArr.map((item: any) => ({
-            label: item.name,
-            id: item.id,
-          }));
-          setDataDistrict(formatArr);
-        } else {
-          const newArr = response.response.data.content;
-          const formatArr = newArr.map((item: any) => ({
-            label: item.name,
-            id: item.id,
-          }));
-          const endArr = dataDistrict.concat(formatArr);
-          setDataDistrict(endArr);
-        }
+    const response = await orderStore.getListDistrict(
+      page.current,
+      size.current,
+      searchDistrict,
+      value
+    );
+    if (response && response.kind === "ok") {
+      if (page.current === 0) {
+        const newArr = response.response.data.content;
+        const formatArr = newArr.map((item: any) => ({
+          label: item.name,
+          id: item.id,
+        }));
+        setDataDistrict(formatArr);
       } else {
-        console.error("Failed to fetch categories:", response);
+        const newArr = response.response.data.content;
+        const formatArr = newArr.map((item: any) => ({
+          label: item.name,
+          id: item.id,
+        }));
+        const endArr = dataDistrict.concat(formatArr);
+        setDataDistrict(endArr);
       }
+    } else {
+      console.error("Failed to fetch categories:", response);
+    }
   };
   const getListWard = async (value: any) => {
-      const response = await orderStore.getListWard(
-        page.current,
-        size.current,
-        searchWards,
-        value
-      );
-      if (response && response.kind === "ok") {
-        if (page.current === 0) {
-          const newArr = response.response.data.content;
-          const formatArr = newArr.map((item: any) => ({
-            label: item.name,
-            id: item.id,
-          }));
-          setDataWards(formatArr);
-        } else {
-          const newArr = response.response.data.content;
-          const formatArr = newArr.map((item: any) => ({
-            label: item.name,
-            id: item.id,
-          }));
-          const endArr = dataWards.concat(formatArr);
-          setDataWards(endArr);
-        }
+    const response = await orderStore.getListWard(
+      page.current,
+      size.current,
+      searchWards,
+      value
+    );
+    if (response && response.kind === "ok") {
+      if (page.current === 0) {
+        const newArr = response.response.data.content;
+        const formatArr = newArr.map((item: any) => ({
+          label: item.name,
+          id: item.id,
+        }));
+        setDataWards(formatArr);
       } else {
-        console.error("Failed to fetch categories:", response);
+        const newArr = response.response.data.content;
+        const formatArr = newArr.map((item: any) => ({
+          label: item.name,
+          id: item.id,
+        }));
+        const endArr = dataWards.concat(formatArr);
+        setDataWards(endArr);
       }
+    } else {
+      console.error("Failed to fetch categories:", response);
+    }
   };
 
   const handleSelectCity = (data: any) => {
@@ -239,7 +239,6 @@ export const NewDelivery: FC = observer(function NewDelivery() {
         };
         try {
           const response = await orderStore.createAddress(dataCreate);
-          console.log(response)
 
           if (response && response.kind === "ok") {
             Toast.show({
@@ -314,11 +313,11 @@ export const NewDelivery: FC = observer(function NewDelivery() {
           style={{
             marginHorizontal: scaleWidth(16),
             marginTop: scaleHeight(10),
-            height: heightScroll - scaleHeight(64),
+            // height: heightScroll - scaleHeight(64),
           }}>
           <Controller
             control={control}
-            render={({ field: { onChange, value, onBlur }}) => (
+            render={({ field: { onChange, value, onBlur } }) => (
               <TextField
                 keyboardType="numeric"
                 labelTx={"order.phone"}
@@ -419,17 +418,14 @@ export const NewDelivery: FC = observer(function NewDelivery() {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      <View style={styles.viewGroupBtn}>
-        <TouchableOpacity
-          onPress={() => {navigation.goBack()}}
-          style={styles.viewBtnCancel}>
-          <Text tx={"common.cancel"} style={styles.textBtnCancel} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleSubmit(submitAdd)}
-          style={styles.viewBtnConfirm}>
-          <Text tx={"common.saveChange"} style={styles.textBtnConfirm} />
-        </TouchableOpacity>
+      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+        <GroupButtonBottom
+          onPressCancel={() => navigation.goBack()}
+          onPressConfirm={handleSubmit(submitAdd)}
+          txCancel={"common.cancel"}
+          txConfirm={"common.saveChange"}
+          isModal={false}
+        />
       </View>
     </View>
   );

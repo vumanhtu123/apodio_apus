@@ -7,14 +7,15 @@ import { TxKeyPath, translate } from '../../../../i18n';
 import { useStores } from '../../../models';
 import { useFocusEffect } from '@react-navigation/native';
 import { CustomModal } from '../../../../components/custom-modal';
+import { GroupButtonBottom } from '../../../../components/group-button/groupButtonBottom';
 
 interface UnitModalProps {
-  isVisible: boolean;
-  setIsVisible: () => void;
-  title?: string;
-  titleTx?: TxKeyPath;
-  onSave: (value: any) => void;
-  onSaveAndChange: (value: any) => void;
+    isVisible: boolean;
+    setIsVisible: () => void;
+    title?: string;
+    titleTx?: TxKeyPath;
+    onSave: (value: any) => void;
+    onSaveAndChange: (value: any) => void;
 }
 
 const UnitModal = (props: UnitModalProps) => {
@@ -115,38 +116,13 @@ const UnitModal = (props: UnitModalProps) => {
                     }}
                 />
             </View>
-            <View style={{
-                marginTop: scaleWidth(margin.margin_10),
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginBottom: scaleHeight(margin.margin_15)
-            }}>
-                <Button
-                    onPress={handleSubmit(saveData, onError)}
-                    tx={'productScreen.save'} style={{
-                        marginRight: scaleHeight(8),
-                        height: scaleHeight(48), backgroundColor: colors.palette.neutral100,
-                        borderWidth: 1, borderColor: colors.palette.veryLightGrey,
-                        width: (Dimensions.get('screen').width - scaleWidth(44)) * 0.48,
-                        borderRadius: 8
-                    }} textStyle={{
-                        color: colors.palette.dolphin, fontWeight: '700',
-                        fontSize: fontSize.size14, lineHeight: scaleHeight(24)
-                    }} />
-                <Button tx={'productScreen.saveAndChange'} style={{
-                    marginLeft: scaleHeight(8),
-                    height: scaleHeight(48),
-                    backgroundColor: colors.palette.navyBlue,
-                    width: (Dimensions.get('screen').width - scaleWidth(44)) * 0.48,
-                    borderRadius: 8
-                }}
-                    textStyle={{
-                        color: colors.palette.neutral100, fontWeight: '700',
-                        fontSize: fontSize.size14, lineHeight: scaleHeight(24)
-                    }}
-                    onPress={handleSubmit(saveAndChange, onError)}
-                />
-            </View>
+            <GroupButtonBottom
+                onPressCancel={handleSubmit(saveData, onError)}
+                onPressConfirm={handleSubmit(saveAndChange, onError)}
+                txCancel={'productScreen.save'}
+                txConfirm={'productScreen.saveAndChange'}
+                isModal={true}
+            />
         </CustomModal>
     );
 };

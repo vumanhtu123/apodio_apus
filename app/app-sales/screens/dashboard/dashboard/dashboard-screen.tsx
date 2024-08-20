@@ -694,13 +694,14 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
                 data={arrBanner}
                 autoplay={true}
                 ref={refCarousel}
+                vertical={false}
                 loop
                 sliderWidth={Dimensions.get("window").width - 32}
                 itemWidth={Dimensions.get("window").width - 32}
                 onSnapToItem={(index) => setactiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
+                // lockScrollWhileSnapping={true}
+                // enableMomentum={false}
+                // decelerationRate={0.5}
                 renderItem={({ item }: any) => (
                   <TouchableOpacity
                     style={{ height: 200, width: "100%", borderRadius: 4 }}

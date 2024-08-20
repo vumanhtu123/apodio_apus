@@ -29,6 +29,8 @@ import { number } from "mobx-state-tree/dist/internal";
 import { setISODay } from "date-fns/fp/setISODay";
 import { commasToDots, formatCurrency, formatVND } from "../../../../utils/validate";
 import CustomCalendar from "../../../../../components/calendar";
+import moment from "moment";
+import { convertToOffsetDateTime } from "../../../../utils/formatDate";
 
 
 export const MustPayScreen: FC<
@@ -49,55 +51,29 @@ export const MustPayScreen: FC<
   const [timeStart, setTimeStart] = useState("");
   const [timeEnd, setTimeEnd] = useState("");
   const [isReset, setIsReset] = useState<boolean>();
-  const [makeDateS, setMakeDateS] = useState<any>();
-  const [makeDateE, setMakeDateE] = useState<any>();
+  const [makeDateS, setMakeDateS] = useState<any>(null);
+  const [makeDateE, setMakeDateE] = useState<any>(null);
   const [isSortByDate, setIsSortByDate] = useState<boolean>(false);
+  // const [formatStartDateWithTime, setFormatStartDateWithTime] = useState<string | null>(null)
+  // const [formatEndDateWithTime, setFormatEndDateWithTime] = useState<string | null>(null)
 
 
   // const [totalPage, setTotalPage] = useState<number>(0)
   const [myData, setMyData] = useState<{}[]>([])
   const getAPI = useStores()
-  const fakeData: any = [
-    {
-      id: "1",
-      name: "Công ty TNHH một thành viên APODIO",
-      totalLiabilities: "2.000.000",
-      paid: "1.000.000",
-      musPay: "1.000.000",
-    },
-    {
-      id: "2",
-      name: "Công ty TNHH một thành viên APODIO",
-      totalLiabilities: "2.000.000",
-      paid: "1.000.000",
-      musPay: "1.000.000",
-    },
-    {
-      id: "3",
-      name: "Công ty TNHH một thành viên APODIO",
-      totalLiabilities: "2.000.000",
-      paid: "1.000.000",
-      musPay: "1.000.000",
-    },
-    {
-      id: "4",
-      name: "Công ty TNHH một thành viên APODIO",
-      totalLiabilities: "2.000.000",
-      paid: "1.000.000",
-      musPay: "1.000.000",
-    },
-    {
-      id: "5",
-      name: "Công ty TNHH một thành viên APODIO",
-      totalLiabilities: "2.000.000",
-      paid: "1.000.000",
-      musPay: "1.000.000",
-    },
-  ];
-  // console.log("data fake", fakeData);
+
+  console.log("ngay chon", makeDateS, makeDateE);
+
+  // Thêm thời gian vào ngày
+  const dateStart = moment(makeDateS).format('YYYY-MM-DDTHH:mm:ssZ');
+  const dateEnd = moment(makeDateE).format('YYYY-MM-DDTHH:mm:ssZ');
+
+  // Để có được định dạng yêu cầu với URL encoding (percent encoding)
+
+
+  // console.log("ngay chon 2", formatStartDateWithTime, formatEndDateWithTime);
 
   console.log("total page", totalPage.current);
-
   console.log("total element", totalElement.current);
 
   const toggleModalDate = () => {
@@ -115,24 +91,26 @@ export const MustPayScreen: FC<
 
   }
 
-  const getDataDebt = async () => {
+  const getDataDebt = async (dateStart: string | null, dateEnd: string | null) => {
+    console.log("ngay da chon doan", dateStart, dateEnd);
+    const formatDateStart = convertToOffsetDateTime(dateStart)
+    const formatDateEnd = convertToOffsetDateTime(dateEnd)
 
-    const dataTem = await getAPI.debtStore.getListMustPay(size, page, valueSearch, "EXTERNAL", true, "", "", checkStatusLoadMore.current)
+    const dataTem = await getAPI.debtStore.getListMustPay(size, page, valueSearch, "EXTERNAL", true, dateStart == null ? null : formatDateStart, dateEnd == null ? null : formatDateEnd, checkStatusLoadMore.current)
     console.log('====================================');
     console.log("data debt page", dataTem?.data?.data.content);
     console.log('====================================');
 
-    totalPage.current = Number(dataTem?.data?.data.totalPages)
-    totalElement.current = Number(dataTem?.data?.data.totalElements)
+    totalPage.current = Number(dataTem?.data?.data?.totalPages)
+    totalElement.current = Number(dataTem?.data?.data?.totalElements)
 
     // setTotalPage(Number(dataTem?.data.totalPages))
 
     if (dataTem?.data !== null) {
       console.log("doan dev 1");
 
-      if (dataTem?.data?.data.pageable.pageNumber == 0) {
-        console.log("doan dev 2");
-
+      if (page == 0) {
+        console.log("doan dev 2", dataTem.data.data.content);
         setMyData(dataTem.data.data.content)
       } else {
         console.log("doan dev 3");
@@ -146,21 +124,23 @@ export const MustPayScreen: FC<
   }
 
   useEffect(() => {
-    getDataDebt()
+    getDataDebt(makeDateS, makeDateE)
     getDebtTotal()
   }, [])
 
   useEffect(() => {
+    getDataDebt(makeDateS, makeDateE)
+    console.log("da chon ngay");
+
+  }, [makeDateS, makeDateE]);
+
+  useEffect(() => {
     setIsLoadingMore(false)
-
     console.log("leng data thay doi", myData.length);
-
-
   }, [myData.length])
 
   useEffect(() => {
-
-    getDataDebt()
+    getDataDebt(makeDateS, makeDateE)
   }, [valueSearch])
 
 
@@ -169,7 +149,7 @@ export const MustPayScreen: FC<
     setIsLoadingMore(true)
     checkStatusLoadMore.current = false
     setPage(0)
-    getDataDebt()
+    getDataDebt(null, null)
 
     setTimeout(() => {
       setRefreshing(false);
@@ -180,21 +160,15 @@ export const MustPayScreen: FC<
     checkStatusLoadMore.current = true
     setIsLoadingMore(true);
     if (page < totalPage.current) {
-      setPage(page + 1)
-      getDataDebt()
+      // setPage(page + 1)
+      getDataDebt(makeDateS, makeDateE)
       console.log('doan1');
-
-
       console.log('doan3');
 
     }
     if (myData.length == totalElement.current) {
       setIsLoadingMore(false)
     }
-
-    // setTimeout(() => {
-    //   setIsLoadingMore(false);
-    // }, 3000);
   };
   return (
     <View style={{ flex: 1 }}>
@@ -218,7 +192,7 @@ export const MustPayScreen: FC<
           setValueSearch(value.nativeEvent.text)
           setPage(0)
           setMyData([])
-          getDataDebt()
+          getDataDebt(makeDateS, makeDateE)
         }}
 
       />
@@ -300,12 +274,11 @@ export const MustPayScreen: FC<
         isReset={() => {
           setIsReset(!isReset);
         }}
+
         handleShort={() => {
           setMakeDateE(timeEnd);
           setMakeDateS(timeStart);
           toggleModalDate();
-          console.log("asdaadad");
-
         }}
         onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
           console.log("markedDatesS------", markedDatesS);

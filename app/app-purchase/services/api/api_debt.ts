@@ -46,8 +46,8 @@ export class DebtAPi {
         search: string,
         type: string,
         debtAmountDesc: boolean,
-        start: string,
-        end: string,
+        start: string | null,
+        end: string | null,
         isLoadMore: boolean
 
     ) : Promise<any>{

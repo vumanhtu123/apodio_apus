@@ -1079,7 +1079,7 @@ export const ProductEditScreen: FC = (item) => {
             isUsing={productUsing === true || priceUsing === true ? true : false}
             uomId={uomId}
             valueSwitchUnit={valueSwitchUnit}
-            productName={methods.getValues('productName')}
+            productName={methods.watch('productName')}
             setDataCreateProduct={(arr: any) => setDataCreateProduct(arr)}
             setDataGroupAttribute={(arr: any) => setDataGroupAttribute(arr)}
             setVariantInConfig={(a) => setVariantInConfig(a)}

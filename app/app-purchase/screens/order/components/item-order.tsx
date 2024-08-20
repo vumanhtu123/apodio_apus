@@ -121,7 +121,7 @@ export default function ItemOrder(props: ItemOrder) {
       </View>
       <View style={{ flexDirection: "row" }}>
         <View style={{ flex: 1 }}>
-          <Text style={TEXTCONTENT} tx={"dashboard.promotions"} />
+          <Text style={TEXTCONTENT} tx={"order.promotions"} />
         </View>
         <Text style={TEXTMONEY} text={formatVND(formatCurrency(commasToDots(discount)))} />
       </View>

@@ -41,8 +41,8 @@ export const DebtStoreModal = types
         search: string,
         type: string,
         debtAmountDesc: boolean,
-        start: string,
-        end: string,
+        start: string | null,
+        end: string | null,
         isLoadMore: boolean
     ){
         try {

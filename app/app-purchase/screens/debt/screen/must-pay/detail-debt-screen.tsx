@@ -444,6 +444,7 @@ export const DetailDebtScreen: FC<
         isReset={() => {
           setIsReset(!isReset);
         }}
+
         handleShort={() => {
           setMakeDateE(timeEnd);
           setMakeDateS(timeStart);

@@ -42,8 +42,7 @@ import {
   ItemUnit,
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
-import en from "../../../../i18n/en";
-import { values } from "mobx";
+import { GroupButtonBottom } from "../../../../components/group-button/groupButtonBottom";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -906,7 +905,7 @@ export const ProductCreateScreen: FC = (item) => {
             uomId={uomId}
             isUsing={false}
             valueSwitchUnit={valueSwitchUnit}
-            productName={methods.getValues('productName')}
+            productName={methods.watch('productName')}
             setDataCreateProduct={(arr: any) => setDataCreateProduct(arr)}
             setDataGroupAttribute={(arr: any) => setDataGroupAttribute(arr)}
             setVariantInConfig={(a) => setVariantInConfig(a)}
@@ -1063,25 +1062,15 @@ export const ProductCreateScreen: FC = (item) => {
             getListUnitGroup(false);
           }}
         />
-        <View style={styles.viewGroupBtn}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={styles.viewBtnCancel}
-          >
-            <Text tx={"common.cancel"} style={styles.textBtnCancel} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={methods.handleSubmit(submitAdd)}
-            style={styles.viewBtnConfirm}
-          >
-            <Text
-              tx={"createProductScreen.done"}
-              style={styles.textBtnConfirm}
-            />
-          </TouchableOpacity>
-        </View>
+        <GroupButtonBottom
+          txCancel={"common.cancel"}
+          txConfirm={"createProductScreen.done"}
+          onPressCancel={() => {
+            navigation.goBack();
+          }}
+          onPressConfirm={methods.handleSubmit(submitAdd)}
+          isModal={false}
+        />
       </View>
     </FormProvider>
   );
