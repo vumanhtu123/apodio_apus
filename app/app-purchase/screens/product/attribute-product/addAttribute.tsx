@@ -25,8 +25,8 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
   const navigation = useNavigation();
   const paddingTop = useSafeAreaInsets().top;
   const route = useRoute();
-  const idNewAttribute = route?.params as {data: any};
-  const editScreen = route?.params as {editScreen: any};
+  const idNewAttribute = route?.params as { data: any };
+  const editScreen = route?.params as { editScreen: any };
   const [attributeData, setAttributeData] = useState<{}[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<{}[]>([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -41,31 +41,32 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
   const page = useRef(0);
   const methods = useForm({ defaultValues: { valueSwitch: true } })
 
-  const getListAttribute = async () => {
+  const getListAttribute = async (searchValue?: any) => {
     const response = await attributeStore.getListAttribute(
       page.current,
       50,
-      true
+      true,
+      searchValue
     );
     if (response && response.kind === "ok") {
-      if (page.current === 0) {
-        const newArr = response.response.data.content;
-        const formatArr = newArr.map((item: any) => ({
-          text: item.name,
-          value: item.id,
-        }));
-        page.current += 1;
-        setAttributeData(formatArr);
-      } else {
-        const newArr = response.response.data.content;
-        const formatArr = newArr.map((item: any) => ({
-          text: item.name,
-          value: item.id,
-        }));
-        const endArr = attributeData.concat(formatArr);
-        setAttributeData(endArr);
-        page.current += 1;
-      }
+      // if (page.current === 0) {
+      const newArr = response.response.data.content;
+      const formatArr = newArr.map((item: any) => ({
+        text: item.name,
+        value: item.id,
+      }));
+      // page.current += 1;
+      setAttributeData(formatArr);
+      // } else {
+      //   const newArr = response.response.data.content;
+      //   const formatArr = newArr.map((item: any) => ({
+      //     text: item.name,
+      //     value: item.id,
+      //   }));
+      //   const endArr = attributeData.concat(formatArr);
+      //   setAttributeData(endArr);
+      //   page.current += 1;
+      // }
     } else {
       console.error("Failed to fetch categories:", response);
     }
@@ -184,7 +185,9 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
     setFilteredData(newArray);
     setArrSelect(a);
   };
-
+  const searchAttribute = (searchValue: any) => {
+    getListAttribute(searchValue)
+  }
   const handleItemSelect = useCallback((item: any) => {
     var indexArr = arrSelect.findIndex(
       (selectedItem: { value: any; id: any }) =>
@@ -370,7 +373,13 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
     setSelectedItems(a.concat(arrSelect));
     setArrSelect([]);
   }, [selectedItems, arrSelect])
-
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const refreshAttribute = async () => {
+    setIsRefreshing(true)
+    setAttributeData([])
+    await getListAttribute()
+    setIsRefreshing(false)
+  }
   return (
     <FormProvider {...methods}>
       <View style={styles.ROOT}>
@@ -392,9 +401,14 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
             onPressChoice={handleSelect}
             titleTx="addAttribute.title"
             hintTx="addAttribute.hint"
+            handleOnSubmitSearch={searchAttribute}
             newData={idNewAttribute?.data}
             dataEdit={dataEditDropdown}
-            loadMore={() => getListAttribute()}
+            isSearch
+            onRefresh={refreshAttribute}
+            isRefreshing={isRefreshing}
+            setIsRefreshing={setIsRefreshing}
+          // loadMore={() => getListAttribute()}
           />
           <ItemAttribute
             arrSelect={arrSelect}

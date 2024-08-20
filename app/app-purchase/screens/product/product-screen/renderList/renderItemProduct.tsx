@@ -1,12 +1,11 @@
 import React from "react";
-import { TouchableOpacity, View, ImageBackground } from "react-native";
+import { ImageBackground, TouchableOpacity, View } from "react-native";
 import FastImage from "react-native-fast-image";
-import { Svgs } from "../../../../../../assets/svgs";
-import { colors, scaleHeight, scaleWidth } from "../../../../theme";
-import { styles, stylesItem } from "../../styles";
-import { Text } from "../../../../../components";
-import { MotiView } from "moti";
 import Images from "../../../../../../assets/index";
+import { Svgs } from "../../../../../../assets/svgs";
+import { Text } from "../../../../../components";
+import { colors, scaleHeight, scaleWidth } from "../../../../theme";
+import { stylesItem } from "../../styles";
 
 const RenderProductItem = ({
   item,
@@ -15,21 +14,22 @@ const RenderProductItem = ({
   viewProduct,
   handleProductDetail,
   handleClassifyDetail,
+  isRenderList
 }: any) => {
   if (isGridView) {
     return (
-      // <MotiView
-      //   from={{ opacity: 0, translateY: 50 }}
-      //   animate={{ opacity: 1, translateY: 0 }}
-      //   transition={{ delay: 1000 + index * 200 }}>
+      // <View>
+      //   {isRenderList ? (
+      //     <PlaceholderListGrid />
+      //   ) : (
       <TouchableOpacity
         key={index}
         onPress={() => {
           viewProduct === "VIEW_PRODUCT"
             ? handleProductDetail(item.id, item.hasVariant)
             : !item.hasVariant && viewProduct !== "VIEW_PRODUCT"
-            ? handleProductDetail(item.productTemplateId, item.hasVariant)
-            : handleClassifyDetail(item.id, item.hasVariant);
+              ? handleProductDetail(item.productTemplateId, item.hasVariant)
+              : handleClassifyDetail(item.id, item.hasVariant);
 
           // console.log('cxzzc', item.productTemplateId)
         }}
@@ -112,7 +112,8 @@ const RenderProductItem = ({
           </View>
         </View>
       </TouchableOpacity>
-      // </MotiView>
+      //   )}
+      // </View>
     );
   } else {
     return (

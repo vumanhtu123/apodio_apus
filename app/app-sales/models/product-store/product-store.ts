@@ -128,9 +128,9 @@ export const ProductStoreModel = types
         return result;
       }
     }),
-    getListBrand: flow(function* () {
+    getListBrand: flow(function* (search : any) {
       const product = new ProductApi(self.environment.api);
-      const result = yield product.getListBrandProduct();
+      const result = yield product.getListBrandProduct(search);
       if (result.kind === "ok") {
         return result;
       } else {

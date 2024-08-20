@@ -1,4 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -7,16 +9,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
-import { styles } from "./styles";
 import LinearGradient from "react-native-linear-gradient";
-import { AutoImage, Button, Header, Screen, Text } from "../../../components";
 import { Svgs } from "../../../../assets/svgs";
-import { NavigatorParamList } from "../../navigators";
-import { StackScreenProps } from "@react-navigation/stack";
-import { observer } from "mobx-react-lite";
+import { AutoImage, Header, Text } from "../../../components";
 import { translate } from "../../../i18n";
 import { useStores } from "../../models";
+import { NavigatorParamList } from "../../navigators";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
+import { styles } from "./styles";
 
 export const ProductVendorScreen: FC<
   StackScreenProps<NavigatorParamList, "vendorScreen">
@@ -209,8 +209,8 @@ export const ProductVendorScreen: FC<
       <View style={styles.ROOT}>
         <View
           style={{
-            marginHorizontal: 16,
-            marginVertical: 16,
+            marginHorizontal: scaleWidth(16),
+            marginVertical: scaleHeight(16),
             flexDirection: "row",
             justifyContent: "space-between",
           }}>
@@ -219,7 +219,7 @@ export const ProductVendorScreen: FC<
             style={{
               fontSize: fontSize.size10,
               fontWeight: "500",
-              marginVertical: 10,
+              marginVertical: scaleHeight(10),
             }}></Text>
           <TouchableOpacity onPress={handleAllProduct}>
             <Text
@@ -232,7 +232,7 @@ export const ProductVendorScreen: FC<
               }}></Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, marginHorizontal: 16 }}>
+        <View style={{ flex: 1, marginHorizontal: scaleWidth(16) }}>
           <FlatList
             keyExtractor={(item, index) => index.toString()}
             data={getList}
@@ -248,7 +248,6 @@ export const ProductVendorScreen: FC<
             onEndReachedThreshold={0.8}
             ListFooterComponent={renderFooter}
             numColumns={2}
-            // columnWrapperStyle={isGridView ? null : null}
             renderItem={renderProductItem}
           />
         </View>

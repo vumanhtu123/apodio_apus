@@ -36,6 +36,7 @@ import { translate } from "../../../../../i18n/translate";
 import { useStores } from "../../../../models";
 import { styles } from "./styles";
 import en from "../../../../../i18n/en";
+import { PlaceholderProduct } from "../../../../../components/custom-placeholder/placeholder-detail/placeholder-product";
 type RouteParams = {
   reload?: boolean;
   screen?: any
@@ -67,6 +68,8 @@ export const ProductDetailScreen: FC = () => {
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dialogDeleteProduct, setDialogDeleteProduct] = useState(false);
   const [attributes, setAttributes] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const handleGetDetailProduct = async () => {
     try {
       const response = await productStore.getDetailProduct(productId);
@@ -90,6 +93,8 @@ export const ProductDetailScreen: FC = () => {
       }
     } catch (error) {
       console.error("Error fetching detail:", error);
+    } finally {
+      setIsLoading(false)
     }
   };
   useEffect(() => {
@@ -293,173 +298,179 @@ export const ProductDetailScreen: FC = () => {
         {/* <Screen style={{ flex: 1, marginBottom: scaleHeight(64) }} preset="fixed" > */}
         <ScrollView
           style={{
-            marginVertical: scaleHeight(margin.margin_12),
+            marginVertical: isLoading ? null : scaleHeight(margin.margin_12),
           }}
           showsVerticalScrollIndicator={false}>
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: scaleWidth(margin.margin_16),
-            }}>
-            <Text
-              tx="productScreen.infoAll"
-              style={{
-                fontSize: fontSize.size14,
-                fontWeight: "500",
-                flex: 1,
-              }}></Text>
-          </View>
-          <ProductImageGallery
-            arrImagesProduct={arrImagesProduct}
-            setModalImages={setModalImages}
-            setActiveSlide={setActiveSlide}
-          />
-          <ProductClassificationDetail
-            arrClassification={arrClassification}
-            changeClassification={changeClassification}
-            setChangeClassification={setChangeClassification}
-            setDetailsClassification={setDetailsClassification}
-          />
-          {detailsClassification.imageUrls?.length !== 0 ? (
-            <ScrollView
-              style={{
-                marginVertical: scaleHeight(margin.margin_12),
-                marginHorizontal: scaleWidth(margin.margin_16),
-              }}
-              horizontal
-              showsHorizontalScrollIndicator={false}>
-              {detailsClassification.imageUrls?.map((item: any, index: any) => {
-                return (
-                  <View key={index}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setModalImages1(true);
-                        setActiveSlide(index);
-                      }}>
-                      <AutoImage
-                        style={styles.viewImage}
-                        source={{
-                          uri: item,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                );
-              })}
-            </ScrollView>
-          ) : null}
-          <ProductDetailsSection
-            dataClassification={dataClassification}
-            detailsClassification={detailsClassification}
-            arrClassification={arrClassification}
-          />
-          {dataClassification?.description !== "" &&
-            dataClassification?.description !== null ? (
-            <View>
-              <View style={styles.viewLine} />
-              <View style={styles.viewDescribe}>
-                <Text tx={"productScreen.describe"} style={styles.textTitle} />
-                <Text
-                  text={dataClassification.description}
-                  style={[
-                    styles.textDolphin12,
-                    {
-                      color: colors.palette.nero,
-                    },
-                  ]}
-                />
-              </View>
-            </View>
-          ) : null}
-          <ProductWeightDetails
-            dataClassification={dataClassification}
-            detailProduct={detailProduct}
-            arrClassification={arrClassification}
-            detailsClassification={detailsClassification}
-          />
-          <ProductAttributeDetails
-            attributeDetailsClassification={attributeDetailsClassification}
-            attributes={attributes}
-            showDetails={showDetails}
-            toggleDetails={toggleDetails}
-          />
-
-          {arrNCC?.length > 0 ? (
-            <View>
-              <View style={styles.viewLine} />
+          {isLoading ? (
+            <PlaceholderProduct />
+          ) : (
+            <>
               <View
                 style={{
-                  paddingVertical: scaleHeight(20),
-                  paddingHorizontal: scaleWidth(16),
+                  flexDirection: "row",
+                  marginHorizontal: scaleWidth(margin.margin_16),
                 }}>
-                <Text tx="detailScreen.supplier" style={styles.textTitle} />
-                <View
+                <Text
+                  tx="productScreen.infoAll"
                   style={{
-                    flexDirection: "row",
-                    marginBottom:
-                      showNCC === true ? scaleHeight(margin.margin_10) : 0,
-                  }}>
-                  <Text
-                    style={[
-                      styles.textDolphin12,
-                      {
-                        flex: 1,
-                      },
-                    ]}>
-                    {arrNCC?.length + translate("productScreen.supplier")}
-                  </Text>
-                  {showNCC === true ? (
-                    <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>
-                      <Svgs.icon_caretUp />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>
-                      <Svgs.icon_caretRightDown />
-                    </TouchableOpacity>
-                  )}
-                </View>
-                {showNCC === true
-                  ? arrNCC?.map((item: any) => {
+                    fontSize: fontSize.size14,
+                    fontWeight: "500",
+                    flex: 1,
+                  }}></Text>
+              </View>
+              <ProductImageGallery
+                arrImagesProduct={arrImagesProduct}
+                setModalImages={setModalImages}
+                setActiveSlide={setActiveSlide}
+              />
+              <ProductClassificationDetail
+                arrClassification={arrClassification}
+                changeClassification={changeClassification}
+                setChangeClassification={setChangeClassification}
+                setDetailsClassification={setDetailsClassification}
+              />
+              {detailsClassification.imageUrls?.length !== 0 ? (
+                <ScrollView
+                  style={{
+                    marginVertical: scaleHeight(margin.margin_12),
+                    marginHorizontal: scaleWidth(margin.margin_16),
+                  }}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}>
+                  {detailsClassification.imageUrls?.map((item: any, index: any) => {
                     return (
-                      <View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            paddingVertical: scaleHeight(padding.padding_8),
+                      <View key={index}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setModalImages1(true);
+                            setActiveSlide(index);
                           }}>
-                          <AutoHeightImage
-                            source={{ uri: item?.avatarUrl }}
-                            width={scaleHeight(40)}
-                            height={scaleHeight(40)}
-                            style={{ borderRadius: 40 }}
-                            fallbackSource={Svgs.imageError}
+                          <AutoImage
+                            style={styles.viewImage}
+                            source={{
+                              uri: item,
+                            }}
                           />
-                          <View
-                            style={{
-                              marginLeft: scaleWidth(6),
-                              justifyContent: "center",
-                            }}>
-                            <Text style={styles.textNameNCC}>
-                              {item?.vendorCode + "- " + item?.vendorName}
-                            </Text>
-                            <Text style={styles.textNameClassification}>
-                              {item?.phoneNumber}
-                            </Text>
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            height: scaleHeight(1),
-                            backgroundColor: colors.palette.ghostWhite,
-                          }}
-                        />
+                        </TouchableOpacity>
                       </View>
                     );
-                  })
-                  : null}
-              </View>
-            </View>
-          ) : null}
+                  })}
+                </ScrollView>
+              ) : null}
+              <ProductDetailsSection
+                dataClassification={dataClassification}
+                detailsClassification={detailsClassification}
+                arrClassification={arrClassification}
+              />
+              {dataClassification?.description !== "" &&
+                dataClassification?.description !== null ? (
+                <View>
+                  <View style={styles.viewLine} />
+                  <View style={styles.viewDescribe}>
+                    <Text tx={"productScreen.describe"} style={styles.textTitle} />
+                    <Text
+                      text={dataClassification.description}
+                      style={[
+                        styles.textDolphin12,
+                        {
+                          color: colors.palette.nero,
+                        },
+                      ]}
+                    />
+                  </View>
+                </View>
+              ) : null}
+              <ProductWeightDetails
+                dataClassification={dataClassification}
+                detailProduct={detailProduct}
+                arrClassification={arrClassification}
+                detailsClassification={detailsClassification}
+              />
+              <ProductAttributeDetails
+                attributeDetailsClassification={attributeDetailsClassification}
+                attributes={attributes}
+                showDetails={showDetails}
+                toggleDetails={toggleDetails}
+              />
+
+              {arrNCC?.length > 0 ? (
+                <View>
+                  <View style={styles.viewLine} />
+                  <View
+                    style={{
+                      paddingVertical: scaleHeight(20),
+                      paddingHorizontal: scaleWidth(16),
+                    }}>
+                    <Text tx="detailScreen.supplier" style={styles.textTitle} />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginBottom:
+                          showNCC === true ? scaleHeight(margin.margin_10) : 0,
+                      }}>
+                      <Text
+                        style={[
+                          styles.textDolphin12,
+                          {
+                            flex: 1,
+                          },
+                        ]}>
+                        {arrNCC?.length + translate("productScreen.supplier")}
+                      </Text>
+                      {showNCC === true ? (
+                        <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>
+                          <Svgs.icon_caretUp />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity onPress={() => setShowNCC(!showNCC)}>
+                          <Svgs.icon_caretRightDown />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                    {showNCC === true
+                      ? arrNCC?.map((item: any) => {
+                        return (
+                          <View>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                paddingVertical: scaleHeight(padding.padding_8),
+                              }}>
+                              <AutoHeightImage
+                                source={{ uri: item?.avatarUrl }}
+                                width={scaleHeight(40)}
+                                height={scaleHeight(40)}
+                                style={{ borderRadius: 40 }}
+                                fallbackSource={Svgs.imageError}
+                              />
+                              <View
+                                style={{
+                                  marginLeft: scaleWidth(6),
+                                  justifyContent: "center",
+                                }}>
+                                <Text style={styles.textNameNCC}>
+                                  {item?.vendorCode + "- " + item?.vendorName}
+                                </Text>
+                                <Text style={styles.textNameClassification}>
+                                  {item?.phoneNumber}
+                                </Text>
+                              </View>
+                            </View>
+                            <View
+                              style={{
+                                height: scaleHeight(1),
+                                backgroundColor: colors.palette.ghostWhite,
+                              }}
+                            />
+                          </View>
+                        );
+                      })
+                      : null}
+                  </View>
+                </View>
+              ) : null}
+            </>
+          )}
         </ScrollView>
         {/* </Screen> */}
       </SafeAreaView>
@@ -592,6 +603,6 @@ export const ProductDetailScreen: FC = () => {
           ) : null}
         </View>
       </Modal>
-    </View>
+    </View >
   );
 };

@@ -9,39 +9,39 @@ import { DetailUnitGroupResult } from "./deatl-unit-group-model"
 
 
 export const UnitStoreModel = types
-  .model("UnitStore")
-  .props({
-  })
-  .extend(withEnvironment)
-  .actions((self) => ({
-    getDetailUnitGroup: flow(function* (id: number) {
-        const unitApi = new UnitApi(self.environment.api)
-        const result: DetailUnitGroupResult = yield unitApi.getDetailUnitGroup(id)
-        return result
-    }),
-    getListUnit: flow(function* () {
-        const unitApi = new UnitApi(self.environment.api)
-        const result: UnitResult = yield unitApi.getListUnit()
-        return result
-    }),
-    getListUnitGroup: flow(function* () {
-        const unitApi = new UnitApi(self.environment.api)
-        const result: UnitGroupResult = yield unitApi.getListUnitGroup()
-        return result
-    }),
-    createUnitName: flow(function* (name: string) {
-        const unitApi = new UnitApi(self.environment.api)
-        const result: CreateUnitResult = yield unitApi.createUnitName(name)
-        return result
-    }),
-    createUnitGroupLine: flow(function* (params: any ) {
-        const unitApi = new UnitApi(self.environment.api)
-        const result: CreateUnitGroupLineResult = yield unitApi.createUnitGroupLine(params)
-        return result
-    }),
-  }))
+    .model("UnitStore")
+    .props({
+    })
+    .extend(withEnvironment)
+    .actions((self) => ({
+        getDetailUnitGroup: flow(function* (id: number) {
+            const unitApi = new UnitApi(self.environment.api)
+            const result: DetailUnitGroupResult = yield unitApi.getDetailUnitGroup(id)
+            return result
+        }),
+        getListUnit: flow(function* (search: any) {
+            const unitApi = new UnitApi(self.environment.api)
+            const result: UnitResult = yield unitApi.getListUnit(search)
+            return result
+        }),  
+        getListUnitGroup: flow(function* (search: any) {
+            const unitApi = new UnitApi(self.environment.api)
+            const result: UnitGroupResult = yield unitApi.getListUnitGroup(search)
+            return result
+        }),
+        createUnitName: flow(function* (name: string) {
+            const unitApi = new UnitApi(self.environment.api)
+            const result: CreateUnitResult = yield unitApi.createUnitName(name)
+            return result
+        }),
+        createUnitGroupLine: flow(function* (params: any) {
+            const unitApi = new UnitApi(self.environment.api)
+            const result: CreateUnitGroupLineResult = yield unitApi.createUnitGroupLine(params)
+            return result
+        }),
+    }))
 
-export interface UnitStore extends Instance<typeof UnitStoreModel> {}
-export interface UnitStoreSnapshotOut extends SnapshotOut<typeof UnitStoreModel> {}
-export interface UnitStoreSnapshotIn extends SnapshotIn<typeof UnitStoreModel> {}
+export interface UnitStore extends Instance<typeof UnitStoreModel> { }
+export interface UnitStoreSnapshotOut extends SnapshotOut<typeof UnitStoreModel> { }
+export interface UnitStoreSnapshotIn extends SnapshotIn<typeof UnitStoreModel> { }
 export const createUnitStoreDefaultModel = () => types.optional(UnitStoreModel, {})
