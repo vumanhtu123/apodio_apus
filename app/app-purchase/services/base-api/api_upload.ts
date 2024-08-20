@@ -95,7 +95,7 @@ export class ApiUpload {
 
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
-            "Accept-Language": "en",
+            "Accept-Language": "vi",
             "Content-Type": "multipart/form-data",
             "X-TenantId": tenantId,
           };
@@ -103,7 +103,7 @@ export class ApiUpload {
           const tenantId = await getTenantId();
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
-            "Accept-Language": "en",
+            "Accept-Language": "vi",
             "X-TenantId": tenantId,
           };
         }

@@ -1,16 +1,14 @@
 import { pagination } from '../../introduction/introduction-screen';
-import { colors } from '../../../../theme/colors';
+import { colors, palette } from '../../../../theme/colors';
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/sort-styles */
-import { Dimensions, StyleSheet } from "react-native"
+import { Dimensions, Platform, StyleSheet } from "react-native"
 import { fontSize, scaleHeight, scaleWidth } from "../../../../theme"
 
 export const styles = StyleSheet.create({
   ROOT: {
     flex:1,
-    alignItems:'center',
-    
-    
+    alignItems:'center',  
   },
   imgTopHeader: {
     width:"100%", 
@@ -25,26 +23,19 @@ export const styles = StyleSheet.create({
   horView: {
     height: scaleHeight(140),
     backgroundColor: colors.white,
-    // marginHorizontal: scaleWidth(16),
     borderRadius: 14,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    // paddingHorizontal: 33,
     paddingTop: scaleHeight(20),
     position:'absolute',
-    marginTop:50,
-    marginBottom:300,
-    width:scaleWidth(343),
-    // marginHorizontal:20,
+    marginTop: Platform.OS === 'android' ? scaleHeight(45) : scaleHeight(100),
+    width: '90%',
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
     shadowRadius: 2,
-    // elevation: 10, // Đối với Android
-    // marginLeft:15,
-    // marginRight:15
-    
   },
+
   horViewMenu:{
     alignItems: 'center',
     justifyContent: 'center',
@@ -203,8 +194,8 @@ export const styles = StyleSheet.create({
   body: {
     backgroundColor: 'white',
     borderRadius: 8,
-    marginHorizontal: 16,
-    marginTop: '14%',
+    marginHorizontal: scaleHeight(18),
+    marginTop: '20%',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0,
     shadowRadius: 8,
@@ -326,7 +317,7 @@ export const styles = StyleSheet.create({
   },
   version: {
     alignSelf: 'center',
-    color:colors.aluminium,
+    color:palette.neutral700,
     marginVertical: 20,
     marginBottom:36
   },

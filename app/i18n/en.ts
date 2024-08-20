@@ -62,7 +62,7 @@ const en = {
   txtDialog: {
     txt_title_dialog: "Thông báo",
     content_exit_dialog: "Bạn có chắc chắn muốn thoát?",
-    settings: "Settings",
+    settings: "Cài đặt",
     delete_variant: "Bạn có muốn xóa biến thể này?",
     permission_allow: "Permission allow",
     allow_permission_in_setting: "Allow permission in setting",
@@ -913,7 +913,8 @@ const en = {
       "Tạo ra các phiên bản khác nhau của sản phẩm như màu sắc, kích thước, size.. bằng các thêm các thuộc tính tương ứng",
     addProperties: "Thêm thuộc tính",
     information: "Thêm thông tin",
-    canBuy: "Có thể bán",
+    canBuy: "Có thể mua",
+    canSale: "Có thể bán",
     edit_product: "Sửa sản phẩm",
     cancel: "Hủy",
     done: "Hoàn tất",

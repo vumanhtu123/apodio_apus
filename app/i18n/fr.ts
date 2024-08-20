@@ -773,7 +773,7 @@ const fr = {
     unit: "Đơn vị tính gốc",
     properties: "Thuộc tính chung",
     detailProperty: "Xem chi tiết thuộc tính",
-    orders: "Đơn hàng",
+    orders: "Order",
     weight: "Trọng lượng",
     volume: "Thể tích",
     codeProduct: "Mã biến thể sản phẩm ",

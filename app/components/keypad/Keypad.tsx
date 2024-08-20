@@ -16,9 +16,7 @@ import {
   _textStyle,
 } from "./Keypad.style";
 import { BACKSPACE_KEYPAD } from "./ModernKeyboard";
-import Images fro../../../assets/index";
-import { colors } from "../../app-purchase/theme";
-import Images fro../../../assets/index";
+import { colors } from "../theme";
 
 type CustomTextStyleProp = StyleProp<TextStyle> | Array<StyleProp<TextStyle>>;
 type CustomImageStyleProp =

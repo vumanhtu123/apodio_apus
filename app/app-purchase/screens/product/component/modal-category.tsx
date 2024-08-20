@@ -47,7 +47,6 @@ const CategoryModalFilter = ({
       }).catch((error: any) => {
         setShowLoading(false);
       });
-    // }
   };
   const refreshCategoryFilter = async () => {
     setIsRefreshingCategory(true);
@@ -118,10 +117,33 @@ const CategoryModalFilter = ({
     // <Modal
     <CustomModal
       isVisible={showCategory}
-      setIsVisible={setShowCategory}
+      setIsVisible={() => setShowCategory(false)}
       isHideKeyBoards={showCategory}
       isVisibleLoading={showLoading}
     >
+      <View>
+        <Text style={{
+          textAlign: 'center',
+          width: scaleWidth(68),
+          height: scaleHeight(5),
+          backgroundColor: colors.veryLightGrey1,
+          borderRadius: 8,
+          alignSelf: 'center',
+        }} />
+        <Text
+          tx={'detailScreen.category'}
+          style={{
+            fontSize: fontSize.size14,
+            fontWeight: '700',
+            color: 'black',
+            marginLeft: scaleWidth(9)
+          }}></Text>
+        <View style={{
+          height: 1,
+          backgroundColor: colors.solitude2,
+          marginTop: scaleHeight(14),
+        }} />
+      </View>
       <View
         style={{
           borderColor: colors.palette.veryLightGrey,

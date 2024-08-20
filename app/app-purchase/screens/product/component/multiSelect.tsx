@@ -7,6 +7,7 @@ import {
   ViewStyle,
   TextInput,
   Dimensions,
+  RefreshControl,
 } from "react-native";
 import {
   colors,
@@ -21,6 +22,8 @@ import { TxKeyPath, translate } from "../../../../i18n";
 import { Svgs } from "../../../../../assets/svgs";
 import Modal from "react-native-modal";
 import { Button } from "../../../../components";
+import { Controller, useForm } from "react-hook-form";
+import { CustomModal } from "../../../../components/custom-modal";
 
 export interface InputSelectProps {
   titleText?: string;
@@ -32,14 +35,19 @@ export interface InputSelectProps {
   styleView?: ViewStyle;
 
   arrData: {}[];
-  onPressChoice?({}): void;
-  onRemove?({}): void;
+  onPressChoice?({ }): void;
+  onRemove?({ }): void;
   loadMore?(): void;
   dataDefault?: string;
   multiple?: any;
   newData?: {};
   dataEdit?: {}[];
   disable?: boolean;
+  isSearch?: boolean;
+  onRefresh?: any
+  isRefreshing?: any;
+  setIsRefreshing?: any;
+  handleOnSubmitSearch?: any
 }
 const ROOT: ViewStyle = {
   borderRadius: 8,
@@ -63,25 +71,28 @@ const DropdownModal = (props: InputSelectProps) => {
     dataEdit,
     newData,
     disable,
+    isSearch,
+    onRefresh,
+    isRefreshing,
+    setIsRefreshing,
+    handleOnSubmitSearch
   } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItems, setSelectedItems] = useState<any>([]);
   const [selectedItem, setSelectedItem] = useState<any>([]);
   const title = titleText || (titleTx && translate(titleTx)) || "";
   const hint = hintText || (hintTx && translate(hintTx)) || "";
+  const { control, reset, formState: { errors }, clearErrors, watch } = useForm();
+  const searchValue = watch('searchData');
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
-  const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState<{}[]>([]);
-
+  const [showLoading, setShowLoading] = useState(false);
   useEffect(() => {
     setFilteredData(arrData);
-    console.log("bugssss", arrData);
   }, [arrData]);
-
   useEffect(() => {
-    console.log("--------newData222222--------", newData);
     if (newData !== undefined) {
       const arr = [newData]?.concat(selectedItems);
       setSelectedItems(arr);
@@ -99,14 +110,12 @@ const DropdownModal = (props: InputSelectProps) => {
       setSelectedItem(dataEdit);
     }
   }, [dataEdit]);
-
   const handleSearch = (text: any) => {
-    setSearch(text);
     if (text) {
       const newData = arrData.filter((item: any) => {
-        const itemData = item.label.toUpperCase();
+        const itemData = item?.text?.toUpperCase();
         const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+        return itemData?.indexOf(textData) > -1;
       });
       setFilteredData(newData);
     } else {
@@ -128,20 +137,29 @@ const DropdownModal = (props: InputSelectProps) => {
     }
     // onPressChoice(selectedItems);
   };
+  const refreshItem = async () => {
+    setIsRefreshing(true)
+    setFilteredData([])
+    reset({ searchData: '' });
+    await onRefresh()
+      .then((result: any) => {
+        setShowLoading(false);
+      }).catch((error: any) => {
+        setShowLoading(false);
+      });
+    setIsRefreshing(false)
+  }
   const onConfirm = () => {
     setSelectedItems(selectedItem);
     onPressChoice(selectedItem);
     toggleModal();
   };
-
-  // console.log("--------newData--------", newData);
-
   const renderItem = ({ item }: any) => {
     const isSelected = selectedItem.some(
       (selectedItem: { value: any }) => selectedItem.value === item.value
     );
     return (
-      <View>
+      <View style={{}}>
         <View style={{ height: scaleHeight(1), backgroundColor: colors.solitude2 }} />
         <TouchableOpacity
           style={styles.item}
@@ -163,6 +181,17 @@ const DropdownModal = (props: InputSelectProps) => {
     onPressChoice(updatedSelectedItems);
     setSelectedItem(updatedSelectedItems);
   };
+  const onSubmitSearch = async () => {
+    setShowLoading(true);
+    setFilteredData([]);
+    try {
+      await handleOnSubmitSearch(searchValue);
+    } catch (error) {
+      setShowLoading(false);
+    } finally {
+      setShowLoading(false);
+    }
+  }
   return (
     <View style={[ROOT, styleView]}>
       <TouchableOpacity
@@ -208,37 +237,89 @@ const DropdownModal = (props: InputSelectProps) => {
           </View>
         )}
       </TouchableOpacity>
-      <Modal
+      <CustomModal
         isVisible={modalVisible}
-        onBackdropPress={toggleModal}
-        style={{ margin: 0 }}>
-        <View style={styles.modalContainer}>
-          <Text text={title} style={styles.textTitleModal} />
-          <FlatList
-            data={filteredData}
-            renderItem={renderItem}
-            keyExtractor={(item: any) => item.value}
-            onEndReached={loadMore}
-            // keyExtractor={(item) => item.toString()}
-          />
-          <View style={styles.viewModalButton}>
-            <Button
-              onPress={() => {
-                toggleModal();
-              }}
-              tx={"productScreen.cancel"}
-              style={styles.buttonCancel}
-              textStyle={styles.textCancel}
-            />
-            <Button
-              tx={"productScreen.BtnNotificationAccept"}
-              style={styles.buttonAccept}
-              textStyle={styles.textAccept}
-              onPress={(item) => onConfirm(item)}
+        setIsVisible={() => { setModalVisible(false) }}
+        isHideKeyBoards={modalVisible}
+        isVisibleLoading={showLoading}
+      >
+        <Text text={title} style={styles.textTitleModal} />
+        {isSearch ? (
+          <View style={{ flexDirection: "row", borderWidth: 1, borderColor: '#53A0F6', borderRadius: 4, paddingVertical: scaleHeight(5) }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity style={{ justifyContent: 'center', marginLeft: scaleWidth(8) }}>
+                <Svgs.icon_searchBlack width={scaleWidth(18)} height={scaleHeight(18)} />
+              </TouchableOpacity>
+            </View>
+            <Controller
+              control={control}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <TextInput
+                  placeholder="Tìm kiếm..."
+                  style={{
+                    fontSize: fontSize.size16,
+                    fontWeight: "400",
+                    paddingVertical: 0,
+                    flex: 1
+                  }}
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={(text) => {
+                    onChange(text)
+                    handleSearch(text)
+                  }}
+                  multiline={true}
+                />)}
+              defaultValue={''}
+              name='searchData'
             />
           </View>
+        ) : null}
+        {searchValue ? (
+          <View style={{}}>
+            <TouchableOpacity onPress={onSubmitSearch} style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ justifyContent: 'center', marginRight: scaleWidth(2) }}>
+                <Svgs.icon_searchBlack width={scaleWidth(14)} height={scaleHeight(14)} />
+              </View>
+              <Text style={styles.textLabel}>{searchValue}</Text>
+            </TouchableOpacity>
+            <View style={styles.viewLine}></View>
+          </View>
+        ) : null}
+        <FlatList
+          data={filteredData}
+          renderItem={renderItem}
+          refreshControl={onRefresh ? (
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={refreshItem}
+              title="ok"
+            />
+          ) : undefined
+          }
+          keyExtractor={(item: any) => item.value}
+          onEndReached={loadMore}
+        // style={{ height: scaleHeight(200) }}
+        // keyExtractor={(item) => item.toString()}
+        />
+        <View style={styles.viewModalButton}>
+
+          <Button
+            onPress={() => {
+              toggleModal();
+            }}
+            tx={"productScreen.cancel"}
+            style={styles.buttonCancel}
+            textStyle={styles.textCancel}
+          />
+          <Button
+            tx={"productScreen.BtnNotificationAccept"}
+            style={styles.buttonAccept}
+            textStyle={styles.textAccept}
+            onPress={(item: any) => onConfirm(item)}
+          />
         </View>
-      </Modal>
+      </CustomModal>
     </View>
   );
 };
@@ -255,15 +336,15 @@ const styles = StyleSheet.create({
     fontSize: fontSize.size12,
   },
   modalContainer: {
-    height: "50%",
-    backgroundColor: colors.palette.neutral100,
-    borderRadius: 8,
-    paddingVertical: scaleHeight(padding.padding_12),
-    paddingHorizontal: scaleWidth(padding.padding_16),
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
+    // height: "50%",
+    // backgroundColor: colors.palette.neutral100,
+    // borderRadius: 8,
+    // paddingVertical: scaleHeight(padding.padding_12),
+    // paddingHorizontal: scaleWidth(padding.padding_16),
+    // position: "absolute",
+    // bottom: 0,
+    // left: 0,
+    // right: 0,
     // marginHorizontal : 15
   },
   item: {
@@ -278,6 +359,7 @@ const styles = StyleSheet.create({
   selectedItemText: {
     color: colors.dolphin,
     marginRight: scaleWidth(4),
+    fontSize: fontSize.size12,
   },
   closeButton: {
     backgroundColor: colors.dodgerBlue,
@@ -348,7 +430,7 @@ const styles = StyleSheet.create({
     marginRight: scaleWidth(6),
   },
   textTitleModal: {
-    marginVertical: scaleHeight(18),
+    marginVertical: scaleHeight(10),
     marginLeft: scaleWidth(9),
     fontWeight: "700",
     fontSize: fontSize.size14,
@@ -357,7 +439,7 @@ const styles = StyleSheet.create({
   viewModalButton: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: scaleHeight(margin.margin_15),
+    // marginBottom: scaleHeight(margin.margin_15),
     marginTop: scaleHeight(10),
   },
   buttonCancel: {
@@ -386,6 +468,18 @@ const styles = StyleSheet.create({
     fontSize: fontSize.size14,
     lineHeight: scaleHeight(24),
   },
+  textLabel: {
+    fontWeight: '600',
+    fontSize: fontSize.size14,
+    lineHeight: scaleHeight(24),
+    color: colors.palette.black,
+    marginVertical: scaleHeight(margin.margin_8),
+  },
+  viewLine: {
+    height: scaleHeight(1),
+    width: "100%",
+    backgroundColor: colors.palette.ghostWhite,
+  }
 });
 
 export default DropdownModal;

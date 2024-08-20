@@ -17,7 +17,7 @@ import {
   scaleHeight,
   scaleWidth,
   spacing,
-} from "../../app-purchase/theme";
+} from "../theme";
 import { translate, TxKeyPath } from "../../i18n";
 import { Text } from "../text/text";
 

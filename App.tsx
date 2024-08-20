@@ -7,6 +7,8 @@ import { AppContext } from "./app/app-context/AppContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppList from "./app/app-context/AppList";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { getCurrentLanguage } from "./app/app-purchase/utils/storage";
+import { changeLanguage } from "./app/i18n";
 
 function IgniteApp() {
   const [currentApp, setCurrentApp] = useState<string>("appPurchase");
@@ -30,6 +32,23 @@ function IgniteApp() {
       }
     };
 
+    // const languageApp = async () => {
+    //   const language = await getCurrentLanguage()
+    //   // changeLanguage(language)
+    //   switch (language) {
+    //     case 'vi':
+    //       changeLanguage("en")
+    //       break;
+    //     case 'en':
+    //       changeLanguage("fr")
+    //     default:
+
+    //       break;
+    //   }
+    //   console.log(language, 'day la ngon ngu')
+    // }
+
+    // languageApp()
     loadAppChoice();
   }, []);
 
@@ -48,7 +67,7 @@ function IgniteApp() {
   };
 
   return (
-    <AppContext.Provider value={{currentApp, setCurrentApp }}>
+    <AppContext.Provider value={{ currentApp, setCurrentApp }}>
       <SafeAreaProvider>
         <View style={{ flex: 1 }}>{renderApp()}</View>
       </SafeAreaProvider>

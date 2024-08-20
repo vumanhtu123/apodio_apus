@@ -6,7 +6,7 @@ import { Data, TagResult } from "../../models/product-store/tag-product-model";
 import { Brand, BrandResult } from "../../models/brand-model";
 import { ALERT_TYPE, Dialog, Toast, Loading } from "../../../components/dialog-notification";
 import { VendorResult } from "../../models/product-store/vendor-model";
-
+import { ApiUpload } from "../base-api/api_upload";
 
 export class ProductApi {
   private api: Api;
@@ -57,7 +57,6 @@ export class ProductApi {
         text: "Loading...",
       });
     }
-    // console.log('asdasdas', isLoadMore)
     try {
       console.log("dataa :", page);
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -84,9 +83,9 @@ export class ProductApi {
     }
   }
   async getDetailProduct(id: number): Promise<any> {
-    Loading.show({
-      text: "Loading...",
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_PRODUCT_DETAIL,
@@ -181,9 +180,9 @@ export class ProductApi {
     }
   }
   async getListBrandProduct(search: any): Promise<BrandResult> {
-    Loading.show({
-      text: "Loading...",
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_BRAND_PRODUCT,

@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import { Svgs } from '../../../../../../assets/svgs';
 import { Button, Text } from '../../../../../components';
@@ -9,14 +9,32 @@ import RenderProductItem from './renderItemProduct';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useStores } from '../../../../models';
 import { translate } from '../../../../../i18n/translate';
-const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vendorId }: any) => {
+import { PlaceholderListGrid } from '../../../../../components/custom-placeholder/placeholder-list/placeholder-list-grid';
+interface Company {
+    id: number | null | undefined;
+    name: string;
+    code: string;
+    phoneNumber: string;
+    avatarUrl: string;
+}
+
+interface ProductListComponentProps {
+    searchValue: string;
+    onClearSearch: () => void;
+    isGridView: boolean;
+    vendorId: number ;
+    company: MutableRefObject<Company>;
+}
+const ProductListComponent: FC<ProductListComponentProps> = ({ searchValue, onClearSearch, isGridView, vendorId, company }) => {
     const navigation = useNavigation();
     const [tabTypes, setTabTypes] = useState(["Sản phẩm", "Phân loại"]);
     const [showCategory, setShowCategory] = useState(false);
     const [indexItem, setIndexItem] = useState(0);
-    const [page, setPage] = useState(0);
+    // const [page, setPage] = useState(0);
+    const page = useRef(0)
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingList, setIsLoadingList] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<any>();
     const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
     const [totalElementsProduct, setTotalElementsProduct] = useState<any>(0);
@@ -26,6 +44,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
     const [nameDirectory, setNameDirectory] = useState("");
     const [viewProduct, setViewProduct] = useState(productStore.viewProductType);
     const isFirstRender = useRef(true);
+
 
     useFocusEffect(
         useCallback(() => {
@@ -44,7 +63,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
     }, [navigation]);
     const handleSubmitSearch = async () => {
         setIsLoading(true)
-        setPage(0);
+        page.current = 0;
         setDataProduct([]);
         await handleGetProduct(searchValue);
         setIsLoading(false)
@@ -65,7 +84,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
                     (productStore.sort.length > 1 ? "&sort=" + productStore.sort[1] : "");
             }
             const response: any = await productStore.getListProduct(
-                page,
+                page.current,
                 size,
                 productStore.viewProductType,
                 selectedCategory,
@@ -73,12 +92,12 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
                 productStore.tagId,
                 parseSort,
                 productStore.isLoadMore,
-                vendorId
+                vendorId 
             );
             if (response && response.kind === "ok") {
                 setTotalPagesProduct(response.response.data.totalPages)
                 setTotalElementsProduct(response.response.data.totalElements)
-                if (page === 0) {
+                if (page.current === 0) {
                     setDataProduct(response.response.data.content);
                 } else {
                     setDataProduct((prevProducts: any) => [
@@ -95,11 +114,13 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
             }
         } catch (error) {
             console.error("Error fetching product:", error);
+        } finally {
+            setIsLoadingList(false)
         }
     };
     const handlePressViewProduct = (type: any) => {
         viewProductType(type);
-        setPage(0);
+        page.current = 0
     };
     const viewProductType = useCallback(async (type: any) => {
         const viewType = type === "Sản phẩm" ? "VIEW_PRODUCT" : "VIEW_VARIANT";
@@ -108,12 +129,10 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
         setDataProduct([]);
         await handleGetProduct(searchValue);
     }, [dataProduct]);
-
-
     useEffect(() => {
         //if (!isFirstRender.current) {
         const fetchData = async () => {
-            setPage(0);
+            page.current = 0
             setDataProduct([]);
             await handleGetProduct(searchValue);
         };
@@ -121,35 +140,38 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
         //}
 
     }, [selectedCategory]);
-    useEffect(() => {
-        if (!isFirstRender.current) {
-            if (!isRefreshing) {
-                handleGetProduct(searchValue); // Load more
-            }
-        }
-    }, [page]);
+    // useEffect(() => {
+    //     if (!isFirstRender.current) {
+    //         if (!isRefreshing) {
+    //             handleGetProduct(searchValue); // Load more
+    //         }    
+    //     }
+    // }, [page.current]);
     const handleEndReached = () => {
-        if (!isRefreshing && page <= totalPagesProduct - 1 && !isLoading) {
+        if (!isRefreshing && page.current <= totalPagesProduct - 1 && !isLoading) {
             productStore.setIsLoadMore(true);
-            setPage((prevPage) => prevPage + 1);
+            // setPage((prevPage) => prevPage + 1);
+            page.current += 1;
+            handleGetProduct(searchValue);
         }
     };
     const refreshProduct = useCallback(async () => {
         productStore.setIsLoadMore(true)
+        setIsLoadingList(true)
         setIsRefreshing(true);
         setDataProduct([]);
         setSelectedCategory(undefined);
         onClearSearch();
         setOpenSearch(false);
         setNameDirectory("");
-        setPage(0);
+        page.current = 0
         productStore.setTagId(0);
         productStore.setSort([]);
         await handleGetProduct();
         setIsRefreshing(false);
     }, [onClearSearch]);
     const renderFooter = () => {
-        if (isRefreshing || page >= totalPagesProduct - 1 || dataProduct.length < 1) return null;
+        if (isRefreshing || page.current >= totalPagesProduct - 1 || dataProduct.length < 1) return null;
         return (
             <View>
                 <ActivityIndicator size="large" color="#F6961C" />
@@ -185,7 +207,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
     return (
         <>
             <TouchableOpacity
-                onPress={() => navigation.navigate("ProductCreateScreen" as never)}
+                onPress={() => navigation.navigate({ name: "ProductCreateScreen", params: { vendor: company } } as never)}
                 style={styles.btnCreateProduct}>
                 <Svgs.ic_addProduct
                     width={scaleWidth(50)}
@@ -263,7 +285,7 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
                 isSearchBarVisible={openSearch}
             />
             <View style={{ alignItems: 'flex-end', paddingHorizontal: scaleWidth(16) }}>
-                <Text style={{ fontSize: fontSize.size12 }}>{translate("productScreen.totalProduct")} {Math.min(size * (page + 1), totalElementsProduct)}/{totalElementsProduct}</Text>
+                <Text style={{ fontSize: fontSize.size12 }}>{translate("productScreen.totalProduct")} {Math.min(size * (page.current + 1), totalElementsProduct)}/{totalElementsProduct}</Text>
             </View>
             <View style={styles.containerProduct}>
                 <FlatList
@@ -284,16 +306,21 @@ const ProductListComponent: FC = ({ searchValue, onClearSearch, isGridView, vend
                     key={isGridView ? "grid" : "list"}
                     numColumns={isGridView ? 3 : 1}
                     columnWrapperStyle={isGridView ? null : null}
-                    renderItem={({ item, index }) => (
-                        <RenderProductItem
-                            item={item}
-                            index={index}
-                            isGridView={isGridView}
-                            viewProduct={viewProduct}
-                            handleProductDetail={handleProductDetail}
-                            handleClassifyDetail={handleClassifyDetail}
-                        />
-                    )}
+                    renderItem={({ item, index }) => {
+                        return isLoadingList ? (
+                            <PlaceholderListGrid />
+                        ) : (
+                            <RenderProductItem
+                                item={item}
+                                index={index}
+                                isGridView={isGridView}
+                                viewProduct={viewProduct}
+                                handleProductDetail={handleProductDetail}
+                                handleClassifyDetail={handleClassifyDetail}
+                            />
+                        )
+                    }
+                    }
                 />
             </View>
         </>

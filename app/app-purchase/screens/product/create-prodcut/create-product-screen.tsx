@@ -43,6 +43,7 @@ import {
 } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
 import en from "../../../../i18n/en";
+import { values } from "mobx";
 
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
@@ -63,6 +64,8 @@ export const ProductCreateScreen: FC = (item) => {
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [uomGroupId, setUomGroupId] = useState({ id: 0, label: "" });
   const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
+  const [vendorIds, setVendorIds] = useState([])
+  const vendorData = useRef()
   const route = useRoute();
   const textAttributes = useRef([])
   const attributeValues = useRef([])
@@ -70,7 +73,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   const {
     selectedIds,
-    vendorId,
+    vendor,
     idUnitGroup,
     nameUnitGroup,
     attributeArr,
@@ -108,7 +111,37 @@ export const ProductCreateScreen: FC = (item) => {
 
   useEffect(() => {
     getListUnitGroup(false);
+    vendorData.current = vendor
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (vendor !== undefined && selectedIds !== undefined) {
+        setVendorIds(selectedIds)
+      }
+      if (vendor !== undefined && selectedIds === undefined) {
+        setVendorIds([vendor.id])
+      }
+      if (vendor === undefined && selectedIds !== undefined) {
+        setVendorIds(selectedIds)
+      }
+    });
+    return unsubscribe;
+  }, [vendor, selectedIds]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      if (idUnitGroup !== undefined) {
+        const dataModified = {
+          id: idUnitGroup,
+          label: nameUnitGroup,
+        };
+        setUomGroupId(dataModified);
+        getDetailUnitGroup(idUnitGroup);
+      }
+    });
+    return unsubscribe;
+  }, [idUnitGroup]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -177,13 +210,13 @@ export const ProductCreateScreen: FC = (item) => {
     } as never);
   }, [attributeArr, dropdownSelected, hasVariantInConfig])
 
-  const getListUnitGroup = async (valueSwitchUnit: boolean) => {
+  const getListUnitGroup = async (valueSwitchUnit: boolean, searchValue?: any) => {
     let unitResult = null;
     if (valueSwitchUnit) {
-      unitResult = await unitStore.getListUnitGroup();
+      unitResult = await unitStore.getListUnitGroup(searchValue);
       console.log("getListUnitGroup---------------------:", unitResult);
     } else {
-      unitResult = await unitStore.getListUnit();
+      unitResult = await unitStore.getListUnit(searchValue);
       console.log(
         "getListUnit---------------------:",
         JSON.stringify(unitResult)
@@ -202,7 +235,16 @@ export const ProductCreateScreen: FC = (item) => {
       console.error("Failed to fetch list unit:", unitResult);
     }
   };
-
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefreshUnit = () => {
+    setIsRefreshing(true)
+    setUnitGroupData([])
+    getListUnitGroup(valueSwitchUnit)
+    setIsRefreshing(false)
+  }
+  const searchUnit = (searchValue: any) => {
+    getListUnitGroup(valueSwitchUnit, searchValue)
+  }
   useEffect(() => {
     if (attributeArr !== undefined) {
       const groupedById = attributeArr.reduce(
@@ -449,22 +491,22 @@ export const ProductCreateScreen: FC = (item) => {
     const newArr2 = newArr.map((item: any) => {
       return {
         ...item,
-        retailPrice: item.retailPrice?.map((items: any) => {
+        retailPrice: valueSale ? item.retailPrice?.map((items: any) => {
           return {
             ...items,
             min: Number(formatNumberByString(items.min.toString())),
             price: Number(formatNumberByString(items.price.toString())),
           };
-        }),
-        wholesalePrice: item.wholesalePrice?.map((items: any) => {
+        }) : null,
+        wholesalePrice: valueSale ? item.wholesalePrice?.map((items: any) => {
           return {
             ...items,
             min: Number(formatNumberByString(items.min.toString())),
             price: Number(formatNumberByString(items.price.toString())),
           };
-        }),
-        costPrice: Number(formatNumberByString(item.costPrice.toString())),
-        listPrice: Number(formatNumberByString(item.listPrice.toString())),
+        }) : null,
+        costPrice: valueSale ? Number(formatNumberByString(item.costPrice.toString())) : null,
+        listPrice: valueSale ? Number(formatNumberByString(item.listPrice.toString())) : null,
       };
     });
     // const arrUrlRoot = imagesURLSlider.map((obj) => obj.result);
@@ -477,13 +519,14 @@ export const ProductCreateScreen: FC = (item) => {
         weight: formatStringToFloat(item.weight1),
       };
     });
+
     const doneData = {
       sku: data.SKU === "" ? null : data.SKU,
       name: data.productName,
       saleOk: valueSale,
       imageUrls: imagesNote,
       purchaseOk: true,
-      vendorIds: selectedIds! || [],
+      vendorIds: vendorIds,
       managementForm: data.brands?.label2,
       productCategoryId: data.category?.id || null,
       brandId: data.brand?.id || null,
@@ -500,10 +543,10 @@ export const ProductCreateScreen: FC = (item) => {
       attributeCategoryIds: attributeIds.current,
       description: description,
       productVariants: hasVariantInConfig ? newArr2 : [],
-      retailPrice: dataPrice2,
-      costPrice: Number(formatNumberByString(methods.watch("costPrice"))),
-      listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
-      wholesalePrice: dataPrice,
+      retailPrice: valueSale ? dataPrice2 : null,
+      costPrice: valueSale ? Number(formatNumberByString(methods.watch("costPrice"))) : null,
+      listPrice: valueSale ? Number(formatNumberByString(methods.watch("listPrice"))) : null,
+      wholesalePrice: valueSale ? dataPrice : null,
       deleteVariantIds: [],
       baseTemplatePackingLine:
         data.weightOriginal?.trim() === "" ||
@@ -648,10 +691,9 @@ export const ProductCreateScreen: FC = (item) => {
   }, [imagesNote])
 
   const goToChooseSupplierScreen = () => {
-    const listIds = selectedIds;
     navigation.navigate({
       name: "ChooseVendorScreen",
-      params: { listIds, mode: "create", vendorId: 1144 },
+      params: { listIds: vendorIds, mode: "create", vendor: vendorData.current },
     } as never);
   };
 
@@ -742,7 +784,7 @@ export const ProductCreateScreen: FC = (item) => {
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text
-                  tx="createProductScreen.canBuy"
+                  tx="createProductScreen.canSale"
                   style={{
                     fontSize: fontSize.size13,
                     marginRight: scaleWidth(10),
@@ -755,7 +797,8 @@ export const ProductCreateScreen: FC = (item) => {
                   }}
                 />
               </View>
-              <ItemGroupPrice />
+              {valueSale === true ?
+                <ItemGroupPrice /> : null}
             </View>
           </View>
           {/* {valueSale === true ? ( */}
@@ -771,9 +814,9 @@ export const ProductCreateScreen: FC = (item) => {
                 onPress={() => goToChooseSupplierScreen()}
                 style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}
               >
-                {selectedIds?.length > 0 ? (
+                {vendorIds?.length > 0 ? (
                   <Text style={styles.textWeight400Black}>
-                    {selectedIds.length + " " + translate("createProductScreen.supplier")}
+                    {vendorIds.length + " " + translate("createProductScreen.supplier")}
                   </Text>
                 ) : (
                   <Text
@@ -825,6 +868,10 @@ export const ProductCreateScreen: FC = (item) => {
             onChangeInput={(item) => handleSelectUnit(item)}
             addUnitOrGroup={() => handleAddNewUnitOrGroup()}
             onChangeSwitch={() => handleSwitchUnit()}
+            onRefresh={handleRefreshUnit}
+            onSubmitSearch={searchUnit}
+            isRefreshing={isRefreshing}
+            setIsRefreshing={setIsRefreshing}
           />
           {addWeight ? (
             <View
@@ -864,6 +911,7 @@ export const ProductCreateScreen: FC = (item) => {
             addVariant={addVariant}
             setAddVariant={setAddVariant}
             addWeight={addWeight}
+            valueSale={valueSale}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
             isVariantInConfig={isVariantInConfig}

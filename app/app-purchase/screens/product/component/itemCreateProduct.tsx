@@ -46,7 +46,6 @@ export const ItemMoreInformation = memo(
       })
       setDataBrand(newArr);
     };
-
     const getListCategory = async (searchValue?: any) => {
       const data = await categoryStore.getListCategoriesModal(0, 5, searchValue);
       console.log("get list category  ", data.response.data.totalPages);
@@ -72,6 +71,12 @@ export const ItemMoreInformation = memo(
       setIsRefreshing(true)
       setDataCategory([])
       await getListCategory()
+      setIsRefreshing(false)
+    }
+    const refreshBrand = async () => {
+      setIsRefreshing(true)
+      setDataBrand([])
+      await getListBrand()
       setIsRefreshing(false)
     }
     const getListTags = async () => {
@@ -125,11 +130,15 @@ export const ItemMoreInformation = memo(
               <InputSelect
                 titleTx={"productScreen.trademark"}
                 hintTx={"productScreen.select_trademark"}
+                headerTxModal={"productScreen.trademark"}
                 isSearch
                 required={false}
                 handleOnSubmitSearch={searchBrand}
                 arrData={dataBrand}
                 size={totalPageBrand}
+                isRefreshing={isRefreshing}
+                setIsRefreshing={setIsRefreshing}
+                onRefresh={refreshBrand}
                 dataDefault={value?.label ?? ''}
                 onPressChoice={(item: any) => {
                   onChange(item);
@@ -382,6 +391,10 @@ interface ItemUnit {
   addUnitOrGroup: () => void;
   onChangeSwitch: () => void;
   onChangeInput: (item: any) => void;
+  onRefresh: () => void;
+  onSubmitSearch: any;
+  isRefreshing: boolean
+  setIsRefreshing: any
 }
 
 export const ItemUnit = memo(
@@ -429,9 +442,18 @@ export const ItemUnit = memo(
                 ? "productScreen.select_unit_group"
                 : "productScreen.select_unit"
             }
+            headerTxModal={
+              props.valueSwitchUnit
+                ? "productScreen.unit_group"
+                : "productScreen.unit"
+            }
             isSearch
             required={true}
             arrData={props.arrUnitGroupData}
+            onRefresh={props.onRefresh}
+            isRefreshing={props.isRefreshing}
+            setIsRefreshing={props.setIsRefreshing}
+            handleOnSubmitSearch={props.onSubmitSearch}
             dataDefault={props.valueSwitchUnit ? props.uomGroupId.label : props.uomId.label}
             onPressChoice={(item) => props.onChangeInput(item)}
             styleView={{ marginBottom: scaleHeight(6) }}

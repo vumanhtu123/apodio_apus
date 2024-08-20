@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 import { ActivityIndicator, Dimensions, KeyboardAvoidingView, Platform, Text, TouchableOpacity, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
-import { colors, margin, scaleHeight, scaleWidth } from "../../app-purchase/theme"
+import { colors, margin, scaleHeight, scaleWidth } from "../theme"
 import Modal from 'react-native-modal'
 
 
@@ -15,12 +15,6 @@ export type ModalProps = {
 
 export const CustomModal = (props: ModalProps) => {
   const { children, style, isVisible, isVisibleLoading, setIsVisible, isHideKeyBoards, ...rest } = props
-
-  // const handleBackdropPress = useCallback(() => {
-  //   if (isHideKeyBoards) {
-  //     setIsVisible();
-  //   }
-  // }, [isHideKeyBoards, setIsVisible]);
   return (
     <Modal
       animationIn="slideInUp"
@@ -34,17 +28,9 @@ export const CustomModal = (props: ModalProps) => {
       onBackButtonPress={setIsVisible}
       style={{ margin: 0 }}
     >
-      {/* <TouchableWithoutFeedback onPress={handleBackdropPress}> */}
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-      > */}
-      {/* <TouchableWithoutFeedback  > */}
-
       <View style={{
         maxHeight: Dimensions.get('screen').height * 0.45,
-        minHeight: Dimensions.get('screen').height * 0.3,
+        minHeight: Dimensions.get('screen').height * 0.4,
         width: '100%',
         backgroundColor: colors.palette.neutral100,
         borderTopLeftRadius: margin.border_top_left_radius,
@@ -59,9 +45,6 @@ export const CustomModal = (props: ModalProps) => {
           <ActivityIndicator size={'large'} color="#2A6FA8" />
         </View>) : null}
       </View>
-      {/* </TouchableWithoutFeedback> */}
-      {/* </KeyboardAvoidingView> */}
-      {/* </TouchableWithoutFeedback> */}
     </Modal>
 
   )

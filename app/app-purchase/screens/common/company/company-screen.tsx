@@ -174,7 +174,7 @@ export const ListCompany: FC<StackScreenProps<AuthParamList, "listCompany">> =
           style={{ marginTop: 10 }}
           data={data}
           renderItem={({ item }) => <ItemListCompany item={item} />}
-          keyExtractor={(item: any, index: any) => index}
+          keyExtractor={(item: any, index: any) => item.id.toString()}
           showsVerticalScrollIndicator={false}
           // "để hiện hình quay quay khi kéo xuống"
           // refreshControl={

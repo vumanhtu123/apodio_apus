@@ -22,7 +22,7 @@ export const FilterOrderScreen: FC = (item) => {
     { label: "filterScreen.zToA", sort: "name,desc" },
   ]);
   const { productStore } = useStores();
-  const [dataTag, setDataTag] = useState([]);
+  const [dataTag, setDataTag] = useState<{}[]>([]);
   const [sort, setSort] = useState('')
   useEffect(() => {
     initData();
@@ -209,7 +209,7 @@ export const FilterOrderScreen: FC = (item) => {
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
-            width: scaleWidth(165),
+            width: scaleWidth(157),
             height: scaleHeight(48),
             justifyContent: "center",
             alignItems: "center",
@@ -222,7 +222,7 @@ export const FilterOrderScreen: FC = (item) => {
         <TouchableOpacity
           onPress={handleSort}
           style={{
-            width: scaleWidth(150),
+            width: scaleWidth(157),
             height: scaleHeight(48),
             justifyContent: "center",
             alignItems: "center",

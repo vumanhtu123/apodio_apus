@@ -1,4 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -7,17 +9,14 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
-import { products, suppliers } from "./data";
-import { styles } from "./styles";
 import LinearGradient from "react-native-linear-gradient";
-import { AutoImage, Button, Header, Screen, Text } from "../../../components";
 import { Svgs } from "../../../../assets/svgs";
-import { NavigatorParamList } from "../../navigators";
-import { StackScreenProps } from "@react-navigation/stack";
-import { observer } from "mobx-react-lite";
+import { AutoImage, Header, Text } from "../../../components";
 import { translate } from "../../../i18n";
 import { useStores } from "../../models";
+import { NavigatorParamList } from "../../navigators";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
+import { styles } from "./styles";
 
 
 export const ProductVendorScreen: FC<
@@ -196,10 +195,11 @@ export const ProductVendorScreen: FC<
         onSearchValueChange={handleSearchValueChange}
         handleOnSubmitSearch={handleSubmitSearch}
       />
-      <Screen style={styles.ROOT} preset="fixed">
+      <View style={styles.ROOT}>
         <View
           style={{
             marginHorizontal: scaleWidth(16),
+            marginVertical: scaleHeight(16),
             flexDirection: "row",
             justifyContent: "space-between",
           }}>
@@ -240,7 +240,7 @@ export const ProductVendorScreen: FC<
             renderItem={renderProductItem}
           />
         </View>
-      </Screen>
+      </View>
     </View>
   );
 });

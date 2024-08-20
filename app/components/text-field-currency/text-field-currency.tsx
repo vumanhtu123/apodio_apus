@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Animated,
   Platform,
   StyleProp,
   TextInput,
@@ -9,9 +8,6 @@ import {
   TouchableOpacity,
   View,
   ViewStyle,
-  Text as TextRN,
-  ScrollView,
-  TouchableWithoutFeedback,
   Pressable,
   StyleSheet,
 } from "react-native";
@@ -20,15 +16,10 @@ import {
   fontSize,
   scaleHeight,
   scaleWidth,
-  spacing,
-} from "../../app-purchase/theme";
+} from "../theme";
 import { translate, TxKeyPath } from "../../i18n";
 import { Text } from "../text/text";
-import { SvgIcon } from "../svg-icon";
-import { Svgs } from "../../../assets/svgs";
-import CurrencyInput from 'react-native-currency-input';
 import CustomKeyboard from "./custom-keyboard";
-import ModernKeyboard from "../keypad/ModernKeyboard";
 
 
 const CONTAINER: ViewStyle = {

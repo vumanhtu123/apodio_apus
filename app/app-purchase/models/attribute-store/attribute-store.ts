@@ -50,10 +50,11 @@ export const AttributeStoreModel = types
     getListAttribute: flow(function* (
       page: number,
       size: number,
-      activated: boolean
+      activated: boolean,
+      search: string,
     ) {
       const attributeApi = new AttributeApi(self.environment.api);
-      const result: AttributeResult = yield attributeApi.getListAttribute(page, size, activated);
+      const result: AttributeResult = yield attributeApi.getListAttribute(page, size, activated, search);
       if (result.kind === "ok") {
         return result;
       } else {
@@ -99,10 +100,10 @@ export const AttributeStoreModel = types
     }),
   }));
 
-export interface attributeStore extends Instance<typeof AttributeStoreModel> {}
+export interface attributeStore extends Instance<typeof AttributeStoreModel> { }
 export interface attributeStoreSnapshotOut
-  extends SnapshotOut<typeof AttributeStoreModel> {}
+  extends SnapshotOut<typeof AttributeStoreModel> { }
 export interface attributeStoreSnapshotIn
-  extends SnapshotIn<typeof AttributeStoreModel> {}
+  extends SnapshotIn<typeof AttributeStoreModel> { }
 export const createAttributeStoreDefaultModel = () =>
   types.optional(AttributeStoreModel, {});

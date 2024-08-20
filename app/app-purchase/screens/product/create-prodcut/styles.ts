@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
     paddingVertical: scaleHeight(20),
   },
   viewBtnCancel: {
-    width: scaleWidth(165),
+    width: scaleWidth(157),
     height: scaleHeight(48),
     justifyContent: "center",
     alignItems: "center",
@@ -127,7 +127,7 @@ export const styles = StyleSheet.create({
     borderColor: colors.palette.veryLightGrey,
   },
   viewBtnConfirm: {
-    width: scaleWidth(150),
+    width: scaleWidth(157),
     height: scaleHeight(48),
     justifyContent: "center",
     alignItems: "center",

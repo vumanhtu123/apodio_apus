@@ -20,7 +20,7 @@ export class UnitApi {
       text: 'Loading...',
     });
     try {
-      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.DETAIL_UNIT_GROUP,{
+      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.DETAIL_UNIT_GROUP, {
         uomGroupId: id
       });
       Loading.hide();
@@ -36,16 +36,17 @@ export class UnitApi {
     }
   }
 
-  async getListUnit(): Promise<UnitResult> {
-    Loading.show({
-      text: 'Loading...',
-    });
+  async getListUnit(search: any): Promise<UnitResult> {
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_UNIT,
         {
           page: 0,
           size: 200,
+          search: search
         }
       );
       Loading.hide();
@@ -61,16 +62,17 @@ export class UnitApi {
     }
   }
 
-  async getListUnitGroup(): Promise<UnitGroupResult> {
-    Loading.show({
-      text: 'Loading...',
-    });
+  async getListUnitGroup(search: any): Promise<UnitGroupResult> {
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_UNIT_GROUP,
         {
           page: 0,
           size: 200,
+          search: search
         }
       );
       Loading.hide();
@@ -112,12 +114,12 @@ export class UnitApi {
       text: 'Loading...',
     });
     try {
-      const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_UNIT_GROUP,params)
+      const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_UNIT_GROUP, params)
       Loading.hide();
       const result = response.data
-      if (response.data.data){
+      if (response.data.data) {
         return { kind: "ok", result }
-      }else{
+      } else {
         return { kind: "bad-data", result }
       }
     } catch (error) {
