@@ -448,7 +448,7 @@ export default function ItemListProduct(props: AddProduct) {
           } else {
             Toast.show({
               type: ALERT_TYPE.DANGER,
-              textBody: "Chiết khấu không thể lớn hơn 100",
+              textBody:  translate('productScreen.discountCannotBeGreaterThan100'),
             });
           }
         }}
@@ -472,7 +472,7 @@ export default function ItemListProduct(props: AddProduct) {
           // setCheck(false)
         }}
         titleTx={"selectPriceListApply.inputPrice"}
-        placeholder="Nhập giá"
+        placeholder={translate('order.input_price')}
         titleInputTx={"productScreen.priceProduct"}
         rightText={vendorStore.companyInfo.symbol}
       />

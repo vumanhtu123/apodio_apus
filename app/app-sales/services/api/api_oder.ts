@@ -448,9 +448,9 @@ export class OrderApi {
     page: any,
     size: any
   ): Promise<BaseResponse<TaxModel, ErrorCode>> {
-    Loading.show({
-      text: "Loading...",
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       const response: ApiResponse<BaseResponse<TaxModel, ErrorCode>> =
         await this.apiAccount.apisauce.get(ApiEndpoint.GET_LIST_TAX, {

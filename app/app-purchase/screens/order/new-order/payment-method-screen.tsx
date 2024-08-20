@@ -310,19 +310,19 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   if (Number(formatStringToFloat(value)) >= Number(price)) {
                     setError('price', {
                       type: "validate",
-                      message: "productScreen.cannotPrepayMoreThanTheOrderValue",
+                      message: translate("productScreen.cannotPrepayMoreThanTheOrderValue"),
                     })
                   }
                   if (Number(formatStringToFloat(value)) < Number(Sum1())) {
                     setError("price", {
                       type: "validate",
-                      message: 'productScreen.guestsNeedToPay',
+                      message: translate('productScreen.guestsNeedToPay'),
                     });
                   }
                   if (Number(formatStringToFloat(value)) > Number(credit) && countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
                     setError('price', {
                       type: "validate",
-                      message: "productScreen.cannotPay",
+                      message: translate("productScreen.cannotPay"),
                     })
                     return
                   }

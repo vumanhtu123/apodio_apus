@@ -766,7 +766,7 @@ export function ItemSelectVariant(props: ItemSelectVariant) {
             setCheck(false);
           }}
           titleTx={"selectPriceListApply.inputPrice"}
-          placeholder="Nhập giá"
+          placeholder={translate('order.input_price')}
           titleInputTx={"productScreen.priceProduct"}
           rightText={vendorStore.companyInfo.symbol}
         />

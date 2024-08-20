@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -18,7 +18,6 @@ import { NavigatorParamList } from "../../navigators";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
 import { styles } from "./styles";
 
-
 export const ProductVendorScreen: FC<
   StackScreenProps<NavigatorParamList, "vendorScreen">
 > = observer(function ProductVendorScreen(props: any) {
@@ -32,25 +31,37 @@ export const ProductVendorScreen: FC<
   const [openSearch, setOpenSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  const getListVendor = (search: string) => {
-    productStore.getListVendor(page, search).then((item: any) => {
-      if (item.response.data.content != null) {
-        setTotalPage(item.response.data.totalPages);
-        const data = item.response.data.content;
-        setList((prev: any) => [...prev, ...data]);
-      }
-      console.log("vendor screen", JSON.stringify(item.response.data));
-    });
+  const getListVendor = async (search: string) => {
+    setIsLoading(true);
+    try {
+      await productStore.getListVendor(page, search).then((item: any) => {
+        if (item.response.data.content != null) {
+          setTotalPage(item.response.data.totalPages);
+          const data = item.response.data.content;
+          setList((prev: any) => [...prev, ...data]);
+        }
+        getList.forEach((item: any) => console.log("id screen", item.id)); // Kiểm tra id của các item
+
+        console.log("vendor screen", JSON.stringify(item.response.data));
+      });
+    } catch (e: any) {
+      console.log("error", e.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleEndReached = () => {
-    if (!isLoading && page + 1 < totalPage) {
-      setIsLoading(true);
-      setPage(page + 1);
-      setIsLoading(false);
-      getListVendor("");
+    console.log("total page", totalPage);
+    if (!isLoading && page < totalPage) {
+      setPage((prePage) => prePage + 1);
+      // getListVendor("");
     }
   };
+
+  useEffect(() => {
+    getListVendor(searchValue);
+  }, [page]);
 
   const refreshNotifications = () => {
     setIsRefreshing(true);
@@ -86,33 +97,33 @@ export const ProductVendorScreen: FC<
     }
   };
 
-  useEffect(() => {
-    getListVendor(searchValue);
-  }, []);
+  // useEffect(() => {
+  //   getListVendor(searchValue);
+  // }, []);
   const handleAllProduct = () => {
     navigation.navigate({
       name: "productScreen",
     } as never);
-    productStore.setSort([])
-    productStore.setSortCategory([])
-    productStore.setStatusTab('product')
+    productStore.setSort([]);
+    productStore.setSortCategory([]);
+    productStore.setStatusTab("product");
     productStore.setCompany({
       id: null,
-      name: '',
-      code: '',
-      phoneNumber: '',
-      avatarUrl: ""
-    })
+      name: "",
+      code: "",
+      phoneNumber: "",
+      avatarUrl: "",
+    });
   };
   const renderProductItem = ({ item }: any) => {
     const handlePress = () => {
       navigation.navigate({
         name: "productScreen",
       } as never);
-      productStore.setCompany(item)
-      productStore.setSort([])
-      productStore.setSortCategory([])
-      productStore.setStatusTab('product')
+      productStore.setCompany(item);
+      productStore.setSort([]);
+      productStore.setSortCategory([]);
+      productStore.setStatusTab("product");
     };
     return (
       <LinearGradient
@@ -223,6 +234,7 @@ export const ProductVendorScreen: FC<
         </View>
         <View style={{ flex: 1, marginHorizontal: scaleWidth(16) }}>
           <FlatList
+            keyExtractor={(item, index) => index.toString()}
             data={getList}
             showsVerticalScrollIndicator={false}
             refreshControl={
@@ -232,7 +244,6 @@ export const ProductVendorScreen: FC<
                 title="ok"
               />
             }
-            keyExtractor={(item) => item.id.toString()}
             onEndReached={handleEndReached}
             onEndReachedThreshold={0.8}
             ListFooterComponent={renderFooter}

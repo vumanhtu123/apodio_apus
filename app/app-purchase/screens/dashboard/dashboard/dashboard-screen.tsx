@@ -584,11 +584,11 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
             onPress={() => props.navigation.navigate("inforAccount")}
             showInfo={isShow}
             // kind={KIND_SCREEN.HOME}
-            kind={1}
+            kind={0}
             onChangeAVT={() => {
               // nextPage();
               navigation.navigate({
-                name: "vendorScreen",
+                name: "RevenueScreen",
               } as never);
               // navigation.dispatch(DrawerActions.openDrawer);
               // navigation.dispatch(DrawerActions.openDrawer);
