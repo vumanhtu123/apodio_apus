@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
@@ -21,7 +21,8 @@ export const ProductScreen: FC = () => {
   const [submittedCategorySearch, setSubmittedCategorySearch] = useState('');
   const [searchValue, setSearchValue] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
-  const [company, setCompany] = useState(productStore.company);
+  // const [company, setCompany] = useState();
+  const company = useRef(productStore.company)
   // Xử lý tìm kiếm danh mục
 
   const handleSearchCategoryChange = (text: string) => {
@@ -99,12 +100,12 @@ export const ProductScreen: FC = () => {
         titleMiddleStyle={styles.titleHeader}
       />
       <View style={{ flex: 1, backgroundColor: colors.aliceBlue }}>
-        {activeTab === "product" && company.id !== null ? (
+        {activeTab === "product" && company.current.id !== null ? (
           <View style={{ paddingHorizontal: scaleWidth(16), paddingVertical: scaleHeight(8), flexDirection: 'row', alignItems: 'center', backgroundColor: colors.white }}>
             <Svgs.avatar width={scaleWidth(40)} height={scaleHeight(40)} />
             <View style={{ marginHorizontal: scaleWidth(6) }}>
-              <Text style={{ fontSize: fontSize.size10 }}>{company.code} - {company.name}</Text>
-              <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{company.phoneNumber}</Text>
+              <Text style={{ fontSize: fontSize.size10 }}>{company.current.code} - {company.current.name}</Text>
+              <Text style={{ fontSize: fontSize.size10, color: colors.dolphin }}>{company.current.phoneNumber}</Text>
             </View>
           </View>
         ) : null}
@@ -144,7 +145,7 @@ export const ProductScreen: FC = () => {
             searchValue={submittedSearch}
             onClearSearch={handleClearSearch}
             isGridView={isGridView}
-            vendorId={company.id}
+            vendorId={company.current.id as number}
             company={company}
           />
         ) : (

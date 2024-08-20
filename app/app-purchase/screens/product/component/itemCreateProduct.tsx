@@ -30,19 +30,24 @@ export const ItemMoreInformation = memo(
     const [dataTagConvert, setDataTagConvert] = useState<{}[]>([]);
     const [dataCategory, setDataCategory] = useState<any>([]);
     const [size, setSize] = useState<any>();
+    const [totalPageBrand, setTotalPageBrand] = useState<any>();
     const [hasFetchedTotalPages, setHasFetchedTotalPages] = useState(false);
+    const [hasFetchedTotalPagesBrand, setHasFetchedTotalPagesBrand] = useState(false);
 
-    const getListBrand = async () => {
-      const data = await productStore.getListBrand();
-      console.log('sadaszxc1',data)
+    const getListBrand = async (searchValue?: any) => {
+      const data = await productStore.getListBrand(searchValue);
+      // console.log('sadaszxc1', data.result.data.totalPages)
+      if (!hasFetchedTotalPagesBrand) {
+        setTotalPageBrand(data.result.data.totalPages)
+        setHasFetchedTotalPagesBrand(true);
+      }
       const newArr = data.result.data.content.map((item: any) => {
         return { label: item.name, id: item.id };
       })
       setDataBrand(newArr);
     };
-
     const getListCategory = async (searchValue?: any) => {
-      const data = await categoryStore.getListCategoriesModal(0, 100, searchValue);
+      const data = await categoryStore.getListCategoriesModal(0, 5, searchValue);
       console.log("get list category  ", data.response.data.totalPages);
       // setTotalPage(data.response.data.totalPages)
       if (!hasFetchedTotalPages) {
@@ -56,15 +61,22 @@ export const ItemMoreInformation = memo(
       setDataCategory(newArr);
     };
     const searchCategory = (searchValue: any) => {
-      // console.log('sadsadsa', searchValue)
       getListCategory(searchValue)
     }
+    const searchBrand = (searchValue: any) => {
+      getListBrand(searchValue)
+    }
     const [isRefreshing, setIsRefreshing] = useState(false);
-
     const refreshCategory = async () => {
       setIsRefreshing(true)
       setDataCategory([])
       await getListCategory()
+      setIsRefreshing(false)
+    }
+    const refreshBrand = async () => {
+      setIsRefreshing(true)
+      setDataBrand([])
+      await getListBrand()
       setIsRefreshing(false)
     }
     const getListTags = async () => {
@@ -93,6 +105,7 @@ export const ItemMoreInformation = memo(
               <InputSelect
                 titleTx={"inforMerchant.Category"}
                 hintTx={"productScreen.select_catgory"}
+                headerTxModal={"inforMerchant.Category"}
                 isSearch
                 required={false}
                 arrData={dataCategory}
@@ -103,9 +116,6 @@ export const ItemMoreInformation = memo(
                 setIsRefreshing={setIsRefreshing}
                 size={size}
                 normalInputSelect={true}
-                // onLoadMore={loadMoreCategories}
-                // handleOnSubmitSearch={handleSubmitSearchCategory}
-                // onChangeText={handleSearchCategoryChange}
                 onPressChoice={(item: any) => {
                   onChange(item);
                 }}
@@ -120,15 +130,20 @@ export const ItemMoreInformation = memo(
               <InputSelect
                 titleTx={"productScreen.trademark"}
                 hintTx={"productScreen.select_trademark"}
+                headerTxModal={"productScreen.trademark"}
                 isSearch
                 required={false}
+                handleOnSubmitSearch={searchBrand}
                 arrData={dataBrand}
+                size={totalPageBrand}
+                isRefreshing={isRefreshing}
+                setIsRefreshing={setIsRefreshing}
+                onRefresh={refreshBrand}
                 dataDefault={value?.label ?? ''}
                 onPressChoice={(item: any) => {
                   onChange(item);
                 }}
                 styleView={{ marginBottom: scaleHeight(15) }}
-              // styleView={{ width: scaleWidth(164), height: scaleHeight(56), marginRight: scaleWidth(15) }}
               />
             )}
             name="brand"
@@ -376,6 +391,10 @@ interface ItemUnit {
   addUnitOrGroup: () => void;
   onChangeSwitch: () => void;
   onChangeInput: (item: any) => void;
+  onRefresh: () => void;
+  onSubmitSearch: any;
+  isRefreshing: boolean
+  setIsRefreshing: any
 }
 
 export const ItemUnit = memo(
@@ -423,9 +442,18 @@ export const ItemUnit = memo(
                 ? "productScreen.select_unit_group"
                 : "productScreen.select_unit"
             }
+            headerTxModal={
+              props.valueSwitchUnit
+                ? "productScreen.unit_group"
+                : "productScreen.unit"
+            }
             isSearch
             required={true}
             arrData={props.arrUnitGroupData}
+            onRefresh={props.onRefresh}
+            isRefreshing={props.isRefreshing}
+            setIsRefreshing={props.setIsRefreshing}
+            handleOnSubmitSearch={props.onSubmitSearch}
             dataDefault={props.valueSwitchUnit ? props.uomGroupId.label : props.uomId.label}
             onPressChoice={(item) => props.onChangeInput(item)}
             styleView={{ marginBottom: scaleHeight(6) }}

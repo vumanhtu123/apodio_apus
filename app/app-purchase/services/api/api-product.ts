@@ -57,7 +57,6 @@ export class ProductApi {
         text: "Loading...",
       });
     }
-    // console.log('asdasdas', isLoadMore)
     try {
       console.log("dataa :", page);
       const response: ApiResponse<any> = await this.api.apisauce.get(
@@ -84,9 +83,9 @@ export class ProductApi {
     }
   }
   async getDetailProduct(id: number): Promise<any> {
-    Loading.show({
-      text: "Loading...",
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_PRODUCT_DETAIL,
@@ -180,16 +179,17 @@ export class ProductApi {
       return { kind: "bad-data", result: error };
     }
   }
-  async getListBrandProduct(): Promise<BrandResult> {
-    Loading.show({
-      text: "Loading...",
-    });
+  async getListBrandProduct(search: any): Promise<BrandResult> {
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.LIST_BRAND_PRODUCT,
         {
           page: 0,
           size: 20,
+          search: search
         }
       );
       Loading.hide();
@@ -418,7 +418,7 @@ export class ProductApi {
   }
 
   async getListVendor(page: number, search: string): Promise<VendorResult> {
-    if(page === 0){
+    if (page === 0) {
       Loading.show({
         text: "Loading...",
       });

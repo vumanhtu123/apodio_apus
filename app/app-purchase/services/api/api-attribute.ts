@@ -13,15 +13,16 @@ export class AttributeApi {
     this.api = api
   }
 
-  async getListAttribute(page: number, size: number, activated: boolean): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+  async getListAttribute(page: number, size: number, activated: boolean, search: string): Promise<any> {
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.LIST_ATTRIBUTE, {
         page,
         size,
-        activated
+        activated,
+        search: search
       }
       )
       Loading.hide();
@@ -34,15 +35,15 @@ export class AttributeApi {
       Loading.hide();
       return { kind: "bad-data" }
     }
-  }  
+  }
   async getListDataAttribute(categoryIds: any): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
-        const queryStringParts = categoryIds.map((id: any) => `categoryIds=${id}`);
-        const queryString = categoryIds.length !== 0 ? '?' + queryStringParts.join('&'): ''
-      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.LIST_DATA_ATTRIBUTE+ queryString, 
+      const queryStringParts = categoryIds.map((id: any) => `categoryIds=${id}`);
+      const queryString = categoryIds.length !== 0 ? '?' + queryStringParts.join('&') : ''
+      const response: ApiResponse<any> = await this.api.apisauce.get(ApiEndpoint.LIST_DATA_ATTRIBUTE + queryString,
       )
       Loading.hide();
       const data = response.data
@@ -55,7 +56,7 @@ export class AttributeApi {
       Loading.hide();
       return { kind: "bad-data" }
     }
-  }  
+  }
 
   async createAttributeGroup(name: any): Promise<any> {
     Loading.show({
@@ -77,15 +78,15 @@ export class AttributeApi {
       Loading.hide();
       return { kind: "bad-data" }
     }
-  }  
+  }
 
-  async createAttributeDataGroup(DataAttribute: any,attributeCategoryId: number): Promise<any> {
+  async createAttributeDataGroup(DataAttribute: any, attributeCategoryId: number): Promise<any> {
     Loading.show({
       text: 'Loading...',
     });
     try {
       console.log('----arr----', JSON.stringify(DataAttribute))
-      const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_DATA_ATTRIBUTE_GROUP+ "?attributeCategoryId=" + attributeCategoryId,
+      const response: ApiResponse<any> = await this.api.apisauce.post(ApiEndpoint.CREATE_DATA_ATTRIBUTE_GROUP + "?attributeCategoryId=" + attributeCategoryId,
         DataAttribute,
       )
       Loading.hide();
@@ -99,5 +100,5 @@ export class AttributeApi {
       Loading.hide();
       return { kind: "bad-data" }
     }
-  }  
+  }
 }

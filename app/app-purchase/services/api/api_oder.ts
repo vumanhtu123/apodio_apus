@@ -56,9 +56,9 @@ export class OrderApi {
     }
   }
   async getDetailInvoice(id: number): Promise<any> {
-    Loading.show({
-      text: "Loading...",
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
       const response: ApiResponse<any> = await this.apiAccount.apisauce.get(
@@ -387,9 +387,9 @@ export class OrderApi {
   }
 
   async getDetailOrder(id: number, isLoading?: boolean): Promise<any> {
-    Loading.show({
-      text: "Loading...",
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_DETAIL_ORDER,
@@ -545,11 +545,11 @@ export class OrderApi {
     }
   }
   async stateAllow(id: any): Promise<any> {
-    Loading.show({
-      text: "Loading...",
-      onShow: () => console.log("Loading shown"),
-      onHide: () => console.log("Loading hidden"),
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    //   onShow: () => console.log("Loading shown"),
+    //   onHide: () => console.log("Loading hidden"),
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_STATE_ALLOW + "?id=" + id
