@@ -77,4 +77,4 @@ export interface Root {
     isAnotherPartner?: boolean
   }
   
-  export type VendorResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root };
+  export type VendorResult = { kind: "ok", result: Root } | { kind: "bad-data", result: Root } | { kind: "bad-data", result: any };

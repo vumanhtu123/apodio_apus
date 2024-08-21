@@ -144,7 +144,7 @@ export const OrderTracking: FC = observer(
                             titleTx={'order.father_status'}
                             hintTx={"order.select_father_status"}
                             dataDefault={orderStore.fatherStatus.label}
-                            onPressChoice={(item) => orderStore.setFatherStatus(item)}
+                            onPressChoice={(item: {id: string, label: string}) => orderStore.setFatherStatus(item)}
                             styleView={{ marginHorizontal: scaleWidth(16), marginBottom: scaleHeight(15) }}
                         />
                         <InputSelect
@@ -152,7 +152,7 @@ export const OrderTracking: FC = observer(
                             titleTx={'order.child_status'}
                             hintTx={'order.select_child_status'}
                             dataDefault={orderStore.childStatus.label}
-                            onPressChoice={(item) => orderStore.setChildStatus(item)}
+                            onPressChoice={(item: {id: string, label: string}) => orderStore.setChildStatus(item)}
                             styleView={{ marginHorizontal: scaleWidth(16), marginBottom: scaleHeight(15) }}
                         />
                         <View style={styles.viewGroupBtn}>

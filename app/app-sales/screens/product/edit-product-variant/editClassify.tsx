@@ -202,7 +202,7 @@ export const EditClassify: FC = (item) => {
                 weight: formatStringToFloat(item.weight1),
             }
         })
-        const doneData = {
+        const doneData: any = {
             name: data.productName,
             imageUrls: imagesNote,
             retailPrice: dataPrice2,

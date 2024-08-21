@@ -71,7 +71,7 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
             // console.log('====================================');
             // console.log("2222");
             // console.log('====================================');
-            props.navigation.navigate('selectClient', { myTag: selectedTagId })
+            props.navigation.navigate({name: 'selectClient', params:{ myTag: selectedTagId }} as never)
         }
 
         console.log("arr data item tag", selectedTagId);

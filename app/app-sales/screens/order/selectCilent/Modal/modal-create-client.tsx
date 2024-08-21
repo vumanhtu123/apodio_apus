@@ -56,7 +56,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
         if (checkPhoneNumber(phoneNumber) !== true) {
             setError("phoneNumber", {
                 type: "validate",
-                message: checkPhoneNumber(phoneNumber),
+                message: checkPhoneNumber(phoneNumber).toString(),
             });
             hasError = true
         }

@@ -30,13 +30,12 @@ import {
 } from "../../../utils/validate";
 import { observer } from "mobx-react-lite";
 import { stylesModalPrice } from "../styles";
-const { width, height } = Dimensions.get("screen");
 
 interface PriceModalProps {
   isVisible: boolean;
   setIsVisible: () => void;
   title?: string;
-  titleTx?: TxKeyPath | {};
+  titleTx?: TxKeyPath;
   onCancel: () => void;
   onConfirm: (value: any) => void;
   dataAdd?: {}[];
@@ -69,7 +68,6 @@ const PriceModal = observer((props: PriceModalProps) => {
       try {
         const response = await vendorStore.getInfoCompany();
         if (response && response.kind === "ok") {
-          // console.log('response', response.result.data.thousandSeparator)
           vendorStore.setCheckSeparator(response.result.data.thousandSeparator);
         } else {
           console.error("Failed to fetch categories:", response);
@@ -102,9 +100,9 @@ const PriceModal = observer((props: PriceModalProps) => {
   }, [dataAdd]);
   const priceWatch = watch("price");
   const onSubmit = (data: any) => {
-    const minValues = data.price.map((item) => item.min);
+    const minValues = data.price.map((item: {min: number}) => item.min);
     const isDuplicate = minValues.some(
-      (min, idx) => minValues.indexOf(min) !== idx
+      (min: number, idx: number) => minValues.indexOf(min) !== idx
     );
     if (isDuplicate) {
       setModalError(true);
@@ -119,7 +117,7 @@ const PriceModal = observer((props: PriceModalProps) => {
   const [isError, setIsError] = useState(false);
 
   const validateUniqueMinQuantity = (value: any) => {
-    const minValues = priceWatch.map((item) => item.min);
+    const minValues = priceWatch!.map((item: any) => item.min);
     const isDuplicate = minValues.filter((min) => min === value).length > 1;
     setIsError(isDuplicate);
     return isDuplicate ? "Số lượng không được trùng lặp" : true;
@@ -137,7 +135,7 @@ const PriceModal = observer((props: PriceModalProps) => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
         style={stylesModalPrice.keyboardView}>
         <View style={stylesModalPrice.viewModal}>
-          <Text style={stylesModalPrice.viewTextTittle} tx={actualTitle} />
+          <Text style={stylesModalPrice.viewTextTittle} text={actualTitle} />
           <View style={stylesModalPrice.line} />
           <FlatList
             data={fields}
@@ -255,7 +253,7 @@ const PriceModal = observer((props: PriceModalProps) => {
           />
           <Button
             onPress={() => {
-              const lastItem = priceWatch[priceWatch?.length - 1];
+              const lastItem: {min: string, price: string} | {} = priceWatch![priceWatch!.length - 1];
               if (lastItem.min && lastItem.price) {
                 append({ min: "", price: "" });
               } else {

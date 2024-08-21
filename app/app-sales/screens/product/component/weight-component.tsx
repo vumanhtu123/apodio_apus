@@ -1,9 +1,8 @@
-import React, { memo, useEffect, useState } from "react";
-import { View, ScrollView, TouchableOpacity, FlatList } from "react-native";
+import React, {useEffect, useState } from "react";
+import { View, TouchableOpacity, FlatList } from "react-native";
 import { Text, TextField } from "../../../../components";
 import {
   Controller,
-  FormProvider,
   useFieldArray,
   useForm,
   useFormContext,
@@ -16,13 +15,11 @@ import { translate } from "../../../../i18n";
 import {
   commasToDots,
   formatCurrency,
-  formatNumberFloat,
   formatStringToFloat,
 } from "../../../utils/validate";
 import { useStores } from "../../../models";
 import { stylesWeight } from "../styles";
 import { observer } from "mobx-react-lite";
-import en from "../../../../i18n/en";
 
 
 interface InputSelectProps {
@@ -54,11 +51,8 @@ interface ItemOriginal {
 export default function ItemWeight(props: ItemWeight) {
   const { vendorStore } = useStores()
   const [addLine, setAddLine] = useState(false)
-  const { control, setValue, setError, getFieldState, getValues, watch } = useFormContext()
+  const { control, setValue, getValues, watch } = useFormContext()
   const {
-    handleSubmit,
-    // watch,
-    // getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {

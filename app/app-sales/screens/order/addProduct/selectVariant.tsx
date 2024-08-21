@@ -42,7 +42,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(20);
-  const [arrImagesProduct, setArrImagesProduct] = useState([]);
+  const [arrImagesProduct, setArrImagesProduct] = useState<any>([]);
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dataVariant, setDataVariant] = useState<Content[]>([]);
   const [modalPrice, setModalPrice] = useState<any>(false);
@@ -92,7 +92,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         page,
         size,
         undefined,
-        undefined,
+        '',
         [],
         "",
         orderStore.isLoadMore,
@@ -299,7 +299,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       page,
       size,
       undefined,
-      undefined,
+      '',
       [],
       "",
       orderStore.isLoadMore,
@@ -707,7 +707,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={true}>
-            {arrImagesProduct?.map((item, index) => {
+            {arrImagesProduct?.map((item: string, index: number) => {
               return (
                 <TouchableOpacity
                   key={index}

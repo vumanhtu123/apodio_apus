@@ -4,7 +4,7 @@ import { Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface MoreInformation {
     addDescribe: boolean
@@ -12,6 +12,7 @@ interface MoreInformation {
     addVariant: boolean
     setAddWeight: (value: boolean)=> void
     addWeight: boolean
+    dataDescribe: string
     onChangeDescription: (data: string) => void
     onChangeIsVisible: (data: boolean) => void
 }
@@ -20,6 +21,11 @@ export const MoreInformation = (props: MoreInformation) => {
     const [addDescribe, setAddDescribe] = useState(props.addDescribe)
     const [modalDescribe, setModalDescribe] = useState(false);
     const [description, setDescription] = useState('');
+
+    useEffect(()=>{
+        setAddDescribe(props.addDescribe)
+        setDescription(props.dataDescribe)
+    }, [props.addDescribe, props.dataDescribe])
 
     const handleDescribe = () => {
         setAddDescribe(true);

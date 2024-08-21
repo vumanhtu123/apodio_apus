@@ -71,10 +71,10 @@ const SelectFilterModal = (props: any) => {
             <TouchableOpacity
               key={item.type}
               style={styles.optionItem}
-              onPress={() => handleSelectOption(index, item.type)}>
+              onPress={() => handleSelectOption(index)}>
               <RadioButton
                 selected={selectedIndex === index}
-                onPress={() => handleSelectOption(index, item.type)}
+                onPress={() => handleSelectOption(index)}
               />
               <Text style={styles.optionText}>{item.label}</Text>
             </TouchableOpacity>

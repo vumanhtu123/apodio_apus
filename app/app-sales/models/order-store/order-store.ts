@@ -73,7 +73,7 @@ export const OrderStoreModel = types
     isLoadMoreSelectClient: types.optional(types.boolean, false),
     clearingDebt: types.optional(types.boolean, false),
     isReload : types.optional(types.boolean,false),
-    dataAddress: types.optional(types.frozen<Root1>(), {
+    dataAddress: types.optional(types.frozen(), {
       id: 0,
       partnerId: 0,
       phoneNumber: "",
@@ -410,12 +410,12 @@ export const OrderStoreModel = types
     getListOrderProduct: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
+      productCategoryId: number | undefined,
       search: string,
-      tagIds: [],
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number
+      warehouseId: number | undefined
     ) {
       // console.log('page' , page)
       const orderApi = new OrderApi(
@@ -444,13 +444,13 @@ export const OrderStoreModel = types
     getListOrderVariant: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
+      productCategoryId: number | undefined,
       search: string,
-      tagIds: [],
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number,
-      productTemplateId: number
+      warehouseId: number | undefined,
+      productTemplateId: number | undefined
     ) {
       // console.log('page' , page)
       const orderApi = new OrderApi(
@@ -495,13 +495,13 @@ export const OrderStoreModel = types
     getListOrderProductPrice: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
+      productCategoryId: number | undefined,
       search: string,
-      tagIds: [],
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number,
-      priceListId: number
+      warehouseId: number | undefined,
+      priceListId: number | undefined
     ) {
       // console.log('page' , page)
       const orderApi = new OrderApi(
@@ -532,13 +532,13 @@ export const OrderStoreModel = types
     getListOrderVariantPrice: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
+      productCategoryId: number | undefined,
       search: string,
-      tagIds: [],
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number,
-      productTemplateId: number,
+      warehouseId: number | undefined,
+      productTemplateId: number | undefined,
       priceListId: number
     ) {
       // console.log('page' , page)
@@ -814,7 +814,7 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<TaxModel, ErrorCode> =
+        const result =
           yield orderApi.getTaxList(type, scopeType, page, size);
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {
@@ -833,7 +833,7 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<OrderResult, ErrorCode> =
+        const result: OrderResult =
           yield orderApi.cancelOrder(id);
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.kind === "ok") {
@@ -891,7 +891,7 @@ export const OrderStoreModel = types
       );
       console.log("data form:", dataForm);
       try {
-        const result: BaseResponse<TaxLineModel, ErrorCode> =
+        const result =
           yield orderApi.postTaxLines(dataForm);
         if (result.data !== null) {
           return result.data.taxLines;

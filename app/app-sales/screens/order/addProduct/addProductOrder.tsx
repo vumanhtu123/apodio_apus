@@ -45,7 +45,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
 
   const handleGetCategoryFilter = async () => {
     try {
-      const response = await categoryStore.getListCategoriesFilter(0, 100);
+      const response = await categoryStore.getListCategoriesFilter(0, 100, "");
       if (response && response.kind === "ok") {
         const data = response.response.data.content;
         const newElement = { name: "Tất cả danh mục" };
@@ -456,7 +456,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
           amount: data.minQuantity,
           isSelect: true,
           unitPrice: newPrice,
-          price: newPrice * data.minQuantity,
+          price: newPrice! * data.minQuantity,
         };
         const newArr = orderStore.dataProductAddOrder.concat(newArr1);
         orderStore.setDataProductAddOrder(newArr);
@@ -480,7 +480,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
           amount: newAmount,
           isSelect: true,
           unitPrice: newPrice,
-          price: newPrice * newAmount,
+          price: newPrice! * newAmount,
         };
         const newArr = orderStore.dataProductAddOrder.concat(newArr1);
         orderStore.setDataProductAddOrder(newArr);

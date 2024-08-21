@@ -260,7 +260,6 @@ const CustomCalendar = React.memo((props: any) => {
   }, []);
 
   useEffect(() => {
-    console.log('ajysdgkiayusdg', props.dateS)
     if (props.dateS && props.dateE === undefined) {
       if (props.isOneDate) {
         console.log(props.dateS, 'dateS')
@@ -277,15 +276,12 @@ const CustomCalendar = React.memo((props: any) => {
     }
     if (props.dateS && props.dateE) {
       if (props.isOneDate == false) {
-        console.log('asdfkjahsd', markedDates)
         handleChangeS(props.dateS)
         handleChangeE(props.dateE);
           const newMarkedDates: { [key: string]: MarkedDate } = {};
-          console.log('1', props.dateS)
           const tempStartDate = moment(props.dateS);
           const tempEndDate = moment(props.dateE);
           const range = tempEndDate.diff(tempStartDate, "days");
-          console.log('2', props.dateE)
           newMarkedDates[props.dateS] = {
             startingDay: true,
             color: colors.palette.navyBlue,
@@ -297,7 +293,6 @@ const CustomCalendar = React.memo((props: any) => {
               const tempDate = moment(props.dateS)
                 .add(i, "days")
                 .format("YYYY-MM-DD");
-              console.log('3', range)
               if (i < range) {
                 newMarkedDates[tempDate] = {
                   color: colors.palette.gray,

@@ -51,7 +51,7 @@ export const ProductDetailScreen: FC = () => {
   const [changeClassification, setChangeClassification] = useState("");
   const [dataClassification, setDataClassification] = useState<any>({});
   const [dataClassificationToEdit, setDataClassificationToEdit] = useState({});
-  const [arrImagesProduct, setArrImagesProduct] = useState([]);
+  const [arrImagesProduct, setArrImagesProduct] = useState<any>([]);
   const [arrClassification, setArrClassification] = useState([]);
   const [detailsClassification, setDetailsClassification] = useState<any>([]);
   const [attributeCategory, setAttributeCategory] = useState([]);
@@ -478,6 +478,7 @@ export const ProductDetailScreen: FC = () => {
                 autoplay={false}
                 ref={refCarousel}
                 loop
+                vertical={false}
                 renderItem={({ item, index }: any) => (
                   <View>
                     <Image
@@ -498,9 +499,9 @@ export const ProductDetailScreen: FC = () => {
                 itemWidth={Dimensions.get("window").width - 32}
                 firstItem={activeSlide}
                 onSnapToItem={(index) => setActiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
+                // lockScrollWhileSnapping={true}
+                // enableMomentum={false}
+                // decelerationRate={0.5}
               />
               <Pagination
                 dotsLength={
@@ -542,6 +543,7 @@ export const ProductDetailScreen: FC = () => {
                 autoplay={false}
                 ref={refCarousel}
                 loop
+                vertical={false}
                 renderItem={({ item }: any) => (
                   <View>
                     <Image
@@ -562,9 +564,9 @@ export const ProductDetailScreen: FC = () => {
                 itemWidth={Dimensions.get("window").width - 32}
                 firstItem={activeSlide}
                 onSnapToItem={(index) => setActiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
+                // lockScrollWhileSnapping={true}
+                // enableMomentum={false}
+                // decelerationRate={0.5}
               />
               <Pagination
                 dotsLength={

@@ -1,4 +1,3 @@
-import { size } from "lodash";
 import { ApiResponse } from "apisauce";
 import { hideLoading, showLoading } from "../../utils/toast";
 import { ApiOrder } from "../base-api/api-config-order";
@@ -6,7 +5,7 @@ import { ApiEndpoint } from "../base-api/api_endpoint";
 import { Loading } from "../../../components/dialog-notification";
 import { ApiAccounting } from "../base-api/api-config-accounting";
 import { TaxModel } from "../../models/order-store/entities/order-tax-model";
-import { DebtLimit } from "../../models/order-store/entities/order-debt-limit-model";
+import { DebtModel } from "../../models/order-store/entities/order-debt-limit-model";
 import { TaxLineModel } from "../../models/order-store/entities/order-tax-lines-model";
 import { TYPE_DEBT, CONTRACT_TYPE } from "../../utils/enum";
 
@@ -134,12 +133,12 @@ export class OrderApi {
   async getListOrderProduct(
     page: number,
     size: number,
-    productCategoryId: number,
+    productCategoryId: number | undefined,
     search: string,
-    tagIds: [],
+    tagIds: number[],
     sort: string,
     isLoadMore: boolean,
-    warehouseId: number
+    warehouseId: number | undefined
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -174,13 +173,13 @@ export class OrderApi {
   async getListOrderVariant(
     page: number,
     size: number,
-    productCategoryId: number,
+    productCategoryId: number | undefined,
     search: string,
-    tagIds: [],
+    tagIds: number[],
     sort: string,
     isLoadMore: boolean,
-    warehouseId: number,
-    productTemplateId: number
+    warehouseId: number | undefined,
+    productTemplateId: number | undefined
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -216,13 +215,13 @@ export class OrderApi {
   async getListOrderProductPrice(
     page: number,
     size: number,
-    productCategoryId: number,
+    productCategoryId: number| undefined,
     search: string,
-    tagIds: [],
+    tagIds: number[],
     sort: string,
     isLoadMore: boolean,
-    warehouseId: number,
-    priceListId: number
+    warehouseId: number | undefined,
+    priceListId: number | undefined
   ): Promise<any> {
     Loading.show({
       text: "Loading...",
@@ -262,13 +261,13 @@ export class OrderApi {
   async getListOrderVariantPrice(
     page: number,
     size: number,
-    productCategoryId: number,
+    productCategoryId: number | undefined,
     search: string,
-    tagIds: [],
+    tagIds: number[],
     sort: string,
     isLoadMore: boolean,
-    warehouseId: number,
-    productTemplateId: number,
+    warehouseId: number | undefined,
+    productTemplateId: number | undefined,
     priceListId: number
   ): Promise<any> {
     Loading.show({
@@ -447,11 +446,11 @@ export class OrderApi {
     scopeType: any,
     page: any,
     size: any
-  ): Promise<BaseResponse<TaxModel, ErrorCode>> {
+  ): Promise<BaseResponse<TaxModel, ErrorCode> | undefined> {
     // Loading.show({
     //   text: "Loading...",
     // });
-    try {
+    // try {
       const response: ApiResponse<BaseResponse<TaxModel, ErrorCode>> =
         await this.apiAccount.apisauce.get(ApiEndpoint.GET_LIST_TAX, {
           type: type,
@@ -467,22 +466,22 @@ export class OrderApi {
       }
       Loading.hide();
       return data;
-    } catch (e) {
-      Loading.hide();
-      return { kind: "bad-data" };
-    }
+    // } catch (e) {
+    //   Loading.hide();
+    //   return { kind: "bad-data" };
+    // }
   }
 
   async getDebtLimit(
     partnerId: any
     // type: any,
     // contractType: any
-  ): Promise<BaseResponse<DebtLimit, ErrorCode>> {
+  ): Promise<BaseResponse<DebtModel, ErrorCode> | undefined> {
     Loading.show({
       text: "Loading...",
     });
-    try {
-      const response: ApiResponse<BaseResponse<DebtLimit, ErrorCode>> =
+    // try {
+      const response: ApiResponse<BaseResponse<DebtModel, ErrorCode>> =
         await this.apiAccount.apisauce.get(ApiEndpoint.GET_DEBT_LIMIT, {
           partnerId: partnerId,
           type: TYPE_DEBT.EXTERNAL,
@@ -496,19 +495,19 @@ export class OrderApi {
       }
       Loading.hide();
       return data;
-    } catch (e) {
-      Loading.hide();
-      return { kind: "bad-data" };
-    }
+    // } catch (e) {
+    //   Loading.hide();
+    //   return { kind: "bad-data" };
+    // }
   }
 
   async postTaxLines(
     formTax: []
-  ): Promise<BaseResponse<TaxLineModel, ErrorCode>> {
+  ): Promise<BaseResponse<TaxLineModel, ErrorCode> | undefined> {
     Loading.show({
       text: "Loading...",
     });
-    try {
+    // try {
       const response: ApiResponse<BaseResponse<TaxLineModel, ErrorCode>> =
         await this.api.apisauce.post(ApiEndpoint.POST_LIST_TAX_LINES, formTax);
       const data = response.data;
@@ -518,10 +517,10 @@ export class OrderApi {
       }
       Loading.hide();
       return data;
-    } catch (e) {
-      Loading.hide();
-      return { kind: "bad-data" };
-    }
+    // } catch (e) {
+    //   Loading.hide();
+    //   return { kind: "bad-data" };
+    // }
   }
   async cancelOrder(id: any): Promise<any> {
     Loading.show({
@@ -569,11 +568,11 @@ export class OrderApi {
       return { kind: "bad-data", result: error };
     }
   }
-  async postNewOrder(form: any): Promise<BaseResponse<any, ErrorCode>> {
+  async postNewOrder(form: any): Promise<BaseResponse<any, ErrorCode> | undefined> {
     Loading.show({
       text: "Loading...",
     });
-    try {
+    // try {
       const response: ApiResponse<BaseResponse<any, ErrorCode>> =
         await this.api.apisauce.post(ApiEndpoint.POST_ADD_SALE_ORDER, form);
       const data = response.data;
@@ -583,9 +582,9 @@ export class OrderApi {
       }
       Loading.hide();
       return data;
-    } catch (e) {
-      Loading.hide();
-      return { kind: "bad-data" };
-    }
+    // } catch (e) {
+    //   Loading.hide();
+    //   return { kind: "bad-data" };
+    // }
   }
 }

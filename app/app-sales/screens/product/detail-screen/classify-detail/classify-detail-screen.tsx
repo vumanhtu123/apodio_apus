@@ -1,15 +1,11 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { FC, useEffect, useRef, useState } from "react";
 import {
-  ActivityIndicator,
   Dimensions,
   Image,
-  FlatList,
-  RefreshControl,
   SafeAreaView,
   TouchableOpacity,
   View,
-  StyleSheet,
 } from "react-native";
 import { Svgs } from "../../../../../../assets/svgs";
 import { Header } from "../../../../../components/header/header";
@@ -18,8 +14,6 @@ import {
   colors,
   fontSize,
   margin,
-  padding,
-  palette,
   scaleHeight,
   scaleWidth,
 } from "../../../../theme";
@@ -28,10 +22,7 @@ import { AutoImage } from "../../../../../components/auto-image/auto-image";
 import { ScrollView } from "react-native-gesture-handler";
 import Modal from "react-native-modal";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-import AutoHeightImage from "react-native-auto-height-image";
 import { useStores } from "../../../../models";
-import { commasToDots, formatCurrency, formatNumber, formatVND } from "../../../../utils/validate";
-import ProductAttribute from "../../component/productAttribute";
 import { ALERT_TYPE, Dialog } from "../../../../../components/dialog-notification";
 import { translate } from "../../../../../i18n/translate";
 import SupplierList from "./render/supplier-detail";
@@ -45,7 +36,6 @@ export const ClassifyDetailScreen: FC = () => {
   const navigation = useNavigation();
   const route = useRoute<any>();
   const reload = route?.params?.reload;
-  const [showDetails, setShowDetails] = useState(false);
   const [dataClassification, setDataClassification] = useState<any>({});
   const [arrImagesProduct, setArrImagesProduct] = useState<any>([]);
   const [detailsClassification, setDetailsClassification] = useState<any>([]);
@@ -60,7 +50,6 @@ export const ClassifyDetailScreen: FC = () => {
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [nameValue, setNameValue] = useState<any>([]);
   const [isChecking, setIsChecking] = useState(true);
-  const [showOrHiddenWeight, setShowOrHiddenWeight] = useState<boolean>(false)
   const [attributes, setAttributes] = useState<any>([]);
   const handleGetDetailClassify = async () => {
     try {
@@ -301,6 +290,7 @@ export const ClassifyDetailScreen: FC = () => {
                 autoplay={false}
                 ref={refCarousel}
                 loop
+                vertical={false}
                 renderItem={({ item }: any) => (
                   <View>
                     <Image
@@ -317,9 +307,9 @@ export const ClassifyDetailScreen: FC = () => {
                 itemWidth={Dimensions.get("window").width - 32}
                 firstItem={activeSlide}
                 onSnapToItem={(index) => setActiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
+                // lockScrollWhileSnapping={true}
+                // enableMomentum={false}
+                // decelerationRate={0.5}
               />
               <Pagination
                 dotsLength={arrImagesProduct.length > 0 && arrImagesProduct.length}

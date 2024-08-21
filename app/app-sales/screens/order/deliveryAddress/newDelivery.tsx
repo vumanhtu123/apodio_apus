@@ -202,7 +202,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
     if (checkPhoneNumber(data.phone) !== true) {
       setError("phone", {
         type: "validate",
-        message: checkPhoneNumber(data.phone),
+        message: checkPhoneNumber(data.phone).toString(),
       });
       hasError = true
     }

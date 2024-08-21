@@ -147,7 +147,6 @@ export const ProductCreateScreen: FC = (item) => {
       const unitResult = await unitStore.getDetailUnitGroup(id);
       if (unitResult && unitResult.kind === "ok") {
         const data = unitResult.result.data;
-        console.log("getDetailUnitGroup:-------------------", data);
         setDetailUnitGroupData(data);
         const uomId = {
           id: data.originalUnit.id,
@@ -176,13 +175,8 @@ export const ProductCreateScreen: FC = (item) => {
     let unitResult = null;
     if (valueSwitchUnit) {
       unitResult = await unitStore.getListUnitGroup();
-      console.log("getListUnitGroup---------------------:", unitResult);
     } else {
       unitResult = await unitStore.getListUnit();
-      console.log(
-        "getListUnit---------------------:",
-        JSON.stringify(unitResult)
-      );
     }
     if (unitResult && unitResult.kind === "ok") {
       const data = unitResult.result.data.content;
@@ -213,12 +207,12 @@ export const ProductCreateScreen: FC = (item) => {
         },
         {}
       );
-      const resultArray = Object.values(groupedById);
+      const resultArray: any = Object.values(groupedById);
       const attributeValueArr: any = [];
       const textAttributeValueArr: any = [];
       const a = attributeArr.slice();
       a.forEach((item: { productAttributeId: any, id: any, value: any }) => {
-        if ("id" in item) {
+        if (item.id) {
           attributeValueArr.push({
             productAttributeId: item.productAttributeId,
             productAttributeValueId: item.id,
@@ -290,12 +284,10 @@ export const ProductCreateScreen: FC = (item) => {
       });
       newArr5.forEach((item: any, index: any) => (dataArr[index].attributeValues = item));
       setDataCreateProduct(dataArr);
-      console.log('data variants', JSON.stringify(dataArr))
     }
   }, [attributeArr]);
 
   const submitAdd = async (data: any) => {
-    console.log(JSON.stringify(dataCreateProduct));
     if (parternValidateSku.test(data.SKU) === false) {
       methods.setError("SKU", {
         type: "validate",
@@ -467,7 +459,7 @@ export const ProductCreateScreen: FC = (item) => {
         weight: formatStringToFloat(item.weight1),
       };
     });
-    const doneData = {
+    const doneData: any = {
       sku: data.SKU === "" ? null : data.SKU,
       name: data.productName,
       purchaseOk: valuePurchase,
@@ -519,7 +511,6 @@ export const ProductCreateScreen: FC = (item) => {
     };
     console.log("Done data create: ", JSON.stringify(doneData));
     const result = await productStore.postProduct(doneData);
-    console.log("data test---------", JSON.stringify(result));
     if (result.kind === "ok") {
       navigation.navigate({
         name: "successScreen", params: {
@@ -540,7 +531,7 @@ export const ProductCreateScreen: FC = (item) => {
   const uploadImages = useCallback(async (
     imageArray: any[],
     checkUploadSlider: boolean,
-    indexItem?: number
+    indexItem?: number | undefined
   ) => {
     try {
       const uploadPromises = imageArray.map(async (image: any, index: any) => {
@@ -569,15 +560,13 @@ export const ProductCreateScreen: FC = (item) => {
 
       // Gửi các yêu cầu upload đồng thời và chờ cho đến khi tất cả hoàn thành
       const results = await Promise.all(uploadPromises);
-      console.log(`successfully----------`, results);
       if (results) {
-        console.log(`imageArray---------------`, imageArray);
         if (checkUploadSlider) {
           setImagesNote([...imagesNote, ...results]);
         } else {
           const newArr = dataCreateProduct.slice();
-          const newArr1 = newArr[indexItem].imageUrls.concat(results);
-          dataCreateProduct[indexItem].imageUrls = newArr1;
+          const newArr1 = newArr[indexItem!].imageUrls.concat(results);
+          dataCreateProduct[indexItem!].imageUrls = newArr1;
           setDataCreateProduct(newArr);
         }
       }
@@ -868,6 +857,7 @@ export const ProductCreateScreen: FC = (item) => {
             addWeight={addWeight}
             onChangeDescription={(data) => dataDescription.current = data}
             onChangeIsVisible={(data) => addDescribe.current = data}
+            dataDescribe={dataDescription.current}
           />
         </ScrollView>
         <UnitModal

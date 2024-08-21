@@ -685,7 +685,7 @@ export const ItemVariant = memo(
                 <PriceModal
                     isVisible={modalRetailPrice1}
                     setIsVisible={() => setModalRetailPrice1(false)}
-                    title={"productDetail.retailPrice"}
+                    titleTx={"productDetail.retailPrice"}
                     onCancel={() => {
                         setModalRetailPrice1(false);
                         dataModal.length !== 0
@@ -703,7 +703,7 @@ export const ItemVariant = memo(
                 <PriceModal
                     isVisible={modalWholesalePrice1}
                     setIsVisible={() => setModalWholesalePrice1(false)}
-                    title={"productDetail.wholesalePrice"}
+                    titleTx={"productDetail.wholesalePrice"}
                     onCancel={() => {
                         setModalWholesalePrice1(false);
                         dataModal.length !== 0

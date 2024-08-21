@@ -521,7 +521,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   };
 
   const getListTax = async () => {
-    const result: TaxModel = await store.orderStore.getListTax(
+    const result = await store.orderStore.getListTax(
       "VAT_RATES",
       0,
       20,

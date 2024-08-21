@@ -32,13 +32,13 @@ export const FilterScreen: FC = (item) => {
     const data = await productStore.getListTagProduct();
     setData(data.result.data.content);
   };
-  const [selectedNameFilter, setSelectedNameFilter] = useState(
+  const [selectedNameFilter, setSelectedNameFilter] = useState<string | null>(
     productStore.sort[0]
   );
-  const [selectedTimeFilter, setSelectedTimeFilter] = useState(
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState<string | null>(
     productStore.sort[1]
   );
-  const [selectedTagFilter, setSelectedTagFilter] = useState(0);
+  const [selectedTagFilter, setSelectedTagFilter] = useState<number | null>(0);
   const handleNamePress = (item: any) => {
     if (selectedNameFilter === item) {
       setSelectedNameFilter(null);
@@ -86,13 +86,13 @@ export const FilterScreen: FC = (item) => {
     console.log(productStore.sort);
     productStore.setTagId(indexItemTag);
     console.log(productStore.tagId);
-    navigation.navigate("productScreen" as never, { reload: false });
+    navigation.navigate({name: "productScreen", params: { reload: false }} as never);
   };
   const handleSortCategory = () => {
     const filterData = getFilterData();
     productStore.setSortCategory(Object.values(filterData));
     console.log(productStore.sortCategory);
-    navigation.navigate("productScreen" as never, { reload: false });
+    navigation.navigate({name: "productScreen", params: { reload: false }} as never);
   };
   useEffect(() => {
     console.log("first ", indexItemTag);
@@ -263,7 +263,7 @@ export const FilterScreen: FC = (item) => {
         }}>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("productScreen" as never, { reload: false })
+            navigation.navigate({name: "productScreen", params: { reload: false }} as never)
           }
           style={{
             width: scaleWidth(165),

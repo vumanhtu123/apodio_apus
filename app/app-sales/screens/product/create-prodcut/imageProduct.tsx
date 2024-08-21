@@ -46,7 +46,7 @@ export default function ImageProduct(props: ImageProduct) {
                 maxHeight: 500,
                 maxWidth: 500,
             };
-            launchCamera(options, (response: any) => {
+            launchCamera(options, (response) => {
                 console.log("==========> response1233123", response);
                 if (response.didCancel) {
                     console.log("User cancelled photo picker1");
@@ -54,7 +54,7 @@ export default function ImageProduct(props: ImageProduct) {
                     console.log("ImagePicker Error2: ", response.errorCode);
                 } else if (response.errorCode) {
                     console.log("User cancelled photo picker1");
-                } else if (response?.assets[0].uri) {
+                } else if (response?.assets) {
                     console.log(response?.assets[0].uri);
                     const imageAssets = [response?.assets[0]];
                     uploadImage(imageAssets, true, -1);

@@ -519,7 +519,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   };
 
   const getListTax = async () => {
-    const result: TaxModel = await store.orderStore.getListTax(
+    const result = await store.orderStore.getListTax(
       "VAT_RATES",
       0,
       20,

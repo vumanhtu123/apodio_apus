@@ -32,7 +32,6 @@ export const ItemMoreInformation = memo(
     const [size, setSize] = useState<any>();
     const getListBrand = async () => {
       const data = await productStore.getListBrand();
-      console.log('firstád', data)
       const newArr = data.result.data.content.map((item: any) => {
         return { label: item.name, id: item.id };
       })
@@ -51,7 +50,6 @@ export const ItemMoreInformation = memo(
       setDataCategory(newArr);
     };
     const searchCategory = (searchValue: any) => {
-      // console.log('sadsadsa', searchValue)
       getListCategory(searchValue)
     }
     const [isRefreshing, setIsRefreshing] = useState(false);
@@ -327,7 +325,7 @@ export const ItemGroupPrice = memo(
         <PriceModal
           isVisible={modalRetailPrice}
           setIsVisible={() => setModalRetailPrice(false)}
-          title={"productDetail.retailPrice"}
+          titleTx={"productDetail.retailPrice"}
           onCancel={() => {
             setModalRetailPrice(false);
             dataModal?.length !== 0
@@ -344,7 +342,7 @@ export const ItemGroupPrice = memo(
         <PriceModal
           isVisible={modalWholesalePrice}
           setIsVisible={() => setModalWholesalePrice(false)}
-          title={"productDetail.wholesalePrice"}
+          titleTx={"productDetail.wholesalePrice"}
           onCancel={() => {
             setModalWholesalePrice(false);
             dataModal.length !== 0
