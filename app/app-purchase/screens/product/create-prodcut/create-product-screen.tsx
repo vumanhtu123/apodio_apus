@@ -209,13 +209,13 @@ export const ProductCreateScreen: FC = (item) => {
     } as never);
   }, [attributeArr, dropdownSelected, hasVariantInConfig])
 
-  const getListUnitGroup = async (valueSwitchUnit: boolean) => {
+  const getListUnitGroup = async (valueSwitchUnit: boolean, searchValue?: any) => {
     let unitResult = null;
     if (valueSwitchUnit) {
-      unitResult = await unitStore.getListUnitGroup();
+      unitResult = await unitStore.getListUnitGroup(searchValue);
       console.log("getListUnitGroup---------------------:", unitResult);
     } else {
-      unitResult = await unitStore.getListUnit();
+      unitResult = await unitStore.getListUnit(searchValue);
       console.log(
         "getListUnit---------------------:",
         JSON.stringify(unitResult)
@@ -234,7 +234,16 @@ export const ProductCreateScreen: FC = (item) => {
       console.error("Failed to fetch list unit:", unitResult);
     }
   };
-
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefreshUnit = () => {
+    setIsRefreshing(true)
+    setUnitGroupData([])
+    getListUnitGroup(valueSwitchUnit)
+    setIsRefreshing(false)
+  }
+  const searchUnit = (searchValue: any) => {
+    getListUnitGroup(valueSwitchUnit, searchValue)
+  }
   useEffect(() => {
     if (attributeArr !== undefined) {
       const groupedById = attributeArr.reduce(
@@ -858,6 +867,10 @@ export const ProductCreateScreen: FC = (item) => {
             onChangeInput={(item) => handleSelectUnit(item)}
             addUnitOrGroup={() => handleAddNewUnitOrGroup()}
             onChangeSwitch={() => handleSwitchUnit()}
+            onRefresh={handleRefreshUnit}
+            onSubmitSearch={searchUnit}
+            isRefreshing={isRefreshing}
+            setIsRefreshing={setIsRefreshing}
           />
           {addWeight ? (
             <View

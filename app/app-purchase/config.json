@@ -15,6 +15,7 @@
       "UAA": "https://gateway.dev.apusplatform.com/services/uaa",
       "URL_WAREHOUSE": "https://warehouse-service.dev.apusplatform.com",
       "URL_SUPPLIER": "https://resources-service.dev.apusplatform.com"
+      
 
     },
     "STAGING": {

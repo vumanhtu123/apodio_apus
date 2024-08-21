@@ -5,6 +5,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -54,6 +55,7 @@ export const CreateConversionGroup: FC = observer(
     const [indexConversion, setIndexConversion] = useState(0);
     const [disabledSelect, setDisabledSelect] = useState(false);
     const [dataUnit, setDataUnit] = useState("");
+    const [dataChooseUnit, setDataChooseUnit] = useState("");
 
     const handleSearch = (text: any) => {
       setSearch(text);
@@ -125,6 +127,7 @@ export const CreateConversionGroup: FC = observer(
 
     useEffect(() => {
       getListUnit();
+      getListUnit2();
     }, []);
 
     useEffect(() => {
@@ -139,9 +142,8 @@ export const CreateConversionGroup: FC = observer(
       }
     }, [conversionWatch[0].code, conversionWatch[0].conversionRate]);
 
-    const getListUnit = async () => {
-      const unitResult = await unitStore.getListUnit();
-      console.log("response11111", unitResult);
+    const getListUnit = async (searchValue?: any) => {
+      const unitResult = await unitStore.getListUnit(searchValue);
       if (unitResult && unitResult.kind === "ok") {
         let dataModified = unitResult.result.data.content.map(
           (obj: { id: any; name: any }) => {
@@ -151,14 +153,57 @@ export const CreateConversionGroup: FC = observer(
             };
           }
         );
-        console.log("response2222", dataModified);
-        setFilteredData(dataModified);
         setData(dataModified);
       } else {
         console.error("Failed to fetch list unit:", unitResult);
       }
     };
-
+    const getListUnit2 = async (searchValue?: any) => {
+      const unitResult = await unitStore.getListUnit(searchValue);
+      if (unitResult && unitResult.kind === "ok") {
+        let dataModified = unitResult.result.data.content.map(
+          (obj: { id: any; name: any }) => {
+            return {
+              id: obj.id,
+              label: obj.name,
+            };
+          }
+        );
+        const filteredResult1 = dataModified.filter(
+          (item: any) => item.id !== originalUnit.id
+        );
+        const filteredResult = filteredResult1.filter(
+          (item: any) => item.label !== dataUnit
+        );
+        console.log('sadsadaczxcz', filteredResult1)
+        console.log('sadsad', filteredResult)
+        setFilteredData(filteredResult);
+        // setFilteredData(dataModified);
+      } else {
+        console.error("Failed to fetch list unit:", unitResult);
+      }
+    };
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const handleRefreshUnit = () => {
+      setIsRefreshing(true)
+      setData([])
+      getListUnit()
+      setIsRefreshing(false)
+    }
+    const handleRefreshUnit2 = () => {
+      setIsRefreshing(true)
+      setSearch('')
+      setFilteredData([])
+      getListUnit2()
+      setIsRefreshing(false)
+    }
+    const searchUnit = (searchValue: any) => {
+      getListUnit(searchValue)
+    }
+    const searchUnit2 = async (searchValue: any) => {
+      setFilteredData([])
+      await getListUnit2(searchValue)
+    }
     const createUnitGroupLine = async (params: any, saveLocal: boolean) => {
       const unitResult = await unitStore.createUnitGroupLine(params);
       console.log('du lieu tra ve', unitResult)
@@ -296,6 +341,11 @@ export const CreateConversionGroup: FC = observer(
             required={true}
             arrData={arrData}
             dataDefault={originalUnit.label}
+            onRefresh={handleRefreshUnit}
+            isRefreshing={isRefreshing}
+            setIsRefreshing={setIsRefreshing}
+            handleOnSubmitSearch={searchUnit}
+            normalInputSelect={true}
             onPressChoice={(item: { label: string, id: number }) => {
               setDataUnit(item.label);
               setOriginalUnit(item);
@@ -541,18 +591,38 @@ export const CreateConversionGroup: FC = observer(
                                 placeholder={translate("productScreen.search")}
                               />
                             </View>
+                            {search ? (
+                              <View style={{}}>
+                                <TouchableOpacity
+                                  onPress={() => searchUnit2(search)}
+                                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                  <View style={{ justifyContent: 'center', marginRight: scaleWidth(2) }}>
+                                    <Svgs.icon_searchBlack width={scaleWidth(14)} height={scaleHeight(14)} />
+                                  </View>
+                                  <Text style={styles.textLabelFlatList}>{search}</Text>
+                                </TouchableOpacity>
+                                <View style={styles.viewLine}></View>
+                              </View>
+                            ) : null}
                             <FlatList
                               data={filteredData}
                               style={{
                                 // flex: 1,
-                                marginTop: scaleHeight(margin.margin_10),
+                                marginTop: search ? null : scaleHeight(margin.margin_10),
                               }}
+                              refreshControl={
+                                <RefreshControl
+                                  refreshing={isRefreshing}
+                                  onRefresh={handleRefreshUnit2}
+                                  title="ok"
+                                />}
                               renderItem={({ item }: any) => {
                                 return (
                                   <View>
                                     <TouchableOpacity
                                       onPress={() => {
                                         setDataUnit(item.label);
+                                        setDataChooseUnit(item.label);
                                         setFilteredData((prevItems) =>
                                           prevItems.filter(
                                             (i: any) => i.label !== item.label

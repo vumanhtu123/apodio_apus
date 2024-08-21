@@ -1,21 +1,53 @@
 
 import { TouchableOpacity, View, } from 'react-native'
-import React, { FC, useState } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import Modal from 'react-native-modal'
 import { Styles } from '../screen/styles'
 import { colors, fontSize, scaleHeight, scaleWidth } from '../../../theme'
 import { Text } from '../../../../components'
 import { Svgs } from '../../../../../assets/svgs'
+import { translate } from '../../../../i18n'
 
 
 interface propsModal {
     isVisible?: boolean,
-    setIsVisible?: () => void
+    setIsVisible?: () => void,
+    sortMustPay: (value: string) => void,
+    sortTotalDebt: (value: string) => void
+
 }
 
-export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
-    const [selectUpOrDow, setSelectUpOrDow] = useState("Up")
-    const [totalDebt, setTotalDebt] = useState("Dow")
+export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible, sortTotalDebt, sortMustPay }) => {
+    // const [selectUpOrDow, setSelectUpOrDow] = useState("Dow")
+    const [selectSortMustPay, setSelectSortMustPay] = useState(0)
+    const [selectTotalDebt, setSelectTotalDebt] = useState(0)
+
+    const selectUpOrDow = useRef('Dow')
+    const totalDebt = useRef('Dow')
+
+
+
+    const sendKeySortMustPay = () => {
+        sortMustPay(selectUpOrDow.current)
+    }
+    const sendKeySortTotalDebt = () => {
+        sortTotalDebt(totalDebt.current)
+    }
+
+    console.log('value select', selectUpOrDow.current);
+    const dataUpOrDow = [
+        {
+            name: translate('debtScreen.dow'),
+            sort: 'Dow'
+
+        },
+        {
+            name: translate('debtScreen.up'),
+            sort: 'Up'
+
+        },
+
+    ]
 
     return (
 
@@ -63,41 +95,35 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
 
                 <View style={Styles.horizontalLine} />
 
-                <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text tx='debtScreen.nameProviders'></Text>
-                    <Svgs.ic_tick />
-                </TouchableOpacity>
+                {
 
-                <View style={Styles.horizontalLine} />
-
+                }
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <View style={{ flex: 1 }}>
                         <Text tx='debtScreen.theMoneyHaveToPay'></Text>
                     </View>
                     <View style={Styles.styleBtnSwipe}>
+                        {
+                            dataUpOrDow.map((item, index) => {
+                                return (
+                                    <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: index == selectSortMustPay ? colors.white : colors.lavender }]}
+                                        onPress={() => {
+                                            // setSelectUpOrDow('giảm')
+                                            setSelectSortMustPay(index)
+                                            console.log('select', selectUpOrDow.current);
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: selectUpOrDow == 'Dow' ? colors.white : colors.lavender }]}
-                            onPress={() => setSelectUpOrDow('Dow')}
-                        >
-                            <Text style={{ fontSize: fontSize.size12, padding: 7 }}
-                                tx='debtScreen.dow'
-                            >
+                                            selectUpOrDow.current = item.sort
+                                            sendKeySortMustPay()
+                                        }}
+                                    >
+                                        <Text style={{ fontSize: fontSize.size12, padding: 7 }}
 
-                            </Text>
-                        </TouchableOpacity>
+                                        >{item.name}</Text>
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: selectUpOrDow == 'Up' ? colors.white : colors.lavender }]}
-                            onPress={() => setSelectUpOrDow('Up')}
-                        >
-                            <Text style={{ fontSize: fontSize.size12, padding: 7 }}
-                                tx='debtScreen.up'
-                            >
-
-                            </Text>
-                        </TouchableOpacity>
-
-
-
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
                     </View>
                 </View>
 
@@ -109,23 +135,27 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible }) => {
                     </View>
                     <View style={Styles.styleBtnSwipe}>
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: totalDebt == 'Dow' ? colors.white : colors.lavender }]}
-                            onPress={() => setTotalDebt('Dow')}
-                        >
-                            <Text style={{ fontSize: fontSize.size12, padding: 7 }}
-                                tx='debtScreen.dow'
-                            >
-                            </Text>
-                        </TouchableOpacity>
+                        {
+                            dataUpOrDow.map((item, index) => {
+                                return (
+                                    <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: index == selectTotalDebt ? colors.white : colors.lavender }]}
+                                        onPress={() => {
+                                            // setSelectUpOrDow('giảm')
+                                            setSelectTotalDebt(index)
+                                            console.log('select', selectUpOrDow.current);
 
-                        <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: totalDebt == 'Up' ? colors.white : colors.lavender }]}
-                            onPress={() => setTotalDebt('Up')}
-                        >
-                            <Text style={{ fontSize: fontSize.size12, padding: 7 }}
-                                tx='debtScreen.up'
-                            >
-                            </Text>
-                        </TouchableOpacity>
+                                            totalDebt.current = item.sort
+                                            sendKeySortTotalDebt()
+                                        }}
+                                    >
+                                        <Text style={{ fontSize: fontSize.size12, padding: 7 }}
+
+                                        >{item.name}</Text>
+
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
 
 
                     </View>

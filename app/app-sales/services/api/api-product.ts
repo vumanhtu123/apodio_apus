@@ -81,9 +81,9 @@ export class ProductApi {
     }
   }
   async getDetailProduct(id: number): Promise<any> {
-    Loading.show({
-      text: 'Loading...',
-    });
+    // Loading.show({
+    //   text: 'Loading...',
+    // });
     try {
       const response: ApiResponse<any> = await this.api.apisauce.get(
         ApiEndpoint.GET_PRODUCT_DETAIL,
@@ -177,7 +177,7 @@ export class ProductApi {
       return { kind: "bad-data", result: error };
     }
   }
-  async getListBrandProduct(): Promise<Brand> {
+  async getListBrandProduct(search: any): Promise<Brand> {
     Loading.show({
       text: 'Loading...',
     });
@@ -187,6 +187,7 @@ export class ProductApi {
         {
           page: 0,
           size: 20,
+          search: search
         }
       );
       Loading.hide();

@@ -6,11 +6,12 @@ import { colors, fontSize, scaleWidth } from '../../../theme'
 import { Svgs } from '../../../../../assets/svgs'
 import { Text } from '../../../../components'
 import { commasToDots, formatCurrency, formatVND } from '../../../utils/validate'
+import { useNavigation } from '@react-navigation/native'
 
 interface Props {
     id: number
-    nameCompany: string,
-    pay: number,
+    name: string,
+    remainingDebt: number,
     day: string
 }
 
@@ -21,11 +22,15 @@ interface ItemNCC {
 }
 
 const ItemListNCC: FC<ItemNCC> = ({ item, isVisible, setIsVisible }) => {
-
+    const navigation = useNavigation()
 
     return (
-        <View
+        <TouchableOpacity
             style={Styles.bodyItemNCC}
+            onPress={() =>
+                navigation.navigate("detailReceivable" as never)
+
+            }
         >
             <View
                 style={{
@@ -38,8 +43,12 @@ const ItemListNCC: FC<ItemNCC> = ({ item, isVisible, setIsVisible }) => {
                     <Svgs.ic_avatar />
                     <Text style={{
                         fontSize: fontSize.size12,
-                        fontWeight: '600'
-                    }}>{item?.nameCompany}</Text>
+                        fontWeight: '600',
+                        flex: 1,
+
+                    }}
+                        numberOfLines={1}
+                    >{item?.name}</Text>
                 </View>
             </View>
             <View style={[Styles.styleLine, {}]} />
@@ -49,7 +58,7 @@ const ItemListNCC: FC<ItemNCC> = ({ item, isVisible, setIsVisible }) => {
                 <Text
                     style={{ fontSize: fontSize.size16, fontWeight: '600', color: colors.palette.radicalRed }}
                 >
-                    {formatVND(formatCurrency(commasToDots(item?.pay)))}
+                    {formatVND(formatCurrency(commasToDots(item?.remainingDebt)))}
                 </Text>
                 <TouchableOpacity style={Styles.styleBtnPay}
                     onPress={() => setIsVisible(!isVisible)}
@@ -61,7 +70,7 @@ const ItemListNCC: FC<ItemNCC> = ({ item, isVisible, setIsVisible }) => {
             </View>
 
 
-        </View>
+        </TouchableOpacity>
     )
 }
 

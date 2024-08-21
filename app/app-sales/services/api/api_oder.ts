@@ -57,9 +57,9 @@ export class OrderApi {
     }
   }
   async getDetailInvoice(id: number): Promise<any> {
-    Loading.show({
-      text: "Loading...",
-    });
+    // Loading.show({
+    //   text: "Loading...",
+    // });
     try {
       // console.log('first0--' ,ApiEndpoint.GET_LIST_ORDER )
       const response: ApiResponse<any> = await this.apiAccount.apisauce.get(

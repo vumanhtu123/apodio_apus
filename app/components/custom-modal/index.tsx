@@ -29,15 +29,15 @@ export const CustomModal = (props: ModalProps) => {
       style={{ margin: 0 }}
     >
       <View style={{
-        maxHeight: Dimensions.get('screen').height * 0.6,
-        minHeight: Dimensions.get('screen').height * 0.3,
+        maxHeight: Dimensions.get('screen').height * 0.45,
+        minHeight: Dimensions.get('screen').height * 0.4,
         width: '100%',
         backgroundColor: colors.palette.neutral100,
         borderTopLeftRadius: margin.border_top_left_radius,
         borderTopRightRadius: margin.border_top_right_radius,
         paddingVertical: scaleHeight(margin.margin_16),
         paddingHorizontal: scaleWidth(margin.margin_16),
-        paddingBottom : scaleHeight(20),
+        paddingBottom: scaleHeight(20),
         position: 'absolute', bottom: 0,
       }}>
         {children}

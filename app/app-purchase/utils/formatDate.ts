@@ -1,5 +1,5 @@
 import I18n from "i18n-js"
-
+import momentTimeZone from 'moment-timezone'
 // Note the syntax of these imports from the date-fns library.
 // If you import with the syntax: import { format } from "date-fns" the ENTIRE library
 // will be included in your production bundle (even if you only use one function).
@@ -43,4 +43,11 @@ export const formatDateTime = (dateTimeString: string | number | Date) => {
   const formattedDateTime = ` ${hours}:${minutes} ${day}/${month}`;
 
   return formattedDateTime;
+}
+
+export function convertToOffsetDateTime(date: string | any): string {
+  let format = 'YYYY-MM-DDTHH:mm:ssZ'
+  const targetTimeZone = 'Asia/Ho_Chi_Minh'
+  const momentDate = momentTimeZone.tz(date, format, targetTimeZone)
+  return momentDate.format('YYYY-MM-DDTHH:mm:ssZ')
 }

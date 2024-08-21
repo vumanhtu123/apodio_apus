@@ -359,14 +359,14 @@ export const stylesCategory = StyleSheet.create({
   viewIconSearch: {
     position: "absolute",
     bottom: scaleHeight(20),
-    left: scaleWidth(20),
+    left: scaleWidth(10),
   },
   textInput: {
     fontSize: fontSize.size14,
     fontWeight: "400",
     paddingVertical: scaleHeight(3),
     marginVertical: scaleHeight(10),
-    marginHorizontal: scaleWidth(10),
+    // marginHorizontal: scaleWidth(10),
     borderWidth: 0.3,
     borderRadius: 5,
     paddingLeft: scaleWidth(30),

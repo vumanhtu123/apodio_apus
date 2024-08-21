@@ -46,7 +46,7 @@ const getDomainUAA = () => {
 
 const getDomainUpload = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.STAGING.URL_UPLOAD;
+  const domain = CONFIG.API.DEV.URL_UPLOAD;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Upload", domain);
   return domain;
@@ -68,6 +68,7 @@ const getDomainWarehouse = () => {
   console.log("URL warehouse 2", domain);
   return domain;
 };
+
 const getDomainSupplier = () => {
   const domain = CONFIG.API.DEV.URL_SUPPLIER;
   console.log("URL Supplier", domain);
@@ -131,3 +132,5 @@ export const DEFAULT_API_SUPPLIER: ApiConfig = {
   url: getDomainSupplier(),
   timeout: 100000,
 };
+
+
