@@ -16,6 +16,7 @@ import { CustomModal } from "../../../components/custom-modal";
 interface Input {
   onVisible?: any;
   onClose?: any;
+  selected: (data: any) => void;
 }
 
 export const ClassifyModal = (props: Input) => {
@@ -41,6 +42,13 @@ export const ClassifyModal = (props: Input) => {
   } = useForm({
     mode: "all",
   });
+
+  const handleSubmitForm = (item: any) => {
+    if (selectedValue) {
+      props.onClose();
+      props.selected(item);
+    }
+  };
 
   console.log("tuvm acb", selectedValue);
 
@@ -134,6 +142,7 @@ export const ClassifyModal = (props: Input) => {
               <TouchableOpacity
                 onPress={() => {
                   selectItem(item.id);
+                  handleSubmitForm(item);
                 }}>
                 <View
                   style={[
