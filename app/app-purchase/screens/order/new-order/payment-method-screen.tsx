@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Header, Screen, Text, TextField } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
@@ -148,88 +148,49 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   } = useForm();
   const navigation = useNavigation();
   return (
-    <View
-      style={{
-        backgroundColor: colors.palette.aliceBlue,
-        justifyContent: "space-between",
-        flexDirection: "column",
-        flex: 1,
-      }}>
+    <View style={styles.ROOT}>
       <View>
         <Header
           LeftIcon={Svgs.back}
           onLeftPress={() => navigation.goBack()}
           style={{ height: scaleHeight(70) }}
           headerTx={"order.warning_payment"}
-          titleStyle={{
-            alignSelf: "center",
-            fontSize: fontSize.size16,
-            lineHeight: scaleHeight(24),
-            fontWeight: "700",
-            color: colors.palette.neutral100,
-          }}
+          titleStyle={styles.textTitle}
         />
         <View style={{ backgroundColor: colors.palette.aliceBlue }}>
           {warning == false ? null :
             // (check !== true ? (
-            <View
-              style={{
-                backgroundColor: "#FEF7E5",
-                flexDirection: "row",
-                paddingHorizontal: padding.padding_20,
-                justifyContent: "flex-start",
-                paddingVertical: padding.padding_10,
-              }}>
+            <View style={styles.viewWarning}>
               <Svgs.ic_warning_yellow />
               <Text
                 tx="order.tittle_warning"
-                style={{
-                  color: colors.nero,
-                  fontSize: fontSize.size12,
-                  fontWeight: "400",
-                }}></Text>
+                style={styles.textWarning} />
             </View>}
           {/* ) : null)} */}
-          <Text
-            style={{
-              fontSize: fontSize.size20,
-              fontWeight: "600",
-              color: "#FF4956",
-              textAlign: "center",
-              marginVertical: margin.margin_20,
-            }}>
+          <Text style={styles.textSum}>
             {formatVND(formatCurrency(commasToDots(Sum())))}
           </Text>
           {type === false ? (
             <View style={{ flexDirection: "row", marginHorizontal: scaleWidth(16) }}>
               <Text
-                style={{
-                  fontSize: fontSize.size12,
-                  fontWeight: "400",
-                  color: colors.dolphin,
-                }}
-                tx="order.debt_limit"></Text>
-              <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
+                style={styles.textDolphin400}
+                tx="order.debt_limit"/>
+              <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: colors.radicalRed }}>
                 {formatVND(formatCurrency(commasToDots(debtAmount)))}
               </Text>
             </View>
           ) : null}
           <View style={{ flexDirection: "row", marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(8) }}>
             <Text
-              style={{
-                fontSize: fontSize.size12,
-                fontWeight: "400",
-                color: colors.dolphin,
-              }}
-              tx="order.text_money_limit"></Text>
-            <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
+              style={styles.textDolphin400}
+              tx="order.text_money_limit"/>
+            <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: colors.radicalRed }}>
               {formatVND(formatCurrency(commasToDots(Sum1())))}
             </Text>
           </View>
           <TouchableOpacity
             onPress={() => {
               setButtonPayment(true);
-              // console.log('sakdas', method)
             }}
             style={{
               flexDirection: "row",
@@ -266,7 +227,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       fontWeight: "400",
                       marginRight: scaleWidth(6),
                       textAlign: 'right',
-                      color: "#FF4956"
+                      color: colors.radicalRed
                     }}>
                     {`(${formatVND(formatCurrency(commasToDots(credit)))})`}
                   </Text>
@@ -299,7 +260,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                     Toast.show({
                       type: ALERT_TYPE.DANGER,
                       title: '',
-                      textBody: translate('txtToats.change_payment'),
+                      textBody: translate('txtToasts.change_payment'),
                     })
                     setValue('price', '0')
                   } else {
@@ -361,7 +322,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 color: colors.dolphin,
               }}
               tx="order.amount_paid"></Text>
-            <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
+            <Text style={{ fontSize: 12, fontWeight: "400", color: colors.radicalRed }}>
               {formatVND(formatCurrency(commasToDots(Remain())))}
             </Text>
           </View>}
@@ -434,3 +395,43 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     </View>
   );
 });
+
+const styles = StyleSheet.create({
+  ROOT: {
+    backgroundColor: colors.palette.aliceBlue,
+    justifyContent: "space-between",
+    flexDirection: "column",
+    flex: 1,
+  },
+  textTitle: {
+    alignSelf: "center",
+    fontSize: fontSize.size16,
+    lineHeight: scaleHeight(24),
+    fontWeight: "700",
+    color: colors.palette.neutral100,
+  },
+  viewWarning: {
+    backgroundColor: "#FEF7E5",
+    flexDirection: "row",
+    paddingHorizontal: padding.padding_20,
+    justifyContent: "flex-start",
+    paddingVertical: padding.padding_10,
+  },
+  textWarning: {
+    color: colors.nero,
+    fontSize: fontSize.size12,
+    fontWeight: "400",
+  },
+  textSum: {
+    fontSize: fontSize.size20,
+    fontWeight: "600",
+    color: colors.radicalRed,
+    textAlign: "center",
+    marginVertical: margin.margin_20,
+  },
+  textDolphin400: {
+    fontSize: fontSize.size12,
+    fontWeight: "400",
+    color: colors.dolphin,
+  },
+})

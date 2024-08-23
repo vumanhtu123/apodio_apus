@@ -81,7 +81,7 @@ export const ItemListMustPay: FC<ItemProps> = ({ item, onClick, idSelect }) => {
                             style={[idSelect == item?.partner?.id ? Styles.sizeTitle : Styles.sizeTitleUnSelect,]}
                             tx='debtScreen.mustPay'
                         />
-                        <Text style={[Styles.sizeContent, { color: idSelect == item?.partner?.id ? 'yellow' : "#FF4956" }]}>
+                        <Text style={[Styles.sizeContent, { color: idSelect == item?.partner?.id ? 'yellow' : colors.radicalRed }]}>
                             {formatVND(formatCurrency(commasToDots(item?.debtAmount)))}
                         </Text>
                     </View>

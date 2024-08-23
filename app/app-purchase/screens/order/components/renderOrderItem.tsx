@@ -10,15 +10,11 @@ import { Svgs } from "../../../../../assets/svgs";
 import {
   colors,
   fontSize,
-  margin,
-  padding,
   scaleHeight,
   scaleWidth,
 } from "../../../theme";
 import { Text } from "../../../../components";
-import { TurboModuleRegistry } from "react-native-windows";
 import { useStores } from "../../../models";
-import AutoHeightImage from "react-native-auto-height-image";
 import { ALERT_TYPE, Dialog } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n";
 import Images from "../../../../../assets/index";

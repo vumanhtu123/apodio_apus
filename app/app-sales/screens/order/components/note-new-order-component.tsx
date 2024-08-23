@@ -96,7 +96,7 @@ export const ShowNote = (props: InputNote) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.permission_denied"),
+          textBody: translate("txtToasts.permission_denied"),
         });
 
         Dialog.show({
@@ -116,7 +116,7 @@ export const ShowNote = (props: InputNote) => {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.permission_blocked"),
+        textBody: translate("txtToasts.permission_blocked"),
       });
 
       console.log("Permission blocked, you need to enable it from settings");
@@ -142,7 +142,7 @@ export const ShowNote = (props: InputNote) => {
             Toast.show({
               type: ALERT_TYPE.DANGER,
               title: "",
-              textBody: translate("txtToats.required_maximum_number_of_photos"),
+              textBody: translate("txtToasts.required_maximum_number_of_photos"),
             });
           } else {
             uploadImages(selectedAssets);
@@ -193,7 +193,7 @@ export const ShowNote = (props: InputNote) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.permission_denied"),
+          textBody: translate("txtToasts.permission_denied"),
         });
         Dialog.show({
           type: ALERT_TYPE.INFO,
@@ -212,7 +212,7 @@ export const ShowNote = (props: InputNote) => {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.permission_blocked"),
+        textBody: translate("txtToasts.permission_blocked"),
       });
       console.log("Permission blocked, you need to enable it from settings");
     }

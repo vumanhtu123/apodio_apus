@@ -16,21 +16,11 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
         const [onClick, setOnClick] = useState('successfully')
         const [sort, setSort] = useState<any>()
         const [MyDataTag, setMyDataTag] = useState<any>()
-        const [selectedTagId, setSelectedTagId] = useState([])
+        const [selectedTagId, setSelectedTagId] = useState<any>([])
         const { orderStore } = useStores()
-
-        // console.log('====================================');
-        // console.log('tessss', newOrOld);
-        // console.log('====================================');
-        // console.log('====================================');
-        // console.log('tessss2', aToz);
-        // console.log('====================================');
 
         const getDataTag = () => {
             orderStore.getListTagClient(true).then((data) => {
-                // console.log('====================================');
-                // console.log("My data Tag", data);
-                // console.log('====================================');
 
                 const MyDataTag = data?.content.map((item) => {
                     return {
@@ -38,14 +28,10 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                         name: item.name
                     }
                 })
-
                 setMyDataTag(MyDataTag)
             })
         }
 
-        // console.log('====================================');
-        // console.log("My data Tag", MyDataTag);
-        // console.log('====================================');
         useEffect(() => {
             getDataTag()
         }, [props.navigation])
@@ -66,41 +52,30 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
 
         const handleSort = () => {
             orderStore.setSortCreateClient(sort)
-
-            // console.log("sorttttttt", orderStore.sortCreateClient);
-            // console.log('====================================');
-            // console.log("2222");
-            // console.log('====================================');
-            props.navigation.navigate('selectClient', { myTag: selectedTagId })
+            props.navigation.navigate({name: 'selectClient', params: { myTag: selectedTagId }}as never)
         }
 
         console.log("arr data item tag", selectedTagId);
-        // console.log("keqqqqqqqq", newOrOld);
         return (
             <View style={{ flex: 1 }}>
                 <Header
                     headerTx="selectClient.filter"
                     LeftIcon={Svgs.back}
                     onLeftPress={() => props.navigation.goBack()}
-
                 />
-
                 <View
                     style={{ padding: scaleHeight(16), }}
                 >
-
                     <View style={{ marginBottom: scaleWidth(20) }}>
                         <Text tx="selectClient.timeCreate" style={Styles.stylesTitle} />
                         <View style={Styles.flexRow}>
                             <TouchableOpacity style={[sort == "createdAt,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
                                 onPress={() => {
                                     setSort('createdAt,desc')
-
                                 }}
                             >
                                 <Text tx="selectClient.new" style={{ color: sort == "createdAt,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
                             </TouchableOpacity>
-
                             <TouchableOpacity style={sort == "createdAt,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
                                 onPress={() => setSort('createdAt,asc')}
                             >
@@ -108,31 +83,25 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                             </TouchableOpacity>
                         </View>
                     </View>
-
-
                     <View style={{ marginBottom: scaleWidth(20) }}>
                         <Text tx="selectClient.followName" style={Styles.stylesTitle} />
                         <View style={Styles.flexRow}>
                             <TouchableOpacity style={[sort == "name,asc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect, { marginRight: 12 }]}
                                 onPress={() => {
                                     setSort('name,asc')
-
                                 }}
                             >
                                 <Text tx="selectClient.aToz" style={{ color: sort == "name,asc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
                             </TouchableOpacity>
-
                             <TouchableOpacity style={sort == "name,desc" ? Styles.stylesBTNSelect : Styles.stylesBTNUnSelect}
                                 onPress={() => {
                                     setSort('name,desc')
-
                                 }}
                             >
                                 <Text tx="selectClient.zToa" style={{ color: sort == "name,desc" ? colors.palette.navyBlue : colors.palette.dolphin }} />
                             </TouchableOpacity>
                         </View>
                     </View>
-
                     <View>
                         <Text tx="selectClient.tag" style={Styles.stylesTitle} />
                         <FlatList
@@ -170,10 +139,7 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                             numColumns={3}
                         />
                     </View>
-
-
                 </View>
-
                 <View style={[Styles.stylesBtnBottom, { position: 'absolute', bottom: 0 }]}>
                     <TouchableOpacity
                         style={[onClick === 'save' ? Styles.btnSuccessfully : Styles.btnSave, { marginRight: 13 }]}
@@ -183,17 +149,13 @@ export const FilterSelectScreen: FC<StackScreenProps<NavigatorParamList, "filter
                             style={{ color: onClick === 'save' ? colors.palette.white : colors.palette.navyBlue }}
                             tx="common.cancel"
                         >
-
                         </Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity
                         style={onClick === 'successfully' ? Styles.btnSuccessfully : Styles.btnSave}
                         onPress={() => {
                             handleSort()
-
                         }}
-
                     >
                         <Text
                             style={{ color: onClick === 'successfully' ? colors.palette.white : colors.palette.navyBlue }}

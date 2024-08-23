@@ -157,7 +157,7 @@ export default function ItemWeight(props: ItemWeight) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.add_line_weight"),
+        textBody: translate("txtToasts.add_line_weight"),
       })
     } else {
       setAddLine(true)
@@ -201,7 +201,7 @@ export default function ItemWeight(props: ItemWeight) {
                       Toast.show({
                         type: ALERT_TYPE.DANGER,
                         title: "",
-                        textBody: translate("txtToats.change_weight"),
+                        textBody: translate("txtToasts.change_weight"),
                       })
                     } else {
                       append({ weight1: "", volume: "", unit: {} });

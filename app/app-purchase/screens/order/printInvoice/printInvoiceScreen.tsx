@@ -44,7 +44,6 @@ export const PrintInvoiceScreen: FC = observer(function PrintInvoiceScreen(
   const route = useRoute();
   const invoiceId = route?.params?.invoiceId;
   const { PrintManager } = NativeModules;
-  console.log("firstzzzzádfasf", invoiceId);
   const handleGetDetailInvoice = async () => {
     try {
       const response = await orderStore.getDetailInvoice(invoiceId);

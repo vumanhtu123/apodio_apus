@@ -362,7 +362,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.noClient"),
+        textBody: translate("txtToasts.noClient"),
       });
     } else {
       if (orderStore.dataClientSelect.isHaveDeliveryAddress) {
@@ -521,7 +521,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   };
 
   const getListTax = async () => {
-    const result: TaxModel = await store.orderStore.getListTax(
+    const result = await store.orderStore.getListTax(
       "VAT_RATES",
       0,
       20,

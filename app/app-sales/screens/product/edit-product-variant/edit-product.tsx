@@ -144,6 +144,17 @@ export const ProductEditScreen: FC = (item) => {
     setVendor(selectedIds);
   }, [selectedIds]);
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefreshUnit = () => {
+    setIsRefreshing(true)
+    setUnitGroupData([])
+    getListUnitGroup(valueSwitchUnit)
+    setIsRefreshing(false)
+  }
+  const searchUnit = (searchValue: any) => {
+    getListUnitGroup(valueSwitchUnit, searchValue)
+  }
+
   useEffect(() => {
     getCheckUsingProduct();
 
@@ -402,14 +413,17 @@ export const ProductEditScreen: FC = (item) => {
     }
   };
 
-  const getListUnitGroup = async (valueSwitchUnit: boolean) => {
+  const getListUnitGroup = async (valueSwitchUnit: boolean, searchValue?: any) => {
     let unitResult = null;
     if (valueSwitchUnit) {
-      unitResult = await unitStore.getListUnitGroup();
+      unitResult = await unitStore.getListUnitGroup(searchValue);
       console.log("getListUnitGroup---------------------:", unitResult);
     } else {
-      unitResult = await unitStore.getListUnit();
-      console.log("getListUnit---------------------:", unitResult);
+      unitResult = await unitStore.getListUnit(searchValue);
+      console.log(
+        "getListUnit---------------------:",
+        JSON.stringify(unitResult)
+      );
     }
     if (unitResult && unitResult.kind === "ok") {
       const data = unitResult.result.data.content;
@@ -419,8 +433,6 @@ export const ProductEditScreen: FC = (item) => {
           label: obj.name,
         };
       });
-      console.log("uomGroupId---------------------:", uomGroupId.id);
-
       setUnitGroupData(dataModified);
     } else {
       console.error("Failed to fetch list unit:", unitResult);
@@ -549,7 +561,7 @@ export const ProductEditScreen: FC = (item) => {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.required_information"),
+        textBody: translate("txtToasts.required_information"),
       });
       return
     }
@@ -587,7 +599,7 @@ export const ProductEditScreen: FC = (item) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.input_weight"),
+          textBody: translate("txtToasts.input_weight"),
         });
         return
       }
@@ -595,7 +607,7 @@ export const ProductEditScreen: FC = (item) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.input_weight_variant"),
+          textBody: translate("txtToasts.input_weight_variant"),
         });
         return
       }
@@ -1024,6 +1036,10 @@ export const ProductEditScreen: FC = (item) => {
             onChangeInput={(item) => handleSelectUnit(item)}
             addUnitOrGroup={() => handleAddNewUnitOrGroup()}
             onChangeSwitch={() => handleSwitchUnit()}
+            onRefresh={handleRefreshUnit}
+            onSubmitSearch={searchUnit}
+            isRefreshing={isRefreshing}
+            setIsRefreshing={setIsRefreshing}
           />
           {addWeight ? (
             <View

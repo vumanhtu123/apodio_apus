@@ -11,7 +11,7 @@ interface InputSelect {
   closeDialog: () => void;
   onSave?: () => void;
   arrData: {}[];
-  method: number;
+  method: number | undefined;
   setMethod: (item: number, name: string) => void;
   debt: { isHaveDebtLimit: any; debtAmount: any };
   isPayment?: boolean;
@@ -61,7 +61,7 @@ export const ModalPayment = (data: InputSelect) => {
                 }}
                 debt={data.debt}
                 name={payment.label}
-                id={data.method}
+                id={data.method!}
                 index={index}
                 length={data.arrData.length}
               />
@@ -107,7 +107,7 @@ export const ModalPayment = (data: InputSelect) => {
           <TouchableOpacity
             onPress={() => {
               data.closeDialog();
-              data.onSave();
+              data.onSave!();
             }}
             style={{
               backgroundColor: colors.navyBlue,

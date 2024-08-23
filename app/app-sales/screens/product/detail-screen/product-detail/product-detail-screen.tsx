@@ -259,7 +259,6 @@ export const ProductDetailScreen: FC = () => {
     console.log("first", JSON.stringify(attributes));
     selectDataClassification();
   };
-  // console.log('firszxczt',getUnitName)
   return (
     <View style={styles.ROOT}>
       <Header

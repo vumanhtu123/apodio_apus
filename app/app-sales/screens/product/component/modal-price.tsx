@@ -98,7 +98,7 @@ const PriceModal = observer((props: PriceModalProps) => {
     }
     console.log("loi roi");
   }, [dataAdd]);
-  const priceWatch = watch("price");
+  const priceWatch: any = watch("price");
   const onSubmit = (data: any) => {
     const minValues = data.price.map((item: {min: number}) => item.min);
     const isDuplicate = minValues.some(
@@ -118,9 +118,9 @@ const PriceModal = observer((props: PriceModalProps) => {
 
   const validateUniqueMinQuantity = (value: any) => {
     const minValues = priceWatch!.map((item: any) => item.min);
-    const isDuplicate = minValues.filter((min) => min === value).length > 1;
+    const isDuplicate = minValues.filter((min: any) => min === value).length > 1;
     setIsError(isDuplicate);
-    return isDuplicate ? "Số lượng không được trùng lặp" : true;
+    return isDuplicate ? translate("productScreen.validateMin")  : true;
   };
 
   return (
@@ -253,7 +253,7 @@ const PriceModal = observer((props: PriceModalProps) => {
           />
           <Button
             onPress={() => {
-              const lastItem: {min: string, price: string} | {} = priceWatch![priceWatch!.length - 1];
+              const lastItem: any = priceWatch![priceWatch!.length - 1];
               if (lastItem.min && lastItem.price) {
                 append({ min: "", price: "" });
               } else {

@@ -151,7 +151,7 @@ const DropdownModal = (props: InputSelectProps) => {
   }
   const onConfirm = () => {
     setSelectedItems(selectedItem);
-    onPressChoice(selectedItem);
+    onPressChoice!(selectedItem);
     toggleModal();
   };
   const renderItem = ({ item }: any) => {
@@ -178,7 +178,7 @@ const DropdownModal = (props: InputSelectProps) => {
       (selectedItem: { value: any }) => selectedItem.value !== item.value
     );
     setSelectedItems(updatedSelectedItems);
-    onPressChoice(updatedSelectedItems);
+    onPressChoice!(updatedSelectedItems);
     setSelectedItem(updatedSelectedItems);
   };
   const onSubmitSearch = async () => {
@@ -316,7 +316,7 @@ const DropdownModal = (props: InputSelectProps) => {
             tx={"productScreen.BtnNotificationAccept"}
             style={styles.buttonAccept}
             textStyle={styles.textAccept}
-            onPress={(item: any) => onConfirm(item)}
+            onPress={() => onConfirm()}
           />
         </View>
       </CustomModal>

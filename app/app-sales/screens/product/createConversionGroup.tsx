@@ -237,7 +237,7 @@ export const CreateConversionGroup: FC = observer(
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.required_information"),
+          textBody: translate("txtToasts.required_information"),
         });
       } else {
         Dialog.show({
@@ -276,7 +276,7 @@ export const CreateConversionGroup: FC = observer(
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.required_information"),
+          textBody: translate("txtToasts.required_information"),
         });
       } else {
         Dialog.show({
@@ -429,7 +429,7 @@ export const CreateConversionGroup: FC = observer(
                                     type: ALERT_TYPE.DANGER,
                                     title: "",
                                     textBody: translate(
-                                      "txtToats.required_dvt"
+                                      "txtToasts.required_dvt"
                                     ),
                                   });
                                 } else {
@@ -446,7 +446,7 @@ export const CreateConversionGroup: FC = observer(
                               Toast.show({
                                 type: ALERT_TYPE.DANGER,
                                 title: "",
-                                textBody: translate("txtToats.required_dvt"),
+                                textBody: translate("txtToasts.required_dvt"),
                               });
                             } else {
                               setShowModal(true);
@@ -494,7 +494,7 @@ export const CreateConversionGroup: FC = observer(
                                       type: ALERT_TYPE.DANGER,
                                       title: "",
                                       textBody: translate(
-                                        "txtToats.required_dvt"
+                                        "txtToasts.required_dvt"
                                       ),
                                     });
                                   } else {

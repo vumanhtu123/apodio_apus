@@ -367,7 +367,7 @@ export const ItemGroupPrice = memo(
           title={"productDetail.wholesalePrice"}
           onCancel={() => {
             setModalWholesalePrice(false);
-            dataModal.length !== 0
+            dataModal?.length !== 0
               ? setDataModal([])
               : setDataModal([{ min: "", price: "" }]);
           }}

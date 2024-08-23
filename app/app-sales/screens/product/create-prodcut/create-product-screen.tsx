@@ -47,7 +47,7 @@ import { MoreInformation } from "../component/moreInformation";
 export const ProductCreateScreen: FC = (item) => {
   const navigation = useNavigation();
   const [imagesNote, setImagesNote] = useState<any>([]);
-  const [valueSale, setValueSale] = useState(false);
+  const [valuePurchase, setValuePurchase] = useState(false);
   const [valueSwitchUnit, setValueSwitchUnit] = useState(false);
   const [modalCreateUnit, setModalCreateUnit] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
@@ -60,8 +60,6 @@ export const ProductCreateScreen: FC = (item) => {
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [uomGroupId, setUomGroupId] = useState({ id: 0, label: "" });
   const [uomId, setUomId] = useState({ id: 0, label: "", uomGroupLineId: 0 });
-  const [vendorIds, setVendorIds] = useState([])
-  const vendorData = useRef()
   const route = useRoute();
   const textAttributes = useRef([])
   const attributeValues = useRef([])
@@ -71,7 +69,6 @@ export const ProductCreateScreen: FC = (item) => {
 
   const {
     selectedIds,
-    vendor,
     idUnitGroup,
     nameUnitGroup,
     attributeArr,
@@ -107,37 +104,7 @@ export const ProductCreateScreen: FC = (item) => {
 
   useEffect(() => {
     getListUnitGroup(false);
-    vendorData.current = vendor
   }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      if (vendor !== undefined && selectedIds !== undefined) {
-        setVendorIds(selectedIds)
-      }
-      if (vendor !== undefined && selectedIds === undefined) {
-        setVendorIds([vendor.id])
-      }
-      if (vendor === undefined && selectedIds !== undefined) {
-        setVendorIds(selectedIds)
-      }
-    });
-    return unsubscribe;
-  }, [vendor, selectedIds]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      if (idUnitGroup !== undefined) {
-        const dataModified = {
-          id: idUnitGroup,
-          label: nameUnitGroup,
-        };
-        setUomGroupId(dataModified);
-        getDetailUnitGroup(idUnitGroup);
-      }
-    });
-    return unsubscribe;
-  }, [idUnitGroup]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -353,7 +320,7 @@ export const ProductCreateScreen: FC = (item) => {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.required_information"),
+        textBody: translate("txtToasts.required_information"),
       });
       return
     }
@@ -398,7 +365,7 @@ export const ProductCreateScreen: FC = (item) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.input_weight"),
+          textBody: translate("txtToasts.input_weight"),
         });
         return
       }
@@ -406,7 +373,7 @@ export const ProductCreateScreen: FC = (item) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.input_weight_variant"),
+          textBody: translate("txtToasts.input_weight_variant"),
         });
         return
       }
@@ -480,22 +447,22 @@ export const ProductCreateScreen: FC = (item) => {
     const newArr2 = newArr.map((item: any) => {
       return {
         ...item,
-        retailPrice: valueSale ? item.retailPrice?.map((items: any) => {
+        retailPrice: item.retailPrice?.map((items: any) => {
           return {
             ...items,
             min: Number(formatNumberByString(items.min.toString())),
             price: Number(formatNumberByString(items.price.toString())),
           };
-        }) : null,
-        wholesalePrice: valueSale ? item.wholesalePrice?.map((items: any) => {
+        }),
+        wholesalePrice: item.wholesalePrice?.map((items: any) => {
           return {
             ...items,
             min: Number(formatNumberByString(items.min.toString())),
             price: Number(formatNumberByString(items.price.toString())),
           };
-        }) : null,
-        costPrice: valueSale ? Number(formatNumberByString(item.costPrice.toString())) : null,
-        listPrice: valueSale ? Number(formatNumberByString(item.listPrice.toString())) : null,
+        }),
+        costPrice: Number(formatNumberByString(item.costPrice.toString())),
+        listPrice: Number(formatNumberByString(item.listPrice.toString())),
       };
     });
     const packingLine = data.weight?.map((item: any) => {
@@ -509,10 +476,10 @@ export const ProductCreateScreen: FC = (item) => {
     const doneData: any = {
       sku: data.SKU === "" ? null : data.SKU,
       name: data.productName,
-      saleOk: valueSale,
+      purchaseOk: valuePurchase,
       imageUrls: imagesNote,
-      purchaseOk: true,
-      vendorIds: vendorIds,
+      saleOk: true,
+      vendorIds: selectedIds! || [],
       managementForm: data.brands?.label2,
       productCategoryId: data.category?.id || null,
       brandId: data.brand?.id || null,
@@ -529,10 +496,10 @@ export const ProductCreateScreen: FC = (item) => {
       attributeCategoryIds: attributeIds.current,
       description: addDescribe.current == true ? dataDescription.current : '',
       productVariants: hasVariantInConfig ? newArr2 : [],
-      retailPrice: valueSale ? dataPrice2 : null,
-      costPrice: valueSale ? Number(formatNumberByString(methods.watch("costPrice"))) : null,
-      listPrice: valueSale ? Number(formatNumberByString(methods.watch("listPrice"))) : null,
-      wholesalePrice: valueSale ? dataPrice : null,
+      retailPrice: dataPrice2,
+      costPrice: Number(formatNumberByString(methods.watch("costPrice"))),
+      listPrice: Number(formatNumberByString(methods.watch("listPrice"))),
+      wholesalePrice: dataPrice,
       deleteVariantIds: [],
       baseTemplatePackingLine:
         data.weightOriginal?.trim() === "" ||
@@ -620,7 +587,7 @@ export const ProductCreateScreen: FC = (item) => {
       // Xử lý kết quả upload
       results.forEach((result, index) => {
         if (result) {
-          console.log(`Upload image ${JSON.stringify(imageArray[index])} successfully`);
+          console.log(`Upload image ${imageArray[index]} successfully`);
         } else {
           console.log(`Failed to upload image ${imageArray[index]}`);
         }
@@ -674,9 +641,10 @@ export const ProductCreateScreen: FC = (item) => {
   }, [imagesNote])
 
   const goToChooseSupplierScreen = () => {
+    const listIds = selectedIds;
     navigation.navigate({
       name: "ChooseVendorScreen",
-      params: { listIds: vendorIds, mode: "create", vendor: vendorData.current },
+      params: { listIds, mode: "create" },
     } as never);
   };
 
@@ -760,54 +728,53 @@ export const ProductCreateScreen: FC = (item) => {
               />
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <Text
-                  tx="createProductScreen.canSale"
+                  tx="createProductScreen.canBuy"
                   style={{
                     fontSize: fontSize.size13,
                     marginRight: scaleWidth(10),
                   }}
                 />
                 <Switch
-                  value={valueSale}
+                  value={valuePurchase}
                   onToggle={() => {
-                    setValueSale(!valueSale);
+                    setValuePurchase(!valuePurchase);
                   }}
                 />
               </View>
-              {valueSale === true ?
-                <ItemGroupPrice /> : null}
+              <ItemGroupPrice />
             </View>
           </View>
-          {/* {valueSale === true ? ( */}
-          <View
-            style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
-          >
-            <View style={styles.viewViewDetail}>
-              <Text
-                tx={"createProductScreen.infoSupplier"}
-                style={styles.textTitleView}
-              />
-              <TouchableOpacity
-                onPress={() => goToChooseSupplierScreen()}
-                style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}
-              >
-                {vendorIds?.length > 0 ? (
-                  <Text style={styles.textWeight400Black}>
-                    {vendorIds.length + " " + translate("createProductScreen.supplier")}
-                  </Text>
-                ) : (
-                  <Text
-                    tx={"createProductScreen.noSelectSupplier"}
-                    style={styles.textWeight400Dolphin}
-                  />
-                )}
-                <Svgs.icon_caretRight
-                  width={scaleWidth(16)}
-                  height={scaleHeight(16)}
+          {valuePurchase === true ? (
+            <View
+              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
+            >
+              <View style={styles.viewViewDetail}>
+                <Text
+                  tx={"createProductScreen.infoSupplier"}
+                  style={styles.textTitleView}
                 />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => goToChooseSupplierScreen()}
+                  style={[styles.viewLineSwitchUnit, { marginBottom: 0 }]}
+                >
+                  {selectedIds?.length > 0 ? (
+                    <Text style={styles.textWeight400Black}>
+                      {selectedIds.length + " " + translate("createProductScreen.supplier")}
+                    </Text>
+                  ) : (
+                    <Text
+                      tx={"createProductScreen.noSelectSupplier"}
+                      style={styles.textWeight400Dolphin}
+                    />
+                  )}
+                  <Svgs.icon_caretRight
+                    width={scaleWidth(16)}
+                    height={scaleHeight(16)}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-          {/* ) : null} */}
+          ) : null}
           <View
             style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}
           >
@@ -887,7 +854,6 @@ export const ProductCreateScreen: FC = (item) => {
             addVariant={addVariant}
             setAddVariant={setAddVariant}
             addWeight={addWeight}
-            valueSale={valueSale}
             dataCreateProduct={dataCreateProduct}
             dataGroupAttribute={dataGroupAttribute}
             isVariantInConfig={isVariantInConfig}

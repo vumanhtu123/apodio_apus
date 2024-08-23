@@ -421,7 +421,7 @@ export const SumMoney = (props: DataSumMoney) => {
           style={{
             fontSize: fontSize.size12,
             fontWeight: "600",
-            color: "#FF4956",
+            color: colors.radicalRed,
             marginTop: margin.margin_8,
           }}>
           {/* {(isNaN(Sum()) ? sumValue : SumNoVAT()) ?? 0} */}

@@ -193,7 +193,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             style={{
               fontSize: fontSize.size20,
               fontWeight: "600",
-              color: "#FF4956",
+              color:colors.radicalRed,
               textAlign: "center",
               marginVertical: margin.margin_20,
             }}>
@@ -208,7 +208,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                   color: colors.dolphin,
                 }}
                 tx="order.debt_limit"></Text>
-              <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
+              <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: colors.radicalRed }}>
                 {formatVND(formatCurrency(commasToDots(debtAmount)))}
               </Text>
             </View>
@@ -221,7 +221,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 color: colors.dolphin,
               }}
               tx="order.text_money_limit"></Text>
-            <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: "#FF4956" }}>
+            <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: colors.radicalRed }}>
               {formatVND(formatCurrency(commasToDots(Sum1())))}
             </Text>
           </View>
@@ -265,7 +265,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                       fontWeight: "400",
                       marginRight: scaleWidth(6),
                       textAlign: 'right',
-                      color: "#FF4956"
+                      color: colors.radicalRed
                     }}>
                     {`(${formatVND(formatCurrency(commasToDots(credit)))})`}
                   </Text>
@@ -298,7 +298,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                     Toast.show({
                       type: ALERT_TYPE.DANGER,
                       title: '',
-                      textBody: translate('txtToats.change_payment'),
+                      textBody: translate('txtToasts.change_payment'),
                     })
                     setValue('price', '0')
                   } else {
@@ -359,7 +359,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                 color: colors.dolphin,
               }}
               tx="order.amount_paid"></Text>
-            <Text style={{ fontSize: 12, fontWeight: "400", color: "#FF4956" }}>
+            <Text style={{ fontSize: 12, fontWeight: "400", color: colors.radicalRed }}>
               {formatVND(formatCurrency(commasToDots(Remain())))}
             </Text>
           </View>}

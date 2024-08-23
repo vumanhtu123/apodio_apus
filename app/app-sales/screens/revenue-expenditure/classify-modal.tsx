@@ -190,7 +190,7 @@ export const styles = StyleSheet.create({
     marginLeft: scaleWidth(85),
   },
   textCancel: {
-    color: "#FF4956",
+    color: colors.radicalRed,
     fontSize: 14,
     fontWeight: "700",
   },

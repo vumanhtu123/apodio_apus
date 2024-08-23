@@ -32,10 +32,10 @@ export const FilterScreen: FC = (item) => {
     const data = await productStore.getListTagProduct();
     setData(data.result.data.content);
   };
-  const [selectedTimeFilter, setSelectedTimeFilter] = useState(
+  const [selectedTimeFilter, setSelectedTimeFilter] = useState<string | null>(
     productStore.sort[1]
   );
-  const [selectedTagFilter, setSelectedTagFilter] = useState(0);
+  const [selectedTagFilter, setSelectedTagFilter] = useState<number | null>(0);
   const handleTimePress = (item: any) => {
     if (selectedTimeFilter === item) {
       setSelectedTimeFilter(null);

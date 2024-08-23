@@ -31,6 +31,7 @@ export interface Content {
   productPackingLines: ProductPackingLine[];
   saleUom: SaleUom;
   brand: Brand;
+  amount: number;
   warehouses: Warehouse[];
 }
 

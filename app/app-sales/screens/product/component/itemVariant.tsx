@@ -81,8 +81,8 @@ export const ItemVariant = memo(
                     if (checkUploadSlider) {
                     } else {
                         const newArr = props.dataCreateProduct.slice();
-                        const newArr1 = newArr[indexItem].imageUrls.concat(results);
-                        props.dataCreateProduct[indexItem].imageUrls = newArr1;
+                        const newArr1 = newArr[indexItem!].imageUrls.concat(results);
+                        props.dataCreateProduct[indexItem!].imageUrls = newArr1;
                         props.setDataCreateProduct(newArr);
                     }
                 }
@@ -688,7 +688,7 @@ export const ItemVariant = memo(
                     titleTx={"productDetail.retailPrice"}
                     onCancel={() => {
                         setModalRetailPrice1(false);
-                        dataModal.length !== 0
+                        dataModal?.length !== 0
                             ? setDataModal([])
                             : setDataModal([{ min: "", price: "" }]);
                     }}
@@ -706,7 +706,7 @@ export const ItemVariant = memo(
                     titleTx={"productDetail.wholesalePrice"}
                     onCancel={() => {
                         setModalWholesalePrice1(false);
-                        dataModal.length !== 0
+                        dataModal?.length !== 0
                             ? setDataModal([])
                             : setDataModal([{ min: "", price: "" }]);
                     }}

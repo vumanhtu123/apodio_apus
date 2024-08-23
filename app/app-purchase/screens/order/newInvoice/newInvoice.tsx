@@ -274,12 +274,12 @@ export const NewInvoice: FC = observer(function NewInvoice(props) {
         Toast.show({
           type: ALERT_TYPE.SUCCESS,
           title: "",
-          textBody: translate("txtToats.create_success"),
+          textBody: translate("txtToasts.create_success"),
         });
         // console.log('firstxzcxz',submit.response.data.id)
-        navigation.navigate("orderDetails", {
+        navigation.navigate({name: "orderDetails", params: {
           idInvoices: submit.response.data.id,
-        });
+        }}as never);
         // Perform any success actions here (e.g., navigation)
       } else {
         console.log("first", JSON.stringify(submit.response.errorCodes));

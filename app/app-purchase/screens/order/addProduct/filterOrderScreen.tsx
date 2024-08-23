@@ -22,7 +22,7 @@ export const FilterOrderScreen: FC = (item) => {
     { label: "filterScreen.zToA", sort: "name,desc" },
   ]);
   const { productStore } = useStores();
-  const [dataTag, setDataTag] = useState([]);
+  const [dataTag, setDataTag] = useState<any>([]);
   const [sort, setSort] = useState('')
   useEffect(() => {
     initData();
@@ -101,7 +101,7 @@ export const FilterOrderScreen: FC = (item) => {
         LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         colorIcon={colors.text}
-        headerText="filterScreen.filter"
+        headerTx="filterScreen.filter"
         style={{ height: scaleHeight(54) }}
       />
       <View style={{ marginHorizontal: scaleWidth(16), flex: 1 }}>

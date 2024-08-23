@@ -179,7 +179,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
   const handleSelectDistrict1 = () => {
     Toast.show({
       type: ALERT_TYPE.DANGER,
-      textBody: translate('txtToats.change_city'),
+      textBody: translate('txtToasts.change_city'),
     });
   };
 
@@ -187,12 +187,12 @@ export const NewDelivery: FC = observer(function NewDelivery() {
     if (city.label === "") {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        textBody: translate('txtToats.change_city'),
+        textBody: translate('txtToasts.change_city'),
       });
     } else {
       Toast.show({
         type: ALERT_TYPE.DANGER,
-        textBody: translate('txtToats.change_district'),
+        textBody: translate('txtToasts.change_district'),
       });
     }
   };
@@ -217,7 +217,7 @@ export const NewDelivery: FC = observer(function NewDelivery() {
       ) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
-          textBody: translate('txtToats.required_information'),
+          textBody: translate('txtToasts.required_information'),
         });
       } else {
         Keyboard.dismiss()

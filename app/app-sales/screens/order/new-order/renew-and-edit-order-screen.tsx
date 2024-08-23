@@ -372,7 +372,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.noClient"),
+        textBody: translate("txtToasts.noClient"),
       });
     } else {
       navigation.navigate("deliveryAddress" as never);

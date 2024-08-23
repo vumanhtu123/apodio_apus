@@ -160,7 +160,7 @@ export const ListRevenueScreen: FC<
               {translate("analysis.balance")}
               <Text
                 style={{
-                  color: "#FF4956",
+                  color: colors.radicalRed,
                   fontSize: 14,
                   fontWeight: "600",
                 }}>
@@ -235,7 +235,7 @@ export const ListRevenueScreen: FC<
         <TouchableOpacity
           onPress={() => props.navigation.navigate("expenseScreen")}
           style={{
-            backgroundColor: "#FF4956",
+            backgroundColor: colors.radicalRed,
             flexDirection: "row",
             // paddingHorizontal: 36,
             paddingVertical: 12,
@@ -349,7 +349,7 @@ const ItemSum = () => {
             style={{
               fontSize: 16,
               fontWeight: "600",
-              color: "#FF4956",
+              color: colors.radicalRed,
             }}>
             100.000
           </Text>

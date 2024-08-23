@@ -379,7 +379,7 @@ export default function ItemListProduct(props: AddProduct) {
               style={{
                 fontSize: 10,
                 fontWeight: "400",
-                color: "#FF4956",
+                color: colors.radicalRed,
                 fontStyle: "italic",
               }}>
               {" " +

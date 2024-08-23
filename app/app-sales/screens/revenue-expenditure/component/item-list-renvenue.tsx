@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
   },
   textRevenue: {
     flex: 1,
-    color: "#FF4956",
+    color: colors.radicalRed,
     fontSize: 12,
     fontWeight: "600",
     textAlign: "center",
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: scaleWidth(80),
   },
-  textRevenueNoDate: { fontSize: 12, fontWeight: "600", color: "#FF4956" },
+  textRevenueNoDate: { fontSize: 12, fontWeight: "600", color: colors.radicalRed },
   textPaymentMethod: {
     fontSize: 12,
     fontWeight: "600",
