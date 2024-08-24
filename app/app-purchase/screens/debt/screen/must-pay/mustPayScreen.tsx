@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { TabScreenProps } from "../../../../navigators/bottom-navigation";
 import { NavigatorParamList } from "../../../../navigators";
 import React from "react";
@@ -40,11 +40,11 @@ export const MustPayScreen: FC<
   const [refreshing, setRefreshing] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [page, setPage] = useState(0)
-  const [size, setSize] = useState(20)
+  const page = useRef(0)
+  const size = useRef(5)
   const totalPage = useRef<number>(0)
   const checkStatusLoadMore = useRef<boolean>(false)
-  const [valueSearch, setValueSearch] = useState('')
+  const valueSearch = useRef('')
   const totalElement = useRef<number>(0)
   const [totalMustPay, setTotalMustPay] = useState(0)
   const [totalProvider, setTotalProvider] = useState(0)
@@ -54,24 +54,11 @@ export const MustPayScreen: FC<
   const [makeDateS, setMakeDateS] = useState<any>(null);
   const [makeDateE, setMakeDateE] = useState<any>(null);
   const [isSortByDate, setIsSortByDate] = useState<boolean>(false);
-  // const [formatStartDateWithTime, setFormatStartDateWithTime] = useState<string | null>(null)
-  // const [formatEndDateWithTime, setFormatEndDateWithTime] = useState<string | null>(null)
-
-
-  // const [totalPage, setTotalPage] = useState<number>(0)
   const [myData, setMyData] = useState<{}[]>([])
+  const [debtAmountDesc, setDebtAmountDesc] = useState(true)
   const getAPI = useStores()
 
   console.log("ngay chon", makeDateS, makeDateE);
-
-  // Thêm thời gian vào ngày
-  const dateStart = moment(makeDateS).format('YYYY-MM-DDTHH:mm:ssZ');
-  const dateEnd = moment(makeDateE).format('YYYY-MM-DDTHH:mm:ssZ');
-
-  // Để có được định dạng yêu cầu với URL encoding (percent encoding)
-
-
-  // console.log("ngay chon 2", formatStartDateWithTime, formatEndDateWithTime);
 
   console.log("total page", totalPage.current);
   console.log("total element", totalElement.current);
@@ -96,9 +83,9 @@ export const MustPayScreen: FC<
     const formatDateStart = convertToOffsetDateTime(dateStart)
     const formatDateEnd = convertToOffsetDateTime(dateEnd)
 
-    const dataTem = await getAPI.debtStore.getListMustPay(size, page, valueSearch, "EXTERNAL", true, dateStart == null ? null : formatDateStart, dateEnd == null ? null : formatDateEnd, checkStatusLoadMore.current)
+    const dataTem = await getAPI.debtStore.getListMustPay(size.current, page.current, valueSearch.current, "EXTERNAL", debtAmountDesc, dateStart == null ? null : formatDateStart, dateEnd == null ? null : formatDateEnd, checkStatusLoadMore.current)
     console.log('====================================');
-    console.log("data debt page", dataTem?.data?.data.content);
+    console.log("data debt page", dataTem?.data?.data);
     console.log('====================================');
 
     totalPage.current = Number(dataTem?.data?.data?.totalPages)
@@ -107,17 +94,15 @@ export const MustPayScreen: FC<
     // setTotalPage(Number(dataTem?.data.totalPages))
 
     if (dataTem?.data !== null) {
-      console.log("doan dev 1");
-
-      if (page == 0) {
-        console.log("doan dev 2", dataTem.data.data.content);
+      // console.log("doan dev 1");
+      if (page.current == 0) {
+        // console.log("doan dev 2", dataTem.data.data.content);
         setMyData(dataTem.data.data.content)
       } else {
-        console.log("doan dev 3");
-
+        // console.log("doan dev 3");
         setMyData((data) => [
           ...data,
-          ...dataTem.data.data.content
+          ...dataTem?.data?.data?.content
         ])
       }
     }
@@ -139,37 +124,58 @@ export const MustPayScreen: FC<
     console.log("leng data thay doi", myData.length);
   }, [myData.length])
 
+
   useEffect(() => {
     getDataDebt(makeDateS, makeDateE)
-  }, [valueSearch])
+  }, [debtAmountDesc])
 
+  // valueSearch
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    setIsLoadingMore(true)
-    checkStatusLoadMore.current = false
-    setPage(0)
-    getDataDebt(null, null)
+  const handleRefresh = useCallback(async () => {
+    try {
+      setRefreshing(true);
+      setIsLoadingMore(true);
+      checkStatusLoadMore.current = false;
+      // setMyData([]);
+      page.current = 0;
 
-    setTimeout(() => {
+      await getDataDebt(null, null);
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+      // Xử lý lỗi ở đây, ví dụ: hiển thị thông báo cho người dùng
+    } finally {
       setRefreshing(false);
-    }, 1000);
-  };
+      setIsLoadingMore(false);
+    }
+  }, [getDataDebt]);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
+    if (isLoadingMore || page.current >= totalPage.current) {
+      return
+    }
+
+    page.current += 1
     checkStatusLoadMore.current = true
-    setIsLoadingMore(true);
-    if (page < totalPage.current) {
-      // setPage(page + 1)
-      getDataDebt(makeDateS, makeDateE)
-      console.log('doan1');
-      console.log('doan3');
+    setIsLoadingMore(true)
 
-    }
-    if (myData.length == totalElement.current) {
-      setIsLoadingMore(false)
-    }
-  };
+    getDataDebt(makeDateS, makeDateE)
+      .then(() => {
+        if (myData.length >= totalElement.current) {
+          setIsLoadingMore(false)
+        }
+      })
+      .catch((error) => {
+        console.error("Error loading more data:", error);
+        setIsLoadingMore(false);
+
+      })
+      .finally(() => {
+        checkStatusLoadMore.current = false
+      })
+  }, [isLoadingMore, myData.length, getDataDebt])
+  // const handleLoadMore = () => {
+
+  // }
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -189,8 +195,8 @@ export const MustPayScreen: FC<
         onSearchValueChange={(txt: any) => { }}
         handleOnSubmitSearch={(value: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
           console.log("value search debt", value.nativeEvent.text);
-          setValueSearch(value.nativeEvent.text)
-          setPage(0)
+          valueSearch.current = value.nativeEvent.text
+          page.current = 0
           setMyData([])
           getDataDebt(makeDateS, makeDateE)
         }}
@@ -201,7 +207,12 @@ export const MustPayScreen: FC<
         end={{ x: 1, y: 1 }}
         colors={[colors.palette.navyBlue, colors.palette.malibu]}
         style={{ height: scaleHeight(50) }}></LinearGradient>
-      <View style={Styles.bodyCardMusPay}>
+      <View style={[Styles.bodyCardMusPay, {
+        top: scaleHeight(100),
+        width: '92%',
+        marginRight: scaleWidth(16),
+        marginLeft: scaleWidth(16),
+      }]}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <TouchableOpacity style={[{ alignItems: "center", flex: 1 }]}>
             <Text
@@ -230,11 +241,12 @@ export const MustPayScreen: FC<
           data={myData}
           renderItem={({ item }: any) => (
             <ItemListMustPay
+              key={item.partner.id}
               item={item}
               onClick={() => {
                 console.log("id item", item.partner.id)
                 setValueItemSelect(item.partner.id);
-                props.navigation.navigate("detailDebt");
+                props.navigation.navigate("detailDebt", { "idSend": item.partner.id });
               }}
               idSelect={valueItemSelect}
             />
@@ -242,14 +254,15 @@ export const MustPayScreen: FC<
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={({ item, index }: any) => item?.partner.id}
           onEndReached={() => handleLoadMore()}
           onEndReachedThreshold={0.2}
           ListFooterComponent={() => (
-            <View>{isLoadingMore == true ? <ActivityIndicator /> : null}</View>
+            <View>{isLoadingMore == true ? <ActivityIndicator size={20} /> : null}</View>
           )}
           style={{ marginTop: scaleHeight(80) }}
-          maxToRenderPerBatch={20}
+          // maxToRenderPerBatch={20}
+          showsVerticalScrollIndicator={false}
         />
       ) : (
         <View
@@ -264,9 +277,10 @@ export const MustPayScreen: FC<
         setIsVisible={() => setIsVisible(!isVisible)}
         sortMustPay={(value) => {
           console.log("value sort must pay", value)
+          setDebtAmountDesc(value)
         }}
         sortTotalDebt={(value) => {
-          console.log("value sort total", value)
+          console.log("Hien dang bo", value)
         }}
       />
 

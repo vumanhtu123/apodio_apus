@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { NavigatorParamList } from "../../../../navigators";
 import { observer } from "mobx-react-lite";
 import {
@@ -29,6 +29,11 @@ import moment from "moment";
 import { ModalPay } from "../../component/modalPay";
 import { ModalExchange } from "../../component/modalExchange";
 import { translate } from "../../../../../i18n";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useStores } from "../../../../models";
+import { commasToDots, formatCurrency, formatVND } from "../../../../utils/validate";
+import { number } from "mobx-state-tree/dist/internal";
+import { convertToOffsetDateTime } from "../../../../utils/formatDate";
 
 
 export const DetailDebtScreen: FC<
@@ -41,12 +46,29 @@ export const DetailDebtScreen: FC<
   const [isVisible, setIsVisible] = useState(false);
   const [keyToPass, setKeyToPass] = useState<string>();
   const [isReset, setIsReset] = useState<boolean>();
-  const [makeDateS, setMakeDateS] = useState<any>();
-  const [makeDateE, setMakeDateE] = useState<any>();
-  const [timeStart, setTimeStart] = useState("");
-  const [timeEnd, setTimeEnd] = useState("");
+  const [makeDateS, setMakeDateS] = useState<any>(moment().startOf('month').format('YYYY-MM-DD HH:mm:ss'));
+  const [makeDateE, setMakeDateE] = useState<any>(moment().endOf('month').format('YYYY-MM-DD HH:mm:ss'));
+  const [timeStart, setTimeStart] = useState(null);
+  const [timeEnd, setTimeEnd] = useState(null);
   const [isSortByDate, setIsSortByDate] = useState<boolean>(false);
   const [isVisiblePay, setIsVisiblePay] = useState<boolean>(false);
+  const route = useRoute();
+  const getApi = useStores();
+  const [dataDebtHead, setDataDebtHead] = useState<{}[]>([])
+  const [myDataListDetailDebt, setMyDataListDetailDebt] = useState<{}[]>([])
+  const page = useRef(0)
+  const totalPage = useRef(0)
+  const totalElement = useRef(0)
+  const checkStatusLoadMore = useRef<boolean>(false)
+  const size = useRef(5)
+  const valueDebt = useRef<number>(0)
+
+
+  const idSend = route.params.idSend
+
+  console.log("idDoandev", idSend);
+
+
 
   const toggleModalDate = () => {
     setIsSortByDate(!isSortByDate);
@@ -132,42 +154,149 @@ export const DetailDebtScreen: FC<
       createDateTransaction: "08/11/2020",
     },
   ];
-  const groupBy = (data: DataItem[], key: string) => {
-    return data.reduce((result: { [key: string]: DataItem[] }, item: any) => {
-      const value = item[key];
-      if (!result[value]) {
-        result[value] = [];
-      }
-      result[value].push(item);
-      return result;
-    }, {});
-  };
-  const dataGroup = groupBy(fakeData, "createDateTransaction");
-  console.log("====================================");
-  console.log("data groupBy", groupBy(fakeData, "createDateTransaction"));
-  console.log("====================================");
 
-  const handleRefresh = () => {
-    setRefreshing(true);
+  // const groupBy = (data: DataItem[], key: string) => {
+  //   return data.reduce((result: { [key: string]: DataItem[] }, item: any) => {
+  //     const value = item[key];
+  //     if (!result[value]) {
+  //       result[value] = [];
+  //     }
+  //     result[value].push(item);
+  //     return result;
+  //   }, {});
+  // };
+  // const dataGroup = groupBy(fakeData, "createDateTransaction");
+  // console.log("====================================");
+  // console.log("data groupBy", groupBy(fakeData, "createDateTransaction"));
+  // console.log("====================================");
 
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 3000);
-  };
 
-  const handleLoadMore = () => {
-    setIsLoadingMore(true);
 
-    setTimeout(() => {
-      setIsLoadingMore(false);
-    }, 3000);
-  };
 
   console.log(
     "data date start ,end",
     moment(makeDateE).format("DD/MM/YYYY"),
     makeDateE
   );
+
+  const getDataDebt = async (idSend: number) => {
+    const DataDebt = await getApi.debtStore.getDataDebtDetail(idSend, "EXTERNAL")
+    // console.log('====================================');
+    // console.log("doanDev", DataDebt?.data?.data);
+    // console.log('====================================');
+    if (DataDebt?.data?.data != null) {
+      setDataDebtHead(DataDebt?.data?.data)
+    }
+
+  }
+
+  const getListDetailDebt = async () => {
+    console.log("date doandev22222", timeStart, timeEnd);
+
+
+    const dateStart = convertToOffsetDateTime(makeDateS)
+    const dateEnd = convertToOffsetDateTime(makeDateE)
+    console.log("date doandev", dateStart, dateEnd);
+
+
+    const getData = await getApi.debtStore.getListDebtDetail(size.current, page.current, idSend, "EXTERNAL", dateStart == "Invalid date" ? null : dateStart, dateEnd == "Invalid date" ? null : dateEnd, true, null, checkStatusLoadMore.current)
+    console.log('====================================');
+    console.log("My data Debt", getData?.data?.data?.content);
+    console.log('====================================');
+    if (getData?.data != null) {
+      if (page.current == 0) {
+        setMyDataListDetailDebt(getData?.data?.data?.content)
+
+      } else {
+        setMyDataListDetailDebt((data) => [
+          ...data,
+          ...getData?.data?.data?.content
+        ])
+      }
+
+      // console.log('TotalElement doandev', getData?.data?.data?.totalElements, getData?.data?.data.totalPages);
+      totalPage.current = Number(getData?.data?.data?.totalPages)
+      totalElement.current = Number(getData?.data?.data?.totalElements)
+    }
+  }
+
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    checkStatusLoadMore.current = false
+    page.current = 0
+    getListDetailDebt()
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
+
+  const handleLoadMore = useCallback(() => {
+    if (isLoadingMore || page.current >= totalPage.current) {
+      return;
+    }
+
+    checkStatusLoadMore.current = true;
+    setIsLoadingMore(true);
+
+    page.current += 1;
+    getListDetailDebt()
+      .then(() => {
+        if (myDataListDetailDebt?.length >= totalElement.current) {
+          setIsLoadingMore(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error loading more data:", error);
+        setIsLoadingMore(false);
+      })
+      .finally(() => {
+        checkStatusLoadMore.current = false;
+      });
+  }, [isLoadingMore, myDataListDetailDebt?.length, getListDetailDebt]);
+
+  // const getValuePayDebt = async (orderId: number, moveType: string) => {
+  //   try {
+
+  //     const [result] = await Promise.all([
+  //       getApi.debtStore.getValueDebtPay(orderId, moveType),
+  //       new Promise(resolve => setTimeout(resolve, 1000))
+  //     ]);
+  //     console.log('doan dev get value pay', result?.data.data);
+  //     valueDebt.current = result?.data?.data
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+
+  // }
+  const getValuePayDebt = async (orderId: number, moveType: string) => {
+    try {
+      const result = await getApi.debtStore.getValueDebtPay(orderId, moveType);
+
+      console.log('doan dev get value pay', result?.data?.data);
+
+      valueDebt.current = result?.data?.data
+      setIsVisiblePay(!isVisiblePay);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  useEffect(() => {
+    setIsLoadingMore(false)
+  }, [myDataListDetailDebt?.length])
+
+  useEffect(() => {
+    getDataDebt(idSend)
+    getListDetailDebt()
+  }, [])
+
+  useEffect(() => {
+    getListDetailDebt()
+
+  }, [makeDateS, makeDateE])
 
   return (
     <View style={{ flex: 1 }}>
@@ -188,7 +317,7 @@ export const DetailDebtScreen: FC<
           "-" +
           moment(makeDateE).format("DD/MM/YYYY")
         }
-        headerInput={true}
+        // headerInput={true}
         searchText={translate("NCCScreen.nameSuppliers")}
       />
       <LinearGradient
@@ -203,7 +332,7 @@ export const DetailDebtScreen: FC<
               style={[
                 Styles.styleNumber,
                 { color: colors.palette.textExCancle },
-              ]}>{`100.000 ${"đ"}`}</Text>
+              ]}>{formatVND(formatCurrency(commasToDots(dataDebtHead?.debtAmount)))}</Text>
             <Text
               style={{ fontSize: 12, textAlign: "center" }}
               tx="debtScreen.debtNeedToPaid"></Text>
@@ -214,7 +343,7 @@ export const DetailDebtScreen: FC<
                 Styles.styleNumber,
                 { color: colors.palette.textExCancle },
               ]}>
-              12/01/2022
+              {dataDebtHead?.nearestDueDate}
             </Text>
             <Text style={{ fontSize: 12 }} tx="debtScreen.paymentTerm"></Text>
           </TouchableOpacity>
@@ -222,175 +351,151 @@ export const DetailDebtScreen: FC<
       </View>
 
       <FlatList
-        style={{ marginTop: 50 }}
-        data={Object.entries(dataGroup)}
+        style={{ marginTop: scaleHeight(60) }}
+        data={
+          //  Object.entries(dataGroup)
+          myDataListDetailDebt
+        }
         showsVerticalScrollIndicator={false}
-        keyExtractor={([createDateTransaction]) => createDateTransaction}
-        renderItem={({ item: [createDateTransaction, products] }) => {
+        keyExtractor={
+          //  ([createDateTransaction]) => createDateTransaction
+          (item: any) => item?.code
+        }
+        renderItem={(
+          // item: [createDateTransaction, products] 
+          { item }: any
+        ) => {
           return (
             <View style={[Styles.groupContainer]}>
-              <View
+              <TouchableOpacity
+                key={item?.code}
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginVertical: scaleHeight(15),
-                }}>
+                  backgroundColor: colors.white,
+                  marginBottom: 10,
+                  borderRadius: margin.margin_8,
+                  padding: scaleWidth(15),
+                }}
+                onPress={() =>
+                  setValueStatusShowOrHiddenPay(!valueStatusShowOrHiddenPay)
+                }>
                 <View
-                  style={{
-                    width: "40%",
-                    height: 1,
-                    backgroundColor: colors.solitude1,
-                  }}
-                />
-                <Text style={Styles.dateText}>{createDateTransaction}</Text>
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx="debtScreen.orderDate" style={Styles.label} />
+                  <Text style={Styles.styleOrder}>{moment(item?.orderDate).format("DD/MM/YYYY")}</Text>
+                </View>
                 <View
-                  style={{
-                    width: "40%",
-                    height: 1,
-                    backgroundColor: colors.solitude1,
-                  }}
-                />
-              </View>
-              {products.map((item, index) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={{
-                    backgroundColor: colors.white,
-                    marginBottom: 10,
-                    borderRadius: margin.margin_8,
-                    padding: scaleWidth(15),
-                  }}
-                  onPress={() =>
-                    setValueStatusShowOrHiddenPay(!valueStatusShowOrHiddenPay)
-                  }>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text tx="debtScreen.order" style={Styles.label} />
-                    <Text style={Styles.styleOrder}>{item.order}</Text>
-                  </View>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text tx="debtScreen.valueOrder" style={Styles.label} />
-                    <Text
-                      style={[
-                        Styles.styleOrder,
-                        { color: colors.palette.malachite },
-                      ]}>
-                      {item.valueOrder}
-                    </Text>
-                  </View>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text tx="debtScreen.paid" style={Styles.label} />
-                    <Text
-                      style={[
-                        Styles.styleOrder,
-                        { color: colors.palette.malachite },
-                      ]}>
-                      {item.paid}
-                    </Text>
-                  </View>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text tx="debtScreen.dateOfPayment" style={Styles.label} />
-                    <Text style={[Styles.styleOrder]}>
-                      {item.dateOfPayment}
-                    </Text>
-                  </View>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text tx="debtScreen.remainingDebt" style={Styles.label} />
-                    <Text
-                      style={[
-                        Styles.styleOrder,
-                        { color: colors.palette.radicalRed },
-                      ]}>
-                      {item.remainingDebt}
-                    </Text>
-                  </View>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text
-                      tx="debtScreen.latePaymentPenalty"
-                      style={Styles.label}
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx="debtScreen.order" style={Styles.label} />
+                  <Text style={Styles.styleOrder}>{item?.code}</Text>
+                </View>
+
+                <View
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx="debtScreen.valueOrder" style={Styles.label} />
+                  <Text
+                    style={[
+                      Styles.styleOrder,
+                      { color: colors.palette.malachite },
+                    ]}>
+                    {item?.amountTotal}
+                  </Text>
+                </View>
+                <View
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx={item?.moveType == "IN_INVOICE" ? "debtScreen.valueWarehouse" : "debtScreen.exValueWarehouse"} style={Styles.label} />
+                  <Text
+                    style={[
+                      Styles.styleOrder,
+                      { color: colors.palette.malachite },
+                    ]}>
+                    {item?.amountWarehouse}
+                  </Text>
+                </View>
+                <View
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx="debtScreen.paid" style={Styles.label} />
+                  <Text
+                    style={[
+                      Styles.styleOrder,
+                      { color: colors.palette.malachite },
+                    ]}>
+                    {item?.amountPayment}
+                  </Text>
+                </View>
+                <View
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx="debtScreen.dateOfPayment" style={Styles.label} />
+                  <Text style={[Styles.styleOrder]}>
+                    {item?.paymentDate}
+                  </Text>
+                </View>
+                <View
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx="debtScreen.remainingDebt" style={Styles.label} />
+                  <Text
+                    style={[
+                      Styles.styleOrder,
+                      { color: colors.palette.radicalRed },
+                    ]}>
+                    {item?.debtAmount}
+                  </Text>
+                </View>
+
+                <View
+                  style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
+                  <Text tx="debtScreen.paymentTerm2" style={Styles.label} />
+                  <Text style={[Styles.styleOrder]}>{item?.dueDate}</Text>
+                </View>
+                {valueStatusShowOrHiddenPay ? (
+                  <TouchableOpacity
+                    style={[Styles.btnPay]}
+                    onPress={() => {
+                      console.log("onClick pay");
+                      setKeyToPass("pay");
+                      getValuePayDebt(item?.orderId, item?.moveType)
+
+                    }}>
+                    <Svgs.ic_pay_hand
+                      width={scaleWidth(17)}
+                      height={scaleHeight(17)}
                     />
                     <Text
-                      style={[
-                        Styles.styleOrder,
-                        { color: colors.palette.radicalRed },
-                      ]}>
-                      {item.latePaymentPenalty}
-                    </Text>
-                  </View>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text
-                      tx="debtScreen.totalRemainingDebt"
-                      style={Styles.label}
-                    />
-                    <Text
-                      style={[
-                        Styles.styleOrder,
-                        { color: colors.palette.radicalRed },
-                      ]}>
-                      {item.totalRemainingDebt}
-                    </Text>
-                  </View>
-                  <View
-                    style={[Styles.flexRow, { marginVertical: scaleWidth(2) }]}>
-                    <Text tx="debtScreen.paymentTerm2" style={Styles.label} />
-                    <Text style={[Styles.styleOrder]}>{item.paymentTerm}</Text>
-                  </View>
-                  {valueStatusShowOrHiddenPay ? (
-                    <TouchableOpacity
-                      style={Styles.btnPay}
-                      onPress={() => {
-                        setKeyToPass("pay");
-                        setIsVisiblePay(!isVisiblePay);
-                      }}>
-                      <Svgs.ic_pay_hand
-                        width={scaleWidth(17)}
-                        height={scaleHeight(17)}
-                      />
+                      tx="debtScreen.pay"
+                      style={{
+                        color: colors.white,
+                        fontSize: fontSize.size10,
+                      }}></Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    style={Styles.flexRow}
+                    onPress={() => {
+                      setIsVisible(!isVisible);
+                    }}>
+                    <Text tx="debtScreen.exChange" style={Styles.label} />
+                    <View style={{ flexDirection: "row" }}>
+                      <Svgs.ic_messenger />
                       <Text
-                        tx="debtScreen.pay"
-                        style={{
-                          color: colors.white,
-                          fontSize: fontSize.size10,
-                        }}></Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={Styles.flexRow}
-                      onPress={() => {
-                        setIsVisible(!isVisible);
-                      }}>
-                      <Text tx="debtScreen.exChange" style={Styles.label} />
-                      <View style={{ flexDirection: "row" }}>
-                        <Svgs.ic_messenger />
-                        <Text
-                          style={[
-                            Styles.styleOrder,
-                            {
-                              color: colors.palette.navyBlue,
-                              marginHorizontal: 4,
-                            },
-                          ]}>
-                          {item.exchange}
-                        </Text>
-                        <Text
-                          style={[
-                            Styles.styleOrder,
-                            { color: colors.palette.radicalRed },
-                          ]}>
-                          (2 Chưa xem)
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  )}
-                </TouchableOpacity>
-              ))}
+                        style={[
+                          Styles.styleOrder,
+                          {
+                            color: colors.palette.navyBlue,
+                            marginHorizontal: 4,
+                          },
+                        ]}>
+                        {item.exchange}
+                      </Text>
+                      <Text
+                        style={[
+                          Styles.styleOrder,
+                          { color: colors.palette.radicalRed },
+                        ]}>
+                        (2 Chưa xem)
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              </TouchableOpacity>
             </View>
           );
         }}
@@ -398,8 +503,10 @@ export const DetailDebtScreen: FC<
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         }
         onEndReached={handleLoadMore}
-        onEndReachedThreshold={0.2}
-        ListFooterComponent={() => isLoadingMore && <ActivityIndicator />}
+        onEndReachedThreshold={0.4}
+        // initialNumToRender={5}
+        // maxToRenderPerBatch={5}
+        ListFooterComponent={() => <View>{isLoadingMore == true ? <ActivityIndicator /> : null}</View>}
       />
 
       {valueStatusShowOrHiddenPay ? (
@@ -438,6 +545,7 @@ export const DetailDebtScreen: FC<
         isVisible={isVisiblePay}
         setIsVisible={() => setIsVisiblePay(!isVisiblePay)}
         keyToPass={keyToPass}
+        valueDebt={valueDebt.current}
       />
 
       <CustomCalendar
@@ -448,6 +556,7 @@ export const DetailDebtScreen: FC<
         handleShort={() => {
           setMakeDateE(timeEnd);
           setMakeDateS(timeStart);
+          page.current = 0
           toggleModalDate();
         }}
         onMarkedDatesChangeS={(markedDatesS: React.SetStateAction<string>) => {
