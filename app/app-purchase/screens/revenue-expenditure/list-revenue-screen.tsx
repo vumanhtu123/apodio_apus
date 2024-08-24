@@ -5,6 +5,7 @@ import {
   Button,
   FlatList,
   Platform,
+  ScrollView,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,7 +16,6 @@ import { translate } from "../../../i18n";
 import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { ItemRevenue } from "./component/item-list-renvenue";
-import { RefactorMoneyModal } from "./refactor-money-modal";
 import { ClassifyModal } from "./classify-modal";
 import { FundsModal } from "./funds-modal";
 import CustomCalendar from "../../../components/calendar";
@@ -35,44 +35,105 @@ export const ListRevenueScreen: FC<
   const [IsReset, setIsReset] = useState<boolean>();
   const list = [
     {
+      id: 0,
       status: "05",
       toDay: "Thứ tư",
       monthDay: "Tháng 3/05",
       expenditureValue: "0",
       revenueValue: "40.000",
-      paymentMethod: "",
+      detail: [
+        {
+          name: "Nhập hàng",
+          value: "30.000",
+          paymentMethod: "ATM",
+        },
+        {
+          name: "Bán hàng",
+          value: "50.000",
+          paymentMethod: "ATM",
+        },
+      ],
     },
     {
+      id: 1,
       status: "25",
       toDay: "Thứ tư",
       monthDay: "Tháng 4/07",
       expenditureValue: "40.000",
       revenueValue: "0",
       paymentMethod: "ATM",
+      detail: [
+        {
+          name: "Nhập hàng",
+          value: "30.000",
+          paymentMethod: "ATM",
+        },
+        {
+          name: "Bán hàng",
+          value: "50.000",
+          paymentMethod: "ATM",
+        },
+      ],
     },
     {
+      id: 2,
       status: "09",
       toDay: "Thứ tư",
       monthDay: "Tháng 3/12",
       expenditureValue: "10.000",
       revenueValue: "5.000",
-      paymentMethod: "",
+      detail: [
+        {
+          name: "Nhập hàng",
+          value: "30.000",
+          paymentMethod: "ATM",
+        },
+        {
+          name: "Bán hàng",
+          value: "50.000",
+          paymentMethod: "ATM",
+        },
+      ],
     },
     {
-      status: "",
+      id: 3,
+      status: "10",
       toDay: "Thứ tư",
       monthDay: "Tháng 3/05",
       expenditureValue: "0",
       revenueValue: "40.000",
-      paymentMethod: "Tiền mặt",
+      detail: [
+        {
+          name: "Nhập hàng",
+          value: "30.000",
+          paymentMethod: "ATM",
+        },
+        {
+          name: "Bán hàng",
+          value: "50.000",
+          paymentMethod: "ATM",
+        },
+      ],
     },
     {
-      status: "05",
+      id: 4,
+      status: "31",
       toDay: "Thứ tư",
       monthDay: "Tháng 3/05",
       expenditureValue: "40.000",
       revenueValue: "40.000",
-      paymentMethod: "",
+      detail: [
+        {
+          name: "Nhập hàng",
+          value: "30.000",
+          paymentMethod: "ATM",
+        },
+        {
+          name: "Bán hàng",
+          value: "50.000",
+          paymentMethod: "ATM",
+        },
+      ],
     },
   ];
 
@@ -88,8 +149,8 @@ export const ListRevenueScreen: FC<
   return (
     <View
       style={{
-        justifyContent: "space-between",
-        flexDirection: "column",
+        // justifyContent: "space-between",
+        // flexDirection: "column",
         flex: 1,
       }}>
       <LinearGradient
@@ -209,22 +270,67 @@ export const ListRevenueScreen: FC<
                 }}></Text>
             </View>
           </View>
-          <FlatList
-            data={list}
-            renderItem={({ item, index }: any) => {
-              return (
-                <ItemRevenue
-                  expenditureValue={item.expenditureValue}
-                  monthDay={item.monthDay}
-                  paymentMethod={item.paymentMethod}
-                  revenueValue={item.revenueValue}
-                  status={item.status}
-                  toDay={item.toDay}
-                />
-              );
-            }}></FlatList>
         </View>
       </LinearGradient>
+      <ScrollView>
+        <FlatList
+          scrollEnabled={false}
+          data={list}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }: any) => {
+            return (
+              <ItemRevenue
+                id={item.id}
+                expenditureValue={item.expenditureValue}
+                monthDay={item.monthDay}
+                revenueValue={item.revenueValue}
+                status={item.status}
+                toDay={item.toDay}
+                detail={item.detail}
+              />
+            );
+          }}></FlatList>
+
+        {/* <RefactorMoneyModal
+        onVisible={isVisible}
+        onClose={(item: any) => {
+          setIsVisible(false);
+        }}
+      /> */}
+        <ClassifyModal
+          onVisible={isVisible}
+          onClose={(item: any) => {
+            setIsVisible(false);
+          }}
+          selected={(data: any) => {
+            // field1.current = data.value;
+          }}
+        />
+        {/* <FundsModal
+        onVisible={isVisible}
+        onClose={(item: any) => {
+          setIsVisible(false);
+        }}
+      /> */}
+        <CustomCalendar
+          button2={true}
+          onClose={() => toggleModalDate()}
+          handleShort={() => {
+            setMakeDateS(timeStart);
+            setMakeDateE(timeEnd);
+            toggleModalDate();
+          }}
+          onMarkedDatesChangeS={(markedDateS: string) => {
+            setTimeStart(markedDateS);
+          }}
+          onMarkedDatesChangeE={(markedDateE: string) => {
+            setTimeEnd(markedDateE);
+          }}
+          isShowTabs={false}
+          isSortByDate={isShortByDate}
+          toggleModalDate={toggleModalDate}
+        />
+      </ScrollView>
       <View
         style={{
           flexDirection: "row",
@@ -278,43 +384,6 @@ export const ListRevenueScreen: FC<
             }}></Text>
         </TouchableOpacity>
       </View>
-
-      {/* <RefactorMoneyModal
-        onVisible={isVisible}
-        onClose={(item: any) => {
-          setIsVisible(false);
-        }}
-      /> */}
-      <ClassifyModal
-        onVisible={isVisible}
-        onClose={(item: any) => {
-          setIsVisible(false);
-        }}
-      />
-      {/* <FundsModal
-        onVisible={isVisible}
-        onClose={(item: any) => {
-          setIsVisible(false);
-        }}
-      /> */}
-      <CustomCalendar
-        button2={true}
-        onClose={() => toggleModalDate()}
-        handleShort={() => {
-          setMakeDateS(timeStart);
-          setMakeDateE(timeEnd);
-          toggleModalDate();
-        }}
-        onMarkedDatesChangeS={(markedDateS: string) => {
-          setTimeStart(markedDateS);
-        }}
-        onMarkedDatesChangeE={(markedDateE: string) => {
-          setTimeEnd(markedDateE);
-        }}
-        isShowTabs={false}
-        isSortByDate={isShortByDate}
-        toggleModalDate={toggleModalDate}
-      />
     </View>
   );
 });

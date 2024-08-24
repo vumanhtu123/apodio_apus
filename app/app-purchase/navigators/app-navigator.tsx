@@ -152,6 +152,7 @@ export type NavigatorParamList = {
   detailWarehouse: undefined;
   warehouse: undefined;
   vendorScreen: undefined;
+  comingSoonScreen: undefined;
 };
 
 export type AppStackScreenProps<T extends keyof NavigatorParamList> =
@@ -536,6 +537,11 @@ export const AppStack = () => {
         name="vendorScreen"
         options={{ gestureEnabled: true }}
         component={Screens.ProductVendorScreen}
+      />
+      <Stack.Screen
+        name="comingSoonScreen"
+        options={{ gestureEnabled: true }}
+        component={Screens.ComingSoonScreen}
       />
     </Stack.Navigator>
   );

@@ -1,3 +1,4 @@
+export * from "./coming-soon/coming-soon";
 export * from "./common/wellcome/wellcome";
 export * from "./common/splash/Splash";
 export * from "./select-language/select-language-screen";
