@@ -7,7 +7,7 @@ import React from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { Header, Text, TextField } from "../../../../components";
 import { Styles, stylesWareHouse } from "../style";
-import { scaleHeight } from "../../../theme";
+import { colors, scaleHeight } from "../../../theme";
 import { Svgs } from "../../../../../assets/svgs";
 import { ConditionsComponent } from "../component/conditions-component";
 import { ConfigInfoMoreComponent } from "../component/config-info-component";
@@ -51,16 +51,16 @@ export const CreateWareHouseScreen: FC<
       nameWareHouse:
         status.current == "COPY"
           ? props.route.params.name +
-              "-COPY-" +
-              props.route.params.sequenceCopy ?? ""
+          "-COPY-" +
+          props.route.params.sequenceCopy ?? ""
           : props.route.params.name ?? "",
       codeWareHouse:
         status.current == "COPY"
           ? props.route.params.code +
-              "-COPY-" +
-              props.route.params.sequenceCopy ??
-            "" ??
-            ""
+          "-COPY-" +
+          props.route.params.sequenceCopy ??
+          "" ??
+          ""
           : String(props.route.params.code ?? ""),
       addressWareHouse: String(props.route.params.address ?? ""),
       temperature1: String(
@@ -138,7 +138,7 @@ export const CreateWareHouseScreen: FC<
 
   const onError = (errors: any) => {
     console.log("Form validation errors:", errors);
-    if(config){
+    if (config) {
       setShowErrors(true);
       setCheckErrorTriggered(prev => prev + 1);
     }
@@ -169,7 +169,7 @@ export const CreateWareHouseScreen: FC<
     clearErrors("weightCapacityUom");
   };
 
-  
+
 
   const onSubmit = (data: any) => {
     if (
@@ -194,10 +194,10 @@ export const CreateWareHouseScreen: FC<
           onHandleData(data);
           break;
       }
-    }else {
-      if(config){
-      setShowErrors(true);
-      setCheckErrorTriggered(prev => prev + 1);
+    } else {
+      if (config) {
+        setShowErrors(true);
+        setCheckErrorTriggered(prev => prev + 1);
       }
     }
   };
@@ -564,10 +564,10 @@ export const CreateWareHouseScreen: FC<
                   onBlur={onBlur}
                   isShowPassword
                   RightIconClear={null}
-                  RightIconShow={() => {}}
-                  onClearText={() => {}}
+                  RightIconShow={() => { }}
+                  onClearText={() => { }}
                   maxLength={50}
-                  onShowPassword={() => {}}
+                  onShowPassword={() => { }}
                   error={errors.codeWareHouse?.message ?? ""}
                   onChangeText={(value) => {
                     onChange(value.trimStart());
@@ -605,10 +605,10 @@ export const CreateWareHouseScreen: FC<
                   onBlur={onBlur}
                   isShowPassword
                   RightIconClear={null}
-                  RightIconShow={() => {}}
-                  onClearText={() => {}}
+                  RightIconShow={() => { }}
+                  onClearText={() => { }}
                   maxLength={250}
-                  onShowPassword={() => {}}
+                  onShowPassword={() => { }}
                   error={errors.nameWareHouse?.message ?? ""}
                   onChangeText={(value) => {
                     onChange(value.trimStart());
@@ -647,9 +647,9 @@ export const CreateWareHouseScreen: FC<
                   onBlur={onBlur}
                   isShowPassword
                   RightIconClear={null}
-                  RightIconShow={() => {}}
-                  onClearText={() => {}}
-                  onShowPassword={() => {}}
+                  RightIconShow={() => { }}
+                  onClearText={() => { }}
+                  onShowPassword={() => { }}
                   onChangeText={(value) => {
                     onChange(value.trimStart());
                   }}
@@ -717,7 +717,7 @@ export const CreateWareHouseScreen: FC<
               )}
             />
             {config ? <ConfigInfoMoreComponent list={listUnit} checkErrorTriggered={checkErrorTriggered} showErrors={showErrors} /> : null}
-            
+
           </ScrollView>
           <TouchableOpacity
             onPress={methods.handleSubmit(onSubmit, onError)}

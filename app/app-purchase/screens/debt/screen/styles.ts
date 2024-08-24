@@ -16,14 +16,14 @@ export  const Styles = StyleSheet.create({
         
     },
     bodyCardMusPay : {
-        width:'92%',
+        width:'95%',
         backgroundColor:colors.white,
         padding: padding.padding_16,
         borderRadius: scaleWidth(8),
         // marginHorizontal: scaleWidth(16),
-        marginRight:scaleWidth(16),
-        marginLeft: scaleWidth(16),
-        top: scaleWidth(90),
+        marginRight:scaleWidth(10),
+        marginLeft: scaleWidth(10),
+        top: scaleWidth(50),
         position: 'absolute',
     },
     bodyItem: {

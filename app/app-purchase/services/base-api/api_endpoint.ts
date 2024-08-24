@@ -91,4 +91,10 @@ export const ApiEndpoint = {
   GET_VENDOR: "/api/v1/internal/mobile-product-template/vendors",
   GET_TOTAL_DEBT: "/api/v1/mobile/debt-paid/total",
   GET_LIST_DEBT_MUST_PAY: "/api/v1/mobile/debt-paid/list-partner",
+  GET_DATA_DEBT_DETAIL: "/api/v1/mobile/debt-paid/nearest-due-date",
+  GET_LIST_DETAIL_DEBT: "/api/v1/mobile/debt-paid/list",
+  GET_VALUE_DEBT: "/api/v1/mobile/debt-paid/debt-order",
+  GET_ID_SENT_ACCOUNTING_BOOK: "/api/v1/account-ledger/list",
+  GET_LIST_SELECT_ACCOUNTING_BOOK: "/api/v1/account-journal/list",
+
 };
