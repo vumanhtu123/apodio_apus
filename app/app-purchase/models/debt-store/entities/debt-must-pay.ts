@@ -48,5 +48,16 @@ interface Response {
     traceId: string;
     data: DataMustPay;
 }
+export interface RootMustPayDebtDetail {
+  message: string
+  traceId: string
+  data: DataMustPayDebtDetail
+}
+
+export interface DataMustPayDebtDetail {
+  nearestDueDate: any
+  debtAmount: number
+}
+
   
 export type ResponseDebtResult = {kind: "ok", response: Response} | {kind: "bad-data", response: Response}

@@ -12,38 +12,38 @@ import { translate } from '../../../../i18n'
 interface propsModal {
     isVisible?: boolean,
     setIsVisible?: () => void,
-    sortMustPay: (value: string) => void,
+    sortMustPay: (value: boolean) => void,
     sortTotalDebt: (value: string) => void
 
 }
 
 export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible, sortTotalDebt, sortMustPay }) => {
     // const [selectUpOrDow, setSelectUpOrDow] = useState("Dow")
-    const [selectSortMustPay, setSelectSortMustPay] = useState(0)
+    const [selectSortMustPay, setSelectSortMustPay] = useState(true)
     const [selectTotalDebt, setSelectTotalDebt] = useState(0)
 
-    const selectUpOrDow = useRef('Dow')
-    const totalDebt = useRef('Dow')
+    const selectUpOrDow = useRef(false)
+    // const totalDebt = useRef('Dow')
 
 
 
     const sendKeySortMustPay = () => {
         sortMustPay(selectUpOrDow.current)
     }
-    const sendKeySortTotalDebt = () => {
-        sortTotalDebt(totalDebt.current)
-    }
+    // const sendKeySortTotalDebt = () => {
+    //     sortTotalDebt(totalDebt.current)
+    // }
 
     console.log('value select', selectUpOrDow.current);
     const dataUpOrDow = [
         {
             name: translate('debtScreen.dow'),
-            sort: 'Dow'
+            sort: true
 
         },
         {
             name: translate('debtScreen.up'),
-            sort: 'Up'
+            sort: false
 
         },
 
@@ -106,10 +106,10 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible, sortTotal
                         {
                             dataUpOrDow.map((item, index) => {
                                 return (
-                                    <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: index == selectSortMustPay ? colors.white : colors.lavender }]}
+                                    <TouchableOpacity style={[Styles.styBtnUp, { backgroundColor: item.sort == selectSortMustPay ? colors.white : colors.lavender }]}
                                         onPress={() => {
                                             // setSelectUpOrDow('giảm')
-                                            setSelectSortMustPay(index)
+                                            setSelectSortMustPay(item.sort)
                                             console.log('select', selectUpOrDow.current);
 
                                             selectUpOrDow.current = item.sort
@@ -127,9 +127,9 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible, sortTotal
                     </View>
                 </View>
 
-                <View style={Styles.horizontalLine} />
+                {/* <View style={Styles.horizontalLine} /> */}
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={{ flex: 1 }}>
                         <Text tx='debtScreen.totalDebt'></Text>
                     </View>
@@ -159,7 +159,7 @@ export const ModalFilter: FC<propsModal> = ({ isVisible, setIsVisible, sortTotal
 
 
                     </View>
-                </View>
+                </View> */}
             </View>
 
         </Modal>

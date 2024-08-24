@@ -718,6 +718,8 @@ const en = {
     paymentTerm: " Hạn thanh toán gần nhất",
     order: "Đơn hàng",
     valueOrder: "Giá trị đơn hàng",
+    valueWarehouse: "Giá trị nhập kho",
+    exValueWarehouse:"Giá trị xuất kho",
     dateOfPayment: "Ngày thanh toán",
     remainingDebt: "Nợ còn lại",
     latePaymentPenalty: "Phạt thanh toán muộn",
@@ -734,6 +736,8 @@ const en = {
     paymentAmount: "Số tiền thanh toán",
     amount: "Tiền mặt",
     payments: "Hình thức thanh toán",
+    senderAccountNumber: "Số tài khoản người gửi",
+    recipientAccountNumber:"Số tài khoản người nhận",
     payTotal: "Thanh toán tổng nợ",
     accordingToTransaction: "Theo giao dịch",
     accordingToClient: "Theo khách hàng",
@@ -751,7 +755,8 @@ const en = {
     enterNumberAcc: "Nhập số tài khoản",
     pleaseEnterData: "Vui lòng nhập dữ liệu",
     accountingBook:"Sổ kế toán",
-    
+    orderDate:"Ngày tạo",
+
   },
   productScreen: {
     select_vendor: "Lựa chọn xem sản phẩm của nhà cung cấp:",

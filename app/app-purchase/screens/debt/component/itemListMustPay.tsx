@@ -33,6 +33,7 @@ export const ItemListMustPay: FC<ItemProps> = ({ item, onClick, idSelect }) => {
 
         <TouchableOpacity
             onPress={onClick}
+        // key={item?.partner.id}
         >
             <LinearGradient
                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}
