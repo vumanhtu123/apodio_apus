@@ -4,37 +4,74 @@ import { Text } from "../../../../components";
 import { colors, scaleWidth } from "../../../theme";
 
 interface InputItem {
+  id?: any;
   status?: any;
   toDay?: any;
   monthDay?: any;
   expenditureValue?: any;
   revenueValue?: any;
   paymentMethod?: any;
+  detail: [
+    {
+      name: any;
+      value: any;
+      paymentMethod: any;
+    }
+  ];
 }
 
+// const RenderItem = (props: any) => {
+//   return;
+//   <ItemRevenueNoDate
+//     revenueValue={item.value}
+//     paymentMethod={item.paymentMethod}
+//     name={item.name}
+//   />;
+// };
+
 export const ItemRevenue = (props: InputItem) => {
-  return props.paymentMethod != "" ? (
-    <ItemRevenueNoDate
-      revenueValue={props.revenueValue}
-      paymentMethod={props.paymentMethod}
-    />
-  ) : (
-    <View style={styles.container}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <View style={styles.viewStatus}>
-          <Text style={styles.textStatus}>{props.status ?? 1}</Text>
+  const [isShowDetail, setIsShowDetail] = useState(false);
+
+  return (
+    <View style={{ flexDirection: "column" }}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => {
+          setIsShowDetail(!isShowDetail);
+          // handleOnclick(props.id);
+        }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={styles.viewStatus}>
+            <Text style={styles.textStatus}>{props.status ?? 1}</Text>
+          </View>
+          <View style={{ flexDirection: "column" }}>
+            <Text style={{ fontSize: 12, fontWeight: "600" }}>
+              {props.toDay ?? "Thứ Ba"}
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "400",
+                color: colors.dolphin,
+              }}>
+              {props.monthDay ?? "Tháng 3/24"}
+            </Text>
+          </View>
         </View>
-        <View style={{ flexDirection: "column" }}>
-          <Text style={{ fontSize: 12, fontWeight: "600" }}>
-            {props.toDay ?? "Thứ Ba"}
-          </Text>
-          <Text style={{ fontSize: 12, fontWeight: "400", color: colors.dolphin }}>
-            {props.monthDay ?? "Tháng 3/24"}
-          </Text>
-        </View>
-      </View>
-      <Text style={styles.textRevenue}>{props.revenueValue}</Text>
-      <Text style={styles.textExpenditure}>{props.expenditureValue}</Text>
+        <Text style={styles.textRevenue}>{props.revenueValue}</Text>
+        <Text style={styles.textExpenditure}>{props.expenditureValue}</Text>
+      </TouchableOpacity>
+      {isShowDetail == true
+        ? props.detail.map((item: any) => {
+            return (
+              <ItemRevenueNoDate
+                revenueValue={item.value}
+                paymentMethod={item.paymentMethod}
+                name={item.name}
+              />
+            );
+          })
+        : null}
     </View>
   );
 };
@@ -42,7 +79,9 @@ export const ItemRevenue = (props: InputItem) => {
 const ItemRevenueNoDate = (props: any) => {
   return (
     <View style={styles.containerRevenueNoDate}>
-      <Text tx="analysis.importGoods" style={styles.textTittle}></Text>
+      <Text tx="analysis.importGoods" style={styles.textTittle}>
+        {props.name}
+      </Text>
       <View style={styles.viewPaymentMethod}>
         <Text style={styles.textRevenueNoDate}>{props.revenueValue}</Text>
         <Text style={styles.textPaymentMethod}>{props.paymentMethod}</Text>

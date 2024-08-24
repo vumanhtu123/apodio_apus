@@ -15,6 +15,7 @@ import { CustomModal } from "../../../components/custom-modal";
 interface Input {
   onVisible?: any;
   onClose?: any;
+  selected: (data: any) => void;
 }
 
 export const FundsModal = (props: Input) => {
@@ -31,6 +32,13 @@ export const FundsModal = (props: Input) => {
   } = useForm({
     mode: "all",
   });
+
+  const handleSubmitForm = (item: any) => {
+    if (selectedValue) {
+      props.onClose();
+      props.selected(item);
+    }
+  };
 
   console.log("tuvm acb", selectedValue);
 
@@ -191,6 +199,7 @@ export const FundsModal = (props: Input) => {
               <TouchableOpacity
                 onPress={() => {
                   selectItem(item.id);
+                  handleSubmitForm(item);
                 }}>
                 <View
                   style={{

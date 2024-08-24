@@ -206,7 +206,11 @@ export const RefactorMoneyModal = (props: Input) => {
           {list.map((item, index) => {
             return (
               <TouchableOpacity onPress={() => {}}>
-                <View style={{ borderRadius: 10, backgroundColor: colors.aliceBlue }}>
+                <View
+                  style={{
+                    borderRadius: 10,
+                    backgroundColor: colors.aliceBlue,
+                  }}>
                   <Text style={{ paddingHorizontal: 23, paddingVertical: 11 }}>
                     {item}
                   </Text>
