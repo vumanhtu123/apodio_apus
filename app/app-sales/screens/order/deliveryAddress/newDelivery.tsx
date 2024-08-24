@@ -260,29 +260,11 @@ export const NewDelivery: FC = observer(function NewDelivery() {
               })
             }
             setTimeout(() => navigation.goBack(), 1000)
-            // Dialog.show({
-            //   type: ALERT_TYPE.INFO,
-            //   title: translate("productScreen.Notification"),
-            //   textBody: screen === 'edit' ? translate("order.editAddressDialog") : translate("order.newAddressDialog"),
-            //   button2: translate("productScreen.BtnNotificationAccept"),
-            //   closeOnOverlayTap: false,
-            //   onPressButton: () => {
-            //     navigation.goBack();
-            //     Dialog.hide();
-            //   },
-            // });
           } else {
             Toast.show({
               type: ALERT_TYPE.SUCCESS,
               textBody: response.response.errorCodes[0].message
             })
-            // Dialog.show({
-            //   type: ALERT_TYPE.DANGER,
-            //   title: translate("txtDialog.txt_title_dialog"),
-            //   textBody: response.response.errorCodes[0].message,
-            //   button: translate("common.ok"),
-            //   closeOnOverlayTap: false,
-            // });
             console.error(
               "Failed to fetch categories:",
               response.response.message

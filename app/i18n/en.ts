@@ -261,6 +261,8 @@ const en = {
     warning_payment: "Thanh toán trước",
     text_money_limit: "Số tiền tối thiểu cần thanh toán trước: ",
     debt_limit: "Hạn mức công nợ tối đa được trừ cho đơn hàng: ",
+    minimumQuantitySell: "SL tối thiểu cần bán là ",
+    confirmRemoveProductCart: "Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
     tittle_warning:
       " Vui lòng chọn một phương thức thanh toán trước để kết hợp với hạn mức công nợ khả dụng",
     customer_paid: "Khách muốn trả",

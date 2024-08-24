@@ -199,11 +199,11 @@ const RenderOrderItem = ({
                         type: ALERT_TYPE.INFO,
                         title: translate("productScreen.Notification"),
                         textBody:
-                          "SL tối thiểu cần bán là " +
+                        translate('order.minimumQuantitySell') +
                           item.minQuantity +
                           " " +
                           item.saleUom.name +
-                          ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
+                          ". " + translate('order.confirmRemoveProductCart'),
                         button: translate("productScreen.cancel"),
                         button2: translate(
                           "productScreen.BtnNotificationAccept"
@@ -434,11 +434,11 @@ const RenderOrderItem = ({
                         type: ALERT_TYPE.INFO,
                         title: translate("productScreen.Notification"),
                         textBody:
-                          "SL tối thiểu cần bán là " +
+                        translate('order.minimumQuantitySell') +
                           item.minQuantity +
                           " " +
                           item.saleUom.name +
-                          ". Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
+                          ". " + translate('order.confirmRemoveProductCart'),
                         button: translate("productScreen.cancel"),
                         button2: translate(
                           "productScreen.BtnNotificationAccept"

@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
-import { ImageBackground, TouchableOpacity, View } from "react-native";
-import { styles } from "./styles";
+import React, { FC } from "react";
+import { ImageBackground, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Svgs } from "../../../../../assets/svgs";
 import { Header, Text } from "../../../../components";
@@ -30,11 +29,7 @@ export const OrderSuccess: FC = () => {
   const now = moment();
   const formattedDateTime = now.format("HH:mm:ss - DD/MM/YYYY");
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "space-between",
-      }}>
+    <View style={styles.ROOT}>
       <View>
         <Header
           LeftIcon={Svgs.back}
@@ -49,16 +44,7 @@ export const OrderSuccess: FC = () => {
           style={{ height: scaleHeight(228) }}></LinearGradient>
         <ImageBackground
           source={Images.backgroundSuccess}
-          style={{
-            position: "absolute",
-            alignItems: "center",
-            // justifyContent: '',
-            height: scaleHeight(556),
-            top: scaleWidth(45),
-            marginHorizontal: scaleWidth(16),
-            width: scaleWidth(343),
-            // backgroundColor: 'blue',
-          }}
+          style={styles.viewImageBackground}
           resizeMode="cover">
           <View style={{ alignItems: "center", marginTop: scaleWidth(50) }}>
             <Svgs.ic_Frame width={scaleWidth(219)} height={scaleHeight(171)} />
@@ -71,11 +57,7 @@ export const OrderSuccess: FC = () => {
                   ? "successScreen.editTitleSuccess"
                   : "successScreen.titleSuccessOrder"
               }
-              style={{
-                fontSize: fontSize.size14,
-                fontWeight: "500",
-                color: colors.aluminium,
-              }}
+              style={[styles.textRed500, {color: colors.aluminium}]}
             />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ fontSize: fontSize.size14 }}>#{code}</Text>
@@ -86,11 +68,7 @@ export const OrderSuccess: FC = () => {
                     style={{ fontSize: fontSize.size14 }}
                   />
                   <Text
-                    style={{
-                      color: colors.palette.radicalRed,
-                      fontWeight: "500",
-                      fontSize: fontSize.size14,
-                    }}>
+                    style={styles.textRed500}>
                     {formatVND(formatCurrency(commasToDots(formattedPrice)))}
                   </Text>
                 </>
@@ -121,12 +99,9 @@ export const OrderSuccess: FC = () => {
                   tx="successScreen.theRemainingAmount"
                 />
                 <Text
-                  style={{
-                    color: colors.palette.radicalRed,
-                    fontWeight: "500",
-                    fontSize: fontSize.size14,
+                  style={[styles.textRed500, {
                     marginBottom: scaleWidth(12),
-                  }}>
+                  }]}>
                   {paymentMethod == true
                     ? formatVND(0)
                     : formatVND(
@@ -156,7 +131,6 @@ export const OrderSuccess: FC = () => {
       <View
         style={{
           paddingHorizontal: scaleWidth(16),
-          // backgroundColor: 'yellow',
         }}>
         {screen === "edit" ? null : (
           <TouchableOpacity
@@ -164,22 +138,10 @@ export const OrderSuccess: FC = () => {
               orderStore.reset();
               navigation.goBack();
             }}
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: scaleWidth(10),
-              borderColor: colors.veryLightGrey,
-              paddingVertical: scaleHeight(12),
-              backgroundColor: colors.navyBlue,
-            }}>
+            style={styles.viewButtonCreateOrder}>
             <Text
               tx="successScreen.btnCreateOrder"
-              style={{
-                fontSize: fontSize.size14,
-                color: "white",
-                fontWeight: "600",
-              }}
-            />
+              style={styles.textButton}/>
           </TouchableOpacity>
         )}
         <TouchableOpacity
@@ -194,12 +156,7 @@ export const OrderSuccess: FC = () => {
           }}>
           <Text
             tx="successScreen.btnDetailOrder"
-            style={{
-              fontSize: fontSize.size14,
-              color: colors.navyBlue,
-              fontWeight: "700",
-            }}
-          />
+            style={styles.textButton}/>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -214,15 +171,43 @@ export const OrderSuccess: FC = () => {
           }}>
           <Text
             tx="successScreen.btnBack"
-            style={{
-              fontSize: fontSize.size14,
-              color: colors.navyBlue,
-              fontWeight: "700",
-            }}
-          />
+            style={styles.textButton}/>
         </TouchableOpacity>
       </View>
     </View>
-    // </View>
   );
 };
+const styles = StyleSheet.create({
+  ROOT: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
+  viewImageBackground: {
+    position: "absolute",
+    alignItems: "center",
+    // justifyContent: '',
+    height: scaleHeight(556),
+    top: scaleWidth(45),
+    marginHorizontal: scaleWidth(16),
+    width: scaleWidth(343),
+    // backgroundColor: 'blue',
+  },
+  textButton: {
+    fontSize: fontSize.size14,
+    color: "white",
+    fontWeight: "700",
+  },
+  viewButtonCreateOrder: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: scaleWidth(10),
+    borderColor: colors.veryLightGrey,
+    paddingVertical: scaleHeight(12),
+    backgroundColor: colors.navyBlue,
+  },
+  textRed500: {
+    color: colors.palette.radicalRed,
+    fontWeight: "500",
+    fontSize: fontSize.size14,
+  },
+})

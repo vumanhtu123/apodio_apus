@@ -8,6 +8,7 @@ import { TaxModel } from "../../models/order-store/entities/order-tax-model";
 import { DebtModel } from "../../models/order-store/entities/order-debt-limit-model";
 import { TaxLineModel } from "../../models/order-store/entities/order-tax-lines-model";
 import { TYPE_DEBT, CONTRACT_TYPE } from "../../utils/enum";
+import { InvoiceResult } from "../../models/order-store/entities/order-store-model";
 
 export class OrderApi {
   private api: ApiOrder;
@@ -107,7 +108,7 @@ export class OrderApi {
       return { kind: "bad-data" };
     }
   }
-  async createInvoice(invoiceAdd: any): Promise<any> {
+  async createInvoice(invoiceAdd: any): Promise<InvoiceResult> {
     Loading.show({
       text: "Loading...",
     });
@@ -127,7 +128,7 @@ export class OrderApi {
       return { kind: "bad-data", response: data };
     } catch (e) {
       Loading.hide();
-      return { kind: "bad-data" };
+      return { kind: "bad-data", response: e };
     }
   }
   async getListOrderProduct(

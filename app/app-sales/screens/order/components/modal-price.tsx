@@ -1,18 +1,13 @@
 import 'numeral/locales/vi';
-import React, { useEffect, useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Dimensions, KeyboardAvoidingView, Platform, View, ViewStyle } from 'react-native';
-import Modal from 'react-native-modal';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Dimensions, View, ViewStyle } from 'react-native';
 import { Button, Text, TextField } from '../../../../components';
-import Dialog from '../../../../components/dialog/dialog';
 import { TxKeyPath, translate } from '../../../../i18n';
 import { useStores } from '../../../models';
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from '../../../theme';
-import { addCommas, formatCurrency, formatNumberByString, removeNonNumeric } from '../../../utils/validate';
-import { TextFieldCurrency } from '../../../../components/text-field-currency/text-field-currency';
-import { Svgs } from '../../../../../assets/svgs';
+import { formatCurrency, formatNumberByString } from '../../../utils/validate';
 import { CustomModal } from '../../../../components/custom-modal';
-const { width, height } = Dimensions.get('screen');
 
 interface PriceModalProps {
     isVisible: boolean;
@@ -41,7 +36,6 @@ const PriceModal = (props: PriceModalProps) => {
     });
     const [valueCheck, setValueCheck] = useState<any>()
     const priceWatch = watch('price');
-    // console.log(priceWatch , 'checkkkk')
     const onSubmit = () => {
         const formatValue = formatNumberByString(valueCheck)
         const formatDots = formatValue.replace(/,/g, '.');
@@ -49,9 +43,6 @@ const PriceModal = (props: PriceModalProps) => {
         onConfirm(formatDots);
         reset();
     }
-    const [modalNotify, setModalNotify] = useState(false)
-    const [modalClose, setModalClose] = useState(false)
-    const [modalError, setModalError] = useState(false)
     const [showLoading, setShowLoading] = useState(false)
 
     const titleModal = titleTx ? titleTx : title;
@@ -59,13 +50,6 @@ const PriceModal = (props: PriceModalProps) => {
     const placeholderInputText = placeholderTx ? placeholderTx : placeholder;
 
     return (
-        // <Modal
-        //     animationIn={'fadeIn'}
-        //     animationOut={'fadeOut'}
-        //     isVisible={isVisible}
-        //     style={VIEWMODAL}
-        //     avoidKeyboard={true}
-        // >
         <CustomModal
             isVisible={isVisible}
             setIsVisible={() => setIsVisible}
@@ -102,19 +86,16 @@ const PriceModal = (props: PriceModalProps) => {
                                 }}
                                 value={value}
                                 onBlur={onBlur}
-                                // RightIconClear={Images.icon_delete2}
-                                // onClearText={() => onChange('')}
                                 valueCurrency={rightText}
                                 onChangeText={(value) => {
                                     onChange(vendorStore.companyInfo.thousandSeparator === 'DOTS' ? formatCurrency(value) : formatCurrency(value))
                                     setValueCheck(value !== '' ? formatCurrency(value) : 0)
                                 }}
-                                // isImportant={true}
                                 showRightIcon={false}
                                 maxLength={15}
                                 placeholder={placeholder}
                             />)}
-                        rules={{ required: "Nhập giá sản phẩm" }}
+                        rules={{ required: translate('productScreen.enterProduct') }}
                     />
                 </View>
                 <View style={{
@@ -150,10 +131,6 @@ const PriceModal = (props: PriceModalProps) => {
                 </View>
             </View>
         </CustomModal>
-
-
-
-        // </Modal>
     );
 };
 

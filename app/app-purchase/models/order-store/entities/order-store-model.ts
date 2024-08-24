@@ -1,3 +1,5 @@
+import { ErrorCode } from "../../errors";
+
 export interface InputSelectModel {
   id: string,
   label: string
@@ -344,3 +346,15 @@ interface Response {
 }
 
 export type OrderResult = { kind: "ok", response: Response } | { kind: "bad-data", response: Response };
+interface Invoice {
+  message: string;
+  traceId: string;
+  data: DataInvoice;
+  errorCodes: ErrorCode[]
+}
+
+interface DataInvoice {
+  id: number,
+  debtAmount: number
+}
+export type InvoiceResult = { kind: "ok", response: Invoice } | { kind: "bad-data", response: Invoice } | { kind: "bad-data", response: any };

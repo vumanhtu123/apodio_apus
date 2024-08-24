@@ -265,6 +265,7 @@ export const OrderStoreModel = types
         name: "",
         code: "",
         phoneNumber: "",
+        isHaveDeliveryAddress: false,
       };
       self.sortPriceList = "";
       self.dataPriceListSelected = {
@@ -792,7 +793,7 @@ export const OrderStoreModel = types
         self.environment.apiOrder,
         self.environment.apiAccount
       );
-      const result: OrderResult = yield orderApi.createInvoice(invoiceAdd);
+      const result = yield orderApi.createInvoice(invoiceAdd);
       console.log("-----------dsa", JSON.stringify(result));
       if (result.kind === "ok") {
         console.log("order", result);

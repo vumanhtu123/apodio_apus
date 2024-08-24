@@ -1,19 +1,17 @@
 import { observer } from "mobx-react-lite";
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Header, Screen, Text, TextField } from "../../../../components";
+import { Header, Text, TextField } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
 import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { ModalPayment } from "../components/modal-payment-method";
 import { useStores } from "../../../models";
-import { advanceMethodData, methodData } from "./data";
+import { advanceMethodData } from "./data";
 import { translate } from "../../../../i18n";
 import { commasToDots, formatCurrency, formatStringToFloat, formatVND } from "../../../utils/validate";
 import { ALERT_TYPE, Toast } from "../../../../components/dialog-notification";
-import { TextFieldCurrency } from "../../../../components/text-field-currency/text-field-currency";
-import { InputSelect } from "../../../../components/input-select/inputSelect";
 
 export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   props: any
@@ -26,8 +24,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
   const countRef = useRef('');
   const [credit, setCredit] = useState(0)
   const [isCredit, setIsCredit] = useState(false)
+  const namePayment = useRef('')
 
-  const { orderStore, vendorStore } = useStores();
+  const { orderStore } = useStores();
   // console.log('zxcxzmmlmllm', credit)
   const getBalanceLimit = async () => {
     if (orderStore.dataClientSelect !== null) {
@@ -147,6 +146,55 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
     formState: { errors }, setError, setValue
   } = useForm();
   const navigation = useNavigation();
+  const submitTextField = (value: string) => {
+    console.log(value, 'day la value')
+    if (Number(formatStringToFloat(value)) >= Number(price)) {
+      setError('price', {
+        type: "validate",
+        message: translate("productScreen.cannotPrepayMoreThanTheOrderValue"),
+      })
+    }
+    if (Number(formatStringToFloat(value)) < Number(Sum1())) {
+      setError("price", {
+        type: "validate",
+        message: translate('productScreen.guestsNeedToPay'),
+      });
+    }
+    if (Number(formatStringToFloat(value)) > Number(credit) && countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
+      setError('price', {
+        type: "validate",
+        message: translate("productScreen.cannotPay"),
+      })
+      return
+    }
+    if (Number(formatStringToFloat(value)) >= Number(Sum1()) && Number(formatStringToFloat(value)) <= Number(price)) {
+      setValue('price', value.toString())
+      setError('price', {})
+      setText(value)
+      Remain()
+    }
+  }
+
+  const saveModal = () => {
+    countRef.current = namePayment.current;
+    setCheck(true)
+    if (namePayment.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
+      if (Number(Sum1()) <= credit) {
+        setText(formatCurrency(commasToDots(Sum1().toString())))
+        setValue('price', formatCurrency(commasToDots(Sum1().toString())))
+        setError('price', {})
+      } else {
+        setText(formatCurrency(commasToDots(credit.toString())))
+        setValue('price', formatCurrency(commasToDots(credit.toString())))
+        setError('price', {})
+      }
+    } else {
+      setText('')
+      setValue('price', '')
+      setError('price', {})
+    }
+  }
+
   return (
     <View style={styles.ROOT}>
       <View>
@@ -174,8 +222,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             <View style={{ flexDirection: "row", marginHorizontal: scaleWidth(16) }}>
               <Text
                 style={styles.textDolphin400}
-                tx="order.debt_limit"/>
-              <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: colors.radicalRed }}>
+                tx="order.debt_limit" />
+              <Text style={styles.textRed400}>
                 {formatVND(formatCurrency(commasToDots(debtAmount)))}
               </Text>
             </View>
@@ -183,8 +231,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           <View style={{ flexDirection: "row", marginHorizontal: scaleWidth(16), marginVertical: scaleHeight(8) }}>
             <Text
               style={styles.textDolphin400}
-              tx="order.text_money_limit"/>
-            <Text style={{ fontSize: fontSize.size12, fontWeight: "400", color: colors.radicalRed }}>
+              tx="order.text_money_limit" />
+            <Text style={styles.textRed400}>
               {formatVND(formatCurrency(commasToDots(Sum1())))}
             </Text>
           </View>
@@ -192,43 +240,20 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
             onPress={() => {
               setButtonPayment(true);
             }}
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: 'center',
-              marginHorizontal: scaleWidth(16),
-              marginVertical: scaleHeight(8)
-            }}>
+            style={styles.textChangePayment}>
             <Text
               tx="order.method_payment"
-              style={{
-                fontSize: fontSize.size12,
-                fontWeight: "400",
-                color: colors.nero,
-              }}></Text>
+              style={[styles.textRed400, { color: colors.nero }]} />
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View>
                 <Text
-                  style={{
-                    fontSize: fontSize.size12,
-                    fontWeight: "400",
-                    color: colors.nero,
-                    marginRight: scaleWidth(6),
-                    textAlign: 'right'
-
-                  }}>
+                  style={styles.namePayment}>
                   {countRef.current}
                   {/* {credit} */}
                 </Text>
                 {method === 1 ? (
                   <Text
-                    style={{
-                      fontSize: fontSize.size12,
-                      fontWeight: "400",
-                      marginRight: scaleWidth(6),
-                      textAlign: 'right',
-                      color: colors.radicalRed
-                    }}>
+                    style={[styles.namePayment, { color: colors.radicalRed }]}>
                     {`(${formatVND(formatCurrency(commasToDots(credit)))})`}
                   </Text>
                 ) : null}
@@ -242,12 +267,7 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               <TextField
                 keyboardType='numeric'
                 labelTx={type === false && price > debtAmount ? "order.customer_needPaid" : "order.customer_paid"}
-                style={{
-                  marginHorizontal: scaleWidth(16),
-                  marginVertical: scaleHeight(8),
-                  backgroundColor: "white",
-                  borderRadius: scaleWidth(8),
-                }}
+                style={styles.viewInputText}
                 value={value}
                 onBlur={onBlur}
                 showRightIcon={false}
@@ -267,33 +287,8 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
                     onChange(formatCurrency(value))
                   }
                 }}
-                onSubmitEditing={() => {
-                  if (Number(formatStringToFloat(value)) >= Number(price)) {
-                    setError('price', {
-                      type: "validate",
-                      message: translate("productScreen.cannotPrepayMoreThanTheOrderValue"),
-                    })
-                  }
-                  if (Number(formatStringToFloat(value)) < Number(Sum1())) {
-                    setError("price", {
-                      type: "validate",
-                      message: translate('productScreen.guestsNeedToPay'),
-                    });
-                  }
-                  if (Number(formatStringToFloat(value)) > Number(credit) && countRef.current === translate("order.EXCEPT_FOR_LIABILITIES")) {
-                    setError('price', {
-                      type: "validate",
-                      message: translate("productScreen.cannotPay"),
-                    })
-                    return
-                  }
-                  if (Number(formatStringToFloat(value)) >= Number(Sum1()) && Number(formatStringToFloat(value)) <= Number(price)) {
-                    setValue('price', value.toString())
-                    console.log(value, '123')
-                    setError('price', {})
-                    setText(value)
-                    Remain()
-                  }
+                onSubmitEditing={(data) => {
+                  submitTextField(data.nativeEvent.text)
                 }}
               />
             )}
@@ -315,14 +310,9 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
               marginHorizontal: margin.margin_16,
               marginVertical: margin.margin_6,
             }}>
-            <Text
-              style={{
-                fontSize: fontSize.size12,
-                fontWeight: "400",
-                color: colors.dolphin,
-              }}
-              tx="order.amount_paid"></Text>
-            <Text style={{ fontSize: 12, fontWeight: "400", color: colors.radicalRed }}>
+            <Text style={styles.textDolphin400}
+              tx="order.amount_paid" />
+            <Text style={styles.textRed400}>
               {formatVND(formatCurrency(commasToDots(Remain())))}
             </Text>
           </View>}
@@ -333,24 +323,10 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
           onPress={() => {
             Apply();
           }}>
-          <View
-            style={{
-              backgroundColor: colors.navyBlue,
-              borderRadius: 8,
-              marginHorizontal: margin.margin_15,
-              marginBottom: margin.margin_15,
-              marginTop: margin.margin_5,
-            }}>
+          <View style={styles.viewButtonApply}>
             <Text
               tx="order.apply"
-              style={{
-                color: "white",
-                fontSize: fontSize.size14,
-                fontWeight: "600",
-                marginHorizontal: margin.margin_50,
-                marginVertical: margin.margin_12,
-                textAlign: "center",
-              }}></Text>
+              style={styles.textApply}/>
           </View>
         </TouchableOpacity>
       </View>
@@ -360,32 +336,12 @@ export const PaymentMethodScreen = observer(function PaymentMethodScreen(
         closeDialog={function (): void {
           setButtonPayment(false);
         }}
-        onSave={() => {
-          console.log('da chon')
-        }}
+        onSave={()=>saveModal()}
         arrData={advanceMethodData}
         method={method}
         setMethod={function (item: number, name: string): void {
           setMethod(item);
-          countRef.current = name;
-          console.log('/////////////', item)
-          setCheck(true)
-          if (name === translate("order.EXCEPT_FOR_LIABILITIES")) {
-            if (Number(Sum1()) <= credit) {
-              setText(formatCurrency(commasToDots(Sum1().toString())))
-              setValue('price', formatCurrency(commasToDots(Sum1().toString())))
-              setError('price', {})
-            } else {
-              setText(formatCurrency(commasToDots(credit.toString())))
-              setValue('price', formatCurrency(commasToDots(credit.toString())))
-              setError('price', {})
-            }
-          } else {
-            setText('')
-            setValue('price', '')
-            setError('price', {})
-          }
-          console.log("tuvm method", countRef);
+          namePayment.current = name
         }}
         debt={{
           isHaveDebtLimit: isCredit,
@@ -433,5 +389,41 @@ const styles = StyleSheet.create({
     fontSize: fontSize.size12,
     fontWeight: "400",
     color: colors.dolphin,
+  },
+  textRed400: { fontSize: fontSize.size12, fontWeight: "400", color: colors.radicalRed },
+  textChangePayment: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: 'center',
+    marginHorizontal: scaleWidth(16),
+    marginVertical: scaleHeight(8)
+  },
+  namePayment: {
+    fontSize: fontSize.size12,
+    fontWeight: "400",
+    color: colors.nero,
+    marginRight: scaleWidth(6),
+    textAlign: 'right'
+  },
+  viewInputText: {
+    marginHorizontal: scaleWidth(16),
+    marginVertical: scaleHeight(8),
+    backgroundColor: "white",
+    borderRadius: scaleWidth(8),
+  },
+  textApply: {
+    color: "white",
+    fontSize: fontSize.size14,
+    fontWeight: "600",
+    marginHorizontal: margin.margin_50,
+    marginVertical: margin.margin_12,
+    textAlign: "center",
+  },
+  viewButtonApply: {
+    backgroundColor: colors.navyBlue,
+    borderRadius: 8,
+    marginHorizontal: margin.margin_15,
+    marginBottom: margin.margin_15,
+    marginTop: margin.margin_5,
   },
 })

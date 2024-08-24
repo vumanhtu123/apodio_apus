@@ -34,9 +34,8 @@ import {
   SumMoney,
 } from "../components/header-order";
 import { ModalTaxes } from "../components/modal-taxes-apply";
-import { arrPayment, methodData } from "./data";
+import { arrPayment } from "./data";
 import { useStores } from "../../../models";
-import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 import {
   ALERT_TYPE,
   Dialog,
