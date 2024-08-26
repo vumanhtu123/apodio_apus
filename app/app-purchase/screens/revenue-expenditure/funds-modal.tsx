@@ -40,7 +40,7 @@ export const FundsModal = (props: Input) => {
     }
   };
 
-  console.log("tuvm acb", selectedValue);
+  // console.log("tuvm acb", selectedValue);
 
   const selectItem = (id: any) => {
     setSelectedItem(id);
