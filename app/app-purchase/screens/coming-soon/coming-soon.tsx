@@ -19,9 +19,10 @@ import { styles } from "./styles";
 // REMOVE ME! ⬇️ This TS ignore will not be necessary after you've added the correct navigator param type
 export const ComingSoonScreen: FC<
   StackScreenProps<NavigatorParamList, "comingSoonScreen">
-> = observer(function ComingSoonScreen(props) {
+> = observer(function ComingSoonScreen(props: any) {
   const { bottom, top } = useSafeAreaInsets();
 
+  console.log("comingSoonScreen", props.route.params);
   console.log(top, bottom);
 
   return (

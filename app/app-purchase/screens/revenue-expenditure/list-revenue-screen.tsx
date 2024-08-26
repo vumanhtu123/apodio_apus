@@ -23,6 +23,111 @@ import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
 import { NavigatorParamList } from "../../navigators";
 import { useNavigation } from "@react-navigation/native";
+import { useStores } from "../../models";
+
+export const list = [
+  {
+    id: 0,
+    status: "05",
+    toDay: "Thứ tư",
+    monthDay: "Tháng 3/05",
+    expenditureValue: "0",
+    revenueValue: "40.000",
+    detail: [
+      {
+        name: "Nhập hàng",
+        value: "30.000",
+        paymentMethod: "ATM",
+      },
+      {
+        name: "Bán hàng",
+        value: "50.000",
+        paymentMethod: "ATM",
+      },
+    ],
+  },
+  {
+    id: 1,
+    status: "25",
+    toDay: "Thứ tư",
+    monthDay: "Tháng 4/07",
+    expenditureValue: "40.000",
+    revenueValue: "0",
+    paymentMethod: "ATM",
+    detail: [
+      {
+        name: "Nhập hàng",
+        value: "30.000",
+        paymentMethod: "ATM",
+      },
+      {
+        name: "Bán hàng",
+        value: "50.000",
+        paymentMethod: "ATM",
+      },
+    ],
+  },
+  {
+    id: 2,
+    status: "09",
+    toDay: "Thứ tư",
+    monthDay: "Tháng 3/12",
+    expenditureValue: "10.000",
+    revenueValue: "5.000",
+    detail: [
+      {
+        name: "Nhập hàng",
+        value: "30.000",
+        paymentMethod: "ATM",
+      },
+      {
+        name: "Bán hàng",
+        value: "50.000",
+        paymentMethod: "ATM",
+      },
+    ],
+  },
+  {
+    id: 3,
+    status: "10",
+    toDay: "Thứ tư",
+    monthDay: "Tháng 3/05",
+    expenditureValue: "0",
+    revenueValue: "40.000",
+    detail: [
+      {
+        name: "Nhập hàng",
+        value: "30.000",
+        paymentMethod: "ATM",
+      },
+      {
+        name: "Bán hàng",
+        value: "50.000",
+        paymentMethod: "ATM",
+      },
+    ],
+  },
+  {
+    id: 4,
+    status: "31",
+    toDay: "Thứ tư",
+    monthDay: "Tháng 3/05",
+    expenditureValue: "40.000",
+    revenueValue: "40.000",
+    detail: [
+      {
+        name: "Nhập hàng",
+        value: "30.000",
+        paymentMethod: "ATM",
+      },
+      {
+        name: "Bán hàng",
+        value: "50.000",
+        paymentMethod: "ATM",
+      },
+    ],
+  },
+];
 
 export const ListRevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "RevenueScreen">
@@ -35,109 +140,21 @@ export const ListRevenueScreen: FC<
   const [isVisible, setIsVisible] = useState(false);
   const [isShortByDate, setIsShortByDate] = useState(false);
   const [IsReset, setIsReset] = useState<boolean>();
-  const list = [
-    {
-      id: 0,
-      status: "05",
-      toDay: "Thứ tư",
-      monthDay: "Tháng 3/05",
-      expenditureValue: "0",
-      revenueValue: "40.000",
-      detail: [
-        {
-          name: "Nhập hàng",
-          value: "30.000",
-          paymentMethod: "ATM",
-        },
-        {
-          name: "Bán hàng",
-          value: "50.000",
-          paymentMethod: "ATM",
-        },
-      ],
-    },
-    {
-      id: 1,
-      status: "25",
-      toDay: "Thứ tư",
-      monthDay: "Tháng 4/07",
-      expenditureValue: "40.000",
-      revenueValue: "0",
-      paymentMethod: "ATM",
-      detail: [
-        {
-          name: "Nhập hàng",
-          value: "30.000",
-          paymentMethod: "ATM",
-        },
-        {
-          name: "Bán hàng",
-          value: "50.000",
-          paymentMethod: "ATM",
-        },
-      ],
-    },
-    {
-      id: 2,
-      status: "09",
-      toDay: "Thứ tư",
-      monthDay: "Tháng 3/12",
-      expenditureValue: "10.000",
-      revenueValue: "5.000",
-      detail: [
-        {
-          name: "Nhập hàng",
-          value: "30.000",
-          paymentMethod: "ATM",
-        },
-        {
-          name: "Bán hàng",
-          value: "50.000",
-          paymentMethod: "ATM",
-        },
-      ],
-    },
-    {
-      id: 3,
-      status: "10",
-      toDay: "Thứ tư",
-      monthDay: "Tháng 3/05",
-      expenditureValue: "0",
-      revenueValue: "40.000",
-      detail: [
-        {
-          name: "Nhập hàng",
-          value: "30.000",
-          paymentMethod: "ATM",
-        },
-        {
-          name: "Bán hàng",
-          value: "50.000",
-          paymentMethod: "ATM",
-        },
-      ],
-    },
-    {
-      id: 4,
-      status: "31",
-      toDay: "Thứ tư",
-      monthDay: "Tháng 3/05",
-      expenditureValue: "40.000",
-      revenueValue: "40.000",
-      detail: [
-        {
-          name: "Nhập hàng",
-          value: "30.000",
-          paymentMethod: "ATM",
-        },
-        {
-          name: "Bán hàng",
-          value: "50.000",
-          paymentMethod: "ATM",
-        },
-      ],
-    },
-  ];
+
+  const { paymentStore } = useStores();
+
+  const getListPayment = async () => {
+    const result: any = await paymentStore.getListPayment();
+
+    console.log(
+      "result payment list: ",
+      JSON.stringify(result.result.data.content)
+    );
+  };
+
+  useEffect(() => {
+    getListPayment();
+  }, []);
 
   const toggleModalDate = () => {
     setIsShortByDate(!isShortByDate);
@@ -195,7 +212,10 @@ export const ListRevenueScreen: FC<
               // testDebug();
             }}
           />
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate({ name: "SearchScreen" } as never);
+            }}>
             <Svgs.icon_search />
           </TouchableOpacity>
         </View>

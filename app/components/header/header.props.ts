@@ -1,28 +1,28 @@
-import { StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { IconTypes } from '../icon/icons';
-import { TxKeyPath } from '../../i18n';
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
+import { IconTypes } from "../icon/icons";
+import { TxKeyPath } from "../../i18n";
 
 export interface HeaderProps {
   /**
    * Main header, e.g. POWERED BY IGNITE
    */
   headerTx?: TxKeyPath;
-  rightTx?: TxKeyPath
-  rightTx1?: TxKeyPath
-  leftText?: TxKeyPath
-  TitleIcon?: TxKeyPath
-  TitleIcon1?: TxKeyPath
-  TitleIcon2?: TxKeyPath
-  textBelowIconRightSearch? : any
-  searchTx?: TxKeyPath
-  textBelowIconRight?: any
+  rightTx?: TxKeyPath;
+  rightTx1?: TxKeyPath;
+  leftText?: TxKeyPath;
+  TitleIcon?: TxKeyPath;
+  TitleIcon1?: TxKeyPath;
+  TitleIcon2?: TxKeyPath;
+  textBelowIconRightSearch?: any;
+  searchTx?: TxKeyPath;
+  textBelowIconRight?: any;
   /**
    * header non-i18n
    */
   headerText?: string;
-  rightText? : string;
-  rightText1? : string;
-  searchText? : string
+  rightText?: string;
+  rightText1?: string;
+  searchText?: string;
 
   /**
    * Icon that should appear on the left
@@ -59,15 +59,15 @@ export interface HeaderProps {
   /**
    * Container style overrides.
    */
-  style?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>;
   /**
    * Title style overrides.
    */
-  btnLeftStyle?: StyleProp<ViewStyle>
-  btnRightStyle?: StyleProp<ViewStyle>
-  titleStyle?: StyleProp<TextStyle>
+  btnLeftStyle?: StyleProp<ViewStyle>;
+  btnRightStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
   // type?: "AntDesign" | "Entypo" | "EvilIcons" | "Feather" | "FontAwesome" | "FontAwesome5" | "Fontisto" | "Foundation" | "Ionicons" | "MaterialCommunityIcons" | "CustomIcon" | "MaterialIcons"
-  titleMiddleStyle?: StyleProp<ViewStyle>
+  titleMiddleStyle?: StyleProp<ViewStyle>;
   widthRightIcon?: number;
   heightRightIcon?: number;
   widthLeftIcon?: number;
@@ -75,20 +75,20 @@ export interface HeaderProps {
   headerInput?: any;
   searchValue?: string;
   headerInputCenter?: any;
-  onSearchValueChange?: any
-  handleOnSubmitSearch?: any
+  onSearchValueChange?: any;
+  handleOnSubmitSearch?: any;
   type?:
-  | 'AntDesign'
-  | 'Entypo'
-  | 'EvilIcons'
-  | 'Feather'
-  | 'FontAwesome'
-  | 'FontAwesome5'
-  | 'Fontisto'
-  | 'Foundation'
-  | 'Ionicons'
-  | 'MaterialCommunityIcons'
-  | 'CustomIcon'
-  | 'MaterialIcons';
+    | "AntDesign"
+    | "Entypo"
+    | "EvilIcons"
+    | "Feather"
+    | "FontAwesome"
+    | "FontAwesome5"
+    | "Fontisto"
+    | "Foundation"
+    | "Ionicons"
+    | "MaterialCommunityIcons"
+    | "CustomIcon"
+    | "MaterialIcons";
   colorIcon?: string;
 }

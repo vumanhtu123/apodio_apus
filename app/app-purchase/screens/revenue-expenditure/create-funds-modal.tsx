@@ -27,7 +27,7 @@ export const CreateFunds = (props: Input) => {
     mode: "all",
   });
 
-  console.log("doan acb", isFocused);
+  // console.log("doan acb", isFocused);
 
   const addItem = (item: any) => {
     setSelectedValue([...selectedValue, item]);
@@ -129,7 +129,11 @@ export const CreateFunds = (props: Input) => {
           {list.map((item, index) => {
             return (
               <TouchableOpacity onPress={() => {}}>
-                <View style={{ borderRadius: 10, backgroundColor: colors.aliceBlue }}>
+                <View
+                  style={{
+                    borderRadius: 10,
+                    backgroundColor: colors.aliceBlue,
+                  }}>
                   <Text style={{ paddingHorizontal: 23, paddingVertical: 11 }}>
                     {item}
                   </Text>

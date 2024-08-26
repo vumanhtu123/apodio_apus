@@ -96,5 +96,7 @@ export const ApiEndpoint = {
   GET_VALUE_DEBT: "/api/v1/mobile/debt-paid/debt-order",
   GET_ID_SENT_ACCOUNTING_BOOK: "/api/v1/account-ledger/list",
   GET_LIST_SELECT_ACCOUNTING_BOOK: "/api/v1/account-journal/list",
-
+  //payment
+  GET_PAYMENT_TOTAL: "/api/v1/mobile/payment/total",
+  GET_PAYMENT_LIST: "/api/v1/mobile/payment/list",
 };
