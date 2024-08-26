@@ -22,10 +22,12 @@ import CustomCalendar from "../../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
 import { NavigatorParamList } from "../../navigators";
+import { useNavigation } from "@react-navigation/native";
 
 export const ListRevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "RevenueScreen">
 > = observer(function ListRevenueScreen(props) {
+  const navigation = useNavigation()
   const [makeDateE, setMakeDateE] = useState<any>();
   const [makeDateS, setMakeDateS] = useState<any>();
   const [timeStart, setTimeStart] = useState("");
@@ -201,7 +203,7 @@ export const ListRevenueScreen: FC<
           <FilterAppBarComponent
             date={timeStart == "" ? null : timeStart + timeEnd}
             onShowCalender={() => {
-              toggleModalDate();
+              navigation.navigate({name: "filterRevenueScreen"} as never)
             }}
             clear={() => {
               setTimeStart("");

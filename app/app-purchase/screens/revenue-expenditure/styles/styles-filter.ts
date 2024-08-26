@@ -135,7 +135,7 @@ export const styles = StyleSheet.create({
     marginVertical: scaleHeight(15),
   },
   stytleTitle: {
-    color: colors.nero,
+    color: colors.dolphin,
     fontSize: scaleWidth(14),
     fontWeight: "600",
     marginTop: scaleHeight(20),

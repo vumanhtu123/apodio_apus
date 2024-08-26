@@ -12,6 +12,8 @@ import { styles } from "./styles/styles-filter";
 import CustomCalendarWarehouseBook from "../warehouse-book/calendar-warehouse-book/customCalendarWarehouseBook";
 import { NavigatorParamList } from "../../navigators";
 import { translate } from "../../../i18n";
+import { GroupButtonBottom } from "../../../components/group-button/groupButtonBottom";
+import moment from "moment";
 
 
 interface ModalFielterProps {
@@ -23,113 +25,80 @@ export const FilterRevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "filterRevenueScreen">
 > = observer(function name(props) {
   const [indexTime, setIndexTime] = useState(0);
-  const [indexClassify, setIndexClassify] = useState(0);
-  const [indexTypeOfGoods, setIndexTypeOfGoods] = useState(0);
-  const [isSortByDate, setIsSortByDate] = useState(false);
   const [markedDatesS, setMarkedDatesS] = useState("");
   const [markedDatesE, setMarkedDatesE] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [selectedClassify, setSelectedClassify] = useState("");
-  const [selectedTypeOfGoods, setSelectedTypeOfGoods] = useState("");
-  const [slectedReportDetail, setslectedReportDetail] = useState(
-    translate("warehouseBook.apply")
-  );
+  const [viewCalendarS, setViewCalendarS] = useState(false)
+  const [viewCalendarE, setViewCalendarE] = useState(false)
+  const [isSortByDate, setIsSortByDate] = useState(false)
 
   const navigation = useNavigation();
-  const [dateS, setdateS] = useState("");
-  const [dateE, setdateE] = useState("");
 
-  // console.log('====================================');
-  // console.log("Ngay end", markedDatesE);
-  // console.log('====================================');
   const dataDay = [
     {
+      id: 1,
       day: "Hôm nay",
       onPress: () => {
-        console.log("Hom qua");
+        setMarkedDatesS(moment(new Date()).format('YYYY-MM-DD'))
+        setMarkedDatesE(moment(new Date()).format('YYYY-MM-DD'))
       },
     },
     {
+      id: 2,
       day: "Hôm qua",
       onPress: () => {
-        console.log("Hom qua");
+        const date = new Date()
+        const lastDay = date.setDate(date.getDate() - 1)
+        setMarkedDatesS(moment(lastDay).format('YYYY-MM-DD'))
+        setMarkedDatesE(moment(lastDay).format('YYYY-MM-DD'))
       },
     },
     {
+      id: 3,
       day: "Tháng này",
       onPress: () => {
-        console.log("Hom qua2");
+        const today = new Date()
+        const startDay = new Date(today.getFullYear(), today.getMonth(), 1)
+        const endDay = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
+        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
       },
     },
     {
+      id: 4,
       day: "Tháng trước",
       onPress: () => {
-        console.log("Hom qua3");
+        const today = new Date()
+        const startDay = new Date(today.getFullYear(), today.getMonth()-1, 1)
+        const endDay = new Date(today.getFullYear(), today.getMonth(), 0)
+        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
+        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
       },
     },
     {
+      id: 5,
       day: "30 ngày",
       onPress: () => {
-        console.log("Hom qua4");
+        const today = new Date()
+        const endDay = new Date()
+        const startDay = today.setDate(today.getDate() - 30)
+        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
+        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
       },
     },
     {
+      id: 6,
       day: "Năm nay",
       onPress: () => {
-        console.log("Hom qua5");
-      },
-    },
-    {
-      day: "Tất cả",
-      onPress: () => {
-        console.log("Hom qua6");
+        const today = new Date()
+        const startDay = new Date(today.getFullYear(), 0, 1)
+        const endDay = new Date(today.getFullYear(), 12, 0)
+        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
+        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
       },
     },
   ];
 
-  const dataClassify = [
-    {
-      classify: translate("warehouseBook.sell"),
-    },
-    {
-      classify: translate("warehouseBook.return"),
-    },
-    {
-      classify: translate("warehouseBook.initializeWarehouse"),
-    },
-    {
-      classify: translate("warehouseBook.editInventory"),
-    },
-    {
-      classify: translate("warehouseBook.editCostPrice"),
-    },
-    {
-      classify: translate("warehouseBook.deleteProduct"),
-    },
-    {
-      classify: translate("warehouseBook.deleteRawMaterials"),
-    },
-    {
-      classify: translate("warehouseBook.different"),
-    },
-  ];
-
-  const dataTypeOfGoods = [
-    {
-      typeOfGoods: translate("warehouseBook.product"),
-    },
-    {
-      typeOfGoods: translate("warehouseBook.typeOfGoods"),
-    },
-  ];
-  // console.log('====================================');
-  // console.log("index", selectedTypeOfGoods);
-  // console.log('====================================');
-  const handleChangeText = (txt: any) => {
-    setdateS(txt);
-    const formattedDate = txt.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1");
-    setMarkedDatesS(formattedDate);
-  };
   return (
     <View style={{ flex: 1 }}>
       <Header
@@ -147,21 +116,7 @@ export const FilterRevenueScreen: FC<
             borderRadius: scaleWidth(8),
             height: "100%",
           }}>
-          <View style={styles.lineHeaderModal} />
           <View style={styles.bodyModal}>
-            <View style={styles.flexRow}>
-              <TouchableOpacity>
-                <Text tx="common.filter" style={styles.textFilter} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  // Alert.alert("ok")
-                }}>
-                <Text tx="common.cancel" style={styles.textCancel} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.lineModal} />
 
             <Text tx="warehouseBook.time" style={styles.textTime} />
 
@@ -174,7 +129,9 @@ export const FilterRevenueScreen: FC<
                       onPress={() => {
                         setIndexTime(index);
                         setSelectedTime(item.day);
-                        item.onPress;
+                        item.onPress();
+                        setViewCalendarS(false)
+                        setViewCalendarE(false)
                       }}
                       style={[
                         styles.styleIemTime,
@@ -201,8 +158,8 @@ export const FilterRevenueScreen: FC<
                   </View>
                 );
               }}
-              keyExtractor={(item) => item.day}
-              // numColumns={1}
+              keyExtractor={(item) => item.id.toString()}
+              scrollEnabled={false}
               numColumns={2}
             />
             <Text
@@ -210,10 +167,13 @@ export const FilterRevenueScreen: FC<
               style={styles.stytleTitle}
             />
 
-            <View style={{ flexDirection: "row", marginBottom: 10 }}>
+            <TouchableOpacity onPress={()=> {setViewCalendarS(!viewCalendarS)
+              setIsSortByDate(!isSortByDate)
+            }}
+             style={{ flexDirection: "row", marginBottom: 10 }}>
               <Text
                 style={{
-                  marginRight: scaleWidth(16),
+                  marginRight: scaleWidth(24),
                   fontSize: scaleWidth(12),
                   alignSelf: "center",
                   color: colors.dolphin,
@@ -224,39 +184,43 @@ export const FilterRevenueScreen: FC<
                   flex: 1,
                   flexDirection: "row",
                   borderBottomWidth: 1,
-                  borderBottomColor: colors.palette.navyBlue,
+                  borderBottomColor: viewCalendarS == true ? colors.palette.navyBlue : colors.ghostWhite,
                   alignItems: "center",
                 }}>
-                <TextInput
+                <Text
                   style={{ flex: 1, padding: 0 }}
-                  value={markedDatesS}
-                  onChangeText={handleChangeText}
+                  text={markedDatesS}
                 />
 
-                <View style={{ transform: [{ rotate: "180deg" }] }}>
+                <View style={{ transform: [{ rotate: viewCalendarS == true ? "180deg" : "0deg" }] }}>
                   <Svgs.dropDown />
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
 
-            <View style={styles.bodyClender}>
+            {viewCalendarS == true ? <View style={styles.bodyClender}>
               <CustomCalendarWarehouseBook
-                // isOneDate ={true}
+                isOneDate={true}
 
                 onMarkedDatesChangeS={(markedDatesS: any) => {
                   console.log(markedDatesS);
                   setMarkedDatesS(markedDatesS);
+                  setIndexTime(-1)
                 }}
+                dateS={markedDatesS}
                 onMarkedDatesChangeE={(markeDateE: any) => {
                   console.log(markeDateE);
-                  setMarkedDatesE(markeDateE);
+                  // setMarkedDatesE(markeDateE);
                 }}
-
-              // isSortByDate={true}
+                maxDate={markedDatesE}
+              isSortByDate={isSortByDate}
               />
-            </View>
+            </View> : null}
 
-            <View style={{ flexDirection: "row", marginBottom: 10 }}>
+            <TouchableOpacity onPress={()=> {setViewCalendarE(!viewCalendarE)
+                setIsSortByDate(!isSortByDate)
+            }}
+             style={{ flexDirection: "row", marginBottom: 10 }}>
               <Text
                 style={{
                   marginRight: scaleWidth(16),
@@ -270,202 +234,49 @@ export const FilterRevenueScreen: FC<
                   flex: 1,
                   flexDirection: "row",
                   borderBottomWidth: 1,
-                  borderBottomColor: colors.palette.navyBlue,
+                  borderBottomColor: viewCalendarE == true ? colors.palette.navyBlue : colors.ghostWhite,
                   alignItems: "center",
                 }}>
-                <TextInput
+                <Text
                   style={{ flex: 1, padding: 0 }}
-                  value={markedDatesE}
+                  text={markedDatesE}
                 />
 
-                <View style={{ transform: [{ rotate: "180deg" }] }}>
+                <View style={{ transform: [{ rotate: viewCalendarE == true ? "180deg" : "0deg" }] }}>
                   <Svgs.dropDown />
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
 
-            <Text tx="warehouseBook.classify" style={styles.stytleTitle} />
+            {viewCalendarE == true ? <View style={styles.bodyClender}>
+              <CustomCalendarWarehouseBook
+                isOneDate={true}
 
-            <FlatList
-              data={dataClassify}
-              renderItem={({ item, index }) => {
-                return (
-                  <View style={{ justifyContent: "space-between", flex: 1 }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setIndexClassify(index);
-
-                        setSelectedClassify(item.classify);
-                        // item.onPress
-                      }}
-                      style={[
-                        styles.styleIemTime,
-                        {
-                          backgroundColor:
-                            indexClassify === index ? colors.aliceBlue2 : colors.aliceBlue,
-                          borderWidth: 1,
-                          borderColor:
-                            indexClassify == index
-                              ? colors.palette.navyBlue
-                              : colors.aliceBlue,
-                        },
-                      ]}>
-                      <Text
-                        style={{
-                          color:
-                            indexClassify == index
-                              ? colors.palette.navyBlue
-                              : colors.palette.dolphin,
-                        }}>
-                        {item.classify}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }}
-              keyExtractor={(item) => item.classify}
-              // numColumns={1}
-              numColumns={2}
-            />
-
-            <Text tx="warehouseBook.typeOfGoods" style={styles.stytleTitle} />
-
-            <View style={styles.flexRow}>
-              <FlatList
-                data={dataTypeOfGoods}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View style={{ justifyContent: "space-between", flex: 1 }}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          setIndexTypeOfGoods(index);
-
-                          setSelectedTypeOfGoods(item.typeOfGoods);
-                          // item.onPress
-                        }}
-                        style={[
-                          styles.styleIemTime,
-                          {
-                            backgroundColor:
-                              indexTypeOfGoods === index
-                                ? colors.aliceBlue2
-                                : colors.aliceBlue,
-                            borderWidth: 1,
-                            borderColor:
-                              indexTypeOfGoods == index
-                                ? colors.palette.navyBlue
-                                : colors.aliceBlue,
-                          },
-                        ]}>
-                        <Text
-                          style={{
-                            color:
-                              indexTypeOfGoods == index
-                                ? colors.palette.navyBlue
-                                : colors.palette.dolphin,
-                          }}>
-                          {item.typeOfGoods}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
+                onMarkedDatesChangeS={(markedDatesS: any) => {
+                  console.log(markedDatesS);
+                  setMarkedDatesE(markedDatesS);
                 }}
-                keyExtractor={(item) => item.typeOfGoods}
-                // numColumns={1}
-                numColumns={2}
+                dateS={markedDatesE}
+                onMarkedDatesChangeE={(markeDateE: any) => {
+                  console.log(markeDateE);
+                  // setMarkedDatesE(markeDateE);
+                }}
+                minDate={markedDatesS}
+              // maxDate={new Date()}
+              isSortByDate={isSortByDate}
               />
-            </View>
+            </View> : null}
 
-            <View style={[styles.flexRow, { alignItems: "center" }]}>
-              <Text
-                tx="warehouseBook.reportDetail"
-                style={styles.stytleTitle}
-              />
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Svgs.ic_downLoadBlue />
-
-                <Text
-                  tx="warehouseBook.downloadNow"
-                  style={{
-                    fontSize: scaleWidth(12),
-                    color: colors.palette.navyBlue,
-                  }}
-                />
-              </View>
-            </View>
-
-            <View style={styles.flexRow}>
-              <TouchableOpacity
-                style={[
-                  styles.styleBtnReport,
-                  {
-                    borderColor:
-                      slectedReportDetail == translate("warehouseBook.reset")
-                        ? colors.palette.navyBlue
-                        : colors.palette.veryLightGrey,
-                    backgroundColor:
-                      slectedReportDetail == translate("warehouseBook.reset")
-                        ? colors.palette.navyBlue
-                        : colors.white,
-                  },
-                ]}
-                onPress={() => {
-                  setslectedReportDetail(translate("warehouseBook.reset"));
-                }}>
-                <Text
-                  tx="warehouseBook.reset"
-                  style={{
-                    fontSize: scaleWidth(14),
-                    color:
-                      slectedReportDetail == translate("warehouseBook.reset")
-                        ? colors.white
-                        : colors.dolphin,
-                  }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.styleBtnReport,
-                  {
-                    borderColor:
-                      slectedReportDetail == translate("warehouseBook.apply")
-                        ? colors.palette.navyBlue
-                        : colors.palette.veryLightGrey,
-                    backgroundColor:
-                      slectedReportDetail == translate("warehouseBook.apply")
-                        ? colors.palette.navyBlue
-                        : colors.white,
-                  },
-                ]}
-                onPress={() => {
-                  setslectedReportDetail(translate("warehouseBook.apply"));
-
-                  const getData = {
-                    time: selectedTime,
-                    dayStart: markedDatesS,
-                    dayEnd: markedDatesE,
-                    classify: selectedClassify,
-                    typeOfGoods: selectedClassify,
-                  };
-                  // console.log('====================================');
-                  // console.log( "doannn",getData.time);
-                  // console.log('====================================');
-                }}>
-                <Text
-                  tx="warehouseBook.apply"
-                  style={{
-                    fontSize: scaleWidth(14),
-                    color:
-                      slectedReportDetail == translate("warehouseBook.apply")
-                        ? colors.white
-                        : colors.dolphin,
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
       </ScrollView>
+      <GroupButtonBottom
+        txCancel={"warehouseBook.reset"}
+        txConfirm={"warehouseBook.apply"}
+        isModal={false}
+        onPressCancel={() => console.log('dasd')}
+        onPressConfirm={() => console.log('asjgdf')}
+      />
     </View>
   );
 });
