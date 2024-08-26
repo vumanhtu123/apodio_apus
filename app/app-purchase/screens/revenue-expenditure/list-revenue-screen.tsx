@@ -22,6 +22,7 @@ import CustomCalendar from "../../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
 import { NavigatorParamList } from "../../navigators";
+import { useStores } from "../../models";
 
 export const list = [
   {
@@ -137,6 +138,21 @@ export const ListRevenueScreen: FC<
   const [isVisible, setIsVisible] = useState(false);
   const [isShortByDate, setIsShortByDate] = useState(false);
   const [IsReset, setIsReset] = useState<boolean>();
+
+  const { paymentStore } = useStores();
+
+  const getListPayment = async () => {
+    const result: any = await paymentStore.getListPayment();
+
+    console.log(
+      "result payment list: ",
+      JSON.stringify(result.result.data.content)
+    );
+  };
+
+  useEffect(() => {
+    getListPayment();
+  }, []);
 
   const toggleModalDate = () => {
     setIsShortByDate(!isShortByDate);
