@@ -205,7 +205,10 @@ export const ListRevenueScreen: FC<
           <FilterAppBarComponent
             date={timeStart == "" ? null : timeStart + timeEnd}
             onShowCalender={() => {
-              toggleModalDate();
+              props.navigation.navigate({
+                name: "filterRevenueScreen",
+              } as never);
+              // toggleModalDate();
             }}
             clear={() => {
               setTimeStart("");

@@ -20,18 +20,11 @@ import {
 } from "../../../theme";
 import { Styles } from "../Styles";
 import { Controller, useForm } from "react-hook-form";
-import { Numpad } from "../component/num-pad-component";
-import en from "../../../../i18n/en";
 import CustomCalendar from "../../../../components/calendar";
 import { ClassifyModal } from "../classify-modal";
 import { FundsModal } from "../funds-modal";
 import { translate } from "../../../../i18n";
-import {
-  commasToDots,
-  formatCurrency,
-  formatNumberByString,
-  formatVND,
-} from "../../../utils/validate";
+import { formatCurrency, formatStringToFloat } from "../../../utils/validate";
 
 export const ExpenseScreen: FC<
   StackScreenProps<NavigatorParamList, "expenseScreen">
@@ -61,20 +54,22 @@ export const ExpenseScreen: FC<
 
   type FromValue = {
     EnterTheAmount: string;
+    EnterNoteNotPaid: string;
+    EnterNotePaid: string;
   };
   const {
     control,
     getValues,
     setValue,
     watch,
+    handleSubmit,
     formState: { errors },
   } = useForm<FromValue>();
 
   const value = watch("EnterTheAmount");
+  const note = watch("EnterNoteNotPaid");
 
-  console.log("value text", value);
-
-  const formatValue = formatNumberByString(value);
+  const formatValue = formatStringToFloat(value);
 
   const dataTaskBar = [
     { name: translate("revenueAndExpenditure.unpaid") },
@@ -83,6 +78,28 @@ export const ExpenseScreen: FC<
 
   const open = () => {
     setOpenOrClose(!openOrClose);
+  };
+
+  const onSubmit = (data: any) => {
+    if (
+      field1.current == "Chưa phân loại" ||
+      field2.current == "Chọn để phân loại nguồn tiền"
+    ) {
+      console.log("validate error");
+    } else {
+      props.navigation.navigate({
+        name: "comingSoonScreen",
+        params: {
+          amount: formatValue,
+          classify: field1,
+          received: field2,
+          noteNotPaid: data.EnterNoteNotPaid,
+          notePaid: data.EnterPaid,
+        },
+      } as never);
+      console.log("test data", data);
+      console.log("note", note);
+    }
   };
 
   return (
@@ -168,7 +185,7 @@ export const ExpenseScreen: FC<
           />
         </TouchableOpacity>
 
-        {value == undefined || null || value == "" ? (
+        {Number.isNaN(formatValue) || formatValue == undefined ? (
           <View style={{ flex: 1 }}></View>
         ) : (
           <View style={Styles.content}>
@@ -287,10 +304,23 @@ export const ExpenseScreen: FC<
 
                 {/* Ghi chú */}
 
-                <TextField
-                  labelTx={"revenueAndExpenditure.note"}
-                  placeholderTx={"revenueAndExpenditure.ex"}
-                />
+                <Controller
+                  control={control}
+                  name="EnterNoteNotPaid"
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      labelTx={"revenueAndExpenditure.note"}
+                      placeholderTx={"revenueAndExpenditure.ex"}
+                      value={value}
+                      onBlur={() => onBlur}
+                      error={""}
+                      onClearText={() => onChange("")}
+                      onChangeText={(value) => {
+                        onChange(value);
+                      }}
+                      RightIconClear={null}
+                    />
+                  )}></Controller>
               </View>
             ) : (
               <View>
@@ -401,10 +431,23 @@ export const ExpenseScreen: FC<
 
                 {/* Ghi chú */}
 
-                <TextField
-                  labelTx={"revenueAndExpenditure.note"}
-                  placeholderTx={"revenueAndExpenditure.ex"}
-                />
+                <Controller
+                  control={control}
+                  name="EnterNotePaid"
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <TextField
+                      labelTx={"revenueAndExpenditure.note"}
+                      placeholderTx={"revenueAndExpenditure.ex"}
+                      value={value}
+                      onBlur={() => onBlur}
+                      error={""}
+                      onClearText={() => onChange("")}
+                      onChangeText={(value) => {
+                        onChange(value);
+                      }}
+                      RightIconClear={null}
+                    />
+                  )}></Controller>
               </View>
             )}
           </View>
@@ -425,9 +468,7 @@ export const ExpenseScreen: FC<
         </TouchableOpacity> */}
         <TouchableOpacity
           style={Styles.btnCreate}
-          onPress={() => {
-            props.navigation.navigate({ name: "comingSoonScreen" } as never);
-          }}>
+          onPress={handleSubmit(onSubmit)}>
           <Text tx="common.create" style={Styles.textCreate} />
         </TouchableOpacity>
       </View>

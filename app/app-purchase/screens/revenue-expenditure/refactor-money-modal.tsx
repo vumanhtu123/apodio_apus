@@ -3,7 +3,6 @@ import { TouchableOpacity, View, ViewStyle } from "react-native";
 import { Text, TextField } from "../../../components";
 import { Controller, useForm } from "react-hook-form";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
-import { Svgs } from "../../../../assets/svgs";
 import Modal from "react-native-modal";
 import { Numpad } from "./component/num-pad-component";
 
@@ -26,7 +25,7 @@ export const RefactorMoneyModal = (props: Input) => {
     mode: "all",
   });
 
-  console.log("tuvm acb", selectedValue);
+  // console.log("tuvm acb", selectedValue);
 
   const addItem = (item: any) => {
     setSelectedValue([...selectedValue, item]);

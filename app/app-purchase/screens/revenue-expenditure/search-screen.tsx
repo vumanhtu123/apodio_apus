@@ -11,16 +11,12 @@ import {
 import React from "react";
 import { LinearGradient } from "react-native-linear-gradient";
 import { colors, fontSize, scaleHeight, scaleWidth } from "../../theme";
-import ViewInfo from "../dashboard/component/view-info";
 import { Svgs } from "../../../../assets/svgs";
-import { FilterAppBarComponent } from "./component/filter-appbar";
-import { translate } from "i18n-js";
 import { Button, Header, Text } from "../../../components";
 import { observer } from "mobx-react-lite";
 import { NavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";
 import { TextInput } from "react-native-gesture-handler";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BTNLEFT, LOGO, ROOT } from "./Styles";
 import { ItemRevenue } from "./component/item-list-renvenue";
 import { list } from "./list-revenue-screen";
