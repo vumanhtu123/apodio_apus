@@ -1,5 +1,3 @@
-
-
 // import { ApiOrder } from './../services/base-api/api-config-order';
 import {
   Api,
@@ -10,10 +8,8 @@ import {
   ApiAccounting,
   ApiWarehouse,
   ApiSupplier,
-
 } from "../services/api";
 import { UAA_API } from "../services/base-api/api-config-uaa";
-
 
 let ReactotronDev;
 if (__DEV__) {
@@ -42,7 +38,7 @@ export class Environment {
     this.apiWarehouse = new ApiWarehouse();
     this.apiAccount = new ApiAccounting();
     this.apiSupplier = new ApiSupplier();
-    
+
     global.api = new Api();
     global.apiErp = new ApiErp();
     global.apiGetWay = new GetWayAPI();
@@ -51,7 +47,7 @@ export class Environment {
     global.ApiOrder = new ApiOrder();
     global.apiAccount = new ApiAccounting();
     global.apiWarehouse = new ApiWarehouse();
-    global.apiSupplier = new ApiSupplier()
+    global.apiSupplier = new ApiSupplier();
   }
 
   async setup() {
@@ -80,7 +76,7 @@ export class Environment {
 
     global.apiAccount = new ApiAccounting();
     global.apiWarehouse = new ApiWarehouse();
-    global.apiSupplier = new ApiSupplier()
+    global.apiSupplier = new ApiSupplier();
   }
 
   /**
@@ -97,7 +93,7 @@ export class Environment {
   apiAccount: ApiAccounting;
   apiGetWay: GetWayAPI;
   apiUpload: ApiUpload;
-  apiAccounting : ApiAccounting;
+  apiAccounting: ApiAccounting;
   apiOrder: ApiOrder;
   apiWarehouse: ApiWarehouse;
   apiSupplier: ApiSupplier;
