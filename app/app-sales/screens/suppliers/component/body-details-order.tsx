@@ -269,7 +269,7 @@ export const InfoPayment = () => {
           }}>
           100.000đ
         </Text>
-        <Text style={{ fontSize: 12, fontWeight: "600", color: "#FF4956" }}>
+        <Text style={{ fontSize: 12, fontWeight: "600", color: colors.radicalRed }}>
           25.900.000đ
         </Text>
       </View>

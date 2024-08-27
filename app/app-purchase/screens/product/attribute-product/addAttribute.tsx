@@ -20,6 +20,7 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { ItemAttribute } from "./itemAttribute";
 import { styles } from "./styles";
+import { GroupButtonBottom } from "../../../../components/group-button/groupButtonBottom";
 
 export const AddAttribute: FC = observer(function AddAttribute(props) {
   const navigation = useNavigation();
@@ -208,7 +209,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.please_select_attribute"),
+        textBody: translate("txtToasts.please_select_attribute"),
       });
     } else {
       const newArr = selectedGroup.map((items: any) => {
@@ -227,7 +228,7 @@ export const AddAttribute: FC = observer(function AddAttribute(props) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.please_select_attribute"),
+          textBody: translate("txtToasts.please_select_attribute"),
         });
       } else {
         if (editScreen?.editScreen === true) {

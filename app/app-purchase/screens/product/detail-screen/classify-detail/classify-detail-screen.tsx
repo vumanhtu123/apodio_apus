@@ -300,6 +300,7 @@ export const ClassifyDetailScreen: FC = () => {
                 data={arrImagesProduct}
                 autoplay={false}
                 ref={refCarousel}
+                vertical={false}
                 loop
                 renderItem={({ item }: any) => (
                   <View>
@@ -317,9 +318,6 @@ export const ClassifyDetailScreen: FC = () => {
                 itemWidth={Dimensions.get("window").width - 32}
                 firstItem={activeSlide}
                 onSnapToItem={(index) => setActiveSlide(index)}
-                lockScrollWhileSnapping={true}
-                enableMomentum={false}
-                decelerationRate={0.5}
               />
               <Pagination
                 dotsLength={arrImagesProduct.length > 0 && arrImagesProduct.length}

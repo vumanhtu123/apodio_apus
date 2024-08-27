@@ -52,7 +52,7 @@ export const ProductCategoriesScreen: FC = observer(() => {
   };
   const renderProductItem = ({ item, index }: any) => {
     const handlePress = () => {
-      navigation.navigate("productScreen" as never, { company: item.name });
+      navigation.navigate({name: "productScreen", params: { company: item.name }} as never);
     };
     if (item.company === "APODIO") {
       return (

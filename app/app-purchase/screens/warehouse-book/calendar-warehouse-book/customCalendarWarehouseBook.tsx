@@ -36,6 +36,76 @@ const CustomCalendarWarehouseBook = (props: any) => {
     setInitialState();
   }, []);
 
+  useEffect(() => {
+    if (props.dateS && props.dateE === undefined) {
+      if (props.isOneDate) {
+        console.log(props.dateS, 'dateS')
+        handleChangeS(props.dateS);
+        handleChangeE("");
+        setMarkedDates({
+          [props.dateS]: {
+            selected: true,
+            selectedColor: colors.palette.navyBlue,
+            selectedTextColor: colors.white,
+          },
+        });
+      }
+    }
+    if (props.dateS && props.dateE) {
+      if (props.isOneDate == false) {
+        handleChangeS(props.dateS)
+        handleChangeE(props.dateE);
+          const newMarkedDates: { [key: string]: MarkedDate } = {};
+          const tempStartDate = moment(props.dateS);
+          const tempEndDate = moment(props.dateE);
+          const range = tempEndDate.diff(tempStartDate, "days");
+          newMarkedDates[props.dateS] = {
+            startingDay: true,
+            color: colors.palette.navyBlue,
+            textColor: colors.white,
+            fontWeight: "700",
+          };
+          if (range > 0) {
+            for (let i = 1; i <= range; i++) {
+              const tempDate = moment(props.dateS)
+                .add(i, "days")
+                .format("YYYY-MM-DD");
+              if (i < range) {
+                newMarkedDates[tempDate] = {
+                  color: colors.palette.gray,
+                  textColor: colors.black,
+                };
+              } else {
+                newMarkedDates[tempDate] = {
+                  endingDay: true,
+                  color: colors.palette.navyBlue,
+                  textColor: colors.white,
+                  fontWeight: "700",
+                };
+              }
+            }
+            setMarkedDates(newMarkedDates);
+            setIsStartDatePicked(false);
+            setIsEndDatePicked(true);
+            setStartDate("");
+          } else {
+            handleChangeS(props.dateS);
+            handleChangeE("");
+            setMarkedDates({
+              [props.dateS]: {
+                startingDay: true,
+                color: colors.palette.navyBlue,
+                textColor: colors.white,
+              },
+            });
+            setIsStartDatePicked(true);
+            setIsEndDatePicked(false);
+            setStartDate(props.dateS);
+          }
+      }
+    }
+  }, [props.isSortByDate])
+
   const setInitialState = () => {
     if (props.isOneDate) {
       //setSelectedIndex(0);
@@ -221,7 +291,9 @@ const CustomCalendarWarehouseBook = (props: any) => {
           <Calendar
             // minDate={Date()}
             //@ts-ignore
-            maxDate={today}
+            current={ props.isOneDate == true ? props.dateS: ''}
+            maxDate={props.maxDate}
+            minDate={props.minDate}
             monthFormat={'MMMM yyyy'}
             markedDates={(console.log(markedDates), markedDates)}
             markingType={props.isOneDate === true ? 'custom' : "period"}

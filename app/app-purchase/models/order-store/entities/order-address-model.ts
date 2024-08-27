@@ -58,7 +58,7 @@ export type OrderCityResult =
   | { kind: "bad-data"; response: Response };
 
 export interface Root1 {
-  [x: string]: number;
+  // [x: string]: number;
   id: number;
   partnerId: number;
   phoneNumber: string;
@@ -99,7 +99,7 @@ export interface Ward {
 export interface Response1 {
   message: string;
   traceId: string;
-  data: Root1;
+  data: Root1[];
   errorCodes: ErrorCode[];
 }
 export type OrderListAddressResult =

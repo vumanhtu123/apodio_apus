@@ -19,7 +19,7 @@ const fr = {
     required_value_null: "Vui lòng nhập thông tin",
   },
 
-  txtToats: {
+  txtToasts: {
     please_select_attribute: "Vui lòng chọn thuộc tính",
     required_information: "Vui lòng nhập đủ thông tin bắt buộc",
     required_maximum_number_of_photos: "Số lượng ảnh tối đa là 6",

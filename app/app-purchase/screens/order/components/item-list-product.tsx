@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   colors,
   fontSize,
@@ -9,26 +9,17 @@ import {
 } from "../../../theme";
 import { Text } from "../../../../components/text/text";
 import {
-  FlatList,
   ImageBackground,
-  TextInput,
-  TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
 } from "react-native";
-import { Button, TextField } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
-import { scheduleFlushOperations } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
-import AutoHeightImage from "react-native-auto-height-image";
 import { translate } from "../../../../i18n/translate";
-import { Controller, useForm } from "react-hook-form";
-import { number } from "mobx-state-tree/dist/internal";
+import { useForm } from "react-hook-form";
 import FastImage from "react-native-fast-image";
 import {
   commasToDots,
   formatCurrency,
-  formatNumberByString,
   formatStringToFloat,
   formatVND,
 } from "../../../utils/validate";
@@ -379,7 +370,7 @@ export default function ItemListProduct(props: AddProduct) {
               style={{
                 fontSize: 10,
                 fontWeight: "400",
-                color: "#FF4956",
+                color: colors.radicalRed,
                 fontStyle: "italic",
               }}>
               {" " +

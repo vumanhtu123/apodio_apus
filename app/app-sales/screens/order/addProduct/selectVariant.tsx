@@ -29,8 +29,8 @@ import {
 import { useStores } from "../../../models";
 import { ItemSelectVariant } from "../components/itemSelectVariant";
 import { styles } from "./styles";
-import PriceModal from "../components/modal-price";
 import Images from "../../../../../assets/index";
+import { translate } from "../../../../i18n";
 
 export const SelectVariant: FC = observer(function SelectVariant() {
   const navigation = useNavigation();
@@ -38,16 +38,15 @@ export const SelectVariant: FC = observer(function SelectVariant() {
   const route = useRoute();
   const [modalImages, setModalImages] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [dataSelect, setDataSelect] = useState([]);
   const [totalPagesProduct, setTotalPagesProduct] = useState<any>(0);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(20);
-  const [arrImagesProduct, setArrImagesProduct] = useState([]);
+  const [arrImagesProduct, setArrImagesProduct] = useState<any>([]);
   const [detailProduct, setDetailProduct] = useState<any>([]);
   const [dataVariant, setDataVariant] = useState<Content[]>([]);
   const [modalPrice, setModalPrice] = useState<any>(false);
   const refCarousel = useRef(null);
-  const {productTemplateId}: any = route?.params;
+  const productTemplateId = route?.params?.productTemplateId;
 
   const handleGetDetailProduct = async () => {
     try {
@@ -92,7 +91,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         page,
         size,
         undefined,
-        undefined,
+        '',
         [],
         "",
         orderStore.isLoadMore,
@@ -299,7 +298,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
       page,
       size,
       undefined,
-      undefined,
+      '',
       [],
       "",
       orderStore.isLoadMore,
@@ -679,7 +678,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
         LeftIcon={Svgs.back}
         onLeftPress={() => navigation.goBack()}
         style={{ height: scaleHeight(54) }}
-        headerText={`${detailProduct.sku}` + "/Chọn biến thể"}
+        headerText={`${detailProduct.sku}` + "/" + translate('order.selectVariant')}
         titleMiddleStyle={{ alignItems: "flex-start" }}
       />
       <View style={styles.viewBodySelectVariant}>
@@ -707,7 +706,7 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={true}>
-            {arrImagesProduct?.map((item, index) => {
+            {arrImagesProduct?.map((item: string, index: number) => {
               return (
                 <TouchableOpacity
                   key={index}
@@ -806,31 +805,17 @@ export const SelectVariant: FC = observer(function SelectVariant() {
             ? true
             : false
         }
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          height: scaleHeight(48),
-          backgroundColor: colors.palette.navyBlue,
-          marginHorizontal: scaleWidth(16),
-          marginBottom: scaleHeight(20),
-          borderRadius: 8,
-          justifyContent: "center",
+        style={[styles.viewButtonAddToCart, {
           opacity:
             dataVariant.filter((items: any) => items.isSelect === true)
               .length === 0
               ? 0.6
               : 1,
-        }}>
+        }]}>
         <Svgs.ic_ShoopingCar />
         <Text
           tx={"order.addToCart"}
-          style={{
-            marginLeft: scaleWidth(12),
-            fontWeight: "600",
-            fontSize: fontSize.size14,
-            lineHeight: scaleHeight(24),
-            color: colors.palette.white,
-          }}
+          style={styles.textAddToCart}
         />
       </TouchableOpacity>
       <Modal

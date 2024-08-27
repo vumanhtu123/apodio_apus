@@ -51,7 +51,10 @@ const DescribeModal = (props: DescribeModalProps) => {
 
   const actualTitle = titleTx ? translate(titleTx) : title;
 
-  const { control, reset, handleSubmit, watch } = useForm();
+  const { control, handleSubmit, setValue } = useForm();
+  useEffect(()=>{
+    setValue('Describe', dataDescribe)
+  }, [isVisible])
 
   const onSubmit = (data: any) => {
     onConfirm(data);
@@ -90,15 +93,11 @@ const DescribeModal = (props: DescribeModalProps) => {
                   value={value}
                   onBlur={onBlur}
                   onChangeText={(value) => onChange(value)}
-                  // onClearText={() => onChange('')}
-                  // RightIconClear={Images.icon_delete2}
                   showRightIcon={false}
                   multiline={true}
                   isMultiline={true}
-                  // error={errors?.phone?.message}
                 />
               )}
-              defaultValue={dataDescribe}
               name="Describe"
             />
           </View>

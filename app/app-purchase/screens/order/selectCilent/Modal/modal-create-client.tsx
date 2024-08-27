@@ -2,20 +2,12 @@ import React, { FC, useState } from "react";
 import { Dimensions, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { colors, fontSize, margin, scaleHeight, scaleWidth } from "../../../../theme";
 import { Svgs } from "../../../../../../assets/svgs";
-import { red } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
-import { onAction } from "mobx-state-tree";
-import Modal from 'react-native-modal'
 import { Text, TextField } from "../../../../../components";
 import { Controller, UseFormWatch, useForm, useWatch } from "react-hook-form";
 import { InputSelect } from "../../../../../components/input-select/inputSelect";
 import { useStores } from "../../../../models";
-import { boolean } from "mobx-state-tree/dist/internal";
-import { RectButton } from "react-native-gesture-handler";
 import { Dialog, Loading } from "../../../../../components/dialog-notification";
 import { translate } from "../../../../../i18n/translate";
-import en from "../../../../../i18n/en";
-import { clientData } from "../../../../models/add-client-props";
-import { values } from "mobx";
 import { checkPhoneNumber } from "../../../../utils/validate";
 import { CustomModal } from "../../../../../components/custom-modal";
 interface ModalClientFromPhoneProps {
@@ -63,7 +55,7 @@ const ModalCreateClient = (props: ModalClientFromPhoneProps) => {
         if (checkPhoneNumber(phoneNumber) !== true) {
             setError("phoneNumber", {
                 type: "validate",
-                message: checkPhoneNumber(phoneNumber),
+                message: checkPhoneNumber(phoneNumber).toString(),
             });
             hasError = true
         }

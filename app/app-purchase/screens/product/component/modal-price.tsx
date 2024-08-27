@@ -36,7 +36,7 @@ interface PriceModalProps {
   isVisible: boolean;
   setIsVisible: () => void;
   title?: string;
-  titleTx?: TxKeyPath | {};
+  titleTx?: TxKeyPath;
   onCancel: () => void;
   onConfirm: (value: any) => void;
   dataAdd?: {}[];
@@ -100,11 +100,11 @@ const PriceModal = observer((props: PriceModalProps) => {
     }
     console.log("loi roi");
   }, [dataAdd]);
-  const priceWatch = watch("price");
+  const priceWatch: any = watch("price");
   const onSubmit = (data: any) => {
-    const minValues = data.price.map((item) => item.min);
+    const minValues = data.price.map((item: {min: string}) => item.min);
     const isDuplicate = minValues.some(
-      (min, idx) => minValues.indexOf(min) !== idx
+      (min: string, idx: number) => minValues.indexOf(min) !== idx
     );
     if (isDuplicate) {
       setModalError(true);
@@ -119,10 +119,10 @@ const PriceModal = observer((props: PriceModalProps) => {
   const [isError, setIsError] = useState(false);
 
   const validateUniqueMinQuantity = (value: any) => {
-    const minValues = priceWatch.map((item) => item.min);
-    const isDuplicate = minValues.filter((min) => min === value).length > 1;
+    const minValues = priceWatch.map((item: { min: string}) => item.min);
+    const isDuplicate = minValues.filter((min: string) => min === value).length > 1;
     setIsError(isDuplicate);
-    return isDuplicate ? "Số lượng không được trùng lặp" : true;
+    return isDuplicate ? translate("productScreen.validateMin") : true;
   };
 
   return (

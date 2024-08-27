@@ -43,21 +43,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
     }, [viewProduct])
   );
 
-  const handleGetCategoryFilter = async () => {
-    try {
-      const response = await categoryStore.getListCategoriesFilter(0, 100);
-      if (response && response.kind === "ok") {
-        const data = response.response.data.content;
-        const newElement = { name: "Tất cả danh mục" };
-        data.unshift(newElement);
-        setDataCategoryFilter(data);
-      } else {
-        console.error("Failed to fetch categories:", response);
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
   const [searchValue, setSearchValue] = useState("");
   const handleSearchValueChange = (text: string) => {
     const newValue = text !== null ? text.toString() : "";
@@ -456,7 +441,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
           amount: data.minQuantity,
           isSelect: true,
           unitPrice: newPrice,
-          price: newPrice * data.minQuantity,
+          price: newPrice! * data.minQuantity,
         };
         const newArr = orderStore.dataProductAddOrder.concat(newArr1);
         orderStore.setDataProductAddOrder(newArr);
@@ -480,7 +465,7 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
           amount: newAmount,
           isSelect: true,
           unitPrice: newPrice,
-          price: newPrice * newAmount,
+          price: newPrice! * newAmount,
         };
         const newArr = orderStore.dataProductAddOrder.concat(newArr1);
         orderStore.setDataProductAddOrder(newArr);
@@ -640,7 +625,6 @@ export const AddProductOrder: FC = observer(function AddProductOrder() {
       ) {
         handleGetVariantPrice();
       }
-      handleGetCategoryFilter()
     });
     return unsubscribe;
   }, [navigation, orderStore.sort]);

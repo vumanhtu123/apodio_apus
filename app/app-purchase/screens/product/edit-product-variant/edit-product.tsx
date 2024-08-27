@@ -10,14 +10,13 @@ import {
 import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import { Text } from "../../../../components/text/text";
-import { colors, fontSize, margin, padding, scaleHeight, scaleWidth } from "../../../theme";
+import { colors, fontSize, scaleHeight, scaleWidth } from "../../../theme";
 import { styles } from "./styles"
 import { ScrollView } from "react-native-gesture-handler";
-import { Controller, FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { TextField } from "../../../../components/text-field/text-field";
 import { Switch } from "../../../../components";
 import { InputSelect } from "../../../../components/input-select/inputSelect";
-import DescribeModal from "../component/modal-describe";
 import { useStores } from "../../../models";
 import {
   checkArrayIsEmptyOrNull,
@@ -36,7 +35,7 @@ import ItemWeight from "../component/weight-component";
 import ImageProduct from "../create-prodcut/imageProduct";
 import { ItemGroupPrice, ItemMoreInformation, ItemUnit } from "../component/itemCreateProduct";
 import { ItemVariant } from "../component/itemVariant";
-import en from "../../../../i18n/en";
+import { MoreInformation } from "../component/moreInformation";
 
 export const ProductEditScreen: FC = (item) => {
   const route = useRoute();
@@ -44,14 +43,11 @@ export const ProductEditScreen: FC = (item) => {
   const [imagesNote, setImagesNote] = useState<any>();
   const [valueSale, setValueSale] = useState(false);
   const [valueSwitchUnit, setValueSwitchUnit] = useState(false);
-  const [modalDescribe, setModalDescribe] = useState(false);
-  const [addDescribe, setAddDescribe] = useState(false);
   const [addVariant, setAddVariant] = useState(false);
   const [arrUnitGroupData, setUnitGroupData] = useState([] as any);
   const [detailUnitGroupData, setDetailUnitGroupData] = useState<{ uomGroupLines: any, originalUnit: any }>({ uomGroupLines: [], originalUnit: '' });
   const [addWeight, setAddWeight] = useState(false);
   const [attributeIds, setAttributeIds] = useState<number[]>([]);
-  const [description, setDescription] = useState("");
   const [attributeValues, setAttributeValues] = useState<{}[]>([]);
   const [textAttributes, setTextAttributes] = useState<{}[]>([]);
   const [modalcreateUnit, setModalcreateUnit] = useState(false);
@@ -61,15 +57,16 @@ export const ProductEditScreen: FC = (item) => {
   const [constAttributeToEdit, setConstAttributeToEdit] = useState<{}[]>([]);
   const [dropdownToEdit, setDropdownToEdit] = useState<{}[]>([]);
   const [defaultTags, setDefaultTags] = useState([]);
-  const { productStore, unitStore, categoryStore, vendorStore } = useStores();
+  const { productStore, unitStore } = useStores();
   const [dataCreateProduct, setDataCreateProduct] = useState<{ imageUrls: string[], retailPrice: {}[], wholesalePrice: {}[] }[]>([]);
   const [productUsing, setProductUsing] = useState(false);
   const [priceUsing, setPriceUsing] = useState(false);
   const [dataOldCreateProduct, setDataOldCreateProduct] = useState([]);
   const [hasVariantInConfig, setVariantInConfig] = useState(false);
   const [dataGroupAttribute, setDataGroupAttribute] = useState([]);
+  const dataDescription = useRef('')
+  const addDescribe = useRef(false)
   const {
-    control,
     formState: { errors },
   } = useForm({
     mode: "all",
@@ -98,7 +95,6 @@ export const ProductEditScreen: FC = (item) => {
     selectedGroupAttribute,
     newDataCreateProduct
   }: any = route?.params || {};
-
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -145,6 +141,17 @@ export const ProductEditScreen: FC = (item) => {
   useEffect(() => {
     setVendor(selectedIds);
   }, [selectedIds]);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefreshUnit = () => {
+    setIsRefreshing(true)
+    setUnitGroupData([])
+    getListUnitGroup(valueSwitchUnit)
+    setIsRefreshing(false)
+  }
+  const searchUnit = (searchValue: any) => {
+    getListUnitGroup(valueSwitchUnit, searchValue)
+  }
 
   useEffect(() => {
     // getListUnitGroup(false);
@@ -276,8 +283,8 @@ export const ProductEditScreen: FC = (item) => {
         }
       }))
       if (newDataEdit?.description !== "" && newDataEdit?.description !== null) {
-        setAddDescribe(true);
-        setDescription(newDataEdit?.description);
+        addDescribe.current = true
+        dataDescription.current = newDataEdit?.description
       }
       if (newDataEdit?.brand !== null) {
         methods.setValue('brand', {
@@ -404,14 +411,17 @@ export const ProductEditScreen: FC = (item) => {
     }
   };
 
-  const getListUnitGroup = async (valueSwitchUnit: boolean) => {
+  const getListUnitGroup = async (valueSwitchUnit: boolean, searchValue?: any) => {
     let unitResult = null;
     if (valueSwitchUnit) {
-      unitResult = await unitStore.getListUnitGroup();
+      unitResult = await unitStore.getListUnitGroup(searchValue);
       console.log("getListUnitGroup---------------------:", unitResult);
     } else {
-      unitResult = await unitStore.getListUnit();
-      console.log("getListUnit---------------------:", unitResult);
+      unitResult = await unitStore.getListUnit(searchValue);
+      console.log(
+        "getListUnit---------------------:",
+        JSON.stringify(unitResult)
+      );
     }
     if (unitResult && unitResult.kind === "ok") {
       const data = unitResult.result.data.content;
@@ -421,13 +431,12 @@ export const ProductEditScreen: FC = (item) => {
           label: obj.name,
         };
       });
-      console.log("uomGroupId---------------------:", uomGroupId.id);
-
       setUnitGroupData(dataModified);
     } else {
       console.error("Failed to fetch list unit:", unitResult);
     }
   };
+
 
   useEffect(() => {
     if (attributeArr !== undefined) {
@@ -444,14 +453,14 @@ export const ProductEditScreen: FC = (item) => {
         },
         {}
       );
-      const resultArray = Object.values(groupedById);
+      const resultArray: any = Object.values(groupedById);
 
       const attributeValueArr: any = [];
       const textAttributeValueArr: any = [];
       const a = attributeArr.slice();
 
       a.forEach((item: { productAttributeId: any; id: any; value: any }) => {
-        if ("id" in item) {
+        if (item.id) {
           attributeValueArr.push({
             productAttributeId: item.productAttributeId,
             productAttributeValueId: item.id,
@@ -521,7 +530,7 @@ export const ProductEditScreen: FC = (item) => {
         dataOldCreateProduct.map((item: { name: any }) => [item.name.trim(), item])
       );
 
-      const updatedA = dataArr.map((item) => {
+      const updatedA: any = dataArr.map((item) => {
         return bMap.has(item.name.trim()) ? bMap.get(item.name.trim()) : item;
       });
 
@@ -554,7 +563,7 @@ export const ProductEditScreen: FC = (item) => {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.required_information"),
+        textBody: translate("txtToasts.required_information"),
       });
       return
     }
@@ -592,7 +601,7 @@ export const ProductEditScreen: FC = (item) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.input_weight"),
+          textBody: translate("txtToasts.input_weight"),
         });
         return
       }
@@ -600,7 +609,7 @@ export const ProductEditScreen: FC = (item) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.input_weight_variant"),
+          textBody: translate("txtToasts.input_weight_variant"),
         });
         return
       }
@@ -694,7 +703,7 @@ export const ProductEditScreen: FC = (item) => {
         weight: formatStringToFloat(item.weight1),
       }
     })
-    const doneData = {
+    const doneData: any = {
       sku: data.SKU === "" ? null : data.SKU,
       name: data.productName,
       saleOk: valueSale,
@@ -713,7 +722,7 @@ export const ProductEditScreen: FC = (item) => {
       attributeValues: attributeValues,
       attributeCategoryIds: attributeIds,
       textAttributes: textAttributes,
-      description: description,
+      description: addDescribe.current == true ? dataDescription.current : '',
       productVariants: hasVariantInConfig === false ? [] : newArr2,
       retailPrice: valueSale ? dataPrice2 : null,
       costPrice: valueSale ? Number(formatNumberByString(methods.watch('costPrice'))) : null,
@@ -792,8 +801,8 @@ export const ProductEditScreen: FC = (item) => {
           setImagesNote([...imagesNote, ...results]);
         } else {
           const newArr = dataCreateProduct.slice();
-          const newArr1 = newArr[indexItem].imageUrls.concat(results);
-          dataCreateProduct[indexItem].imageUrls = newArr1;
+          const newArr1 = newArr[indexItem!].imageUrls.concat(results);
+          dataCreateProduct[indexItem!].imageUrls = newArr1;
           setDataCreateProduct(newArr);
         }
       }
@@ -853,12 +862,6 @@ export const ProductEditScreen: FC = (item) => {
     }
   }, [imagesNote])
 
-  const handleDescribe = () => {
-    setAddDescribe(true);
-  };
-  const handleCloseDescribe = () => {
-    setAddDescribe(false);
-  };
   const goToChooseSupplierScreen = () => {
     const listIds = vendor;
     navigation.navigate({ name: "ChooseVendorScreen", params: { listIds, mode: "edit" } } as never);
@@ -1043,6 +1046,10 @@ export const ProductEditScreen: FC = (item) => {
             onChangeInput={(item) => handleSelectUnit(item)}
             addUnitOrGroup={() => handleAddNewUnitOrGroup()}
             onChangeSwitch={() => handleSwitchUnit()}
+            onRefresh={handleRefreshUnit}
+            onSubmitSearch={searchUnit}
+            isRefreshing={isRefreshing}
+            setIsRefreshing={setIsRefreshing}
           />
           {addWeight ? (
             <View
@@ -1085,120 +1092,17 @@ export const ProductEditScreen: FC = (item) => {
             setVariantInConfig={(a) => setVariantInConfig(a)}
             screen="edit"
           />
-          {addDescribe ? (
-            <View
-              style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-              <View style={styles.viewViewDetail}>
-                <View>
-                  <View style={{ flexDirection: "row", alignContent: "center" }}>
-                    <Text tx={"createProductScreen.description"}
-                      style={styles.textTitleView} />
-                    {description ? (
-                      <TouchableOpacity
-                        onPress={() => {
-                          setModalDescribe(true);
-                        }}>
-                        <Svgs.icon_edit
-                          style={{ marginLeft: scaleWidth(8) }}
-                          width={scaleWidth(14)}
-                          height={scaleHeight(14)}
-                        />
-                      </TouchableOpacity>
-                    ) : null}
-                  </View>
-                  <TouchableOpacity
-                    onPress={handleCloseDescribe}
-                    style={{
-                      position: "absolute",
-                      right: 0,
-                      flexDirection: "row",
-                    }}>
-                    <Svgs.ic_close
-                      width={scaleWidth(14)}
-                      height={scaleHeight(14)}
-                    />
-                  </TouchableOpacity>
-                </View>
-                {description === "" || description === null ? (
-                  <View style={{}}>
-                    <TouchableOpacity
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                      onPress={() => setModalDescribe(true)}>
-                      <Svgs.ic_plusCircleBlue
-                        width={scaleWidth(14)}
-                        height={scaleHeight(14)}
-                      />
-                      <Text tx={"createProductScreen.addDescription"}
-                        style={styles.textWeight400Blue} />
-                    </TouchableOpacity>
-                  </View>
-                ) : (
-                  <Text text={description} />
-                )}
-              </View>
-            </View>
-          ) : null}
-          <View style={{ backgroundColor: "white", marginTop: scaleHeight(12) }}>
-            <View style={styles.viewViewDetail}>
-              <Text
-                tx="createProductScreen.information"
-                style={styles.textTitleView}
-              />
-              <View>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Svgs.icon_gear
-                    width={scaleWidth(20)}
-                    height={scaleHeight(20)}
-                  />
-                  {addDescribe === false ? (
-                    <TouchableOpacity
-                      onPress={handleDescribe}
-                      style={styles.viewBtnInMorInfo}>
-                      <Text tx={"createProductScreen.description"}
-                        style={styles.textBtnMorInfo} />
-                    </TouchableOpacity>
-                  ) : null}
-                  {addVariant === false ? (
-                    <TouchableOpacity
-                      onPress={() => setAddVariant(true)}
-                      style={styles.viewBtnInMorInfo}>
-                      <Text tx={"createProductScreen.productClassification"}
-                        style={styles.textBtnMorInfo} />
-                    </TouchableOpacity>
-                  ) : null}
-                  {addWeight === false ? (
-                    <TouchableOpacity
-                      onPress={() => setAddWeight(true)}
-                      style={styles.viewBtnInMorInfo}>
-                      <Text
-                        tx={"createProductScreen.weight"}
-                        style={styles.textBtnMorInfo}
-                      />
-                    </TouchableOpacity>
-                  ) : null}
-                  {addDescribe === true && addVariant === true && addWeight === true ? (
-                    <Text tx={"createProductScreen.notificationAddAllInfoProduct"}
-                      style={{
-                        marginLeft: scaleWidth(8),
-                        fontSize: fontSize.size13,
-                      }} />
-                  ) : null}
-                </View>
-              </View>
-            </View>
-          </View>
+          <MoreInformation
+            setAddVariant={setAddVariant}
+            setAddWeight={setAddWeight}
+            addDescribe={addDescribe.current}
+            addVariant={addVariant}
+            addWeight={addWeight}
+            onChangeDescription={(data) => dataDescription.current = data}
+            onChangeIsVisible={(data) => addDescribe.current = data}
+            dataDescribe={dataDescription.current}
+          />
         </ScrollView>
-        <DescribeModal
-          titleTx={"productScreen.describe"}
-          isVisible={modalDescribe}
-          dataDescribe={description}
-          setIsVisible={() => setModalDescribe(false)}
-          onCancel={() => setModalDescribe(false)}
-          onConfirm={(data) => {
-            setDescription(data.Describe);
-            setModalDescribe(false);
-          }}
-        />
         <UnitModal
           titleTx={"productScreen.createUnit"}
           isVisible={modalcreateUnit}

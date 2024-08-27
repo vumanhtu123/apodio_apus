@@ -226,4 +226,5 @@ export const colors = {
   whiteSmoke2: palette.whiteSmoke2,
   mintCream1: palette.mintCream1,
   ecstasy: palette.ecstasy,
+  radicalRed: palette.radicalRed,
 };

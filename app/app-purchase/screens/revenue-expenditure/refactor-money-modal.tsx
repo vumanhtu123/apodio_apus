@@ -87,7 +87,7 @@ export const RefactorMoneyModal = (props: Input) => {
             <Text
               tx={"analysis.cancel"}
               style={{
-                color: "#FF4956",
+                color: colors.radicalRed,
                 fontSize: 14,
                 fontWeight: "700",
               }}></Text>

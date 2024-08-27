@@ -73,14 +73,14 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: '',
-        textBody: translate('txtToats.required_value_null'),
+        textBody: translate('txtToasts.required_value_null'),
       })
     } else {
       if (nameAttribute.some((item: any) => item.name.trim() === name.trim())) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: '',
-          textBody: translate('txtToats.cannot_create_duplicate'),
+          textBody: translate('txtToasts.cannot_create_duplicate'),
         })
       } else {
         const id = generateRandomString(8);
@@ -109,7 +109,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: '',
-        textBody: translate('txtToats.required_value_null'),
+        textBody: translate('txtToasts.required_value_null'),
       })
     } else {
       const newArr = extractAndRemove(
@@ -123,7 +123,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
               title: '',
-              textBody: translate('txtToats.cannot_create_duplicate'),
+              textBody: translate('txtToasts.cannot_create_duplicate'),
             })
           } else {
             const newValues = obj.productAttributeValues.concat(dataAdd);
@@ -161,7 +161,7 @@ export const NewAttribute: FC = observer(function NewAttribute(props) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: '',
-        textBody: translate('txtToats.required_information'),
+        textBody: translate('txtToasts.required_information'),
       })
     }
     else {

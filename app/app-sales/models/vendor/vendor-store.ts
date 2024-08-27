@@ -39,7 +39,7 @@ export const VendorStoreModel = types
     ) {
       try {
         const vendorApi = new VendorApi(self.environment.apiErp);
-        const result: VendorResult = yield vendorApi.getListVendor(
+        const result = yield vendorApi.getListVendor(
           page,
           size,
           vendorActivated,
@@ -55,7 +55,7 @@ export const VendorStoreModel = types
     getInfoCompany: flow(function* () {
       try {
         const vendorApi = new VendorApi(self.environment.apiErp);
-        const result: VendorResult = yield vendorApi.getInfoCompany();
+        const result = yield vendorApi.getInfoCompany();
         return result;
       } catch (error) {
         console.log("Get list info company", error);

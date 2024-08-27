@@ -50,7 +50,7 @@ export class VendorApi {
     }
   }
 
-  async getInfoCompany(): Promise<any> {
+  async getInfoCompany(): Promise<VendorResult> {
     Loading.show({
       text: "Loading...",
     });

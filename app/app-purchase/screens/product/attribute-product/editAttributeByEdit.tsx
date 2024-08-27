@@ -166,7 +166,7 @@ export const EditAttributeByEdit: FC = observer(function EditAttributeByEdit(
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.cannot_be_deselected"),
+        textBody: translate("txtToasts.cannot_be_deselected"),
       });
     } else {
       var indexArr = arrSelect.findIndex(

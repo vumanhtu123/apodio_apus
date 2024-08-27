@@ -161,7 +161,7 @@ export const EditClassify: FC = (item) => {
             Toast.show({
                 type: ALERT_TYPE.DANGER,
                 title: "",
-                textBody: translate("txtToats.required_information"),
+                textBody: translate("txtToasts.required_information"),
             });
             return
         }
@@ -176,7 +176,7 @@ export const EditClassify: FC = (item) => {
                 Toast.show({
                     type: ALERT_TYPE.DANGER,
                     title: "",
-                    textBody: translate("txtToats.input_weight"),
+                    textBody: translate("txtToasts.input_weight"),
                 });
                 return
             }
@@ -202,7 +202,7 @@ export const EditClassify: FC = (item) => {
                 weight: formatStringToFloat(item.weight1),
             }
         })
-        const doneData = {
+        const doneData: any = {
             name: data.productName,
             imageUrls: imagesNote,
             retailPrice: dataPrice2,

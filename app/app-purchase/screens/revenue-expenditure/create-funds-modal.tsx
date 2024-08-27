@@ -188,7 +188,7 @@ export const styles = StyleSheet.create({
     fontWeight: "700",
   },
   textCancel: {
-    color: "#FF4956",
+    color: colors.radicalRed,
     fontSize: 14,
     fontWeight: "700",
   },

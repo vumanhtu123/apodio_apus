@@ -46,7 +46,7 @@ export default function ImageProduct(props: ImageProduct) {
                 maxHeight: 500,
                 maxWidth: 500,
             };
-            launchCamera(options, (response: any) => {
+            launchCamera(options, (response) => {
                 console.log("==========> response1233123", response);
                 if (response.didCancel) {
                     console.log("User cancelled photo picker1");
@@ -54,7 +54,7 @@ export default function ImageProduct(props: ImageProduct) {
                     console.log("ImagePicker Error2: ", response.errorCode);
                 } else if (response.errorCode) {
                     console.log("User cancelled photo picker1");
-                } else if (response?.assets[0].uri) {
+                } else if (response?.assets) {
                     console.log(response?.assets[0].uri);
                     const imageAssets = [response?.assets[0]];
                     uploadImage(imageAssets, true, -1);
@@ -69,7 +69,7 @@ export default function ImageProduct(props: ImageProduct) {
                 Toast.show({
                     type: ALERT_TYPE.DANGER,
                     title: "",
-                    textBody: translate("txtToats.permission_denied"),
+                    textBody: translate("txtToasts.permission_denied"),
                 });
                 Dialog.show({
                     type: ALERT_TYPE.INFO,
@@ -88,7 +88,7 @@ export default function ImageProduct(props: ImageProduct) {
             Toast.show({
                 type: ALERT_TYPE.DANGER,
                 title: "",
-                textBody: translate("txtToats.permission_blocked"),
+                textBody: translate("txtToasts.permission_blocked"),
             });
             console.log("Permission blocked, you need to enable it from settings");
         }
@@ -128,7 +128,7 @@ export default function ImageProduct(props: ImageProduct) {
                 Toast.show({
                     type: ALERT_TYPE.DANGER,
                     title: "",
-                    textBody: translate("txtToats.permission_denied"),
+                    textBody: translate("txtToasts.permission_denied"),
                 });
                 Dialog.show({
                     type: ALERT_TYPE.INFO,
@@ -147,7 +147,7 @@ export default function ImageProduct(props: ImageProduct) {
             Toast.show({
                 type: ALERT_TYPE.DANGER,
                 title: "",
-                textBody: translate("txtToats.permission_blocked"),
+                textBody: translate("txtToasts.permission_blocked"),
             });
 
             console.log("Permission blocked, you need to enable it from settings");
@@ -173,7 +173,7 @@ export default function ImageProduct(props: ImageProduct) {
                         Toast.show({
                             type: ALERT_TYPE.DANGER,
                             title: "",
-                            textBody: translate("txtToats.required_maximum_number_of_photos"),
+                            textBody: translate("txtToasts.required_maximum_number_of_photos"),
                         });
                     } else {
                         uploadImage(selectedAssets, true, -1);
@@ -202,7 +202,7 @@ export default function ImageProduct(props: ImageProduct) {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
-                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                        textBody: translate('txtToasts.required_maximum_number_of_photos'),
                                     })
                                 }
                             }}
@@ -220,7 +220,7 @@ export default function ImageProduct(props: ImageProduct) {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
-                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                        textBody: translate('txtToasts.required_maximum_number_of_photos'),
                                     })
                                 }
                             }}
@@ -282,7 +282,7 @@ export default function ImageProduct(props: ImageProduct) {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
-                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                        textBody: translate('txtToasts.required_maximum_number_of_photos'),
 
                                     })
                                 }
@@ -305,7 +305,7 @@ export default function ImageProduct(props: ImageProduct) {
                                     Toast.show({
                                         type: ALERT_TYPE.DANGER,
                                         title: '',
-                                        textBody: translate('txtToats.required_maximum_number_of_photos'),
+                                        textBody: translate('txtToasts.required_maximum_number_of_photos'),
 
                                     })
                                 }

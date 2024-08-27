@@ -250,7 +250,7 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.please_select_attribute"),
+        textBody: translate("txtToasts.please_select_attribute"),
       });
     } else {
       const newArr = selectedGroup.map((items: any) => {
@@ -269,7 +269,7 @@ export const EditAttribute: FC = observer(function EditAttribute(props) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.please_select_attribute"),
+          textBody: translate("txtToasts.please_select_attribute"),
         });
       } else {
         Dialog.show({

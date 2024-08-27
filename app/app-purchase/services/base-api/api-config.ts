@@ -46,7 +46,7 @@ const getDomainUAA = () => {
 
 const getDomainUpload = () => {
   const env = CONFIG.ENV;
-  const domain = CONFIG.API.DEV.URL_UPLOAD;
+  const domain = CONFIG.API.STAGING.URL_UPLOAD;
   // console.log('URL',CONFIG.API.PRODUCT.URL);
   console.log("Upload", domain);
   return domain;

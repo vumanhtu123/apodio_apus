@@ -168,8 +168,10 @@ const ProductDetailsSection = ({
                     />
                     {/* ) : (
                   <ProductAttribute
-                    label="Giá vốn"
-                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification?.uom?.name}`}
+                    label={translate("detailScreen.capitalPrice")}
+                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification.uom?.name ||
+                                dataClassification.uomGroup?.originalUnit?.name
+                                }`}
                     textStyle={{ color: colors.palette.radicalRed }}
                   />
                 )} */}
@@ -191,8 +193,10 @@ const ProductDetailsSection = ({
                     />
                     {/* ) : (
                   <ProductAttribute
-                    label="Giá niêm yết"
-                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification?.uom?.name}`}
+                    labelTx="detailScreen.listedPrice"
+                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification.uom?.name ||
+                                dataClassification.uomGroup?.originalUnit?.name
+                                }`}
                     textStyle={{ color: colors.palette.radicalRed }}
                   />
                 )} */}

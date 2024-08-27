@@ -22,6 +22,7 @@ import CustomCalendar from "../../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
 import { NavigatorParamList } from "../../navigators";
+import { useNavigation } from "@react-navigation/native";
 import { useStores } from "../../models";
 
 export const list = [
@@ -131,6 +132,7 @@ export const list = [
 export const ListRevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "RevenueScreen">
 > = observer(function ListRevenueScreen(props) {
+  const navigation = useNavigation()
   const [makeDateE, setMakeDateE] = useState<any>();
   const [makeDateS, setMakeDateS] = useState<any>();
   const [timeStart, setTimeStart] = useState("");
@@ -221,10 +223,7 @@ export const ListRevenueScreen: FC<
           <FilterAppBarComponent
             date={timeStart == "" ? null : timeStart + timeEnd}
             onShowCalender={() => {
-              props.navigation.navigate({
-                name: "filterRevenueScreen",
-              } as never);
-              // toggleModalDate();
+              navigation.navigate({name: "filterRevenueScreen"} as never)
             }}
             clear={() => {
               setTimeStart("");
@@ -244,7 +243,7 @@ export const ListRevenueScreen: FC<
               {translate("analysis.balance")}
               <Text
                 style={{
-                  color: "#FF4956",
+                  color: colors.radicalRed,
                   fontSize: 14,
                   fontWeight: "600",
                 }}>
@@ -364,7 +363,7 @@ export const ListRevenueScreen: FC<
         <TouchableOpacity
           onPress={() => props.navigation.navigate("expenseScreen")}
           style={{
-            backgroundColor: "#FF4956",
+            backgroundColor: colors.radicalRed,
             flexDirection: "row",
             // paddingHorizontal: 36,
             paddingVertical: 12,
@@ -441,7 +440,7 @@ const ItemSum = () => {
             style={{
               fontSize: 16,
               fontWeight: "600",
-              color: "#FF4956",
+              color: colors.radicalRed,
             }}>
             100.000
           </Text>

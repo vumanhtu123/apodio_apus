@@ -1,34 +1,23 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
-import { observer, useLocalObservable, useLocalStore } from "mobx-react-lite";
+import React, { FC, useEffect, useRef, useState } from "react";
+import { observer } from "mobx-react-lite";
 import {
-  Dimensions,
-  Image,
-  ImageBackground,
   View,
   ScrollView,
   FlatList,
   TouchableOpacity,
-  Platform,
   RefreshControl,
 } from "react-native";
 import { styles } from "./styles";
 
 import {
   colors,
-  fontSize,
-  margin,
-  padding,
   scaleHeight,
-  scaleWidth,
 } from "../../../theme";
-import Modal from "react-native-modal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  BottomParamList,
   TabScreenProps,
 } from "../../../navigators/bottom-navigation";
-import { NavigatorParamList, navigate } from "../../../navigators";
 import { Svgs } from "../../../../../assets/svgs";
 import { Header } from "../../../../components/header/header";
 import moment from "moment";
@@ -37,16 +26,14 @@ import CustomCalendar from '../../../../components/calendar';
 import ItemOrder from '../components/item-order';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useStores } from '../../../models';
-import { formatCurrency } from '../../../utils/validate';
 import { formatDateTime } from '../../../utils/formatDate';
-import { Calendar } from "react-native-calendars";
 
 export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
   function OrderScreen(props) {
     // Pull in one of our MST stores
     // const refCarousel = useRef(null)
     const route = useRoute();
-    const isReload = route?.params?.isReload
+    // const isReload = route?.params?.isReload
     const { orderStore } = useStores();
     const [data, setData] = useState([]);
     const [arrData, setArrData] = useState<any>([]);
@@ -57,7 +44,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     const today = new Date();
     // const sevenDaysBefore = new Date(today)
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const firstDayOfNextMonth = new Date(
+    const firstDayOfNextMonth: any = new Date(
       today.getFullYear(),
       today.getMonth() + 1,
       1
@@ -100,7 +87,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     { status: 'DONE', textStatus: 'Hoàn thành' },
     { status: 'CANCEL', textStatus: 'Hủy đơn' },
     ]
-    const flatListRef = useRef(null);
+    const flatListRef = useRef<FlatList>(null);
     const [page, setPage] = useState(0);
     useEffect(() => {
       getListOrder()
@@ -110,7 +97,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
       const unsubscribe = navigation.addListener('focus', () => {
         if (orderStore.isReload === true) {
           if (flatListRef.current) {
-            flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+            flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
           }
           console.log("---------useEffect---------reload--------------xcxcx----");
           // setArrData([])

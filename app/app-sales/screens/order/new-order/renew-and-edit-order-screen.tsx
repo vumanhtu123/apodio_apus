@@ -34,9 +34,8 @@ import {
   SumMoney,
 } from "../components/header-order";
 import { ModalTaxes } from "../components/modal-taxes-apply";
-import { arrPayment, methodData } from "./data";
+import { arrPayment } from "./data";
 import { useStores } from "../../../models";
-import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 import {
   ALERT_TYPE,
   Dialog,
@@ -372,7 +371,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.noClient"),
+        textBody: translate("txtToasts.noClient"),
       });
     } else {
       navigation.navigate("deliveryAddress" as never);
@@ -519,7 +518,7 @@ export const NewAndEditOrder: FC = observer(function NewAndEditOrder(
   };
 
   const getListTax = async () => {
-    const result: TaxModel = await store.orderStore.getListTax(
+    const result = await store.orderStore.getListTax(
       "VAT_RATES",
       0,
       20,

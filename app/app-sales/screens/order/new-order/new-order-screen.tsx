@@ -35,7 +35,6 @@ import {
 import { ModalTaxes } from "../components/modal-taxes-apply";
 import { arrPayment } from "./data";
 import { useStores } from "../../../models";
-import { TaxModel } from "../../../models/order-store/entities/order-tax-model";
 import {
   ALERT_TYPE,
   Dialog,
@@ -362,7 +361,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.noClient"),
+        textBody: translate("txtToasts.noClient"),
       });
     } else {
       if (orderStore.dataClientSelect.isHaveDeliveryAddress) {
@@ -521,7 +520,7 @@ export const NewOrder: FC = observer(function NewOrder(props: any) {
   };
 
   const getListTax = async () => {
-    const result: TaxModel = await store.orderStore.getListTax(
+    const result = await store.orderStore.getListTax(
       "VAT_RATES",
       0,
       20,

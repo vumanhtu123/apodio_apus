@@ -46,10 +46,6 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
         Number(orderStore.dataClientSelect.id)
       );
       if (response && response.kind === "ok") {
-        console.log(
-          "getListAddress---------------------",
-          JSON.stringify(response.response.data)
-        );
         const newArr = response.response.data;
         if (orderStore.dataAddress.id === undefined) {
           newArr.map((items: any) => {

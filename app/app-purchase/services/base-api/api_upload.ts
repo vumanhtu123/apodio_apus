@@ -97,14 +97,14 @@ export class ApiUpload {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "vi",
             "Content-Type": "multipart/form-data",
-            "X-TenantId": tenantId,
+            // "X-TenantId": tenantId,
           };
         } else {
           const tenantId = await getTenantId();
           request.headers = {
             imei: DeviceInfo.getUniqueIdSync() + 2,
             "Accept-Language": "vi",
-            "X-TenantId": tenantId,
+            // "X-TenantId": tenantId,
           };
         }
 

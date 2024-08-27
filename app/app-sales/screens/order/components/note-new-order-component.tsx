@@ -15,7 +15,7 @@ import {
 } from "../../../../components/dialog-notification";
 import { translate } from "../../../../i18n/translate";
 import { RESULTS } from "react-native-permissions";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { CameraOptions, ImageLibraryOptions, launchCamera, launchImageLibrary } from "react-native-image-picker";
 import {
   checkCameraPermission,
   checkLibraryPermission,
@@ -67,8 +67,8 @@ export const ShowNote = (props: InputNote) => {
       : imagesNote.length;
     console.log("----------------indexItem-----------------", numberUrl);
     if (permissionStatus === RESULTS.GRANTED) {
-      const options = {
-        cameraType: "back",
+      const options: ImageLibraryOptions = {
+        mediaType: 'photo',
         quality: 1,
         maxHeight: scaleHeight(500),
         maxWidth: scaleWidth(500),
@@ -96,7 +96,7 @@ export const ShowNote = (props: InputNote) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.permission_denied"),
+          textBody: translate("txtToasts.permission_denied"),
         });
 
         Dialog.show({
@@ -116,13 +116,13 @@ export const ShowNote = (props: InputNote) => {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.permission_blocked"),
+        textBody: translate("txtToasts.permission_blocked"),
       });
 
       console.log("Permission blocked, you need to enable it from settings");
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
-      const options = {
-        cameraType: "back",
+      const options: ImageLibraryOptions = {
+        mediaType: 'photo',
         quality: 1,
         maxHeight: scaleHeight(500),
         maxWidth: scaleWidth(500),
@@ -142,7 +142,7 @@ export const ShowNote = (props: InputNote) => {
             Toast.show({
               type: ALERT_TYPE.DANGER,
               title: "",
-              textBody: translate("txtToats.required_maximum_number_of_photos"),
+              textBody: translate("txtToasts.required_maximum_number_of_photos"),
             });
           } else {
             uploadImages(selectedAssets);
@@ -161,12 +161,13 @@ export const ShowNote = (props: InputNote) => {
 
     if (permissionStatus === RESULTS.GRANTED) {
       console.log("You can use the camera");
-      const options = {
+      const options: CameraOptions = {
         cameraType: "back",
+        mediaType: 'photo',
         quality: 1,
         maxHeight: scaleHeight(500),
         maxWidth: scaleWidth(500),
-        selectionLimit: 6 - numberUrl,
+        // selectionLimit: 6 - numberUrl,
       };
       launchCamera(options, (response) => {
         console.log("==========> response1233123", response);
@@ -176,7 +177,7 @@ export const ShowNote = (props: InputNote) => {
           console.log("ImagePicker Error2: ", response.errorCode);
         } else if (response.errorCode) {
           console.log("User cancelled photo picker1");
-        } else if (response?.assets[0].uri) {
+        } else if (response?.assets) {
           console.log(response?.assets[0].uri);
           const imageAssets = [response?.assets[0]];
           setModalImage(false);
@@ -192,7 +193,7 @@ export const ShowNote = (props: InputNote) => {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.permission_denied"),
+          textBody: translate("txtToasts.permission_denied"),
         });
         Dialog.show({
           type: ALERT_TYPE.INFO,
@@ -211,7 +212,7 @@ export const ShowNote = (props: InputNote) => {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.permission_blocked"),
+        textBody: translate("txtToasts.permission_blocked"),
       });
       console.log("Permission blocked, you need to enable it from settings");
     }
@@ -321,11 +322,11 @@ export const ShowNote = (props: InputNote) => {
             {/* </TouchableOpacity>
           </TouchableOpacity> */}
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => props.setNote(false)}
             style={{ position: "absolute", right: 6, top: 6 }}>
-            {/* <Images.icon_deleteDolphin /> */}
-          </TouchableOpacity>
+            <Images.icon_deleteDolphin />
+          </TouchableOpacity> */}
         </View>
       ) : null}
       <Modal isVisible={modalImage} style={{ alignItems: "center" }}>

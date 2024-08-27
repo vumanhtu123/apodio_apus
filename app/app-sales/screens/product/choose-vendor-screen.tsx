@@ -65,7 +65,7 @@ export const ChooseVendorScreen: FC = () => {
         setSelectedIds(listIds || []);
       }
     } else {
-      console.error("Failed to fetch list unit:", unitResult);
+      console.error("Failed to fetch list unit:", vendorResult);
     }
   };
   const handleEndReachedCategory = () => {
@@ -111,10 +111,10 @@ export const ChooseVendorScreen: FC = () => {
     getListVendor(true, searchText);
   };
   const handleBtn = () => {
-    navigation.navigate("ProductCreateScreen", { selectedIds });
+    navigation.navigate({name: "ProductCreateScreen", params: { selectedIds }} as never);
   };
   const handleBtnEditing = () => {
-    navigation.navigate("ProductEditScreen", { selectedIds });
+    navigation.navigate({name: "ProductEditScreen", params: { selectedIds }}as never);
   };
   const handleSelectOption = (groupIndex: number, id: number) => {
     const isSelected = selectedIds.includes(id);
@@ -258,7 +258,7 @@ export const ChooseVendorScreen: FC = () => {
               />
             }
             showsVerticalScrollIndicator={false}
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
             onEndReached={handleEndReachedCategory}
             onEndReachedThreshold={0.5}
             numColumns={1}

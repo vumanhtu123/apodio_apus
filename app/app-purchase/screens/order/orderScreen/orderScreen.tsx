@@ -46,7 +46,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     // Pull in one of our MST stores
     // const refCarousel = useRef(null)
     const route = useRoute();
-    const isReload = route?.params?.isReload
+    // const isReload = route?.params?.isReload
     const { orderStore } = useStores();
     const [data, setData] = useState([]);
     const [arrData, setArrData] = useState<any>([]);
@@ -100,7 +100,7 @@ export const OrderScreen: FC<TabScreenProps<"orders">> = observer(
     { status: 'DONE', textStatus: 'Hoàn thành' },
     { status: 'CANCEL', textStatus: 'Hủy đơn' },
     ]
-    const flatListRef = useRef(null);
+    const flatListRef = useRef<FlatList>(null);
     const [page, setPage] = useState(0);
     useEffect(() => {
       getListOrder()

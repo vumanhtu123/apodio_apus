@@ -77,7 +77,7 @@ export default function ImagesGroup(props: ImagesGroup) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
               title: "",
-              textBody: translate("txtToats.required_maximum_number_of_photos"),
+              textBody: translate("txtToasts.required_maximum_number_of_photos"),
             });
           } else {
             uploadImage(selectedAssets, false, indexItem);
@@ -93,7 +93,7 @@ export default function ImagesGroup(props: ImagesGroup) {
         Toast.show({
           type: ALERT_TYPE.DANGER,
           title: "",
-          textBody: translate("txtToats.permission_denied"),
+          textBody: translate("txtToasts.permission_denied"),
         });
         Dialog.show({
           type: ALERT_TYPE.INFO,
@@ -112,7 +112,7 @@ export default function ImagesGroup(props: ImagesGroup) {
       Toast.show({
         type: ALERT_TYPE.DANGER,
         title: "",
-        textBody: translate("txtToats.permission_blocked"),
+        textBody: translate("txtToasts.permission_blocked"),
       });
     } else if (permissionStatus === RESULTS.UNAVAILABLE) {
       const options: ImageLibraryOptions = {
@@ -137,7 +137,7 @@ export default function ImagesGroup(props: ImagesGroup) {
             Toast.show({
               type: ALERT_TYPE.DANGER,
               title: "",
-              textBody: translate("txtToats.required_maximum_number_of_photos"),
+              textBody: translate("txtToasts.required_maximum_number_of_photos"),
             });
           } else {
             uploadImage(selectedAssets, false, indexItem);
@@ -164,7 +164,7 @@ export default function ImagesGroup(props: ImagesGroup) {
               type: ALERT_TYPE.DANGER,
               title: "",
               textBody: translate(
-                "txtToats.required_maximum_number_of_photos"
+                "txtToasts.required_maximum_number_of_photos"
               ),
             });
           }
@@ -330,7 +330,7 @@ export default function ImagesGroup(props: ImagesGroup) {
                   type: ALERT_TYPE.DANGER,
                   title: "",
                   textBody: translate(
-                    "txtToats.required_maximum_number_of_photos"
+                    "txtToasts.required_maximum_number_of_photos"
                   ),
                 });
               }

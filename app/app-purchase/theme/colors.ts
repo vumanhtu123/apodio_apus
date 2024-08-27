@@ -228,4 +228,5 @@ export const colors = {
   mintCream1: palette.mintCream1,
   ecstasy: palette.ecstasy,
   pigmentGreen: palette.pigmentGreen,
+  radicalRed: palette.radicalRed,
 };

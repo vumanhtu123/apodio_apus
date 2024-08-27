@@ -5,7 +5,6 @@ import {
   FlatList,
   StyleSheet,
   ViewStyle,
-  TextInput,
   Dimensions,
 } from "react-native";
 import {
@@ -77,28 +76,28 @@ const DropdownModal = (props: InputSelectProps) => {
 
   useEffect(() => {
     setFilteredData(arrData);
-    console.log("bugssss", arrData);
   }, [arrData]);
 
   useEffect(() => {
-    console.log("--------newData222222--------", newData);
     if (newData !== undefined) {
       const arr = [newData]?.concat(selectedItems);
       setSelectedItems(arr);
       setSelectedItem(arr);
       const newArrData = [newData]?.concat(arrData);
       setFilteredData(newArrData);
-      console.log("log multiselect");
     }
   }, [newData]);
 
   useEffect(() => {
-    console.log("--------dataEdit--------", dataEdit);
-    if (dataEdit !== undefined) {
+    if (dataEdit?.length !== 0) {
       setSelectedItems(dataEdit);
       setSelectedItem(dataEdit);
     }
   }, [dataEdit]);
+
+  useEffect(()=>{
+    setSelectedItem(selectedItems)
+  }, [modalVisible])
 
   const handleSearch = (text: any) => {
     setSearch(text);
@@ -130,11 +129,9 @@ const DropdownModal = (props: InputSelectProps) => {
   };
   const onConfirm = () => {
     setSelectedItems(selectedItem);
-    onPressChoice(selectedItem);
+    onPressChoice!(selectedItem);
     toggleModal();
   };
-
-  // console.log("--------newData--------", newData);
 
   const renderItem = ({ item }: any) => {
     const isSelected = selectedItem.some(
@@ -147,7 +144,6 @@ const DropdownModal = (props: InputSelectProps) => {
           style={styles.item}
           onPress={() => handleItemSelect(item)}>
           <View style={styles.radioButton}>
-            {/* {isSelected && <Images.icon_checkGreen width={scaleWidth(20)} height={scaleHeight(20)} />} */}
             {isSelected && <Svgs.icon_checkBox />}
           </View>
           <Text style={[styles.itemText]}>{item.text}</Text>
@@ -160,7 +156,7 @@ const DropdownModal = (props: InputSelectProps) => {
       (selectedItem: { value: any }) => selectedItem.value !== item.value
     );
     setSelectedItems(updatedSelectedItems);
-    onPressChoice(updatedSelectedItems);
+    onPressChoice!(updatedSelectedItems);
     setSelectedItem(updatedSelectedItems);
   };
   return (
@@ -219,7 +215,6 @@ const DropdownModal = (props: InputSelectProps) => {
             renderItem={renderItem}
             keyExtractor={(item: any) => item.value}
             onEndReached={loadMore}
-            // keyExtractor={(item) => item.toString()}
           />
           <View style={styles.viewModalButton}>
             <Button
@@ -234,7 +229,7 @@ const DropdownModal = (props: InputSelectProps) => {
               tx={"productScreen.BtnNotificationAccept"}
               style={styles.buttonAccept}
               textStyle={styles.textAccept}
-              onPress={(item) => onConfirm(item)}
+              onPress={() => onConfirm!()}
             />
           </View>
         </View>

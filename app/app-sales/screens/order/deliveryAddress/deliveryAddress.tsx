@@ -7,7 +7,7 @@ import React, {
 } from "react-native";
 import { Header, Text } from "../../../../components";
 import { Svgs } from "../../../../../assets/svgs";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { styles } from "./styles";
 import {
   colors,
@@ -25,7 +25,6 @@ export const DeliveryAddress: FC = observer(function DeliveryAddress() {
   const navigation = useNavigation();
   const [addressChoice, setAddressChoice] = useState(0);
   const [arrAddress, setArrAddress] = useState<Root1[]>([]);
-  const route = useRoute();
   const { orderStore } = useStores();
 
   const handlePress = (data: any) => {

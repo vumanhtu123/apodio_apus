@@ -43,7 +43,7 @@ export const EditWeight: FC = observer(
                 Toast.show({
                     type: ALERT_TYPE.DANGER,
                     title: "",
-                    textBody: translate("txtToats.input_weight"),
+                    textBody: translate("txtToasts.input_weight"),
                   });
             }else{
                 dataCreateProduct[index].weight.volumeOriginal = data.volumeOriginal

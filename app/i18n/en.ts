@@ -34,7 +34,7 @@ const en = {
     checkQuantity :"Số lượng thực tế không được nhỏ hơn 0",
   },
 
-  txtToats: {
+  txtToasts: {
     please_select_attribute: "Vui lòng chọn thuộc tính",
     required_information: "Vui lòng nhập đủ thông tin bắt buộc",
     required_maximum_number_of_photos: "Số lượng ảnh tối đa là 6",
@@ -197,6 +197,7 @@ const en = {
     send: "Gửi",
   },
   order: {
+    selectVariant: "Chọn biến thể",
     orderTracking: "Theo dõi hành trình đơn hàng",
     time: "Thời gian",
     back: "Quay lại",
@@ -260,6 +261,8 @@ const en = {
     warning_payment: "Thanh toán trước",
     text_money_limit: "Số tiền tối thiểu cần thanh toán trước: ",
     debt_limit: "Hạn mức công nợ tối đa được trừ cho đơn hàng: ",
+    minimumQuantitySell: "SL tối thiểu cần bán là ",
+    confirmRemoveProductCart: "Bạn có muốn bỏ sản phẩm khỏi giỏ hàng không?",
     tittle_warning:
       " Vui lòng chọn một phương thức thanh toán trước để kết hợp với hạn mức công nợ khả dụng",
     customer_paid: "Khách muốn trả",
@@ -1369,6 +1372,10 @@ const en = {
     today: "Hôm nay",
     last7days: "7 ngày trước",
     thisMonth: "Tháng này",
+    yesterday: "Hôm qua",
+    last30days: "30 ngày",
+    lastMonth: "Tháng trước",
+    thisYear: "Năm nay",
     reset: "Đặt lại",
     done: "Xác nhận",
     thisWeek: "Tuần này",

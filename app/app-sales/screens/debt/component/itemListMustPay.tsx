@@ -80,7 +80,7 @@ export const ItemListMustPay: FC<ItemProps> = ({ item, onClick, idSelect }) => {
                         />
 
 
-                        <Text style={[Styles.sizeContent, { color: idSelect == item?.id ? 'yellow' : "#FF4956" }]}>
+                        <Text style={[Styles.sizeContent, { color: idSelect == item?.id ? 'yellow' : colors.radicalRed }]}>
                             {`${item?.musPay}đ`}
                         </Text>
                     </View>

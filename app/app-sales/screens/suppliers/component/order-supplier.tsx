@@ -277,7 +277,7 @@ const ItemOrder = (item: any) => {
           </Text>
           <Text
             style={{
-              color: "#FF4956",
+              color: colors.radicalRed,
               fontSize: 10,
               fontWeight: "700",
               marginVertical: 8,
@@ -312,7 +312,7 @@ const ItemOrder = (item: any) => {
             }}>
             {item.tax ?? "5.000.000"}
           </Text>
-          <Text style={{ color: "#FF4956", fontSize: 12, fontWeight: "600" }}>
+          <Text style={{ color: colors.radicalRed, fontSize: 12, fontWeight: "600" }}>
             {item.totalPayment ?? "80.000.000"}
           </Text>
         </View>

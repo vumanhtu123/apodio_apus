@@ -137,7 +137,7 @@ export const ItemAttribute = memo(
                                                                                             type: ALERT_TYPE.DANGER,
                                                                                             title: "",
                                                                                             textBody: translate(
-                                                                                                "txtToats.attribute_is_using"
+                                                                                                "txtToasts.attribute_is_using"
                                                                                             ),
                                                                                         });
                                                                                     } else {
@@ -181,6 +181,7 @@ export const ItemAttribute = memo(
                                                                     style={{
                                                                         color: colors.palette.dolphin,
                                                                         fontSize: fontSize.size12,
+                                                                        marginLeft: scaleWidth(5)
                                                                     }}
                                                                 />
                                                             </View>
@@ -233,7 +234,7 @@ export const ItemAttribute = memo(
                                                                             return (
                                                                                 <TextInput
                                                                                     style={{
-                                                                                        width: "60%",
+                                                                                        width: "100%",
                                                                                         paddingVertical:
                                                                                             Platform.OS === "ios"
                                                                                                 ? scaleHeight(4)
@@ -278,7 +279,7 @@ export const ItemAttribute = memo(
                                                             ) : (
                                                                 <TextInput
                                                                     style={{
-                                                                        width: "60%",
+                                                                        width: "100%",
                                                                         paddingVertical:
                                                                             Platform.OS === "ios" ? scaleHeight(4) : 0,
                                                                     }}

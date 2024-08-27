@@ -347,7 +347,7 @@ export const ItemGroupPrice = memo(
         <PriceModal
           isVisible={modalRetailPrice}
           setIsVisible={() => setModalRetailPrice(false)}
-          title={"productDetail.retailPrice"}
+          titleTx={"productDetail.retailPrice"}
           onCancel={() => {
             setModalRetailPrice(false);
             dataModal?.length !== 0
@@ -364,10 +364,10 @@ export const ItemGroupPrice = memo(
         <PriceModal
           isVisible={modalWholesalePrice}
           setIsVisible={() => setModalWholesalePrice(false)}
-          title={"productDetail.wholesalePrice"}
+          titleTx={"productDetail.wholesalePrice"}
           onCancel={() => {
             setModalWholesalePrice(false);
-            dataModal.length !== 0
+            dataModal?.length !== 0
               ? setDataModal([])
               : setDataModal([{ min: "", price: "" }]);
           }}

@@ -265,6 +265,7 @@ export const OrderStoreModel = types
         name: "",
         code: "",
         phoneNumber: "",
+        isHaveDeliveryAddress: false,
       };
       self.sortPriceList = "";
       self.dataPriceListSelected = {
@@ -409,12 +410,12 @@ export const OrderStoreModel = types
     getListOrderProduct: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
+      productCategoryId: number | undefined,
       search: string,
-      tagIds: [],
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number
+      warehouseId: number | undefined
     ) {
       // console.log('page' , page)
       const orderApi = new OrderApi(
@@ -443,13 +444,13 @@ export const OrderStoreModel = types
     getListOrderVariant: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
-      search: string,
-      tagIds: [],
+      productCategoryId: number | undefined,
+      search: string | undefined,
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number,
-      productTemplateId: number
+      warehouseId: number | undefined,
+      productTemplateId: number | undefined
     ) {
       // console.log('page' , page)
       const orderApi = new OrderApi(
@@ -494,13 +495,13 @@ export const OrderStoreModel = types
     getListOrderProductPrice: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
+      productCategoryId: number | undefined,
       search: string,
-      tagIds: [],
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number,
-      priceListId: number
+      warehouseId: number | undefined,
+      priceListId: number | undefined
     ) {
       // console.log('page' , page)
       const orderApi = new OrderApi(
@@ -531,13 +532,13 @@ export const OrderStoreModel = types
     getListOrderVariantPrice: flow(function* (
       page: number,
       size: number,
-      productCategoryId: number,
-      search: string,
-      tagIds: [],
+      productCategoryId: number | undefined,
+      search: string | undefined,
+      tagIds: number[],
       sortId: string,
       isLoadMore: boolean,
-      warehouseId: number,
-      productTemplateId: number,
+      warehouseId: number| undefined,
+      productTemplateId: number | undefined,
       priceListId: number
     ) {
       // console.log('page' , page)
@@ -792,7 +793,7 @@ export const OrderStoreModel = types
         self.environment.apiOrder,
         self.environment.apiAccount
       );
-      const result: OrderResult = yield orderApi.createInvoice(invoiceAdd);
+      const result = yield orderApi.createInvoice(invoiceAdd);
       console.log("-----------dsa", JSON.stringify(result));
       if (result.kind === "ok") {
         console.log("order", result);
@@ -813,7 +814,7 @@ export const OrderStoreModel = types
         self.environment.apiAccount
       );
       try {
-        const result: BaseResponse<TaxModel, ErrorCode> =
+        const result =
           yield orderApi.getTaxList(type, scopeType, page, size);
         console.log("tuvm getTax result", JSON.stringify(result));
         if (result.data !== null) {

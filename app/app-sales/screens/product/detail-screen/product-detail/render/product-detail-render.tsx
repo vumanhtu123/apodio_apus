@@ -152,51 +152,55 @@ const ProductDetailsSection = ({
                 ) : null}
                 <View>
                     {/* {detailsClassification?.length !== 0 ? ( */}
-                    <ProductAttribute
-                        label={translate("detailScreen.capitalPrice")}
-                        value={
-                            detailsClassification?.costPrice > 0
-                                ? `${formatVND(
-                                    formatCurrency(
-                                        commasToDots(detailsClassification?.costPrice)
-                                    )
-                                )}/${dataClassification.uom?.name ||
-                                dataClassification.uomGroup?.originalUnit?.name
-                                }`
-                                : null
-                        }
-                        textStyle={{ color: colors.palette.radicalRed }}
-                    />
+                        <ProductAttribute
+                            label={translate("detailScreen.capitalPrice")}
+                            value={
+                                detailsClassification?.costPrice > 0
+                                    ? `${formatVND(
+                                        formatCurrency(
+                                            commasToDots(detailsClassification?.costPrice)
+                                        )
+                                    )}/${dataClassification.uom?.name ||
+                                    dataClassification.uomGroup?.originalUnit?.name
+                                    }`
+                                    : null
+                            }
+                            textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                    {/* // ) : (
+                    //     <ProductAttribute
+                    //         label={translate("detailScreen.capitalPrice")}
+                    //         value={`${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification.uom?.name ||
+                    //             dataClassification.uomGroup?.originalUnit?.name
+                    //             }`}
+                    //         textStyle={{ color: colors.palette.radicalRed }}
+                    //     />
+                    // )} */}
+                    {/* // {detailsClassification?.length !== 0 ? ( */}
+                        <ProductAttribute
+                            labelTx="detailScreen.listedPrice"
+                            value={
+                                detailsClassification?.listPrice > 0
+                                    ? `${formatVND(
+                                        formatCurrency(
+                                            commasToDots(detailsClassification?.listPrice)
+                                        )
+                                    )}/${dataClassification.uom?.name ||
+                                    dataClassification.uomGroup?.originalUnit?.name
+                                    }`
+                                    : null
+                            }
+                            textStyle={{ color: colors.palette.radicalRed }}
+                        />
                     {/* ) : (
-                  <ProductAttribute
-                    label="Giá vốn"
-                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.costPrice)))}/${dataClassification?.uom?.name}`}
-                    textStyle={{ color: colors.palette.radicalRed }}
-                  />
-                )} */}
-                    {/* {detailsClassification?.length !== 0 ? ( */}
-                    <ProductAttribute
-                        labelTx="detailScreen.listedPrice"
-                        value={
-                            detailsClassification?.listPrice > 0
-                                ? `${formatVND(
-                                    formatCurrency(
-                                        commasToDots(detailsClassification?.listPrice)
-                                    )
-                                )}/${dataClassification.uom?.name ||
+                        <ProductAttribute
+                            labelTx="detailScreen.listedPrice"
+                            value={`${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification.uom?.name ||
                                 dataClassification.uomGroup?.originalUnit?.name
-                                }`
-                                : null
-                        }
-                        textStyle={{ color: colors.palette.radicalRed }}
-                    />
-                    {/* ) : (
-                  <ProductAttribute
-                    label="Giá niêm yết"
-                    value={`${formatVND(formatCurrency(commasToDots(dataClassification?.listPrice)))}/${dataClassification?.uom?.name}`}
-                    textStyle={{ color: colors.palette.radicalRed }}
-                  />
-                )} */}
+                                }`}
+                            textStyle={{ color: colors.palette.radicalRed }}
+                        />
+                    )} */}
                 </View>
                 <TouchableOpacity
                     style={styles.viewCaret}

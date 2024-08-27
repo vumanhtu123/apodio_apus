@@ -82,8 +82,8 @@ export const ItemVariant = memo(
                     if (checkUploadSlider) {
                     } else {
                         const newArr = props.dataCreateProduct.slice();
-                        const newArr1 = newArr[indexItem].imageUrls.concat(results);
-                        props.dataCreateProduct[indexItem].imageUrls = newArr1;
+                        const newArr1 = newArr[indexItem!].imageUrls.concat(results);
+                        props.dataCreateProduct[indexItem!].imageUrls = newArr1;
                         props.setDataCreateProduct(newArr);
                     }
                 }
@@ -649,7 +649,15 @@ export const ItemVariant = memo(
                                         />
                                     </TouchableOpacity>
                                 ) : null}
-                                {props.isVariantInConfig === true ?
+                                {props.isVariantInConfig === undefined ?
+                                    <TouchableOpacity onPress={() => props.setAddVariant(false)}>
+                                        <Svgs.ic_close
+                                            width={scaleWidth(14)}
+                                            height={scaleHeight(14)}
+                                            style={{ marginLeft: 10 }}
+                                        />
+                                    </TouchableOpacity>
+                                    :(props.isVariantInConfig === true ?
                                     (props.dataCreateProduct.length === 0 ? (
                                         <TouchableOpacity onPress={() => props.setAddVariant(false)}>
                                             <Svgs.ic_close
@@ -674,7 +682,7 @@ export const ItemVariant = memo(
                                                 style={{ marginLeft: 10 }}
                                             />
                                         </TouchableOpacity>
-                                    ) : null)}
+                                    ) : null))}
                             </View>
                         </View>
                     </View>
@@ -685,7 +693,7 @@ export const ItemVariant = memo(
                     title={"productDetail.retailPrice"}
                     onCancel={() => {
                         setModalRetailPrice1(false);
-                        dataModal.length !== 0
+                        dataModal?.length !== 0
                             ? setDataModal([])
                             : setDataModal([{ min: "", price: "" }]);
                     }}
@@ -703,7 +711,7 @@ export const ItemVariant = memo(
                     title={"productDetail.wholesalePrice"}
                     onCancel={() => {
                         setModalWholesalePrice1(false);
-                        dataModal.length !== 0
+                        dataModal?.length !== 0
                             ? setDataModal([])
                             : setDataModal([{ min: "", price: "" }]);
                     }}
