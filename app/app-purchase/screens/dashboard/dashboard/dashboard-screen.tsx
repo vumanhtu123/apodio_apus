@@ -38,6 +38,7 @@ import { TabScreenProps } from "../../../navigators/bottom-navigation";
 import { formatCurrency } from "../../../utils/validate";
 import { formatDateTime } from "../../../utils/formatDate";
 import { getCompanyInfo, setCompanyInfo } from "../../../utils/storage";
+import { translate } from "../../../../i18n";
 
 export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
   function DashBoardScreen(props) {
@@ -53,7 +54,7 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
     const [revenue, setRevenue] = useState("");
     const [order, setOrder] = useState("");
     const getAPI = useStores();
-    const { orderStore, companyStore } = useStores();
+    const { orderStore, companyStore, paymentStore } = useStores();
     const [arrData, setArrData] = useState<any>([]);
     // Lấy ngày hiện tại theo giờ Việt Nam
     const today = moment().tz("Asia/Ho_Chi_Minh");
@@ -590,6 +591,13 @@ export const DashBoardScreen: FC<TabScreenProps<"home">> = observer(
               navigation.navigate({
                 name: "RevenueScreen",
               } as never);
+              paymentStore.setFilterListPayment({
+                dateStart: moment(new Date()).format("YYYY-MM-DD"),
+                dateEnd: moment(new Date()).format("YYYY-MM-DD"),
+                customDate: false,
+                stringDate: translate("calendar.today"),
+                id: 1,
+              })
               // navigation.dispatch(DrawerActions.openDrawer);
               // navigation.dispatch(DrawerActions.openDrawer);
               // testDebug();
