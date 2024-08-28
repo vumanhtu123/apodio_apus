@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import {
   Button,
   FlatList,
@@ -17,122 +17,18 @@ import { Svgs } from "../../../../assets/svgs";
 import { colors, scaleHeight, scaleWidth } from "../../theme";
 import { ItemRevenue } from "./component/item-list-renvenue";
 import { ClassifyModal } from "./classify-modal";
-import { FundsModal } from "./funds-modal";
 import CustomCalendar from "../../../components/calendar";
 import ViewInfo from "../dashboard/component/view-info";
 import { LinearGradient } from "react-native-linear-gradient";
 import { NavigatorParamList } from "../../navigators";
 import { useNavigation } from "@react-navigation/native";
 import { useStores } from "../../models";
-
-export const list = [
-  {
-    id: 0,
-    status: "05",
-    toDay: "Thứ tư",
-    monthDay: "Tháng 3/05",
-    expenditureValue: "0",
-    revenueValue: "40.000",
-    detail: [
-      {
-        name: "Nhập hàng",
-        value: "30.000",
-        paymentMethod: "ATM",
-      },
-      {
-        name: "Bán hàng",
-        value: "50.000",
-        paymentMethod: "ATM",
-      },
-    ],
-  },
-  {
-    id: 1,
-    status: "25",
-    toDay: "Thứ tư",
-    monthDay: "Tháng 4/07",
-    expenditureValue: "40.000",
-    revenueValue: "0",
-    paymentMethod: "ATM",
-    detail: [
-      {
-        name: "Nhập hàng",
-        value: "30.000",
-        paymentMethod: "ATM",
-      },
-      {
-        name: "Bán hàng",
-        value: "50.000",
-        paymentMethod: "ATM",
-      },
-    ],
-  },
-  {
-    id: 2,
-    status: "09",
-    toDay: "Thứ tư",
-    monthDay: "Tháng 3/12",
-    expenditureValue: "10.000",
-    revenueValue: "5.000",
-    detail: [
-      {
-        name: "Nhập hàng",
-        value: "30.000",
-        paymentMethod: "ATM",
-      },
-      {
-        name: "Bán hàng",
-        value: "50.000",
-        paymentMethod: "ATM",
-      },
-    ],
-  },
-  {
-    id: 3,
-    status: "10",
-    toDay: "Thứ tư",
-    monthDay: "Tháng 3/05",
-    expenditureValue: "0",
-    revenueValue: "40.000",
-    detail: [
-      {
-        name: "Nhập hàng",
-        value: "30.000",
-        paymentMethod: "ATM",
-      },
-      {
-        name: "Bán hàng",
-        value: "50.000",
-        paymentMethod: "ATM",
-      },
-    ],
-  },
-  {
-    id: 4,
-    status: "31",
-    toDay: "Thứ tư",
-    monthDay: "Tháng 3/05",
-    expenditureValue: "40.000",
-    revenueValue: "40.000",
-    detail: [
-      {
-        name: "Nhập hàng",
-        value: "30.000",
-        paymentMethod: "ATM",
-      },
-      {
-        name: "Bán hàng",
-        value: "50.000",
-        paymentMethod: "ATM",
-      },
-    ],
-  },
-];
+import { formatDatePayment } from "../../utils/formatDate";
 
 export const ListRevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "RevenueScreen">
 > = observer(function ListRevenueScreen(props) {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [makeDateE, setMakeDateE] = useState<any>();
   const [makeDateS, setMakeDateS] = useState<any>();
   const [timeStart, setTimeStart] = useState("");
@@ -140,12 +36,46 @@ export const ListRevenueScreen: FC<
   const [isVisible, setIsVisible] = useState(false);
   const [isShortByDate, setIsShortByDate] = useState(false);
   const [IsReset, setIsReset] = useState<boolean>();
+  const [listPayment, setListPayment] = useState<any>();
+  const [total, setTotal] = useState<any>();
+  const page = useRef(0);
+  const size = useRef(20);
+  const inbound = "INBOUND, INBOUND_INTERNAL";
+  const outbound = "OUTBOUND, OUTBOUND_INTERNAL";
 
   const { paymentStore } = useStores();
 
   const getListPayment = async () => {
-    const result: any = await paymentStore.getListPayment();
+    const result: any = await paymentStore.getListPayment({
+      search: "",
+      dateStart: paymentStore.filterListPayment.dateStart,
+      dateEnd: paymentStore.filterListPayment.dateEnd,
+      page: page.current,
+      size: size.current,
+    });
+    setListPayment(result.result.data.content);
+    console.log(
+      "result payment list: ",
+      JSON.stringify(result.result.data.content)
+    );
+  };
 
+  const getTotalPayment = async () => {
+    const result: any = await paymentStore.getTotalPayment();
+    setTotal(result.result.data);
+    console.log("total payment: ", JSON.stringify(result.result.data));
+  };
+
+  const getListFilter = async (item: any) => {
+    const result: any = await paymentStore.getListPayment({
+      search: "",
+      dateStart: paymentStore.filterListPayment.dateStart,
+      dateEnd: paymentStore.filterListPayment.dateEnd,
+      page: page.current,
+      size: size.current,
+      paymentTypes: item == 1 ? inbound : outbound,
+    });
+    setListPayment(result.result.data.content);
     console.log(
       "result payment list: ",
       JSON.stringify(result.result.data.content)
@@ -154,6 +84,7 @@ export const ListRevenueScreen: FC<
 
   useEffect(() => {
     getListPayment();
+    getTotalPayment();
   }, []);
 
   const toggleModalDate = () => {
@@ -223,7 +154,7 @@ export const ListRevenueScreen: FC<
           <FilterAppBarComponent
             date={timeStart == "" ? null : timeStart + timeEnd}
             onShowCalender={() => {
-              navigation.navigate({name: "filterRevenueScreen"} as never)
+              navigation.navigate({ name: "filterRevenueScreen" } as never);
             }}
             clear={() => {
               setTimeStart("");
@@ -264,7 +195,16 @@ export const ListRevenueScreen: FC<
               </Text>
             </TouchableOpacity>
           </View>
-          <ItemSum />
+          <ItemSum
+            outbound={total?.outbound}
+            inbound={total?.inbound}
+            inboundPress={1}
+            outboundPress={2}
+            onChange={(item: any) => {
+              console.log("onClick 111");
+              getListFilter(item);
+            }}
+          />
           <View style={{ backgroundColor: "#7676801F" }}>
             <View
               style={{
@@ -272,14 +212,13 @@ export const ListRevenueScreen: FC<
                 alignSelf: "flex-end",
                 marginVertical: 10,
               }}>
-              <View style={{ flex: 1, marginHorizontal: 40 }} />
               <Text
                 tx={"analysis.expenditure"}
                 style={{
                   fontSize: 10,
                   fontWeight: "400",
                   color: colors.nero,
-                  flex: 1,
+                  width: "28%",
                 }}></Text>
               <Text
                 tx={"analysis.revenue"}
@@ -287,72 +226,70 @@ export const ListRevenueScreen: FC<
                   fontSize: 10,
                   fontWeight: "400",
                   color: colors.nero,
-                  // flex: 1,
-                  marginRight: scaleWidth(30),
+                  width: "17%",
                 }}></Text>
             </View>
           </View>
         </View>
       </LinearGradient>
-      <ScrollView>
-        <FlatList
-          scrollEnabled={false}
-          data={list}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }: any) => {
-            return (
-              <ItemRevenue
-                id={item.id}
-                expenditureValue={item.expenditureValue}
-                monthDay={item.monthDay}
-                revenueValue={item.revenueValue}
-                status={item.status}
-                toDay={item.toDay}
-                detail={item.detail}
-              />
-            );
-          }}></FlatList>
+      <FlatList
+        scrollEnabled={true}
+        data={listPayment}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }: any) => {
+          const { day, monthYear } = formatDatePayment(item.date);
+          return (
+            <ItemRevenue
+              totalOutbound={item.totalOutbound}
+              day={day}
+              totalInbound={item.totalInbound}
+              dayOfWeek={item.dayOfWeek}
+              month={monthYear}
+              lines={item.lines}
+            />
+          );
+        }}></FlatList>
 
-        {/* <RefactorMoneyModal
+      {/* <RefactorMoneyModal
         onVisible={isVisible}
         onClose={(item: any) => {
           setIsVisible(false);
         }}
       /> */}
-        <ClassifyModal
-          onVisible={isVisible}
-          onClose={(item: any) => {
-            setIsVisible(false);
-          }}
-          selected={(data: any) => {
-            // field1.current = data.value;
-          }}
-        />
-        {/* <FundsModal
+      <ClassifyModal
+        onVisible={isVisible}
+        onClose={(item: any) => {
+          setIsVisible(false);
+        }}
+        selected={(data: any) => {
+          // field1.current = data.value;
+        }}
+      />
+      {/* <FundsModal
         onVisible={isVisible}
         onClose={(item: any) => {
           setIsVisible(false);
         }}
       /> */}
-        <CustomCalendar
-          button2={true}
-          onClose={() => toggleModalDate()}
-          handleShort={() => {
-            setMakeDateS(timeStart);
-            setMakeDateE(timeEnd);
-            toggleModalDate();
-          }}
-          onMarkedDatesChangeS={(markedDateS: string) => {
-            setTimeStart(markedDateS);
-          }}
-          onMarkedDatesChangeE={(markedDateE: string) => {
-            setTimeEnd(markedDateE);
-          }}
-          isShowTabs={false}
-          isSortByDate={isShortByDate}
-          toggleModalDate={toggleModalDate}
-        />
-      </ScrollView>
+      <CustomCalendar
+        button2={true}
+        onClose={() => toggleModalDate()}
+        handleShort={() => {
+          setMakeDateS(timeStart);
+          setMakeDateE(timeEnd);
+          toggleModalDate();
+        }}
+        onMarkedDatesChangeS={(markedDateS: string) => {
+          setTimeStart(markedDateS);
+        }}
+        onMarkedDatesChangeE={(markedDateE: string) => {
+          setTimeEnd(markedDateE);
+        }}
+        isShowTabs={false}
+        isSortByDate={isShortByDate}
+        toggleModalDate={toggleModalDate}
+      />
+
       <View
         style={{
           flexDirection: "row",
@@ -410,70 +347,166 @@ export const ListRevenueScreen: FC<
   );
 });
 
-const ItemSum = () => {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        marginHorizontal: 16,
-        marginVertical: 15,
-      }}>
-      <View
-        style={{
-          flex: 1,
-          paddingVertical: 15,
-          backgroundColor: colors.aliceBlue,
-          borderRadius: 6,
-          flexDirection: "row",
-        }}>
-        <Svgs.ic_money_down style={{ marginLeft: scaleWidth(5) }} />
+const ItemSum = (props: any) => {
+  const [showTotal, setShowTotal] = useState<number>(0);
+  const handleChange = () => {
+    props.onChange(showTotal);
+  };
 
-        <View style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
-          <Text
-            tx={"analysis.totalExpenditure"}
+  return (
+    <View>
+      {showTotal == 1 ? (
+        <TouchableOpacity
+          onPress={() => {
+            console.log("inboundPress", props.inboundPress);
+            setShowTotal(props.inboundPress);
+          }}
+          style={{
+            marginHorizontal: 16,
+            marginVertical: 15,
+            // flex: 1,
+            width: "50%",
+            paddingVertical: 15,
+            backgroundColor: colors.aliceBlue,
+            borderRadius: 6,
+            flexDirection: "row",
+          }}>
+          <Svgs.ic_money_down style={{ marginLeft: scaleWidth(5) }} />
+
+          <View style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
+            <Text
+              tx={"analysis.totalExpenditure"}
+              style={{
+                fontSize: 10,
+                fontWeight: "400",
+                color: colors.nero,
+              }}></Text>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "600",
+                color: colors.radicalRed,
+              }}>
+              {props.inbound}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ) : showTotal == 2 ? (
+        <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
+          <View />
+          <TouchableOpacity
+            onPress={() => {
+              console.log("outboundPress", props.outboundPress);
+              setShowTotal(props.outboundPress);
+            }}
             style={{
-              fontSize: 10,
-              fontWeight: "400",
-              color: colors.nero,
-            }}></Text>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: colors.radicalRed,
+              marginHorizontal: 16,
+              marginVertical: 15,
+              marginLeft: scaleWidth(15),
+              paddingVertical: 15,
+              backgroundColor: colors.aliceBlue,
+              width: "50%",
+              borderRadius: 6,
+              flexDirection: "row",
             }}>
-            100.000
-          </Text>
+            <Svgs.ic_money_up style={{ marginLeft: scaleWidth(5) }} />
+            <View
+              style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
+              <Text
+                tx={"analysis.totalRevenue"}
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: colors.nero,
+                }}></Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: colors.malachite,
+                }}>
+                {props.outbound}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View
-        style={{
-          marginLeft: scaleWidth(15),
-          paddingVertical: 15,
-          backgroundColor: colors.aliceBlue,
-          flex: 1,
-          borderRadius: 6,
-          flexDirection: "row",
-        }}>
-        <Svgs.ic_money_up style={{ marginLeft: scaleWidth(5) }} />
-        <View style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
-          <Text
-            tx={"analysis.totalRevenue"}
+      ) : (
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal: 16,
+            marginVertical: 15,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("inboundPress", props.inboundPress);
+              setShowTotal(props.inboundPress);
+              handleChange();
+            }}
             style={{
-              fontSize: 10,
-              fontWeight: "400",
-              color: colors.nero,
-            }}></Text>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "600",
-              color: colors.malachite,
+              flex: 1,
+              paddingVertical: 15,
+              backgroundColor: colors.aliceBlue,
+              borderRadius: 6,
+              flexDirection: "row",
             }}>
-            900.000
-          </Text>
+            <Svgs.ic_money_down style={{ marginLeft: scaleWidth(5) }} />
+
+            <View
+              style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
+              <Text
+                tx={"analysis.totalExpenditure"}
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: colors.nero,
+                }}></Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: colors.radicalRed,
+                }}>
+                {props.inbound}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("outboundPress", props.outboundPress);
+              setShowTotal(props.outboundPress);
+              handleChange();
+            }}
+            style={{
+              marginLeft: scaleWidth(15),
+              paddingVertical: 15,
+              backgroundColor: colors.aliceBlue,
+              flex: 1,
+              borderRadius: 6,
+              flexDirection: "row",
+            }}>
+            <Svgs.ic_money_up style={{ marginLeft: scaleWidth(5) }} />
+            <View
+              style={{ flexDirection: "column", marginLeft: scaleWidth(5) }}>
+              <Text
+                tx={"analysis.totalRevenue"}
+                style={{
+                  fontSize: 10,
+                  fontWeight: "400",
+                  color: colors.nero,
+                }}></Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "600",
+                  color: colors.malachite,
+                }}>
+                {props.outbound}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
-      </View>
+      )}
     </View>
   );
 };

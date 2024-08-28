@@ -19,7 +19,7 @@ export const PaymentStoreModel = types
         dateEnd: string;
         customDate: boolean;
         stringDate: string;
-        id: number
+        id: number;
       }>(),
       {
         dateStart: moment(new Date()).format("YYYY-MM-DD"),
@@ -38,17 +38,41 @@ export const PaymentStoreModel = types
       dateEnd: string;
       customDate: boolean;
       stringDate: string;
-      id: number
+      id: number;
     }) {
       self.filterListPayment = value;
     },
   }))
   .actions((self) => ({
-    getListPayment: flow(function* () {
+    getListPayment: flow(function* (value: {
+      dateStart: string;
+      dateEnd: string;
+      search: string;
+      page: number;
+      size: number;
+      paymentTypes?: any;
+    }) {
       try {
         const paymentApi = new PaymentApi(self.environment.apiAccounting);
-        const result: any = yield paymentApi.getPaymentList();
+        const result: any = yield paymentApi.getPaymentList(
+          value.search,
+          value.dateStart,
+          value.dateEnd,
+          value.page,
+          value.size,
+          value.paymentTypes
+        );
         console.log("getListPayment result: ", result);
+        return result;
+      } catch (err) {
+        console.log("error: ", err);
+      }
+    }),
+    getTotalPayment: flow(function* () {
+      try {
+        const paymentApi = new PaymentApi(self.environment.apiAccounting);
+        const result: any = yield paymentApi.getTotal();
+        console.log("get total result: ", result);
         return result;
       } catch (err) {
         console.log("error: ", err);
