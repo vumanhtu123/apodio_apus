@@ -4,17 +4,16 @@ import { Text } from "../../../../components";
 import { colors, scaleWidth } from "../../../theme";
 
 interface InputItem {
-  id?: any;
-  status?: any;
-  toDay?: any;
-  monthDay?: any;
-  expenditureValue?: any;
-  revenueValue?: any;
-  paymentMethod?: any;
-  detail: [
+  dayOfWeek?: any;
+  day?: any;
+  month?: any;
+  totalInbound?: any;
+  totalOutbound?: any;
+  lines: [
     {
-      name: any;
-      value: any;
+      label: any;
+      inbound: any;
+      outbound: any;
       paymentMethod: any;
     }
   ];
@@ -40,13 +39,14 @@ export const ItemRevenue = (props: InputItem) => {
           setIsShowDetail(!isShowDetail);
           // handleOnclick(props.id);
         }}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", width: "40%" }}>
           <View style={styles.viewStatus}>
-            <Text style={styles.textStatus}>{props.status ?? 1}</Text>
+            <Text style={styles.textStatus}>{props.day}</Text>
           </View>
           <View style={{ flexDirection: "column" }}>
             <Text style={{ fontSize: 12, fontWeight: "600" }}>
-              {props.toDay ?? "Thứ Ba"}
+              {props.dayOfWeek ?? ""}
             </Text>
             <Text
               style={{
@@ -54,20 +54,22 @@ export const ItemRevenue = (props: InputItem) => {
                 fontWeight: "400",
                 color: colors.dolphin,
               }}>
-              {props.monthDay ?? "Tháng 3/24"}
+              {props.month ?? ""}
             </Text>
           </View>
         </View>
-        <Text style={styles.textRevenue}>{props.revenueValue}</Text>
-        <Text style={styles.textExpenditure}>{props.expenditureValue}</Text>
+        <Text style={styles.textRevenue}>{props.totalInbound}</Text>
+        <Text style={styles.textExpenditure}>{props.totalOutbound}</Text>
       </TouchableOpacity>
       {isShowDetail == true
-        ? props.detail.map((item: any) => {
+        ? props.lines.map((item: any, index: any) => {
             return (
               <ItemRevenueNoDate
-                revenueValue={item.value}
+                index={index}
+                label={item.label}
+                inbound={item.inbound}
+                outbound={item.outbound}
                 paymentMethod={item.paymentMethod}
-                name={item.name}
               />
             );
           })
@@ -78,15 +80,13 @@ export const ItemRevenue = (props: InputItem) => {
 
 const ItemRevenueNoDate = (props: any) => {
   return (
-    <View style={styles.containerRevenueNoDate}>
-      <Text tx="analysis.importGoods" style={styles.textTittle}>
-        {props.name}
-      </Text>
+    <View key={props.index} style={styles.containerRevenueNoDate}>
+      <Text style={styles.textTittle}>{props.label}</Text>
       <View style={styles.viewPaymentMethod}>
-        <Text style={styles.textRevenueNoDate}>{props.revenueValue}</Text>
+        <Text style={styles.textRevenueNoDate}>{props.inbound}</Text>
         <Text style={styles.textPaymentMethod}>{props.paymentMethod}</Text>
       </View>
-      <View />
+      <Text style={styles.textExpenditure2}>{props.outbound}</Text>
     </View>
   );
 };
@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   textRevenue: {
-    flex: 1,
+    width: "15%",
     color: colors.radicalRed,
     fontSize: 12,
     fontWeight: "600",
@@ -119,7 +119,15 @@ export const styles = StyleSheet.create({
     marginHorizontal: scaleWidth(40),
   },
   textExpenditure: {
-    flex: 1,
+    width: "20%",
+    color: colors.malachite,
+    fontSize: 12,
+    fontWeight: "600",
+    textAlign: "center",
+    // marginLeft: props.expenditureValue !== "0" || undefined ? 10 : 15,
+  },
+  textExpenditure2: {
+    width: "20%",
     color: colors.malachite,
     fontSize: 12,
     fontWeight: "600",
@@ -130,22 +138,24 @@ export const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 12,
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "space-between",
   },
   textTittle: {
-    flex: 1,
+    width: "40%",
     fontSize: 12,
     fontWeight: "400",
     color: colors.dolphin,
   },
   viewPaymentMethod: {
-    flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    marginRight: scaleWidth(80),
   },
-  textRevenueNoDate: { fontSize: 12, fontWeight: "600", color: colors.radicalRed },
+  textRevenueNoDate: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: colors.radicalRed,
+  },
   textPaymentMethod: {
     fontSize: 12,
     fontWeight: "600",

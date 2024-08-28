@@ -19,8 +19,8 @@ export class PaymentApi {
         ApiEndpoint.GET_PAYMENT_TOTAL,
         {
           search: "",
-          start: "",
-          end: "",
+          start: "2024-06-01",
+          end: "2024-08-31",
         }
       );
       Loading.hide();
@@ -35,20 +35,36 @@ export class PaymentApi {
     }
   }
 
-  async getPaymentList(): Promise<any> {
+  async getPaymentList(
+    search: string,
+    start: any,
+    end: any,
+    page: number,
+    size: number,
+    paymentTypes?: any
+  ): Promise<any> {
     Loading.show({
       text: "Loading...",
     });
     try {
       const response: ApiResponse<any> = await this.apiAccounting.apisauce.get(
         ApiEndpoint.GET_PAYMENT_LIST,
-        {
-          search: "",
-          start: "2024-06-01",
-          end: "2024-08-31",
-          page: 0,
-          size: 20,
-        }
+        paymentTypes == ""
+          ? {
+              search: search,
+              start: start,
+              end: end,
+              page: page,
+              size: size,
+            }
+          : {
+              search: search,
+              start: start,
+              end: end,
+              page: page,
+              size: size,
+              paymentTypes: paymentTypes,
+            }
       );
       Loading.hide();
       const result = response.data;
