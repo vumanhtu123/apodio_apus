@@ -49,7 +49,7 @@ export class PaymentApi {
     try {
       const response: ApiResponse<any> = await this.apiAccounting.apisauce.get(
         ApiEndpoint.GET_PAYMENT_LIST,
-        paymentTypes == ""
+        paymentTypes == undefined
           ? {
               search: search,
               start: start,

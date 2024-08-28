@@ -19,15 +19,59 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { TextInput } from "react-native-gesture-handler";
 import { BTNLEFT, LOGO, ROOT } from "./Styles";
 import { ItemRevenue } from "./component/item-list-renvenue";
-import { list } from "./list-revenue-screen";
+import { formatDatePayment } from "../../utils/formatDate";
+import { useStores } from "../../models";
 
 export const SearchScreen: FC<
   StackScreenProps<NavigatorParamList, "SearchScreen">
 > = observer(function SearchScreen(props) {
   const [searchText, setSearchText] = useState("");
+  const [listPayment, setListPayment] = useState<any>();
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(20);
+  const [totalPages, setTotalPages] = useState(0);
+  const { paymentStore } = useStores();
 
   const onBack = () => {
     props.navigation.goBack();
+  };
+
+  const getListPayment = async (text: string) => {
+    const result: any = await paymentStore.getListPayment({
+      search: text,
+      dateStart: paymentStore.filterListPayment.dateStart,
+      dateEnd: paymentStore.filterListPayment.dateEnd,
+      page: page,
+      size: size,
+    });
+    setTotalPages(result.result.data.totalPages);
+    if (result && result.kind === "ok") {
+      if (page === 0) {
+        // if (listPayment == undefined) {
+        //   console.log("get list success");
+        setListPayment(result.result.data.content);
+        // } else {
+        //   const newArr = result.result.data.content.filter(
+        //     (item: { id: number }) => item.id !== listPayment?.id
+        //   );
+        //   setListPayment([listPayment].concat(newArr));
+        // }
+      } else {
+        // const newArr = result.result.data.content.filter(
+        //   (item: { id: number }) => item.id !== listPayment?.id
+        // );
+        setListPayment((prevProducts: any) => [
+          ...prevProducts,
+          ...result.result.data.content,
+        ]);
+      }
+    } else {
+      console.error("Failed to fetch list unit:", result);
+    }
+    console.log(
+      "result payment list: ",
+      JSON.stringify(result.result.data.page)
+    );
   };
 
   const handleSearch = (text: any) => {
@@ -39,6 +83,7 @@ export const SearchScreen: FC<
     value: NativeSyntheticEvent<TextInputSubmitEditingEventData>
   ) => {
     console.log("value search", value.nativeEvent.text);
+    getListPayment(value.nativeEvent.text);
     // setValueSearch(value.nativeEvent.text)
     // setPage(0)
     // setMyData([])
@@ -157,25 +202,24 @@ export const SearchScreen: FC<
         </View>
       </View>
       {searchText != "" ? (
-        <ScrollView>
-          <FlatList
-            scrollEnabled={false}
-            data={list}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }: any) => {
-              return (
-                <ItemRevenue
-                  id={item.id}
-                  expenditureValue={item.expenditureValue}
-                  monthDay={item.monthDay}
-                  revenueValue={item.revenueValue}
-                  status={item.status}
-                  toDay={item.toDay}
-                  detail={item.detail}
-                />
-              );
-            }}></FlatList>
-        </ScrollView>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={true}
+          data={listPayment}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }: any) => {
+            const { day, monthYear } = formatDatePayment(item.date);
+            return (
+              <ItemRevenue
+                totalOutbound={item.totalOutbound}
+                day={day}
+                totalInbound={item.totalInbound}
+                dayOfWeek={item.dayOfWeek}
+                month={monthYear}
+                lines={item.lines}
+              />
+            );
+          }}></FlatList>
       ) : null}
     </View>
   );

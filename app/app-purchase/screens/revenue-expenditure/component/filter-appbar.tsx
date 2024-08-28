@@ -21,6 +21,11 @@ interface SelectorProps {
 export const FilterAppBarComponent = (props: any) => {
   const [value, setValue] = useState(0);
 
+  const handleChange = () => {
+    props.onChange(value);
+    console.log("propss 2", value);
+  };
+
   console.log("propss", props.date);
   return (
     <View style={styles.container}>
@@ -56,6 +61,7 @@ export const FilterAppBarComponent = (props: any) => {
                 <ItemSelector
                   selected={() => {
                     setValue(item.id);
+                    handleChange();
                   }}
                   name={item.name}
                   index={index}

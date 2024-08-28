@@ -17,113 +17,118 @@ import { useStores } from "../../models";
 export const FilterRevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "filterRevenueScreen">
 > = observer(function name(props) {
-  const { paymentStore } = useStores()
+  const { paymentStore } = useStores();
   const [markedDatesS, setMarkedDatesS] = useState("");
   const [markedDatesE, setMarkedDatesE] = useState("");
-  const [selectedTime, setSelectedTime] = useState<{ id: number, day: string }>({ id: 0, day: '' });
-  const [viewCalendarS, setViewCalendarS] = useState(false)
-  const [viewCalendarE, setViewCalendarE] = useState(false)
-  const [isSortByDate, setIsSortByDate] = useState(false)
-  const [valueDateS, setValueDateS] = useState('') 
-  const [valueDateE, setValueDateE] = useState('')
-  const customDate = useRef(false)
+  const [selectedTime, setSelectedTime] = useState<{ id: number; day: string }>(
+    { id: 0, day: "" }
+  );
+  const [viewCalendarS, setViewCalendarS] = useState(false);
+  const [viewCalendarE, setViewCalendarE] = useState(false);
+  const [isSortByDate, setIsSortByDate] = useState(false);
+  const [valueDateS, setValueDateS] = useState("");
+  const [valueDateE, setValueDateE] = useState("");
+  const customDate = useRef(false);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log(paymentStore.filterListPayment.customDate)
-    console.log(paymentStore.filterListPayment.stringDate)
-    console.log(paymentStore.filterListPayment)
-    console.log(moment(new Date()).format('YYYY-MM-DD'))
-    setValueDateS(paymentStore.filterListPayment.dateStart)
-    setValueDateE(paymentStore.filterListPayment.dateEnd)
-    setSelectedTime({ day: paymentStore.filterListPayment.stringDate, id: paymentStore.filterListPayment.id })
-    setMarkedDatesS(paymentStore.filterListPayment.dateStart)
-    setMarkedDatesE(paymentStore.filterListPayment.dateEnd)
-  }, [])
+    console.log(paymentStore.filterListPayment.customDate);
+    console.log(paymentStore.filterListPayment.stringDate);
+    console.log(paymentStore.filterListPayment);
+    console.log(moment(new Date()).format("YYYY-MM-DD"));
+    setValueDateS(paymentStore.filterListPayment.dateStart);
+    setValueDateE(paymentStore.filterListPayment.dateEnd);
+    setSelectedTime({
+      day: paymentStore.filterListPayment.stringDate,
+      id: paymentStore.filterListPayment.id,
+    });
+    setMarkedDatesS(paymentStore.filterListPayment.dateStart);
+    setMarkedDatesE(paymentStore.filterListPayment.dateEnd);
+  }, []);
 
-  useEffect(()=>{
-    console.log(valueDateE,'123', valueDateS)
-    console.log(markedDatesE, markedDatesS)
-    if(valueDateS !== markedDatesS || valueDateE !== markedDatesE){
-      setSelectedTime({id: 0, day: ''})
-      customDate.current = true
+  useEffect(() => {
+    console.log(valueDateE, "123", valueDateS);
+    console.log(markedDatesE, markedDatesS);
+    if (valueDateS !== markedDatesS || valueDateE !== markedDatesE) {
+      setSelectedTime({ id: 0, day: "" });
+      customDate.current = true;
     }
-  }, [markedDatesE, markedDatesS])
+  }, [markedDatesE, markedDatesS]);
 
   const dataDay = [
     {
       id: 1,
-      day: translate('calendar.today'),
+      day: translate("calendar.today"),
       onPress: () => {
-        setMarkedDatesS(moment(new Date()).format('YYYY-MM-DD'))
-        setMarkedDatesE(moment(new Date()).format('YYYY-MM-DD'))
-        setValueDateS(moment(new Date()).format('YYYY-MM-DD'))
-        setValueDateE(moment(new Date()).format('YYYY-MM-DD'))
+        setMarkedDatesS(moment(new Date()).format("YYYY-MM-DD"));
+        setMarkedDatesE(moment(new Date()).format("YYYY-MM-DD"));
+        setValueDateS(moment(new Date()).format("YYYY-MM-DD"));
+        setValueDateE(moment(new Date()).format("YYYY-MM-DD"));
       },
     },
     {
       id: 2,
-      day: translate('calendar.yesterday'),
+      day: translate("calendar.yesterday"),
       onPress: () => {
-        const date = new Date()
-        const lastDay = date.setDate(date.getDate() - 1)
-        setMarkedDatesS(moment(lastDay).format('YYYY-MM-DD'))
-        setMarkedDatesE(moment(lastDay).format('YYYY-MM-DD'))
-        setValueDateS(moment(lastDay).format('YYYY-MM-DD'))
-        setValueDateE(moment(lastDay).format('YYYY-MM-DD'))
+        const date = new Date();
+        const lastDay = date.setDate(date.getDate() - 1);
+        setMarkedDatesS(moment(lastDay).format("YYYY-MM-DD"));
+        setMarkedDatesE(moment(lastDay).format("YYYY-MM-DD"));
+        setValueDateS(moment(lastDay).format("YYYY-MM-DD"));
+        setValueDateE(moment(lastDay).format("YYYY-MM-DD"));
       },
     },
     {
       id: 3,
-      day: translate('calendar.thisMonth'),
+      day: translate("calendar.thisMonth"),
       onPress: () => {
-        const today = new Date()
-        const startDay = new Date(today.getFullYear(), today.getMonth(), 1)
-        const endDay = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
-        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
-        setValueDateS(moment(startDay).format('YYYY-MM-DD'))
-        setValueDateE(moment(endDay).format('YYYY-MM-DD'))
+        const today = new Date();
+        const startDay = new Date(today.getFullYear(), today.getMonth(), 1);
+        const endDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        setMarkedDatesS(moment(startDay).format("YYYY-MM-DD"));
+        setMarkedDatesE(moment(endDay).format("YYYY-MM-DD"));
+        setValueDateS(moment(startDay).format("YYYY-MM-DD"));
+        setValueDateE(moment(endDay).format("YYYY-MM-DD"));
       },
     },
     {
       id: 4,
-      day: translate('calendar.lastMonth'),
+      day: translate("calendar.lastMonth"),
       onPress: () => {
-        const today = new Date()
-        const startDay = new Date(today.getFullYear(), today.getMonth() - 1, 1)
-        const endDay = new Date(today.getFullYear(), today.getMonth(), 0)
-        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
-        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
-        setValueDateS(moment(startDay).format('YYYY-MM-DD'))
-        setValueDateE(moment(endDay).format('YYYY-MM-DD'))
+        const today = new Date();
+        const startDay = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+        const endDay = new Date(today.getFullYear(), today.getMonth(), 0);
+        setMarkedDatesS(moment(startDay).format("YYYY-MM-DD"));
+        setMarkedDatesE(moment(endDay).format("YYYY-MM-DD"));
+        setValueDateS(moment(startDay).format("YYYY-MM-DD"));
+        setValueDateE(moment(endDay).format("YYYY-MM-DD"));
       },
     },
     {
       id: 5,
-      day: translate('calendar.last30days'),
+      day: translate("calendar.last30days"),
       onPress: () => {
-        const today = new Date()
-        const endDay = new Date()
-        const startDay = today.setDate(today.getDate() - 30)
-        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
-        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
-        setValueDateS(moment(startDay).format('YYYY-MM-DD'))
-        setValueDateE(moment(endDay).format('YYYY-MM-DD'))
+        const today = new Date();
+        const endDay = new Date();
+        const startDay = today.setDate(today.getDate() - 30);
+        setMarkedDatesS(moment(startDay).format("YYYY-MM-DD"));
+        setMarkedDatesE(moment(endDay).format("YYYY-MM-DD"));
+        setValueDateS(moment(startDay).format("YYYY-MM-DD"));
+        setValueDateE(moment(endDay).format("YYYY-MM-DD"));
       },
     },
     {
       id: 6,
-      day: translate('calendar.thisYear'),
+      day: translate("calendar.thisYear"),
       onPress: () => {
-        const today = new Date()
-        const startDay = new Date(today.getFullYear(), 0, 1)
-        const endDay = new Date(today.getFullYear(), 12, 0)
-        setMarkedDatesS(moment(startDay).format('YYYY-MM-DD'))
-        setMarkedDatesE(moment(endDay).format('YYYY-MM-DD'))
-        setValueDateS(moment(startDay).format('YYYY-MM-DD'))
-        setValueDateE(moment(endDay).format('YYYY-MM-DD'))
+        const today = new Date();
+        const startDay = new Date(today.getFullYear(), 0, 1);
+        const endDay = new Date(today.getFullYear(), 12, 0);
+        setMarkedDatesS(moment(startDay).format("YYYY-MM-DD"));
+        setMarkedDatesE(moment(endDay).format("YYYY-MM-DD"));
+        setValueDateS(moment(startDay).format("YYYY-MM-DD"));
+        setValueDateE(moment(endDay).format("YYYY-MM-DD"));
       },
     },
   ];
@@ -146,7 +151,6 @@ export const FilterRevenueScreen: FC<
             height: "100%",
           }}>
           <View style={styles.bodyModal}>
-
             <Text tx="warehouseBook.time" style={styles.textTime} />
 
             <FlatList
@@ -157,17 +161,19 @@ export const FilterRevenueScreen: FC<
                     <TouchableOpacity
                       onPress={() => {
                         setSelectedTime({ day: item.day, id: item.id });
-                        console.log(index)
+                        console.log(index);
                         item.onPress();
-                        setViewCalendarS(false)
-                        setViewCalendarE(false)
-                        customDate.current = false
+                        setViewCalendarS(false);
+                        setViewCalendarE(false);
+                        customDate.current = false;
                       }}
                       style={[
                         styles.styleIemTime,
                         {
                           backgroundColor:
-                            selectedTime.id - 1 === index ? colors.aliceBlue2 : colors.aliceBlue,
+                            selectedTime.id - 1 === index
+                              ? colors.aliceBlue2
+                              : colors.aliceBlue,
                           borderWidth: 1,
                           borderColor:
                             selectedTime.id - 1 == index
@@ -197,11 +203,12 @@ export const FilterRevenueScreen: FC<
               style={styles.stytleTitle}
             />
 
-            <TouchableOpacity onPress={() => {
-              setViewCalendarS(!viewCalendarS)
-              setIsSortByDate(!isSortByDate)
-              console.log(selectedTime, 'ahjsdkjashdg')
-            }}
+            <TouchableOpacity
+              onPress={() => {
+                setViewCalendarS(!viewCalendarS);
+                setIsSortByDate(!isSortByDate);
+                console.log(selectedTime, "ahjsdkjashdg");
+              }}
               style={{ flexDirection: "row", marginBottom: 10 }}>
               <Text
                 style={{
@@ -216,42 +223,52 @@ export const FilterRevenueScreen: FC<
                   flex: 1,
                   flexDirection: "row",
                   borderBottomWidth: 1,
-                  borderBottomColor: viewCalendarS == true ? colors.palette.navyBlue : colors.ghostWhite,
+                  borderBottomColor:
+                    viewCalendarS == true
+                      ? colors.palette.navyBlue
+                      : colors.ghostWhite,
                   alignItems: "center",
                 }}>
                 <Text
                   style={{ flex: 1, padding: 0 }}
-                  text={moment(markedDatesS).format('DD/MM/YYYY')}
+                  text={moment(markedDatesS).format("DD/MM/YYYY")}
                 />
 
-                <View style={{ transform: [{ rotate: viewCalendarS == true ? "180deg" : "0deg" }] }}>
+                <View
+                  style={{
+                    transform: [
+                      { rotate: viewCalendarS == true ? "180deg" : "0deg" },
+                    ],
+                  }}>
                   <Svgs.dropDown />
                 </View>
               </View>
             </TouchableOpacity>
 
-            {viewCalendarS == true ? <View style={styles.bodyClender}>
-              <CustomCalendarWarehouseBook
-                isOneDate={true}
+            {viewCalendarS == true ? (
+              <View style={styles.bodyClender}>
+                <CustomCalendarWarehouseBook
+                  isOneDate={true}
+                  onMarkedDatesChangeS={(markedDatesS: any) => {
+                    console.log(markedDatesS);
+                    setMarkedDatesS(markedDatesS);
+                    // setSelectedTime({ id: 0, day: '' })
+                  }}
+                  dateS={markedDatesS}
+                  onMarkedDatesChangeE={(markeDateE: any) => {
+                    console.log(markeDateE);
+                  }}
+                  maxDate={markedDatesE}
+                  isSortByDate={isSortByDate}
+                />
+              </View>
+            ) : null}
 
-                onMarkedDatesChangeS={(markedDatesS: any) => {
-                  console.log(markedDatesS);
-                  setMarkedDatesS(markedDatesS);
-                  // setSelectedTime({ id: 0, day: '' })
-                }}
-                dateS={markedDatesS}
-                onMarkedDatesChangeE={(markeDateE: any) => {
-                  console.log(markeDateE);
-                }}
-                maxDate={markedDatesE}
-                isSortByDate={isSortByDate}
-              />
-            </View> : null}
-
-            <TouchableOpacity onPress={() => {
-              setViewCalendarE(!viewCalendarE)
-              setIsSortByDate(!isSortByDate)
-            }}
+            <TouchableOpacity
+              onPress={() => {
+                setViewCalendarE(!viewCalendarE);
+                setIsSortByDate(!isSortByDate);
+              }}
               style={{ flexDirection: "row", marginBottom: 10 }}>
               <Text
                 style={{
@@ -266,39 +283,47 @@ export const FilterRevenueScreen: FC<
                   flex: 1,
                   flexDirection: "row",
                   borderBottomWidth: 1,
-                  borderBottomColor: viewCalendarE == true ? colors.palette.navyBlue : colors.ghostWhite,
+                  borderBottomColor:
+                    viewCalendarE == true
+                      ? colors.palette.navyBlue
+                      : colors.ghostWhite,
                   alignItems: "center",
                 }}>
                 <Text
                   style={{ flex: 1, padding: 0 }}
-                  text={moment(markedDatesE).format('DD/MM/YYYY')}
+                  text={moment(markedDatesE).format("DD/MM/YYYY")}
                 />
 
-                <View style={{ transform: [{ rotate: viewCalendarE == true ? "180deg" : "0deg" }] }}>
+                <View
+                  style={{
+                    transform: [
+                      { rotate: viewCalendarE == true ? "180deg" : "0deg" },
+                    ],
+                  }}>
                   <Svgs.dropDown />
                 </View>
               </View>
             </TouchableOpacity>
 
-            {viewCalendarE == true ? <View style={styles.bodyClender}>
-              <CustomCalendarWarehouseBook
-                isOneDate={true}
-
-                onMarkedDatesChangeS={(markedDatesS: any) => {
-                  console.log(markedDatesS);
-                  setMarkedDatesE(markedDatesS);
-                  // setSelectedTime({ id: 0, day: '' })
-                }}
-                dateS={markedDatesE}
-                onMarkedDatesChangeE={(markedDateE: any) => {
-                  console.log(markedDateE);
-                }}
-                isShowTabs={false}
-                minDate={markedDatesS}
-                isSortByDate={isSortByDate}
-              />
-            </View> : null}
-
+            {viewCalendarE == true ? (
+              <View style={styles.bodyClender}>
+                <CustomCalendarWarehouseBook
+                  isOneDate={true}
+                  onMarkedDatesChangeS={(markedDatesS: any) => {
+                    console.log(markedDatesS);
+                    setMarkedDatesE(markedDatesS);
+                    // setSelectedTime({ id: 0, day: '' })
+                  }}
+                  dateS={markedDatesE}
+                  onMarkedDatesChangeE={(markedDateE: any) => {
+                    console.log(markedDateE);
+                  }}
+                  isShowTabs={false}
+                  minDate={markedDatesS}
+                  isSortByDate={isSortByDate}
+                />
+              </View>
+            ) : null}
           </View>
         </View>
       </ScrollView>
@@ -306,14 +331,17 @@ export const FilterRevenueScreen: FC<
         txCancel={"warehouseBook.reset"}
         txConfirm={"warehouseBook.apply"}
         isModal={false}
-        onPressCancel={() => console.log('dasd')}
-        onPressConfirm={() => paymentStore.setFilterListPayment({
-          dateStart: markedDatesS,
-          dateEnd: markedDatesE,
-          customDate: customDate.current,
-          stringDate: selectedTime.day,
-          id: selectedTime.id,
-        })}
+        onPressCancel={() => navigation.goBack()}
+        onPressConfirm={() => {
+          paymentStore.setFilterListPayment({
+            dateStart: markedDatesS,
+            dateEnd: markedDatesE,
+            customDate: customDate.current,
+            stringDate: selectedTime.day,
+            id: selectedTime.id,
+          }),
+            navigation.navigate({ name: "RevenueScreen" } as never);
+        }}
       />
     </View>
   );

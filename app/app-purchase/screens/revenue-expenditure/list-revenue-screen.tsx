@@ -2,10 +2,9 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { observer } from "mobx-react-lite";
 import { FC, useEffect, useRef, useState } from "react";
 import {
-  Button,
   FlatList,
   Platform,
-  ScrollView,
+  RefreshControl,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -24,6 +23,7 @@ import { NavigatorParamList } from "../../navigators";
 import { useNavigation } from "@react-navigation/native";
 import { useStores } from "../../models";
 import { formatDatePayment } from "../../utils/formatDate";
+import moment from "moment";
 
 export const ListRevenueScreen: FC<
   StackScreenProps<NavigatorParamList, "RevenueScreen">
@@ -35,13 +35,14 @@ export const ListRevenueScreen: FC<
   const [timeEnd, setTimeEnd] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [isShortByDate, setIsShortByDate] = useState(false);
-  const [IsReset, setIsReset] = useState<boolean>();
   const [listPayment, setListPayment] = useState<any>();
   const [total, setTotal] = useState<any>();
-  const page = useRef(0);
-  const size = useRef(20);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(20);
   const inbound = "INBOUND, INBOUND_INTERNAL";
   const outbound = "OUTBOUND, OUTBOUND_INTERNAL";
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
 
   const { paymentStore } = useStores();
 
@@ -50,14 +51,75 @@ export const ListRevenueScreen: FC<
       search: "",
       dateStart: paymentStore.filterListPayment.dateStart,
       dateEnd: paymentStore.filterListPayment.dateEnd,
-      page: page.current,
-      size: size.current,
+      page: page,
+      size: size,
     });
-    setListPayment(result.result.data.content);
+    setTotalPages(result.result.data.totalPages);
+    if (result && result.kind === "ok") {
+      if (page === 0) {
+        // if (listPayment == undefined) {
+        //   console.log("get list success");
+        setListPayment(result.result.data.content);
+        // } else {
+        //   const newArr = result.result.data.content.filter(
+        //     (item: { id: number }) => item.id !== listPayment?.id
+        //   );
+        //   setListPayment([listPayment].concat(newArr));
+        // }
+      } else {
+        // const newArr = result.result.data.content.filter(
+        //   (item: { id: number }) => item.id !== listPayment?.id
+        // );
+        setListPayment((prevProducts: any) => [
+          ...prevProducts,
+          ...result.result.data.content,
+        ]);
+      }
+    } else {
+      console.error("Failed to fetch list unit:", result);
+    }
     console.log(
       "result payment list: ",
-      JSON.stringify(result.result.data.content)
+      JSON.stringify(result.result.data.page)
     );
+  };
+
+  const handlePressDate = (date: any) => {
+    // console.log("press date", date);
+    if (date == 2) {
+      paymentStore.setFilterListPayment({
+        dateStart: moment(new Date()).format("YYYY-MM-DD"),
+        dateEnd: moment(new Date()).format("YYYY-MM-DD"),
+        customDate: false,
+        stringDate: translate("calendar.today"),
+        id: 1,
+      });
+    } else if (date == 1) {
+      const startOfMonth = moment().startOf("month").format("YYYY-MM-DD");
+      const endOfMonth = moment().endOf("month").format("YYYY-MM-DD");
+      paymentStore.setFilterListPayment({
+        dateStart: startOfMonth,
+        dateEnd: endOfMonth,
+        customDate: false,
+        stringDate: translate("calendar.today"),
+        id: 1,
+      });
+    }
+  };
+
+  const handleEndReachedListPayment = () => {
+    if (page < totalPages - 1) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const refreshListPayment = async () => {
+    setIsRefreshing(true);
+    setPage(0);
+    // setSearchText("");
+
+    getListPayment();
+    setIsRefreshing(false);
   };
 
   const getTotalPayment = async () => {
@@ -67,12 +129,13 @@ export const ListRevenueScreen: FC<
   };
 
   const getListFilter = async (item: any) => {
+    console.log("inbound list filter", item);
     const result: any = await paymentStore.getListPayment({
       search: "",
       dateStart: paymentStore.filterListPayment.dateStart,
       dateEnd: paymentStore.filterListPayment.dateEnd,
-      page: page.current,
-      size: size.current,
+      page: page,
+      size: size,
       paymentTypes: item == 1 ? inbound : outbound,
     });
     setListPayment(result.result.data.content);
@@ -83,9 +146,12 @@ export const ListRevenueScreen: FC<
   };
 
   useEffect(() => {
-    getListPayment();
     getTotalPayment();
   }, []);
+
+  useEffect(() => {
+    getListPayment();
+  }, [page, paymentStore.filterListPayment, timeStart]);
 
   const toggleModalDate = () => {
     setIsShortByDate(!isShortByDate);
@@ -95,7 +161,6 @@ export const ListRevenueScreen: FC<
     setIsVisible(!isVisible);
   };
 
-  console.log("tumv check", timeStart);
   return (
     <View
       style={{
@@ -152,7 +217,7 @@ export const ListRevenueScreen: FC<
         </View>
         <View style={{ backgroundColor: "white" }}>
           <FilterAppBarComponent
-            date={timeStart == "" ? null : timeStart + timeEnd}
+            date={timeStart == "" ? null : timeStart + " - " + timeEnd}
             onShowCalender={() => {
               navigation.navigate({ name: "filterRevenueScreen" } as never);
             }}
@@ -160,6 +225,10 @@ export const ListRevenueScreen: FC<
               setTimeStart("");
               setTimeEnd("");
               console.log("onclick", timeStart);
+            }}
+            onChange={(item: any) => {
+              handlePressDate(item);
+              console.log("on props", item);
             }}
           />
           <View
@@ -233,8 +302,18 @@ export const ListRevenueScreen: FC<
         </View>
       </LinearGradient>
       <FlatList
+        showsVerticalScrollIndicator={false}
         scrollEnabled={true}
         data={listPayment}
+        onEndReached={handleEndReachedListPayment}
+        onEndReachedThreshold={1.5}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={refreshListPayment}
+            title="ok"
+          />
+        }
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }: any) => {
           const { day, monthYear } = formatDatePayment(item.date);
